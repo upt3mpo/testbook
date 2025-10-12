@@ -38,8 +38,8 @@ Thank you for your interest in improving the Testbook Testing Platform! This doc
 
 ```bash
 # 1. Fork and clone
-git clone https://github.com/YOUR_USERNAME/Testbook.git
-cd Testbook
+git clone https://github.com/YOUR_USERNAME/testbook.git
+cd testbook
 
 # 2. Set up backend
 cd backend

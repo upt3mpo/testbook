@@ -227,11 +227,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 💡 Getting Started
 
-**Quick Start:**
+**Install:**
 ```bash
+git clone https://github.com/upt3mpo/testbook.git
+cd testbook
 ./start-dev.sh              # Start application
-cd backend && pytest -v     # Run backend tests
-cd frontend && npm test     # Run frontend tests
+```
+
+**Verify:**
+```bash
+cd backend && pytest -v     # Run backend tests (180 passing)
+cd frontend && npm test     # Run frontend tests (30 passing)
 ```
 
 **Learn:**

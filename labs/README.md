@@ -237,8 +237,8 @@ Before starting Lab 1:
 
 ```bash
 # 1. Clone Testbook
-git clone <repo>
-cd Testbook
+git clone https://github.com/upt3mpo/testbook.git
+cd testbook
 
 # 2. Start application
 ./start-dev.sh  # macOS/Linux

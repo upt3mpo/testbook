@@ -1,6 +1,6 @@
 # ✅ Testbook 1.0.0 - Ready for Git Init
 
-**Date:** October 12, 2025  
+**Date:** October 12, 2025
 **Status:** 🟢 **CLEAN & READY FOR INITIAL COMMIT**
 
 ---
@@ -21,7 +21,7 @@
 
 ### Code & Tests ✅
 - [x] Backend: 180/180 tests passing
-- [x] Frontend: 30/30 tests passing  
+- [x] Frontend: 30/30 tests passing
 - [x] All dependencies installed (MSW, ESM compatible)
 - [x] All scripts working
 - [x] Real images included (21 files, 1.6MB)
@@ -112,7 +112,7 @@ Initial public release.
 Production ready for learners."
 
 # Connect to remote
-git remote add origin <your-repo-url>
+git remote add origin https://github.com/upt3mpo/testbook.git
 
 # Push
 git branch -M main
@@ -191,8 +191,8 @@ git push origin v1.0.0
 
 ## ✅ APPROVED FOR COMMIT
 
-All internal development docs removed.  
-All public-facing docs clean and professional.  
+All internal development docs removed.
+All public-facing docs clean and professional.
 Ready for initial git commit and v1.0.0 tag.
 
 🚀 **Let's ship Testbook 1.0.0!** 🚀

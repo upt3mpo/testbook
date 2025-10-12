@@ -198,8 +198,8 @@ Both work identically - it's purely personal preference!
 
 ```bash
 # Clone the repo
-git clone https://github.com/yourname/Testbook.git
-cd Testbook
+git clone https://github.com/upt3mpo/testbook.git
+cd testbook
 
 # Complete setup (dependencies + database)
 make setup

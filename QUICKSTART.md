@@ -13,8 +13,8 @@ Get Testbook running in 5 minutes on any platform!
 
 ### Step 1: Clone Repository
 ```bash
-git clone <your-repo-url>
-cd Testbook
+git clone https://github.com/upt3mpo/testbook.git
+cd testbook
 ```
 
 ### Step 2: Start Application (Development Mode)
@@ -56,8 +56,8 @@ Password: Sarah2024!
 
 ### Step 1: Clone Repository
 ```cmd
-git clone <your-repo-url>
-cd Testbook
+git clone https://github.com/upt3mpo/testbook.git
+cd testbook
 ```
 
 ### Step 2: Start Application (Development Mode)

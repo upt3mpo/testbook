@@ -17,8 +17,8 @@ Choose your operating system:
 ### macOS / Linux
 
 ```bash
-git clone <your-repo-url>
-cd Testbook
+git clone https://github.com/upt3mpo/testbook.git
+cd testbook
 chmod +x start-dev.sh
 ./start-dev.sh
 ```
@@ -26,8 +26,8 @@ chmod +x start-dev.sh
 ### Windows
 
 ```cmd
-git clone <your-repo-url>
-cd Testbook
+git clone https://github.com/upt3mpo/testbook.git
+cd testbook
 start-dev.bat
 ```
 

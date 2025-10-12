@@ -18,7 +18,7 @@ This guide helps Windows users set up and run Testbook. There are three approach
 
 1. **Clone the repository:**
    ```cmd
-   git clone https://github.com/yourusername/testbook.git
+   git clone https://github.com/upt3mpo/testbook.git
    cd testbook
    ```
 
@@ -94,7 +94,7 @@ taskkill /PID <PID_NUMBER> /F
 
 4. **Clone and run Testbook:**
    ```bash
-   git clone https://github.com/yourusername/testbook.git
+   git clone https://github.com/upt3mpo/testbook.git
    cd testbook
    chmod +x start-dev.sh
    ./start-dev.sh

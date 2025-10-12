@@ -2447,8 +2447,8 @@ Ready to begin? Start here:
 
 ```bash
 # 1. Clone/setup Testbook
-git clone <repo>
-cd Testbook
+git clone https://github.com/upt3mpo/testbook.git
+cd testbook
 
 # 2. Start application
 ./start-dev.sh
