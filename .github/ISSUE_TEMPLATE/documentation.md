@@ -1,0 +1,58 @@
+---
+name: Documentation Issue
+about: Report problems with documentation or suggest improvements
+title: '[DOCS] '
+labels: documentation
+assignees: ''
+---
+
+## 📄 Documentation Location
+
+**Which document?**
+[e.g. README.md, LAB_03_Testing_API_Endpoints.md, TESTING_CHEATSHEET.md]
+
+**Section/heading:**
+[e.g. "Step 3: Writing Your First Test"]
+
+**Link to the file:**
+[Paste the GitHub link or relative path]
+
+## 🐛 Issue Type
+
+- [ ] Typo or grammar
+- [ ] Broken link
+- [ ] Incorrect/outdated information
+- [ ] Missing information
+- [ ] Confusing explanation
+- [ ] Code example doesn't work
+- [ ] Other: ___________
+
+## 📋 Current Content
+
+**What does it say now?**
+```
+Quote the current text or describe it
+```
+
+## ✅ Suggested Fix
+
+**What should it say?**
+```
+Your suggested correction or improvement
+```
+
+## 🎓 Context
+
+**Why is this important?**
+- Impact on learners: [e.g. causes confusion, blocks progress, misleading]
+- Who it affects: [e.g. beginners, all users, Windows users]
+
+## 📝 Additional Context
+
+Any other relevant information.
+
+## ✅ Contribution
+
+- [ ] I'd be willing to submit a PR to fix this
+- [ ] I just want to report the issue
+

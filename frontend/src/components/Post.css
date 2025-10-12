@@ -1,0 +1,263 @@
+.post {
+  padding: 16px;
+}
+
+.repost-header {
+  padding-bottom: 8px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.post-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.post-author-link {
+  text-decoration: none;
+}
+
+.post-author-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.post-author-name {
+  font-weight: 600;
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.post-author-name:hover {
+  text-decoration: underline;
+}
+
+.post-username {
+  font-size: 13px;
+}
+
+.post-time {
+  font-size: 12px;
+}
+
+.post-delete-btn {
+  padding: 4px 12px;
+  font-size: 13px;
+}
+
+.post-content {
+  margin-bottom: 12px;
+}
+
+.post-content p {
+  margin: 0;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.post-media {
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  background-color: var(--bg-secondary);
+  display: block;
+  object-fit: contain;
+}
+
+/* Horizontal images (landscape) - wider than tall */
+.post-media-horizontal {
+  max-height: 500px;
+  height: auto;
+}
+
+/* Vertical images (portrait) - taller than wide */
+.post-media-vertical {
+  max-height: 700px;
+  height: auto;
+  max-width: 100%;
+}
+
+/* Square images - roughly equal dimensions */
+.post-media-square {
+  max-height: 600px;
+  height: auto;
+}
+
+.original-post {
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 12px;
+  background-color: var(--bg-secondary);
+}
+
+.original-post .post {
+  padding: 0;
+  box-shadow: none;
+  border: none;
+}
+
+.post-stats {
+  display: flex;
+  gap: 16px;
+  padding: 8px 0;
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 8px;
+}
+
+.post-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.reactions-container {
+  position: relative;
+  z-index: 10;
+}
+
+.reactions-dropdown {
+  display: flex;
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 8px;
+  gap: 4px;
+  box-shadow: var(--modal-shadow);
+  z-index: 10000;
+  flex-wrap: wrap;
+  width: 200px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(5px);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+/* Show dropdown on hover (CSS) or when show class is present (React) */
+.reactions-container:hover .reactions-dropdown,
+.reactions-dropdown.show {
+  opacity: 1;
+  pointer-events: all;
+  transform: translateY(0);
+}
+
+.reaction-btn {
+  padding: 6px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+  pointer-events: auto;
+  position: relative;
+  z-index: 1;
+}
+
+.reaction-btn:hover {
+  background-color: var(--bg-hover);
+}
+
+.reaction-btn.active {
+  background-color: var(--accent-color);
+  color: white;
+  border-color: var(--accent-color);
+}
+
+.comment-form {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-color);
+}
+
+/* Post actions menu (3-dot menu) */
+.post-actions-menu {
+  position: relative;
+  margin-left: auto;
+}
+
+.post-menu-btn {
+  padding: 4px 12px;
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 1;
+  min-width: auto;
+}
+
+.post-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: var(--modal-shadow);
+  min-width: 150px;
+  z-index: 100;
+  margin-top: 4px;
+}
+
+.dropdown-item {
+  display: block;
+  width: 100%;
+  padding: 10px 16px;
+  text-align: left;
+  border: none;
+  background: none;
+  color: var(--text-primary);
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.dropdown-item:hover {
+  background-color: var(--bg-hover);
+}
+
+.dropdown-item:first-child {
+  border-radius: 8px 8px 0 0;
+}
+
+.dropdown-item:last-child {
+  border-radius: 0 0 8px 8px;
+}
+
+.dropdown-item-danger {
+  color: var(--danger-color);
+}
+
+.dropdown-item-danger:hover {
+  background-color: rgba(220, 53, 69, 0.1);
+}
+
+/* Post edit form */
+.post-edit-form {
+  margin-bottom: 12px;
+}
+
+.post-edit-textarea {
+  width: 100%;
+  min-height: 80px;
+  padding: 12px;
+  font-size: 15px;
+  resize: vertical;
+  margin-bottom: 8px;
+}
+
+.post-edit-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+

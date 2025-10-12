@@ -1,0 +1,24 @@
+# Python Playwright E2E Testing Dependencies
+
+# Core testing framework
+pytest>=7.4.0
+pytest-playwright>=0.4.0
+
+# Playwright
+playwright>=1.40.0
+
+# Environment configuration
+python-dotenv>=1.0.0        # Load .env files
+
+# API requests for database seeding
+requests>=2.31.0            # HTTP library
+
+# Additional pytest plugins
+pytest-xdist>=3.3.0        # Parallel test execution
+pytest-timeout>=2.1.0       # Test timeouts
+pytest-rerunfailures>=12.0  # Retry flaky tests
+
+# Optional: For test reporting
+pytest-html>=4.0.0          # HTML reports
+pytest-json-report>=1.5.0   # JSON reports
+

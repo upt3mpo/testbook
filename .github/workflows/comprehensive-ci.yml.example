@@ -1,0 +1,326 @@
+# Comprehensive CI Workflow for Testbook
+# This is an EXAMPLE - rename to comprehensive-ci.yml to activate
+# Runs backend tests, E2E tests, security tests, and linting
+
+name: Comprehensive CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  markdown-validation:
+    name: Markdown Validation
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install markdownlint and link checker
+        run: |
+          npm install -g markdownlint-cli markdown-link-check
+
+      - name: Run markdownlint
+        run: markdownlint '**/*.md' --ignore node_modules --ignore venv --ignore backend/venv --ignore frontend/node_modules
+
+      - name: Check critical links
+        run: |
+          markdown-link-check README.md --config .markdown-link-check.json
+          markdown-link-check START_HERE.md --config .markdown-link-check.json || true
+
+  backend-tests:
+    name: Backend Tests & Coverage
+    runs-on: ubuntu-latest
+    needs: markdown-validation
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Cache Python dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+
+      - name: Install dependencies
+        run: |
+          cd backend
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run backend tests with coverage
+        run: |
+          cd backend
+          pytest -v --cov --cov-report=xml --cov-report=html --cov-report=term-missing
+
+      - name: Check coverage threshold
+        run: |
+          cd backend
+          pytest --cov --cov-fail-under=80
+
+      - name: Upload coverage to Codecov (optional)
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./backend/coverage.xml
+          flags: backend
+          name: backend-coverage
+
+      - name: Upload coverage HTML report
+        uses: actions/upload-artifact@v3
+        with:
+          name: backend-coverage-report
+          path: backend/htmlcov/
+
+  security-tests:
+    name: Security Tests
+    runs-on: ubuntu-latest
+    needs: backend-tests
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          cd backend
+          pip install -r requirements.txt
+          pip install -r ../tests/security/requirements.txt 2>/dev/null || true
+
+      - name: Start backend for security tests
+        run: |
+          cd backend
+          uvicorn main:app &
+          sleep 10
+
+      - name: Run security tests
+        run: |
+          pytest tests/security/ -v
+
+  e2e-tests:
+    name: E2E Tests (Playwright)
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install backend dependencies
+        run: |
+          cd backend
+          pip install -r requirements.txt
+
+      - name: Install frontend dependencies
+        run: |
+          cd frontend
+          npm ci
+
+      - name: Install Playwright dependencies
+        run: |
+          cd tests
+          npm ci
+          npx playwright install --with-deps chromium
+
+      - name: Start backend
+        run: |
+          cd backend
+          uvicorn main:app &
+          sleep 10
+
+      - name: Start frontend
+        run: |
+          cd frontend
+          npm run dev &
+          sleep 15
+
+      - name: Run E2E tests
+        run: |
+          cd tests
+          npx playwright test
+
+      - name: Upload Playwright report
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-report
+          path: tests/playwright-report/
+          retention-days: 30
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: e2e-test-results
+          path: tests/test-results/
+
+  api-tests:
+    name: API Tests (Newman)
+    runs-on: ubuntu-latest
+    needs: backend-tests
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install Newman
+        run: npm install -g newman newman-reporter-htmlextra
+
+      - name: Install backend dependencies
+        run: |
+          cd backend
+          pip install -r requirements.txt
+
+      - name: Start backend
+        run: |
+          cd backend
+          uvicorn main:app &
+          sleep 10
+
+      - name: Run Newman tests
+        run: |
+          newman run tests/api/Testbook.postman_collection.json \
+            --reporters cli,htmlextra \
+            --reporter-htmlextra-export newman-report.html
+
+      - name: Upload Newman report
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: newman-report
+          path: newman-report.html
+
+  linting:
+    name: Code Quality & Linting
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install linting tools
+        run: |
+          pip install flake8 black isort
+
+      - name: Check Python formatting (black)
+        run: |
+          black --check backend/
+
+      - name: Check import sorting (isort)
+        run: |
+          isort --check-only backend/
+
+      - name: Lint Python code (flake8)
+        run: |
+          flake8 backend/ --max-line-length=100 --extend-ignore=E203
+
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install frontend dependencies
+        run: |
+          cd frontend
+          npm ci
+
+      - name: Lint JavaScript
+        run: |
+          cd frontend
+          npm run lint 2>/dev/null || echo "No lint script configured"
+
+  docs-validation:
+    name: Documentation Validation
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check for broken links
+        uses: gaurav-nelson/github-action-markdown-link-check@v1
+        with:
+          use-quiet-mode: 'yes'
+          config-file: '.github/markdown-link-check-config.json'
+
+      - name: Check markdown formatting
+        run: |
+          npm install -g markdownlint-cli
+          markdownlint '**/*.md' --ignore node_modules --ignore venv
+
+  # Optional: Performance testing (run nightly)
+  performance-tests:
+    name: Performance Tests (K6)
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule' # Only on scheduled runs
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up K6
+        run: |
+          sudo gpg -k
+          sudo gpg --no-default-keyring --keyring /usr/share/keyrings/k6-archive-keyring.gpg \
+            --keyserver hkp://keyserver.ubuntu.com:80 \
+            --recv-keys C5AD17C747E3415A3642D57D77C6C491D6AC1D69
+          echo "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/deb stable main" | \
+            sudo tee /etc/apt/sources.list.d/k6.list
+          sudo apt-get update
+          sudo apt-get install k6
+
+      - name: Set up and start backend
+        run: |
+          cd backend
+          pip install -r requirements.txt
+          uvicorn main:app &
+          sleep 15
+
+      - name: Run smoke test
+        run: |
+          k6 run tests/performance/smoke-test.js
+
+  # All checks must pass
+  all-checks-passed:
+    name: All Checks Passed
+    runs-on: ubuntu-latest
+    needs: [backend-tests, security-tests, e2e-tests, api-tests, linting, docs-validation]
+
+    steps:
+      - name: All checks passed
+        run: echo "✅ All CI checks passed successfully!"
+

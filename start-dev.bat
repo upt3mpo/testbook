@@ -1,0 +1,154 @@
+@echo off
+setlocal enabledelayedexpansion
+
+echo.
+echo 🚀 Starting Testbook in development mode...
+echo.
+
+REM Check if ports are already in use
+echo ⏳ Checking if ports are available...
+netstat -ano | findstr ":8000" | findstr "LISTENING" >nul 2>&1
+if not errorlevel 1 (
+    echo ⚠️  Port 8000 is already in use by another process
+    echo    This might be an existing backend instance
+    echo    Run 'netstat -ano ^| findstr :8000' to find the PID and stop it
+    echo    Continuing anyway...
+    echo.
+)
+
+netstat -ano | findstr ":3000" | findstr "LISTENING" >nul 2>&1
+if not errorlevel 1 (
+    echo ⚠️  Port 3000 is already in use by another process
+    echo    This might be an existing frontend instance
+    echo    Run 'netstat -ano ^| findstr :3000' to find the PID and stop it
+    echo    Continuing anyway...
+    echo.
+)
+
+REM Generate placeholder images if they don't exist
+if not exist "backend\static\images\default-avatar.jpg" (
+    echo 📸 Generating placeholder images...
+    python setup_images.py
+    echo.
+)
+
+REM Backend setup
+echo 🔧 Setting up backend...
+cd backend
+
+REM Create venv if it doesn't exist
+if not exist "venv\Scripts\activate.bat" (
+    echo 📦 Creating Python virtual environment...
+    python -m venv venv
+)
+
+REM Activate venv
+call venv\Scripts\activate.bat
+
+REM Check if dependencies need installation (idempotent check)
+if not exist "venv\Lib\site-packages\fastapi\__init__.py" (
+    REM Check for uv
+    where uv >nul 2>&1
+    if not errorlevel 1 (
+        echo 📦 Installing backend dependencies with uv ^(fast!^)...
+        call uv pip install -r requirements.txt
+    ) else (
+        echo 📦 Installing backend dependencies with pip...
+        pip install -q -r requirements.txt
+    )
+) else (
+    echo ✓ Backend dependencies already installed
+)
+
+REM Seed database
+echo 🌱 Seeding database...
+python seed.py
+
+REM Start backend
+echo 🚀 Starting backend server on port 8000...
+start /B python -m uvicorn main:app --reload --host 0.0.0.0 --port 8000
+
+REM Wait for backend to be healthy
+echo ⏳ Waiting for backend to be ready...
+set /a attempts=0
+:wait_backend
+set /a attempts+=1
+if %attempts% GTR 30 (
+    echo ❌ Backend failed to start within 30 seconds
+    echo    Check for errors above
+    goto :error_exit
+)
+
+curl -s -f http://localhost:8000/docs >nul 2>&1
+if errorlevel 1 (
+    timeout /t 1 /nobreak >nul
+    goto :wait_backend
+)
+echo ✅ Backend is ready!
+
+cd ..
+
+REM Frontend setup
+echo.
+echo ⚛️  Setting up frontend...
+cd frontend
+
+REM Check if node_modules exists (idempotent check)
+if not exist "node_modules\" (
+    echo 📦 Installing frontend dependencies...
+    call npm install
+) else (
+    echo ✓ Frontend dependencies already installed
+)
+
+REM Start frontend
+echo 🚀 Starting frontend server on port 3000...
+start /B npm run dev
+
+REM Wait for frontend to be healthy
+echo ⏳ Waiting for frontend to be ready...
+set /a attempts=0
+:wait_frontend
+set /a attempts+=1
+if %attempts% GTR 30 (
+    echo ❌ Frontend failed to start within 30 seconds
+    echo    Check for errors above
+    goto :error_exit
+)
+
+curl -s -f http://localhost:3000 >nul 2>&1
+if errorlevel 1 (
+    timeout /t 1 /nobreak >nul
+    goto :wait_frontend
+)
+echo ✅ Frontend is ready!
+
+cd ..
+
+echo.
+echo ==========================================
+echo ✅ Testbook is running in development mode!
+echo ==========================================
+echo.
+echo 📱 Frontend:    http://localhost:3000
+echo 🔌 Backend API: http://localhost:8000/api
+echo 📚 API Docs:    http://localhost:8000/docs
+echo.
+echo Test accounts:
+echo   • sarah.johnson@testbook.com / Sarah2024!
+echo   • mike.chen@testbook.com / MikeRocks88
+echo.
+echo Press Ctrl+C to stop all services
+echo ==========================================
+echo.
+
+pause
+goto :eof
+
+:error_exit
+echo.
+echo ❌ Startup failed. Please check the errors above.
+cd ..
+pause
+exit /b 1
+

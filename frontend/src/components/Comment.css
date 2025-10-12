@@ -1,0 +1,44 @@
+.comment {
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 8px;
+  background-color: var(--bg-secondary);
+}
+
+.comment-body {
+  flex: 1;
+}
+
+.comment-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.comment-author {
+  font-weight: 600;
+  color: var(--text-primary);
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.comment-author:hover {
+  text-decoration: underline;
+}
+
+.comment-username {
+  font-size: 12px;
+}
+
+.comment-time {
+  font-size: 11px;
+}
+
+.comment-content {
+  font-size: 14px;
+  color: var(--text-primary);
+  word-wrap: break-word;
+}
+

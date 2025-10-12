@@ -1,0 +1,78 @@
+.followers-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.followers-header {
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.followers-title {
+  margin: 0 0 8px 0;
+  font-size: 24px;
+}
+
+.followers-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.user-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+}
+
+.user-link {
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.user-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.user-name {
+  font-weight: 600;
+  color: var(--text-primary);
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.user-name:hover {
+  text-decoration: underline;
+}
+
+.user-username {
+  font-size: 14px;
+}
+
+.user-bio {
+  margin: 4px 0 0 0;
+  color: var(--text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.user-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.text-center {
+  text-align: center;
+  padding: 40px 20px;
+}
+

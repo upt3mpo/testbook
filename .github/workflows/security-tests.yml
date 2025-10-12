@@ -1,0 +1,78 @@
+name: Security Tests
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+  schedule:
+    - cron: '0 3 * * 1'  # Run weekly on Mondays at 3 AM UTC
+
+jobs:
+  security-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        working-directory: ./backend
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Install security testing tools
+        working-directory: ./tests/security
+        run: pip install -r requirements.txt
+
+      - name: Run security tests
+        working-directory: ./tests/security
+        env:
+          TESTING: true
+          SECRET_KEY: test-secret-key-for-ci
+        run: pytest -v
+
+      - name: Run Bandit security linter
+        working-directory: ./backend
+        run: |
+          pip install bandit
+          bandit -r . -f json -o bandit-report.json || true
+
+      - name: Upload Bandit report
+        uses: actions/upload-artifact@v4
+        with:
+          name: bandit-security-report
+          path: backend/bandit-report.json
+          retention-days: 90
+
+      - name: Run Safety check for vulnerable dependencies
+        working-directory: ./backend
+        run: |
+          pip install safety
+          safety check --json --output safety-report.json || true
+
+      - name: Upload Safety report
+        uses: actions/upload-artifact@v4
+        with:
+          name: safety-dependency-report
+          path: backend/safety-report.json
+          retention-days: 90
+
+  dependency-review:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Dependency Review
+        uses: actions/dependency-review-action@v4
+        with:
+          fail-on-severity: moderate
+

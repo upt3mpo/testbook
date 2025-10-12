@@ -1,0 +1,28 @@
+[run]
+source = .
+omit =
+    */venv/*
+    */tests/*
+    */migrations/*
+    */__pycache__/*
+    */static/*
+    */frontend-dist/*
+    seed.py
+    setup_images.py
+
+[report]
+precision = 2
+show_missing = True
+skip_covered = False
+exclude_lines =
+    pragma: no cover
+    def __repr__
+    raise AssertionError
+    raise NotImplementedError
+    if __name__ == .__main__.:
+    if TYPE_CHECKING:
+    @abstractmethod
+
+[html]
+directory = htmlcov
+

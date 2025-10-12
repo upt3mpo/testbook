@@ -1,0 +1,85 @@
+.create-post {
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.create-post form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.create-post-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Drag and drop zone */
+.drop-zone {
+  border: 2px dashed var(--border-color);
+  border-radius: 8px;
+  padding: 32px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  background-color: var(--bg-secondary);
+}
+
+.drop-zone:hover {
+  border-color: var(--accent-color);
+  background-color: var(--bg-hover);
+}
+
+.drop-zone-active {
+  border-color: var(--accent-color);
+  background-color: var(--bg-hover);
+  transform: scale(1.02);
+}
+
+.drop-zone-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.drop-zone-icon {
+  font-size: 48px;
+}
+
+.drop-zone-text {
+  margin: 0;
+  font-size: 15px;
+  color: var(--text-primary);
+}
+
+.drop-zone-hint {
+  margin: 0;
+  font-size: 13px;
+}
+
+/* File preview */
+.file-preview {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: var(--bg-secondary);
+  padding: 12px;
+}
+
+.preview-image,
+.preview-video {
+  width: 100%;
+  max-height: 400px;
+  object-fit: contain;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+.remove-file-btn {
+  width: 100%;
+  justify-content: center;
+}
+

@@ -1,0 +1,55 @@
+.feed-container {
+  min-height: calc(100vh - 60px);
+  padding: 20px;
+}
+
+.feed-content {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.feed-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  background-color: var(--bg-primary);
+  padding: 8px;
+  border-radius: 8px;
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--border-color);
+}
+
+.feed-tab {
+  flex: 1;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  background-color: transparent;
+  color: var(--text-secondary);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.feed-tab:hover {
+  background-color: var(--bg-hover);
+}
+
+.feed-tab.active {
+  background-color: var(--accent-color);
+  color: white;
+}
+
+.posts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.empty-feed {
+  padding: 40px;
+  text-align: center;
+  color: var(--text-secondary);
+}
+
