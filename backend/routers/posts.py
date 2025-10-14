@@ -1,13 +1,12 @@
 import uuid
 from pathlib import Path
 
-from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
-from sqlalchemy.orm import Session
-
 import models
 import schemas
 from auth import get_current_user
 from database import get_db
+from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
+from sqlalchemy.orm import Session
 
 router = APIRouter()
 
@@ -58,7 +57,7 @@ async def upload_media(
     return {"url": file_url, "filename": file.filename}
 
 
-@router.post("/", response_model=schemas.PostResponse)
+@router.post("/", response_model=schemas.PostResponse, status_code=status.HTTP_201_CREATED)
 def create_post(
     post_data: schemas.PostCreate,
     current_user: models.User = Depends(get_current_user),
@@ -365,7 +364,11 @@ def get_post(
     )
 
 
-@router.post("/{post_id}/comments", response_model=schemas.CommentResponse)
+@router.post(
+    "/{post_id}/comments",
+    response_model=schemas.CommentResponse,
+    status_code=status.HTTP_201_CREATED,
+)
 def create_comment(
     post_id: int,
     comment_data: schemas.CommentCreate,
@@ -396,7 +399,9 @@ def create_comment(
     )
 
 
-@router.post("/{post_id}/reactions", response_model=schemas.PostResponse)
+@router.post(
+    "/{post_id}/reactions", response_model=schemas.PostResponse, status_code=status.HTTP_201_CREATED
+)
 def add_reaction(
     post_id: int,
     reaction_data: schemas.ReactionCreate,

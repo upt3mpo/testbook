@@ -21,7 +21,7 @@ class TestCreatePost:
         response = client.post("/api/posts/", json=post_data, headers=auth_headers)
 
         # Assert - Verify response status and structure
-        assert response.status_code == 200  # API returns 200, not 201
+        assert response.status_code == 201  # API returns 201 Created
         data = response.json()
         assert data["content"] == "This is a test post"  # Content saved correctly
         assert data["id"] is not None  # Post assigned database ID
@@ -37,7 +37,7 @@ class TestCreatePost:
             headers=auth_headers,
         )
 
-        assert response.status_code == 200  # API returns 200, not 201
+        assert response.status_code == 201  # API returns 201 Created
         data = response.json()
         assert data["image_url"] == "/static/images/test.jpg"
 
@@ -56,8 +56,8 @@ class TestCreatePost:
         """Test creating post with empty content."""
         response = client.post("/api/posts/", json={"content": ""}, headers=auth_headers)
 
-        # Should either fail validation or accept empty content
-        assert response.status_code in [200, 201, 400, 422]
+        # Should either fail validation or accept empty content (returns 201 if accepted)
+        assert response.status_code in [201, 400, 422]
 
 
 @pytest.mark.integration
