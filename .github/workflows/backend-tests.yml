@@ -73,13 +73,15 @@ jobs:
         run: |
           pytest tests/integration/ -v --tb=short
 
-      - name: Run contract tests
-        working-directory: ./backend
-        env:
-          TESTING: true
-          SECRET_KEY: test-secret-key-for-ci
-        run: |
-          pytest tests/integration/test_api_contract.py -v --tb=short
+      # Contract tests are intentionally skipped - planned for future update
+      # See: backend/tests/integration/test_api_contract.py for details
+      # - name: Run contract tests
+      #   working-directory: ./backend
+      #   env:
+      #     TESTING: true
+      #     SECRET_KEY: test-secret-key-for-ci
+      #   run: |
+      #     pytest tests/integration/test_api_contract.py -v --tb=short
 
       - name: Generate coverage report
         working-directory: ./backend
