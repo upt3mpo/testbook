@@ -146,7 +146,8 @@ jobs:
         working-directory: ./tests/e2e-python
         env:
           API_URL: http://localhost:8000
-        run: pytest -v --headless
+          HEADLESS: true
+        run: pytest -v
 
       - name: Upload screenshots
         if: failure()
