@@ -588,7 +588,7 @@ markers =
 
 ### Organizing Tests
 
-```
+```text
 backend/
 ├── tests/
 │   ├── __init__.py

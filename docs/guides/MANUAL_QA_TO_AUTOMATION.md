@@ -23,7 +23,7 @@ Welcome! If you're a manual QA professional looking to add automation to your sk
 
 **Manual Testing:**
 
-```
+```text
 1. Open browser
 2. Navigate to login page
 3. Enter username: "testuser"
@@ -245,7 +245,7 @@ Let's convert your existing manual test cases to automation.
 
 **Manual Test Case:**
 
-```
+```text
 Test Case: Successful Login
 Prerequisites: User exists in database
 Steps:
@@ -284,7 +284,7 @@ test('Successful login redirects to home', async ({ page }) => {
 
 **Manual Test Case:**
 
-```
+```text
 Test Case: Registration with invalid email
 Steps:
   1. Navigate to /register

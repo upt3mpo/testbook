@@ -380,7 +380,7 @@ npx playwright show-trace trace.zip
 
 **Error:**
 
-```
+```text
 Error: Timeout waiting for selector "[data-testid="button"]"
 ```
 
@@ -474,7 +474,7 @@ def reset_state(db_session):
 
 **Error:**
 
-```
+```text
 ModuleNotFoundError: No module named 'pytest'
 ```
 
@@ -513,7 +513,7 @@ print(sys.path)  # Should include venv
 
 **Error:**
 
-```
+```text
 TypeError: Cannot read property 'click' of undefined
 ```
 

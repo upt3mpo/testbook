@@ -88,7 +88,7 @@ Document your insights from exploring browser automation and contract testing.
 
 **Complete the testing pyramid for a feature you know well:**
 
-```
+```text
        /\      ← E2E tests: ____________________
       /  \
      /____\    ← Contract tests: ____________________

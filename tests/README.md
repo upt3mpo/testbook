@@ -33,8 +33,8 @@ start-dev.bat   # Windows
 
 These tests expect **port 3000** (configured in `playwright.config.js`):
 
-- Frontend: http://localhost:3000 ✅
-- Backend: http://localhost:8000
+- Frontend: <http://localhost:3000> ✅
+- Backend: <http://localhost:8000>
 
 **If using production mode** (`start.sh` - port 8000):
 

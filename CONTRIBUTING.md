@@ -77,7 +77,7 @@ cd ..
 
 **Examples:**
 
-```
+```text
 feature/add-mutation-testing
 fix/flaky-e2e-tests
 docs/update-setup-guide
@@ -252,7 +252,7 @@ markdownlint --fix '**/*.md' --ignore node_modules --ignore venv
 
 ### Documentation Structure
 
-```
+```text
 docs/
 ├── course/          # Course materials
 │   ├── *.md         # Course content

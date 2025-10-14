@@ -16,7 +16,7 @@ cd backend && source .venv/bin/activate && pytest -v
 
 ### Windows
 
-```cmd
+```bat
 cd backend
 .venv\Scripts\activate
 pytest -v
@@ -322,7 +322,7 @@ k6 run --out json=results.json tests/performance/load-test.js
 
 ### Understanding Results
 
-```
+```text
 ✓ health check returns 200
 ✓ login successful
 ✓ feed loads successfully

@@ -27,7 +27,7 @@ Utility scripts for development and maintenance.
 
 **Windows:**
 
-```cmd
+```bat
 scripts\check-markdown.bat
 ```
 
@@ -146,7 +146,7 @@ Markdown validation runs automatically in GitHub Actions when:
 
 ### Successful Run
 
-```
+```text
 ✅ Markdown linting passed!
 ✅ Link validation passed!
 All markdown validation checks passed!
@@ -155,7 +155,7 @@ You're good to commit! 🚀
 
 ### Failed Linting
 
-```
+```text
 ❌ Markdown linting found issues
 
 README.md:45 MD022/blanks-around-headings
@@ -168,7 +168,7 @@ Run 'markdownlint --fix **/*.md' to auto-fix some issues
 
 ### Broken Links
 
-```
+```text
 ❌ README.md has broken links
 
 FILE: README.md
@@ -230,7 +230,7 @@ npm install -g markdownlint-cli markdown-link-check
 
 ### "npm: command not found"
 
-**Solution:** Install Node.js from https://nodejs.org/
+**Solution:** Install Node.js from <https://nodejs.org/>
 
 ### Too many link check failures
 

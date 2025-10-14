@@ -7,6 +7,8 @@ A self-guided learning platform for mastering automation testing. Perfect for in
 **Your Platform:** 🖥️ Windows | 🍎 macOS | 🐧 Linux - All supported!
 **Your Language:** 🐍 Python | ☕ JavaScript - Pick your preference!
 
+> **🪟 Windows Users:** Throughout this guide, we show both PowerShell (recommended) and Command Prompt alternatives. Use PowerShell for the best experience. See [Windows Setup Guide](docs/guides/WINDOWS_SETUP.md) for details.
+
 ---
 
 ## 🎯 Choose Your Learning Path
@@ -137,12 +139,12 @@ chmod +x *.sh
 
 **Windows:**
 
-```cmd
+```bat
 cd Testbook
 start-dev.bat
 ```
 
-**Verify:** Open **http://localhost:3000** - Testbook should load!
+**Verify:** Open **<http://localhost:3000>** - Testbook should load!
 
 **📝 Why development mode?**
 
@@ -253,7 +255,7 @@ If you're new to automation testing, follow this progression:
 
 ## 📊 Skill Progression
 
-```
+```text
 Level 0: "I've never written a test"
     ↓
     → Do Lab 1 (30 min)

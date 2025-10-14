@@ -23,7 +23,7 @@
 
 ## 📊 Accessibility Testing Pyramid
 
-```
+```text
      Manual Testing (60%)
     - Screen readers
     - Keyboard navigation

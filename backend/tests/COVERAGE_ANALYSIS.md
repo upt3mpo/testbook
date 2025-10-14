@@ -10,7 +10,7 @@
 
 ### Overall Coverage
 
-```
+```text
 Module          Coverage    Lines    Missing    Priority
 -----------     --------    -----    -------    --------
 auth.py         75%         42       10         HIGH ⚠️

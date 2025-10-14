@@ -68,7 +68,7 @@ See **[TESTING_PATTERNS.md](TESTING_PATTERNS.md)** for complete guide!
 
 ### Authentication
 
-```
+```text
 login-email-input, login-password-input, login-submit-button
 register-email-input, register-username-input, register-submit-button
 
@@ -76,7 +76,7 @@ register-email-input, register-username-input, register-submit-button
 
 ### Navigation
 
-```
+```text
 navbar, navbar-home-link, navbar-profile-link
 
 navbar-settings-link, navbar-logout-button
@@ -84,7 +84,7 @@ navbar-settings-link, navbar-logout-button
 
 ### Posts (replace {id} with post ID)
 
-```
+```text
 post-{id}                      # Post container
 post-{id}-content              # Post text
 post-{id}-react-button         # Reaction dropdown
@@ -99,7 +99,7 @@ post-{id}-delete-button        # Delete option
 
 ### Create Post
 
-```
+```text
 create-post-textarea           # Text input
 
 create-post-drop-zone          # Drag & drop area
@@ -109,7 +109,7 @@ create-post-submit-button      # Post button
 
 ### Profile
 
-```
+```text
 profile-display-name           # User's name
 
 profile-followers-link         # Click to see followers
@@ -120,7 +120,7 @@ profile-edit-button            # Edit profile (own profile)
 
 ### Settings
 
-```
+```text
 settings-avatar-input          # Avatar upload
 settings-upload-avatar-button  # Upload photo button
 
@@ -133,8 +133,7 @@ settings-save-button           # Save button
 
 ### Followers/Following
 
-```
-
+```text
 followers-list                 # Followers container
 follower-{id}-block-button     # Block follower
 following-list                 # Following container

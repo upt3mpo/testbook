@@ -124,7 +124,7 @@ export default function() {
 
 ### 2. Performance Metrics
 
-```
+```text
 ✓ status is 200.........................: 100.00% ✓ 1200 ✗ 0
 ✓ response time < 200ms.................: 95.00%  ✓ 1140 ✗ 60
 

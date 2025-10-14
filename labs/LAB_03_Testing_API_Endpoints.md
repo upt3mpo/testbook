@@ -72,7 +72,7 @@ pytest tests/integration/test_api_auth.py::TestLoginEndpoint::test_login_success
 
 **Should see:**
 
-```
+```text
 tests/test_api_auth.py::TestLoginEndpoint::test_login_success PASSED ✓
 ```
 

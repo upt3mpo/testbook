@@ -443,7 +443,7 @@ test('full integration', { tag: '@slow' }, async () => {
 
 **Python Structure**
 
-```
+```text
 backend/
   tests/
     conftest.py          # Shared fixtures
@@ -467,7 +467,7 @@ tests/
 
 **JavaScript Structure**
 
-```
+```text
 frontend/
   src/
     components/

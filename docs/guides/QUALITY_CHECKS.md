@@ -245,7 +245,7 @@ git commit --no-verify
 
 **Linting jobs run before tests:**
 
-```
+```text
 lint-backend → backend-tests ↘
                               → e2e-tests → security → badge-update
 lint-frontend → frontend-tests ↗

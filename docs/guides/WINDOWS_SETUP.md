@@ -4,6 +4,28 @@ This guide helps Windows users set up and run Testbook. There are three approach
 
 ---
 
+## 🪟 PowerShell vs Command Prompt
+
+Throughout this guide, we provide commands for both shells:
+
+**PowerShell (Recommended):**
+
+- ✅ Default on Windows 10/11
+- ✅ Modern, powerful scripting
+- ✅ Better environment variable handling (`$env:VAR="value"`)
+- ✅ More consistent with cross-platform workflows
+
+**Command Prompt (Alternative):**
+
+- ✅ Works in corporate environments where PowerShell is restricted
+- ✅ Simpler for basic commands
+- ✅ Compatible with older Windows systems
+- ⚠️ More verbose for environment variables (`set VAR=value`)
+
+💡 **Tip:** If unsure, use PowerShell - it's installed by default and more powerful.
+
+---
+
 ## Option 1: Native Windows (Recommended for Beginners)
 
 **Best for:** Windows users who prefer native tools and don't want to install WSL.
@@ -19,14 +41,14 @@ This guide helps Windows users set up and run Testbook. There are three approach
 
 1. **Clone the repository:**
 
-   ```cmd
+   ```bat
    git clone https://github.com/upt3mpo/testbook.git
    cd testbook
    ```
 
 2. **Run the start script:**
 
-   ```cmd
+   ```bat
    start-dev.bat
    ```
 
@@ -43,16 +65,16 @@ The script will:
 **Problem:** `curl` command not found during health checks
 **Solution:** Install curl via Windows:
 
-```cmd
+```bat
 winget install curl
 ```
 
-Or download from: https://curl.se/windows/
+Or download from: <https://curl.se/windows/>
 
 **Problem:** Port already in use
 **Solution:** Find and kill the process:
 
-```cmd
+```bat
 netstat -ano | findstr :8000
 taskkill /PID <PID_NUMBER> /F
 ```
@@ -113,9 +135,9 @@ taskkill /PID <PID_NUMBER> /F
 
 ### Accessing from Windows
 
-- Frontend: http://localhost:3000
-- Backend: http://localhost:8000
-- API Docs: http://localhost:8000/docs
+- Frontend: <http://localhost:3000>
+- Backend: <http://localhost:8000>
+- API Docs: <http://localhost:8000/docs>
 
 WSL 2 automatically forwards ports to Windows, so you can access the app from your Windows browser!
 
@@ -160,13 +182,13 @@ wsl --update
 
 2. **Run Testbook:**
 
-   ```cmd
+   ```bat
    docker-compose up
    ```
 
 3. **Access the app:**
-   - Frontend: http://localhost:80
-   - Backend: http://localhost:80/api
+   - Frontend: <http://localhost:80>
+   - Backend: <http://localhost:80/api>
 
 **Note:** Docker mode runs in production configuration with different ports than dev mode.
 
@@ -191,7 +213,7 @@ wsl --update
 
 **Start the app:**
 
-```cmd
+```bat
 # Windows
 start-dev.bat
 
@@ -205,7 +227,7 @@ start-dev.bat
 
 **Reset database:**
 
-```cmd
+```bat
 # Windows
 reset-database.bat
 
@@ -215,7 +237,7 @@ reset-database.bat
 
 **Run tests:**
 
-```cmd
+```bat
 # Windows
 cd backend
 .venv\Scripts\activate
@@ -237,7 +259,7 @@ pytest -v
 
 **Solution:**
 
-```cmd
+```bat
 # Windows
 netstat -ano | findstr :8000
 taskkill /PID <PID> /F
@@ -253,7 +275,7 @@ lsof -ti:8000 | xargs kill
 **Solution:**
 Ensure virtual environment is activated:
 
-```cmd
+```bat
 # Windows
 cd backend
 .venv\Scripts\activate
@@ -270,7 +292,7 @@ source .venv/bin/activate
 **Solution:**
 Delete and reinstall:
 
-```cmd
+```bat
 cd frontend
 rmdir /s /q node_modules  # Windows
 rm -rf node_modules       # WSL
@@ -293,7 +315,7 @@ npm install
 
 **Setup:**
 
-```cmd
+```bat
 # Windows
 code .
 
@@ -331,7 +353,7 @@ Works great with native Windows or WSL. Configure interpreters:
 
 Once your environment is running:
 
-1. **Verify setup:** Open http://localhost:3000 and log in
+1. **Verify setup:** Open <http://localhost:3000> and log in
 2. **Start learning:** Follow [START_HERE.md](../../START_HERE.md)
 3. **Run your first test:** Complete [Lab 1](../../labs/LAB_01_Your_First_Test.md)
 

@@ -136,10 +136,10 @@ All scenarios (except `empty`) include these users:
 
 | User | Email | Password | Use For |
 |------|-------|----------|---------|
-| **Sarah Johnson** | sarah.johnson@testbook.com | Sarah2024! | Primary test user |
-| **Mike Chen** | mike.chen@testbook.com | MikeRocks88 | Secondary user, interactions |
-| **Emma Davis** | emma.davis@testbook.com | EmmaLovesPhotos | Third user, photo tests |
-| **New User** | newuser@testbook.com | NewUser123! | Fresh user, no history |
+| **Sarah Johnson** | ``sarah.johnson@testbook.com`` | ``Sarah2024!`` | Primary test user |
+| **Mike Chen** | ``mike.chen@testbook.com`` | ``MikeRocks88`` | Secondary user, interactions |
+| **Emma Davis** | ``emma.davis@testbook.com`` | ``EmmaLovesPhotos`` | Third user, photo tests |
+| **New User** | ``newuser@testbook.com`` | ``NewUser123!`` | Fresh user, no history |
 
 ---
 

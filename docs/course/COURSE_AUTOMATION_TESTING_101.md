@@ -145,7 +145,7 @@ cd Testbook
 
 **Step 3: Explore the API**
 
-1. Open http://localhost:8000/docs
+1. Open <http://localhost:8000/docs>
 2. Try the `/api/auth/login` endpoint
 3. Use the token to call `/api/auth/me`
 4. Explore other endpoints
@@ -172,6 +172,7 @@ cd Testbook
    ```
 
 3. **Understanding the Flow**
+
    - User logs in → Token generated
    - Token sent with requests → API validates
    - Data from database → Returned as JSON
@@ -260,7 +261,7 @@ pytest tests/unit/test_auth.py::TestPasswordHashing::test_password_is_hashed -v
 
 **Expected Output:**
 
-```
+```text
 tests/unit/test_auth.py::TestPasswordHashing::test_password_is_hashed PASSED ✓
 ```
 
@@ -272,8 +273,10 @@ pytest tests/ -v
 
 **Expected Output:**
 
-```
+```text
+
 ====================== 166 passed in 51s =======================
+
 ```
 
 **Step 4: Generate Coverage Report**
@@ -1157,7 +1160,7 @@ playwright install chromium
 HEADLESS=false pytest test_auth.py::TestAuthentication::test_login_success -v
 ```
 
-**Windows (PowerShell):**
+**Windows (PowerShell - Recommended):**
 
 ```powershell
 $env:HEADLESS="false"; pytest test_auth.py::TestAuthentication::test_login_success -v
@@ -1230,7 +1233,7 @@ cd tests/e2e-python
 HEADLESS=false pytest test_my_first.py -v
 ```
 
-**Windows (PowerShell):**
+**Windows (PowerShell - Recommended):**
 
 ```powershell
 cd tests/e2e-python
@@ -1614,7 +1617,8 @@ def test_complete_workflow(page, login_as):
 
 **Beginner → Advanced Progression:**
 
-```
+```text
+
 Section 7 Basics (inline)
     ↓
 Choose Your Track:
@@ -1622,6 +1626,7 @@ Choose Your Track:
     └─ ☕ Section 8 Guide → CI/CD
 
 Optional: Testing Comparison Guide (any time)
+
 ```
 
 ### 📚 Resources
@@ -1800,13 +1805,15 @@ k6 run tests/performance/smoke-test.js
 
 **Step 3:** Analyze results
 
-```
+```text
+
 ✓ health check returns 200
 ✓ login successful
 ✓ feed loads successfully
 
 http_req_duration.........: avg=245ms  p(95)=456ms
 http_req_failed...........: 0.23%
+
 ```
 
 **✏️ Exercise:** Document what each metric means
@@ -2174,7 +2181,7 @@ jobs:
 
 **1. Start Simple, Then Optimize:**
 
-```
+```text
 Basic workflow → Add caching → Add parallel execution → Add artifacts
 ```
 
@@ -2465,20 +2472,26 @@ Track your learning journey:
 
 Ready to begin? Start here:
 
+**1. Clone/setup Testbook**
+
 ```bash
-# 1. Clone/setup Testbook
 git clone https://github.com/upt3mpo/testbook.git
 cd testbook
-
-# 2. Start application
-./start-dev.sh  # macOS/Linux or start-dev.bat (Windows)
-
-# 3. Open course
-# Read this file (COURSE_AUTOMATION_TESTING_101.md)
-
-# 4. Start Section 1
-# Follow Section 1 instructions above
 ```
+
+**2. Start application**
+
+```bash
+./start-dev.sh  # macOS/Linux or start-dev.bat (Windows)
+```
+
+**3. Open course**
+
+*Read this file (COURSE_AUTOMATION_TESTING_101.md)*
+
+**4. Start Section 1**
+
+*Follow Section 1 instructions above*
 
 ---
 

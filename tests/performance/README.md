@@ -100,7 +100,7 @@ k6 run stress-test.js
 
 ### Example Output
 
-```
+```text
 ✓ health check returns 200
 ✓ login successful
 ✓ feed loads successfully

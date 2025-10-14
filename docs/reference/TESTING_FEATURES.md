@@ -222,10 +222,10 @@ All accounts have **known passwords** for easy testing:
 
 | Email | Password | Use Case |
 |-------|----------|----------|
-| sarah.johnson@testbook.com | Sarah2024! | Active user with followers |
-| mike.chen@testbook.com | MikeRocks88 | User with many posts |
-| emma.davis@testbook.com | EmmaLovesPhotos | Photographer with images |
-| newuser@testbook.com | NewUser123! | Fresh account, no activity |
+| ``sarah.johnson@testbook.com`` | ``Sarah2024!`` | Active user with followers |
+| ``mike.chen@testbook.com`` | ``MikeRocks88`` | User with many posts |
+| ``emma.davis@testbook.com`` | ``EmmaLovesPhotos`` | Photographer with images |
+| ``newuser@testbook.com`` | ``NewUser123!`` | Fresh account, no activity |
 
 ### Dynamic Test Data
 
@@ -410,9 +410,9 @@ await expect(page.locator('[data-testid="create-post-preview"]')).toBeVisible();
    ```
 
 3. **Run your tests**:
-   - Frontend: http://localhost:3000
-   - Backend: http://localhost:8000
-   - API Docs: http://localhost:8000/docs
+   - Frontend: <http://localhost:3000>
+   - Backend: <http://localhost:8000>
+   - API Docs: <http://localhost:8000/docs>
 
 4. **Check test data**:
 

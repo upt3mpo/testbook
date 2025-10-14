@@ -111,7 +111,7 @@ pytest tests/test_broken.py::TestBrokenTests::test_user_email -v
 
 **What happens:**
 
-```
+```text
 AssertionError: assert 'testuser2@example.com' == 'testuser@example.com'
 ```
 
@@ -177,7 +177,7 @@ pytest tests/test_broken.py::TestBrokenTests::test_create_user -v
 
 **What happens:**
 
-```
+```text
 AssertionError: assert None is not None
 ```
 
@@ -237,7 +237,7 @@ pytest tests/test_broken.py::TestBrokenTests::test_health_check -v
 
 **What happens:**
 
-```
+```text
 AssertionError: assert 404 == 200
 ```
 
@@ -288,7 +288,7 @@ pytest tests/test_broken.py::TestBrokenTests::test_login -v
 
 **What happens:**
 
-```
+```text
 AssertionError: assert 422 == 200
 ```
 
@@ -397,7 +397,7 @@ pytest tests/test_broken.py::TestBrokenTests::test_post_creation -v
 
 **What happens:**
 
-```
+```text
 NameError: name 'Post' is not defined
 ```
 
@@ -456,7 +456,7 @@ pytest tests/test_broken.py::TestBrokenTests::test_user_full_name -v
 
 **What happens:**
 
-```
+```text
 AttributeError: 'User' object has no attribute 'full_name'
 ```
 
@@ -514,7 +514,7 @@ pytest tests/test_broken.py::TestBrokenTests::test_multiple_users -v
 
 **What happens:**
 
-```
+```text
 AssertionError: assert 5 == 6
 ```
 
@@ -578,7 +578,7 @@ pytest tests/test_broken.py::TestBrokenTests::test_verify_wrong_password -v
 
 **What happens:**
 
-```
+```text
 AssertionError: assert False is True
 ```
 

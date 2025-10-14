@@ -176,7 +176,7 @@ TEST_USERS.newuser // For registration tests
 
 ## 📁 Test Structure
 
-```
+```text
 tests/e2e/
 ├── fixtures/
 │   └── test-helpers.js      # Reusable helper functions

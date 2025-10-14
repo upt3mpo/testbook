@@ -4,6 +4,8 @@ Get Testbook running in 5 minutes on any platform!
 
 **⚠️ IMPORTANT:** Use the **development mode** scripts below (`start-dev.sh` / `start-dev.bat`). These run the app on port 3000 and work with all tests. Do NOT use `start.sh` - it's for production deployment only!
 
+> **🪟 Windows Users:** We show both PowerShell (recommended) and Command Prompt alternatives. Use PowerShell unless you have a specific reason to use Command Prompt. See [Windows Setup Guide](docs/guides/WINDOWS_SETUP.md) for details.
+
 ---
 
 ## 🖥️ Choose Your Platform
@@ -27,8 +29,8 @@ chmod +x start-dev.sh
 
 **What happens:**
 
-- Backend starts on http://localhost:8000
-- Frontend starts on http://localhost:3000 ← **This is your app!**
+- Backend starts on <http://localhost:8000>
+- Frontend starts on <http://localhost:3000> ← **This is your app!**
 - Database automatically seeded
 
 **Why development mode?**
@@ -40,15 +42,13 @@ chmod +x start-dev.sh
 
 ### Step 3: Open Browser
 
-```
-Frontend: http://localhost:3000  ← Open this!
-Backend API: http://localhost:8000/api
-API Docs: http://localhost:8000/docs
-```
+Frontend: <http://localhost:3000>  ← Open this!
+Backend API: <http://localhost:8000/api>
+API Docs: <http://localhost:8000/docs>
 
 ### Step 4: Login
 
-```
+```text
 Email: sarah.johnson@testbook.com
 Password: Sarah2024!
 ```
@@ -62,21 +62,21 @@ Password: Sarah2024!
 
 ### Windows Step 1: Clone Repository
 
-```cmd
+```bat
 git clone https://github.com/upt3mpo/testbook.git
 cd testbook
 ```
 
 ### Windows Step 2: Start Application (Development Mode)
 
-```cmd
+```bat
 start-dev.bat
 ```
 
 **What happens:**
 
-- Backend starts on http://localhost:8000
-- Frontend starts on http://localhost:3000 ← **This is your app!**
+- Backend starts on <http://localhost:8000>
+- Frontend starts on <http://localhost:3000> ← **This is your app!**
 - Database automatically seeded
 
 **Why development mode?**
@@ -88,15 +88,13 @@ start-dev.bat
 
 ### Windows Step 3: Open Browser
 
-```
-Frontend: http://localhost:3000  ← Open this!
-Backend API: http://localhost:8000/api
-API Docs: http://localhost:8000/docs
-```
+Frontend: <http://localhost:3000>  ← Open this!
+Backend API: <http://localhost:8000/api>
+API Docs: <http://localhost:8000/docs>
 
 ### Windows Step 4: Login
 
-```
+```text
 Email: sarah.johnson@testbook.com
 Password: Sarah2024!
 ```
@@ -127,7 +125,7 @@ pytest -v
 <details>
 <summary><b>Windows</b></summary>
 
-```cmd
+```bat
 cd backend
 .venv\Scripts\activate
 pytest -v
@@ -181,8 +179,8 @@ npm test
 
 **Ports:**
 
-- Frontend: http://localhost:3000
-- Backend: http://localhost:8000
+- Frontend: <http://localhost:3000>
+- Backend: <http://localhost:8000>
 
 **Use for:**
 
@@ -196,8 +194,8 @@ npm test
 
 **Ports:**
 
-- Frontend: http://localhost:8000
-- Backend: http://localhost:8000
+- Frontend: <http://localhost:8000>
+- Backend: <http://localhost:8000>
 
 **Use for:**
 
@@ -248,7 +246,7 @@ lsof -ti:8000 | xargs kill -9
 
 **Windows:**
 
-```cmd
+```bat
 REM Find and kill process on port 3000
 netstat -ano | findstr :3000
 taskkill /PID <PID> /F
@@ -279,9 +277,9 @@ chmod +x *.sh
 
 ### Wrong Port Opened
 
-**Common mistake:** Opening http://localhost:8000 after running `start-dev.sh`
+**Common mistake:** Opening <http://localhost:8000> after running `start-dev.sh`
 
-**Fix:** Open http://localhost:3000 (that's the frontend!)
+**Fix:** Open <http://localhost:3000> (that's the frontend!)
 
 Port 8000 is the backend API - it won't show the app interface.
 
@@ -304,7 +302,7 @@ Port 8000 is the backend API - it won't show the app interface.
 
 After setup, verify:
 
-- [ ] App loads at **http://localhost:3000** (development mode)
+- [ ] App loads at **<http://localhost:3000>** (development mode)
 - [ ] Can login with test account
 - [ ] Can create a post
 - [ ] Backend tests run: `cd backend && pytest -v`

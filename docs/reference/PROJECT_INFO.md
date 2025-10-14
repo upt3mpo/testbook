@@ -49,41 +49,41 @@ Testbook is a fully functional fake social media application built specifically 
 
 ## Architecture
 
-```
-┌─────────────────────────────────────────┐
-│           React Frontend                │
-│  - Login/Register                       │
-│  - Feed (All / Following)               │
-│  - Posts, Comments, Reactions           │
-│  - User Profiles                        │
-│  - Settings                             │
-└──────────────┬──────────────────────────┘
+```text
+┌───────────────────────────────────────┐
+│           React Frontend              │
+│  - Login/Register                     │
+│  - Feed (All / Following)             │
+│  - Posts, Comments, Reactions         │
+│  - User Profiles                      │
+│  - Settings                           │
+└──────────────┬────────────────────────┘
                │ HTTP/REST
-┌──────────────┴──────────────────────────┐
-│        FastAPI Backend                  │
-│  ┌─────────────────────────────────┐   │
-│  │ Routers                         │   │
-│  │ - Auth (login, register)        │   │
-│  │ - Users (profile, follow/block) │   │
-│  │ - Posts (CRUD, reactions)       │   │
-│  │ - Feed (all, following)         │   │
-│  │ - Dev (reset, seed, utils)      │   │
-│  └─────────────┬───────────────────┘   │
-│                │                        │
-│  ┌─────────────┴───────────────────┐   │
-│  │ Models & Database               │   │
-│  │ - User                          │   │
-│  │ - Post                          │   │
-│  │ - Comment                       │   │
-│  │ - Reaction                      │   │
-│  │ - Relationships (follow, block) │   │
-│  └─────────────────────────────────┘   │
-└─────────────────────────────────────────┘
+┌──────────────┴────────────────────────┐
+│        FastAPI Backend                │
+│  ┌─────────────────────────────────┐  │
+│  │ Routers                         │  │
+│  │ - Auth (login, register)        │  │
+│  │ - Users (profile, follow/block) │  │
+│  │ - Posts (CRUD, reactions)       │  │
+│  │ - Feed (all, following)         │  │
+│  │ - Dev (reset, seed, utils)      │  │
+│  └─────────────┬───────────────────┘  │
+│                │                      │
+│  ┌─────────────┴───────────────────┐  │
+│  │ Models & Database               │  │
+│  │ - User                          │  │
+│  │ - Post                          │  │
+│  │ - Comment                       │  │
+│  │ - Reaction                      │  │
+│  │ - Relationships (follow, block) │  │
+│  └─────────────────────────────────┘  │
+└───────────────────────────────────────┘
 ```
 
 ## File Structure
 
-```
+```text
 Testbook/
 ├── backend/
 │   ├── main.py              # FastAPI app entry

@@ -57,7 +57,7 @@ newman run Testbook.postman_collection.json \
 
 The collection uses these variables:
 
-- `{{baseUrl}}` - API base URL (default: http://localhost:8000/api)
+- `{{baseUrl}}` - API base URL (default: <http://localhost:8000/api>)
 - `{{token}}` - JWT token (auto-set after login)
 - `{{postId}}` - Created post ID (auto-set)
 - `{{userId}}` - Current user ID (auto-set)

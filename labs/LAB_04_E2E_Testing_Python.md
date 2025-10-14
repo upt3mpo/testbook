@@ -64,16 +64,16 @@ cd tests/e2e-python
 HEADLESS=false pytest test_auth.py::TestAuthentication::test_login_success -v
 ```
 
-**Windows (PowerShell):**
+**Windows (PowerShell - Recommended):**
 
 ```powershell
 cd tests/e2e-python
 $env:HEADLESS="false"; pytest test_auth.py::TestAuthentication::test_login_success -v
 ```
 
-**Windows (Command Prompt):**
+**Windows (Command Prompt - Alternative):**
 
-```cmd
+```bat
 cd tests\e2e-python
 set HEADLESS=false
 pytest test_auth.py::TestAuthentication::test_login_success -v
@@ -100,15 +100,15 @@ pytest test_auth.py::TestAuthentication::test_login_success -v
 HEADLESS=false SLOW_MO=1000 pytest test_auth.py::TestAuthentication::test_login_success -v
 ```
 
-**Windows (PowerShell):**
+**Windows (PowerShell - Recommended):**
 
 ```powershell
 $env:HEADLESS="false"; $env:SLOW_MO="1000"; pytest test_auth.py::TestAuthentication::test_login_success -v
 ```
 
-**Windows (Command Prompt):**
+**Windows (Command Prompt - Alternative):**
 
-```cmd
+```bat
 set HEADLESS=false
 set SLOW_MO=1000
 pytest test_auth.py::TestAuthentication::test_login_success -v
@@ -202,15 +202,15 @@ def test_my_first_e2e_login_and_create_post(page: Page):
 HEADLESS=false pytest test_my_first.py -v
 ```
 
-**Windows (PowerShell):**
+**Windows (PowerShell - Recommended):**
 
 ```powershell
 $env:HEADLESS="false"; pytest test_my_first.py -v
 ```
 
-**Windows (Command Prompt):**
+**Windows (Command Prompt - Alternative):**
 
-```cmd
+```bat
 set HEADLESS=false
 pytest test_my_first.py -v
 ```

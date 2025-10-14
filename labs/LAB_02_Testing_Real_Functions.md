@@ -72,13 +72,11 @@ def test_password_is_hashed(self):
 ```bash
 cd backend
 pytest tests/unit/test_auth.py::TestPasswordHashing::test_password_is_hashed -v
-
 ```
 
 **You should see:**
 
-```
-
+```text
 tests/unit/test_auth.py::TestPasswordHashing::test_password_is_hashed PASSED ✓
 ```
 

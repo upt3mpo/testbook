@@ -111,7 +111,7 @@ start-dev.bat
 
 ## 🏗️ How Development Mode Works
 
-```
+```text
 start-dev.sh runs:
 ├── Pre-checks
 │   ├── Check if ports 8000 and 3000 are available
@@ -147,7 +147,7 @@ start-dev.sh runs:
 
 ## 🐳 How Production Mode Works
 
-```
+```text
 start.sh runs:
 ├── docker-compose up
 │   ├── Builds backend container
@@ -209,7 +209,7 @@ After starting in development mode, verify:
 
 ## 🎯 Quick Decision Tree
 
-```
+```text
 Are you learning/testing?
 ├─ YES → Use start-dev.sh ✅
 └─ NO → Are you deploying to production?

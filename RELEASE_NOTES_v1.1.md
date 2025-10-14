@@ -143,7 +143,7 @@ Testbook v1.1 transforms the platform from a solid 1.0 learning sandbox into a *
 
 **Backend:**
 
-```
+```text
 backend/tests/
 ├── unit/           ← Stage 1 (Unit Tests)
 └── integration/    ← Stage 2 (Integration Tests)
@@ -151,7 +151,7 @@ backend/tests/
 
 **Frontend:**
 
-```
+```text
 frontend/src/tests/
 ├── unit/           ← Stage 1 (Component Tests)
 ├── integration/    ← Stage 2 (Contract Tests)
@@ -333,9 +333,9 @@ Special thanks to all learners who will use this to:
 
 ## 🔗 Links
 
-- **Repository:** https://github.com/upt3mpo/testbook
-- **Issues:** https://github.com/upt3mpo/testbook/issues
-- **Discussions:** https://github.com/upt3mpo/testbook/discussions
+- **Repository:** <https://github.com/upt3mpo/testbook>
+- **Issues:** <https://github.com/upt3mpo/testbook/issues>
+- **Discussions:** <https://github.com/upt3mpo/testbook/discussions>
 
 ---
 

@@ -81,7 +81,7 @@ export LOG_LEVEL=WARNING
 
 **Default for local development:**
 
-```
+```text
 [14:32:15] INFO     testbook.auth - User logged in successfully
 [14:32:16] DEBUG    testbook.posts - Fetching posts for user_id=1
 [14:32:17] ERROR    testbook.api - Failed to process request
@@ -489,10 +489,10 @@ logger.addHandler(handler)
 
 ## Learn More
 
-- **Python Logging Docs**: https://docs.python.org/3/library/logging.html
-- **Structlog**: https://www.structlog.org/ (Alternative library)
-- **12 Factor App Logs**: https://12factor.net/logs
-- **FastAPI Logging**: https://fastapi.tiangolo.com/tutorial/handling-errors/
+- **Python Logging Docs**: <https://docs.python.org/3/library/logging.html>
+- **Structlog**: <https://www.structlog.org/> (Alternative library)
+- **12 Factor App Logs**: <https://12factor.net/logs>
+- **FastAPI Logging**: <https://fastapi.tiangolo.com/tutorial/handling-errors/>
 
 ---
 

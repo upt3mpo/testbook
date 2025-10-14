@@ -465,9 +465,9 @@ limiter = Limiter(
 
 ## Learn More
 
-- **SlowAPI Docs**: https://slowapi.readthedocs.io/
+- **SlowAPI Docs**: <https://slowapi.readthedocs.io/>
 - **LAB_06**: Testing With Rate Limits (practical exercises)
-- **Flask-Limiter**: https://flask-limiter.readthedocs.io/ (similar concepts)
+- **Flask-Limiter**: <https://flask-limiter.readthedocs.io/> (similar concepts)
 
 ---
 

@@ -40,7 +40,7 @@ cd tests/e2e-python
 HEADLESS=false pytest examples/ -v -m examples
 ```
 
-**Windows (PowerShell):**
+**Windows (PowerShell - Recommended):**
 
 ```powershell
 cd tests/e2e-python
@@ -59,7 +59,7 @@ HEADLESS=false pytest examples/test_page_objects_example.py -v
 HEADLESS=false pytest examples/test_api_ui_combined_example.py -v
 ```
 
-**Windows (PowerShell):**
+**Windows (PowerShell - Recommended):**
 
 ```powershell
 # Page Object Model examples

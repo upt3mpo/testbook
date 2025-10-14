@@ -6,7 +6,7 @@
 
 ## 📁 Directory Structure
 
-```
+```text
 frontend/src/tests/
 ├── unit/                      # Component unit tests
 │   ├── CreatePost.test.jsx    # Post creation component

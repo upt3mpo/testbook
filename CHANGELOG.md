@@ -355,7 +355,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 **CI Job Flow:**
 
-```
+```text
 lint-backend → backend-tests ↘
                               → e2e-tests → security → badge-update
 lint-frontend → frontend-tests ↗
@@ -568,7 +568,7 @@ npx lhci autorun
 
 **Welcome banner** (displayed on `pytest` start):
 
-```
+```text
 ╔══════════════════════════════════════════════════════════════════╗
 ║                                                                  ║
 ║  🧪 Welcome to Testbook Testing Platform!                       ║
@@ -598,7 +598,7 @@ npx lhci autorun
 
 **Welcome banner** (displayed on `npm test` start):
 
-```
+```text
 ╔══════════════════════════════════════════════════════════════════╗
 ║                                                                  ║
 ║  ⚡ Welcome to Testbook Frontend Testing!                         ║

@@ -267,6 +267,7 @@ pytest --html=test-report.html --self-contained-html
 
 Create `TESTING.md` for your feature:
 
+<!-- markdownlint-disable MD040 -->
 ````markdown
 # Testing Documentation: [Feature Name]
 
@@ -292,17 +293,21 @@ pytest -m e2e
 ## Test Strategy
 
 ### Unit Tests
+
 Focus on business logic validation...
 
 ### Integration Tests
+
 Verify API contracts and data flow...
 
 ### E2E Tests
+
 Confirm user workflows work end-to-end...
 
 ## Notable Test Cases
 
 ### Test: Unauthorized Access Prevention
+
 **Why it matters:** Prevents users from accessing others' data
 **How it works:** Attempts to access resource with wrong credentials
 **Result:** Returns 403 Forbidden
@@ -310,10 +315,13 @@ Confirm user workflows work end-to-end...
 ## Continuous Improvement
 
 Areas for future testing:
+
 - Performance testing with k6
 - Accessibility testing
 - Cross-browser E2E tests
+
 ````
+<!-- markdownlint-enable MD040 -->
 
 ---
 
@@ -515,7 +523,7 @@ You're portfolio-ready when you have:
 
 **Post on LinkedIn:**
 
-```
+```text
 Excited to share that I completed Testbook's comprehensive test automation curriculum!
 
 🧪 Built test suites covering unit, integration, E2E, performance, and security testing

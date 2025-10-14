@@ -357,8 +357,8 @@ Use the same commands in GitHub Actions:
 
 ## Learn More
 
-- **Make Tutorial**: https://makefiletutorial.com/
-- **Just Documentation**: https://github.com/casey/just
+- **Make Tutorial**: <https://makefiletutorial.com/>
+- **Just Documentation**: <https://github.com/casey/just>
 - **Project Scripts**: See `scripts/` directory for platform-specific alternatives
 
 ---

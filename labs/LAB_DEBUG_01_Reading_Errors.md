@@ -60,7 +60,7 @@ pytest tests/test_learn_errors.py::test_simple_math -v
 
 **You'll see:**
 
-```python
+```text
 ============================ FAILURES =============================
 __________________ test_simple_math ___________________
 
@@ -77,19 +77,19 @@ FAILED tests/test_learn_errors.py::test_simple_math - AssertionError: assert 4 =
 
 **Let's break this down:**
 
-```
+```text
 ============================ FAILURES =============================
 ```
 
 **Meaning:** The failures section starts here
 
-```
+```text
 __________________ test_simple_math ___________________
 ```
 
 **Meaning:** This is the name of the test that failed
 
-```
+```text
     def test_simple_math():
         """A test that will fail."""
         result = 2 + 2
@@ -98,7 +98,7 @@ __________________ test_simple_math ___________________
 
 **Meaning:** Shows the code around the failure. The `>` arrow points to the EXACT line that failed
 
-```
+```text
 E       AssertionError: assert 4 == 5
 ```
 
@@ -109,7 +109,7 @@ E       AssertionError: assert 4 == 5
 - `assert 4 == 5` shows what was asserted
 - It's saying: "You said 4 equals 5, but it doesn't!"
 
-```
+```text
 tests/test_learn_errors.py:4: AssertionError
 ```
 
@@ -119,7 +119,7 @@ tests/test_learn_errors.py:4: AssertionError
 - Line: `4`
 - Error type: `AssertionError`
 
-```
+```text
 FAILED tests/test_learn_errors.py::test_simple_math - AssertionError: assert 4 == 5
 ```
 
@@ -164,7 +164,7 @@ pytest tests/test_learn_errors.py::test_string_comparison -v
 
 **The Error Shows:**
 
-```
+```text
 E       AssertionError: assert 'Hello World' == 'Hello world'
 E         - Hello world
 E         + Hello World
@@ -203,7 +203,7 @@ def test_type_mismatch():
 
 **The Error Shows:**
 
-```
+```text
 E       AssertionError: assert '42' == 42
 ```
 
@@ -243,7 +243,7 @@ def test_none_value():
 
 **The Error Shows:**
 
-```
+```text
 E       AssertionError: assert None == 'something'
 ```
 
@@ -277,7 +277,7 @@ def test_list_length():
 
 **The Error Shows:**
 
-```
+```text
 E       AssertionError: assert 2 == 3
 E        +  where 2 = len(['apple', 'banana'])
 ```
@@ -313,7 +313,7 @@ pytest tests/test_learn_errors.py::test_api_error -v
 
 **What you'll see:**
 
-```
+```text
 E       AssertionError: assert 404 == 200
 E        +  where 404 = <Response [404]>.status_code
 ```
@@ -356,7 +356,7 @@ def test_import_error():
 
 **You'll see:**
 
-```
+```text
 E   ModuleNotFoundError: No module named 'nonexistent_module'
 ```
 
@@ -409,7 +409,7 @@ pytest tests/test_learn_errors.py::test_stack_trace -v
 
 **You'll see a STACK TRACE:**
 
-```python
+```text
 tests/test_learn_errors.py:X: in test_stack_trace
     result = another_helper(42)
 tests/test_learn_errors.py:Y: in another_helper
@@ -423,7 +423,7 @@ E   AttributeError: 'int' object has no attribute 'upper'
 
 1. **Bottom (where error happened):**
 
-   ```
+   ```text
    return value.upper()
    E   AttributeError: 'int' object has no attribute 'upper'
    ```
@@ -432,7 +432,7 @@ E   AttributeError: 'int' object has no attribute 'upper'
 
 2. **Middle (how we got there):**
 
-   ```
+   ```text
    return helper_function(data)
    ```
 
@@ -440,7 +440,7 @@ E   AttributeError: 'int' object has no attribute 'upper'
 
 3. **Top (where it started):**
 
-   ```
+   ```text
    result = another_helper(42)
    ```
 
@@ -448,7 +448,7 @@ E   AttributeError: 'int' object has no attribute 'upper'
 
 **The Chain:**
 
-```
+```text
 test_stack_trace (called with 42)
     ↓
 another_helper (received 42)
@@ -525,7 +525,7 @@ When you see an error, check:
 
 ### AssertionError
 
-```
+```text
 E   AssertionError: assert 4 == 5
 ```
 
@@ -536,7 +536,7 @@ E   AssertionError: assert 4 == 5
 
 ### AttributeError
 
-```
+```text
 E   AttributeError: 'NoneType' object has no attribute 'email'
 ```
 
@@ -547,7 +547,7 @@ E   AttributeError: 'NoneType' object has no attribute 'email'
 
 ### TypeError
 
-```
+```text
 E   TypeError: unsupported operand type(s) for +: 'int' and 'str'
 ```
 
@@ -558,7 +558,7 @@ E   TypeError: unsupported operand type(s) for +: 'int' and 'str'
 
 ### KeyError
 
-```
+```text
 E   KeyError: 'email'
 ```
 
@@ -569,7 +569,7 @@ E   KeyError: 'email'
 
 ### IndexError
 
-```
+```text
 E   IndexError: list index out of range
 ```
 
@@ -580,7 +580,7 @@ E   IndexError: list index out of range
 
 ### ModuleNotFoundError
 
-```
+```text
 E   ModuleNotFoundError: No module named 'pytest'
 ```
 

@@ -55,7 +55,7 @@ npm run test:ui
 
 ### Test Structure
 
-```
+```text
 src/
 ├── components/
 │   ├── __tests__/          # Component tests
@@ -121,7 +121,7 @@ describe('MyComponent', () => {
 
 ## Project Structure
 
-```
+```text
 frontend/
 ├── public/           # Static assets
 ├── src/

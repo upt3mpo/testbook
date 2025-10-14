@@ -18,7 +18,7 @@
 
 ## 📁 Documentation Structure
 
-```
+```text
 Testbook/
 ├── START_HERE.md              ⭐ Choose your learning path
 ├── README.md                   📱 Project overview
@@ -417,7 +417,7 @@ Security testing guide
 
 **Commands:**
 
-```cmd
+```bat
 start-dev.bat              :: Start app
 reset-database.bat         :: Reset database
 .venv\Scripts\activate      :: Activate Python

@@ -176,7 +176,7 @@ pytest tests/test_learn_fixtures.py::TestUsingFixtures::test_fixture_flow -v -s
 
 **You'll see:**
 
-```
+```text
 1. Fixture runs (creates user)
 2. Test receives user
 3. Test runs

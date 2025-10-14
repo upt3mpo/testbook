@@ -33,7 +33,7 @@ Testing experience is **highly valued** in the software industry, but it's often
 
 ### Fork the Repository
 
-1. Go to https://github.com/upt3mpo/testbook
+1. Go to <https://github.com/upt3mpo/testbook>
 2. Click "Fork" (top right)
 3. Clone your fork:
 
@@ -268,7 +268,7 @@ Once you push to GitHub, your CI will run. Screenshot the Actions tab showing:
 
 **Option 1: For QA Engineer Roles**
 
-```
+```text
 QA ENGINEER | AUTOMATION TESTING PROJECT
 September 2024 - Present
 
@@ -288,7 +288,7 @@ September 2024 - Present
 
 **Option 2: For Junior Developer Roles (Testing-Adjacent)**
 
-```
+```text
 FULL-STACK TESTING PROJECT | TESTBOOK
 September 2024 - Present
 
@@ -304,7 +304,7 @@ September 2024 - Present
 
 **Option 3: For Career Changers**
 
-```
+```text
 AUTOMATION TESTING CERTIFICATION PROJECT
 September 2024 - Present
 
@@ -356,7 +356,7 @@ September 2024 - Present
 
 **Add to "Experience" or "Projects":**
 
-```
+```text
 Automation Testing Portfolio Project
 Self-Directed Learning
 Sep 2024 - Present
@@ -454,7 +454,7 @@ Skills: Test Automation • Python • JavaScript • pytest • Playwright • 
 
 ### Write a Great Repository Description
 
-```
+```text
 🧪 Automation testing portfolio - 210+ tests | Python (pytest) + JavaScript (Vitest/Playwright) | 86% coverage | CI/CD | Full testing pyramid
 ```
 

@@ -40,11 +40,12 @@ pytest test_auth.py::TestAuthentication::test_login_success -v
 
 **macOS/Linux:**
 
+```bash
 HEADLESS=false pytest -v
-
 ```
 
-**Windows (PowerShell):**
+**Windows (PowerShell - Recommended):**
+
 ```powershell
 $env:HEADLESS="false"; pytest -v
 ```
@@ -53,11 +54,11 @@ $env:HEADLESS="false"; pytest -v
 
 **macOS/Linux:**
 
+```bash
 HEADLESS=false SLOW_MO=1000 pytest -v
-
 ```
 
-**Windows (PowerShell):**
+**Windows (PowerShell - Recommended):**
 
 ```powershell
 $env:HEADLESS="false"; $env:SLOW_MO="1000"; pytest -v
@@ -67,7 +68,7 @@ $env:HEADLESS="false"; $env:SLOW_MO="1000"; pytest -v
 
 ## 📁 Directory Structure
 
-```
+```text
 tests/e2e-python/
 ├── conftest.py              # Pytest fixtures and configuration
 ├── pytest.ini               # Pytest settings and markers
@@ -190,7 +191,7 @@ DEFAULT_TIMEOUT=60000 pytest -v
 VIDEO_ON_FAILURE=true pytest -v
 ```
 
-**Windows (PowerShell):**
+**Windows (PowerShell - Recommended):**
 
 ```powershell
 # Headed mode with slow motion
@@ -204,9 +205,9 @@ $env:DEFAULT_TIMEOUT="60000"; pytest -v
 $env:VIDEO_ON_FAILURE="true"; pytest -v
 ```
 
-**Windows (Command Prompt):**
+**Windows (Command Prompt - Alternative):**
 
-```cmd
+```bat
 # Headed mode with slow motion (run separately)
 set HEADLESS=false
 set SLOW_MO=1000

@@ -722,7 +722,7 @@ Not understanding testing strategy.
 
 **Fix:**
 
-```
+```text
          E2E Tests (Few)
       /               \
    Integration Tests (Some)

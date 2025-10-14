@@ -33,7 +33,7 @@ newman run Testbook.postman_collection.json
 
 **Expected Output:**
 
-```
+```text
 → Testbook API Tests
   ✓ Health Check
   ✓ Register User
@@ -50,7 +50,7 @@ newman run Testbook.postman_collection.json
 ├─────────────────────────┼─────────────┼────────────┤
 │            test-scripts │          30 │          0 │
 ├─────────────────────────┼─────────────┼────────────┤
-│      assertions │          45 │          0 │
+│      assertions         │          45 │          0 │
 └─────────────────────────┴─────────────┴────────────┘
 ```
 
@@ -210,7 +210,7 @@ stage('API Tests') {
 
 ### Success Indicators
 
-```
+```text
 ✓ All tests passing
 ✓ 0 failed assertions
 ✓ Response times < 500ms
@@ -219,7 +219,7 @@ stage('API Tests') {
 
 ### Failure Indicators
 
-```
+```text
 ✗ Tests failing
 ✗ Failed assertions > 0
 ✗ Response times > 2000ms
@@ -228,7 +228,7 @@ stage('API Tests') {
 
 ### Example Failure Output
 
-```
+```text
 ✗ Login User
   AssertionError: expected response status to be 200 but got 401
 

@@ -333,7 +333,7 @@ on:
 
 ## 📊 Validation Report Example
 
-```
+```text
 ✅ Markdown Linting: Passed
 ✅ Link Validation: Passed
 
@@ -387,15 +387,15 @@ Check capitalization and special characters:
 
 ### markdownlint
 
-**Documentation:** https://github.com/DavidAnson/markdownlint
+**Documentation:** <https://github.com/DavidAnson/markdownlint>
 
-**Rules:** https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md
+**Rules:** <https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md>
 
 ### markdown-link-check
 
-**Documentation:** https://github.com/tcort/markdown-link-check
+**Documentation:** <https://github.com/tcort/markdown-link-check>
 
-**Configuration:** https://github.com/tcort/markdown-link-check#config-file-format
+**Configuration:** <https://github.com/tcort/markdown-link-check#config-file-format>
 
 ---
 

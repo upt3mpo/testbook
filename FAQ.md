@@ -658,7 +658,7 @@ If your issue isn't here:
 
 ### Tip 1: Keep Two Terminals Open
 
-```
+```text
 Terminal 1: Backend running
 Terminal 2: Run tests
 ```

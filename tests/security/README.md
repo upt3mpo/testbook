@@ -27,7 +27,7 @@ Comprehensive security testing for Testbook API.
 
 **Visual representation:**
 
-```
+```text
 Tests 1-15:  ✅ Pass (within rate limit)
 Test 16:     ❌ Gets rate limited (429 error)
 Tests 17-23: ❌ Cascade failures (can't get auth tokens)
@@ -92,7 +92,7 @@ pytest tests/security/ -v
 
 ### With TESTING=true (Correct Setup)
 
-```
+```text
 =================== 17-19 passed, 3 skipped, 1-3 failed ===================
 ```
 
@@ -119,7 +119,7 @@ pytest tests/security/ -v
 
 ### Without TESTING=true (Will Fail)
 
-```
+```text
 =================== 10 passed, 3 skipped, 10 failed/errors ===================
 ```
 
@@ -133,7 +133,7 @@ Most failures will be due to rate limiting - this proves rate limiting works!
 
 **Error:**
 
-```
+```text
 KeyError: 'access_token'
 ```
 
@@ -152,7 +152,7 @@ KeyError: 'access_token'
 
 **Error:**
 
-```
+```text
 AssertionError: Rate limiting not working - allowed 30 attempts (expected max 20)
 ```
 
@@ -170,7 +170,7 @@ AssertionError: Rate limiting not working - allowed 30 attempts (expected max 20
 
 **Error:**
 
-```
+```text
 AssertionError: Expected 401, got 403
 ```
 
@@ -217,7 +217,7 @@ pytest tests/security/ -v -n 4  # ❌ Will hit rate limits
 
 ## 📚 Test Structure
 
-```
+```text
 tests/security/
 ├── conftest.py              # Shared fixtures, rate limit handling
 ├── test_security.py         # Core security tests (auth, input, data)

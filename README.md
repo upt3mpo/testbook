@@ -32,7 +32,7 @@ chmod +x start-dev.sh
 
 ### Windows
 
-```cmd
+```bat
 git clone https://github.com/upt3mpo/testbook.git
 cd testbook
 start-dev.bat
@@ -71,7 +71,7 @@ Pick the track that matches your background and goals:
 | **🔄 Hybrid Track** | Python + JavaScript | All tools from both stacks | 15-18 hours | Full-stack QA, most realistic | [Stage 1](learn/stage_1_unit/) |
 | **⚡ Manual QA Transition** | Python-first | pytest, Playwright, automation mindset | 20-25 hours | Manual testers going automation | [Manual QA Guide](docs/guides/MANUAL_QA_TO_AUTOMATION.md) |
 
-**Not sure?** Try the [Hybrid Track](#) - it's what most real QA roles need!
+**Not sure?** Try the [Hybrid Track](learn/stage_1_unit/) - it's what most real QA roles need!
 
 ---
 
@@ -363,7 +363,7 @@ cd backend && source .venv/bin/activate && pytest -v
 
 **Windows:**
 
-```cmd
+```bat
 REM Start app
 start-dev.bat
 

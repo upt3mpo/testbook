@@ -325,7 +325,7 @@ You're ready for Stage 4 when you can:
 
 ### Testing Pyramid Extended
 
-```
+```text
        /\      ← Manual exploratory testing
       /  \     ← Few E2E tests (slowest, most expensive)
      /____\

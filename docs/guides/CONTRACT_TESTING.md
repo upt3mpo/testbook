@@ -236,7 +236,7 @@ Schemathesis would generate:
 
 **What happens if we run it:**
 
-```
+```text
 SchemaError: The provided schema uses Open API 3.1.0,
 which is currently not fully supported.
 ```
@@ -271,7 +271,7 @@ Using `force_schema_version="30"` makes Schemathesis work with OpenAPI 3.1.0! Ho
 - Schema needs documentation improvements
 - Authentication needs configuration
 
-**Reference:** https://github.com/schemathesis/schemathesis/issues/494
+**Reference:** <https://github.com/schemathesis/schemathesis/issues/494>
 
 **Decision:** Enable in a future update after proper configuration. See `testbook-notes/v1.2-contract-testing-plan.md` for full enablement plan.
 
@@ -691,7 +691,7 @@ Both validate the contract between API provider and consumer.
 
 **A:** Yes!
 
-```
+```text
 • Studied property-based contract testing with Schemathesis
 • Understand automated schema validation and API fuzzing
 • Implemented frontend contract validation with OpenAPI schemas

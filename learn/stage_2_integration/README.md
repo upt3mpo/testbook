@@ -408,7 +408,7 @@ You're ready for Stage 3 when you can:
 
 ### Test Pyramid
 
-```
+```text
          /\
         /  \      ← Few E2E tests (slow, expensive)
        /____\

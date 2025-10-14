@@ -728,7 +728,7 @@ npx playwright install
 playwright._impl._api_types.Error: page.goto: net::ERR_CONNECTION_REFUSED
 ```
 
-**Why:** Frontend not running on http://localhost:3000.
+**Why:** Frontend not running on <http://localhost:3000>.
 
 **Fix:**
 

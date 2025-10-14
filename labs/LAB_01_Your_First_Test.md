@@ -81,7 +81,7 @@ pytest tests/test_my_first.py -v
 
 **You should see:**
 
-```
+```text
 tests/test_my_first.py::test_basic_math PASSED ✓
 tests/test_my_first.py::test_string_length PASSED ✓
 tests/test_my_first.py::test_list_contains PASSED ✓
@@ -109,7 +109,7 @@ pytest tests/test_my_first.py -v
 
 **You should see:**
 
-```
+```text
 tests/test_my_first.py::test_basic_math FAILED ✗
 
 E   assert 4 == 5
