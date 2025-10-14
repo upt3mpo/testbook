@@ -12,7 +12,7 @@ Quick reference for testers and automation engineers.
 - **[Postman](https://www.postman.com/)** - API testing (visual interface)
 - **[PyTest](https://pytest.org/)** - Python testing framework
 
-**More options**: See [README.md](README.md#-testing-frameworks-you-can-use) for a complete list
+**More options**: See [README.md](../../README.md#-testing-frameworks-you-can-use) for a complete list
 
 ## 🚀 Quick Start
 
@@ -334,7 +334,7 @@ def test_login():
     assert "access_token" in response.json()
 ```
 
-**Full backend testing guide**: [TESTING_GUIDE.md#backend-testing](TESTING_GUIDE.md#backend-testing)
+**Full backend testing guide**: [TESTING_GUIDE.md#backend-testing](../guides/TESTING_GUIDE.md#backend-testing)
 
 ## 📊 What Makes This Great for Testing
 
@@ -362,10 +362,10 @@ def test_login():
 ## 📖 More Resources
 
 - **[TESTING_PATTERNS.md](TESTING_PATTERNS.md)** - ⭐ How to handle dynamic content (posts, comments, etc.)
-- **[TESTING_GUIDE.md](TESTING_GUIDE.md)** - Detailed examples (UI, API, Backend)
-  - [Backend Testing Section](TESTING_GUIDE.md#backend-testing) - Unit & integration tests
+- **[TESTING_GUIDE.md](../guides/TESTING_GUIDE.md)** - Detailed examples (UI, API, Backend)
+  - [Backend Testing Section](../guides/TESTING_GUIDE.md#backend-testing) - Unit & integration tests
 - **[TESTING_FEATURES.md](TESTING_FEATURES.md)** - Comprehensive testing capabilities
-- **[README.md](README.md)** - Full feature documentation
+- **[README.md](../../README.md)** - Full feature documentation
 - **API Docs** - Interactive API documentation at `/docs`
 
 ---

@@ -34,13 +34,13 @@ client = <fastapi.testclient.TestClient object at 0x7f8b9c>
 E       AssertionError: assert 500 == 401
 E        +  where 500 = <Response [500]>.status_code
 
-tests/test_api_auth.py:45: AssertionError
+tests/integration/test_api_auth.py:45: AssertionError
 ```
 
 **How to Read This:**
 
 1. **Test Name**: `TestLogin::test_login_wrong_password` - Which test failed
-2. **Location**: `tests/test_api_auth.py:45` - Exact line that failed
+2. **Location**: `tests/integration/test_api_auth.py:45` - Exact line that failed
 3. **Expected**: `401` - What you expected
 4. **Actual**: `500` - What you got
 5. **Context**: Shows the code that failed with `>` marker
@@ -97,7 +97,7 @@ def test_something(client):
 
 **Run with `-s` to see prints:**
 ```bash
-pytest tests/test_api_auth.py::test_something -v -s
+pytest tests/integration/test_api_auth.py::test_something -v -s
 ```
 
 ---
@@ -107,7 +107,7 @@ pytest tests/test_api_auth.py::test_something -v -s
 **Drop into interactive debugger when test fails:**
 
 ```bash
-pytest tests/test_api_auth.py::test_something --pdb
+pytest tests/integration/test_api_auth.py::test_something --pdb
 ```
 
 **When test fails, you get:**
@@ -165,7 +165,7 @@ def test_something(client):
 
 **Run normally:**
 ```bash
-pytest tests/test_api_auth.py::test_something -v
+pytest tests/integration/test_api_auth.py::test_something -v
 ```
 
 ---
@@ -175,7 +175,7 @@ pytest tests/test_api_auth.py::test_something -v
 **See all variables when test fails:**
 
 ```bash
-pytest tests/test_api_auth.py::test_something -v -l
+pytest tests/integration/test_api_auth.py::test_something -v -l
 ```
 
 **Output shows:**
@@ -207,7 +207,7 @@ pytest -v -x --pdb  # Stop and debug first failure
 
 ```bash
 # Run just one test
-pytest tests/test_api_auth.py::TestLogin::test_login_wrong_password -v
+pytest tests/integration/test_api_auth.py::TestLogin::test_login_wrong_password -v
 
 # Even more specific with -k
 pytest -k "login and wrong" -v
@@ -422,10 +422,10 @@ def test_something(db_session):
 2. **Run tests in isolation:**
 ```bash
 # Run just one
-pytest tests/test_api_auth.py::test_login -v
+pytest tests/integration/test_api_auth.py::test_login -v
 
 # Run in order
-pytest tests/test_api_auth.py -v
+pytest tests/integration/test_api_auth.py -v
 ```
 
 3. **Check for shared state:**
@@ -465,8 +465,8 @@ echo $VIRTUAL_ENV  # Should show venv path
 
 2. **Activate venv:**
 ```bash
-source venv/bin/activate  # macOS/Linux
-venv\Scripts\activate  # Windows
+source .venv/bin/activate  # macOS/Linux
+.venv\Scripts\activate  # Windows
 ```
 
 3. **Reinstall dependencies:**

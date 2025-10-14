@@ -1,9 +1,11 @@
 {
   "name": "Testbook Development",
-  "dockerComposeFile": "../docker-compose.yml",
-  "service": "backend",
+  "dockerComposeFile": [
+    "../docker-compose.yml",
+    "./docker-compose.devcontainer.override.yml"
+  ],
+  "service": "testbook",
   "workspaceFolder": "/workspace",
-
   "customizations": {
     "vscode": {
       "extensions": [
@@ -19,9 +21,11 @@
         "tamasfe.even-better-toml"
       ],
       "settings": {
-        "python.defaultInterpreterPath": "/workspace/backend/venv/bin/python",
+        "python.defaultInterpreterPath": "/workspace/backend/.venv/bin/python",
         "python.testing.pytestEnabled": true,
-        "python.testing.pytestArgs": ["-v"],
+        "python.testing.pytestArgs": [
+          "-v"
+        ],
         "python.linting.enabled": true,
         "editor.formatOnSave": true,
         "editor.codeActionsOnSave": {
@@ -40,8 +44,11 @@
       }
     }
   },
-
-  "forwardPorts": [8000, 5173, 5432],
+  "forwardPorts": [
+    8000,
+    5173,
+    5432
+  ],
   "portsAttributes": {
     "8000": {
       "label": "Backend API",
@@ -56,18 +63,6 @@
       "onAutoForward": "silent"
     }
   },
-
   "postCreateCommand": "bash .devcontainer/post-create.sh",
-
-  "remoteUser": "vscode",
-
-  "features": {
-    "ghcr.io/devcontainers/features/node:1": {
-      "version": "20"
-    },
-    "ghcr.io/devcontainers/features/python:1": {
-      "version": "3.11"
-    },
-    "ghcr.io/devcontainers/features/git:1": {}
-  }
+  "remoteUser": "vscode"
 }

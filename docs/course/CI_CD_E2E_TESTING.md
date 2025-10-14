@@ -72,7 +72,7 @@ jobs:
       - name: Start backend
         run: |
           cd backend
-          source venv/bin/activate || python -m venv venv && source venv/bin/activate
+          source .venv/bin/activate || python -m venv .venv && source .venv/bin/activate
           pip install -r requirements.txt
           uvicorn main:app --host 0.0.0.0 --port 8000 &
           sleep 5
@@ -93,7 +93,7 @@ jobs:
           API_URL: http://localhost:8000
         run: |
           cd tests/e2e-python
-          pytest --browser=${{ matrix.browser }} --headed=false -v --tb=short
+          HEADLESS=true pytest --browser=${{ matrix.browser }} -v --tb=short
 
       - name: Upload test results
         if: always()
@@ -165,8 +165,8 @@ jobs:
       - name: Start backend
         run: |
           cd backend
-          python -m venv venv
-          source venv/bin/activate
+          python -m venv .venv
+          source .venv/bin/activate
           pip install -r requirements.txt
           uvicorn main:app --host 0.0.0.0 --port 8000 &
           sleep 5

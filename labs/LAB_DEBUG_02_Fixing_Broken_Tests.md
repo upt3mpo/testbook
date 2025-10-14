@@ -718,7 +718,7 @@ When you encounter a failing test:
 
 **Continue building your skills:**
 - **[LAB_03_Testing_API_Endpoints.md](LAB_03_Testing_API_Endpoints.md)** - Write more complex tests
-- **[LAB_04_E2E_Testing.md](LAB_04_E2E_Testing.md)** - Debug browser tests
+- **[LAB_04_E2E_Testing_Python.md](LAB_04_E2E_Testing_Python.md)** or **[LAB_04_E2E_Testing_JavaScript.md](LAB_04_E2E_Testing_JavaScript.md)** - Debug browser tests
 - **[DEBUGGING_GUIDE.md](../docs/reference/DEBUGGING_GUIDE.md)** - Advanced debugging
 
 ---

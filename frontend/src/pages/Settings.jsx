@@ -107,11 +107,17 @@ function Settings() {
   };
 
   const handleDeleteAccount = async () => {
-    if (!window.confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+    if (
+      !window.confirm('Are you sure you want to delete your account? This action cannot be undone.')
+    ) {
       return;
     }
 
-    if (!window.confirm('This will permanently delete all your posts, comments, and data. Are you absolutely sure?')) {
+    if (
+      !window.confirm(
+        'This will permanently delete all your posts, comments, and data. Are you absolutely sure?'
+      )
+    ) {
       return;
     }
 
@@ -132,18 +138,24 @@ function Settings() {
   return (
     <div className="settings-container" data-testid="settings-page">
       <div className="settings-content">
-        <h1 className="settings-title" data-testid="settings-title">Settings</h1>
+        <h1 className="settings-title" data-testid="settings-title">
+          Settings
+        </h1>
 
         <div className="settings-card card">
           <h2 className="settings-section-title">Account Information</h2>
           <div className="settings-info">
             <div className="info-item">
               <span className="info-label">Email:</span>
-              <span className="info-value" data-testid="settings-email">{user?.email}</span>
+              <span className="info-value" data-testid="settings-email">
+                {user?.email}
+              </span>
             </div>
             <div className="info-item">
               <span className="info-label">Username:</span>
-              <span className="info-value" data-testid="settings-username">@{user?.username}</span>
+              <span className="info-value" data-testid="settings-username">
+                @{user?.username}
+              </span>
             </div>
           </div>
         </div>
@@ -151,8 +163,16 @@ function Settings() {
         <div className="settings-card card">
           <h2 className="settings-section-title">Profile Picture</h2>
 
-          {error && <div className="error" data-testid="settings-error">{error}</div>}
-          {success && <div className="success" data-testid="settings-success">{success}</div>}
+          {error && (
+            <div className="error" data-testid="settings-error">
+              {error}
+            </div>
+          )}
+          {success && (
+            <div className="success" data-testid="settings-success">
+              {success}
+            </div>
+          )}
 
           <div className="avatar-section">
             <img
@@ -183,7 +203,9 @@ function Settings() {
                 type="button"
                 onClick={handleClearAvatar}
                 className="btn btn-secondary"
-                disabled={uploadingAvatar || user?.profile_picture === '/static/images/default-avatar.jpg'}
+                disabled={
+                  uploadingAvatar || user?.profile_picture === '/static/images/default-avatar.jpg'
+                }
                 data-testid="settings-clear-avatar-button"
               >
                 Clear Photo
@@ -265,7 +287,9 @@ function Settings() {
 
         <div className="settings-card card danger-zone">
           <h2 className="settings-section-title">Danger Zone</h2>
-          <p className="text-secondary">Once you delete your account, there is no going back. Please be certain.</p>
+          <p className="text-secondary">
+            Once you delete your account, there is no going back. Please be certain.
+          </p>
           <button
             onClick={handleDeleteAccount}
             className="btn btn-danger"
@@ -280,4 +304,3 @@ function Settings() {
 }
 
 export default Settings;
-

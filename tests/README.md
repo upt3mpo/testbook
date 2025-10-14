@@ -235,7 +235,7 @@ npx playwright test --project=firefox
 Make sure backend is running:
 ```bash
 cd backend
-source venv/bin/activate
+source .venv/bin/activate
 uvicorn main:app --reload
 ```
 

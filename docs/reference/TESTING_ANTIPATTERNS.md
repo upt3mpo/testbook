@@ -924,7 +924,7 @@ Before committing your tests, check:
 - **[TESTING_CHEATSHEET.md](TESTING_CHEATSHEET.md)** - Quick reference (updated with critical patterns)
 - **[Common Mistakes](../course/COMMON_MISTAKES.md)** - Student errors
 - **[Test Examples](../../backend/tests/examples/)** - Good vs bad tests
-- **[Test Fix Summary](../../tests/FINAL_FIX_SUMMARY.md)** - How we fixed 18 tests
+- **[Flaky Tests Guide](../guides/FLAKY_TESTS_GUIDE.md)** - How to fix unreliable tests
 
 ---
 

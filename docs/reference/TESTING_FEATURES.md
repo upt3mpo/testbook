@@ -431,11 +431,11 @@ await expect(page.locator('[data-testid="create-post-preview"]')).toBeVisible();
 
 ## 📚 More Resources
 
-- **[README.md](README.md)** - Main documentation and project overview
-- **[TESTING_GUIDE.md](TESTING_GUIDE.md)** - Complete testing examples
+- **[README.md](../../README.md)** - Main documentation and project overview
+- **[TESTING_GUIDE.md](../guides/TESTING_GUIDE.md)** - Complete testing examples
 - **[TESTING_PATTERNS.md](TESTING_PATTERNS.md)** - Testing dynamic content patterns
 - **[TESTING_CHEATSHEET.md](TESTING_CHEATSHEET.md)** - Quick reference guide
-- **[QUICKSTART.md](QUICKSTART.md)** - Get started in 5 minutes
+- **[QUICKSTART.md](../../QUICKSTART.md)** - Get started in 5 minutes
 
 ---
 

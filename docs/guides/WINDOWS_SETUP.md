@@ -199,12 +199,12 @@ reset-database.bat
 ```cmd
 # Windows
 cd backend
-venv\Scripts\activate
+.venv\Scripts\activate
 pytest -v
 
 # WSL
 cd backend
-source venv/bin/activate
+source .venv/bin/activate
 pytest -v
 ```
 
@@ -235,11 +235,11 @@ Ensure virtual environment is activated:
 ```cmd
 # Windows
 cd backend
-venv\Scripts\activate
+.venv\Scripts\activate
 
 # WSL
 cd backend
-source venv/bin/activate
+source .venv/bin/activate
 ```
 
 ### Node Modules Issues

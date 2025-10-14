@@ -1,0 +1,32 @@
+# Development Dockerfile for local VS Code DevContainer
+FROM python:3.11-slim-bookworm
+
+# Set environment variables
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    DEBIAN_FRONTEND=noninteractive
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    git \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set up workspace directory
+WORKDIR /workspace
+
+# Install Node.js 20 (for frontend development)
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create a non-root user
+RUN useradd -m -s /bin/bash vscode && \
+    chown -R vscode:vscode /workspace
+
+USER vscode
+
+# The actual dependency installation will happen in post-create.sh
+# This keeps the image light and allows for easier updates
+

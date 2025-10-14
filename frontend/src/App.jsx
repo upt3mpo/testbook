@@ -18,13 +18,18 @@ import Navbar from './components/Navbar';
 // Loading component
 function LoadingSpinner() {
   return (
-    <div className="loading-container" style={{
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      height: '100vh'
-    }}>
-      <div className="loading" data-testid="loading-spinner">Loading...</div>
+    <div
+      className="loading-container"
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',
+      }}
+    >
+      <div className="loading" data-testid="loading-spinner">
+        Loading...
+      </div>
     </div>
   );
 }
@@ -61,7 +66,7 @@ function AppContent() {
 
   return (
     <div className="app" data-testid="app">
-      <Router>
+      <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <Suspense fallback={<LoadingSpinner />}>
           <Routes>
             {/* Public routes */}
@@ -145,4 +150,3 @@ function App() {
 }
 
 export default App;
-

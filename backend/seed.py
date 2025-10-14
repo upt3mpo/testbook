@@ -283,9 +283,7 @@ def seed_database():
 
         posts = []
         for post_data in posts_data:
-            created_time = datetime.now(timezone.utc) - timedelta(
-                days=post_data["days_ago"]
-            )
+            created_time = datetime.now(timezone.utc) - timedelta(days=post_data["days_ago"])
             post = models.Post(
                 author_id=users[post_data["author_idx"]].id,
                 content=post_data["content"],
@@ -402,8 +400,7 @@ def seed_database():
                 content=repost_data["content"],
                 is_repost=True,
                 original_post_id=posts[repost_data["original_post_idx"]].id,
-                created_at=datetime.now(timezone.utc)
-                - timedelta(hours=random.randint(1, 24)),
+                created_at=datetime.now(timezone.utc) - timedelta(hours=random.randint(1, 24)),
             )
             db.add(repost)
 

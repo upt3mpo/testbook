@@ -26,7 +26,11 @@ function Navbar() {
               <Link to="/" className="navbar-link" data-testid="navbar-home-link">
                 Home
               </Link>
-              <Link to={`/profile/${user.username}`} className="navbar-link" data-testid="navbar-profile-link">
+              <Link
+                to={`/profile/${user.username}`}
+                className="navbar-link"
+                data-testid="navbar-profile-link"
+              >
                 Profile
               </Link>
               <Link to="/settings" className="navbar-link" data-testid="navbar-settings-link">
@@ -49,7 +53,9 @@ function Navbar() {
                   className="avatar avatar-sm"
                   data-testid="navbar-user-avatar"
                 />
-                <span className="navbar-username" data-testid="navbar-username">{user.display_name}</span>
+                <span className="navbar-username" data-testid="navbar-username">
+                  {user.display_name}
+                </span>
               </div>
             </div>
           </>
@@ -70,4 +76,3 @@ function Navbar() {
 }
 
 export default Navbar;
-

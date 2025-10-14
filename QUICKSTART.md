@@ -104,7 +104,7 @@ Password: Sarah2024!
 
 ```bash
 cd backend
-source venv/bin/activate
+source .venv/bin/activate
 pytest -v
 ```
 
@@ -117,7 +117,7 @@ pytest -v
 
 ```cmd
 cd backend
-venv\Scripts\activate
+.venv\Scripts\activate
 pytest -v
 ```
 
@@ -203,8 +203,8 @@ Just run: `python3 setup_images.py` (or `python` on Windows)
 ### Virtual Environment Commands
 
 **Activate:**
-- macOS/Linux: `source venv/bin/activate`
-- Windows: `venv\Scripts\activate`
+- macOS/Linux: `source .venv/bin/activate`
+- Windows: `.venv\Scripts\activate`
 
 **Deactivate:** `deactivate` (all platforms)
 
@@ -267,7 +267,7 @@ Port 8000 is the backend API - it won't show the app interface.
 |------|-------------|---------|
 | **Start app** | `./start-dev.sh` | `start-dev.bat` |
 | **Reset DB** | `./reset-database.sh` | `reset-database.bat` |
-| **Activate venv** | `source venv/bin/activate` | `venv\Scripts\activate` |
+| **Activate venv** | `source .venv/bin/activate` | `.venv\Scripts\activate` |
 | **Run tests** | `pytest -v` | `pytest -v` (same!) |
 | **Path separator** | `/` | `\` |
 | **Shell** | bash/zsh | CMD/PowerShell |

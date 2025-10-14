@@ -168,9 +168,7 @@ class CommentFactory:
         if content is None:
             content = f"Comment from {author.username}"
 
-        comment = Comment(
-            post_id=post.id, author_id=author.id, content=content, **kwargs
-        )
+        comment = Comment(post_id=post.id, author_id=author.id, content=content, **kwargs)
 
         db_session.add(comment)
         db_session.commit()
@@ -216,9 +214,7 @@ class ReactionFactory:
         Returns:
             Reaction: Created and committed reaction instance
         """
-        reaction = Reaction(
-            post_id=post.id, user_id=user.id, reaction_type=reaction_type, **kwargs
-        )
+        reaction = Reaction(post_id=post.id, user_id=user.id, reaction_type=reaction_type, **kwargs)
 
         db_session.add(reaction)
         db_session.commit()
@@ -270,16 +266,12 @@ def create_post_with_comments(
 
     # Create comments from different users
     commenters = UserFactory.create_batch(db_session, num_comments)
-    comments = [
-        CommentFactory.create(db_session, post, commenter) for commenter in commenters
-    ]
+    comments = [CommentFactory.create(db_session, post, commenter) for commenter in commenters]
 
     return post, comments
 
 
-def create_social_network(
-    db_session, num_users: int = 5, posts_per_user: int = 2
-) -> dict:
+def create_social_network(db_session, num_users: int = 5, posts_per_user: int = 2) -> dict:
     """Create a small social network for testing.
 
     Args:
@@ -320,9 +312,7 @@ def create_social_network(
         "users": users,
         "posts": all_posts,
         "relationships": {
-            "following": {
-                user.username: [u.username for u in user.following] for user in users
-            }
+            "following": {user.username: [u.username for u in user.following] for user in users}
         },
     }
 

@@ -21,11 +21,20 @@ function Comment({ comment }) {
       </Link>
       <div className="comment-body">
         <div className="comment-header">
-          <Link to={`/profile/${comment.author_username}`} className="comment-author" data-testid={`comment-${comment.id}-author`}>
+          <Link
+            to={`/profile/${comment.author_username}`}
+            className="comment-author"
+            data-testid={`comment-${comment.id}-author`}
+          >
             {comment.author_display_name}
           </Link>
-          <span className="comment-username text-secondary text-small">@{comment.author_username}</span>
-          <span className="comment-time text-secondary text-small" data-testid={`comment-${comment.id}-time`}>
+          <span className="comment-username text-secondary text-small">
+            @{comment.author_username}
+          </span>
+          <span
+            className="comment-time text-secondary text-small"
+            data-testid={`comment-${comment.id}-time`}
+          >
             {new Date(comment.created_at).toLocaleString()}
           </span>
         </div>
@@ -38,4 +47,3 @@ function Comment({ comment }) {
 }
 
 export default Comment;
-

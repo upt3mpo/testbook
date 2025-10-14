@@ -91,11 +91,11 @@ Most students prefer Native Windows or WSL.
 ```bash
 # macOS/Linux
 cd backend
-source venv/bin/activate
+source .venv/bin/activate
 
 # Windows
 cd backend
-venv\Scripts\activate
+.venv\Scripts\activate
 ```
 
 You should see `(venv)` in your terminal prompt.
@@ -108,7 +108,7 @@ You should see `(venv)` in your terminal prompt.
 
 ```bash
 cd backend
-source venv/bin/activate  # Or venv\Scripts\activate on Windows
+source .venv/bin/activate  # Or .venv\Scripts\activate on Windows
 pip install -r requirements.txt
 ```
 
@@ -192,7 +192,7 @@ pytest -v  # Will create fresh database
 ```bash
 # Terminal 1: Start backend
 cd backend
-source venv/bin/activate
+source .venv/bin/activate
 uvicorn main:app --reload
 
 # Terminal 2: Run E2E tests
@@ -250,7 +250,7 @@ curl http://localhost:8000/api/health
 If not running, start it:
 ```bash
 cd backend
-source venv/bin/activate
+source .venv/bin/activate
 uvicorn main:app --reload
 ```
 
@@ -342,8 +342,8 @@ cd backend
 
 ```bash
 # ✅ GOOD
-test_auth.py
-test_api_users.py
+test_auth.py              # Simple, clear
+test_api_users.py         # Descriptive, standard naming
 
 # ❌ BAD
 auth_test.py
@@ -471,7 +471,7 @@ Go at your own pace!
 python --version  # Should be 3.11+
 
 # Activate venv
-source venv/bin/activate
+source .venv/bin/activate
 
 # Verify venv Python
 which python  # Should point to venv
@@ -671,7 +671,7 @@ When really stuck:
 ```bash
 # Reset everything
 ./reset-database.sh
-cd backend && deactivate && source venv/bin/activate
+cd backend && deactivate && source .venv/bin/activate
 pip install -r requirements.txt
 pytest -v
 ```

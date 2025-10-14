@@ -11,7 +11,26 @@ A self-guided learning platform for mastering automation testing. Perfect for in
 
 ## 🎯 Choose Your Learning Path
 
-### Path 1: **Hands-On Labs** 🛠️ **← RECOMMENDED**
+### Path 1: **🆕 Self-Guided Learning Path** 🌟 **← HIGHLY RECOMMENDED**
+
+**→ Complete 5-stage curriculum from beginner to job-ready (12-18 hours)**
+
+Start here: **[learn/](learn/)** or jump to **[Stage 1: Unit Tests](learn/stage_1_unit/)**
+
+- 🎯 Clear progression (Stage 1 → Stage 5)
+- 🐍 Python Track OR ☕ JavaScript Track OR 🔄 Hybrid
+- 📝 Reflection prompts at each stage
+- ✅ Success criteria to track progress
+- 💼 Portfolio-ready capstone project
+- 🎓 Job interview preparation built in
+
+**Best for:** Self-learners building job-ready testing skills (12-18 hours self-paced)
+
+**5 Stages:** Unit Tests → Integration → API/E2E → Performance/Security → Capstone
+
+---
+
+### Path 2: **Hands-On Labs** 🛠️
 
 **→ Jump straight into coding (write your first test in 30 minutes!)**
 
@@ -20,39 +39,45 @@ Start here: **[labs/LAB_01_Your_First_Test.md](labs/LAB_01_Your_First_Test.md)**
 - 🚀 Write tests immediately
 - 👀 See results fast
 - 🎮 Interactive and practical
-- 📝 Step-by-step instructions
+- 📝 Step-by-step instructions (9 labs total)
 
-**Best for:** Hands-on learners who want to code right away
+**Best for:** Hands-on learners who want to code right away (can combine with Path 1)
 
-### Path 2: **Guided Learning** 👨‍🎓
+---
 
-**→ Follow a structured progression**
+### Path 3: **Guided Learning** 👨‍🎓
+
+**→ Follow a structured course with theory and practice**
 
 Start here: **[docs/course/COURSE_AUTOMATION_TESTING_101.md](docs/course/COURSE_AUTOMATION_TESTING_101.md)**
 
-- 📚 Structured progression
+- 📚 Structured progression with theory
 - 🧪 Multiple hands-on labs
 - 📈 Builds from basics to advanced
 - ⏱️ ~30-40 hours total
 
-**Best for:** Self-learners who prefer structure and context
+**Best for:** Learners who prefer detailed theory alongside practice
 
-### Path 3: **Explore by Example** 🔍
+---
 
-**→ Run existing 180+ tests and learn by reading code**
+### Path 4: **Explore by Example** 🔍
+
+**→ Run existing 210+ tests and learn by reading code**
 
 Start here: **[docs/guides/RUNNING_TESTS.md](docs/guides/RUNNING_TESTS.md)**
 
-- ▶️ Run all 180+ tests (backend + frontend + E2E)
+- ▶️ Run all 210+ tests (backend + frontend + E2E)
 - 📊 View coverage reports
 - 🔬 Examine test code
 - 🎯 Learn by example
 
 **Best for:** Experienced developers who learn by reading code
 
-### Path 4: **Quick Reference** ⚡
+---
 
-**→ Use as reference material**
+### Path 5: **Quick Reference** ⚡
+
+**→ Use as reference material during your work**
 
 Start here: **[docs/reference/TESTING_CHEATSHEET.md](docs/reference/TESTING_CHEATSHEET.md)**
 
@@ -201,7 +226,7 @@ If you're new to automation testing, follow this progression:
 1. **🆕 Do:** [Lab 4B: Advanced E2E Python](labs/LAB_04B_Advanced_E2E_Python.md) - Page objects, fixtures (2 hours)
 2. **🆕 Do:** [Lab 6B: Advanced Component Testing](labs/LAB_06B_Advanced_Component_Testing.md) - MSW, accessibility (2 hours)
 3. **🆕 Do:** [Lab 6C: Frontend Integration Testing](labs/LAB_06C_Frontend_Integration_Testing.md) - Contract validation (90 min)
-4. **Try:** API contract tests - `pytest backend/tests/test_api_contract.py` ✨
+4. **Read:** [Contract Testing Guide](docs/guides/CONTRACT_TESTING.md) - Property-based testing (30 min) ✨
 5. **Run:** API examples - `python tests/api/python_api_examples.py`
 6. **Try:** Performance tests - `k6 run tests/performance/smoke-test.js`
 7. **Explore:** Security tests - `pytest tests/security/`
@@ -249,8 +274,10 @@ Level 4: "I can test anything professionally"
 - ✅ Computer (Mac, Windows, or Linux)
 - ✅ Terminal/Command Prompt
 - ✅ Code editor (VS Code recommended)
-- ✅ Testbook installed
+- ✅ Testbook installed ([QUICKSTART](QUICKSTART.md))
 - ✅ 30 minutes to start
+
+**Having setup issues?** → [Troubleshooting Guide](docs/guides/TROUBLESHOOTING.md)
 
 ### Optional (For Later)
 
@@ -350,12 +377,17 @@ A: Combined with your own projects, you'll have portfolio-ready work showing tes
 A: Start here: **[Manual QA → Automation Guide](docs/guides/MANUAL_QA_TO_AUTOMATION.md)** ✨
 Complete roadmap with side-by-side comparisons and career guidance!
 
+**Q: How do I use this for my job search?**
+A: See the **[Portfolio Guide](docs/guides/PORTFOLIO.md)** 💼
+Learn how to turn your Testbook work into resume content, interview talking points, and portfolio projects!
+
 **Q: What if I get stuck?**
 A: Check these resources (in order):
-1. [FAQ.md](FAQ.md) - Common issues
-2. [COMMON_MISTAKES.md](docs/course/COMMON_MISTAKES.md) - Common errors
-3. [DEBUGGING_GUIDE.md](docs/reference/DEBUGGING_GUIDE.md) - Debug strategies
-4. Lab troubleshooting sections
+1. **[TROUBLESHOOTING.md](docs/guides/TROUBLESHOOTING.md)** - Common errors and fixes ⭐
+2. [FAQ.md](FAQ.md) - Frequently asked questions
+3. [COMMON_MISTAKES.md](docs/course/COMMON_MISTAKES.md) - Typical errors
+4. [DEBUGGING_GUIDE.md](docs/reference/DEBUGGING_GUIDE.md) - Debug strategies
+5. Lab troubleshooting sections
 
 ---
 
@@ -365,11 +397,13 @@ Confused by all the docs? Here's what each is for:
 
 **For Learning:**
 - `START_HERE.md` ← You are here!
+- `learn/` - 🆕 **Self-guided 5-stage path** ⭐
 - `docs/course/COURSE_AUTOMATION_TESTING_101.md` - Structured curriculum
-- `labs/` - Step-by-step tutorials
+- `labs/` - Step-by-step tutorials (9 labs)
 
 **For Reference:**
 - `docs/guides/RUNNING_TESTS.md` - How to run tests
+- `docs/guides/TROUBLESHOOTING.md` - 🆕 **Common errors and fixes**
 - `docs/reference/TESTING_CHEATSHEET.md` - Quick reference
 - `docs/reference/TESTING_PATTERNS.md` - Testing patterns
 
@@ -384,14 +418,33 @@ Confused by all the docs? Here's what each is for:
 
 **Ready to start your testing journey?**
 
-### 🌟 Recommended: Start with Labs
+### 🌟 Recommended: Self-Guided Learning Path
+
+**🆕 Most structured and complete option:**
+
+1. Open → [learn/](learn/) or [learn/stage_1_unit/](learn/stage_1_unit/)
+2. Choose → Python, JavaScript, or Hybrid track
+3. Progress → Stage 1 → Stage 2 → ... → Stage 5
+4. Complete → Build portfolio-ready capstone project
+
+**Time:** 12-18 hours self-paced | **Result:** Job-ready testing skills
+
+---
+
+### Alternative: Start with Quick Labs
+
+**Want to write code immediately?**
 
 1. Open → [labs/README.md](labs/README.md)
 2. Start → [labs/LAB_01_Your_First_Test.md](labs/LAB_01_Your_First_Test.md)
 3. Code → Follow instructions
-4. Learn → Gain professional skills
+4. Learn → Gain hands-on experience
 
-### Or: Start with Structured Learning
+---
+
+### Alternative: Structured Course
+
+**Prefer theory alongside practice?**
 
 1. Open → [docs/course/COURSE_AUTOMATION_TESTING_101.md](docs/course/COURSE_AUTOMATION_TESTING_101.md)
 2. Read → Introduction

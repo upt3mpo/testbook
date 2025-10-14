@@ -1,7 +1,7 @@
 """Example tests using Page Object Model
 
 These examples demonstrate the patterns taught in Lab 4B.
-Run with: pytest examples/test_page_objects_example.py -v --headed
+Run with: HEADLESS=false pytest examples/test_page_objects_example.py -v
 """
 
 import sys

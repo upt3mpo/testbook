@@ -30,7 +30,7 @@ echo -e "${BLUE}═════════════════════�
 echo ""
 
 cd backend
-source venv/bin/activate
+source .venv/bin/activate
 
 if pytest tests/ -v --cov --cov-report=term-missing --tb=short; then
     BACKEND_PASSED=1
@@ -80,7 +80,7 @@ echo -e "${BLUE}═════════════════════�
 echo ""
 
 cd backend
-source venv/bin/activate
+source .venv/bin/activate
 cd ..
 
 if pytest tests/security/ -v --tb=short; then
@@ -139,8 +139,8 @@ if curl -s http://localhost:3000 > /dev/null 2>&1; then
     cd tests/e2e-python
 
     # Check if Playwright is installed in backend venv
-    if [ -f "../../backend/venv/bin/activate" ]; then
-        source ../../backend/venv/bin/activate
+    if [ -f "../../backend/.venv/bin/activate" ]; then
+        source ../../backend/.venv/bin/activate
 
         # Check if playwright module exists
         if python -c "import playwright" 2>/dev/null; then

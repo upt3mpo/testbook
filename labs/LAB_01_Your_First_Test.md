@@ -34,9 +34,9 @@ By the end of this lab, you will:
 
 ```bash
 cd backend
-source venv/bin/activate  # macOS/Linux
+source .venv/bin/activate  # macOS/Linux
 # or
-venv\Scripts\activate     # Windows
+.venv\Scripts\activate     # Windows
 ```
 
 ✅ **Checkpoint:** Your terminal prompt should now show `(venv)`
@@ -216,5 +216,5 @@ def test_sum_numbers():
 
 **🎉 Congratulations on completing Lab 1!**
 
-**Next Lab:** [Lab 2: Testing Real Functions](labs/LAB_02_Testing_Real_Functions.md)
+**Next Lab:** [Lab 2: Testing Real Functions](LAB_02_Testing_Real_Functions.md)
 

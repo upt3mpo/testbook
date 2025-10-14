@@ -57,7 +57,11 @@ function Followers() {
   };
 
   if (loading) {
-    return <div className="loading" data-testid="followers-loading">Loading followers...</div>;
+    return (
+      <div className="loading" data-testid="followers-loading">
+        Loading followers...
+      </div>
+    );
   }
 
   return (
@@ -69,7 +73,11 @@ function Followers() {
         <p className="text-secondary">{followers.length} followers</p>
       </div>
 
-      {error && <div className="error" data-testid="followers-error">{error}</div>}
+      {error && (
+        <div className="error" data-testid="followers-error">
+          {error}
+        </div>
+      )}
 
       {followers.length === 0 ? (
         <div className="card" data-testid="no-followers">
@@ -103,7 +111,9 @@ function Followers() {
                 >
                   {follower.display_name}
                 </Link>
-                <span className="user-username text-secondary text-small">@{follower.username}</span>
+                <span className="user-username text-secondary text-small">
+                  @{follower.username}
+                </span>
                 {follower.bio && <p className="user-bio text-small">{follower.bio}</p>}
               </div>
               <div className="user-actions">

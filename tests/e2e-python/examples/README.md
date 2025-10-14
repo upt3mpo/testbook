@@ -31,19 +31,36 @@ playwright install chromium
 
 ### Run All Examples
 
+**macOS/Linux:**
 ```bash
 cd tests/e2e-python
-pytest examples/ -v --headed -m examples
+HEADLESS=false pytest examples/ -v -m examples
+```
+
+**Windows (PowerShell):**
+```powershell
+cd tests/e2e-python
+$env:HEADLESS="false"; pytest examples/ -v -m examples
 ```
 
 ### Run Specific Examples
 
+**macOS/Linux:**
 ```bash
 # Page Object Model examples
-pytest examples/test_page_objects_example.py -v --headed
+HEADLESS=false pytest examples/test_page_objects_example.py -v
 
 # API + UI combined examples
-pytest examples/test_api_ui_combined_example.py -v --headed
+HEADLESS=false pytest examples/test_api_ui_combined_example.py -v
+```
+
+**Windows (PowerShell):**
+```powershell
+# Page Object Model examples
+$env:HEADLESS="false"; pytest examples/test_page_objects_example.py -v
+
+# API + UI combined examples
+$env:HEADLESS="false"; pytest examples/test_api_ui_combined_example.py -v
 ```
 
 ---

@@ -211,7 +211,7 @@ class TestPageObjectExamples:
         assert profile.get_post_count() >= 1
 ```
 
-**🎯 Checkpoint:** Run `pytest test_page_objects.py -v -m pom --headed`
+**🎯 Checkpoint:** Run `HEADLESS=false pytest test_page_objects.py -v -m pom`
 
 ---
 
@@ -320,7 +320,7 @@ class TestAdvancedFixtures:
         assert feed_page.post_count() >= 1
 ```
 
-**🎯 Checkpoint:** Run `pytest test_advanced_fixtures.py -v -m fixtures --headed`
+**🎯 Checkpoint:** Run `HEADLESS=false pytest test_advanced_fixtures.py -v -m fixtures`
 
 ---
 
@@ -410,7 +410,7 @@ class TestNetworkInterception:
             pass  # Loading was too fast
 ```
 
-**🎯 Checkpoint:** Run `pytest test_network.py -v -m network --headed`
+**🎯 Checkpoint:** Run `HEADLESS=false pytest test_network.py -v -m network`
 
 ---
 
@@ -871,7 +871,7 @@ def test_ui_update_persists_to_database(
     assert user["bio"] == "Updated bio from UI test"
 ```
 
-**🎯 Checkpoint:** Run `pytest test_api_ui_combined.py -v -m combined --headed`
+**🎯 Checkpoint:** Run `HEADLESS=false pytest test_api_ui_combined.py -v -m combined`
 
 ---
 
@@ -1041,7 +1041,7 @@ The concepts transfer directly between languages!
 - **`tests/e2e-python/examples/`** - ⭐ Complete working examples from this lab
   - `test_page_objects_example.py` - Page Object Model in action
   - `test_api_ui_combined_example.py` - API + UI validation patterns
-  - Run with: `pytest tests/e2e-python/examples/ -v --headed -m examples`
+  - Run with: `HEADLESS=false pytest tests/e2e-python/examples/ -v -m examples`
 - **`tests/e2e-python/pages/`** - Reusable page objects (base, feed, profile)
 - **`tests/e2e-python/conftest.py`** - Advanced fixtures added at bottom
 

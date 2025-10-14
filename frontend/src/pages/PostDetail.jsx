@@ -18,7 +18,7 @@ function PostDetail() {
     haha: '😆',
     wow: '😮',
     sad: '😢',
-    angry: '😠'
+    angry: '😠',
   };
 
   useEffect(() => {
@@ -53,19 +53,25 @@ function PostDetail() {
         ...prev,
         ...updatedPost,
         comments: updatedPost.comments ?? prev.comments,
-        reactions: updatedPost.reactions ?? prev.reactions
+        reactions: updatedPost.reactions ?? prev.reactions,
       };
     });
   };
 
   if (loading) {
-    return <div className="loading" data-testid="post-detail-loading">Loading post...</div>;
+    return (
+      <div className="loading" data-testid="post-detail-loading">
+        Loading post...
+      </div>
+    );
   }
 
   if (error || !post) {
     return (
       <div className="post-detail-container">
-        <div className="error" data-testid="post-detail-error">{error || 'Post not found'}</div>
+        <div className="error" data-testid="post-detail-error">
+          {error || 'Post not found'}
+        </div>
       </div>
     );
   }
@@ -89,7 +95,9 @@ function PostDetail() {
               ))}
             </div>
           ) : (
-            <p className="text-secondary text-small" data-testid="no-comments">No comments yet. Be the first to comment!</p>
+            <p className="text-secondary text-small" data-testid="no-comments">
+              No comments yet. Be the first to comment!
+            </p>
           )}
         </div>
 
@@ -106,14 +114,20 @@ function PostDetail() {
                   data-reaction-type={reaction.reaction_type}
                   data-user={reaction.username}
                 >
-                  <span className="reaction-emoji" title={reaction.reaction_type}>{reactionEmojis[reaction.reaction_type]}</span>
+                  <span className="reaction-emoji" title={reaction.reaction_type}>
+                    {reactionEmojis[reaction.reaction_type]}
+                  </span>
                   <span className="reaction-user">{reaction.display_name}</span>
-                  <span className="reaction-username text-secondary text-small">@{reaction.username}</span>
+                  <span className="reaction-username text-secondary text-small">
+                    @{reaction.username}
+                  </span>
                 </div>
               ))}
             </div>
           ) : (
-            <p className="text-secondary text-small" data-testid="no-reactions">No reactions yet.</p>
+            <p className="text-secondary text-small" data-testid="no-reactions">
+              No reactions yet.
+            </p>
           )}
         </div>
       </div>

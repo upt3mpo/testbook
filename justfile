@@ -34,13 +34,13 @@ check-markdown:
 lint-markdown:
     #!/usr/bin/env bash
     echo "🔍 Linting markdown files..."
-    markdownlint '**/*.md' --ignore node_modules --ignore venv --ignore backend/venv --ignore frontend/node_modules --ignore backend/htmlcov || echo "Run 'just fix-markdown' to auto-fix"
+    markdownlint '**/*.md' --ignore node_modules --ignore .venv --ignore backend/.venv --ignore frontend/node_modules --ignore backend/htmlcov || echo "Run 'just fix-markdown' to auto-fix"
 
 # Auto-fix markdown issues
 fix-markdown:
     #!/usr/bin/env bash
     echo "✨ Auto-fixing markdown issues..."
-    markdownlint --fix '**/*.md' --ignore node_modules --ignore venv --ignore backend/venv --ignore frontend/node_modules --ignore backend/htmlcov
+    markdownlint --fix '**/*.md' --ignore node_modules --ignore .venv --ignore backend/.venv --ignore frontend/node_modules --ignore backend/htmlcov
     echo "✅ Markdown fixed!"
 
 # Install all dependencies
@@ -51,8 +51,8 @@ install-backend:
     #!/usr/bin/env bash
     echo "📦 Installing backend dependencies..."
     cd backend
-    python -m venv venv
-    source venv/bin/activate
+    python -m .venv .venv
+    source .venv/bin/activate
     pip install --upgrade pip
     pip install -r requirements.txt
 
@@ -83,7 +83,7 @@ start:
     #!/usr/bin/env bash
     echo "🚀 Starting backend and frontend..."
     trap 'kill 0' EXIT
-    cd backend && source venv/bin/activate && uvicorn main:app --reload &
+    cd backend && source .venv/bin/activate && uvicorn main:app --reload &
     cd frontend && npm run dev &
     wait
 
@@ -92,7 +92,7 @@ start-backend:
     #!/usr/bin/env bash
     echo "🚀 Starting backend on http://localhost:8000"
     cd backend
-    source venv/bin/activate
+    source .venv/bin/activate
     uvicorn main:app --reload
 
 # Start frontend only
@@ -110,7 +110,7 @@ test-backend:
     #!/usr/bin/env bash
     echo "🧪 Running backend tests..."
     cd backend
-    source venv/bin/activate
+    source .venv/bin/activate
     TESTING=true pytest -v
 
 # Run frontend tests
@@ -142,7 +142,7 @@ test-contract:
     #!/usr/bin/env bash
     echo "📋 Running contract tests..."
     cd backend
-    source venv/bin/activate
+    source .venv/bin/activate
     TESTING=true pytest tests/test_api_contract.py -v
 
 # Generate coverage report
@@ -150,7 +150,7 @@ coverage:
     #!/usr/bin/env bash
     echo "📊 Generating coverage..."
     cd backend
-    source venv/bin/activate
+    source .venv/bin/activate
     TESTING=true pytest --cov=. --cov-report=html --cov-report=term
     echo "Report: backend/htmlcov/index.html"
 
@@ -187,7 +187,7 @@ seed:
     #!/usr/bin/env bash
     echo "🌱 Seeding database..."
     cd backend
-    source venv/bin/activate
+    source .venv/bin/activate
     python seed.py
 
 # Start Docker services
@@ -218,7 +218,7 @@ clean:
 clean-all: clean
     #!/usr/bin/env bash
     echo "🧹 Deep cleaning..."
-    rm -rf backend/venv 2>/dev/null || true
+    rm -rf backend/.venv 2>/dev/null || true
     rm -rf frontend/node_modules 2>/dev/null || true
     rm -rf tests/node_modules 2>/dev/null || true
     echo "✅ Deep cleanup complete"

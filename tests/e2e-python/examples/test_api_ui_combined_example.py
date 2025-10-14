@@ -1,7 +1,7 @@
 """Example tests combining API setup with UI verification
 
 These examples demonstrate Python's unique advantage for full-stack testing.
-Run with: pytest examples/test_api_ui_combined_example.py -v --headed
+Run with: HEADLESS=false pytest examples/test_api_ui_combined_example.py -v
 """
 
 import sys

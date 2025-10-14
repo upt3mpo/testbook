@@ -37,11 +37,11 @@ Python packages are installed in the virtual environment, but you're using the s
 ```bash
 # macOS/Linux
 cd backend
-source venv/bin/activate
+source .venv/bin/activate
 
 # Windows
 cd backend
-venv\Scripts\activate
+.venv\Scripts\activate
 
 # Verify it worked - should show (venv) in prompt
 (venv) $
@@ -173,7 +173,7 @@ E2E tests need the app running, but it's not started.
 **Fix:**
 ```bash
 # Terminal 1: Start app
-./start-dev.sh
+./start-dev.sh  # macOS/Linux or start-dev.bat (Windows)
 
 # Terminal 2: Run E2E tests
 cd tests

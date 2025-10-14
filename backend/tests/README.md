@@ -8,10 +8,19 @@ This test suite demonstrates professional testing practices and serves as a lear
 
 ### Test Organization
 
-- **`test_unit_*.py`** - Unit tests (fast, isolated, test individual functions)
-- **`test_api_*.py`** - Integration tests (test API endpoints)
-- **`test_database.py`** - Database-specific tests (constraints, transactions, queries)
+- **`unit/`** - Unit tests (fast, isolated, test individual functions)
+  - `test_auth.py` - Password hashing, JWT tokens
+  - `test_models.py` - Database models, relationships
+- **`integration/`** - Integration tests (test API endpoints and database)
+  - `test_api_auth.py` - Authentication endpoints
+  - `test_api_posts.py` - Posts endpoints
+  - `test_api_users.py` - Users endpoints
+  - `test_api_feed.py` - Feed endpoints
+  - `test_api_contract.py` - API contract validation
+  - `test_api_dev.py` - Development endpoints
+  - `test_database.py` - Database constraints and transactions
 - **`conftest.py`** - Shared fixtures and test configuration
+- **`factories.py`** - Test data factories
 
 ## Running Tests
 
@@ -20,7 +29,7 @@ This test suite demonstrates professional testing practices and serves as a lear
 ```bash
 # Activate virtual environment
 cd backend
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 
 # Install dependencies including test packages
 pip install -r requirements.txt
@@ -35,11 +44,16 @@ pytest
 # Run with verbose output
 pytest -v
 
+# Run specific test directory
+pytest tests/unit/
+pytest tests/integration/
+
 # Run specific test file
-pytest tests/test_unit_auth.py
+pytest tests/unit/test_auth.py
+pytest tests/integration/test_api_posts.py
 
 # Run specific test
-pytest tests/test_unit_auth.py::TestPasswordHashing::test_password_is_hashed
+pytest tests/unit/test_auth.py::TestPasswordHashing::test_password_is_hashed
 
 # Run tests by marker
 pytest -m unit          # Only unit tests
@@ -74,14 +88,14 @@ pytest -n auto
 
 ## Test Structure
 
-### Unit Tests
+### Unit Tests (`tests/unit/`)
 
 Test individual components in isolation:
 
-- **`test_unit_auth.py`** - Password hashing, JWT token creation
-- **`test_unit_models.py`** - Database models, relationships, cascades
+- **`test_auth.py`** - Password hashing, JWT token creation
+- **`test_models.py`** - Database models, relationships, cascades
 
-### Integration Tests
+### Integration Tests (`tests/integration/`)
 
 Test API endpoints and multiple components together:
 
@@ -89,12 +103,35 @@ Test API endpoints and multiple components together:
 - **`test_api_posts.py`** - Post CRUD, comments, reactions, reposts
 - **`test_api_users.py`** - User profiles, follow/unfollow, block/unblock
 - **`test_api_feed.py`** - Feed generation, filtering, ordering
-
-### Database Tests
-
-Test database operations, constraints, and queries:
-
+- **`test_api_contract.py`** - Property-based API contract validation (see below)
+- **`test_api_dev.py`** - Development utilities
 - **`test_database.py`** - Constraints, transactions, complex queries, cascades
+
+#### About Contract Testing (`test_api_contract.py`)
+
+This test uses **Schemathesis** for property-based contract testing - an advanced technique that automatically generates hundreds of test cases from your OpenAPI schema.
+
+**What it does:**
+- Reads the OpenAPI schema from FastAPI
+- Automatically generates 500+ test cases for all endpoints
+- Tests valid inputs, invalid inputs, edge cases, and security fuzzing
+- Validates responses match the schema
+- Finds bugs you'd never think to test manually
+
+**Current Status:** ⚠️ **Skipped** (OpenAPI 3.1.0 compatibility)
+
+FastAPI 0.115+ generates OpenAPI 3.1.0 schemas. Schemathesis 3.27.1 only has experimental 3.1.0 support. The test is skipped until full support is available.
+
+**Educational Value:**
+Even though skipped, studying this test teaches you about:
+- Property-based testing (generates tests from properties/rules)
+- Contract testing (validates implementation matches specification)
+- API fuzzing (automated security testing)
+- Advanced QA techniques used in production
+
+**Learn more:** [Contract Testing Guide](../../docs/guides/CONTRACT_TESTING.md) - Complete explanation with examples
+
+**Alternative:** Frontend contract testing works today! See [Lab 6C: Frontend Integration Testing](../../labs/LAB_06C_Frontend_Integration_Testing.md)
 
 ## Test Markers
 

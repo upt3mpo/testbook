@@ -649,7 +649,7 @@ jobs:
       - uses: actions/setup-python@v4
       - run: pip install -r tests/e2e-python/requirements.txt
       - run: playwright install --with-deps
-      - run: pytest tests/e2e-python/ --headed=false
+      - run: HEADLESS=true pytest tests/e2e-python/
 
   e2e-javascript:
     runs-on: ubuntu-latest

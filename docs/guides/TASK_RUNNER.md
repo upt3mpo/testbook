@@ -71,7 +71,7 @@ make setup            # Full setup + database seed
 ```bash
 make start            # Start both backend + frontend
 make start-backend    # Backend only (port 8000)
-make start-frontend   # Frontend only (port 5173)
+make start-frontend   # Frontend only (port 3000)
 ```
 
 ### Testing
@@ -126,7 +126,7 @@ make clean-all        # Deep clean (includes dependencies)
 ```bash
 # Have to remember multiple commands
 cd backend
-source venv/bin/activate
+source .venv/bin/activate  # Windows: .venv\Scripts\activate
 uvicorn main:app --reload
 
 # In another terminal
@@ -135,8 +135,8 @@ npm run dev
 
 # In another terminal for tests
 cd backend
-source venv/bin/activate
-TESTING=true pytest -v
+source .venv/bin/activate  # Windows: .venv\Scripts\activate
+TESTING=true pytest -v  # Windows (PowerShell): $env:TESTING="true"; pytest -v
 ```
 
 ### ✅ With Task Runners

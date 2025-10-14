@@ -48,6 +48,8 @@ Contract testing ensures the frontend and backend agree on:
 - Status codes
 - Error formats
 
+**📚 Related:** This lab teaches **frontend contract testing** (validating backend responses). There's also **backend contract testing** with Schemathesis that validates the API itself. Learn more: [Contract Testing Guide](../docs/guides/CONTRACT_TESTING.md)
+
 ---
 
 ## Part 1: Setup OpenAPI Schema Validation (20 minutes)
@@ -65,7 +67,7 @@ const https = require('https');
 const http = require('http');
 
 const API_URL = process.env.API_URL || 'http://localhost:8000';
-const OUTPUT_FILE = 'src/test/openapi-schema.json';
+const OUTPUT_FILE = 'src/tests/openapi-schema.json';
 
 console.log(`📥 Fetching OpenAPI schema from ${API_URL}/openapi.json...`);
 
@@ -104,7 +106,7 @@ chmod +x scripts/fetch-schema.js
 node scripts/fetch-schema.js
 ```
 
-**✅ Checkpoint:** File `src/test/openapi-schema.json` created with your API schema
+**✅ Checkpoint:** File `src/tests/openapi-schema.json` created with your API schema
 
 ### Step 2: Install Contract Testing Tools
 
@@ -118,7 +120,7 @@ npm install --save-dev openapi-validator-middleware jest-openapi
 
 ### Step 1: Create Contract Test Helper
 
-Create `frontend/src/test/contract-helpers.js`:
+Create `frontend/src/tests/contract-helpers.js`:
 
 ```javascript
 import jestOpenAPI from 'jest-openapi';
@@ -194,7 +196,7 @@ function resolveSchemaRef(schemaRef) {
 
 ### Step 2: Test API Client
 
-Create `frontend/src/test/api-client.test.js`:
+Create `frontend/src/tests/integration/api-client.test.js`:
 
 ```javascript
 import { describe, it, expect, beforeAll } from 'vitest';
@@ -300,7 +302,7 @@ describe('API Client Contract Tests', () => {
 
 ### Step 1: Create MSW Handlers from Schema
 
-Create `frontend/src/test/mocks/schema-based-handlers.js`:
+Create `frontend/src/tests/mocks/schema-based-handlers.js`:
 
 ```javascript
 import { rest } from 'msw';

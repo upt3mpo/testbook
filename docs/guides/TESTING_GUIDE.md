@@ -158,8 +158,8 @@ Test the FastAPI backend with unit tests, integration tests, and database tests.
 
 ```bash
 cd backend
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+python -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 pip install pytest pytest-asyncio httpx
 ```
@@ -470,7 +470,7 @@ def test_add_reaction_to_post(auth_token):
 ### Database Tests
 
 ```python
-# test_database.py
+# tests/integration/test_database.py
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -601,12 +601,31 @@ backend/
 │   ├── conftest.py          # Shared fixtures
 │   ├── test_models.py       # Unit tests for models
 │   ├── test_auth.py         # Integration tests for auth
-│   ├── test_posts.py        # Integration tests for posts
-│   ├── test_users.py        # Integration tests for users
-│   └── test_database.py     # Database tests
+│   ├── unit/
+│   │   ├── test_auth.py     # Unit tests for auth
+│   │   └── test_models.py   # Unit tests for models
+│   ├── integration/
+│   │   ├── test_api_auth.py # Integration tests for auth
+│   │   ├── test_api_posts.py # Integration tests for posts
+│   │   ├── test_api_users.py # Integration tests for users
+│   │   └── test_database.py # Database tests
 ```
 
 ## API Testing
+
+### Types of API Testing
+
+**Integration Tests** (Manual test cases):
+- Test specific scenarios you design
+- Validate business logic
+- Check exact expected behavior
+- **In Testbook:** 140+ tests in `backend/tests/integration/`
+
+**Contract Tests** (Automated from schema):
+- Automatically generate test cases from OpenAPI schema
+- Validate API matches documentation
+- Find edge cases and security vulnerabilities
+- **In Testbook:** See [Contract Testing Guide](CONTRACT_TESTING.md) for explanation (currently using experimental features)
 
 ### Authentication Flow
 
@@ -1276,11 +1295,11 @@ class TestbookAPI:
 
 ## 📚 More Resources
 
-- **[README.md](README.md)** - Main documentation and project overview
-- **[TESTING_PATTERNS.md](TESTING_PATTERNS.md)** - Testing dynamic content patterns
-- **[TESTING_CHEATSHEET.md](TESTING_CHEATSHEET.md)** - Quick reference guide
-- **[TESTING_FEATURES.md](TESTING_FEATURES.md)** - All testable features
-- **[QUICKSTART.md](QUICKSTART.md)** - Get started quickly
+- **[README.md](../../README.md)** - Main documentation and project overview
+- **[TESTING_PATTERNS.md](../reference/TESTING_PATTERNS.md)** - Testing dynamic content patterns
+- **[TESTING_CHEATSHEET.md](../reference/TESTING_CHEATSHEET.md)** - Quick reference guide
+- **[TESTING_FEATURES.md](../reference/TESTING_FEATURES.md)** - All testable features
+- **[QUICKSTART.md](../../QUICKSTART.md)** - Get started quickly
 
 ---
 

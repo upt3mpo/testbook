@@ -201,9 +201,9 @@ Document your progress:
 
 ### 📚 Resources
 
-- [README.md](README.md) - Project overview
-- [PROJECT_INFO.md](PROJECT_INFO.md) - Technical details
-- [QUICKSTART.md](QUICKSTART.md) - Setup guide
+- [README.md](../../README.md) - Project overview
+- [PROJECT_INFO.md](../reference/PROJECT_INFO.md) - Technical details
+- [QUICKSTART.md](../../QUICKSTART.md) - Setup guide
 
 ---
 
@@ -248,20 +248,20 @@ def test_something():
 ```bash
 
 cd backend
-source venv/bin/activate
+source .venv/bin/activate  # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
 **Step 2: Run Your First Test**
 
 ```bash
-pytest tests/test_unit_auth.py::TestPasswordHashing::test_password_is_hashed -v
+pytest tests/unit/test_auth.py::TestPasswordHashing::test_password_is_hashed -v
 ```
 
 **Expected Output:**
 
 ```
-tests/test_unit_auth.py::TestPasswordHashing::test_password_is_hashed PASSED ✓
+tests/unit/test_auth.py::TestPasswordHashing::test_password_is_hashed PASSED ✓
 ```
 
 **Step 3: Run All Tests**
@@ -289,7 +289,7 @@ open htmlcov/index.html
 
 **Step 1: Read a Simple Test**
 
-Open `backend/tests/test_unit_auth.py` and find this test:
+Open `backend/tests/unit/test_auth.py` and find this test:
 
 ```python
 def test_password_is_hashed(self):
@@ -342,7 +342,7 @@ def test_user(db_session: Session) -> User:
 
 **Challenge:** Modify an existing test
 
-**Step 1:** Find this test in `test_unit_auth.py`:
+**Step 1:** Find this test in `tests/unit/test_auth.py`:
 
 ```python
 def test_verify_correct_password(self):
@@ -371,7 +371,7 @@ def test_verify_correct_password(self):
 **Step 3:** Run your modified test:
 
 ```bash
-pytest tests/test_unit_auth.py::TestPasswordHashing::test_verify_correct_password -v
+pytest tests/unit/test_auth.py::TestPasswordHashing::test_verify_correct_password -v
 ```
 
 **Step 4:** Verify it still passes!
@@ -399,8 +399,8 @@ Reflect on these questions to verify your understanding:
 
 ### 📚 Resources
 
-- [backend/tests/README.md](backend/tests/README.md) - Backend testing guide
-- [RUNNING_TESTS.md](RUNNING_TESTS.md) - How to run tests
+- [backend/tests/README.md](../../backend/tests/README.md) - Backend testing guide
+- [RUNNING_TESTS.md](../guides/RUNNING_TESTS.md) - How to run tests
 
 ---
 
@@ -577,8 +577,8 @@ class TestEmailDomainValidation:
 
 ### 📚 Resources
 
-- Study: `tests/test_unit_auth.py`
-- Study: `tests/test_unit_models.py`
+- Study: `tests/unit/test_auth.py`
+- Study: `tests/unit/test_models.py`
 - Read: [Pytest Documentation](https://docs.pytest.org/)
 
 ---
@@ -613,7 +613,7 @@ class TestEmailDomainValidation:
 **Step 1:** Study existing test:
 
 ```python
-# From tests/test_api_auth.py
+# From tests/integration/test_api_auth.py
 def test_register_new_user_success(self, client):
     """Test successful user registration."""
     response = client.post(
@@ -723,7 +723,7 @@ def test_error_case_name(self, client):
 
 **Project:** Test the Feed Feature
 
-Create `backend/tests/test_api_feed_extended.py`:
+Create `backend/tests/integration/test_api_feed_extended.py`:
 
 **Requirements:**
 
@@ -743,8 +743,8 @@ Create `backend/tests/test_api_feed_extended.py`:
 
 ### 📚 Resources
 
-- Study: `tests/test_api_auth.py`
-- Study: `tests/test_api_posts.py`
+- Study: `tests/integration/test_api_auth.py`
+- Study: `tests/integration/test_api_posts.py`
 - Study: `tests/conftest.py` (fixtures)
 
 ---
@@ -870,8 +870,8 @@ Create comprehensive tests for the Comment model:
 
 ### 📚 Resources
 
-- Study: `tests/test_unit_models.py`
-- Study: `tests/test_database.py`
+- Study: `tests/unit/test_models.py`
+- Study: `tests/integration/test_database.py`
 - Read: `backend/models.py`
 
 ---
@@ -1151,13 +1151,24 @@ playwright install chromium
 
 **Step 2:** Run example test:
 
+**macOS/Linux:**
+
 ```bash
-pytest test_auth.py::TestAuthentication::test_login_success -v --headed
+HEADLESS=false pytest test_auth.py::TestAuthentication::test_login_success -v
+```
+
+**Windows (PowerShell):**
+
+```powershell
+$env:HEADLESS="false"; pytest test_auth.py::TestAuthentication::test_login_success -v
 ```
 
 **Step 3:** Watch the test run in the browser!
 
-**✏️ Exercise:** Run in slow motion: `pytest test_auth.py -v --headed --slowmo=1000`
+**✏️ Exercise:** Run in slow motion:
+
+- **macOS/Linux:** `HEADLESS=false SLOW_MO=1000 pytest test_auth.py -v`
+- **Windows:** `$env:HEADLESS="false"; $env:SLOW_MO="1000"; pytest test_auth.py -v`
 
 ---
 
@@ -1212,9 +1223,18 @@ def test_login_successfully(page: Page):
 
 **Step 2:** Run your test:
 
+**macOS/Linux:**
+
 ```bash
 cd tests/e2e-python
-pytest test_my_first.py -v --headed
+HEADLESS=false pytest test_my_first.py -v
+```
+
+**Windows (PowerShell):**
+
+```powershell
+cd tests/e2e-python
+$env:HEADLESS="false"; pytest test_my_first.py -v
 ```
 
 **Step 3:** Watch it work!
@@ -1357,7 +1377,7 @@ Write E2E test that:
 - Study: `tests/e2e/auth.spec.js` (JavaScript)
 - Study: `tests/e2e-python/test_auth.py` (Python)
 - Read: [Playwright Documentation](https://playwright.dev/)
-- Read: [tests/README.md](tests/README.md)
+- Read: [tests/README.md](../../tests/README.md)
 
 **Advanced E2E:**
 
@@ -1608,7 +1628,7 @@ Optional: Testing Comparison Guide (any time)
 
 **Inline Examples (JavaScript Focus):**
 
-- Study: [TESTING_PATTERNS.md](TESTING_PATTERNS.md)
+- Study: [TESTING_PATTERNS.md](../reference/TESTING_PATTERNS.md)
 - Study: `tests/e2e/users.spec.js`
 - Read: [Playwright Best Practices](https://playwright.dev/docs/best-practices)
 
@@ -2344,10 +2364,10 @@ You'll have built:
 
 ### Testbook Guides
 
-- [RUNNING_TESTS.md](RUNNING_TESTS.md) - Run all tests
-- [TESTING_GUIDE.md](TESTING_GUIDE.md) - Comprehensive guide
-- [TESTING_PATTERNS.md](TESTING_PATTERNS.md) - Testing patterns
-- [TESTING_CHEATSHEET.md](TESTING_CHEATSHEET.md) - Quick reference
+- [RUNNING_TESTS.md](../guides/RUNNING_TESTS.md) - Run all tests
+- [TESTING_GUIDE.md](../guides/TESTING_GUIDE.md) - Comprehensive guide
+- [TESTING_PATTERNS.md](../reference/TESTING_PATTERNS.md) - Testing patterns
+- [TESTING_CHEATSHEET.md](../reference/TESTING_CHEATSHEET.md) - Quick reference
 
 ### Learning Resources
 
@@ -2451,7 +2471,7 @@ git clone https://github.com/upt3mpo/testbook.git
 cd testbook
 
 # 2. Start application
-./start-dev.sh
+./start-dev.sh  # macOS/Linux or start-dev.bat (Windows)
 
 # 3. Open course
 # Read this file (COURSE_AUTOMATION_TESTING_101.md)

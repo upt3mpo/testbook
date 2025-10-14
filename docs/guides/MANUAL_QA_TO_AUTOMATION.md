@@ -93,7 +93,7 @@ Let's start with something you've tested manually hundreds of times: verifying a
 **Automated Version:**
 
 ```python
-# backend/tests/test_api_users.py
+# backend/tests/integration/test_api_users.py
 
 def test_get_user(client):
     """Test retrieving a single user"""
@@ -111,7 +111,7 @@ def test_get_user(client):
 **Run it:**
 ```bash
 cd backend
-pytest tests/test_api_users.py::test_get_user -v
+pytest tests/integration/test_api_users.py::test_get_user -v
 ```
 
 ### Understanding the Pattern
@@ -370,7 +370,7 @@ test('Registration fails with invalid email', async ({ page }) => {
 
 ```python
 # Week 1: Just run existing tests
-pytest tests/test_api_users.py
+pytest tests/integration/test_api_users.py
 
 # Week 2: Modify an existing test
 def test_get_user(client):

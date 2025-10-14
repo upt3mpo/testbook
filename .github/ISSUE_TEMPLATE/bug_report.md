@@ -57,7 +57,7 @@ Paste any relevant error messages or logs here
 ## 🔍 Have you checked?
 
 - [ ] I've searched existing issues for this problem
-- [ ] I've checked the [FAQ](../FAQ.md)
-- [ ] I've checked [COMMON_MISTAKES.md](../docs/course/COMMON_MISTAKES.md)
-- [ ] I've checked [DEBUGGING_GUIDE.md](../docs/reference/DEBUGGING_GUIDE.md)
+- [ ] I've checked the [FAQ](../../FAQ.md)
+- [ ] I've checked [COMMON_MISTAKES.md](../../docs/course/COMMON_MISTAKES.md)
+- [ ] I've checked [DEBUGGING_GUIDE.md](../../docs/reference/DEBUGGING_GUIDE.md)
 

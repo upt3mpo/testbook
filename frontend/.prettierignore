@@ -1,0 +1,8 @@
+node_modules
+dist
+coverage
+build
+.cache
+*.config.js
+package-lock.json
+

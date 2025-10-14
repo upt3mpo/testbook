@@ -6,7 +6,9 @@
 
 ## 🎯 Start Here
 
-**New to Testbook?** → [../START_HERE.md](../START_HERE.md) ⭐
+**🆕 Self-Guided Learning Path** → [../learn/](../learn/) ⭐ **RECOMMENDED**
+
+**New to Testbook?** → [../START_HERE.md](../START_HERE.md)
 
 **Want to run the app?** → [../QUICKSTART.md](../QUICKSTART.md)
 
@@ -22,6 +24,13 @@ Testbook/
 ├── README.md                   📱 Project overview
 ├── QUICKSTART.md               🚀 Get running in 5 minutes
 │
+├── learn/                      🎓 Self-guided 5-stage curriculum (NEW!)
+│   ├── stage_1_unit/           🧪 Unit tests
+│   ├── stage_2_integration/    🧱 Integration tests
+│   ├── stage_3_api_e2e/        🌐 API & E2E testing
+│   ├── stage_4_performance_security/ 🚀 Performance & security
+│   └── stage_5_capstone/       🎯 Job-ready capstone
+│
 ├── docs/
 │   ├── course/                 👨‍🎓 Course materials
 │   ├── guides/                 📖 How-to guides
@@ -35,7 +44,32 @@ Testbook/
 
 ---
 
-## 👨‍🎓 Learning Materials (`docs/course/`)
+## 🎓 Self-Guided Learning Path (`learn/`) **⭐ RECOMMENDED**
+
+**The structured 5-stage journey to job-ready testing skills**
+
+| Stage | Focus | Time | Description |
+|-------|-------|------|-------------|
+| **[Stage 1: Unit Tests](../learn/stage_1_unit/)** | 🧪 Foundations | 2-3 hours | Test individual functions, fixtures, AAA pattern |
+| **[Stage 2: Integration Tests](../learn/stage_2_integration/)** | 🧱 Components | 3-4 hours | API endpoints, database operations, test factories |
+| **[Stage 3: API & E2E](../learn/stage_3_api_e2e/)** | 🌐 Full Stack | 4-5 hours | Playwright, contracts, user workflows |
+| **[Stage 4: Performance & Security](../learn/stage_4_performance_security/)** | 🚀 Non-Functional | 2-3 hours | k6 load testing, OWASP security, rate limiting |
+| **[Stage 5: Capstone](../learn/stage_5_capstone/)** | 🎯 Portfolio | 2-3 hours | Build test suite, documentation, job artifacts |
+
+**Total: 12-18 hours self-paced**
+
+**What makes this path special:**
+- ✅ Links directly to working test code
+- ✅ Reflection questions for deep learning
+- ✅ Success criteria at each stage
+- ✅ Portfolio-ready artifacts
+- ✅ Job interview preparation
+
+**[Start Stage 1 →](../learn/stage_1_unit/)**
+
+---
+
+## 👨‍🎓 Course Materials (`docs/course/`)
 
 | Resource | Time Estimate | Experience Level | Description |
 |----------|---------------|------------------|-------------|
@@ -45,7 +79,6 @@ Testbook/
 | **🆕 [CI_CD_E2E_TESTING.md](course/CI_CD_E2E_TESTING.md)** | 3-4 hours | 🔴 Advanced | CI/CD automation for both stacks |
 | **[COMMON_MISTAKES.md](course/COMMON_MISTAKES.md)** | 30 min | 🟢 Beginner | 24+ common errors and solutions |
 | **[LEARNING_ROADMAP.md](course/LEARNING_ROADMAP.md)** | 10 min | 🟢 All levels | Visual skill progression guide |
-| **🆕 [CURRICULUM_ENHANCEMENTS_PLAN.md](course/CURRICULUM_ENHANCEMENTS_PLAN.md)** | 5 min | 🟡 Educators | Dual-stack curriculum roadmap |
 
 ### Learning Path Details
 
@@ -88,6 +121,11 @@ Testbook/
 | **[TESTING_GUIDE.md](guides/TESTING_GUIDE.md)** | 45 min | 🟡 Intermediate | Comprehensive examples |
 | **🆕 [TESTING_COMPARISON_PYTHON_JS.md](guides/TESTING_COMPARISON_PYTHON_JS.md)** | 45 min | 🟡 Intermediate | Side-by-side Python vs JavaScript testing |
 | **[FLAKY_TESTS_GUIDE.md](guides/FLAKY_TESTS_GUIDE.md)** ✨ | 30 min | 🟡 Intermediate | Understanding & fixing flaky tests |
+| **🆕 [PORTFOLIO.md](guides/PORTFOLIO.md)** ⭐ | 30 min | 🟢 All | Build job-ready portfolio from your work |
+| **🆕 [TROUBLESHOOTING.md](guides/TROUBLESHOOTING.md)** | 20 min | 🟢 Beginner | Real errors with exact fixes |
+| **🆕 [QUALITY_CHECKS.md](guides/QUALITY_CHECKS.md)** ⭐ | 20 min | 🟡 Intermediate | Linting, formatting, coverage gates |
+| **🆕 [ACCESSIBILITY_TESTING.md](guides/ACCESSIBILITY_TESTING.md)** ⭐ | 30 min | 🟡 Intermediate | WCAG 2.1, axe-core, Lighthouse |
+| **🆕 [CONTRACT_TESTING.md](guides/CONTRACT_TESTING.md)** ⭐ | 30 min | 🟡 Intermediate | Property-based API contract testing with Schemathesis |
 | **[WINDOWS_SETUP.md](guides/WINDOWS_SETUP.md)** | 30 min | 🟢 Beginner | Windows-specific setup |
 | **[TASK_RUNNER.md](guides/TASK_RUNNER.md)** ✨ | 20 min | 🟢 Beginner | Simplified commands (Make/just) |
 | **[LOGGING.md](guides/LOGGING.md)** ✨ | 30 min | 🟡 Intermediate | Structured logging & observability |
@@ -371,7 +409,7 @@ Security testing guide
 **Key differences:**
 
 - Use `.bat` files instead of `.sh`
-- Activate venv: `venv\Scripts\activate`
+- Activate venv: `.venv\Scripts\activate`
 - Path separator: `\` instead of `/`
 - PowerShell or CMD
 
@@ -380,7 +418,7 @@ Security testing guide
 ```cmd
 start-dev.bat              :: Start app
 reset-database.bat         :: Reset database
-venv\Scripts\activate      :: Activate Python
+.venv\Scripts\activate      :: Activate Python
 
 ```
 
@@ -390,9 +428,11 @@ venv\Scripts\activate      :: Activate Python
 
 ```bash
 
-./start-dev.sh             # Start app
-./reset-database.sh        # Reset database
-source venv/bin/activate   # Activate Python
+./start-dev.sh             # Start app (macOS/Linux)
+start-dev.bat              # Start app (Windows)
+./reset-database.sh        # Reset database (macOS/Linux)
+source .venv/bin/activate  # Activate Python (macOS/Linux)
+.venv\Scripts\activate     # Activate Python (Windows)
 ```
 
 ---
@@ -436,9 +476,9 @@ source venv/bin/activate   # Activate Python
 
 ### Authentication Testing
 
-- Unit tests: `backend/tests/test_unit_auth.py`
-- API tests: `backend/tests/test_api_auth.py`
-- E2E tests: `tests/e2e/auth.spec.js`
+- Unit tests: `backend/tests/unit/test_auth.py`
+- API tests: `backend/tests/integration/test_api_auth.py`
+- E2E tests: `tests/e2e/auth.spec.js`, `tests/e2e-python/test_auth.py`
 - Guide: [guides/TESTING_GUIDE.md](guides/TESTING_GUIDE.md#authentication)
 
 ### API Testing
@@ -515,10 +555,6 @@ source venv/bin/activate   # Activate Python
 **Result:** Clean, organized, individual learner-focused documentation!
 
 ---
-
-## 🧭 Release Governance & Quality
-
-- **[TESTBOOK_RELEASE_AUDIT.md](TESTBOOK_RELEASE_AUDIT.md)** – Current release readiness rubric, findings, and recommendations for maintainers.
 
 ---
 

@@ -11,10 +11,7 @@ export function broadcastBlockStatusChange(detail) {
   }
 
   try {
-    window.localStorage.setItem(
-      BLOCK_EVENT_STORAGE_KEY,
-      Date.now().toString()
-    );
+    window.localStorage.setItem(BLOCK_EVENT_STORAGE_KEY, Date.now().toString());
   } catch (err) {
     // localStorage might be unavailable (Safari private mode, etc.)
     console.warn('Failed to record block status change timestamp', err);

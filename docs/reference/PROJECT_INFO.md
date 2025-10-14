@@ -361,8 +361,8 @@ MIT License - Use freely for learning and testing!
 ## Support
 
 For questions or issues:
-1. Check [README.md](README.md)
-2. Check [TESTING_GUIDE.md](TESTING_GUIDE.md)
+1. Check [README.md](../../README.md)
+2. Check [TESTING_GUIDE.md](../guides/TESTING_GUIDE.md)
 3. Review API docs at `/docs`
 4. Open an issue on GitHub
 
@@ -370,9 +370,9 @@ For questions or issues:
 
 ## 📚 More Resources
 
-- **[README.md](README.md)** - Main documentation and project overview
-- **[QUICKSTART.md](QUICKSTART.md)** - Get started in 5 minutes
-- **[TESTING_GUIDE.md](TESTING_GUIDE.md)** - Complete testing examples
+- **[README.md](../../README.md)** - Main documentation and project overview
+- **[QUICKSTART.md](../../QUICKSTART.md)** - Get started in 5 minutes
+- **[TESTING_GUIDE.md](../guides/TESTING_GUIDE.md)** - Complete testing examples
 - **[TESTING_PATTERNS.md](TESTING_PATTERNS.md)** - Testing dynamic content patterns
 - **[TESTING_CHEATSHEET.md](TESTING_CHEATSHEET.md)** - Quick reference guide
 - **[TESTING_FEATURES.md](TESTING_FEATURES.md)** - All testable features

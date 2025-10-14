@@ -71,14 +71,14 @@ function Post({ post, onDelete, onUpdate, detailed = false }) {
         emitUpdate({
           ...post,
           has_reposted: false,
-          reposts_count: Math.max(0, post.reposts_count - 1)
+          reposts_count: Math.max(0, post.reposts_count - 1),
         });
       } else {
         await postsAPI.createRepost({ original_post_id: targetPostId, content: '' });
         emitUpdate({
           ...post,
           has_reposted: true,
-          reposts_count: post.reposts_count + 1
+          reposts_count: post.reposts_count + 1,
         });
       }
     } catch (err) {
@@ -108,7 +108,7 @@ function Post({ post, onDelete, onUpdate, detailed = false }) {
       const response = await postsAPI.updatePost(post.id, {
         content: editedContent,
         image_url: post.image_url,
-        video_url: post.video_url
+        video_url: post.video_url,
       });
       emitUpdate(response.data);
       setIsEditing(false);
@@ -143,7 +143,7 @@ function Post({ post, onDelete, onUpdate, detailed = false }) {
       setShowCommentInput(false);
       emitUpdate({
         ...post,
-        comments_count: post.comments_count + 1
+        comments_count: post.comments_count + 1,
       });
     } catch (err) {
       console.error('Failed to add comment:', err);
@@ -174,7 +174,7 @@ function Post({ post, onDelete, onUpdate, detailed = false }) {
     haha: '😆',
     wow: '😮',
     sad: '😢',
-    angry: '😠'
+    angry: '😠',
   };
 
   return (
@@ -189,9 +189,7 @@ function Post({ post, onDelete, onUpdate, detailed = false }) {
     >
       {post.is_repost && (
         <div className="repost-header" data-testid={`repost-indicator-${post.id}`}>
-          <span className="text-secondary text-small">
-            🔁 {post.author_display_name} reposted
-          </span>
+          <span className="text-secondary text-small">🔁 {post.author_display_name} reposted</span>
         </div>
       )}
 
@@ -205,11 +203,18 @@ function Post({ post, onDelete, onUpdate, detailed = false }) {
           />
         </Link>
         <div className="post-author-info">
-          <Link to={`/profile/${post.author_username}`} className="post-author-name" data-testid={`post-${post.id}-author`}>
+          <Link
+            to={`/profile/${post.author_username}`}
+            className="post-author-name"
+            data-testid={`post-${post.id}-author`}
+          >
             {post.author_display_name}
           </Link>
           <span className="post-username text-secondary text-small">@{post.author_username}</span>
-          <span className="post-time text-secondary text-small" data-testid={`post-${post.id}-time`}>
+          <span
+            className="post-time text-secondary text-small"
+            data-testid={`post-${post.id}-time`}
+          >
             {new Date(post.created_at).toLocaleString()}
           </span>
         </div>
@@ -324,7 +329,7 @@ function Post({ post, onDelete, onUpdate, detailed = false }) {
             {post.user_reaction ? `${reactionEmojis[post.user_reaction]} ▼` : 'React ▼'}
           </button>
           <div className={`reactions-dropdown ${showReactions ? 'show' : ''}`}>
-            {reactions.map(reaction => (
+            {reactions.map((reaction) => (
               <button
                 key={reaction}
                 onClick={() => handleReaction(reaction)}
@@ -364,7 +369,11 @@ function Post({ post, onDelete, onUpdate, detailed = false }) {
       </div>
 
       {showCommentInput && (
-        <form onSubmit={handleComment} className="comment-form" data-testid={`post-${post.id}-comment-form`}>
+        <form
+          onSubmit={handleComment}
+          className="comment-form"
+          data-testid={`post-${post.id}-comment-form`}
+        >
           <input
             type="text"
             className="input"

@@ -13,8 +13,8 @@ Ask your question clearly and concisely.
 ## 🔍 What You've Tried
 
 Before asking, please check:
-- [ ] I've checked the [FAQ](../FAQ.md)
-- [ ] I've checked [COMMON_MISTAKES.md](../docs/course/COMMON_MISTAKES.md)
+- [ ] I've checked the [FAQ](../../FAQ.md)
+- [ ] I've checked [COMMON_MISTAKES.md](../../docs/course/COMMON_MISTAKES.md)
 - [ ] I've searched existing issues
 - [ ] I've checked the relevant documentation
 
@@ -51,7 +51,7 @@ If applicable, add screenshots.
 ---
 
 **Note:** For general learning questions, consider checking:
-- [START_HERE.md](../START_HERE.md) - Learning paths
-- [RUNNING_TESTS.md](../docs/guides/RUNNING_TESTS.md) - How to run tests
-- [DEBUGGING_GUIDE.md](../docs/reference/DEBUGGING_GUIDE.md) - Debug strategies
+- [START_HERE.md](../../START_HERE.md) - Learning paths
+- [RUNNING_TESTS.md](../../docs/guides/RUNNING_TESTS.md) - How to run tests
+- [DEBUGGING_GUIDE.md](../../docs/reference/DEBUGGING_GUIDE.md) - Debug strategies
 

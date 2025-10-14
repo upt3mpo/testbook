@@ -426,9 +426,14 @@ test('full integration', { tag: '@slow' }, async () => {
 backend/
   tests/
     conftest.py          # Shared fixtures
-    test_unit_auth.py    # Unit tests
-    test_api_users.py    # API tests
-    test_database.py     # Database tests
+    unit/                # Unit tests
+      test_auth.py
+      test_models.py
+    integration/         # Integration tests
+      test_api_auth.py
+      test_api_users.py
+      test_api_posts.py
+      test_database.py
 tests/
   e2e-python/
     conftest.py

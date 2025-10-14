@@ -63,7 +63,8 @@ export const postsAPI = {
   deletePost: (postId) => api.delete(`/posts/${postId}`),
   getPost: (postId) => api.get(`/posts/${postId}`),
   addComment: (postId, content) => api.post(`/posts/${postId}/comments`, { content }),
-  addReaction: (postId, reactionType) => api.post(`/posts/${postId}/reactions`, { reaction_type: reactionType }),
+  addReaction: (postId, reactionType) =>
+    api.post(`/posts/${postId}/reactions`, { reaction_type: reactionType }),
   removeReaction: (postId) => api.delete(`/posts/${postId}/reactions`),
   uploadMedia: (file) => {
     const formData = new FormData();
@@ -79,7 +80,8 @@ export const postsAPI = {
 // Feed API
 export const feedAPI = {
   getAllFeed: (skip = 0, limit = 50) => api.get(`/feed/all?skip=${skip}&limit=${limit}`),
-  getFollowingFeed: (skip = 0, limit = 50) => api.get(`/feed/following?skip=${skip}&limit=${limit}`),
+  getFollowingFeed: (skip = 0, limit = 50) =>
+    api.get(`/feed/following?skip=${skip}&limit=${limit}`),
 };
 
 // Dev API
@@ -88,8 +90,12 @@ export const devAPI = {
   seedDatabase: () => api.post('/dev/seed'),
   getAllUsers: () => api.get('/dev/users'),
   createTestPost: (userId, content, imageUrl = null, videoUrl = null) =>
-    api.post('/dev/create-post', { user_id: userId, content, image_url: imageUrl, video_url: videoUrl }),
+    api.post('/dev/create-post', {
+      user_id: userId,
+      content,
+      image_url: imageUrl,
+      video_url: videoUrl,
+    }),
 };
 
 export default api;
-

@@ -120,7 +120,7 @@ start-dev.sh runs:
 ├── Backend Setup
 │   ├── cd backend
 │   ├── Create venv (if doesn't exist)
-│   ├── source venv/bin/activate
+│   ├── source .venv/bin/activate
 │   ├── Install dependencies (ONLY if not already present)
 │   ├── Seed database
 │   ├── uvicorn main:app --reload

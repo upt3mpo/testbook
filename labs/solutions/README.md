@@ -29,9 +29,9 @@ This directory contains a small set of reference implementations that demonstrat
 
 When learners are stuck:
 
-1. Start with the hints already embedded in each lab.  
-2. Point them at related source files or existing tests (for example `backend/tests/test_api_auth.py`).  
-3. Encourage running the relevant test suites to compare behaviour.  
+1. Start with the hints already embedded in each lab.
+2. Point them at related source files or existing tests (for example `backend/tests/integration/test_api_auth.py`).
+3. Encourage running the relevant test suites to compare behaviour.
 4. Use these solutions as a last resort, ideally during code review or mentoring.
 
 The self-assessment checklists inside each lab and the progress trackers in `docs/course/COURSE_AUTOMATION_TESTING_101.md` should be your primary grading tools.

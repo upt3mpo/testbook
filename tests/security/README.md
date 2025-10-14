@@ -66,7 +66,7 @@ This automatically starts backend in TESTING mode.
 ```bash
 # Terminal 1: Start backend in TESTING mode
 cd backend
-source venv/bin/activate
+source .venv/bin/activate
 TESTING=true uvicorn main:app --reload --port 8000
 
 # Terminal 2: Run security tests

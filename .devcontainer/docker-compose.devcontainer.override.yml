@@ -1,0 +1,16 @@
+services:
+  testbook:
+    platform: linux/amd64
+    build:
+      context: ..
+      dockerfile: testbook/.devcontainer/Dockerfile.dev
+      args:
+        - DEBIAN_FRONTEND=noninteractive
+    volumes:
+      - .:/workspace:cached
+    # runtime DNS servers to avoid flaky resolver paths
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
+    tty: true
+    command: sleep infinity

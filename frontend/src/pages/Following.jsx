@@ -42,31 +42,29 @@ function Following() {
     }
   };
 
-  const handleFollow = async (followingUsername) => {
-    try {
-      await usersAPI.followUser(followingUsername);
-      // Refresh the list
-      loadFollowing();
-    } catch (err) {
-      console.error('Failed to follow user:', err);
-      alert('Failed to follow user');
-    }
-  };
+  // Note: handleFollow function removed as it's not used in this component
+  // Users can only unfollow from the Following page
 
   if (loading) {
-    return <div className="loading" data-testid="following-loading">Loading following...</div>;
+    return (
+      <div className="loading" data-testid="following-loading">
+        Loading following...
+      </div>
+    );
   }
 
   return (
     <div className="following-container" data-testid="following-page">
       <div className="following-header card">
-        <h1 className="following-title">
-          {isOwnPage ? 'Following' : `${username} is Following`}
-        </h1>
+        <h1 className="following-title">{isOwnPage ? 'Following' : `${username} is Following`}</h1>
         <p className="text-secondary">{following.length} following</p>
       </div>
 
-      {error && <div className="error" data-testid="following-error">{error}</div>}
+      {error && (
+        <div className="error" data-testid="following-error">
+          {error}
+        </div>
+      )}
 
       {following.length === 0 ? (
         <div className="card" data-testid="no-following">
@@ -100,7 +98,9 @@ function Following() {
                 >
                   {followedUser.display_name}
                 </Link>
-                <span className="user-username text-secondary text-small">@{followedUser.username}</span>
+                <span className="user-username text-secondary text-small">
+                  @{followedUser.username}
+                </span>
                 {followedUser.bio && <p className="user-bio text-small">{followedUser.bio}</p>}
               </div>
               <div className="user-actions">
@@ -123,4 +123,3 @@ function Following() {
 }
 
 export default Following;
-

@@ -32,7 +32,7 @@
 
 ### Step 2: Look at Existing API Test (10 minutes)
 
-**Open:** `backend/tests/test_api_auth.py`
+**Open:** `backend/tests/integration/test_api_auth.py`
 
 **Find this test:**
 ```python
@@ -63,7 +63,7 @@ def test_login_success(self, client, test_user):
 ### Step 3: Run the API Test (5 minutes)
 
 ```bash
-pytest tests/test_api_auth.py::TestLoginEndpoint::test_login_success -v
+pytest tests/integration/test_api_auth.py::TestLoginEndpoint::test_login_success -v
 ```
 
 **Should see:**
@@ -100,7 +100,7 @@ def test_login_with_my_wrong_password(self, client, test_user):
 
 **Run your test:**
 ```bash
-pytest tests/test_api_auth.py::TestLoginEndpoint::test_login_with_my_wrong_password -v
+pytest tests/integration/test_api_auth.py::TestLoginEndpoint::test_login_with_my_wrong_password -v
 ```
 
 ✅ **Checkpoint:** Your test passes!
@@ -109,7 +109,7 @@ pytest tests/test_api_auth.py::TestLoginEndpoint::test_login_with_my_wrong_passw
 
 **Challenge:** Test the post creation endpoint
 
-**Create this test in `test_api_posts.py`:**
+**Create this test in `tests/integration/test_api_posts.py`:**
 ```python
 def test_create_my_post(self, client, auth_headers):
     """Test creating a post via API."""
@@ -134,7 +134,7 @@ def test_create_my_post(self, client, auth_headers):
 
 **Run it:**
 ```bash
-pytest tests/test_api_posts.py::TestCreatePost::test_create_my_post -v
+pytest tests/integration/test_api_posts.py::TestCreatePost::test_create_my_post -v
 ```
 
 ✅ **Checkpoint:** Post creation test passes!
@@ -159,7 +159,7 @@ Write a test that:
 2. Deletes the post
 3. Verifies post is gone (GET returns 404)
 
-**Hint:** Look at `test_api_posts.py::TestDeletePost` for examples
+**Hint:** Look at `tests/integration/test_api_posts.py::TestDeletePost` for examples
 
 ### Challenge 2: Test Comment Creation
 Write a test that:
@@ -229,15 +229,17 @@ assert "content" in data
 
 ## 📚 Further Reading
 
-- [TESTING_GUIDE.md - API Testing Section](../TESTING_GUIDE.md#api-testing)
+- [TESTING_GUIDE.md - API Testing Section](../docs/guides/TESTING_GUIDE.md#api-testing)
 - [FastAPI Testing Docs](https://fastapi.tiangolo.com/tutorial/testing/)
-- Study: `tests/test_api_auth.py` (complete file)
+- Study: `tests/integration/test_api_auth.py` (complete file)
 
 ---
 
 **🎉 You're now testing real APIs like a pro!**
 
-**Next Lab:** [Lab 4: End-to-End Testing](labs/LAB_04_E2E_Testing.md)
+**Next Lab:** Choose your language:
+- [Lab 4: E2E Testing (Python)](LAB_04_E2E_Testing_Python.md)
+- [Lab 4: E2E Testing (JavaScript)](LAB_04_E2E_Testing_JavaScript.md)
 
 ---
 

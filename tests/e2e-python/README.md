@@ -29,17 +29,37 @@ playwright install chromium
 # Run all tests
 pytest -v
 
-# Run in headed mode (see browser)
-pytest -v --headed
-
-# Run in slow motion
-pytest -v --headed --slowmo=1000
-
 # Run specific test file
 pytest test_auth.py -v
 
 # Run specific test
 pytest test_auth.py::TestAuthentication::test_login_success -v
+```
+
+**Run in headed mode (see browser):**
+
+**macOS/Linux:**
+
+HEADLESS=false pytest -v
+```
+
+**Windows (PowerShell):**
+```powershell
+$env:HEADLESS="false"; pytest -v
+```
+
+**Run in slow motion:**
+
+**macOS/Linux:**
+
+HEADLESS=false SLOW_MO=1000 pytest -v
+
+```
+
+**Windows (PowerShell):**
+
+```powershell
+$env:HEADLESS="false"; $env:SLOW_MO="1000"; pytest -v
 ```
 
 ---
@@ -155,6 +175,7 @@ BACKEND_URL=http://localhost:8000
 
 ### Run Configuration Examples
 
+**macOS/Linux:**
 ```bash
 # Headed mode with slow motion
 HEADLESS=false SLOW_MO=1000 pytest -v
@@ -162,8 +183,32 @@ HEADLESS=false SLOW_MO=1000 pytest -v
 # Custom timeouts
 DEFAULT_TIMEOUT=60000 pytest -v
 
+
 # Record videos on failure
 VIDEO_ON_FAILURE=true pytest -v
+```
+
+**Windows (PowerShell):**
+
+```powershell
+# Headed mode with slow motion
+$env:HEADLESS="false"; $env:SLOW_MO="1000"; pytest -v
+
+# Custom timeouts
+$env:DEFAULT_TIMEOUT="60000"; pytest -v
+
+
+# Record videos on failure
+$env:VIDEO_ON_FAILURE="true"; pytest -v
+```
+
+**Windows (Command Prompt):**
+
+```cmd
+# Headed mode with slow motion (run separately)
+set HEADLESS=false
+set SLOW_MO=1000
+pytest -v
 ```
 
 ---
@@ -174,6 +219,7 @@ VIDEO_ON_FAILURE=true pytest -v
 **Solution:** Make sure backend and frontend are running (`./start-dev.sh`)
 
 **Problem:** `Timeout waiting for element`
+
 **Solution:** Increase timeout or add wait: `page.wait_for_timeout(500)`
 
 **Problem:** `Playwright not found`
@@ -181,6 +227,7 @@ VIDEO_ON_FAILURE=true pytest -v
 
 **Problem:** Tests fail randomly
 **Solution:**
+
 - Use `fresh_database` fixture
 - Add explicit waits
 - Check for race conditions
@@ -199,17 +246,17 @@ VIDEO_ON_FAILURE=true pytest -v
 
 ---
 
-## 📚 Resources
 
 **Getting Started:**
+
 - [Lab 4: E2E Testing Python](../../labs/LAB_04_E2E_Testing_Python.md) - Beginner lab
-- [Lab 4B: Advanced E2E Python](../../labs/LAB_04B_Advanced_E2E_Python.md) - Advanced patterns
 
 **Documentation:**
+
 - [Playwright Python Docs](https://playwright.dev/python/)
-- [pytest Documentation](https://docs.pytest.org/)
 
 **CI/CD:**
+
 - [CI/CD for E2E Testing](../../docs/course/CI_CD_E2E_TESTING.md) - Automate these tests
 
 ---

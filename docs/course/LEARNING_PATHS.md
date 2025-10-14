@@ -146,7 +146,7 @@ Even if Python-first, consider [Lab 6B](../../labs/LAB_06B_Advanced_Component_Te
   - **New:** [Lab 4B: Advanced E2E Python](../../labs/LAB_04B_Advanced_E2E_Python.md) - Page objects, fixtures, network mocking
   - **New:** [Lab 6C: Frontend Integration](../../labs/LAB_06C_Frontend_Integration_Testing.md) - Contract testing (if working with frontend)
   - **New:** [Section 8: Advanced Patterns](SECTION_08_ADVANCED_E2E_PATTERNS.md) - Professional E2E practices
-- Study [TESTING_PATTERNS.md](../../TESTING_PATTERNS.md)
+- Study [TESTING_PATTERNS.md](../reference/TESTING_PATTERNS.md)
 - Learn when to use each test type
 - **New:** Review [Testing Comparison Guide](../guides/TESTING_COMPARISON_PYTHON_JS.md) - Translate between stacks
 
@@ -312,7 +312,7 @@ You can move quickly through the basics. Spend extra time on advanced patterns (
 **Phase 3: Advanced Techniques (4-6 hours)**
 
 - Study `backend/tests/factories.py` (test data management)
-- Review [TESTING_ANTIPATTERNS.md](../../TESTING_ANTIPATTERNS.md)
+- Review [TESTING_ANTIPATTERNS.md](../reference/TESTING_ANTIPATTERNS.md)
 - **New:** [Section 8: Advanced E2E Patterns](SECTION_08_ADVANCED_E2E_PATTERNS.md) (Python + JavaScript)
 - **New:** [Lab 4B: Advanced E2E Python](../../labs/LAB_04B_Advanced_E2E_Python.md) - Professional page objects
 - **New:** [Lab 6B: Advanced Component Testing](../../labs/LAB_06B_Advanced_Component_Testing.md) (JavaScript) - MSW, a11y
@@ -638,8 +638,8 @@ Common hybrid approaches:
 - **NEW:** [Testing Comparison: Python vs JavaScript](../guides/TESTING_COMPARISON_PYTHON_JS.md) - Side-by-side comparison
 - **NEW:** [Section 8: Advanced E2E Patterns](SECTION_08_ADVANCED_E2E_PATTERNS.md) - Professional patterns for both stacks
 - **NEW:** [CI/CD for E2E Testing](CI_CD_E2E_TESTING.md) - Automate tests for both stacks
-- [EDUCATOR_GUIDE.md](EDUCATOR_GUIDE.md) - For instructors
 - [labs/README.md](../../labs/README.md) - Lab overview
+- [Portfolio Guide](../guides/PORTFOLIO.md) - Turn your learning into job-ready content
 
 ### New Labs
 

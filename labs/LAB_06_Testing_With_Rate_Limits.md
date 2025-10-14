@@ -93,7 +93,7 @@ cd /Users/danmanez/Projects/Testbook
 
 # Start backend normally (with rate limiting)
 cd backend
-source venv/bin/activate
+source .venv/bin/activate  # Windows: .venv\Scripts\activate
 uvicorn main:app --reload --port 8000 &
 
 # Run security tests

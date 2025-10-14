@@ -37,7 +37,7 @@ npm install --save-dev msw
 
 #### Step 2: Create MSW Handlers
 
-Create `frontend/src/test/mocks/handlers.js`:
+Create `frontend/src/tests/mocks/handlers.js`:
 
 ```javascript
 import { rest } from 'msw';
@@ -107,7 +107,7 @@ export const handlers = [
 
 #### Step 3: Setup MSW Server for Tests
 
-Create `frontend/src/test/mocks/server.js`:
+Create `frontend/src/tests/mocks/server.js`:
 
 ```javascript
 import { setupServer } from 'msw/node';
@@ -130,12 +130,12 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'jsdom',
-    setupFiles: './src/test/setup.js', // Add this line
+    setupFiles: './src/tests/setup.js', // Add this line
   },
 });
 ```
 
-Create `frontend/src/test/setup.js`:
+Create `frontend/src/tests/setup.js`:
 
 ```javascript
 import '@testing-library/jest-dom';
@@ -236,7 +236,7 @@ export default function NotificationsList() {
 
 #### Step 2: Test All Component States
 
-Create `frontend/src/components/__tests__/NotificationsList.test.jsx`:
+Create `frontend/src/tests/unit/NotificationsList.test.jsx`:
 
 ```javascript
 import { render, screen, waitFor } from '@testing-library/react';

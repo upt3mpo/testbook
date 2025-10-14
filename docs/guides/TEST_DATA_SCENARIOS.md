@@ -329,10 +329,10 @@ console.log('Seeding complete:', result);
 
 ## Learn More
 
-- [Backend Dev Endpoints](../backend/routers/dev.py)
-- [Test Helpers (JavaScript)](./fixtures/test-helpers.js)
-- [Test Helpers (Python)](../tests/e2e-python/conftest.py)
-- [LAB 05: Test Data Management](../labs/LAB_05_Test_Data_Management.md)
+- Backend Dev Endpoints: `backend/routers/dev.py`
+- Test Helpers (JavaScript): See E2E test files in `tests/e2e/`
+- Test Helpers (Python): `tests/e2e-python/conftest.py`
+- [LAB 05: Test Data Management](../../labs/LAB_05_Test_Data_Management.md)
 
 ---
 

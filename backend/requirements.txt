@@ -10,6 +10,7 @@ bcrypt==4.0.1
 python-multipart==0.0.12
 pillow==10.4.0
 slowapi==0.1.9
+python-dotenv==1.0.1
 
 # Testing dependencies
 pytest==8.3.3
@@ -21,3 +22,8 @@ faker==30.8.2
 requests==2.32.3
 schemathesis==3.27.1
 
+# Code quality tools
+black==23.12.1
+flake8==7.0.0
+isort==5.13.2
+pre-commit==3.6.0

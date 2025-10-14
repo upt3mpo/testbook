@@ -574,11 +574,11 @@ test('toggle repost', async ({ page }) => {
 
 ## 📚 More Resources
 
-- **[README.md](README.md)** - Main documentation and project overview
-- **[TESTING_GUIDE.md](TESTING_GUIDE.md)** - Complete testing examples
+- **[README.md](../../README.md)** - Main documentation and project overview
+- **[TESTING_GUIDE.md](../guides/TESTING_GUIDE.md)** - Complete testing examples
 - **[TESTING_FEATURES.md](TESTING_FEATURES.md)** - All testable features
 - **[TESTING_CHEATSHEET.md](TESTING_CHEATSHEET.md)** - Quick reference guide
-- **[QUICKSTART.md](QUICKSTART.md)** - Get started quickly
+- **[QUICKSTART.md](../../QUICKSTART.md)** - Get started quickly
 
 ---
 
@@ -827,11 +827,11 @@ await page.waitForURL(/.*\/login/, { timeout: 15000 });
 ## 📚 More Info
 
 - **[TESTING_GUIDE.md](../guides/TESTING_GUIDE.md)** - Complete testing examples
+- **[CONTRACT_TESTING.md](../guides/CONTRACT_TESTING.md)** - Property-based API contract testing
 - **[TESTING_FEATURES.md](TESTING_FEATURES.md)** - All testable features
 - **[TESTING_CHEATSHEET.md](TESTING_CHEATSHEET.md)** - Quick reference (updated with real fixes!)
 - **[TESTING_ANTIPATTERNS.md](TESTING_ANTIPATTERNS.md)** - What NOT to do (includes dialog anti-pattern!)
 - **[FLAKY_TESTS_GUIDE.md](../guides/FLAKY_TESTS_GUIDE.md)** ⭐ - Comprehensive guide with real examples
-- **[Test Fix Summary](../../tests/FINAL_FIX_SUMMARY.md)** - How we achieved 100% pass rate
 
 **New:** Patterns 10-12 (dialog handling, force clicks, state waiting) are based on **real fixes** that took Testbook from 87% → 100% test pass rate!
 

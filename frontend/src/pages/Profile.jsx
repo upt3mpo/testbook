@@ -49,10 +49,18 @@ function Profile() {
     try {
       if (profile.is_following) {
         await usersAPI.unfollowUser(username);
-        setProfile({ ...profile, is_following: false, followers_count: profile.followers_count - 1 });
+        setProfile({
+          ...profile,
+          is_following: false,
+          followers_count: profile.followers_count - 1,
+        });
       } else {
         await usersAPI.followUser(username);
-        setProfile({ ...profile, is_following: true, followers_count: profile.followers_count + 1 });
+        setProfile({
+          ...profile,
+          is_following: true,
+          followers_count: profile.followers_count + 1,
+        });
       }
     } catch (err) {
       console.error('Failed to update follow status:', err);
@@ -61,18 +69,21 @@ function Profile() {
   };
 
   const handleBlock = async () => {
-    if (!window.confirm(`Are you sure you want to ${profile.is_blocked ? 'unblock' : 'block'} this user?`)) return;
+    if (
+      !window.confirm(
+        `Are you sure you want to ${profile.is_blocked ? 'unblock' : 'block'} this user?`
+      )
+    )
+      return;
 
     try {
       if (profile.is_blocked) {
         await usersAPI.unblockUser(username);
-        setProfile(prev => prev ? { ...prev, is_blocked: false } : prev);
+        setProfile((prev) => (prev ? { ...prev, is_blocked: false } : prev));
         broadcastBlockStatusChange({ username, isBlocked: false });
       } else {
         await usersAPI.blockUser(username);
-        setProfile(prev =>
-          prev ? { ...prev, is_blocked: true, is_following: false } : prev
-        );
+        setProfile((prev) => (prev ? { ...prev, is_blocked: true, is_following: false } : prev));
         broadcastBlockStatusChange({ username, isBlocked: true });
       }
     } catch (err) {
@@ -82,23 +93,29 @@ function Profile() {
   };
 
   const handlePostDeleted = (postId) => {
-    setPosts(prevPosts => prevPosts.filter(post => post.id !== postId));
+    setPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
   };
 
   const handlePostUpdated = (updatedPost) => {
-    setPosts(prevPosts =>
-      prevPosts.map(post => (post.id === updatedPost.id ? updatedPost : post))
+    setPosts((prevPosts) =>
+      prevPosts.map((post) => (post.id === updatedPost.id ? updatedPost : post))
     );
   };
 
   if (loading) {
-    return <div className="loading" data-testid="profile-loading">Loading profile...</div>;
+    return (
+      <div className="loading" data-testid="profile-loading">
+        Loading profile...
+      </div>
+    );
   }
 
   if (error || !profile) {
     return (
       <div className="profile-container">
-        <div className="error" data-testid="profile-error">{error || 'Profile not found'}</div>
+        <div className="error" data-testid="profile-error">
+          {error || 'Profile not found'}
+        </div>
       </div>
     );
   }
@@ -115,17 +132,33 @@ function Profile() {
               data-testid="profile-avatar"
             />
             <div className="profile-details">
-              <h2 className="profile-name" data-testid="profile-display-name">{profile.display_name}</h2>
-              <p className="profile-username text-secondary" data-testid="profile-username">@{profile.username}</p>
+              <h2 className="profile-name" data-testid="profile-display-name">
+                {profile.display_name}
+              </h2>
+              <p className="profile-username text-secondary" data-testid="profile-username">
+                @{profile.username}
+              </p>
               {profile.bio && (
-                <p className="profile-bio" data-testid="profile-bio">{profile.bio}</p>
+                <p className="profile-bio" data-testid="profile-bio">
+                  {profile.bio}
+                </p>
               )}
               <div className="profile-stats">
-                <span data-testid="profile-posts-count"><strong>{profile.posts_count}</strong> posts</span>
-                <Link to={`/profile/${username}/followers`} className="profile-stat-link" data-testid="profile-followers-link">
+                <span data-testid="profile-posts-count">
+                  <strong>{profile.posts_count}</strong> posts
+                </span>
+                <Link
+                  to={`/profile/${username}/followers`}
+                  className="profile-stat-link"
+                  data-testid="profile-followers-link"
+                >
                   <strong>{profile.followers_count}</strong> followers
                 </Link>
-                <Link to={`/profile/${username}/following`} className="profile-stat-link" data-testid="profile-following-link">
+                <Link
+                  to={`/profile/${username}/following`}
+                  className="profile-stat-link"
+                  data-testid="profile-following-link"
+                >
                   <strong>{profile.following_count}</strong> following
                 </Link>
               </div>
