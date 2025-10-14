@@ -92,32 +92,46 @@ class TestRateLimiting:
 
     def test_registration_rate_limiting(self):
         """Test that user registration is rate limited."""
+        import os
+
         session = requests.Session()
+
+        # In TESTING mode, rate limits are higher (100/min vs 15/min)
+        # So we need to attempt more registrations to hit the limit
+        testing_mode = os.getenv("TESTING", "false").lower() == "true"
+        attempts = 110 if testing_mode else 20
 
         # Try to register multiple accounts rapidly
         registrations = 0
-        for i in range(15):
+        rate_limited = False
+
+        for i in range(attempts):
             response = session.post(
                 f"{BASE_URL}/auth/register",
                 json={
-                    "email": f"spam{i}@test.com",
-                    "username": f"spam{i}",
+                    "email": f"spam{i}_{int(time.time())}@test.com",
+                    "username": f"spam{i}_{int(time.time())}",
                     "display_name": f"Spam User {i}",
                     "password": "SpamPass123!",
                 },
             )
 
             if response.status_code == 429:
+                rate_limited = True
                 break
 
             if response.status_code == 201:
                 registrations += 1
 
-            time.sleep(0.1)
+            # Don't sleep - we want to hit rate limit
+            # time.sleep(0.1)
 
-        # Should limit registrations to prevent spam
-        # Adjust threshold based on policy
-        assert registrations < 15, "Registration not rate limited - spam risk"
+        # Should hit rate limit before all attempts complete
+        # In TESTING mode (100/min), should be rate limited before 110 attempts
+        # In production (15/min), should be rate limited before 20 attempts
+        assert rate_limited or registrations < attempts, (
+            f"Registration not rate limited - completed {registrations}/{attempts} attempts"
+        )
 
 
 class TestBruteForceProtection:
