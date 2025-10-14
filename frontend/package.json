@@ -11,7 +11,7 @@
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage",
     "test:contracts": "node scripts/fetch-schema.js && npm test -- contract",
-    "test:accessibility": "npm test -- accessibility.test.jsx",
+    "test:a11y": "npm test -- accessibility.test.jsx",
     "validate:schema": "node scripts/fetch-schema.js",
     "lint": "eslint src --ext .js,.jsx",
     "lint:fix": "eslint src --ext .js,.jsx --fix",

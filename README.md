@@ -156,7 +156,7 @@ pytest -v                    # Run all 180 tests (1 skipped)
 ```bash
 cd frontend
 npm test                     # Run component tests
-npm run test:accessibility    # Accessibility tests
+npm run test:a11y            # Accessibility tests
 ```
 
 ![Frontend Tests](docs/screenshots/frontend-tests.png)
