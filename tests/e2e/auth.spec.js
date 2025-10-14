@@ -4,8 +4,8 @@
  * Tests registration, login, logout, and authentication state.
  */
 
-const { test, expect } = require('@playwright/test');
-const { resetDatabase, loginUser, registerUser, setupDialogHandler, TEST_USERS } = require('./fixtures/test-helpers');
+import { expect, test } from '@playwright/test';
+import { loginUser, registerUser, resetDatabase, setupDialogHandler, TEST_USERS } from './fixtures/test-helpers.js';
 
 test.describe('Authentication', () => {
   test.beforeEach(async ({ page }) => {

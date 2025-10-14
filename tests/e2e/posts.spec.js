@@ -5,17 +5,17 @@
  * (comments, reactions, reposts).
  */
 
-const { test, expect } = require('@playwright/test');
-const {
-  resetDatabase,
-  loginUser,
-  createPost,
-  getFirstPost,
-  getFirstOwnPost,
-  addReaction,
-  setupDialogHandler,
-  TEST_USERS
-} = require('./fixtures/test-helpers');
+import { expect, test } from '@playwright/test';
+import {
+    addReaction,
+    createPost,
+    getFirstOwnPost,
+    getFirstPost,
+    loginUser,
+    resetDatabase,
+    setupDialogHandler,
+    TEST_USERS
+} from './fixtures/test-helpers.js';
 
 test.describe('Posts', () => {
   test.beforeEach(async ({ page }) => {

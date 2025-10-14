@@ -5,13 +5,13 @@
  * and settings.
  */
 
-const { test, expect } = require('@playwright/test');
-const {
-  resetDatabase,
-  loginUser,
-  setupDialogHandler,
-  TEST_USERS
-} = require('./fixtures/test-helpers');
+import { expect, test } from '@playwright/test';
+import {
+    loginUser,
+    resetDatabase,
+    setupDialogHandler,
+    TEST_USERS
+} from './fixtures/test-helpers.js';
 
 test.describe('Users', () => {
   test.beforeEach(async ({ page }) => {
