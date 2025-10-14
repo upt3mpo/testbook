@@ -121,15 +121,28 @@ jobs:
           python-version: '3.11'
           cache: 'pip'
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
       - name: Install backend dependencies
         working-directory: ./backend
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Install frontend dependencies
+        working-directory: ./frontend
+        run: npm ci
+
       - name: Install Selenium dependencies
         working-directory: ./tests/e2e-python
-        run: pip install -r requirements.txt
+        run: |
+          pip install -r requirements.txt
+          playwright install --with-deps chromium
 
       - name: Start backend server
         working-directory: ./backend
@@ -142,10 +155,22 @@ jobs:
           uvicorn main:app --host 0.0.0.0 --port 8000 &
           sleep 5
 
+      - name: Start frontend server
+        working-directory: ./frontend
+        run: |
+          npm run dev &
+          sleep 10
+
+      - name: Wait for frontend
+        run: |
+          timeout 30 bash -c 'until curl -f http://localhost:3000; do sleep 1; done'
+
       - name: Run Selenium tests
         working-directory: ./tests/e2e-python
         env:
           API_URL: http://localhost:8000
+          FRONTEND_URL: http://localhost:3000
+          BACKEND_URL: http://localhost:8000
           HEADLESS: true
         run: pytest -v
 
