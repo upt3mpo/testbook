@@ -7,11 +7,13 @@ Performance testing suite using K6 for load, stress, and smoke testing.
 ### Install K6
 
 **macOS:**
+
 ```bash
 brew install k6
 ```
 
 **Ubuntu/Debian:**
+
 ```bash
 sudo gpg -k
 sudo gpg --no-default-keyring --keyring /usr/share/keyrings/k6-archive-keyring.gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C5AD17C747E3415A3642D57D77C6C491D6AC1D69
@@ -21,6 +23,7 @@ sudo apt-get install k6
 ```
 
 **Windows:**
+
 ```bash
 choco install k6
 ```
@@ -36,6 +39,7 @@ k6 run smoke-test.js
 ```
 
 **Configuration:**
+
 - 1 virtual user
 - 1 minute duration
 - Tests: Health check, authentication, feed, basic operations
@@ -49,6 +53,7 @@ k6 run load-test.js
 ```
 
 **Configuration:**
+
 - Ramps from 0 → 10 → 20 users
 - 15+ minute total duration
 - Simulates realistic user behavior
@@ -63,6 +68,7 @@ k6 run stress-test.js
 ```
 
 **Configuration:**
+
 - Ramps up to 100 users
 - 20+ minute duration
 - More aggressive request patterns
@@ -73,18 +79,21 @@ k6 run stress-test.js
 ### Key Metrics
 
 **HTTP Request Duration:**
+
 - `avg` - Average response time
 - `p(95)` - 95th percentile (95% of requests faster than this)
 - `p(99)` - 99th percentile
 - `max` - Slowest request
 
 **HTTP Request Failed:**
+
 - `rate` - Percentage of failed requests
 - Should be < 1% for smoke tests
 - Should be < 5% for load tests
 - Can be < 10% for stress tests
 
 **Custom Metrics:**
+
 - `login_duration` - Login endpoint performance
 - `feed_duration` - Feed loading performance
 - `post_creation_duration` - Post creation performance
@@ -108,15 +117,18 @@ feed_duration.............: avg=312.8ms  p(95)=521.3ms
 Tests will fail if thresholds are not met:
 
 **Smoke Test:**
+
 - 95% of requests < 500ms
 - Error rate < 1%
 
 **Load Test:**
+
 - 95% of requests < 1000ms
 - 99% of requests < 2000ms
 - Error rate < 5%
 
 **Stress Test:**
+
 - 99% of requests < 3000ms
 - Error rate < 10%
 
@@ -149,6 +161,7 @@ k6 cloud load-test.js
 ## CI/CD Integration
 
 Performance tests run automatically:
+
 - Weekly (Monday 2 AM)
 - On demand via workflow_dispatch
 - On changes to performance test files
@@ -174,11 +187,13 @@ View results in GitHub Actions artifacts.
 ### What to Test Next
 
 If tests pass:
+
 - Increase VUs (virtual users)
 - Increase duration
 - Add more complex scenarios
 
 If tests fail:
+
 - Identify bottleneck endpoints
 - Check database performance
 - Review backend logs
@@ -263,4 +278,3 @@ const res = http.post('http://localhost:8000/api/posts/', payload, {
 - [K6 Documentation](https://k6.io/docs/)
 - [Performance Testing Guide](https://k6.io/docs/testing-guides/api-load-testing/)
 - [K6 Cloud](https://k6.io/cloud/)
-

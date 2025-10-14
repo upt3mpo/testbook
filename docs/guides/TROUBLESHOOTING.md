@@ -27,6 +27,7 @@ Jump to your error:
 ### Error: `command not found: pytest`
 
 **Full Error:**
+
 ```bash
 $ pytest
 -bash: pytest: command not found
@@ -35,6 +36,7 @@ $ pytest
 **Why:** Virtual environment not activated.
 
 **Fix:**
+
 ```bash
 cd backend
 source .venv/bin/activate  # macOS/Linux
@@ -46,6 +48,7 @@ source .venv/bin/activate  # macOS/Linux
 ```
 
 **Verify it worked:**
+
 ```bash
 which python  # Should point to venv/bin/python
 pytest --version  # Should show pytest version
@@ -56,6 +59,7 @@ pytest --version  # Should show pytest version
 ### Error: `ModuleNotFoundError: No module named 'fastapi'`
 
 **Full Error:**
+
 ```python
 ModuleNotFoundError: No module named 'fastapi'
 ```
@@ -63,6 +67,7 @@ ModuleNotFoundError: No module named 'fastapi'
 **Why:** Dependencies not installed or wrong Python interpreter.
 
 **Fix:**
+
 ```bash
 # Activate venv first
 cd backend
@@ -76,6 +81,7 @@ pip list | grep fastapi
 ```
 
 **Still not working?**
+
 ```bash
 # Check which Python you're using
 which python  # Should be in venv/
@@ -93,6 +99,7 @@ pip install -r requirements.txt
 ### Error: `Python.h: No such file or directory`
 
 **Full Error:**
+
 ```bash
 fatal error: Python.h: No such file or directory
 compilation terminated.
@@ -104,22 +111,26 @@ error: command 'gcc' failed with exit status 1
 **Fix by OS:**
 
 **Ubuntu/Debian:**
+
 ```bash
 sudo apt-get update
 sudo apt-get install python3-dev python3-pip build-essential
 ```
 
 **Fedora/RHEL:**
+
 ```bash
 sudo dnf install python3-devel gcc
 ```
 
 **macOS:**
+
 ```bash
 xcode-select --install
 ```
 
 **Then retry:**
+
 ```bash
 pip install -r requirements.txt
 ```
@@ -129,6 +140,7 @@ pip install -r requirements.txt
 ### Error: `virtualenv: command not found`
 
 **Full Error:**
+
 ```bash
 $ python -m venv .venv
 Error: No module named venv
@@ -139,11 +151,13 @@ Error: No module named venv
 **Fix:**
 
 **Ubuntu/Debian:**
+
 ```bash
 sudo apt-get install python3-venv
 ```
 
 **Then create venv:**
+
 ```bash
 python3 -m venv .venv
 ```
@@ -155,6 +169,7 @@ python3 -m venv .venv
 ### Error: `npm: command not found`
 
 **Full Error:**
+
 ```bash
 $ npm install
 -bash: npm: command not found
@@ -165,11 +180,13 @@ $ npm install
 **Fix by OS:**
 
 **macOS:**
+
 ```bash
 brew install node
 ```
 
 **Ubuntu/Debian:**
+
 ```bash
 curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
 sudo apt-get install -y nodejs
@@ -179,6 +196,7 @@ sudo apt-get install -y nodejs
 Download from [nodejs.org](https://nodejs.org/) and install.
 
 **Verify:**
+
 ```bash
 node --version  # Should show v18+ or v20+
 npm --version   # Should show 9+ or 10+
@@ -189,6 +207,7 @@ npm --version   # Should show 9+ or 10+
 ### Error: `EACCES: permission denied`
 
 **Full Error:**
+
 ```bash
 npm ERR! code EACCES
 npm ERR! syscall mkdir
@@ -200,6 +219,7 @@ npm ERR! Error: EACCES: permission denied
 **Why:** Trying to install globally without permissions.
 
 **Fix (use npx instead):**
+
 ```bash
 # Don't use: npm install -g playwright
 # Use: npx playwright install
@@ -221,6 +241,7 @@ npx playwright install chromium
 ### Error: `ERESOLVE unable to resolve dependency tree`
 
 **Full Error:**
+
 ```bash
 npm ERR! code ERESOLVE
 npm ERR! ERESOLVE unable to resolve dependency tree
@@ -232,6 +253,7 @@ npm ERR! peer react@"^17.0.0" from some-package@1.0.0
 **Why:** Dependency version conflicts.
 
 **Fix:**
+
 ```bash
 # Use legacy peer deps (temporary fix)
 npm install --legacy-peer-deps
@@ -241,6 +263,7 @@ npm install --legacy-peer-deps
 ```
 
 **For Testbook:**
+
 ```bash
 cd frontend  # or cd tests
 rm -rf node_modules package-lock.json
@@ -252,6 +275,7 @@ npm install
 ### Error: Node version mismatch
 
 **Full Error:**
+
 ```bash
 error: The engine "node" is incompatible with this module
 Expected version ">=18.0.0". Got "16.14.0"
@@ -262,6 +286,7 @@ Expected version ">=18.0.0". Got "16.14.0"
 **Fix:**
 
 **Using nvm (recommended):**
+
 ```bash
 # Install nvm: https://github.com/nvm-sh/nvm
 nvm install 20
@@ -270,11 +295,13 @@ node --version  # Should show v20.x.x
 ```
 
 **Using brew (macOS):**
+
 ```bash
 brew upgrade node
 ```
 
 **Then reinstall:**
+
 ```bash
 cd frontend  # or cd tests
 npm install
@@ -287,6 +314,7 @@ npm install
 ### Error: `docker: Got permission denied`
 
 **Full Error:**
+
 ```bash
 docker: Got permission denied while trying to connect to the Docker daemon socket
 ```
@@ -294,6 +322,7 @@ docker: Got permission denied while trying to connect to the Docker daemon socke
 **Why:** User not in docker group (Linux).
 
 **Fix (Linux):**
+
 ```bash
 # Add user to docker group
 sudo usermod -aG docker $USER
@@ -303,6 +332,7 @@ docker ps
 ```
 
 **Alternative (don't need docker for learning):**
+
 ```bash
 # Use development mode instead
 ./start-dev.sh  # Doesn't require Docker
@@ -313,6 +343,7 @@ docker ps
 ### Error: `Cannot connect to the Docker daemon`
 
 **Full Error:**
+
 ```bash
 Cannot connect to the Docker daemon at unix:///var/run/docker.sock
 Is the docker daemon running?
@@ -323,17 +354,20 @@ Is the docker daemon running?
 **Fix:**
 
 **macOS/Windows:**
+
 1. Open Docker Desktop application
 2. Wait for it to start (whale icon in tray)
 3. Retry command
 
 **Linux:**
+
 ```bash
 sudo systemctl start docker
 sudo systemctl enable docker  # Start on boot
 ```
 
 **For Testbook learning:**
+
 ```bash
 # You don't need Docker - use dev mode
 ./start-dev.sh
@@ -346,6 +380,7 @@ sudo systemctl enable docker  # Start on boot
 ### Error: `database is locked`
 
 **Full Error:**
+
 ```bash
 sqlite3.OperationalError: database is locked
 ```
@@ -353,6 +388,7 @@ sqlite3.OperationalError: database is locked
 **Why:** Database file in use by another process or test.
 
 **Fix:**
+
 ```bash
 # Stop all processes
 # Ctrl+C in all terminals
@@ -369,6 +405,7 @@ pytest -v
 ```
 
 **Prevention:**
+
 ```bash
 # Reset database between test runs
 ./reset-database.sh
@@ -379,6 +416,7 @@ pytest -v
 ### Error: `no such table: users`
 
 **Full Error:**
+
 ```bash
 sqlite3.OperationalError: no such table: users
 ```
@@ -386,6 +424,7 @@ sqlite3.OperationalError: no such table: users
 **Why:** Database not initialized or missing tables.
 
 **Fix:**
+
 ```bash
 cd backend
 
@@ -405,6 +444,7 @@ python seed.py
 ### Error: `UNIQUE constraint failed`
 
 **Full Error:**
+
 ```bash
 sqlite3.IntegrityError: UNIQUE constraint failed: users.email
 ```
@@ -412,6 +452,7 @@ sqlite3.IntegrityError: UNIQUE constraint failed: users.email
 **Why:** Trying to create duplicate data (common in tests).
 
 **Fix for tests:**
+
 ```bash
 # This is expected! Tests should handle it:
 def test_duplicate_email(client):
@@ -424,6 +465,7 @@ def test_duplicate_email(client):
 ```
 
 **Fix for database:**
+
 ```bash
 # Reset database
 ./reset-database.sh
@@ -436,6 +478,7 @@ def test_duplicate_email(client):
 ### Error: `Address already in use`
 
 **Full Error:**
+
 ```bash
 ERROR: [Errno 48] Address already in use
 # or
@@ -445,6 +488,7 @@ Error: listen EADDRINUSE: address already in use :::8000
 **Why:** Another process using port 8000 or 3000.
 
 **Fix macOS/Linux:**
+
 ```bash
 # Find process on port 8000
 lsof -ti:8000
@@ -457,6 +501,7 @@ lsof -ti:3000 | xargs kill
 ```
 
 **Fix Windows:**
+
 ```powershell
 # Find process on port 8000
 netstat -ano | findstr :8000
@@ -466,6 +511,7 @@ taskkill /PID <PID> /F
 ```
 
 **Or just use different ports:**
+
 ```bash
 # Backend on different port
 uvicorn main:app --reload --port 8001
@@ -481,6 +527,7 @@ npm run dev -- --port 3001
 ### Error: `fixture 'test_user' not found`
 
 **Full Error:**
+
 ```python
 E   fixture 'test_user' not found
 >   available fixtures: cache, capfd, capsys, ...
@@ -492,22 +539,26 @@ E   fixture 'test_user' not found
 **Fix:**
 
 **Check conftest.py exists:**
+
 ```bash
 ls backend/tests/conftest.py  # Should exist
 ```
 
 **Check you're in correct directory:**
+
 ```bash
 cd backend
 pytest tests/unit/test_auth.py -v
 ```
 
 **See all available fixtures:**
+
 ```bash
 pytest --fixtures
 ```
 
 **If fixture missing, add to conftest.py:**
+
 ```python
 # backend/tests/conftest.py
 @pytest.fixture
@@ -521,6 +572,7 @@ def test_user(db_session):
 ### Error: `ImportError: cannot import name 'app'`
 
 **Full Error:**
+
 ```python
 ImportError: cannot import name 'app' from 'main'
 ```
@@ -528,6 +580,7 @@ ImportError: cannot import name 'app' from 'main'
 **Why:** Import path issue or wrong directory.
 
 **Fix:**
+
 ```bash
 # Must run from backend directory
 cd backend
@@ -539,6 +592,7 @@ pytest -v
 ```
 
 **Check sys.path in conftest.py:**
+
 ```python
 # backend/tests/conftest.py should have:
 import sys
@@ -550,6 +604,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 ### Error: Tests pass individually but fail together
 
 **Full Error:**
+
 ```bash
 $ pytest tests/integration/test_api_auth.py::test_login -v
 PASSED  # ✅ Works alone
@@ -562,6 +617,7 @@ ERROR: KeyError: 'access_token'
 **Why:** Rate limiting or shared state between tests.
 
 **Fix:**
+
 ```bash
 # Run backend in TESTING mode
 cd backend
@@ -580,6 +636,7 @@ pytest tests/integration/ -v --dist loadscope
 ### Error: `Coverage.py warning: No data was collected`
 
 **Full Error:**
+
 ```bash
 Coverage.py warning: No data was collected. (no-data-collected)
 ```
@@ -587,6 +644,7 @@ Coverage.py warning: No data was collected. (no-data-collected)
 **Why:** Tests didn't run or coverage config wrong.
 
 **Fix:**
+
 ```bash
 # Check pytest.ini exists
 ls backend/pytest.ini
@@ -604,6 +662,7 @@ cat .coveragerc
 ### Error: `pytest-cov: module 'coverage' has no attribute 'version'`
 
 **Full Error:**
+
 ```bash
 AttributeError: module 'coverage' has no attribute 'version'
 ```
@@ -611,6 +670,7 @@ AttributeError: module 'coverage' has no attribute 'version'
 **Why:** Coverage plugin version mismatch.
 
 **Fix:**
+
 ```bash
 cd backend
 source .venv/bin/activate  # Windows: .venv\Scripts\activate
@@ -630,6 +690,7 @@ pytest --version
 ### Error: `Executable doesn't exist at /path/to/chromium`
 
 **Full Error:**
+
 ```bash
 Error: Executable doesn't exist at /Users/user/Library/Caches/ms-playwright/chromium-1084/chrome-mac/Chromium.app
 ```
@@ -637,6 +698,7 @@ Error: Executable doesn't exist at /Users/user/Library/Caches/ms-playwright/chro
 **Why:** Playwright browsers not installed.
 
 **Fix Python:**
+
 ```bash
 cd tests/e2e-python
 source .venv/bin/activate  # Windows: .venv\Scripts\activate
@@ -647,6 +709,7 @@ playwright install
 ```
 
 **Fix JavaScript:**
+
 ```bash
 cd tests
 npx playwright install chromium
@@ -660,6 +723,7 @@ npx playwright install
 ### Error: `page.goto: net::ERR_CONNECTION_REFUSED`
 
 **Full Error:**
+
 ```bash
 playwright._impl._api_types.Error: page.goto: net::ERR_CONNECTION_REFUSED
 ```
@@ -667,6 +731,7 @@ playwright._impl._api_types.Error: page.goto: net::ERR_CONNECTION_REFUSED
 **Why:** Frontend not running on http://localhost:3000.
 
 **Fix:**
+
 ```bash
 # Start development servers
 ./start-dev.sh  # macOS/Linux
@@ -686,6 +751,7 @@ pytest -v
 ### Error: `Timeout 30000ms exceeded`
 
 **Full Error:**
+
 ```bash
 playwright._impl._api_types.TimeoutError: Timeout 30000ms exceeded.
 waiting for locator('[data-testid="post-item"]')
@@ -696,18 +762,21 @@ waiting for locator('[data-testid="post-item"]')
 **Fix:**
 
 **1. Check element exists:**
+
 ```bash
 # Run in headed mode to see what's happening
 HEADLESS=false pytest test_posts.py::test_name
 ```
 
 **2. Increase timeout:**
+
 ```python
 # In test
 await expect(page.locator('[data-testid="post-item"]')).to_be_visible(timeout=60000)
 ```
 
 **3. Check selector:**
+
 ```python
 # Debug selector
 await page.screenshot(path="debug.png")
@@ -721,6 +790,7 @@ page.pause()  # Opens inspector
 ### Error: `Connection refused [Errno 61]`
 
 **Full Error:**
+
 ```python
 requests.exceptions.ConnectionError:
 HTTPConnectionPool(host='localhost', port=8000):
@@ -732,6 +802,7 @@ Failed to establish a new connection: [Errno 61] Connection refused'))
 **Why:** Backend API not running.
 
 **Fix:**
+
 ```bash
 # Terminal 1: Start backend
 cd backend
@@ -746,6 +817,7 @@ pytest -v
 ```
 
 **Verify backend is running:**
+
 ```bash
 curl http://localhost:8000/api/health
 # Should return: {"status":"healthy"}
@@ -756,6 +828,7 @@ curl http://localhost:8000/api/health
 ### Error: `429 Too Many Requests`
 
 **Full Error:**
+
 ```python
 assert response.status_code == 200
 E   AssertionError: assert 429 == 200
@@ -764,6 +837,7 @@ E   AssertionError: assert 429 == 200
 **Why:** Hit rate limit (security feature working!).
 
 **Fix:**
+
 ```bash
 # Option 1: Run in TESTING mode (higher limits)
 cd backend
@@ -785,6 +859,7 @@ sleep 60
 ### Windows: `'source' is not recognized`
 
 **Full Error:**
+
 ```bash
 'source' is not recognized as an internal or external command
 ```
@@ -792,6 +867,7 @@ sleep 60
 **Why:** `source` is a Unix command, doesn't exist on Windows.
 
 **Fix:**
+
 ```bash
 # On Windows use:
 cd backend
@@ -801,6 +877,7 @@ cd backend
 ```
 
 **PowerShell:**
+
 ```powershell
 cd backend
 .\venv\Scripts\Activate.ps1
@@ -814,6 +891,7 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 ### Windows: `Execution of scripts is disabled`
 
 **Full Error:**
+
 ```powershell
 .\venv\Scripts\Activate.ps1 cannot be loaded because running scripts
 is disabled on this system.
@@ -822,6 +900,7 @@ is disabled on this system.
 **Why:** Windows PowerShell execution policy.
 
 **Fix:**
+
 ```powershell
 # Allow scripts for current user
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
@@ -831,6 +910,7 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 ```
 
 **Alternative (use cmd.exe):**
+
 ```bash
 # Open Command Prompt instead of PowerShell
 cd backend
@@ -842,6 +922,7 @@ cd backend
 ### macOS: `Permission denied: './start-dev.sh'`
 
 **Full Error:**
+
 ```bash
 $ ./start-dev.sh
 -bash: ./start-dev.sh: Permission denied
@@ -850,6 +931,7 @@ $ ./start-dev.sh
 **Why:** Script not executable.
 
 **Fix:**
+
 ```bash
 chmod +x start-dev.sh
 chmod +x reset-database.sh
@@ -864,6 +946,7 @@ chmod +x run-all-tests.sh
 ### Linux: `sh: 1: playwright: not found`
 
 **Full Error:**
+
 ```bash
 sh: 1: playwright: not found
 ```
@@ -871,6 +954,7 @@ sh: 1: playwright: not found
 **Why:** Playwright not in PATH or not installed globally.
 
 **Fix:**
+
 ```bash
 # Use npx instead
 cd tests/e2e-python
@@ -888,6 +972,7 @@ playwright install
 ### Error: `ScopeMismatch: You tried to access the function scoped fixture`
 
 **Full Error:**
+
 ```python
 ScopeMismatch: You tried to access the function scoped fixture 'db_session'
 with a session scoped request object
@@ -896,6 +981,7 @@ with a session scoped request object
 **Why:** Fixture scope mismatch.
 
 **Fix:**
+
 ```python
 # Change fixture scope to match
 @pytest.fixture(scope="session")  # ❌ Wrong
@@ -913,6 +999,7 @@ def my_fixture(db_session):
 ### Error: `PytestCollectionWarning: cannot collect test class`
 
 **Full Error:**
+
 ```bash
 PytestCollectionWarning: cannot collect test class 'TestConfig'
 because it has a __init__ constructor
@@ -921,6 +1008,7 @@ because it has a __init__ constructor
 **Why:** Test classes shouldn't have `__init__` methods.
 
 **Fix:**
+
 ```python
 # ❌ Wrong
 class TestLogin:
@@ -942,6 +1030,7 @@ class TestLogin:
 ### Error: `AssertionError: assert 401 == 403`
 
 **Full Error:**
+
 ```python
 def test_unauthorized(client):
     response = client.get("/api/posts")
@@ -952,6 +1041,7 @@ E   AssertionError: assert 403 == 401
 **Why:** Both 401 and 403 are valid auth errors, but FastAPI returns 403 by default.
 
 **Fix:**
+
 ```python
 # Accept both
 assert response.status_code in [401, 403]
@@ -966,6 +1056,7 @@ assert response.status_code in [401, 403]
 ### Error: `json.decoder.JSONDecodeError`
 
 **Full Error:**
+
 ```python
 json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
 ```
@@ -973,6 +1064,7 @@ json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
 **Why:** Response isn't JSON (might be HTML error page or empty).
 
 **Fix:**
+
 ```python
 # Check status first
 print(f"Status: {response.status_code}")
@@ -1039,6 +1131,7 @@ cd backend && pytest tests/unit/test_auth.py::TestPasswordHashing::test_password
    - [ ] Are servers running?
 
 3. **Isolate the problem**
+
    ```bash
    # Run single test
    pytest tests/unit/test_auth.py::test_one_thing -v
@@ -1056,6 +1149,7 @@ cd backend && pytest tests/unit/test_auth.py::TestPasswordHashing::test_password
    - [Windows Setup](WINDOWS_SETUP.md) - Windows-specific help
 
 5. **Reset everything**
+
    ```bash
    # Nuclear option - reset everything
    ./reset-database.sh
@@ -1075,6 +1169,7 @@ cd backend && pytest tests/unit/test_auth.py::TestPasswordHashing::test_password
 4. **Ask in Discussions** - Describe what you tried
 
 **When asking for help, include:**
+
 - Exact error message (copy-paste)
 - What you were trying to do
 - What you've already tried
@@ -1097,4 +1192,3 @@ Before starting any work:
 ---
 
 *Remember: Errors are learning opportunities! Each error you fix teaches you something new. 💪*
-

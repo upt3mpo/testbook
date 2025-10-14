@@ -7,6 +7,7 @@ Testbook is a fully functional fake social media application built specifically 
 ## Key Features
 
 ### For Testers
+
 ✅ **Test-friendly design** - All elements have `data-testid` attributes
 ✅ **Dev API endpoints** - Reset, seed, and manipulate test data easily
 ✅ **Predictable behavior** - Consistent, reproducible test scenarios
@@ -14,6 +15,7 @@ Testbook is a fully functional fake social media application built specifically 
 ✅ **Multiple testing approaches** - API, UI, E2E testing support
 
 ### For Learning
+
 ✅ **Realistic scenarios** - Real-world features to test
 ✅ **Modern tech stack** - Learn current frameworks
 ✅ **Best practices** - Clean code, proper architecture
@@ -23,6 +25,7 @@ Testbook is a fully functional fake social media application built specifically 
 ## Technical Stack
 
 ### Backend
+
 - **FastAPI** (Python 3.11) - Fast, modern API framework
 - **SQLAlchemy** - SQL toolkit and ORM
 - **SQLite** - Lightweight database
@@ -31,6 +34,7 @@ Testbook is a fully functional fake social media application built specifically 
 - **Uvicorn** - ASGI server
 
 ### Frontend
+
 - **React 18** - UI library
 - **Vite** - Build tool (fast!)
 - **React Router** - Client-side routing
@@ -38,6 +42,7 @@ Testbook is a fully functional fake social media application built specifically 
 - **CSS3** - Modern styling with custom properties
 
 ### DevOps
+
 - **[Docker](https://www.docker.com/)** - Containerization for easy deployment
 - **[Docker Compose](https://docs.docker.com/compose/)** - Multi-container orchestration
 - **Pillow** - Image generation for test data
@@ -131,6 +136,7 @@ Testbook/
 ## Database Schema
 
 ### Users Table
+
 ```sql
 - id (PK)
 - email (unique)
@@ -145,6 +151,7 @@ Testbook/
 ```
 
 ### Posts Table
+
 ```sql
 - id (PK)
 - author_id (FK → users.id)
@@ -157,6 +164,7 @@ Testbook/
 ```
 
 ### Comments Table
+
 ```sql
 - id (PK)
 - post_id (FK → posts.id)
@@ -166,6 +174,7 @@ Testbook/
 ```
 
 ### Reactions Table
+
 ```sql
 - id (PK)
 - post_id (FK → posts.id)
@@ -175,6 +184,7 @@ Testbook/
 ```
 
 ### Relationships (Many-to-Many)
+
 ```sql
 followers:
 - follower_id (FK → users.id)
@@ -188,11 +198,13 @@ blocks:
 ## API Endpoints
 
 ### Authentication
+
 - `POST /api/auth/register` - Create new account
 - `POST /api/auth/login` - Login (returns JWT)
 - `GET /api/auth/me` - Get current user
 
 ### Users
+
 - `GET /api/users/{username}` - User profile
 - `GET /api/users/{username}/followers` - Get followers list
 - `GET /api/users/{username}/following` - Get following list
@@ -205,6 +217,7 @@ blocks:
 - `DELETE /api/users/{username}/block` - Unblock
 
 ### Posts
+
 - `POST /api/posts/` - Create post
 - `POST /api/posts/upload` - Upload media file
 - `PUT /api/posts/{id}` - Update post
@@ -217,10 +230,12 @@ blocks:
 - `DELETE /api/posts/{id}/reactions` - Remove reaction
 
 ### Feed
+
 - `GET /api/feed/all` - All posts
 - `GET /api/feed/following` - Following feed
 
 ### Dev/Testing
+
 - `POST /api/dev/reset` - Reset database
 - `POST /api/dev/seed` - Reseed data
 - `GET /api/dev/users` - Get test users
@@ -231,18 +246,21 @@ blocks:
 ### What Can You Test?
 
 ✅ **Authentication & Authorization**
+
 - Login/logout flows
 - Registration validation
 - JWT token handling
 - Protected route access
 
 ✅ **User Management**
+
 - Profile creation/updates
 - Follow/unfollow functionality
 - Block/unblock behavior
 - Account deletion
 
 ✅ **Content Management**
+
 - Post creation (text, images, videos)
 - File upload with drag-and-drop
 - Post editing
@@ -252,12 +270,14 @@ blocks:
 - Repost feature
 
 ✅ **Feed & Filtering**
+
 - "See All" vs "Following" feeds
 - Blocked user filtering
 - Post ordering
 - Real-time updates
 
 ✅ **UI/UX**
+
 - Theme switching (dark/light)
 - Text density preferences
 - Responsive design
@@ -265,6 +285,7 @@ blocks:
 - Form validation
 
 ✅ **API Testing**
+
 - Request/response validation
 - Error handling
 - Status codes
@@ -273,6 +294,7 @@ blocks:
 ## Use Cases
 
 ### For QA Engineers
+
 - Practice test automation frameworks ([Selenium](https://www.selenium.dev/), [Playwright](https://playwright.dev/), [Cypress](https://www.cypress.io/))
 - Learn API testing ([Postman](https://www.postman.com/), [REST Assured](https://rest-assured.io/))
 - Implement test strategies (smoke, regression, E2E)
@@ -280,6 +302,7 @@ blocks:
 - Learn CI/CD integration ([GitHub Actions](https://github.com/features/actions), [Jenkins](https://www.jenkins.io/))
 
 ### For Developers
+
 - Practice full-stack development
 - Learn modern frameworks
 - Understand authentication flows
@@ -287,6 +310,7 @@ blocks:
 - Learn containerization
 
 ### For Students
+
 - Learn web development
 - Understand REST APIs
 - Practice with React
@@ -316,6 +340,7 @@ These are intentional simplifications to keep the focus on testing practice.
 ⚠️ **For Testing/Learning** - Additional hardening needed for production!
 
 **Current Security Features:**
+
 - ✅ JWT authentication with bcrypt password hashing
 - ✅ Rate limiting (environment-aware: 100/min prod, 1000/min test)
 - ✅ SECRET_KEY environment variable support with warnings
@@ -323,6 +348,7 @@ These are intentional simplifications to keep the focus on testing practice.
 - ✅ Authorization checks on user-owned resources
 
 **What's Missing for Production:**
+
 - ⚠️ No HTTPS enforcement (configure your reverse proxy)
 - ⚠️ No CSRF protection (stateless API design)
 - ⚠️ Default secrets used if env vars not set (warnings provided)
@@ -348,6 +374,7 @@ Ideas for extending Testbook:
 This is a testing practice tool, but contributions are welcome!
 
 Ideas:
+
 - Add more test scenarios
 - Improve documentation
 - Add example test suites
@@ -361,6 +388,7 @@ MIT License - Use freely for learning and testing!
 ## Support
 
 For questions or issues:
+
 1. Check [README.md](../../README.md)
 2. Check [TESTING_GUIDE.md](../guides/TESTING_GUIDE.md)
 3. Review API docs at `/docs`
@@ -380,4 +408,3 @@ For questions or issues:
 ---
 
 **Built for testers, by developers who care about quality! 🚀**
-

@@ -194,6 +194,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### CI/CD Pipeline Implementation
 
 **Created `.github/workflows/testbook-ci.yml` with 6 jobs:**
+
 1. **Backend Tests** - pytest with coverage (180+ tests)
 2. **Frontend Tests** - Vitest with coverage (30 tests)
 3. **E2E JavaScript** - Playwright browser automation
@@ -202,6 +203,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 6. **Badge Update** - Status summary on main branch
 
 **Pipeline Features:**
+
 - Parallel job execution for speed
 - Smart dependencies (E2E waits for unit/integration)
 - Coverage upload to Codecov
@@ -214,6 +216,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Status Badges Added
 
 **6 badges now on README:**
+
 - ![CI Status](https://github.com/upt3mpo/testbook/actions/workflows/testbook-ci.yml/badge.svg)
 - ![Backend Coverage](https://img.shields.io/badge/backend_coverage-86%25-brightgreen)
 - ![Frontend Coverage](https://img.shields.io/badge/frontend_coverage-95%25-brightgreen)
@@ -226,23 +229,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 **`docs/guides/PORTFOLIO.md` - 700+ lines of career guidance:**
 
 **Section 1: Setup**
+
 - Fork and personalization instructions
 - How to add your own contributions (3 strategies)
 - Screenshot/video capture guide
 
 **Section 2: Resume Templates**
+
 - QA Engineer role (6 bullets, 210+ tests focus)
 - Junior Developer role (testing-adjacent)
 - Career Changer role (learning journey focus)
 - Skills section recommendations
 
 **Section 3: LinkedIn**
+
 - Experience/Projects section template
 - Achievement highlights (coverage, test counts)
 - Technologies list
 - Key learnings summary
 
 **Section 4: Interview Preparation**
+
 - Talking points for each test type (unit, integration, E2E, performance, security)
 - Common QA interview questions with detailed answers
 - 30-second elevator pitch template
@@ -250,17 +257,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Specific test examples to discuss
 
 **Section 5: Repository Polish**
+
 - GitHub profile pinning instructions
 - Repository description template
 - Topics/tags to add
 - Professional README checklist
 
 **Section 6: Quantifying Impact**
+
 - Before/after metrics tables
 - CI/CD improvement tracking
 - Coverage increase documentation
 
 **Section 7: Bonus Content**
+
 - Video walkthrough guide (5-minute structure)
 - Final readiness checklist
 - Additional career resources
@@ -268,17 +278,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Documentation Integration
 
 **Portfolio Guide linked from:**
+
 - `README.md` - Added to "What's Available" section
 - `START_HERE.md` - New FAQ entry for job search
 - `learn/stage_5_capstone/README.md` - Prominent top-of-page link + checklist item
 - `docs/INDEX.md` - Added to guides table with ⭐
 
 **README Updates:**
+
 - Test counts corrected (180 backend, 30 frontend = 210 total)
 - Tagline updated with accurate numbers
 - 6 status badges prominently displayed
 
 **Impact:**
+
 - ✅ Automated testing catches regressions immediately
 - ✅ Quality badges demonstrate project health to recruiters
 - ✅ Portfolio guide saves learners hours of job search preparation
@@ -297,11 +310,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Linting & Formatting Implementation
 
 **Backend (Python) - 3 tools:**
+
 1. **Black** - Code formatting (line length 100)
 2. **isort** - Import sorting (Black-compatible profile)
 3. **Flake8** - Linting with extended ignore rules
 
 **Frontend (JavaScript) - 2 tools:**
+
 1. **ESLint** - Linting with plugins:
    - eslint-plugin-react
    - eslint-plugin-react-hooks
@@ -310,6 +325,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 2. **Prettier** - Code formatting (100-char line length, single quotes)
 
 **Configuration Files Created (6):**
+
 - `backend/.flake8` (15 lines) - Flake8 rules
 - `backend/pyproject.toml` (28 lines) - Black & isort config
 - `frontend/.eslintrc.json` (44 lines) - ESLint rules
@@ -318,6 +334,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `.pre-commit-config.yaml` (56 lines) - Git hooks for 10 checks
 
 **Package Updates:**
+
 - `backend/requirements.txt` - Added black, flake8, isort, pre-commit
 - `frontend/package.json` - Added 8 linting/formatting dev dependencies
 - Added 4 new npm scripts: `lint`, `lint:fix`, `format`, `format:check`
@@ -325,16 +342,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### CI/CD Integration
 
 **2 New Lint Jobs Added:**
+
 1. **lint-backend** (Black, isort, Flake8) - Runs before backend-tests
 2. **lint-frontend** (ESLint, Prettier) - Runs before frontend-tests
 
 **Updated CI workflow** (`.github/workflows/testbook-ci.yml` - now 346 lines):
+
 - Linting must pass before tests run (faster feedback)
 - Tests won't run if code doesn't meet quality standards
 - Badge-update job now depends on linting + tests
 - Updated summary message to include linting results
 
 **CI Job Flow:**
+
 ```
 lint-backend → backend-tests ↘
                               → e2e-tests → security → badge-update
@@ -344,12 +364,14 @@ lint-frontend → frontend-tests ↗
 #### Coverage Gates Enforced
 
 **Backend Coverage Threshold: 80% minimum**
+
 - Added `--cov-fail-under=80` to pytest command in CI
 - Current coverage: 86% (6% above minimum)
 - CI fails immediately if coverage drops below 80%
 - Prevents merging of undertested code
 
 **Why 80%?**
+
 - Industry standard for quality projects
 - Balances thoroughness with pragmatism
 - Allows flexibility for edge cases
@@ -358,6 +380,7 @@ lint-frontend → frontend-tests ↗
 #### Accessibility Testing (WCAG 2.1 AA)
 
 **Created E2E accessibility test suite:**
+
 - **File:** `tests/e2e/accessibility-axe.spec.js` (134 lines)
 - **Tool:** axe-playwright (axe-core integration)
 - **Standard:** WCAG 2.1 Level AA compliance
@@ -369,6 +392,7 @@ lint-frontend → frontend-tests ↗
   5. Profile page
 
 **Test approach:**
+
 ```javascript
 import AxeBuilder from '@axe-core/playwright';
 
@@ -382,18 +406,21 @@ expect(accessibilityScanResults.violations).toEqual([]);
 **Current status:** 0 accessibility violations across all pages ✅
 
 **Added dependencies:**
+
 - `@axe-core/playwright` to tests/package.json
 - Updated with `test:a11y` script
 
 #### Performance Baseline (Lighthouse CI)
 
 **Created Lighthouse configuration:**
+
 - **File:** `lighthouserc.js` (29 lines)
 - **Tool:** Lighthouse CI (@lhci/cli)
 - **Pages tested:** 3 URLs (home, register, login)
 - **Runs:** 3 per page (average taken)
 
 **Quality thresholds:**
+
 | Category | Minimum Score | Level |
 |----------|--------------|-------|
 | Performance | 70% | Warning |
@@ -404,6 +431,7 @@ expect(accessibilityScanResults.violations).toEqual([]);
 **Reports:** Saved to `./reports/lighthouse/` (filesystem target)
 
 **Run command:**
+
 ```bash
 npx lhci autorun
 ```
@@ -413,6 +441,7 @@ npx lhci autorun
 **1. Quality Checks Guide** (`docs/guides/QUALITY_CHECKS.md` - 430 lines)
 
 **Comprehensive guide covering:**
+
 - Overview of all quality tools (table)
 - Backend formatting (Black), import sorting (isort), linting (Flake8)
 - Frontend linting (ESLint), formatting (Prettier)
@@ -428,6 +457,7 @@ npx lhci autorun
 **2. Accessibility Testing Guide** (`docs/guides/ACCESSIBILITY_TESTING.md` - 373 lines)
 
 **Complete accessibility resource:**
+
 - Why accessibility matters (legal, ethical, business)
 - Testing pyramid (automated 40%, manual 60%)
 - 3 testing approaches:
@@ -449,6 +479,7 @@ npx lhci autorun
 **Created:** `scripts/quality-check.sh` (53 lines, executable)
 
 **What it runs:**
+
 1. Backend formatting check (Black)
 2. Import sort check (isort)
 3. Linting (Flake8)
@@ -458,6 +489,7 @@ npx lhci autorun
 7. Frontend tests
 
 **Usage:**
+
 ```bash
 ./scripts/quality-check.sh
 ```
@@ -467,6 +499,7 @@ npx lhci autorun
 #### Tests Package Updated
 
 **Created:** `tests/package.json` (17 lines)
+
 - Properly configured E2E test package
 - Added `@axe-core/playwright` and `@lhci/cli` dependencies
 - Added scripts:
@@ -480,6 +513,7 @@ npx lhci autorun
 #### Summary Statistics
 
 **Files Created: 11**
+
 - 6 configuration files
 - 2 comprehensive guides (803 lines)
 - 1 E2E accessibility test suite
@@ -487,6 +521,7 @@ npx lhci autorun
 - 1 quality check script
 
 **Files Updated: 5**
+
 - CI workflow (now 346 lines, +68 lines)
 - backend/requirements.txt (+4 tools)
 - frontend/package.json (+8 dev dependencies + 4 scripts)
@@ -498,6 +533,7 @@ npx lhci autorun
 **CI Jobs: +2** (lint-backend, lint-frontend)
 
 **New Quality Gates:**
+
 - ✅ Code formatting enforced (Black, Prettier)
 - ✅ Import sorting enforced (isort)
 - ✅ Linting standards enforced (Flake8, ESLint)
@@ -506,6 +542,7 @@ npx lhci autorun
 - ✅ Performance baselines established
 
 **Impact:**
+
 - ✅ Code quality consistent across contributions
 - ✅ Linting catches bugs before tests run (faster feedback)
 - ✅ Coverage gate prevents undertested code
@@ -530,6 +567,7 @@ npx lhci autorun
 **1. Backend (pytest) - `backend/tests/conftest.py`**
 
 **Welcome banner** (displayed on `pytest` start):
+
 ```
 ╔══════════════════════════════════════════════════════════════════╗
 ║                                                                  ║
@@ -544,10 +582,12 @@ npx lhci autorun
 ```
 
 **Completion messages:**
+
 - ✅ Success: Celebratory message + next steps (coverage, frontend, E2E)
 - ❌ Failure: Debug tips (pytest -v, --lf, troubleshooting guide)
 
 **Implementation:**
+
 - `pytest_configure()` hook - Displays banner on startup
 - `pytest_sessionfinish()` hook - Shows completion message
 - Non-intrusive, informative, encouraging
@@ -557,6 +597,7 @@ npx lhci autorun
 **2. Frontend (Vitest) - `frontend/src/tests/setup.js`**
 
 **Welcome banner** (displayed on `npm test` start):
+
 ```
 ╔══════════════════════════════════════════════════════════════════╗
 ║                                                                  ║
@@ -571,6 +612,7 @@ npx lhci autorun
 ```
 
 **Completion message:**
+
 - Shows next steps (coverage, accessibility, E2E)
 - Displayed in `afterAll()` hook
 
@@ -579,6 +621,7 @@ npx lhci autorun
 #### Milestone Progress Messages (from M1)
 
 **Backend messages include:**
+
 - Test suite introduction
 - Quick tips for pytest usage
 - Success celebration with emoji
@@ -586,6 +629,7 @@ npx lhci autorun
 - Debug help on failures
 
 **Frontend messages include:**
+
 - Test suite introduction
 - Vitest feature highlights
 - Next steps for additional testing
@@ -637,12 +681,14 @@ npx lhci autorun
    - Test count badge present
 
 **Output:**
+
 - Clear ✅/❌ for each check
 - Summary with pass/fail count
 - Next steps for release
 - Exit code 0 if all pass, 1 if any fail
 
 **Usage:**
+
 ```bash
 ./scripts/verify-release.sh
 ```
@@ -656,12 +702,14 @@ npx lhci autorun
 **Comprehensive release documentation:**
 
 **Section 1: What's New**
+
 - Major features overview
 - Self-guided learning path
 - Job readiness tools
 - Quality & accessibility
 
 **Section 2: Major Features**
+
 - Detailed breakdown of 5 learning stages
 - CI/CD pipeline description
 - Portfolio guide highlights
@@ -669,6 +717,7 @@ npx lhci autorun
 - Educational enhancements
 
 **Section 3: By The Numbers**
+
 | Metric | v1.0 | v1.1 | Change |
 |--------|------|------|--------|
 | Total Tests | 195 | 210+ | +15 |
@@ -680,26 +729,31 @@ npx lhci autorun
 | Quality Gates | 0 | 6 | ✨ New |
 
 **Section 4: Learning Paths**
+
 - Python Track (12-15 hours)
 - JavaScript Track (14-17 hours)
 - Hybrid Track (15-18 hours)
 - Manual QA Transition (20-25 hours)
 
 **Section 5: Breaking Changes**
+
 - Test file path reorganization
 - Migration instructions
 
 **Section 6: Bug Fixes**
+
 - Confusing directory structure fixed
 - Test counts corrected
 - Links updated
 
 **Section 7: Rubric Score**
+
 - v1.0: 40/65 (62%)
 - v1.1: 64.5/65 (99%)
 - All targets achieved ✅
 
 **Section 8: Getting Started**
+
 - Quick start commands
 - Learning path instructions
 - Job seeker guidance
@@ -709,6 +763,7 @@ npx lhci autorun
 #### Final Documentation Verification
 
 **Cross-linking verified for:**
+
 - ✅ All `/learn/` stages link correctly
 - ✅ All guides reference each other appropriately
 - ✅ README links to all major features
@@ -719,6 +774,7 @@ npx lhci autorun
 - ✅ Frontend test paths updated (15+ files)
 
 **Test verification:**
+
 - ✅ Backend: 180 tests passing, 86% coverage
 - ✅ Frontend: 30 tests passing, 95% coverage
 - ✅ All import paths working after reorganization
@@ -730,16 +786,19 @@ npx lhci autorun
 #### Summary Statistics
 
 **Files Created: 3**
+
 - `backend/tests/conftest.py` (enhanced with banners)
 - `frontend/src/tests/setup.js` (enhanced with banners)
 - `scripts/verify-release.sh` (154 lines)
 - `RELEASE_NOTES_v1.1.md` (348 lines)
 
 **Files Updated: 2**
+
 - `docs/ROADMAP.md` (M6 marked complete, outcomes achieved)
 - `CHANGELOG.md` (M6 section added)
 
 **Verification Checks: 25+**
+
 - File existence (10)
 - Documentation links (4)
 - Backend quality (4)
@@ -749,6 +808,7 @@ npx lhci autorun
 - Badges (3)
 
 **UX Improvements:**
+
 - ✅ Friendly welcome messages (pytest and Vitest)
 - ✅ Completion celebrations
 - ✅ Helpful tips in banners
@@ -756,6 +816,7 @@ npx lhci autorun
 - ✅ Clear next steps after test runs
 
 **Impact:**
+
 - ✅ First-time users feel welcomed
 - ✅ Clear guidance on what's happening
 - ✅ Success feels rewarding
@@ -773,12 +834,14 @@ npx lhci autorun
 **Focus:** Final bug fixes and polish
 
 #### Pytest Configuration
+
 - ✅ Fixed pytest-asyncio deprecation warning
   - Added `asyncio_mode = "auto"` to root `pyproject.toml`
   - Added `asyncio_default_fixture_loop_scope = "function"` to `tests/e2e-python/pytest.ini`
   - Warning now suppressed across all test runs
 
 #### Environment Variable Support
+
 - ✅ Implemented python-dotenv for automatic .env loading
   - Added `python-dotenv==1.0.1` to `backend/requirements.txt`
   - Added `load_dotenv()` to `backend/main.py`
@@ -786,6 +849,7 @@ npx lhci autorun
   - Dev endpoints (`/api/dev/reset`) now work for E2E tests
 
 #### Cross-Platform Documentation
+
 - ✅ Fixed Python E2E test documentation (15+ files)
   - Changed `pytest --headed` → `HEADLESS=false pytest` (correct syntax)
   - Added Windows PowerShell alternatives: `$env:HEADLESS="false"; pytest`
@@ -798,18 +862,21 @@ npx lhci autorun
     - All course and reference materials
 
 #### React Router v7 Compatibility
+
 - ✅ Suppressed React Router v7 deprecation warnings
   - Added future flags to `App.jsx`: `{ v7_startTransition: true, v7_relativeSplatPath: true }`
   - Updated all test helpers in 3 test files
   - Clean test output for screenshots
 
 #### Test Output Polish
+
 - ✅ Suppressed expected console warnings in tests
   - Contract test schema warning suppressed (demo test)
   - Error test console.error suppressed (expected error)
   - Clean, professional test output
 
 #### Screenshots & Visual Assets
+
 - ✅ Added 5 screenshots to README.md
   - `testbook-dashboard.png` - Application UI
   - `backend-tests-passing.png` - 180 tests passing
@@ -820,6 +887,7 @@ npx lhci autorun
 - ✅ All screenshots optimized (<200KB each)
 
 #### Internal Documentation Organization
+
 - ✅ Moved all internal docs to `testbook-notes/` workspace
   - `screenshots-completed.md` (moved from docs/)
   - `ROADMAP.md` (moved from docs/)

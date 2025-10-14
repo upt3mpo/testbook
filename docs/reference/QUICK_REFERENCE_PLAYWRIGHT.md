@@ -589,24 +589,28 @@ await page.evaluate(() => document.querySelector('button').click())
 ## 💡 Best Practices
 
 1. **Use data-testid for selectors** - More stable than CSS classes
+
    ```javascript
    ✅ page.locator('[data-testid="login-button"]')
    ❌ page.locator('.btn-primary.login')
    ```
 
 2. **Don't use timeouts** - Use proper waits
+
    ```javascript
    ❌ await page.waitForTimeout(2000)
    ✅ await page.waitForSelector('[data-testid="element"]')
    ```
 
 3. **Use auto-waiting assertions** - Built-in retries
+
    ```javascript
    ✅ await expect(page.locator('h1')).toHaveText('Welcome')
    ❌ expect(await page.locator('h1').textContent()).toBe('Welcome')
    ```
 
 4. **Reset state between tests** - Use beforeEach
+
    ```javascript
    test.beforeEach(async ({ page }) => {
      await resetDatabase(page);
@@ -614,11 +618,13 @@ await page.evaluate(() => document.querySelector('button').click())
    ```
 
 5. **Use helper functions** - DRY principle
+
    ```javascript
    const { loginUser, createPost } = require('./test-helpers');
    ```
 
 6. **Take screenshots on failure** - Configured in playwright.config.js
+
    ```javascript
    use: {
      screenshot: 'only-on-failure',
@@ -647,4 +653,3 @@ npx playwright test
 # Full cross-browser test
 npx playwright test --project=chromium --project=firefox --project=webkit
 ```
-

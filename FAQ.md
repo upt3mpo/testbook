@@ -38,12 +38,14 @@ Development mode works without Docker and is recommended for all labs.
 **A:** Yes! The scripts are now **idempotent**.
 
 This means:
+
 - ✅ Running it multiple times won't reinstall dependencies unnecessarily
 - ✅ It checks if dependencies are already installed and skips if present
 - ✅ It checks if ports are already in use and warns you
 - ✅ Safe to run even if a previous instance is running
 
 The script will:
+
 1. Check if Python venv exists (create only if needed)
 2. Check if dependencies are installed (install only if needed)
 3. Check if node_modules exists (install only if needed)
@@ -56,6 +58,7 @@ The script will:
 **A:** You might have a previous instance running.
 
 **Option 1:** Kill the process using the port:
+
 ```bash
 # macOS/Linux
 lsof -ti:8000 | xargs kill
@@ -248,6 +251,7 @@ curl http://localhost:8000/api/health
 ```
 
 If not running, start it:
+
 ```bash
 cd backend
 source .venv/bin/activate
@@ -276,6 +280,7 @@ await page.locator('[data-testid="button"]').count()  // Should be > 0
 ```
 
 Common issues:
+
 - Typo in `data-testid`
 - Element is hidden
 - Page hasn't loaded yet
@@ -390,6 +395,7 @@ def clean_db(db_session):
 ```
 
 Or reset manually:
+
 ```bash
 ./reset-database.sh
 ```
@@ -624,11 +630,13 @@ Full index: `docs/INDEX.md`
 ### Q: Can I use this for teaching or mentoring?
 
 **A:** Yes! While Testbook is designed for individual learning, it works great for:
+
 - Staff engineers guiding junior developers
 - Mentors introducing testing to manual QA professionals
 - Tech leads onboarding team members
 
 See:
+
 - `labs/solutions/` - Sample solutions for guidance
 - `docs/course/COURSE_AUTOMATION_TESTING_101.md` - Structured curriculum
 - `docs/course/LEARNING_PATHS.md` - Different learning paths by background
@@ -658,6 +666,7 @@ Terminal 2: Run tests
 ### Tip 2: Use Quick References
 
 Bookmark these for fast lookups:
+
 - `docs/reference/QUICK_REFERENCE_PYTEST.md`
 - `docs/reference/QUICK_REFERENCE_PLAYWRIGHT.md`
 
@@ -668,6 +677,7 @@ Bookmark these for fast lookups:
 ### Tip 4: Start Fresh
 
 When really stuck:
+
 ```bash
 # Reset everything
 ./reset-database.sh
@@ -679,6 +689,7 @@ pytest -v
 ### Tip 5: Use Verbose Mode
 
 Always use `-v` for better output:
+
 ```bash
 pytest -v  # Shows test names and results
 ```
@@ -686,4 +697,3 @@ pytest -v  # Shows test names and results
 ---
 
 **Still have questions? Create an issue on GitHub!** 🚀
-

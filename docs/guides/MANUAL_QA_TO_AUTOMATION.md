@@ -22,6 +22,7 @@ Welcome! If you're a manual QA professional looking to add automation to your sk
 ### What is Test Automation?
 
 **Manual Testing:**
+
 ```
 1. Open browser
 2. Navigate to login page
@@ -33,6 +34,7 @@ Welcome! If you're a manual QA professional looking to add automation to your sk
 ```
 
 **Automated Testing (Same Test):**
+
 ```python
 def test_login_success(client):
     """Test successful login redirects to home"""
@@ -60,6 +62,7 @@ def test_login_success(client):
 ### When to Automate
 
 ✅ **Good candidates for automation:**
+
 - Repetitive tests run frequently
 - Regression tests for stable features
 - Tests that must run on every commit
@@ -68,6 +71,7 @@ def test_login_success(client):
 - Tests that run overnight or on schedule
 
 ❌ **Poor candidates for automation:**
+
 - One-time tests
 - Tests for rapidly changing features
 - Subjective tests (visual design, UX feel)
@@ -83,6 +87,7 @@ def test_login_success(client):
 Let's start with something you've tested manually hundreds of times: verifying an API returns data.
 
 **Manual Process:**
+
 1. Open Postman
 2. Create GET request to `/api/users/1`
 3. Send request
@@ -109,6 +114,7 @@ def test_get_user(client):
 ```
 
 **Run it:**
+
 ```bash
 cd backend
 pytest tests/integration/test_api_users.py::test_get_user -v
@@ -142,11 +148,13 @@ This is called **AAA pattern** (Arrange, Act, Assert).
 **What you're automating:** API endpoints, business logic, database interactions
 
 **Tools:**
+
 - **Pytest**: Test framework
 - **httpx / TestClient**: Make API requests
 - **Faker**: Generate test data
 
 **Example:**
+
 ```python
 def test_create_post(client, authenticated_user):
     """Test creating a post"""
@@ -169,11 +177,13 @@ def test_create_post(client, authenticated_user):
 **What you're automating:** React components, user interactions, rendering
 
 **Tools:**
+
 - **Vitest**: Test framework
 - **React Testing Library**: Test React components
 - **jsdom**: Simulated browser
 
 **Example:**
+
 ```javascript
 test('Login form submits with valid credentials', async () => {
   const user = userEvent.setup();
@@ -200,10 +210,12 @@ test('Login form submits with valid credentials', async () => {
 **What you're automating:** Full user journeys through real browser
 
 **Tools:**
+
 - **Playwright**: Browser automation
 - **Multiple browsers**: Chrome, Firefox, Safari
 
 **Example:**
+
 ```javascript
 test('User can create a post', async ({ page }) => {
   // Login
@@ -232,6 +244,7 @@ Let's convert your existing manual test cases to automation.
 ### Example 1: Login Flow
 
 **Manual Test Case:**
+
 ```
 Test Case: Successful Login
 Prerequisites: User exists in database
@@ -247,6 +260,7 @@ Expected Result:
 ```
 
 **Automated (E2E):**
+
 ```javascript
 test('Successful login redirects to home', async ({ page }) => {
   await page.goto('http://localhost:3000/login');
@@ -269,6 +283,7 @@ test('Successful login redirects to home', async ({ page }) => {
 ### Example 2: Form Validation
 
 **Manual Test Case:**
+
 ```
 Test Case: Registration with invalid email
 Steps:
@@ -283,6 +298,7 @@ Expected Result:
 ```
 
 **Automated (API):**
+
 ```python
 def test_register_invalid_email(client):
     """Test registration fails with invalid email"""
@@ -297,6 +313,7 @@ def test_register_invalid_email(client):
 ```
 
 **Automated (E2E):**
+
 ```javascript
 test('Registration fails with invalid email', async ({ page }) => {
   await page.goto('http://localhost:3000/register');
@@ -320,6 +337,7 @@ test('Registration fails with invalid email', async ({ page }) => {
 ### Learning Path
 
 **Month 1: Foundations**
+
 - [ ] Complete LAB_01 (Your First Test)
 - [ ] Complete LAB_02 (Testing Real Functions)
 - [ ] Learn Python or JavaScript basics
@@ -327,6 +345,7 @@ test('Registration fails with invalid email', async ({ page }) => {
 - [ ] Run existing tests
 
 **Month 2: API Testing**
+
 - [ ] Complete LAB_03 (Testing API Endpoints)
 - [ ] Write 10 API tests
 - [ ] Learn about fixtures and setup
@@ -334,6 +353,7 @@ test('Registration fails with invalid email', async ({ page }) => {
 - [ ] Practice writing assertions
 
 **Month 3: E2E Testing**
+
 - [ ] Complete LAB_04 (E2E Testing)
 - [ ] Automate 5 critical user flows
 - [ ] Learn browser automation
@@ -341,6 +361,7 @@ test('Registration fails with invalid email', async ({ page }) => {
 - [ ] Debug failing tests
 
 **Month 4: Advanced Topics**
+
 - [ ] Complete LAB_05 (Test Data Management)
 - [ ] Complete LAB_06 (Rate Limiting)
 - [ ] Learn performance testing
@@ -350,12 +371,14 @@ test('Registration fails with invalid email', async ({ page }) => {
 ### Daily Practice
 
 **15 Minutes/Day:**
+
 1. Pick one manual test case
 2. Write it as an automated test
 3. Run it and make it pass
 4. Refactor for clarity
 
 **30 Minutes/Day:**
+
 1. Morning: Review failed tests from CI
 2. Afternoon: Automate one regression test
 3. Evening: Read documentation or tutorials
@@ -386,6 +409,7 @@ def test_health_check(client):
 ```
 
 **Resources:**
+
 - [Python for Testers](https://automationpanda.com/)
 - [JavaScript for QA](https://testautomationu.applitools.com/)
 - [Pytest Tutorial](https://docs.pytest.org/en/stable/getting-started.html)
@@ -397,6 +421,7 @@ def test_health_check(client):
 **Problem:** Tests pass sometimes, fail other times.
 
 **Common Causes:**
+
 - Race conditions (timing issues)
 - Shared test data
 - External dependencies
@@ -444,6 +469,7 @@ def test_user():
    - E2E: minutes
 
 2. **Run tests in parallel**
+
 ```bash
 # Pytest parallel
 pytest -n 4
@@ -453,6 +479,7 @@ npx playwright test --workers=4
 ```
 
 3. **Run only changed tests**
+
 ```bash
 # Only test what changed
 pytest --lf  # Last failed
@@ -460,6 +487,7 @@ pytest --testmon  # Test related to code changes
 ```
 
 4. **Use test tags**
+
 ```python
 @pytest.mark.smoke
 def test_critical_path():
@@ -476,6 +504,7 @@ pytest -m smoke
 ### Skills to Develop
 
 **Technical Skills:**
+
 - [ ] Programming (Python, JavaScript)
 - [ ] Test frameworks (Pytest, Jest, Playwright)
 - [ ] CI/CD (GitHub Actions, Jenkins)
@@ -484,6 +513,7 @@ pytest -m smoke
 - [ ] Security testing (OWASP, penetration testing)
 
 **Soft Skills:**
+
 - [ ] Collaboration with developers
 - [ ] Test strategy and planning
 - [ ] Documentation
@@ -493,22 +523,26 @@ pytest -m smoke
 ### Job Titles & Progression
 
 **Entry Level:**
+
 - QA Engineer
 - Test Engineer
 - Junior SDET
 
 **Mid Level:**
+
 - Senior QA Engineer
 - Automation Engineer
 - SDET (Software Development Engineer in Test)
 
 **Senior Level:**
+
 - Lead QA Engineer
 - QA Architect
 - Test Manager
 - Staff Engineer
 
 **Salary Impact:**
+
 - Manual QA: $50k - $80k
 - Automation QA: $70k - $120k
 - Senior SDET: $120k - $180k+
@@ -518,6 +552,7 @@ pytest -m smoke
 ## Part 8: Your Action Plan
 
 ### Week 1: Setup & Exploration
+
 - [ ] Clone Testbook repository
 - [ ] Set up development environment
 - [ ] Run all existing tests
@@ -525,18 +560,21 @@ pytest -m smoke
 - [ ] Complete LAB_01
 
 ### Week 2: First Tests
+
 - [ ] Write 3 simple API tests
 - [ ] Complete LAB_02 and LAB_03
 - [ ] Learn pytest basics
 - [ ] Understand fixtures
 
 ### Week 3: E2E Testing
+
 - [ ] Install Playwright
 - [ ] Complete LAB_04
 - [ ] Automate one critical user flow
 - [ ] Learn debugging techniques
 
 ### Week 4: Real-World Practice
+
 - [ ] Pick 5 manual test cases from your work
 - [ ] Convert them to automated tests
 - [ ] Set up CI/CD to run tests
@@ -558,16 +596,19 @@ pytest -m smoke
 ### External Resources
 
 **Courses:**
+
 - [Test Automation University](https://testautomationu.applitools.com/) (Free)
 - [Udemy: Python for Testers](https://www.udemy.com/topic/python-for-testers/)
 - [Playwright Documentation](https://playwright.dev/docs/intro)
 
 **Books:**
+
 - "Python Testing with pytest" by Brian Okken
 - "Continuous Delivery" by Jez Humble
 - "The Way of the Web Tester" by Jonathan Rasmusson
 
 **Communities:**
+
 - [Ministry of Testing](https://www.ministryoftesting.com/)
 - [Test Automation Patterns Wiki](https://testautomationpatterns.org/)
 - [Reddit /r/QualityAssurance](https://reddit.com/r/qualityassurance)
@@ -579,6 +620,7 @@ pytest -m smoke
 ### "Do I need to be a developer?"
 
 **No.** You need basic programming skills, but you don't need to be a full developer. Focus on:
+
 - Reading code
 - Writing simple functions
 - Understanding logic flow
@@ -591,6 +633,7 @@ You can learn as you go.
 ### "Will automation replace manual testers?"
 
 **No.** Automation complements manual testing. You'll always need:
+
 - Exploratory testing
 - Usability testing
 - Visual regression
@@ -604,6 +647,7 @@ Automation handles repetitive tasks so you can focus on high-value testing.
 ### "How long until I'm proficient?"
 
 **Timeline:**
+
 - **1 month:** Run and modify existing tests
 - **3 months:** Write simple tests independently
 - **6 months:** Build test frameworks
@@ -616,6 +660,7 @@ Everyone learns at their own pace. Consistent practice is key.
 ### "What if I fail?"
 
 **Everyone does!** Failing tests teach you:
+
 - How the system works
 - Edge cases to consider
 - Better assertions
@@ -628,12 +673,14 @@ Treat failures as learning opportunities, not setbacks.
 ## Conclusion
 
 You already have the most important skill: **you know how to test**. You understand:
+
 - User flows
 - Edge cases
 - Business requirements
 - What "quality" means
 
 Now you're adding **automation** to amplify your impact. You'll:
+
 - Test faster
 - Test more
 - Find bugs sooner
@@ -650,4 +697,3 @@ Now you're adding **automation** to amplify your impact. You'll:
 - **General learning:** See docs/course/LEARNING_PATHS.md
 
 **Remember:** Every expert was once a beginner. You've got this! 🚀
-

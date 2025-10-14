@@ -40,6 +40,7 @@ frontend/src/tests/
 **Component-level tests** using Vitest and React Testing Library.
 
 **What they test:**
+
 - Component rendering
 - User interactions (clicks, typing)
 - State management
@@ -49,6 +50,7 @@ frontend/src/tests/
 **Tools:** Vitest, React Testing Library, MSW
 
 **Run:**
+
 ```bash
 npm test -- tests/unit/
 ```
@@ -60,6 +62,7 @@ npm test -- tests/unit/
 **API contract tests** ensuring frontend/backend agreement.
 
 **What they test:**
+
 - API response structure validation
 - OpenAPI schema compliance
 - Request/response data types
@@ -68,6 +71,7 @@ npm test -- tests/unit/
 **Tools:** Vitest, OpenAPI validators
 
 **Run:**
+
 ```bash
 npm test -- tests/integration/
 ```
@@ -79,6 +83,7 @@ npm test -- tests/integration/
 **WCAG compliance checks** using axe-core.
 
 **What they test:**
+
 - Keyboard navigation
 - ARIA labels and roles
 - Form accessibility
@@ -88,6 +93,7 @@ npm test -- tests/integration/
 **Tools:** vitest-axe, axe-core
 
 **Run:**
+
 ```bash
 npm test -- tests/accessibility/
 ```
@@ -99,12 +105,14 @@ npm test -- tests/accessibility/
 MSW intercepts network requests at the network level, providing realistic API mocking for component tests.
 
 **Benefits:**
+
 - ✅ More realistic than axios mocks
 - ✅ Works with any HTTP client
 - ✅ Reusable across tests
 - ✅ Can be used in development mode
 
 **Learn more:**
+
 - [Lab 6B: Advanced Component Testing](../../../labs/LAB_06B_Advanced_Component_Testing.md)
 - [MSW README](mocks/README.md)
 
@@ -113,11 +121,13 @@ MSW intercepts network requests at the network level, providing realistic API mo
 ## 🚀 Running Tests
 
 ### Run All Tests
+
 ```bash
 npm test
 ```
 
 ### Run Specific Test Types
+
 ```bash
 # Unit tests only
 npm test -- tests/unit/
@@ -133,11 +143,13 @@ npm test -- tests/unit/CreatePost.test.jsx
 ```
 
 ### Watch Mode
+
 ```bash
 npm test -- --watch
 ```
 
 ### Coverage Report
+
 ```bash
 npm test -- --coverage
 ```
@@ -147,15 +159,18 @@ npm test -- --coverage
 ## 📚 Learning Resources
 
 ### For Unit Testing (Stage 1)
+
 - [Stage 1: Unit Tests](../../../learn/stage_1_unit/)
 - Study: `tests/unit/CreatePost.test.jsx`, `tests/unit/Navbar.test.jsx`
 
 ### For Integration Testing (Stage 2)
+
 - [Stage 2: Integration Tests](../../../learn/stage_2_integration/)
 - Study: `tests/integration/contract.test.js`
 - Study: `tests/mocks/handlers.js` for MSW patterns
 
 ### For Component Testing Labs
+
 - [Lab 6B: Advanced Component Testing](../../../labs/LAB_06B_Advanced_Component_Testing.md)
 - [Lab 6C: Frontend Integration Testing](../../../labs/LAB_06C_Frontend_Integration_Testing.md)
 
@@ -168,6 +183,7 @@ npm test -- --coverage
 **Setup File:** `tests/setup.js` (loaded before all tests)
 
 **Coverage Excludes:**
+
 - `node_modules/`
 - `src/tests/` (test files themselves)
 - `**/*.config.js`
@@ -239,4 +255,3 @@ it('should enable submit button when form is valid', () => {
 ---
 
 *For more details, see [Testing Guide](../../../docs/guides/TESTING_GUIDE.md)*
-

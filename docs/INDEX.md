@@ -59,6 +59,7 @@ Testbook/
 **Total: 12-18 hours self-paced**
 
 **What makes this path special:**
+
 - ✅ Links directly to working test code
 - ✅ Reflection questions for deep learning
 - ✅ Success criteria at each stage
@@ -318,6 +319,7 @@ Lab series overview | **Total: 🆕 12-18 hours** (includes advanced labs)
 **Total advanced time:** ~5.5 hours | **Experience level:** Professional patterns
 
 **Choose your path:**
+
 - 🐍 **Python-only:** Lab 4B
 - ☕ **JavaScript-only:** Lab 6B → Lab 6C
 - 🎯 **Hybrid (Python + JS):** Lab 4B + Lab 6B + Lab 6C

@@ -7,11 +7,13 @@ Thank you for your interest in improving the Testbook Testing Platform! This doc
 ## 🎯 Ways to Contribute
 
 ### For Educators & Students
+
 - **Report Issues** - Found a bug or unclear documentation? Let us know!
 - **Suggest Improvements** - Have ideas for better labs or examples?
 - **Share Feedback** - How can we make learning easier?
 
 ### For Developers
+
 - **Fix Bugs** - Help improve stability
 - **Add Tests** - Increase coverage
 - **Improve Documentation** - Make guides clearer
@@ -30,6 +32,7 @@ Thank you for your interest in improving the Testbook Testing Platform! This doc
 ## 🔧 Development Setup
 
 ### Prerequisites
+
 - Python 3.11+
 - Node.js 20+
 - Git
@@ -73,6 +76,7 @@ cd ..
 - `test/` - Test improvements
 
 **Examples:**
+
 ```
 feature/add-mutation-testing
 fix/flaky-e2e-tests
@@ -84,6 +88,7 @@ test/increase-security-coverage
 ### Workflow
 
 1. **Create a branch** from `main`:
+
    ```bash
    git checkout -b feature/your-feature-name
    ```
@@ -91,6 +96,7 @@ test/increase-security-coverage
 2. **Make your changes** with atomic commits
 
 3. **Test your changes**:
+
    ```bash
    # Backend tests
    cd backend
@@ -102,6 +108,7 @@ test/increase-security-coverage
    ```
 
 4. **Push and create PR**:
+
    ```bash
    git push origin feature/your-feature-name
    ```
@@ -110,7 +117,7 @@ test/increase-security-coverage
 
 ## ✅ Testing Requirements
 
-### All Contributions Must:
+### All Contributions Must
 
 1. **Pass existing tests** - Don't break what works
 2. **Add new tests** - For new features
@@ -155,12 +162,14 @@ flake8 backend/
 ```
 
 **Standards:**
+
 - Use type hints when helpful
 - Write docstrings for all functions/classes
 - Keep functions focused (one responsibility)
 - Name tests descriptively: `test_user_can_login_with_valid_credentials`
 
 **Example:**
+
 ```python
 def test_user_creation_sets_default_values(db_session):
     """Test that user creation sets appropriate defaults."""
@@ -185,12 +194,14 @@ npx eslint tests/
 ```
 
 **Standards:**
+
 - Use `async/await` consistently
 - Always use `data-testid` selectors
 - Group tests with `describe()`
 - Use descriptive test names
 
 **Example:**
+
 ```javascript
 test('user can login with valid credentials', async ({ page }) => {
   await page.goto('http://localhost:3000');
@@ -206,7 +217,7 @@ test('user can login with valid credentials', async ({ page }) => {
 
 ## 📚 Documentation Standards
 
-### All Documentation Should:
+### All Documentation Should
 
 1. **Be clear and concise** - No jargon without explanation
 2. **Include examples** - Show, don't just tell
@@ -227,10 +238,12 @@ scripts\check-markdown.bat
 ```
 
 This validates:
+
 - ✅ Markdown linting (formatting, style)
 - ✅ Link checking (broken links, anchors)
 
 **Auto-fix common issues:**
+
 ```bash
 markdownlint --fix '**/*.md' --ignore node_modules --ignore venv
 ```
@@ -257,6 +270,7 @@ labs/
 ### Writing Labs
 
 **Template:**
+
 ```markdown
 # 🧪 Lab X: Title
 
@@ -324,12 +338,14 @@ When creating a PR, include:
 ### Review Criteria
 
 ✅ **Approved if:**
+
 - All tests pass
 - Code quality is good
 - Documentation is clear
 - Follows contribution guidelines
 
 ❌ **Changes requested if:**
+
 - Tests failing
 - Coverage drops
 - Unclear documentation
@@ -368,6 +384,7 @@ When creating a PR, include:
 ### Bug Reports
 
 **Include:**
+
 1. **Description** - What's wrong?
 2. **Steps to reproduce** - How to see the bug?
 3. **Expected behavior** - What should happen?
@@ -376,6 +393,7 @@ When creating a PR, include:
 6. **Screenshots** - If applicable
 
 **Template:**
+
 ```markdown
 **Bug Description:**
 [Clear description]
@@ -399,6 +417,7 @@ When creating a PR, include:
 ### Feature Requests
 
 **Include:**
+
 1. **Problem** - What problem does this solve?
 2. **Proposed solution** - How should it work?
 3. **Alternatives** - Other ways to solve it?
@@ -419,10 +438,12 @@ When creating a PR, include:
 ### Documentation PRs
 
 **Small fixes** (typos, broken links):
+
 - Just create PR directly
 - No issue needed
 
 **Large changes** (new guides, restructuring):
+
 - Create issue first
 - Discuss approach
 - Then create PR
@@ -444,6 +465,7 @@ These contributions are especially valuable:
 ### Good First Issues
 
 Look for issues tagged:
+
 - `good-first-issue` - Perfect for beginners
 - `documentation` - Doc improvements
 - `help-wanted` - We need help!
@@ -474,9 +496,10 @@ By contributing, you agree that your contributions will be licensed under the MI
 
 ---
 
-## 🙏 Thank You!
+## 🙏 Thank You
 
 Every contribution makes Testbook better for learners worldwide. Whether you:
+
 - Fix a typo
 - Report a bug
 - Create a lab
@@ -496,4 +519,3 @@ Every contribution makes Testbook better for learners worldwide. Whether you:
 ---
 
 **Happy Contributing! Let's make testing education better together! 🚀**
-

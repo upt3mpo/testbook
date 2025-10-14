@@ -9,11 +9,13 @@ Comprehensive cross-platform guide for running all Testbook tests.
 ## 🖥️ Platform-Specific Quick Start
 
 ### macOS / Linux
+
 ```bash
 cd backend && source .venv/bin/activate && pytest -v
 ```
 
 ### Windows
+
 ```cmd
 cd backend
 .venv\Scripts\activate
@@ -27,12 +29,14 @@ pytest -v
 ## 📚 Test Categories
 
 ### Backend Tests (Python/pytest)
+
 - **166 tests** (unit, integration, database)
 - **84% coverage**
 - **Platform:** All (Python is cross-platform)
 - **Language:** Python
 
 ### E2E Tests (Playwright)
+
 - **60+ tests** (browser automation)
 - **Cross-browser** (Chrome, Firefox, Safari)
 - **Platform:** All
@@ -41,14 +45,17 @@ pytest -v
 > **Before you run E2E tests:** start the development servers with `./start-dev.sh` (macOS/Linux) or `start-dev.bat` (Windows). The UI will be available at `http://localhost:3000` and the API at `http://localhost:8000`.
 
 ### API Tests
+
 - **Tools:** Postman/Newman (all platforms) or Python requests
 - **Language:** Agnostic (HTTP calls)
 
 ### Performance Tests (K6)
+
 - **3 scripts** (smoke, load, stress)
 - **Platform:** All (K6 is cross-platform)
 
 ### Security Tests
+
 - **23 tests**
 - **Platform:** All
 - **Language:** Python
@@ -378,6 +385,7 @@ pytest tests/security/test_rate_limiting.py -v
 **Expected:** 17-19/23 tests passing (74-83%) ✅
 
 **If you see failures:**
+
 1. Check if backend is in TESTING mode
 2. See `tests/security/README.md` for troubleshooting
 3. Read `labs/LAB_06_Testing_With_Rate_Limits.md` for complete explanation

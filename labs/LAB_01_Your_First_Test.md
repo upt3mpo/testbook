@@ -9,6 +9,7 @@
 ## 🎯 What You'll Learn
 
 By the end of this lab, you will:
+
 - Write your first automated test
 - Run a test and see it pass
 - Understand test structure
@@ -21,10 +22,12 @@ By the end of this lab, you will:
 ### Step 1: Open Your Terminal (2 minutes)
 
 **macOS/Linux:**
+
 - Open Terminal app
 - Navigate to Testbook: `cd /path/to/Testbook`
 
 **Windows:**
+
 - Open Command Prompt or PowerShell
 - Navigate to Testbook: `cd C:\path\to\Testbook`
 
@@ -46,6 +49,7 @@ source .venv/bin/activate  # macOS/Linux
 Create a new file: `backend/tests/test_my_first.py`
 
 **Copy this code exactly:**
+
 ```python
 """My first test file!"""
 
@@ -76,6 +80,7 @@ pytest tests/test_my_first.py -v
 ```
 
 **You should see:**
+
 ```
 tests/test_my_first.py::test_basic_math PASSED ✓
 tests/test_my_first.py::test_string_length PASSED ✓
@@ -91,16 +96,19 @@ tests/test_my_first.py::test_list_contains PASSED ✓
 ### Step 5: Make a Test Fail (On Purpose!) (5 minutes)
 
 **Change line 7 to:**
+
 ```python
 assert result == 5  # Wrong answer!
 ```
 
 **Run again:**
+
 ```bash
 pytest tests/test_my_first.py -v
 ```
 
 **You should see:**
+
 ```
 tests/test_my_first.py::test_basic_math FAILED ✗
 
@@ -110,6 +118,7 @@ E   assert 4 == 5
 **This is GOOD!** You now see how tests catch errors.
 
 **Fix it back:**
+
 ```python
 assert result == 4  # Correct answer
 ```
@@ -121,6 +130,7 @@ assert result == 4  # Correct answer
 ### Step 6: Write Your Own Test (10 minutes)
 
 **Add this function to the file:**
+
 ```python
 def test_my_own_test():
     """Test something I wrote myself!"""
@@ -138,11 +148,13 @@ def test_my_own_test():
 ```
 
 **Customize it:**
+
 - Change "Your Name" to your actual name
 - Change favorite_number to your favorite number
 - Add items to my_list
 
 **Run it:**
+
 ```bash
 pytest tests/test_my_first.py::test_my_own_test -v
 ```
@@ -164,6 +176,7 @@ pytest tests/test_my_first.py::test_my_own_test -v
 ## 🚀 Next Steps
 
 Now try:
+
 1. Add 2 more test functions to your file
 2. Run all your tests: `pytest tests/test_my_first.py`
 3. Make one test fail on purpose and see the error
@@ -174,6 +187,7 @@ Now try:
 ## 💡 Key Takeaways
 
 **Test Structure:**
+
 ```python
 def test_something():           # Function starts with "test_"
     """What this test does."""  # Docstring explains it
@@ -189,6 +203,7 @@ def test_something():           # Function starts with "test_"
 ```
 
 **Assert Statements:**
+
 - `assert x == y` - x equals y
 - `assert x != y` - x not equals y
 - `assert x > y` - x greater than y
@@ -200,11 +215,13 @@ def test_something():           # Function starts with "test_"
 ## 🎯 Challenge
 
 Can you write a test that:
+
 1. Creates a list of numbers
 2. Calculates the sum
 3. Asserts the sum is correct
 
 **Hint:**
+
 ```python
 def test_sum_numbers():
     numbers = [1, 2, 3, 4, 5]
@@ -217,4 +234,3 @@ def test_sum_numbers():
 **🎉 Congratulations on completing Lab 1!**
 
 **Next Lab:** [Lab 2: Testing Real Functions](LAB_02_Testing_Real_Functions.md)
-

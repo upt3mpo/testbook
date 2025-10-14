@@ -43,6 +43,7 @@ console.log(user.displayName);  // Error! Backend returns display_name
 **The Solution: Contract Testing**
 
 Contract testing ensures the frontend and backend agree on:
+
 - Response structure
 - Field names and types
 - Status codes
@@ -777,6 +778,7 @@ function displayPost(post: Post) {
 ### Challenge 1: Add More Endpoints
 
 Test contracts for:
+
 - PUT /api/users/me (update profile)
 - POST /api/posts/{id}/reactions
 - DELETE /api/posts/{id}
@@ -784,6 +786,7 @@ Test contracts for:
 ### Challenge 2: Error Contract Testing
 
 Test that error responses match FastAPI's error format:
+
 - 400 (Validation error)
 - 401 (Unauthorized)
 - 403 (Forbidden)
@@ -884,6 +887,7 @@ test('user can create post', async ({ page }) => {
 ## 📚 Resources
 
 **Working Helper Files (Ready to Use!):**
+
 - **`frontend/scripts/fetch-schema.js`** - ⭐ Fetch OpenAPI schema from backend
   - Run: `node frontend/scripts/fetch-schema.js`
   - Creates: `src/test/openapi-schema.json`
@@ -895,14 +899,17 @@ test('user can create post', async ({ page }) => {
 - **`frontend/src/test/mocks/`** - MSW handlers from Lab 6B
 
 **Prerequisites:**
+
 - [Lab 6B: Advanced Component Testing](LAB_06B_Advanced_Component_Testing.md) - MSW basics
 - [Testing Comparison Guide](../docs/guides/TESTING_COMPARISON_PYTHON_JS.md) - Backend testing context
 
 **Next Steps:**
+
 - [Section 8: Advanced E2E Patterns](../docs/course/SECTION_08_ADVANCED_E2E_PATTERNS.md) - Complete E2E patterns
 - [CI/CD Guide](../docs/course/CI_CD_E2E_TESTING.md) - Automate contract tests
 
 **External Documentation:**
+
 - [OpenAPI Specification](https://swagger.io/specification/)
 - [FastAPI OpenAPI](https://fastapi.tiangolo.com/tutorial/metadata/)
 - [Contract Testing Guide](https://pactflow.io/blog/what-is-contract-testing/)
@@ -910,4 +917,3 @@ test('user can create post', async ({ page }) => {
 ---
 
 **🎉 You've mastered frontend integration testing with contract validation! This prevents countless API integration bugs!**
-

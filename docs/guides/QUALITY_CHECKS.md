@@ -21,11 +21,13 @@ Testbook uses automated quality checks to maintain code standards:
 ## 🚀 Quick Start
 
 ### Run All Quality Checks
+
 ```bash
 ./scripts/quality-check.sh
 ```
 
 This runs:
+
 - ✅ Black formatting check (Python)
 - ✅ isort import sort check (Python)
 - ✅ Flake8 linting (Python)
@@ -41,12 +43,14 @@ This runs:
 ### Formatting with Black
 
 **Check formatting:**
+
 ```bash
 cd backend
 black --check .
 ```
 
 **Auto-fix:**
+
 ```bash
 black .
 ```
@@ -64,12 +68,14 @@ target-version = ['py311']
 ### Import Sorting with isort
 
 **Check imports:**
+
 ```bash
 cd backend
 isort --check-only --diff .
 ```
 
 **Auto-fix:**
+
 ```bash
 isort .
 ```
@@ -87,6 +93,7 @@ line_length = 100
 ### Linting with Flake8
 
 **Run linter:**
+
 ```bash
 cd backend
 flake8 .
@@ -106,6 +113,7 @@ exclude = venv, .venv, htmlcov
 ### Coverage Gate (80% minimum)
 
 **Run tests with coverage gate:**
+
 ```bash
 cd backend
 pytest --cov --cov-fail-under=80
@@ -114,6 +122,7 @@ pytest --cov --cov-fail-under=80
 **Current coverage:** 86% (well above minimum!)
 
 **Why 80%?**
+
 - Industry standard for quality projects
 - Ensures critical paths are tested
 - Allows flexibility for edge cases
@@ -126,12 +135,14 @@ pytest --cov --cov-fail-under=80
 ### Linting with ESLint
 
 **Check code:**
+
 ```bash
 cd frontend
 npm run lint
 ```
 
 **Auto-fix:**
+
 ```bash
 npm run lint:fix
 ```
@@ -139,6 +150,7 @@ npm run lint:fix
 **Configuration:** `frontend/.eslintrc.json`
 
 **Plugins enabled:**
+
 - eslint-plugin-react
 - eslint-plugin-react-hooks
 - eslint-plugin-jsx-a11y (accessibility)
@@ -149,12 +161,14 @@ npm run lint:fix
 ### Formatting with Prettier
 
 **Check formatting:**
+
 ```bash
 cd frontend
 npm run format:check
 ```
 
 **Auto-fix:**
+
 ```bash
 npm run format
 ```
@@ -191,6 +205,7 @@ pre-commit install
 ### What Gets Checked
 
 **On every commit:**
+
 1. Trailing whitespace removal
 2. End-of-file fixer
 3. YAML validation
@@ -237,6 +252,7 @@ lint-frontend → frontend-tests ↗
 ```
 
 **Benefits:**
+
 - Fast feedback (linting is quick)
 - Saves compute (don't run tests if code doesn't pass lint)
 - Clear separation of concerns
@@ -246,6 +262,7 @@ lint-frontend → frontend-tests ↗
 **Location:** `.github/workflows/testbook-ci.yml`
 
 **Jobs:**
+
 1. `lint-backend` - Black, isort, Flake8
 2. `lint-frontend` - ESLint, Prettier
 3. `backend-tests` - Tests with 80% coverage gate
@@ -275,12 +292,14 @@ lint-frontend → frontend-tests ↗
 ### VS Code
 
 **Install extensions:**
+
 - Python (Microsoft)
 - Black Formatter
 - ESLint
 - Prettier
 
 **Settings (`.vscode/settings.json`):**
+
 ```json
 {
   "python.formatting.provider": "black",
@@ -305,6 +324,7 @@ lint-frontend → frontend-tests ↗
 ### Issue: "Black would make changes"
 
 **Fix:**
+
 ```bash
 cd backend
 black .
@@ -315,6 +335,7 @@ git commit
 ### Issue: "ESLint: Unexpected console statement"
 
 **Fix:**
+
 ```javascript
 // Option 1: Remove console.log
 
@@ -326,11 +347,13 @@ console.log('Debug info');
 ### Issue: "Coverage below 80%"
 
 **Options:**
+
 1. Write more tests (preferred)
 2. Exclude non-critical files from coverage
 3. Check if tests are actually running
 
 **Investigate:**
+
 ```bash
 cd backend
 pytest --cov --cov-report=html
@@ -344,17 +367,20 @@ open htmlcov/index.html
 ### For Backend (Python)
 
 1. **Run Black before committing**
+
    ```bash
    black .
    ```
 
 2. **Use type hints**
+
    ```python
    def calculate_total(price: float, quantity: int) -> float:
        return price * quantity
    ```
 
 3. **Write docstrings**
+
    ```python
    def complex_function(param):
        """
@@ -373,6 +399,7 @@ open htmlcov/index.html
 ### For Frontend (JavaScript)
 
 1. **Use meaningful variable names**
+
    ```javascript
    // Bad
    const x = users.filter(u => u.active);
@@ -382,6 +409,7 @@ open htmlcov/index.html
    ```
 
 2. **Add prop-types or TypeScript**
+
    ```javascript
    import PropTypes from 'prop-types';
 
@@ -392,6 +420,7 @@ open htmlcov/index.html
    ```
 
 3. **Use semantic HTML**
+
    ```jsx
    // Bad
    <div onClick={handleClick}>Click me</div>
@@ -427,4 +456,3 @@ Before pushing code:
 ---
 
 **Quality is not an accident — it's a habit!** 🚀
-

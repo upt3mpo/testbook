@@ -391,6 +391,7 @@ await expect(posts).toHaveCount(22); // Was 21, now 22
 ## 🔍 Complete Selector Reference
 
 ### Posts
+
 ```css
 [data-testid-generic="post-item"]           /* All posts */
 [data-is-own-post="true"]                   /* Only your posts */
@@ -399,12 +400,14 @@ await expect(posts).toHaveCount(22); // Was 21, now 22
 ```
 
 ### Comments
+
 ```css
 [data-testid-generic="comment-item"]        /* All comments */
 [data-author="username"]                    /* Comments by specific user */
 ```
 
 ### Followers
+
 ```css
 [data-testid-generic="follower-item"]       /* All followers */
 [data-username="username"]                  /* Specific follower */
@@ -412,6 +415,7 @@ await expect(posts).toHaveCount(22); // Was 21, now 22
 ```
 
 ### Following
+
 ```css
 [data-testid-generic="following-item"]      /* All following */
 [data-username="username"]                  /* Specific user */
@@ -587,6 +591,7 @@ test('toggle repost', async ({ page }) => {
 ### The Problem
 
 Frontend applications use browser native dialogs:
+
 - `window.confirm()` - Confirmation dialogs
 - `window.alert()` - Alert messages
 - `window.prompt()` - Input dialogs
@@ -596,6 +601,7 @@ Frontend applications use browser native dialogs:
 ### Real Example from Testbook
 
 Our block user feature had this:
+
 ```javascript
 const handleBlock = async () => {
   if (!window.confirm('Are you sure you want to block this user?')) return;
@@ -608,6 +614,7 @@ Tests that clicked the block button would hang, waiting for the dialog to be dis
 ### ✅ The Solution: Setup Dialog Handler
 
 **Pattern 1: Per-Test Handler**
+
 ```javascript
 test('should block user', async ({ page }) => {
   // Setup BEFORE the action that triggers dialog
@@ -619,6 +626,7 @@ test('should block user', async ({ page }) => {
 ```
 
 **Pattern 2: Global Handler (RECOMMENDED)**
+
 ```javascript
 // In test-helpers.js
 function setupDialogHandler(page) {
@@ -637,6 +645,7 @@ test.beforeEach(async ({ page }) => {
 ```
 
 **Pattern 3: Selective Handling**
+
 ```javascript
 page.on('dialog', async dialog => {
   if (dialog.message().includes('delete')) {
@@ -650,18 +659,21 @@ page.on('dialog', async dialog => {
 ### When to Use
 
 ✅ **Always use dialog handlers** if your app has:
+
 - Confirmation dialogs (`window.confirm`)
 - Success/error alerts (`window.alert`)
 - Delete confirmations
 - Destructive action warnings
 
 ❌ **Don't rely on dialogs for testing logic**
+
 - They're meant for user safety, not test validation
 - Test the API response or UI state change instead
 
 ### Common Dialog Scenarios
 
 **Scenario 1: Single Confirmation**
+
 ```javascript
 // Frontend
 if (!window.confirm('Delete?')) return;
@@ -672,6 +684,7 @@ await page.click('[data-testid="delete-button"]');
 ```
 
 **Scenario 2: Multiple Confirmations**
+
 ```javascript
 // Frontend has TWO confirms
 if (!window.confirm('Sure?')) return;
@@ -684,6 +697,7 @@ await page.click('[data-testid="delete-button"]');
 ```
 
 **Scenario 3: Alert After Action**
+
 ```javascript
 // Frontend
 alert('Success!');
@@ -713,6 +727,7 @@ page.on('dialog', async dialog => {
 ### When to Use `force: true`
 
 Some elements become hidden/unhittable due to:
+
 - CSS transitions
 - Dropdown close handlers
 - Overlay animations
@@ -721,6 +736,7 @@ Some elements become hidden/unhittable due to:
 ### Real Example from Testbook
 
 Our edit button is in a dropdown with click-outside handler:
+
 ```javascript
 useEffect(() => {
   const handleClickOutside = (event) => {
@@ -747,12 +763,14 @@ await page.locator('[data-testid="edit-button"]').click({ force: true });  // �
 ### When to Use Force
 
 ✅ **Good use cases:**
+
 - Elements with CSS transitions
 - Dropdown menus with close handlers
 - Elements that become hidden quickly
 - Animation conflicts
 
 ❌ **Bad use cases:**
+
 - Actually hidden elements (use different selector)
 - As first resort (debug the timing first)
 - To bypass intentional visibility restrictions
@@ -760,6 +778,7 @@ await page.locator('[data-testid="edit-button"]').click({ force: true });  // �
 ### Alternative: Better Timing
 
 Sometimes you can avoid force clicks with better timing:
+
 ```javascript
 // Wait for element to be stable
 const editButton = page.locator('[data-testid="edit-button"]');
@@ -780,6 +799,7 @@ await page.click('[data-testid="edit-button"]');
 ### The Pattern: Don't Wait for Time, Wait for State
 
 **❌ BAD - Arbitrary Timeouts:**
+
 ```javascript
 await page.click('[data-testid="follow-button"]');
 await page.waitForTimeout(1000);  // Hope it's enough!
@@ -787,6 +807,7 @@ await expect(button).toContainText('Unfollow');
 ```
 
 **✅ GOOD - Wait for Actual Change:**
+
 ```javascript
 await page.click('[data-testid="follow-button"]');
 await expect(button).toContainText('Unfollow', { timeout: 10000 });  // Waits only as long as needed
@@ -795,6 +816,7 @@ await expect(button).toContainText('Unfollow', { timeout: 10000 });  // Waits on
 ### Real Examples from Testbook Fixes
 
 **Pattern 1: Wait for Button Text Change**
+
 ```javascript
 // After clicking follow, wait for button to update
 await followButton.click();
@@ -802,6 +824,7 @@ await expect(followButton).toContainText(/unfollow/i, { timeout: 10000 });
 ```
 
 **Pattern 2: Wait for Element to Disappear**
+
 ```javascript
 // After saving edit, wait for edit form to close
 await saveButton.click();
@@ -809,6 +832,7 @@ await expect(editTextarea).not.toBeVisible({ timeout: 5000 });
 ```
 
 **Pattern 3: Wait for Network Idle**
+
 ```javascript
 // After API-heavy operation
 await addReaction(post, 'like');
@@ -816,6 +840,7 @@ await page.waitForLoadState('networkidle', { timeout: 3000 }).catch(() => {});
 ```
 
 **Pattern 4: Wait for URL Change**
+
 ```javascript
 // After deletion should redirect
 await page.click('[data-testid="delete-account"]');
@@ -838,4 +863,3 @@ await page.waitForURL(/.*\/login/, { timeout: 15000 });
 ---
 
 **Now you can test dynamic content AND handle all the edge cases!** 🎉
-

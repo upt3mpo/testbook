@@ -28,13 +28,15 @@ Document your learning and insights from Stage 2.
 
 ---
 
-### 4. What's the difference between a 401 and a 403 status code? Find an example of each in the tests.
+### 4. What's the difference between a 401 and a 403 status code? Find an example of each in the tests
 
 **401 Unauthorized:**
+
 - **Meaning:**
 - **Example test:**
 
 **403 Forbidden:**
+
 - **Meaning:**
 - **Example test:**
 
@@ -88,4 +90,3 @@ Document your learning and insights from Stage 2.
 ---
 
 *These notes are gold for interviews when they ask "Tell me about integration testing" 💡*
-

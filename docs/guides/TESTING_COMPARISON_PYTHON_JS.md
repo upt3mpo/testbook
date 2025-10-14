@@ -26,6 +26,7 @@ This guide helps you translate testing knowledge between Python and JavaScript, 
 ### Basic Test
 
 **Python (pytest)**
+
 ```python
 def test_addition():
     """Test that addition works correctly."""
@@ -34,6 +35,7 @@ def test_addition():
 ```
 
 **JavaScript (Vitest)**
+
 ```javascript
 test('addition works correctly', () => {
   const result = 2 + 2;
@@ -44,6 +46,7 @@ test('addition works correctly', () => {
 ### Test Classes/Groups
 
 **Python (pytest)**
+
 ```python
 class TestAuthentication:
     """Group of authentication tests"""
@@ -56,6 +59,7 @@ class TestAuthentication:
 ```
 
 **JavaScript (Vitest)**
+
 ```javascript
 describe('Authentication', () => {
   test('login succeeds with correct credentials', () => {
@@ -75,6 +79,7 @@ describe('Authentication', () => {
 ### Basic Fixture
 
 **Python (pytest)**
+
 ```python
 @pytest.fixture
 def database():
@@ -89,6 +94,7 @@ def test_query(database):
 ```
 
 **JavaScript (Playwright)**
+
 ```javascript
 const test = base.extend({
   database: async ({}, use) => {
@@ -107,6 +113,7 @@ test('query returns users', async ({ database }) => {
 ### Parametrized Tests
 
 **Python (pytest)**
+
 ```python
 @pytest.mark.parametrize("username,valid", [
     ("alice", True),
@@ -119,6 +126,7 @@ def test_username_validation(username, valid):
 ```
 
 **JavaScript (Vitest)**
+
 ```javascript
 test.each([
   ['alice', true],
@@ -137,6 +145,7 @@ test.each([
 ### Basic E2E Test
 
 **Python**
+
 ```python
 from playwright.sync_api import Page, expect
 
@@ -151,6 +160,7 @@ def test_login(page: Page):
 ```
 
 **JavaScript**
+
 ```javascript
 const { test, expect } = require('@playwright/test');
 
@@ -169,6 +179,7 @@ test('login flow', async ({ page }) => {
 ### Page Object Model
 
 **Python**
+
 ```python
 class LoginPage:
     def __init__(self, page: Page):
@@ -189,6 +200,7 @@ def test_login(page: Page):
 ```
 
 **JavaScript**
+
 ```javascript
 class LoginPage {
   constructor(page) {
@@ -219,6 +231,7 @@ test('login flow', async ({ page }) => {
 ### Mocking Functions
 
 **Python**
+
 ```python
 from unittest.mock import Mock, patch
 
@@ -233,6 +246,7 @@ def test_api_call():
 ```
 
 **JavaScript**
+
 ```javascript
 import { vi } from 'vitest';
 
@@ -252,6 +266,7 @@ test('API call with mock', async () => {
 ### Network Mocking (Playwright)
 
 **Python**
+
 ```python
 import json
 from playwright.sync_api import Route
@@ -273,6 +288,7 @@ def test_mocked_api(page: Page):
 ```
 
 **JavaScript**
+
 ```javascript
 test('mocked API response', async ({ page }) => {
   await page.route('**/api/feed**', route => {
@@ -297,6 +313,7 @@ test('mocked API response', async ({ page }) => {
 ### Testing REST Endpoints
 
 **Python**
+
 ```python
 import requests
 
@@ -322,6 +339,7 @@ def test_create_post():
 ```
 
 **JavaScript**
+
 ```javascript
 import axios from 'axios';
 
@@ -363,6 +381,7 @@ test('POST /api/posts endpoint', async () => {
 ### Pytest Markers vs Vitest Filters
 
 **Python**
+
 ```python
 @pytest.mark.smoke
 def test_critical_path():
@@ -377,6 +396,7 @@ def test_full_integration():
 ```
 
 **JavaScript**
+
 ```javascript
 test('critical path', { tag: '@smoke' }, async () => {
   // test code
@@ -422,6 +442,7 @@ test('full integration', { tag: '@slow' }, async () => {
 ### File Structure
 
 **Python Structure**
+
 ```
 backend/
   tests/
@@ -445,6 +466,7 @@ tests/
 ```
 
 **JavaScript Structure**
+
 ```
 frontend/
   src/
@@ -470,6 +492,7 @@ tests/
 ### Pytest Configuration
 
 **pytest.ini**
+
 ```ini
 [pytest]
 testpaths = tests
@@ -485,6 +508,7 @@ addopts = -v --tb=short
 ### Vitest Configuration
 
 **vitest.config.js**
+
 ```javascript
 import { defineConfig } from 'vitest/config';
 
@@ -506,6 +530,7 @@ export default defineConfig({
 **Python**: `pytest.ini` (shared with pytest)
 
 **JavaScript**: `playwright.config.js`
+
 ```javascript
 module.exports = {
   testDir: './e2e',
@@ -525,6 +550,7 @@ module.exports = {
 ### GitHub Actions
 
 **Python Tests**
+
 ```yaml
 name: Python Tests
 on: [push]
@@ -542,6 +568,7 @@ jobs:
 ```
 
 **JavaScript Tests**
+
 ```yaml
 name: JavaScript Tests
 on: [push]
@@ -562,21 +589,24 @@ jobs:
 
 ## 🎯 When to Use Each Stack
 
-### Choose Python When:
+### Choose Python When
+
 - ✅ Backend is Python (FastAPI, Django, Flask)
 - ✅ Team has Python expertise
 - ✅ Testing APIs and data processing
 - ✅ Scientific/data analysis workflows
 - ✅ Prefer synchronous syntax
 
-### Choose JavaScript When:
+### Choose JavaScript When
+
 - ✅ Frontend is React/Vue/Angular
 - ✅ Team has JavaScript/TypeScript expertise
 - ✅ Testing UI components
 - ✅ Full-stack JavaScript (Node.js)
 - ✅ Prefer async/await patterns
 
-### Use Both When:
+### Use Both When
+
 - ✅ Full-stack application (Python backend + React frontend)
 - ✅ Python for API tests, JavaScript for component tests
 - ✅ Playwright E2E in either language (both work!)
@@ -586,13 +616,15 @@ jobs:
 
 ## 📚 Learning Path Recommendations
 
-### If You Know Python, Learning JavaScript Testing:
+### If You Know Python, Learning JavaScript Testing
+
 1. Start with Vitest (similar to pytest)
 2. Learn async/await syntax
 3. Understand component testing with Testing Library
 4. Playwright syntax is nearly identical!
 
-### If You Know JavaScript, Learning Python Testing:
+### If You Know JavaScript, Learning Python Testing
+
 1. Start with pytest (similar to Vitest)
 2. Learn synchronous syntax (simpler!)
 3. Understand FastAPI TestClient for API testing
@@ -603,18 +635,21 @@ jobs:
 ## 🔗 Useful Resources
 
 ### Python Testing
+
 - [pytest documentation](https://docs.pytest.org/)
 - [Playwright Python docs](https://playwright.dev/python/)
 - [requests documentation](https://requests.readthedocs.io/)
 - [LearnPython.org](https://www.learnpython.org/) - Interactive Python basics
 
 ### JavaScript Testing
+
 - [Vitest documentation](https://vitest.dev/)
 - [Playwright JavaScript docs](https://playwright.dev/)
 - [Testing Library docs](https://testing-library.com/)
 - [learn-js.org](https://www.learn-js.org/) - Interactive JavaScript basics (async/await, promises, objects)
 
 ### Both
+
 - [Testbook repository](../..) - See working examples in both languages!
 - [Compare Lab 4 Python vs JavaScript](../../labs/) - See same lab in both stacks
 
@@ -635,4 +670,3 @@ jobs:
 ---
 
 **🎓 Key Takeaway:** The concepts are the same across both stacks! If you understand testing in one language, you can quickly learn the other. Focus on patterns, not syntax.
-

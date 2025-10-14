@@ -24,7 +24,7 @@ Document your learning about non-functional testing.
 
 ---
 
-### 3. Pick one OWASP Top 10 vulnerability. Explain it in simple terms and how you'd test for it.
+### 3. Pick one OWASP Top 10 vulnerability. Explain it in simple terms and how you'd test for it
 
 **Vulnerability chosen:**
 
@@ -112,4 +112,3 @@ Document your learning about non-functional testing.
 ---
 
 *Performance and security testing differentiate senior QA engineers from juniors! 💪*
-

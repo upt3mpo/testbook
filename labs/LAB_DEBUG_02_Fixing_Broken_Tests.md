@@ -9,6 +9,7 @@
 ## 🎯 What You'll Learn
 
 By the end of this lab, you will:
+
 - Debug and fix broken tests
 - Identify common test failures
 - Use error messages to guide fixes
@@ -52,17 +53,20 @@ class TestBrokenTests:
 ```
 
 **Run it:**
+
 ```bash
 cd backend
 pytest tests/test_broken.py::TestBrokenTests::test_password_hash_length -v
 ```
 
 **What happens:**
+
 - Test passes, but it's wrong!
 - Bcrypt hashes are always 60 characters
 - Test says "length > 10" which is too lenient
 
 **Your Task:**
+
 1. Add a print statement to see actual length
 2. Fix the assertion to check for correct length (60)
 
@@ -100,16 +104,19 @@ def test_user_email(self, test_user_2):
 ```
 
 **Run it:**
+
 ```bash
 pytest tests/test_broken.py::TestBrokenTests::test_user_email -v
 ```
 
 **What happens:**
+
 ```
 AssertionError: assert 'testuser2@example.com' == 'testuser@example.com'
 ```
 
 **Your Task:**
+
 1. Read the error - what email does `test_user_2` have?
 2. Either use the correct fixture or fix the expected email
 
@@ -117,6 +124,7 @@ AssertionError: assert 'testuser2@example.com' == 'testuser@example.com'
 <summary>Click to see solution</summary>
 
 **Solution 1: Use correct fixture**
+
 ```python
 def test_user_email(self, test_user):
     """Test user email."""
@@ -125,6 +133,7 @@ def test_user_email(self, test_user):
 ```
 
 **Solution 2: Fix expected email**
+
 ```python
 def test_user_email(self, test_user_2):
     """Test user email."""
@@ -161,16 +170,19 @@ def test_create_user(self, db_session):
 ```
 
 **Run it:**
+
 ```bash
 pytest tests/test_broken.py::TestBrokenTests::test_create_user -v
 ```
 
 **What happens:**
+
 ```
 AssertionError: assert None is not None
 ```
 
 **Your Task:**
+
 1. Why is `found_user` None?
 2. What's missing between `add()` and the query?
 
@@ -218,16 +230,19 @@ def test_health_check(self, client):
 ```
 
 **Run it:**
+
 ```bash
 pytest tests/test_broken.py::TestBrokenTests::test_health_check -v
 ```
 
 **What happens:**
+
 ```
 AssertionError: assert 404 == 200
 ```
 
 **Your Task:**
+
 1. Why did we get 404?
 2. Check `main.py` - what's the correct endpoint?
 3. Fix the URL
@@ -266,17 +281,21 @@ def test_login(self, client, test_user):
 ```
 
 **Run it:**
+
 ```bash
 pytest tests/test_broken.py::TestBrokenTests::test_login -v
 ```
 
 **What happens:**
+
 ```
 AssertionError: assert 422 == 200
 ```
+
 (422 = Validation Error)
 
 **Your Task:**
+
 1. Why did we get 422?
 2. What format does the API expect?
 3. Fix the request
@@ -317,16 +336,19 @@ def test_password_not_stored_plaintext(self, test_user):
 ```
 
 **Run it:**
+
 ```bash
 pytest tests/test_broken.py::TestBrokenTests::test_password_not_stored_plaintext -v
 ```
 
 **What happens:**
+
 - Test fails (good!)
 - But the assertion logic is backwards
 - We WANT them to NOT be equal
 
 **Your Task:**
+
 1. What should we actually be testing?
 2. Fix the assertion to test the right thing
 
@@ -368,16 +390,19 @@ def test_post_creation(self, db_session, test_user):
 ```
 
 **Run it:**
+
 ```bash
 pytest tests/test_broken.py::TestBrokenTests::test_post_creation -v
 ```
 
 **What happens:**
+
 ```
 NameError: name 'Post' is not defined
 ```
 
 **Your Task:**
+
 1. What's missing?
 2. Add the import at the top of the file
 
@@ -385,11 +410,13 @@ NameError: name 'Post' is not defined
 <summary>Click to see solution</summary>
 
 **At the top of the file, add:**
+
 ```python
 from models import User, Post  # Added Post
 ```
 
 **Then the test works:**
+
 ```python
 def test_post_creation(self, db_session, test_user):
     """Test creating a post."""
@@ -422,16 +449,19 @@ def test_user_full_name(self, test_user):
 ```
 
 **Run it:**
+
 ```bash
 pytest tests/test_broken.py::TestBrokenTests::test_user_full_name -v
 ```
 
 **What happens:**
+
 ```
 AttributeError: 'User' object has no attribute 'full_name'
 ```
 
 **Your Task:**
+
 1. Check `models.py` - what attributes does User have?
 2. Use the correct attribute name
 
@@ -477,16 +507,19 @@ def test_multiple_users(self, db_session):
 ```
 
 **Run it:**
+
 ```bash
 pytest tests/test_broken.py::TestBrokenTests::test_multiple_users -v
 ```
 
 **What happens:**
+
 ```
 AssertionError: assert 5 == 6
 ```
 
 **Your Task:**
+
 1. How many users did we create?
 2. Why does the test expect 6?
 3. Fix the expected count
@@ -538,16 +571,19 @@ def test_verify_wrong_password(self):
 ```
 
 **Run it:**
+
 ```bash
 pytest tests/test_broken.py::TestBrokenTests::test_verify_wrong_password -v
 ```
 
 **What happens:**
+
 ```
 AssertionError: assert False is True
 ```
 
 **Your Task:**
+
 1. What is the test trying to verify?
 2. Should wrong password verification return True or False?
 3. Fix the assertion
@@ -608,6 +644,7 @@ class TestYourChallenge:
 ```
 
 **Hints:**
+
 1. Challenge 1: Check schema requirements in `schemas.py`
 2. Challenge 2: Check Post model in `models.py`
 3. Challenge 3: `.get()` expects ID, not email
@@ -717,6 +754,7 @@ When you encounter a failing test:
 ## 📚 Next Steps
 
 **Continue building your skills:**
+
 - **[LAB_03_Testing_API_Endpoints.md](LAB_03_Testing_API_Endpoints.md)** - Write more complex tests
 - **[LAB_04_E2E_Testing_Python.md](LAB_04_E2E_Testing_Python.md)** or **[LAB_04_E2E_Testing_JavaScript.md](LAB_04_E2E_Testing_JavaScript.md)** - Debug browser tests
 - **[DEBUGGING_GUIDE.md](../docs/reference/DEBUGGING_GUIDE.md)** - Advanced debugging
@@ -724,4 +762,3 @@ When you encounter a failing test:
 ---
 
 **🎉 Congratulations!** You're now a debugging expert. These skills will serve you throughout your entire testing career!
-

@@ -128,6 +128,7 @@ See **[Task Runner Guide](docs/guides/TASK_RUNNER.md)** for all commands.
 **⚠️ IMPORTANT:** Use `start-dev.sh` (not `start.sh`) for learning!
 
 **macOS / Linux:**
+
 ```bash
 cd Testbook
 chmod +x *.sh
@@ -135,6 +136,7 @@ chmod +x *.sh
 ```
 
 **Windows:**
+
 ```cmd
 cd Testbook
 start-dev.bat
@@ -143,6 +145,7 @@ start-dev.bat
 **Verify:** Open **http://localhost:3000** - Testbook should load!
 
 **📝 Why development mode?**
+
 - All tests configured for port 3000
 - No Docker required
 - Easier for beginners
@@ -155,18 +158,21 @@ start-dev.bat
 ### Prefer Python?
 
 **Focus on:**
+
 - Backend testing (pytest) - 166+ tests
 - API contract testing (schemathesis)
 - Security testing (Python)
 - E2E testing (Playwright Python)
 
 **Start with:**
+
 - [labs/LAB_01_Your_First_Test.md](labs/LAB_01_Your_First_Test.md) (Python)
 - **Then:** [labs/LAB_04_E2E_Testing_Python.md](labs/LAB_04_E2E_Testing_Python.md) for complete Python path!
 
 ### Prefer JavaScript?
 
 **Focus on:**
+
 - **Frontend component testing (Vitest + RTL) - 13 tests** ✨
 - **Accessibility testing (axe-core)** ✨
 - E2E testing (Playwright) - 60+ tests
@@ -177,6 +183,7 @@ start-dev.bat
 ### Want Both? (Recommended!)
 
 **Complete testing pyramid path:**
+
 - Labs 1-3 (Python backend testing)
 - **Frontend component tests (Vitest)** ✨
 - **Accessibility tests (axe-core)** ✨
@@ -186,6 +193,7 @@ start-dev.bat
 - **Master the complete pyramid!** 🚀
 
 **Why learn the full pyramid?**
+
 - Test at every level (unit → integration → E2E)
 - More job opportunities (full-stack QA)
 - Better team collaboration
@@ -291,11 +299,13 @@ Level 4: "I can test anything professionally"
 ## ⚡ Quick Start (5 Minutes)
 
 1. **Get Testbook running:**
+
    ```bash
    ./start-dev.sh
    ```
 
 2. **Run existing tests:**
+
    ```bash
    cd backend && pytest -v
    ```
@@ -313,6 +323,7 @@ Level 4: "I can test anything professionally"
 Use this checklist to track your journey:
 
 ### Beginner Level
+
 - [ ] Lab 1 completed
 - [ ] Lab 2 completed
 - [ ] Lab 3 completed
@@ -321,6 +332,7 @@ Use this checklist to track your journey:
 - [ ] Understand test structure
 
 ### Intermediate Level
+
 - [ ] Lab 4 completed
 - [ ] Can write integration tests
 - [ ] Can write E2E tests
@@ -329,6 +341,7 @@ Use this checklist to track your journey:
 - [ ] Understand coverage
 
 ### Advanced Level
+
 - [ ] Can test APIs
 - [ ] Can test performance
 - [ ] Can test security
@@ -337,6 +350,7 @@ Use this checklist to track your journey:
 - [ ] Can debug failing tests
 
 ### Professional Level
+
 - [ ] Built feature with full test suite
 - [ ] Portfolio-ready work
 - [ ] Job-ready skills
@@ -383,6 +397,7 @@ Learn how to turn your Testbook work into resume content, interview talking poin
 
 **Q: What if I get stuck?**
 A: Check these resources (in order):
+
 1. **[TROUBLESHOOTING.md](docs/guides/TROUBLESHOOTING.md)** - Common errors and fixes ⭐
 2. [FAQ.md](FAQ.md) - Frequently asked questions
 3. [COMMON_MISTAKES.md](docs/course/COMMON_MISTAKES.md) - Typical errors
@@ -396,25 +411,28 @@ A: Check these resources (in order):
 Confused by all the docs? Here's what each is for:
 
 **For Learning:**
+
 - `START_HERE.md` ← You are here!
 - `learn/` - 🆕 **Self-guided 5-stage path** ⭐
 - `docs/course/COURSE_AUTOMATION_TESTING_101.md` - Structured curriculum
 - `labs/` - Step-by-step tutorials (9 labs)
 
 **For Reference:**
+
 - `docs/guides/RUNNING_TESTS.md` - How to run tests
 - `docs/guides/TROUBLESHOOTING.md` - 🆕 **Common errors and fixes**
 - `docs/reference/TESTING_CHEATSHEET.md` - Quick reference
 - `docs/reference/TESTING_PATTERNS.md` - Testing patterns
 
 **For Understanding:**
+
 - `README.md` - Project overview
 - `docs/guides/TESTING_GUIDE.md` - Comprehensive examples
 - `docs/reference/PROJECT_INFO.md` - Technical details
 
 ---
 
-## 🎬 Let's Begin!
+## 🎬 Let's Begin
 
 **Ready to start your testing journey?**
 
@@ -456,6 +474,7 @@ Confused by all the docs? Here's what each is for:
 ## 🚀 One Final Thing
 
 **You're about to learn skills that:**
+
 - Companies pay $80k-$150k+ for
 - Are in high demand (SDET, QA Automation)
 - Give you confidence in your code

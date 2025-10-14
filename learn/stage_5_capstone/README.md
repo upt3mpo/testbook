@@ -31,7 +31,9 @@ By the end of this stage, you will:
 Choose one of these options:
 
 #### Option A: Messaging Feature
+
 Imagine Testbook adds direct messaging. Build tests for:
+
 - Sending messages
 - Receiving messages
 - Message history
@@ -39,7 +41,9 @@ Imagine Testbook adds direct messaging. Build tests for:
 - Message notifications
 
 #### Option B: Bookmarks Feature
+
 Imagine users can bookmark posts. Build tests for:
+
 - Adding bookmarks
 - Viewing bookmarks
 - Removing bookmarks
@@ -47,7 +51,9 @@ Imagine users can bookmark posts. Build tests for:
 - Bookmark permissions
 
 #### Option C: Search Feature
+
 Imagine Testbook adds search. Build tests for:
+
 - Searching posts
 - Searching users
 - Search filters
@@ -223,6 +229,7 @@ pytest --cov --cov-report=html
 ```
 
 **Include in portfolio:**
+
 - Overall coverage percentage
 - File-by-file coverage
 - Highlighted: "Achieved 85% test coverage"
@@ -237,6 +244,7 @@ VIDEO_ON_FAILURE=true HEADLESS=false pytest tests/test_e2e_feature.py
 ```
 
 **Include in portfolio:**
+
 - 30-60 second clip
 - Shows test in action
 - Voiceover explaining what's being tested (optional)
@@ -250,6 +258,7 @@ pytest --html=test-report.html --self-contained-html
 ```
 
 **Include in portfolio:**
+
 - Pass/fail statistics
 - Test execution time
 - Any failures and how you fixed them
@@ -315,12 +324,14 @@ Areas for future testing:
 Use these templates (fill in your specifics):
 
 **For Testbook:**
+
 - Built comprehensive test automation suite with pytest and Playwright, achieving 84% code coverage across 100+ tests
 - Implemented E2E testing framework using Page Object Model pattern, reducing test maintenance time by 40%
 - Developed security test suite covering OWASP Top 10 vulnerabilities, identifying and documenting 3 critical issues
 - Created performance testing strategy using k6, establishing baseline metrics for 500 concurrent users
 
 **For Your Capstone:**
+
 - Designed and implemented test automation for [feature] including unit, integration, E2E, and security tests
 - Achieved 85%+ test coverage using pytest, FastAPI TestClient, and Playwright
 - Documented testing strategy and created reusable test fixtures and factories
@@ -440,6 +451,7 @@ Practice answering these with examples from your work:
 ### Show Your Work
 
 **Bring to interviews:**
+
 1. **Laptop with code ready** - Demo your tests running
 2. **Coverage report screenshot** - Visual proof
 3. **Test execution video** - Show E2E tests in action
@@ -457,6 +469,7 @@ Practice answering these with examples from your work:
 You're portfolio-ready when you have:
 
 ### Tests Written
+
 - [ ] 10+ unit tests with good coverage
 - [ ] 8+ integration tests covering all endpoints
 - [ ] 3+ E2E tests for critical workflows
@@ -464,6 +477,7 @@ You're portfolio-ready when you have:
 - [ ] All tests passing
 
 ### Documentation Created
+
 - [ ] Test plan document
 - [ ] TESTING.md with instructions
 - [ ] Code comments explaining complex tests
@@ -471,12 +485,14 @@ You're portfolio-ready when you have:
 - [ ] **📚 [Portfolio guide](../../docs/guides/PORTFOLIO.md) followed** for resume/LinkedIn
 
 ### Artifacts Captured
+
 - [ ] Coverage report (HTML screenshot)
 - [ ] Test execution video (1-2 minutes)
 - [ ] Test report (pytest HTML report)
 - [ ] Before/after metrics (if applicable)
 
 ### Portfolio Prepared
+
 - [ ] GitHub repo is public and clean
 - [ ] README explains project clearly
 - [ ] Code is well-organized and formatted
@@ -484,6 +500,7 @@ You're portfolio-ready when you have:
 - [ ] Professional commit history
 
 ### Interview Ready
+
 - [ ] Can demo tests running live
 - [ ] Can explain testing strategy
 - [ ] Can discuss challenges and solutions
@@ -497,6 +514,7 @@ You're portfolio-ready when you have:
 ### 1. Share Your Work
 
 **Post on LinkedIn:**
+
 ```
 Excited to share that I completed Testbook's comprehensive test automation curriculum!
 
@@ -513,6 +531,7 @@ Check out my work: [GitHub link]
 ### 2. Contribute to Testbook
 
 Now that you understand the codebase:
+
 - Add new tests
 - Improve documentation
 - Fix bugs
@@ -521,12 +540,14 @@ Now that you understand the codebase:
 ### 3. Apply Your Skills
 
 **Job Search:**
+
 - Update resume with Testbook experience
 - Apply for junior QA/SDET roles
 - Use portfolio in applications
 - Practice technical interviews
 
 **Personal Projects:**
+
 - Add testing to your own projects
 - Test open source projects
 - Build testing tools
@@ -535,6 +556,7 @@ Now that you understand the codebase:
 ### 4. Keep Learning
 
 **Advanced Topics:**
+
 - CI/CD pipelines (GitHub Actions)
 - Test automation frameworks
 - Mobile testing (Appium)
@@ -543,7 +565,7 @@ Now that you understand the codebase:
 
 ---
 
-## 🏆 Congratulations!
+## 🏆 Congratulations
 
 You've completed all 5 stages of the Testbook learning path!
 
@@ -567,6 +589,7 @@ You've completed all 5 stages of the Testbook learning path!
 ## 📞 Stay Connected
 
 **Completed Testbook?**
+
 - ⭐ Star the repo on GitHub
 - 💬 Share your experience in Discussions
 - 🐛 Report bugs you find
@@ -589,7 +612,7 @@ Take a moment to look back at your journey:
 
 ---
 
-## 🚀 You Did It!
+## 🚀 You Did It
 
 You're no longer learning test automation — you're practicing it professionally.
 
@@ -602,10 +625,10 @@ You're no longer learning test automation — you're practicing it professionall
 ---
 
 **Need help or have questions?**
+
 - Check [FAQ](../../FAQ.md)
 - Read [CONTRIBUTING](../../CONTRIBUTING.md)
 - Open a GitHub Discussion
 - Connect with the community
 
 **Thank you for completing Testbook! 🎓✨**
-

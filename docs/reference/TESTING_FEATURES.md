@@ -129,6 +129,7 @@ Scripts work on all platforms:
 ### Frontend Testing
 
 ✅ **UI Automation Frameworks**
+
 - Selenium WebDriver
 - Playwright
 - Cypress
@@ -136,6 +137,7 @@ Scripts work on all platforms:
 - TestCafe
 
 ✅ **What You Can Test**
+
 - User registration and login flows
 - Post creation with text, images, videos
 - File upload via drag-and-drop
@@ -155,6 +157,7 @@ Scripts work on all platforms:
 ### Backend Testing
 
 ✅ **API Testing Frameworks**
+
 - Postman/Newman
 - REST Assured (Java)
 - pytest + requests (Python)
@@ -162,6 +165,7 @@ Scripts work on all platforms:
 - RestSharp (.NET)
 
 ✅ **What You Can Test**
+
 - All CRUD operations on posts
 - File upload handling
 - User authentication
@@ -176,12 +180,14 @@ Scripts work on all platforms:
 ### Performance Testing
 
 ✅ **Load Testing Tools**
+
 - K6
 - JMeter
 - Locust
 - Artillery
 
 ✅ **What You Can Test**
+
 - Concurrent user logins
 - Feed loading performance
 - File upload performance
@@ -191,6 +197,7 @@ Scripts work on all platforms:
 ### Security Testing
 
 ✅ **What You Can Test**
+
 - JWT token validation
 - Protected route access
 - Permission checks
@@ -354,6 +361,7 @@ await expect(page.locator('[data-testid="create-post-preview"]')).toBeVisible();
 ## 📈 Test Coverage Recommendations
 
 ### Critical Paths (Must Test)
+
 1. User registration → auto-login → create first post
 2. Login → create post → logout → login again
 3. Upload file → create post → verify media appears
@@ -362,6 +370,7 @@ await expect(page.locator('[data-testid="create-post-preview"]')).toBeVisible();
 6. Block user → verify their posts disappear from feed
 
 ### Happy Paths
+
 - All CRUD operations on posts
 - All user relationship actions
 - Profile updates and avatar changes
@@ -369,6 +378,7 @@ await expect(page.locator('[data-testid="create-post-preview"]')).toBeVisible();
 - Database reset and reseed
 
 ### Negative Tests
+
 - Invalid login credentials
 - Duplicate username/email registration
 - Upload invalid file types
@@ -376,6 +386,7 @@ await expect(page.locator('[data-testid="create-post-preview"]')).toBeVisible();
 - React without authentication
 
 ### Edge Cases
+
 - Empty feeds (no followers, no posts)
 - User with no avatar (uses default)
 - Repost a repost
@@ -385,12 +396,14 @@ await expect(page.locator('[data-testid="create-post-preview"]')).toBeVisible();
 ## 🚀 Quick Start for Testers
 
 1. **Start Testbook**:
+
    ```bash
    ./start-dev.sh    # macOS/Linux
    start-dev.bat     # Windows
    ```
 
 2. **Reset to clean state**:
+
    ```bash
    ./reset-database.sh    # macOS/Linux
    reset-database.bat     # Windows
@@ -402,6 +415,7 @@ await expect(page.locator('[data-testid="create-post-preview"]')).toBeVisible();
    - API Docs: http://localhost:8000/docs
 
 4. **Check test data**:
+
    ```bash
    curl http://localhost:8000/api/dev/users
    ```
@@ -440,4 +454,3 @@ await expect(page.locator('[data-testid="create-post-preview"]')).toBeVisible();
 ---
 
 **Happy Testing! 🎉**
-

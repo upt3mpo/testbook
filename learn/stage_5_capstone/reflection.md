@@ -9,6 +9,7 @@ Final reflection on your complete testing journey.
 **Feature tested:**
 
 **Total tests written:**
+
 - Unit tests:
 - Integration tests:
 - E2E tests:
@@ -115,14 +116,17 @@ Final reflection on your complete testing journey.
 **Biggest challenges and how I solved them:**
 
 **Challenge 1:**
+
 - Problem:
 - Solution:
 
 **Challenge 2:**
+
 - Problem:
 - Solution:
 
 **Challenge 3:**
+
 - Problem:
 - Solution:
 
@@ -239,4 +243,3 @@ Final reflection on your complete testing journey.
 - [ ] Give back to the community
 
 **You've got this! 💪**
-

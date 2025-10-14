@@ -36,6 +36,7 @@ Testing experience is **highly valued** in the software industry, but it's often
 1. Go to https://github.com/upt3mpo/testbook
 2. Click "Fork" (top right)
 3. Clone your fork:
+
    ```bash
    git clone https://github.com/YOUR-USERNAME/testbook.git
    cd testbook
@@ -212,6 +213,7 @@ pytest -v
 ```
 
 Take a screenshot showing:
+
 - ✅ All tests passing
 - Test count (180+)
 - Coverage percentage
@@ -239,6 +241,7 @@ HEADLESS=false SLOW_MO=1000 pytest test_auth.py
 ```
 
 Record a GIF or take screenshots of:
+
 - Browser opening
 - User registration
 - Login flow
@@ -249,6 +252,7 @@ Record a GIF or take screenshots of:
 ### Screenshot 4: CI/CD Pipeline
 
 Once you push to GitHub, your CI will run. Screenshot the Actions tab showing:
+
 - ✅ All jobs passing
 - Backend tests
 - Frontend tests
@@ -319,6 +323,7 @@ September 2024 - Present
 **Add these to your resume skills:**
 
 **Testing:**
+
 - Test Automation
 - Unit Testing
 - Integration Testing
@@ -329,6 +334,7 @@ September 2024 - Present
 - Test-Driven Development (TDD)
 
 **Tools & Frameworks:**
+
 - pytest
 - Playwright
 - Vitest
@@ -339,6 +345,7 @@ September 2024 - Present
 - MSW (Mock Service Worker)
 
 **Languages:**
+
 - Python
 - JavaScript
 - SQL
@@ -387,26 +394,31 @@ Skills: Test Automation • Python • JavaScript • pytest • Playwright • 
 ### Talking Points by Test Type
 
 #### Unit Testing
+
 **"Tell me about your experience with unit testing."**
 
 > "In my Testbook project, I wrote 180+ backend unit tests using pytest. For example, I tested password hashing functions to ensure bcrypt was generating unique salts — this is critical because reusing salts would make passwords vulnerable to rainbow table attacks. I used the AAA pattern (Arrange-Act-Assert) and pytest fixtures to keep tests clean and maintainable. One specific test I'm proud of validates that the same password generates different hashes each time, which caught a bug where we were accidentally using a static salt."
 
 #### Integration Testing
+
 **"How do you test APIs?"**
 
 > "I use FastAPI's TestClient to test API endpoints in the Testbook project. For instance, I wrote integration tests for the user registration flow that verify not just the happy path, but also error cases like duplicate emails, weak passwords, and missing required fields. I check HTTP status codes (200, 400, 401, 403), response schemas, and database state after operations. I also implemented contract testing using OpenAPI schemas to ensure the frontend and backend agree on API structure."
 
 #### E2E Testing
+
 **"What's your experience with end-to-end testing?"**
 
 > "I've worked with Playwright in both Python and JavaScript stacks. In Testbook, I automated complete user journeys like registration → login → create post → view feed. I use the Page Object Model to keep tests maintainable — for example, I have a LoginPage class that encapsulates all login interactions, so if the UI changes, I only update one place. I've also debugged flaky E2E tests by adding proper waits, using data-testid attributes, and running tests in headed mode to understand what's happening visually."
 
 #### Performance Testing
+
 **"Have you done any performance testing?"**
 
 > "Yes, using k6. In Testbook, I created load tests that simulate 100-1000 concurrent users hitting the API. I measure response times, throughput, and error rates under load. For example, I discovered that our feed endpoint was making N+1 database queries, causing response times to spike from 50ms to 500ms under load. This led to optimizing the queries with joins. I also do stress testing to find breaking points and spike testing to see how the system handles sudden traffic increases."
 
 #### Security Testing
+
 **"What do you know about security testing?"**
 
 > "I've implemented tests covering the OWASP Top 10. In Testbook, I specifically test for SQL injection by sending malicious payloads and verifying they don't execute, XSS by checking that user input is properly escaped in HTML output, and CSRF by ensuring state-changing endpoints require valid tokens. I also verify rate limiting to prevent brute-force attacks — for example, ensuring login attempts are limited to 5 per minute per IP. These tests run in CI to catch security regressions before they hit production."
@@ -449,6 +461,7 @@ Skills: Test Automation • Python • JavaScript • pytest • Playwright • 
 ### Add Topics/Tags
 
 In your repo settings, add topics:
+
 - `automation-testing`
 - `pytest`
 - `playwright`
@@ -550,6 +563,7 @@ After implementing the GitHub Actions pipeline:
    - "I'm excited to apply these skills..."
 
 **Upload to:**
+
 - YouTube (unlisted)
 - Loom
 - GitHub repo as README.md link
@@ -559,6 +573,7 @@ After implementing the GitHub Actions pipeline:
 ## ✅ Final Checklist
 
 **Repository:**
+
 - [ ] Forked and personalized
 - [ ] Added your own tests/improvements
 - [ ] All tests passing
@@ -569,18 +584,21 @@ After implementing the GitHub Actions pipeline:
 - [ ] Pinned to profile
 
 **Resume:**
+
 - [ ] Project listed in experience/projects
 - [ ] Quantifiable metrics included
 - [ ] Skills section updated
 - [ ] Proofread for errors
 
 **LinkedIn:**
+
 - [ ] Project added to profile
 - [ ] Skills endorsed (ask connections)
 - [ ] Repository linked
 - [ ] Post about your completion
 
 **Interview Prep:**
+
 - [ ] Practiced 30-second pitch
 - [ ] Practiced 2-minute pitch
 - [ ] Can explain each test type
@@ -592,6 +610,7 @@ After implementing the GitHub Actions pipeline:
 ## 🎯 Remember
 
 **Recruiters look for:**
+
 - ✅ Evidence of hands-on experience
 - ✅ Understanding of testing principles
 - ✅ Ability to articulate technical concepts
@@ -613,4 +632,3 @@ After implementing the GitHub Actions pipeline:
 **Good luck with your job search!** 🚀
 
 *Questions? Open an issue on the main Testbook repo or join the discussions.*
-

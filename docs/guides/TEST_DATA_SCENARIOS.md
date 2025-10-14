@@ -15,16 +15,19 @@ Test data scenarios provide consistent, repeatable test data setups for differen
 ### 1. `default` (Default)
 
 **What it includes:**
+
 - 8 pre-seeded users with known passwords
 - Existing posts and interactions from seed data
 - User relationships (followers, etc.)
 
 **Use when:**
+
 - Testing with realistic data
 - Most general testing scenarios
 - No special setup needed
 
 **Example:**
+
 ```javascript
 // JavaScript/Playwright
 await seedDatabase(page, 'default');  // or just seedDatabase(page)
@@ -40,16 +43,19 @@ seed_test_data('default')  # or omit parameter
 ### 2. `empty`
 
 **What it includes:**
+
 - Clean database with no users
 - No posts, no data
 - Fresh slate
 
 **Use when:**
+
 - Testing registration flows
 - Testing "no data" states
 - Need complete control over all data
 
 **Example:**
+
 ```javascript
 // JavaScript/Playwright
 await seedDatabase(page, 'empty');
@@ -67,16 +73,19 @@ seed_test_data('empty')
 ### 3. `minimal`
 
 **What it includes:**
+
 - Basic seeded users (same as default)
 - No additional posts
 - Clean feed state
 
 **Use when:**
+
 - Testing post creation from scratch
 - Need users but not posts
 - Testing empty feed states
 
 **Example:**
+
 ```javascript
 // JavaScript/Playwright
 await seedDatabase(page, 'minimal');
@@ -93,17 +102,20 @@ seed_test_data('minimal')
 ### 4. `high_traffic`
 
 **What it includes:**
+
 - All default users
 - 6+ additional posts across users
 - More interactions and content
 
 **Use when:**
+
 - Testing with busy feeds
 - Testing pagination or filtering
 - Performance testing UI with data
 - Testing "realistic" user experience
 
 **Example:**
+
 ```javascript
 // JavaScript/Playwright
 await seedDatabase(page, 'high_traffic');
@@ -196,16 +208,19 @@ test('new user can register and post', async ({ page }) => {
 ### Dev API Endpoints (Require TESTING=true)
 
 **Create Post:**
+
 ```bash
 POST /api/dev/create-post?user_id=1&content=Hello
 ```
 
 **Reset Database:**
+
 ```bash
 POST /api/dev/reset
 ```
 
 **Seed Database:**
+
 ```bash
 POST /api/dev/seed
 ```
@@ -267,22 +282,26 @@ def _seed(scenario: str = "default"):
 ## Best Practices
 
 ### 1. **Choose the Right Scenario**
+
 - Use `empty` for registration tests
 - Use `default` for most tests
 - Use `high_traffic` for feed/pagination tests
 - Use `minimal` when you want to create posts from scratch
 
 ### 2. **Reset Between Tests**
+
 - Use session-level reset for faster tests
 - Use function-level reset when tests modify data
 - Document which scenario each test needs
 
 ### 3. **Don't Rely on Order**
+
 - Each test should be independent
 - Don't assume data from previous tests
 - Always seed the scenario you need
 
 ### 4. **Handle Timing**
+
 - Wait for network idle after seeding
 - Use proper waits for API calls
 - Don't assume instant data availability
@@ -305,12 +324,14 @@ def _seed(scenario: str = "default"):
 ### Scenario not working?
 
 **Check:**
+
 1. Backend is running with `TESTING=true`
 2. Dev endpoints are accessible
 3. Network is stable
 4. Wait for seeding to complete
 
 **Debug:**
+
 ```javascript
 // Log scenario result
 const result = await seedDatabase(page, 'high_traffic');
@@ -320,6 +341,7 @@ console.log('Seeding complete:', result);
 ### Posts not appearing?
 
 **Try:**
+
 - Refresh the page after seeding
 - Wait for network idle
 - Check backend logs for errors
@@ -337,4 +359,3 @@ console.log('Seeding complete:', result);
 ---
 
 *Part of the Testbook Testing Platform*
-

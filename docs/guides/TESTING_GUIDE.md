@@ -30,7 +30,6 @@ Testbook works with any testing tool! Here are popular options:
 
 **[Playwright](https://playwright.dev/)** - Recommended for beginners
 
-
 ```bash
 npm init playwright@latest
 
@@ -40,9 +39,7 @@ npm init playwright@latest
 - Great documentation
 - Built-in test runner
 
-
 **[Selenium](https://www.selenium.dev/)** - Industry standard
-
 
 ```bash
 pip install selenium
@@ -52,7 +49,6 @@ pip install selenium
 
 - Huge community support
 - Extensive browser support
-
 
 **[Cypress](https://www.cypress.io/)** - Developer-friendly
 
@@ -67,7 +63,6 @@ npm install cypress --save-dev
 
 ### 🔌 API Testing Tools
 
-
 **[Postman](https://www.postman.com/)** - Visual & powerful
 
 - No coding required (can add scripts)
@@ -75,7 +70,6 @@ npm install cypress --save-dev
 - Export to Newman for CI/CD
 
 **[REST Assured](https://rest-assured.io/)** - Java developers
-
 
 ```java
 given().auth().basic("user", "pass")
@@ -616,12 +610,14 @@ backend/
 ### Types of API Testing
 
 **Integration Tests** (Manual test cases):
+
 - Test specific scenarios you design
 - Validate business logic
 - Check exact expected behavior
 - **In Testbook:** 140+ tests in `backend/tests/integration/`
 
 **Contract Tests** (Automated from schema):
+
 - Automatically generate test cases from OpenAPI schema
 - Validate API matches documentation
 - Find edge cases and security vulnerabilities

@@ -43,6 +43,7 @@ Testbook v1.1 transforms the platform from a solid 1.0 learning sandbox into a *
    - Interview preparation
 
 **Each stage includes:**
+
 - ✅ Track-specific guidance (Python/JavaScript/Hybrid)
 - ✅ Learning objectives and outcomes
 - ✅ Hands-on practice exercises
@@ -56,18 +57,21 @@ Testbook v1.1 transforms the platform from a solid 1.0 learning sandbox into a *
 ### 🧰 Job Readiness & CI/CD
 
 **CI/CD Pipeline:**
+
 - ✅ 8 automated jobs (linting, tests, E2E, security)
 - ✅ Runs on every push/PR
 - ✅ Coverage uploads to Codecov
 - ✅ Test artifacts retained 30 days
 
 **Status Badges:**
+
 - ![CI Status](https://github.com/upt3mpo/testbook/actions/workflows/testbook-ci.yml/badge.svg)
 - ![Backend Coverage](https://img.shields.io/badge/backend_coverage-86%25-brightgreen)
 - ![Frontend Coverage](https://img.shields.io/badge/frontend_coverage-95%25-brightgreen)
 - ![Total Tests](https://img.shields.io/badge/tests-210%2B-blue)
 
 **Portfolio Guide:**
+
 - 🆕 Comprehensive 616-line guide
 - Resume templates (3 versions)
 - LinkedIn profile templates
@@ -79,17 +83,20 @@ Testbook v1.1 transforms the platform from a solid 1.0 learning sandbox into a *
 ### 🧪 Quality, Accessibility & Maintainability
 
 **Code Quality:**
+
 - ✅ Linting enforced (Black, Flake8, isort, ESLint, Prettier)
 - ✅ Pre-commit hooks (10 automated checks)
 - ✅ 80% coverage minimum enforced in CI
 
 **Accessibility:**
+
 - ✅ WCAG 2.1 AA compliance tested
 - ✅ 0 accessibility violations (5 key pages)
 - ✅ Comprehensive accessibility guide
 - ✅ axe-playwright E2E tests
 
 **Performance:**
+
 - ✅ Lighthouse CI configuration
 - ✅ Performance baselines established
 - ✅ Quality thresholds (Performance 70%, Accessibility 90%)
@@ -99,12 +106,14 @@ Testbook v1.1 transforms the platform from a solid 1.0 learning sandbox into a *
 ### 🎓 Educational Enhancements
 
 **Test Files Enhanced:** 9 files with:
+
 - ✅ Arrange-Act-Assert (AAA) comments
 - ✅ "Why This Matters" sections (200+ lines)
 - ✅ Career/interview value explained
 - ✅ Real-world usage examples
 
 **Enhanced Files:**
+
 - Backend: `unit/test_auth.py`, `unit/test_models.py`, `integration/test_api_auth.py`, `integration/test_api_posts.py`
 - Frontend: `tests/unit/CreatePost.test.jsx`, `tests/unit/Navbar.test.jsx`
 - E2E: `e2e/auth.spec.js`, `e2e/posts.spec.js`, `e2e-python/test_auth.py`
@@ -114,12 +123,14 @@ Testbook v1.1 transforms the platform from a solid 1.0 learning sandbox into a *
 ### 📚 Documentation Expansion
 
 **New Guides (4):**
+
 - 🆕 Troubleshooting Guide (1100+ lines) - Real errors with exact fixes
 - 🆕 Portfolio Guide (616 lines) - Turn learning into job applications
 - 🆕 Quality Checks Guide (430 lines) - Linting, formatting, coverage
 - 🆕 Accessibility Testing Guide (373 lines) - WCAG 2.1 compliance
 
 **Improved Documentation:**
+
 - ✅ "Choose Your Path" table (4 tracks)
 - ✅ Setup TL;DR (3-line quick start)
 - ✅ All paths support Python, JavaScript, Hybrid tracks
@@ -131,6 +142,7 @@ Testbook v1.1 transforms the platform from a solid 1.0 learning sandbox into a *
 ### 🏗️ Test Reorganization
 
 **Backend:**
+
 ```
 backend/tests/
 ├── unit/           ← Stage 1 (Unit Tests)
@@ -138,6 +150,7 @@ backend/tests/
 ```
 
 **Frontend:**
+
 ```
 frontend/src/tests/
 ├── unit/           ← Stage 1 (Component Tests)
@@ -147,6 +160,7 @@ frontend/src/tests/
 ```
 
 **Benefits:**
+
 - ✅ Clear categorization
 - ✅ Matches learning stages
 - ✅ Consistent across stacks
@@ -172,15 +186,19 @@ frontend/src/tests/
 ## 🎯 Learning Paths Supported
 
 ### 🐍 Python Track (12-15 hours)
+
 - Backend unit tests → API integration → Python E2E → Security → Capstone
 
 ### ☕ JavaScript Track (14-17 hours)
+
 - Component tests → Contract tests → JavaScript E2E → Performance → Capstone
 
 ### 🔄 Hybrid Track (15-18 hours)
+
 - Both stacks → Full-stack testing → All tools → Professional QA
 
 ### ⚡ Manual QA Transition (20-25 hours)
+
 - Python-first automation path with career guidance
 
 ---
@@ -188,6 +206,7 @@ frontend/src/tests/
 ## 🆕 New Tools & Technologies
 
 **Quality Tools:**
+
 - Black (Python formatting)
 - Flake8 (Python linting)
 - isort (Python import sorting)
@@ -196,11 +215,13 @@ frontend/src/tests/
 - pre-commit (Git hooks)
 
 **Accessibility Tools:**
+
 - axe-playwright (WCAG testing)
 - vitest-axe (Component accessibility)
 - @lhci/cli (Lighthouse CI)
 
 **Development Tools:**
+
 - Codecov (Coverage tracking)
 - GitHub Actions (CI/CD)
 
@@ -209,6 +230,7 @@ frontend/src/tests/
 ## 🚀 Getting Started
 
 ### Quick Start
+
 ```bash
 git clone https://github.com/upt3mpo/testbook.git
 cd testbook
@@ -216,6 +238,7 @@ cd testbook
 ```
 
 ### Start Learning
+
 1. Read [START_HERE.md](START_HERE.md)
 2. Choose your track (Python/JavaScript/Hybrid)
 3. Begin [Stage 1: Unit Tests](learn/stage_1_unit/)
@@ -244,10 +267,12 @@ cd testbook
 ### Test File Paths Changed
 
 **Backend:**
+
 - `test_unit_auth.py` → `unit/test_auth.py`
 - `test_api_*.py` → `integration/test_api_*.py`
 
 **Frontend:**
+
 - `src/test/` → `src/tests/` (consolidated)
 - `src/components/__tests__/` → `src/tests/unit/`
 - `src/test/contract.test.js` → `src/tests/integration/contract.test.js`
@@ -286,6 +311,7 @@ cd testbook
 **Testbook v1.1** represents a complete transformation into a professional-grade learning platform for automation testing.
 
 Special thanks to all learners who will use this to:
+
 - ✅ Master automation testing
 - ✅ Build portfolio projects
 - ✅ Land QA engineering jobs
@@ -296,6 +322,7 @@ Special thanks to all learners who will use this to:
 ## 📚 Documentation
 
 **Complete documentation available at:**
+
 - [README.md](README.md) - Project overview
 - [START_HERE.md](START_HERE.md) - Choose your learning path
 - [/learn/](learn/) - Self-guided 5-stage curriculum
@@ -317,6 +344,7 @@ Special thanks to all learners who will use this to:
 **v1.1 is feature-complete!**
 
 **Future considerations (v1.2+):**
+
 - Instructor dashboards
 - Community challenge branches
 - Peer review workflows
@@ -331,4 +359,3 @@ Special thanks to all learners who will use this to:
 ---
 
 *Happy Testing!* 🧪🚀
-

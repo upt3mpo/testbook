@@ -78,6 +78,7 @@ By the end of this stage, you will:
 **Tool:** pytest (Python) - tests backend security endpoints
 
 **Why different tools?**
+
 - k6 is industry standard for performance (JavaScript)
 - pytest is excellent for security testing (Python)
 - Professional QA engineers use both!
@@ -115,6 +116,7 @@ export default function() {
 ```
 
 **Key elements:**
+
 - Stages define load pattern
 - Checks verify responses
 - Virtual users simulate real traffic
@@ -132,6 +134,7 @@ http_reqs..............................: 1200
 ```
 
 **What to watch:**
+
 - `http_req_duration` - How fast responses are
 - `http_req_failed` - Error rate
 - `http_reqs` - Total requests handled
@@ -157,6 +160,7 @@ def test_sql_injection_prevention(client):
 ```
 
 **Security testing mindset:**
+
 - Think like an attacker
 - Test malicious inputs
 - Verify proper rejection
@@ -179,6 +183,7 @@ def test_rate_limit_enforced(client):
 ```
 
 **Rate limiting tests:**
+
 - Verify limits are enforced
 - Check appropriate status codes
 - Ensure legitimate traffic isn't blocked
@@ -203,6 +208,7 @@ def test_xss_prevention(client, auth_headers):
 ```
 
 **Input validation checks:**
+
 - XSS payloads
 - HTML injection
 - Command injection
@@ -238,6 +244,7 @@ k6 run stress-test.js
 Look at your load test results:
 
 **Questions:**
+
 1. What's the average response time?
 2. What's the 95th percentile (p95)?
 3. Are any requests failing?
@@ -254,6 +261,7 @@ pytest test_security.py::test_sql_injection_prevention -v
 ```
 
 **Try making a test fail:**
+
 - Comment out input validation
 - Disable rate limiting
 - See how tests catch vulnerabilities
@@ -284,6 +292,7 @@ def test_rate_limiting_behavior(client):
 Try to break the application:
 
 **Common attacks to test:**
+
 1. SQL injection: `' OR '1'='1`
 2. XSS: `<script>alert(1)</script>`
 3. Path traversal: `../../etc/passwd`
@@ -367,12 +376,14 @@ The most critical web application security risks:
 ### Security Testing Mindset
 
 ✅ **Think like an attacker:**
+
 - What's the worst input I can send?
 - Can I access others' data?
 - Can I bypass authentication?
 - Can I cause a crash or DOS?
 
 ✅ **Test assumptions:**
+
 - "Users will only send valid data" ❌
 - "Nobody will try that" ❌
 - "The frontend validates it" ❌
@@ -417,7 +428,7 @@ Before moving to Stage 5, answer these:
 
 ---
 
-## 🎉 Stage Complete!
+## 🎉 Stage Complete
 
 You now understand non-functional testing that protects users and business!
 
@@ -426,4 +437,3 @@ You now understand non-functional testing that protects users and business!
 ---
 
 *Pro tip: Security vulnerabilities make excellent interview stories. "I found and prevented a SQL injection vulnerability" is resume gold! 🏆*
-

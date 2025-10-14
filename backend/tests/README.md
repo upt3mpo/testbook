@@ -112,6 +112,7 @@ Test API endpoints and multiple components together:
 This test uses **Schemathesis** for property-based contract testing - an advanced technique that automatically generates hundreds of test cases from your OpenAPI schema.
 
 **What it does:**
+
 - Reads the OpenAPI schema from FastAPI
 - Automatically generates 500+ test cases for all endpoints
 - Tests valid inputs, invalid inputs, edge cases, and security fuzzing
@@ -124,6 +125,7 @@ FastAPI 0.115+ generates OpenAPI 3.1.0 schemas. Schemathesis 3.27.1 only has exp
 
 **Educational Value:**
 Even though skipped, studying this test teaches you about:
+
 - Property-based testing (generates tests from properties/rules)
 - Contract testing (validates implementation matches specification)
 - API fuzzing (automated security testing)
@@ -243,6 +245,7 @@ def test_database_operation(db_session, test_user):
 See [COVERAGE_ANALYSIS.md](COVERAGE_ANALYSIS.md) for detailed breakdown and improvement opportunities.
 
 **Quick Coverage Check:**
+
 ```bash
 pytest --cov --cov-report=term-missing
 ```
@@ -315,4 +318,3 @@ When adding new tests:
 6. Ensure tests pass: `pytest -v`
 7. Check coverage: `pytest --cov`
 8. Maintain 80%+ coverage threshold
-

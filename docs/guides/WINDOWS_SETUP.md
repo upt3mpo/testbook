@@ -9,6 +9,7 @@ This guide helps Windows users set up and run Testbook. There are three approach
 **Best for:** Windows users who prefer native tools and don't want to install WSL.
 
 ### Requirements
+
 - Windows 10/11
 - Python 3.11+ ([Download](https://www.python.org/downloads/))
 - Node.js 18+ ([Download](https://nodejs.org/))
@@ -17,17 +18,20 @@ This guide helps Windows users set up and run Testbook. There are three approach
 ### Setup Steps
 
 1. **Clone the repository:**
+
    ```cmd
    git clone https://github.com/upt3mpo/testbook.git
    cd testbook
    ```
 
 2. **Run the start script:**
+
    ```cmd
    start-dev.bat
    ```
 
 The script will:
+
 - ✅ Check if ports 8000 and 3000 are available
 - ✅ Create Python virtual environment (if needed)
 - ✅ Install dependencies only if not already present (idempotent)
@@ -38,13 +42,16 @@ The script will:
 
 **Problem:** `curl` command not found during health checks
 **Solution:** Install curl via Windows:
+
 ```cmd
 winget install curl
 ```
+
 Or download from: https://curl.se/windows/
 
 **Problem:** Port already in use
 **Solution:** Find and kill the process:
+
 ```cmd
 netstat -ano | findstr :8000
 taskkill /PID <PID_NUMBER> /F
@@ -74,6 +81,7 @@ taskkill /PID <PID_NUMBER> /F
 ### Setup Steps
 
 1. **Install WSL 2 (if not already installed):**
+
    ```powershell
    # Run in PowerShell as Administrator
    wsl --install
@@ -82,17 +90,20 @@ taskkill /PID <PID_NUMBER> /F
    Restart your computer when prompted.
 
 2. **Install Ubuntu (or your preferred distro):**
+
    ```powershell
    wsl --install -d Ubuntu
    ```
 
 3. **Open Ubuntu terminal and install dependencies:**
+
    ```bash
    sudo apt update
    sudo apt install -y python3 python3-pip python3-venv nodejs npm git curl
    ```
 
 4. **Clone and run Testbook:**
+
    ```bash
    git clone https://github.com/upt3mpo/testbook.git
    cd testbook
@@ -111,14 +122,17 @@ WSL 2 automatically forwards ports to Windows, so you can access the app from yo
 ### WSL Tips
 
 **Edit files from Windows:**
+
 - Your WSL files are accessible at: `\\wsl$\Ubuntu\home\<username>\`
 - You can use VS Code with the "Remote - WSL" extension
 
 **Performance:**
+
 - Store project files in WSL filesystem (not `/mnt/c/...`) for best performance
 - Use `code .` in WSL terminal to open VS Code with WSL integration
 
 **Troubleshooting:**
+
 ```bash
 # Check WSL version
 wsl --list --verbose
@@ -145,6 +159,7 @@ wsl --update
 1. **Start Docker Desktop**
 
 2. **Run Testbook:**
+
    ```cmd
    docker-compose up
    ```
@@ -175,6 +190,7 @@ wsl --update
 ### Native Windows or WSL
 
 **Start the app:**
+
 ```cmd
 # Windows
 start-dev.bat
@@ -184,9 +200,11 @@ start-dev.bat
 ```
 
 **Stop the app:**
+
 - Press `Ctrl+C` in the terminal
 
 **Reset database:**
+
 ```cmd
 # Windows
 reset-database.bat
@@ -196,6 +214,7 @@ reset-database.bat
 ```
 
 **Run tests:**
+
 ```cmd
 # Windows
 cd backend
@@ -217,6 +236,7 @@ pytest -v
 **Symptom:** "Port 8000/3000 is already in use"
 
 **Solution:**
+
 ```cmd
 # Windows
 netstat -ano | findstr :8000
@@ -232,6 +252,7 @@ lsof -ti:8000 | xargs kill
 
 **Solution:**
 Ensure virtual environment is activated:
+
 ```cmd
 # Windows
 cd backend
@@ -248,6 +269,7 @@ source .venv/bin/activate
 
 **Solution:**
 Delete and reinstall:
+
 ```cmd
 cd frontend
 rmdir /s /q node_modules  # Windows
@@ -262,6 +284,7 @@ npm install
 ### Visual Studio Code (Recommended)
 
 **Extensions:**
+
 - Python (Microsoft)
 - Pylance
 - ESLint
@@ -269,6 +292,7 @@ npm install
 - Remote - WSL (if using WSL)
 
 **Setup:**
+
 ```cmd
 # Windows
 code .
@@ -280,6 +304,7 @@ code .  # Automatically opens with WSL integration
 ### PyCharm
 
 Works great with native Windows or WSL. Configure interpreters:
+
 - File → Settings → Project → Python Interpreter
 - Select the `venv/bin/python` (WSL) or `venv\Scripts\python.exe` (Windows)
 
@@ -288,12 +313,14 @@ Works great with native Windows or WSL. Configure interpreters:
 ## Getting Help
 
 **Script not working?**
+
 1. Check you're in the project root directory
 2. Verify Python and Node are installed: `python --version` and `node --version`
 3. Look at the error messages - the scripts now provide detailed feedback
 4. See [FAQ.md](../../FAQ.md) for common issues
 
 **Still stuck?**
+
 - Check [RUNNING_TESTS.md](./RUNNING_TESTS.md)
 - Review [START_HERE.md](../../START_HERE.md)
 - Ask in the course discussion forum
@@ -303,9 +330,9 @@ Works great with native Windows or WSL. Configure interpreters:
 ## Next Steps
 
 Once your environment is running:
+
 1. **Verify setup:** Open http://localhost:3000 and log in
 2. **Start learning:** Follow [START_HERE.md](../../START_HERE.md)
 3. **Run your first test:** Complete [Lab 1](../../labs/LAB_01_Your_First_Test.md)
 
 **Happy testing!** 🚀
-

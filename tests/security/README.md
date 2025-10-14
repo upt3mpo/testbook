@@ -11,6 +11,7 @@ Comprehensive security testing for Testbook API.
 ### The Rate Limiting Issue
 
 **Problem:** Tests may fail with errors like:
+
 - `KeyError: 'access_token'`
 - `AssertionError: Rate limiting not working`
 - `429 Too Many Requests`
@@ -25,6 +26,7 @@ Comprehensive security testing for Testbook API.
 4. **Result:** Tests exhaust the rate limit budget → later tests fail
 
 **Visual representation:**
+
 ```
 Tests 1-15:  ✅ Pass (within rate limit)
 Test 16:     ❌ Gets rate limited (429 error)
@@ -45,6 +47,7 @@ pytest tests/security/ -v
 ```
 
 **What TESTING mode does:**
+
 - Production: 20 login requests/minute
 - Testing: 100 login requests/minute (allows all tests to pass)
 
@@ -94,6 +97,7 @@ pytest tests/security/ -v
 ```
 
 **Passing (17-19 tests):**
+
 - ✅ All authentication tests
 - ✅ All authorization tests
 - ✅ Input validation (SQL injection, XSS)
@@ -103,11 +107,13 @@ pytest tests/security/ -v
 - ✅ Request size limits
 
 **Skipped (3 tests):**
+
 - ⏭️ Account lockout (feature not implemented - future enhancement)
 - ⏭️ IP banning (feature not implemented - future enhancement)
 - ⏭️ Rate limit headers (optional feature)
 
 **Failing (1-3 tests):**
+
 - ⚠️ Test execution order issues (test infrastructure, not code bugs)
 - ⚠️ Timing issues with concurrent tests
 
@@ -126,11 +132,13 @@ Most failures will be due to rate limiting - this proves rate limiting works!
 ### Failure Type 1: Rate Limit Exceeded
 
 **Error:**
+
 ```
 KeyError: 'access_token'
 ```
 
 **What happened:**
+
 1. Test tries to get auth token
 2. Makes login request
 3. Gets 429 "Rate limit exceeded"
@@ -143,11 +151,13 @@ KeyError: 'access_token'
 ### Failure Type 2: Test Isolation
 
 **Error:**
+
 ```
 AssertionError: Rate limiting not working - allowed 30 attempts (expected max 20)
 ```
 
 **What happened:**
+
 1. Test checks if rate limiting works
 2. Previous tests already used part of the rate limit budget
 3. Test allows more attempts than expected
@@ -159,11 +169,13 @@ AssertionError: Rate limiting not working - allowed 30 attempts (expected max 20
 ### Failure Type 3: Status Code Mismatches
 
 **Error:**
+
 ```
 AssertionError: Expected 401, got 403
 ```
 
 **What happened:**
+
 - Both 401 and 403 are valid for auth errors
 - FastAPI's dependency system prefers 403
 - Test expectations need updating
@@ -177,6 +189,7 @@ AssertionError: Expected 401, got 403
 ### Tests still failing even with TESTING=true?
 
 **Check #1: Is backend actually in TESTING mode?**
+
 ```bash
 # Look at backend logs
 tail -f /tmp/backend-testing.log
@@ -185,6 +198,7 @@ tail -f /tmp/backend-testing.log
 ```
 
 **Check #2: Did you wait for rate limits to reset?**
+
 ```bash
 # Wait 60 seconds between test runs
 sleep 60
@@ -192,6 +206,7 @@ pytest tests/security/ -v
 ```
 
 **Check #3: Are you running tests sequentially?**
+
 ```bash
 # Don't use -n (parallel)
 pytest tests/security/ -v  # ✅ Good
@@ -213,10 +228,12 @@ tests/security/
 ### conftest.py Features
 
 **Automatic rate limit spacing:**
+
 - 500ms delay between each test
 - Prevents tests from competing for rate limit budget
 
 **Cached auth tokens:**
+
 - Minimizes redundant login calls
 - Single token per user for entire test session
 
@@ -279,14 +296,16 @@ tests/security/
 
 ## 🚀 Best Practices
 
-### DO:
+### DO
+
 - ✅ Run with `TESTING=true` for full suite
 - ✅ Use provided `conftest.py` fixtures
 - ✅ Wait between test runs (60s) if rerunning
 - ✅ Run sequentially, not in parallel
 - ✅ Expect 17-19/23 tests to pass
 
-### DON'T:
+### DON'T
+
 - ❌ Run without TESTING mode (will hit real rate limits)
 - ❌ Remove the 500ms spacing fixture
 - ❌ Run tests in parallel (-n flag)
@@ -297,6 +316,7 @@ tests/security/
 ## 💡 Pro Tips
 
 **Tip 1:** Check if test is rate limited
+
 ```python
 response = requests.post("/login", ...)
 print(f"Status: {response.status_code}")  # 429 = rate limited
@@ -304,6 +324,7 @@ print(f"Body: {response.text}")  # Will show rate limit message
 ```
 
 **Tip 2:** Clear rate limits between runs
+
 ```bash
 # Restart backend (clears in-memory rate limit counters)
 lsof -ti:8000 | xargs kill
@@ -312,6 +333,7 @@ sleep 5
 ```
 
 **Tip 3:** Test rate limiting separately
+
 ```bash
 # Test JUST rate limiting (without TESTING mode)
 pytest tests/security/test_rate_limiting.py::TestRateLimiting::test_login_attempts_should_be_rate_limited -v
@@ -348,12 +370,14 @@ pytest tests/security/test_rate_limiting.py::TestRateLimiting::test_login_attemp
 ## 🆘 Still Having Issues?
 
 **See:**
+
 - This README (you're reading it!)
 - [LAB_06](../../labs/LAB_06_Testing_With_Rate_Limits.md)
 - [FAQ.md](../../FAQ.md)
 - [RUNNING_TESTS.md](../../docs/guides/RUNNING_TESTS.md)
 
 **Or:** Create an issue with:
+
 - Test output
 - Backend logs
 - Whether you used `TESTING=true`

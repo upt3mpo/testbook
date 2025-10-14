@@ -266,6 +266,7 @@ OpenAPI 3.1.0 introduced **complete JSON Schema compatibility** (Draft 2020-12),
 **During development, we discovered:**
 
 Using `force_schema_version="30"` makes Schemathesis work with OpenAPI 3.1.0! However, enabling it revealed:
+
 - 55 test failures (mostly auth and schema documentation gaps)
 - Schema needs documentation improvements
 - Authentication needs configuration
@@ -277,12 +278,14 @@ Using `force_schema_version="30"` makes Schemathesis work with OpenAPI 3.1.0! Ho
 ### Timeline
 
 **Current Status:**
+
 - ✅ Comprehensive documentation added
 - ✅ Workaround discovered (`force_schema_version="30"`)
 - ⚠️ Skipped pending full configuration
 - 🚀 Full enablement planned for future update
 
 **Future Update:**
+
 - Fix schema documentation gaps
 - Configure authentication for Schemathesis
 - Enable all 500+ automated contract tests

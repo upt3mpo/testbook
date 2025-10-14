@@ -41,6 +41,7 @@ pytest test_auth.py::TestAuthentication::test_login_success -v
 **macOS/Linux:**
 
 HEADLESS=false pytest -v
+
 ```
 
 **Windows (PowerShell):**
@@ -176,6 +177,7 @@ BACKEND_URL=http://localhost:8000
 ### Run Configuration Examples
 
 **macOS/Linux:**
+
 ```bash
 # Headed mode with slow motion
 HEADLESS=false SLOW_MO=1000 pytest -v
@@ -245,7 +247,6 @@ pytest -v
 **Key difference:** Python uses synchronous syntax while JavaScript uses async/await. The Playwright API is otherwise identical!
 
 ---
-
 
 **Getting Started:**
 

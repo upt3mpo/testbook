@@ -444,16 +444,19 @@ You can move quickly through the basics. Spend extra time on advanced patterns (
 **🎯 Three Quick-Decision Scenarios:**
 
 **Scenario 1: Python-Only Path**
+
 - Skip Sections 6 entirely
 - Focus: Labs 1-5 → Lab 4 Python → Lab 4B → Security & Performance
 - Best for: Backend-focused teams, API developers
 
 **Scenario 2: Hybrid Path (Recommended!)**
+
 - Complete: Labs 1-5 → Lab 4 Python → Lab 6B → Lab 6C → Lab 4B → Section 8
 - Best for: Full-stack teams, Python API + React UI
 - **Why:** Lab 6C ensures your frontend-backend integration is solid
 
 **Scenario 3: Full-Stack Path**
+
 - Complete: ALL labs in both Python and JavaScript
 - Best for: Maximum flexibility, career advancement
 - Time: 40-50 hours
@@ -649,6 +652,7 @@ Common hybrid approaches:
 ### External Learning Resources
 
 **Programming Basics:**
+
 - **[LearnPython.org](https://www.learnpython.org/)** - Free interactive Python tutorials (highly recommended for beginners!)
   - Interactive exercises with instant feedback
   - No setup required - runs in browser

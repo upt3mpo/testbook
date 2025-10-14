@@ -5,6 +5,7 @@ Comprehensive guide to logging, monitoring, and debugging in Testbook.
 ## Overview
 
 Testbook implements structured logging to help you:
+
 - **Debug issues** during development
 - **Monitor behavior** in production
 - **Track requests** through the system
@@ -87,6 +88,7 @@ export LOG_LEVEL=WARNING
 ```
 
 **Features:**
+
 - ✅ Color-coded by level
 - ✅ Timestamps
 - ✅ Easy to read
@@ -115,6 +117,7 @@ export LOG_FORMAT=json
 ```
 
 **Benefits:**
+
 - ✅ Machine-parseable
 - ✅ Easy to search/filter
 - ✅ Works with log aggregators
@@ -295,6 +298,7 @@ def create_post(user_id: int, content: str):
 Send logs to a centralized service:
 
 **Popular Options:**
+
 - **Datadog** - Full observability platform
 - **New Relic** - APM + logging
 - **Grafana Loki** - Open-source, works with Grafana
@@ -302,6 +306,7 @@ Send logs to a centralized service:
 - **CloudWatch Logs** - AWS native
 
 **Example: Shipping to Datadog**
+
 ```python
 import logging
 from datadog import initialize, statsd
@@ -391,18 +396,21 @@ cat logs/app.log | jq 'select(.duration_ms > 1000)'
 ### Common Issues
 
 **Performance Problems:**
+
 ```bash
 # Find slow queries
 cat logs/app.log | jq 'select(.duration_ms > 1000)'
 ```
 
 **Authentication Issues:**
+
 ```bash
 # Find failed logins
 grep "Login failed" logs/app.log
 ```
 
 **Rate Limiting:**
+
 ```bash
 # Find rate limit violations
 grep "429" logs/app.log
@@ -498,4 +506,3 @@ logger.addHandler(handler)
 ✅ **Monitor in production** - Use log aggregation and alerting
 
 **Good logging makes debugging faster and systems more observable!**
-

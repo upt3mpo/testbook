@@ -12,29 +12,34 @@ Get Testbook running in 5 minutes on any platform!
 <summary><b>🍎 macOS / Linux</b> (click to expand)</summary>
 
 ### Step 1: Clone Repository
+
 ```bash
 git clone https://github.com/upt3mpo/testbook.git
 cd testbook
 ```
 
 ### Step 2: Start Application (Development Mode)
+
 ```bash
 chmod +x start-dev.sh
 ./start-dev.sh
 ```
 
 **What happens:**
+
 - Backend starts on http://localhost:8000
 - Frontend starts on http://localhost:3000 ← **This is your app!**
 - Database automatically seeded
 
 **Why development mode?**
+
 - No Docker required
 - All tests pre-configured for port 3000
 - Hot reload enabled
 - Perfect for learning!
 
 ### Step 3: Open Browser
+
 ```
 Frontend: http://localhost:3000  ← Open this!
 Backend API: http://localhost:8000/api
@@ -42,6 +47,7 @@ API Docs: http://localhost:8000/docs
 ```
 
 ### Step 4: Login
+
 ```
 Email: sarah.johnson@testbook.com
 Password: Sarah2024!
@@ -55,28 +61,33 @@ Password: Sarah2024!
 <summary><b>🖥️ Windows</b> (click to expand)</summary>
 
 ### Step 1: Clone Repository
+
 ```cmd
 git clone https://github.com/upt3mpo/testbook.git
 cd testbook
 ```
 
 ### Step 2: Start Application (Development Mode)
+
 ```cmd
 start-dev.bat
 ```
 
 **What happens:**
+
 - Backend starts on http://localhost:8000
 - Frontend starts on http://localhost:3000 ← **This is your app!**
 - Database automatically seeded
 
 **Why development mode?**
+
 - No Docker required
 - All tests pre-configured for port 3000
 - Hot reload enabled
 - Perfect for learning!
 
 ### Step 3: Open Browser
+
 ```
 Frontend: http://localhost:3000  ← Open this!
 Backend API: http://localhost:8000/api
@@ -84,6 +95,7 @@ API Docs: http://localhost:8000/docs
 ```
 
 ### Step 4: Login
+
 ```
 Email: sarah.johnson@testbook.com
 Password: Sarah2024!
@@ -146,15 +158,19 @@ npm test
 ## 🎯 Next Steps
 
 ### ⭐ New to Testing?
+
 **→ [START_HERE.md](START_HERE.md)** - Choose your learning path
 
 ### 🧪 Want Hands-On Labs?
+
 **→ [labs/LAB_01_Your_First_Test.md](labs/LAB_01_Your_First_Test.md)** - Write first test in 30 min
 
 ### 📚 Want Structured Learning?
+
 **→ [docs/course/COURSE_AUTOMATION_TESTING_101.md](docs/course/COURSE_AUTOMATION_TESTING_101.md)** - Progressive curriculum
 
 ### 📖 Want to Run Tests?
+
 **→ [docs/guides/RUNNING_TESTS.md](docs/guides/RUNNING_TESTS.md)** - Complete guide
 
 ---
@@ -164,10 +180,12 @@ npm test
 ### Development Mode (`start-dev.sh` / `start-dev.bat`) ✅ For Learning
 
 **Ports:**
+
 - Frontend: http://localhost:3000
 - Backend: http://localhost:8000
 
 **Use for:**
+
 - ✅ Learning and testing
 - ✅ All labs and tutorials
 - ✅ No Docker required
@@ -177,10 +195,12 @@ npm test
 ### Production Mode (`start.sh` / `start.bat`) ⚠️ For Deployment
 
 **Ports:**
+
 - Frontend: http://localhost:8000
 - Backend: http://localhost:8000
 
 **Use for:**
+
 - Production deployment only
 - Requires Docker
 - ⚠️ Tests need reconfiguration
@@ -194,6 +214,7 @@ npm test
 ### setup_images.py
 
 This script **automatically detects your OS** and uses appropriate fonts:
+
 - Windows: Arial, Calibri, Segoe UI
 - macOS: Helvetica, Arial
 - Linux: DejaVu, Liberation
@@ -203,6 +224,7 @@ Just run: `python3 setup_images.py` (or `python` on Windows)
 ### Virtual Environment Commands
 
 **Activate:**
+
 - macOS/Linux: `source .venv/bin/activate`
 - Windows: `.venv\Scripts\activate`
 
@@ -215,6 +237,7 @@ Just run: `python3 setup_images.py` (or `python` on Windows)
 ### Port Already in Use
 
 **macOS / Linux:**
+
 ```bash
 # Kill process on port 3000
 lsof -ti:3000 | xargs kill -9
@@ -224,6 +247,7 @@ lsof -ti:8000 | xargs kill -9
 ```
 
 **Windows:**
+
 ```cmd
 REM Find and kill process on port 3000
 netstat -ano | findstr :3000
@@ -237,11 +261,13 @@ taskkill /PID <PID> /F
 ### Python/Node Not Found
 
 **Install Python 3.11+:**
+
 - macOS: `brew install python@3.11`
 - Linux: `sudo apt install python3 python3-pip python3-venv`
 - Windows: Download from [python.org](https://www.python.org/)
 
 **Install Node.js 20+:**
+
 - All platforms: Download from [nodejs.org](https://nodejs.org/)
 
 ### Permission Denied (macOS/Linux only)
@@ -291,6 +317,7 @@ After setup, verify:
 ## 📚 Documentation
 
 **All docs organized in [`docs/`](docs/) directory:**
+
 - [`docs/INDEX.md`](docs/INDEX.md) - Complete documentation index
 - [`docs/course/`](docs/course/) - Learning materials
 - [`docs/guides/`](docs/guides/) - How-to guides

@@ -32,6 +32,7 @@ newman run Testbook.postman_collection.json
 ```
 
 **Expected Output:**
+
 ```
 → Testbook API Tests
   ✓ Health Check
@@ -236,6 +237,7 @@ stage('API Tests') {
 ```
 
 **What to check:**
+
 1. Is backend running?
 2. Are credentials correct?
 3. Check request body format
@@ -378,4 +380,3 @@ newman run tests/api/Testbook.postman_collection.json --bail
 ---
 
 **🎯 Pro Tip:** Use Newman in your CI/CD pipeline for automated API testing on every commit!
-

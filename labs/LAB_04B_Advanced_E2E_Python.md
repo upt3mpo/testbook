@@ -894,6 +894,7 @@ def test_ui_update_persists_to_database(
 ### Challenge 1: Add More Page Objects
 
 Create page objects for:
+
 - LoginPage
 - RegistrationPage
 - SettingsPage
@@ -901,6 +902,7 @@ Create page objects for:
 ### Challenge 2: Advanced Network Mocking
 
 Create tests that mock:
+
 - Partial responses (some posts load, others fail)
 - Rate limit errors (429 status)
 - Pagination responses
@@ -908,6 +910,7 @@ Create tests that mock:
 ### Challenge 3: Complex Fixtures
 
 Create a fixture that:
+
 - Logs in as user A
 - Creates 3 posts
 - Logs in as user B
@@ -935,6 +938,7 @@ def pytest_runtest_makereport(item, call):
 ### Challenge 5: Combined API + UI Testing
 
 Create tests that:
+
 - Use API to create 10 posts, reactions, and follows
 - Verify all appear correctly in UI
 - Measure time saved vs clicking through UI
@@ -1038,6 +1042,7 @@ The concepts transfer directly between languages!
 ## 📚 Resources
 
 **Working Examples (Run These!):**
+
 - **`tests/e2e-python/examples/`** - ⭐ Complete working examples from this lab
   - `test_page_objects_example.py` - Page Object Model in action
   - `test_api_ui_combined_example.py` - API + UI validation patterns
@@ -1046,10 +1051,12 @@ The concepts transfer directly between languages!
 - **`tests/e2e-python/conftest.py`** - Advanced fixtures added at bottom
 
 **Study Existing Tests:**
+
 - `tests/e2e-python/test_auth.py` - Authentication examples
 - `tests/e2e-python/test_posts.py` - Post management examples
 
 **Official Documentation:**
+
 - [Playwright Python Page Objects](https://playwright.dev/python/docs/pom)
 - [pytest fixtures](https://docs.pytest.org/en/stable/fixture.html)
 - [pytest markers](https://docs.pytest.org/en/stable/example/markers.html)
@@ -1061,8 +1068,8 @@ The concepts transfer directly between languages!
 **🐍 Python's Unique Advantage:** Unlike JavaScript, Python lets you use the same language for backend API manipulation AND frontend UI testing. This enables incredibly fast test setup by seeding data via API instead of clicking through UI!
 
 **Next Steps:**
+
 - Apply these patterns to the full test suite
 - Explore [Section 8: Advanced E2E Patterns](../docs/course/SECTION_08_ADVANCED_E2E_PATTERNS.md) for more examples
 - Compare with [JavaScript advanced patterns](../docs/guides/TESTING_COMPARISON_PYTHON_JS.md)
 - Set up [CI/CD automation](../docs/course/CI_CD_E2E_TESTING.md)
-

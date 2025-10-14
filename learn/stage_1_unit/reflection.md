@@ -63,4 +63,3 @@ Use this space to document your learning journey through Stage 1.
 ---
 
 *Keep these notes! They're great material for interviews and portfolio documentation.*
-

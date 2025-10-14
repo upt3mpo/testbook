@@ -776,6 +776,7 @@ Add performance testing to ensure components render efficiently.
 ## 📚 Resources
 
 **Working Examples:**
+
 - **`frontend/src/test/mocks/`** - ⭐ MSW setup ready to use
   - `handlers.js` - API mock handlers
   - `server.js` - MSW server configuration
@@ -784,10 +785,12 @@ Add performance testing to ensure components render efficiently.
 - **`frontend/src/components/__tests__/examples/`** - Component test examples directory
 
 **Existing Tests:**
+
 - `frontend/src/components/__tests__/CreatePost.test.jsx` - Current component tests
 - `frontend/src/components/__tests__/Navbar.test.jsx` - Navigation tests
 
 **Official Documentation:**
+
 - [MSW Documentation](https://mswjs.io/)
 - [Vitest Documentation](https://vitest.dev/)
 - [Testing Library](https://testing-library.com/)
@@ -798,4 +801,3 @@ Add performance testing to ensure components render efficiently.
 **🎉 You've mastered advanced component testing! These patterns are used in professional React applications!**
 
 **Next:** [Lab 6C: Integration & Contract Testing](LAB_06C_Frontend_Integration_Testing.md) - Connect your components to backend contracts!
-

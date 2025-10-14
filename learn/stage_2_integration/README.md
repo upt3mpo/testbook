@@ -57,6 +57,7 @@ By the end of this stage, you will:
    - Cascade deletes
 
 **Supporting Files:**
+
 - [`backend/tests/conftest.py`](../../backend/tests/conftest.py) - pytest fixtures
 - [`backend/tests/factories.py`](../../backend/tests/factories.py) - Test data factories
 
@@ -84,6 +85,7 @@ By the end of this stage, you will:
    - Schema-compliant responses
 
 **Supporting Files:**
+
 - [`frontend/src/tests/setup.js`](../../frontend/src/tests/setup.js) - MSW server setup
 - [`frontend/src/tests/contract-helpers.js`](../../frontend/src/tests/contract-helpers.js) - Contract validation utilities
 
@@ -122,6 +124,7 @@ def test_api_endpoint(client, auth_headers):
 ```
 
 **Key observations:**
+
 - `client` fixture provides FastAPI TestClient
 - `auth_headers` handles authentication
 - We test the full HTTP request/response cycle
@@ -142,6 +145,7 @@ def test_database_operation(db_session, test_user):
 ```
 
 **Notice:**
+
 - Tests interact with real database
 - Fixtures handle cleanup between tests
 - We verify data persistence
@@ -165,6 +169,7 @@ class TestPostCreation:
 ```
 
 **Benefits:**
+
 - Related tests grouped together
 - Shared setup via class fixtures
 - Clear test categories
@@ -193,6 +198,7 @@ posts = PostFactory.create_batch(db_session, user_id=user.id, count=5)
 ```
 
 **Factories provide:**
+
 - Realistic test data
 - Flexible data generation
 - Reduced boilerplate
@@ -205,6 +211,7 @@ This file demonstrates **property-based contract testing** with Schemathesis - a
 
 **What is it?**
 Instead of writing individual test cases, Schemathesis reads your OpenAPI schema and automatically generates 500+ test cases to validate:
+
 - All endpoints match documentation
 - Required fields are enforced
 - Data types are correct
@@ -212,6 +219,7 @@ Instead of writing individual test cases, Schemathesis reads your OpenAPI schema
 - Security vulnerabilities are found (fuzzing)
 
 **Example:** One test for POST /api/posts generates:
+
 - Valid inputs (happy path)
 - Missing required fields
 - Wrong data types
@@ -224,6 +232,7 @@ Instead of writing individual test cases, Schemathesis reads your OpenAPI schema
 FastAPI 0.115+ uses OpenAPI 3.1.0, but Schemathesis only has experimental support. The test is skipped until full support is available.
 
 **Should I learn this?**
+
 - 📚 **Yes!** Read [Contract Testing Guide](../../docs/guides/CONTRACT_TESTING.md) to understand the concept
 - 🎯 **For now:** Focus on the 180 integration tests that ARE running
 - 🔄 **Alternative:** Frontend contract testing works today! See [Lab 6C](../../labs/LAB_06C_Frontend_Integration_Testing.md)
@@ -269,6 +278,7 @@ Pick registration flow in `tests/integration/test_api_auth.py`:
 Find test verifying authorization (e.g., deleting someone else's post).
 
 **Questions:**
+
 - What HTTP status code means "forbidden"? (403)
 - What happens if you remove the auth check?
 - How does the test verify security?
@@ -304,6 +314,7 @@ Open `src/tests/integration/contract.test.js`:
 Open `src/tests/mocks/handlers.js`:
 
 **Questions:**
+
 - How does MSW mock the `/api/posts` endpoint?
 - What response structure does it return?
 - Why mock instead of calling real API?
@@ -311,6 +322,7 @@ Open `src/tests/mocks/handlers.js`:
 **Step 4: Test Component + API Integration**
 
 Look at `tests/unit/CreatePost.test.jsx`:
+
 - Notice: `api.postsAPI.createPost.mockResolvedValueOnce()`
 - This tests component behavior when API succeeds/fails
 - Integration: Component logic + API calls (without real server)
@@ -334,6 +346,7 @@ Look at `tests/unit/CreatePost.test.jsx`:
 You're ready for Stage 3 when you can:
 
 **Core concepts (all tracks):**
+
 - [ ] Explain the difference between unit and integration tests
 - [ ] Test both successful and error responses
 - [ ] Verify authorization and authentication
@@ -341,18 +354,21 @@ You're ready for Stage 3 when you can:
 - [ ] Debug failing integration tests
 
 **Python Track:**
+
 - [ ] Use FastAPI TestClient to make HTTP requests
 - [ ] Test API endpoints with database integration
 - [ ] Use test factories to create data
 - [ ] Write an integration test for an API endpoint
 
 **JavaScript Track:**
+
 - [ ] Use MSW to mock backend APIs
 - [ ] Validate API contracts with OpenAPI schema
 - [ ] Test components that fetch data
 - [ ] Understand the difference between component tests and contract tests
 
 **Hybrid Track:**
+
 - [ ] Can explain how backend API tests and frontend contract tests work together
 - [ ] Understand why contract tests prevent integration bugs
 
@@ -456,7 +472,7 @@ Before moving to Stage 3, answer these:
 
 ---
 
-## 🎉 Stage Complete!
+## 🎉 Stage Complete
 
 You now understand how to test multi-component systems!
 
@@ -465,4 +481,3 @@ You now understand how to test multi-component systems!
 ---
 
 *Pro tip: Integration tests are where most QA engineers spend their time. Master this, and you're job-ready! 💼*
-

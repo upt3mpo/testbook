@@ -112,11 +112,13 @@ api.add_reaction(post['id'], 'like')
 ### Available Methods
 
 **Authentication:**
+
 - `register()` - Register new user
 - `login()` - Login and get token
 - `get_current_user()` - Get authenticated user
 
 **Posts:**
+
 - `create_post()` - Create new post
 - `get_post()` - Get post by ID
 - `update_post()` - Update post
@@ -126,10 +128,12 @@ api.add_reaction(post['id'], 'like')
 - `remove_reaction()` - Remove reaction
 
 **Feed:**
+
 - `get_all_feed()` - Get all posts
 - `get_following_feed()` - Get following posts
 
 **Users:**
+
 - `get_user_profile()` - Get user by username
 - `update_profile()` - Update own profile
 - `follow_user()` - Follow user
@@ -138,6 +142,7 @@ api.add_reaction(post['id'], 'like')
 - `unblock_user()` - Unblock user
 
 **Dev/Testing:**
+
 - `reset_database()` - Reset to clean state
 
 ## Building Your Own Tests
@@ -167,6 +172,7 @@ def test_follow_user(api):
 ```
 
 Run with:
+
 ```bash
 pytest test_testbook_api.py -v
 ```
@@ -309,6 +315,7 @@ def api_client():
 ### Connection Refused
 
 Make sure Testbook is running:
+
 ```bash
 cd backend
 uvicorn main:app --reload
@@ -317,6 +324,7 @@ uvicorn main:app --reload
 ### Authentication Errors
 
 Reset database and try again:
+
 ```python
 api = TestbookAPI()
 api.reset_database()
@@ -325,6 +333,7 @@ api.reset_database()
 ### Import Errors
 
 Make sure requests is installed:
+
 ```bash
 pip install requests
 ```
@@ -335,4 +344,3 @@ pip install requests
 - [ReDoc](http://localhost:8000/redoc) - Alternative API docs
 - [Postman Learning](https://learning.postman.com/)
 - [Requests Documentation](https://requests.readthedocs.io/)
-

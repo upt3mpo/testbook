@@ -42,6 +42,7 @@ By the end of this stage, you will:
    - Example of testing data structures
 
 **Supporting Files:**
+
 - [`backend/tests/conftest.py`](../../backend/tests/conftest.py) - pytest fixtures
 - [`backend/tests/README.md`](../../backend/tests/README.md) - Testing docs
 
@@ -65,6 +66,7 @@ By the end of this stage, you will:
    - Navigation component behavior
 
 **Supporting Files:**
+
 - [`frontend/src/tests/setup.js`](../../frontend/src/tests/setup.js) - Vitest configuration
 - [`frontend/src/tests/mocks/`](../../frontend/src/tests/mocks/) - MSW handlers
 
@@ -116,6 +118,7 @@ def test_user(db_session):
 ```
 
 **Notice how fixtures:**
+
 - Provide reusable test data
 - Keep tests DRY (Don't Repeat Yourself)
 - Handle setup AND cleanup automatically
@@ -143,6 +146,7 @@ def test_password_is_hashed():
 ### 5. Edge Cases
 
 Look for tests that verify:
+
 - ✅ Normal/happy path behavior
 - ❌ Error conditions
 - 🔄 Boundary conditions
@@ -181,6 +185,7 @@ pytest tests/unit/ -v
 Open `tests/unit/test_auth.py` and find `test_password_is_hashed`.
 
 **Questions:**
+
 - Can you identify Arrange, Act, Assert?
 - Why does bcrypt hash start with "$2b$"?
 - What would happen if password hashing was removed?
@@ -209,6 +214,7 @@ npm test -- --watch
 Open `src/components/__tests__/CreatePost.test.jsx` and find the test for button enabling.
 
 **Questions:**
+
 - How does the test simulate user typing?
 - What React state is being tested?
 - Why mock the API instead of calling it?
@@ -231,6 +237,7 @@ Open `src/components/__tests__/CreatePost.test.jsx` and find the test for button
 You're ready for Stage 2 when you can:
 
 **Core concepts (all tracks):**
+
 - [ ] Explain what a unit test is
 - [ ] Identify Arrange-Act-Assert in any test
 - [ ] Understand what fixtures/mocks do
@@ -239,16 +246,19 @@ You're ready for Stage 2 when you can:
 - [ ] Make a test fail intentionally and understand the output
 
 **Python Track:**
+
 - [ ] Use pytest fixtures (db_session, test_user)
 - [ ] Write a simple pytest unit test from scratch
 - [ ] Understand bcrypt password hashing
 
 **JavaScript Track:**
+
 - [ ] Use Vitest and React Testing Library
 - [ ] Mock functions with `vi.fn()`
 - [ ] Test React component rendering and state
 
 **Hybrid Track:**
+
 - [ ] Can explain how backend unit tests differ from frontend component tests
 - [ ] Understand when to use each approach
 
@@ -341,7 +351,7 @@ Before moving to Stage 2, answer these questions:
 
 ---
 
-## 🎉 Stage Complete!
+## 🎉 Stage Complete
 
 Once you've met the success criteria and reflected on the questions:
 
@@ -350,4 +360,3 @@ Once you've met the success criteria and reflected on the questions:
 ---
 
 *Pro tip: Come back to this stage after completing later stages. You'll notice things you missed the first time! 🎯*
-
