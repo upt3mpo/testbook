@@ -29,10 +29,13 @@ class TestRegisterEndpoint:
         response = client.post("/api/auth/register", json=new_user)
 
         # Assert - Verify successful registration and auto-login
-        assert response.status_code == 200  # API returns 200, not 201
+        assert response.status_code == 201  # API returns 201 Created
         data = response.json()
         assert "access_token" in data  # Returns token for auto-login
         assert data["token_type"] == "bearer"  # JWT bearer token format
+        assert data["email"] == "newuser@example.com"  # Returns user data
+        assert data["username"] == "newuser"
+        assert data["display_name"] == "New User"
         assert "hashed_password" not in data  # Security: password never exposed
 
     def test_register_duplicate_email(self, client, test_user):
@@ -103,11 +106,14 @@ class TestRegisterEndpoint:
             },
         )
 
-        assert response.status_code == 200
+        assert response.status_code == 201
         data = response.json()
-        # Register returns token, not user data
+        # Register returns token and user data
         assert "access_token" in data
         assert data["token_type"] == "bearer"
+        assert data["email"] == "defaults@example.com"
+        assert data["username"] == "defaultuser"
+        assert data["display_name"] == "Default User"
 
 
 @pytest.mark.integration
@@ -276,8 +282,12 @@ class TestAuthenticationFlow:
             },
         )
 
-        assert register_response.status_code == 200  # API returns 200
-        token = register_response.json()["access_token"]
+        assert register_response.status_code == 201  # API returns 201 Created
+        data = register_response.json()
+        token = data["access_token"]
+        # Verify user data is returned immediately
+        assert data["email"] == "autouser@example.com"
+        assert data["username"] == "autouser"
 
         # Use the token to get current user
         headers = {"Authorization": f"Bearer {token}"}
@@ -298,7 +308,9 @@ class TestAuthenticationFlow:
                 "password": "SecurePass123!",
             },
         )
-        assert register_response.status_code == 200  # API returns 200
+        assert register_response.status_code == 201  # API returns 201 Created
+        register_data = register_response.json()
+        assert register_data["username"] == "fullflowuser"
 
         # 2. Login
         login_response = client.post(

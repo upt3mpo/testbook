@@ -110,7 +110,7 @@ class TestRateLimiting:
             if response.status_code == 429:
                 break
 
-            if response.status_code == 200:
+            if response.status_code == 201:
                 registrations += 1
 
             time.sleep(0.1)
