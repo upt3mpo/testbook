@@ -1,18 +1,19 @@
 import os
 from contextlib import asynccontextmanager
 
-from database import init_db
 from dotenv import load_dotenv
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from logger import setup_logging
-from routers import auth, dev, feed, posts, users
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from slowapi.util import get_remote_address
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.responses import JSONResponse
+
+from database import init_db
+from logger import setup_logging
+from routers import auth, dev, feed, posts, users
 
 # Load environment variables from .env file
 load_dotenv()

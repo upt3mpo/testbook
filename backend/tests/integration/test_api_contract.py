@@ -77,6 +77,7 @@ pytest.skip(
 )
 
 import schemathesis  # noqa: E402
+
 from main import app  # noqa: E402
 
 # Create the schema from the FastAPI app
