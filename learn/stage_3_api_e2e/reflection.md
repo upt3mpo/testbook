@@ -48,12 +48,14 @@ Document your insights from exploring browser automation and contract testing.
 
 ### 5. Imagine you're testing a shopping cart. What would you test with E2E vs integration tests?
 
-**E2E tests (user workflows):**
--
+### E2E tests (user workflows)
 
 -
 
-**Integration tests (API endpoints):**
+-
+
+### Integration tests (API endpoints)
+
 -
 
 -
@@ -104,13 +106,15 @@ Document your insights from exploring browser automation and contract testing.
 
 **Page:** ____________________
 
-**Key locators:**
+### Key locators
+
 -
 
 -
 -
 
-**Key methods:**
+### Key methods
+
 -
 
 -

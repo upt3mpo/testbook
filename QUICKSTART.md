@@ -60,14 +60,14 @@ Password: Sarah2024!
 <details>
 <summary><b>🖥️ Windows</b> (click to expand)</summary>
 
-### Step 1: Clone Repository
+### Windows Step 1: Clone Repository
 
 ```cmd
 git clone https://github.com/upt3mpo/testbook.git
 cd testbook
 ```
 
-### Step 2: Start Application (Development Mode)
+### Windows Step 2: Start Application (Development Mode)
 
 ```cmd
 start-dev.bat
@@ -86,7 +86,7 @@ start-dev.bat
 - Hot reload enabled
 - Perfect for learning!
 
-### Step 3: Open Browser
+### Windows Step 3: Open Browser
 
 ```
 Frontend: http://localhost:3000  ← Open this!
@@ -94,7 +94,7 @@ Backend API: http://localhost:8000/api
 API Docs: http://localhost:8000/docs
 ```
 
-### Step 4: Login
+### Windows Step 4: Login
 
 ```
 Email: sarah.johnson@testbook.com

@@ -576,7 +576,7 @@ test('toggle repost', async ({ page }) => {
 
 ---
 
-## 📚 More Resources
+## 📚 Additional Resources
 
 - **[README.md](../../README.md)** - Main documentation and project overview
 - **[TESTING_GUIDE.md](../guides/TESTING_GUIDE.md)** - Complete testing examples

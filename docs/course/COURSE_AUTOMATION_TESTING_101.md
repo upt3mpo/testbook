@@ -1390,7 +1390,7 @@ Write E2E test that:
 ## Section 8: Advanced E2E Patterns
 
 > **🆕 Complete Dual-Stack Section Available!** This inline content introduces advanced concepts. For comprehensive dual-stack coverage (Python AND JavaScript), see the **🆕 [dedicated Advanced E2E Patterns guide](SECTION_08_ADVANCED_E2E_PATTERNS.md)**.
-
+>
 > **🎯 Hybrid learners (Python + JavaScript):** After completing [Lab 6C](../../labs/LAB_06C_Frontend_Integration_Testing.md), you now understand how your React frontend integrates with your FastAPI backend through contracts. Section 8 teaches you advanced E2E patterns for testing the complete stack!
 
 ### 🎯 Learning Objectives
