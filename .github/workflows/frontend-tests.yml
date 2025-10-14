@@ -44,7 +44,7 @@ jobs:
 
       - name: Run accessibility tests
         working-directory: ./frontend
-        run: npm test -- --run src/tests/accessibility.test.jsx
+        run: npm run test:accessibility
 
       - name: Generate coverage report
         working-directory: ./frontend
