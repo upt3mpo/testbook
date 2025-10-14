@@ -43,7 +43,7 @@ jobs:
         run: |
           cd backend
           python seed.py
-          uvicorn main:app &
+          TESTING=true uvicorn main:app &
           sleep 5
 
       - name: Wait for backend
@@ -53,6 +53,7 @@ jobs:
       - name: Run Postman collection
         run: |
           newman run tests/api/Testbook.postman_collection.json \
+            --environment tests/api/Testbook.postman_environment.json \
             --reporters cli,htmlextra \
             --reporter-htmlextra-export newman-report.html \
             --bail
@@ -89,7 +90,7 @@ jobs:
         run: |
           cd backend
           python seed.py
-          uvicorn main:app &
+          TESTING=true uvicorn main:app &
           sleep 5
 
       - name: Wait for backend
