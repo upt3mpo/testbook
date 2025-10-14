@@ -207,9 +207,13 @@ jobs:
         npx playwright install --with-deps chromium
 
     - name: Start backend server
+      env:
+        TESTING: true
+        SECRET_KEY: test-secret-key-for-ci
       run: |
         cd backend
-        TESTING=true uvicorn main:app --host 0.0.0.0 --port 8000 &
+        python seed.py
+        uvicorn main:app --host 0.0.0.0 --port 8000 &
         sleep 10
 
     - name: Start frontend server
@@ -271,9 +275,13 @@ jobs:
         npm ci
 
     - name: Start backend server
+      env:
+        TESTING: true
+        SECRET_KEY: test-secret-key-for-ci
       run: |
         cd backend
-        TESTING=true uvicorn main:app --host 0.0.0.0 --port 8000 &
+        python seed.py
+        uvicorn main:app --host 0.0.0.0 --port 8000 &
         sleep 10
 
     - name: Start frontend server
@@ -283,9 +291,13 @@ jobs:
         sleep 10
 
     - name: Run Python E2E tests
+      env:
+        HEADLESS: true
+        FRONTEND_URL: http://localhost:3000
+        BACKEND_URL: http://localhost:8000
       run: |
         cd tests/e2e-python
-        pytest -v --headed --browser chromium
+        pytest -v
 
     - name: Upload Python E2E artifacts
       uses: actions/upload-artifact@v4
