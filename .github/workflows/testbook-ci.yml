@@ -170,6 +170,21 @@ jobs:
     runs-on: ubuntu-latest
     needs: [backend-tests, frontend-tests]
 
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: testbook
+          POSTGRES_PASSWORD: testbook
+          POSTGRES_DB: testbook_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -210,6 +225,7 @@ jobs:
       env:
         TESTING: true
         SECRET_KEY: test-secret-key-for-ci
+        DATABASE_URL: postgresql://testbook:testbook@localhost:5432/testbook_test
       run: |
         cd backend
         python seed.py
@@ -247,6 +263,21 @@ jobs:
     name: E2E Tests (Playwright Python)
     runs-on: ubuntu-latest
     needs: [backend-tests, frontend-tests]
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: testbook
+          POSTGRES_PASSWORD: testbook
+          POSTGRES_DB: testbook_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
 
     steps:
     - name: Checkout code
@@ -286,6 +317,7 @@ jobs:
       env:
         TESTING: true
         SECRET_KEY: test-secret-key-for-ci
+        DATABASE_URL: postgresql://testbook:testbook@localhost:5432/testbook_test
       run: |
         cd backend
         python seed.py
@@ -305,6 +337,12 @@ jobs:
     - name: Wait for frontend
       run: |
         timeout 60 bash -c 'until curl -f http://localhost:3000; do sleep 1; done'
+        echo "Frontend server responding, waiting for app to load..."
+        sleep 10
+
+    - name: Verify frontend is fully loaded
+      run: |
+        curl http://localhost:3000 | grep -q 'root' || echo "Warning: Frontend may not be fully loaded"
 
     - name: Run Python E2E tests
       env:

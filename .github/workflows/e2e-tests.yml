@@ -181,6 +181,12 @@ jobs:
       - name: Wait for frontend
         run: |
           timeout 30 bash -c 'until curl -f http://localhost:3000; do sleep 1; done'
+          echo "Frontend server responding, waiting for app to load..."
+          sleep 10
+
+      - name: Verify frontend is fully loaded
+        run: |
+          curl http://localhost:3000 | grep -q 'root' || echo "Warning: Frontend may not be fully loaded"
 
       - name: Run Selenium tests
         working-directory: ./tests/e2e-python
