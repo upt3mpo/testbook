@@ -300,4 +300,4 @@ npx playwright codegen http://localhost:3000
 
 **🎉 You're now writing E2E tests! This is professional-level testing!**
 
-**Next Lab:** [Lab 5: Test Data Management](labs/LAB_05_Test_Data_Management.md)
+**Next Lab:** [Lab 5: Test Data Management](LAB_05_Test_Data_Management.md)

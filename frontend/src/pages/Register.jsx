@@ -9,7 +9,7 @@ function Register() {
     username: '',
     display_name: '',
     password: '',
-    bio: ''
+    bio: '',
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -19,7 +19,7 @@ function Register() {
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -42,10 +42,16 @@ function Register() {
   return (
     <div className="auth-container" data-testid="register-page">
       <div className="auth-card card">
-        <h1 className="auth-title" data-testid="register-title">Create Account</h1>
+        <h1 className="auth-title" data-testid="register-title">
+          Create Account
+        </h1>
         <p className="auth-subtitle">Join Testbook today!</p>
 
-        {error && <div className="error" data-testid="register-error">{error}</div>}
+        {error && (
+          <div className="error" data-testid="register-error">
+            {error}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="auth-form" data-testid="register-form">
           <input
@@ -119,4 +125,3 @@ function Register() {
 }
 
 export default Register;
-

@@ -7,6 +7,8 @@
 
 **Note:** There's also a [JavaScript version](LAB_04_E2E_Testing_JavaScript.md) that follows the same structure!
 
+**💡 About Commands:** This lab shows commands for macOS/Linux and Windows. Use the one that matches your operating system.
+
 ---
 
 ## 🎯 What You'll Learn
@@ -55,9 +57,26 @@ This launches the backend API on `http://localhost:8000` and the frontend UI on 
 
 **Run an existing test in HEADED mode (you'll see the browser!):**
 
+**macOS/Linux:**
+
 ```bash
 cd tests/e2e-python
-pytest test_auth.py::TestAuthentication::test_login_success -v --headed
+HEADLESS=false pytest test_auth.py::TestAuthentication::test_login_success -v
+```
+
+**Windows (PowerShell - Recommended):**
+
+```powershell
+cd tests/e2e-python
+$env:HEADLESS="false"; pytest test_auth.py::TestAuthentication::test_login_success -v
+```
+
+**Windows (Command Prompt - Alternative):**
+
+```bat
+cd tests\e2e-python
+set HEADLESS=false
+pytest test_auth.py::TestAuthentication::test_login_success -v
 ```
 
 **🎬 What you'll see:**
@@ -75,8 +94,24 @@ pytest test_auth.py::TestAuthentication::test_login_success -v --headed
 
 **This is even cooler - you can see each step!**
 
+**macOS/Linux:**
+
 ```bash
-pytest test_auth.py::TestAuthentication::test_login_success -v --headed --slowmo=1000
+HEADLESS=false SLOW_MO=1000 pytest test_auth.py::TestAuthentication::test_login_success -v
+```
+
+**Windows (PowerShell - Recommended):**
+
+```powershell
+$env:HEADLESS="false"; $env:SLOW_MO="1000"; pytest test_auth.py::TestAuthentication::test_login_success -v
+```
+
+**Windows (Command Prompt - Alternative):**
+
+```bat
+set HEADLESS=false
+set SLOW_MO=1000
+pytest test_auth.py::TestAuthentication::test_login_success -v
 ```
 
 **What happens:**
@@ -161,8 +196,23 @@ def test_my_first_e2e_login_and_create_post(page: Page):
 
 **Run your test in headed mode (watch it work!):**
 
+**macOS/Linux:**
+
 ```bash
-pytest test_my_first.py -v --headed
+HEADLESS=false pytest test_my_first.py -v
+```
+
+**Windows (PowerShell - Recommended):**
+
+```powershell
+$env:HEADLESS="false"; pytest test_my_first.py -v
+```
+
+**Windows (Command Prompt - Alternative):**
+
+```bat
+set HEADLESS=false
+pytest test_my_first.py -v
 ```
 
 **🎬 Watch the magic:**
@@ -252,13 +302,21 @@ Write a test that:
 **Tip 1:** Always run in headed mode while developing
 
 ```bash
-pytest test_my_first.py -v --headed
+# macOS/Linux
+HEADLESS=false pytest test_my_first.py -v
+
+# Windows (PowerShell)
+$env:HEADLESS="false"; pytest test_my_first.py -v
 ```
 
 **Tip 2:** Use slow motion when test fails
 
 ```bash
-pytest test_my_first.py -v --headed --slowmo=1000
+# macOS/Linux
+HEADLESS=false SLOW_MO=1000 pytest test_my_first.py -v
+
+# Windows (PowerShell)
+$env:HEADLESS="false"; $env:SLOW_MO="1000"; pytest test_my_first.py -v
 ```
 
 **Tip 3:** Pause execution to inspect
@@ -288,4 +346,4 @@ page.pause()  # Add this line anywhere in your test
 
 **🎉 You're now writing E2E tests! This is professional-level testing!**
 
-**Next Lab:** [Lab 5: Test Data Management](labs/LAB_05_Test_Data_Management.md)
+**Next Lab:** [Lab 5: Test Data Management](LAB_05_Test_Data_Management.md)

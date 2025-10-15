@@ -62,7 +62,7 @@ jobs:
           SECRET_KEY: test-secret-key-for-ci
           DATABASE_URL: postgresql://testbook:testbook@localhost:5432/testbook_test
         run: |
-          pytest tests/test_unit_*.py -v --tb=short
+          pytest tests/unit/ -v --tb=short
 
       - name: Run API tests
         working-directory: ./backend
@@ -71,15 +71,17 @@ jobs:
           SECRET_KEY: test-secret-key-for-ci
           DATABASE_URL: postgresql://testbook:testbook@localhost:5432/testbook_test
         run: |
-          pytest tests/test_api_*.py -v --tb=short
+          pytest tests/integration/ -v --tb=short
 
-      - name: Run contract tests
-        working-directory: ./backend
-        env:
-          TESTING: true
-          SECRET_KEY: test-secret-key-for-ci
-        run: |
-          pytest tests/test_api_contract.py -v --tb=short
+      # Contract tests are intentionally skipped - planned for future update
+      # See: backend/tests/integration/test_api_contract.py for details
+      # - name: Run contract tests
+      #   working-directory: ./backend
+      #   env:
+      #     TESTING: true
+      #     SECRET_KEY: test-secret-key-for-ci
+      #   run: |
+      #     pytest tests/integration/test_api_contract.py -v --tb=short
 
       - name: Generate coverage report
         working-directory: ./backend

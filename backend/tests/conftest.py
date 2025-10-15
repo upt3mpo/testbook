@@ -22,11 +22,62 @@ from database import Base, get_db
 from main import app
 from models import Comment, Post, Reaction, User
 
+# ═══════════════════════════════════════════════════════════════════
+# Welcome Banner & Completion Messages
+# ═══════════════════════════════════════════════════════════════════
+
+
+def pytest_configure(config):
+    """Display welcome banner when pytest starts."""
+    terminal_width = 70
+
+    banner = f"""
+╔{"═" * (terminal_width - 2)}╗
+║{" " * (terminal_width - 2)}║
+║  {"🧪 Welcome to Testbook Testing Platform!":^{terminal_width - 4}}  ║
+║{" " * (terminal_width - 2)}║
+║  {"▶ Running 180+ backend tests (unit + integration + contract)":^{terminal_width - 4}}  ║
+║  {"▶ Python pytest | FastAPI | SQLAlchemy":^{terminal_width - 4}}  ║
+║{" " * (terminal_width - 2)}║
+║  {"💡 Tip: Use -v for verbose output, -k to filter by name":^{terminal_width - 4}}  ║
+║{" " * (terminal_width - 2)}║
+╚{"═" * (terminal_width - 2)}╝
+"""
+
+    print(banner)
+
+
+def pytest_sessionfinish(session, exitstatus):
+    """Display completion message after all tests run."""
+    if exitstatus == 0:
+        message = """
+✅ All Backend Tests Passed!
+
+🎉 Great work! Your backend is working correctly.
+
+📊 Next steps:
+  • Run coverage report: pytest --cov --cov-report=html
+  • View coverage: open htmlcov/index.html
+  • Run frontend tests: cd ../frontend && npm test
+  • Run E2E tests: cd ../tests && npx playwright test
+"""
+    else:
+        message = """
+❌ Some Tests Failed
+
+🔍 Debug tips:
+  • Use pytest -v for more details
+  • Use pytest -x to stop at first failure
+  • Use pytest --lf to re-run last failed tests
+  • Check docs/guides/TROUBLESHOOTING.md for common issues
+"""
+
+    print(message)
+
+
 # Test database configuration
 TEST_DATABASE_URL = "sqlite:///./test_testbook.db"
-test_engine = create_engine(
-    TEST_DATABASE_URL, connect_args={"check_same_thread": False}
-)
+test_engine = create_engine(TEST_DATABASE_URL, connect_args={"check_same_thread": False})
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=test_engine)
 
 
@@ -211,14 +262,10 @@ def test_posts(db_session: Session, test_user: User, test_user_2: User) -> list[
         list[Post]: List of test posts
     """
     posts = [
-        Post(author_id=test_user.id, content=f"Test post {i} from user 1")
-        for i in range(1, 4)
+        Post(author_id=test_user.id, content=f"Test post {i} from user 1") for i in range(1, 4)
     ]
     posts.extend(
-        [
-            Post(author_id=test_user_2.id, content=f"Test post {i} from user 2")
-            for i in range(1, 3)
-        ]
+        [Post(author_id=test_user_2.id, content=f"Test post {i} from user 2") for i in range(1, 3)]
     )
 
     for post in posts:
@@ -295,9 +342,7 @@ def login_user(client: TestClient, email: str, password: str) -> dict:
     Returns:
         dict: Response containing access_token
     """
-    response = client.post(
-        "/api/auth/login", json={"email": email, "password": password}
-    )
+    response = client.post("/api/auth/login", json={"email": email, "password": password})
     assert response.status_code == 200
     return response.json()
 

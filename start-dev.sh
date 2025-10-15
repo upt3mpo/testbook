@@ -95,17 +95,17 @@ echo "🔧 Setting up backend..."
 cd backend
 
 # Create venv if it doesn't exist
-if [ ! -d "venv" ]; then
+if [ ! -d ".venv" ]; then
     echo "📦 Creating Python virtual environment..."
-    python3 -m venv venv
+    python3 -m venv .venv
 fi
 
-source venv/bin/activate
+source .venv/bin/activate
 
 # Check if dependencies need installation (idempotent check)
 NEEDS_INSTALL=false
-if [ ! -f "venv/lib/python*/site-packages/fastapi/__init__.py" ] && \
-   [ ! -f "venv/lib/python3.*/site-packages/fastapi/__init__.py" ]; then
+if [ ! -f ".venv/lib/python*/site-packages/fastapi/__init__.py" ] && \
+   [ ! -f ".venv/lib/python3.*/site-packages/fastapi/__init__.py" ]; then
     NEEDS_INSTALL=true
 fi
 

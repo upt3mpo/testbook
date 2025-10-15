@@ -203,4 +203,3 @@ function CreatePost({ onPostCreated }) {
 }
 
 export default CreatePost;
-

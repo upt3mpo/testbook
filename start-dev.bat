@@ -37,16 +37,16 @@ echo 🔧 Setting up backend...
 cd backend
 
 REM Create venv if it doesn't exist
-if not exist "venv\Scripts\activate.bat" (
+if not exist ".venv\Scripts\activate.bat" (
     echo 📦 Creating Python virtual environment...
-    python -m venv venv
+    python -m venv .venv
 )
 
 REM Activate venv
-call venv\Scripts\activate.bat
+call .venv\Scripts\activate.bat
 
 REM Check if dependencies need installation (idempotent check)
-if not exist "venv\Lib\site-packages\fastapi\__init__.py" (
+if not exist ".venv\Lib\site-packages\fastapi\__init__.py" (
     REM Check for uv
     where uv >nul 2>&1
     if not errorlevel 1 (

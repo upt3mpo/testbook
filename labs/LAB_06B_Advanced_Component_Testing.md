@@ -37,7 +37,7 @@ npm install --save-dev msw
 
 #### Step 2: Create MSW Handlers
 
-Create `frontend/src/test/mocks/handlers.js`:
+Create `frontend/src/tests/mocks/handlers.js`:
 
 ```javascript
 import { rest } from 'msw';
@@ -107,7 +107,7 @@ export const handlers = [
 
 #### Step 3: Setup MSW Server for Tests
 
-Create `frontend/src/test/mocks/server.js`:
+Create `frontend/src/tests/mocks/server.js`:
 
 ```javascript
 import { setupServer } from 'msw/node';
@@ -130,12 +130,12 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'jsdom',
-    setupFiles: './src/test/setup.js', // Add this line
+    setupFiles: './src/tests/setup.js', // Add this line
   },
 });
 ```
 
-Create `frontend/src/test/setup.js`:
+Create `frontend/src/tests/setup.js`:
 
 ```javascript
 import '@testing-library/jest-dom';
@@ -236,7 +236,7 @@ export default function NotificationsList() {
 
 #### Step 2: Test All Component States
 
-Create `frontend/src/components/__tests__/NotificationsList.test.jsx`:
+Create `frontend/src/tests/unit/NotificationsList.test.jsx`:
 
 ```javascript
 import { render, screen, waitFor } from '@testing-library/react';
@@ -776,6 +776,7 @@ Add performance testing to ensure components render efficiently.
 ## 📚 Resources
 
 **Working Examples:**
+
 - **`frontend/src/test/mocks/`** - ⭐ MSW setup ready to use
   - `handlers.js` - API mock handlers
   - `server.js` - MSW server configuration
@@ -784,10 +785,12 @@ Add performance testing to ensure components render efficiently.
 - **`frontend/src/components/__tests__/examples/`** - Component test examples directory
 
 **Existing Tests:**
+
 - `frontend/src/components/__tests__/CreatePost.test.jsx` - Current component tests
 - `frontend/src/components/__tests__/Navbar.test.jsx` - Navigation tests
 
 **Official Documentation:**
+
 - [MSW Documentation](https://mswjs.io/)
 - [Vitest Documentation](https://vitest.dev/)
 - [Testing Library](https://testing-library.com/)
@@ -798,4 +801,3 @@ Add performance testing to ensure components render efficiently.
 **🎉 You've mastered advanced component testing! These patterns are used in professional React applications!**
 
 **Next:** [Lab 6C: Integration & Contract Testing](LAB_06C_Frontend_Integration_Testing.md) - Connect your components to backend contracts!
-

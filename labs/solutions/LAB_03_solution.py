@@ -300,8 +300,11 @@ class TestCompleteUserJourney:
                 "password": "Test123!",
             },
         )
-        assert register_response.status_code == 200
-        token = register_response.json()["access_token"]
+        assert register_response.status_code == 201
+        register_data = register_response.json()
+        token = register_data["access_token"]
+        # Verify user data is returned immediately
+        assert register_data["username"] == "journeyuser"
         headers = {"Authorization": f"Bearer {token}"}
 
         # Step 2: Verify auto-login (get current user)

@@ -16,6 +16,21 @@ jobs:
     name: Run Postman/Newman Tests
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: testbook
+          POSTGRES_PASSWORD: testbook
+          POSTGRES_DB: testbook_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -40,19 +55,24 @@ jobs:
         run: npm install -g newman newman-reporter-htmlextra
 
       - name: Start backend server
+        working-directory: ./backend
+        env:
+          TESTING: true
+          SECRET_KEY: test-secret-key-for-ci
+          DATABASE_URL: postgresql://testbook:testbook@localhost:5432/testbook_test
         run: |
-          cd backend
           python seed.py
-          uvicorn main:app &
-          sleep 5
+          uvicorn main:app --host 0.0.0.0 --port 8000 > server.log 2>&1 &
+          sleep 10
 
       - name: Wait for backend
         run: |
-          timeout 30 bash -c 'until curl -f http://localhost:8000/api/health; do sleep 1; done'
+          timeout 30 bash -c 'until curl -f http://localhost:8000/api/health; do sleep 1; done' || (cat backend/server.log && exit 1)
 
       - name: Run Postman collection
         run: |
           newman run tests/api/Testbook.postman_collection.json \
+            --environment tests/api/Testbook.postman_environment.json \
             --reporters cli,htmlextra \
             --reporter-htmlextra-export newman-report.html \
             --bail
@@ -68,6 +88,21 @@ jobs:
   python-requests:
     name: Run Python API Tests
     runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: testbook
+          POSTGRES_PASSWORD: testbook
+          POSTGRES_DB: testbook_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
 
     steps:
       - name: Checkout code
@@ -86,15 +121,19 @@ jobs:
           pip install requests
 
       - name: Start backend server
+        working-directory: ./backend
+        env:
+          TESTING: true
+          SECRET_KEY: test-secret-key-for-ci
+          DATABASE_URL: postgresql://testbook:testbook@localhost:5432/testbook_test
         run: |
-          cd backend
           python seed.py
-          uvicorn main:app &
-          sleep 5
+          uvicorn main:app --host 0.0.0.0 --port 8000 > server.log 2>&1 &
+          sleep 10
 
       - name: Wait for backend
         run: |
-          timeout 30 bash -c 'until curl -f http://localhost:8000/api/health; do sleep 1; done'
+          timeout 30 bash -c 'until curl -f http://localhost:8000/api/health; do sleep 1; done' || (cat backend/server.log && exit 1)
 
       - name: Run Python API examples
         run: |

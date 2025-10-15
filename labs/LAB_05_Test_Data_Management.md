@@ -9,6 +9,7 @@
 ## 🎯 What You'll Learn
 
 By the end of this lab, you will:
+
 - Create reusable test data builders
 - Use factory patterns for test data
 - Manage test data lifecycle
@@ -161,6 +162,7 @@ class TestUserBuilder:
 ```
 
 **Run it:**
+
 ```bash
 cd backend
 pytest tests/test_data_builders.py::TestUserBuilder -v
@@ -254,6 +256,7 @@ class TestPostBuilder:
 ```
 
 **Run it:**
+
 ```bash
 pytest tests/test_data_builders.py::TestPostBuilder -v
 ```
@@ -346,6 +349,7 @@ class TestScenarioBuilders:
 ```
 
 **Run it:**
+
 ```bash
 pytest tests/test_data_builders.py::TestScenarioBuilders -v
 ```
@@ -402,6 +406,7 @@ class TestYourCommentBuilder:
 ```
 
 **Hints:**
+
 - Look at `models.py` to see Comment fields
 - Follow the same pattern as PostBuilder
 - Remember to commit and refresh
@@ -601,12 +606,12 @@ def test_get_user():
 ## 📚 Next Steps
 
 **Apply your skills:**
+
 - Use builders in your actual tests
 - Create builders for Reaction model
 - Build complex test scenarios
-- Read: [Test Data Patterns](../docs/reference/TEST_DATA_PATTERNS.md) (when created)
+- Read: [Test Data Scenarios Guide](../docs/guides/TEST_DATA_SCENARIOS.md) for more patterns
 
 ---
 
 **🎉 Congratulations!** You can now manage test data like a professional!
-

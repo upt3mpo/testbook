@@ -4,8 +4,8 @@
  * Tests registration, login, logout, and authentication state.
  */
 
-const { test, expect } = require('@playwright/test');
-const { resetDatabase, loginUser, registerUser, setupDialogHandler, TEST_USERS } = require('./fixtures/test-helpers');
+import { expect, test } from '@playwright/test';
+import { loginUser, registerUser, resetDatabase, setupDialogHandler, TEST_USERS } from './fixtures/test-helpers.js';
 
 test.describe('Authentication', () => {
   test.beforeEach(async ({ page }) => {
@@ -17,6 +17,7 @@ test.describe('Authentication', () => {
 
   test.describe('Registration', () => {
     test('should register new user successfully', async ({ page }) => {
+      // Arrange - Prepare test user data
       const newUser = {
         email: 'testuser@example.com',
         username: 'testuser',
@@ -24,12 +25,13 @@ test.describe('Authentication', () => {
         password: 'TestPassword123!'
       };
 
+      // Act - Register user through UI helper
       await registerUser(page, newUser);
 
-      // Should be logged in and redirected to feed
-      await expect(page).toHaveURL('/');
-      await expect(page.locator('[data-testid="navbar"]')).toBeVisible();
-      await expect(page.locator('[data-testid="navbar-username"]')).toContainText(newUser.displayName);
+      // Assert - Verify successful registration and auto-login
+      await expect(page).toHaveURL('/');  // Redirected to feed
+      await expect(page.locator('[data-testid="navbar"]')).toBeVisible();  // Logged in
+      await expect(page.locator('[data-testid="navbar-username"]')).toContainText(newUser.displayName);  // Correct user
     });
 
     test('should show error for duplicate email', async ({ page }) => {
@@ -190,4 +192,34 @@ test.describe('Authentication', () => {
     });
   });
 });
+
+// 🧠 Why These Tests Matter:
+//
+// E2E tests for authentication are CRITICAL because they test the REAL user experience:
+//
+// 1. **Complete User Journey** - Tests full registration/login flow in actual browser
+// 2. **Frontend + Backend Integration** - Verifies React UI and FastAPI backend work together
+// 3. **Visual Validation** - Tests what users actually see (error messages, redirects, UI state)
+// 4. **Cross-Browser Compatibility** - Playwright tests work on Chrome, Firefox, Safari
+//
+// What These Tests Catch:
+// - ✅ Broken registration form (fields don't submit)
+// - ✅ Login redirects to wrong page
+// - ✅ Error messages don't appear in UI
+// - ✅ Session state issues (user appears logged out after login)
+// - ✅ Navigation bugs (protected routes accessible without auth)
+//
+// In Real QA Teams:
+// - E2E tests are the "smoke tests" run before every release
+// - They catch integration bugs that unit/component tests miss
+// - Failed E2E auth tests are deployment blockers
+// - They verify the most critical user path (can't use app if can't log in!)
+//
+// For Your Career:
+// - E2E testing is THE most in-demand QA skill
+// - Playwright is industry-leading tool (used by Microsoft, Google, etc.)
+// - Shows you can test complete workflows, not just individual pieces
+// - Interview question: "How would you test user registration?" - Show this test running!
+// - Demonstrates understanding of async operations, waits, and selectors
+
 

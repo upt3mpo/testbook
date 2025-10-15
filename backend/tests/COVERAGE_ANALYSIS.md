@@ -10,7 +10,7 @@
 
 ### Overall Coverage
 
-```
+```text
 Module          Coverage    Lines    Missing    Priority
 -----------     --------    -----    -------    --------
 auth.py         75%         42       10         HIGH ⚠️
@@ -53,6 +53,7 @@ TOTAL           84.7%       935      147
 - Optional user authentication fallback paths
 
 **Recommendation:** HIGH PRIORITY - Add tests for:
+
 1. Expired token handling
 2. Invalid token formats
 3. Missing SECRET_KEY scenarios
@@ -98,6 +99,7 @@ TOTAL           84.7%       935      147
 **Status:** ⚠️ Was at 38%, now improving with new tests
 
 **Recent Improvements:**
+
 - ✅ Added test mode guards (TESTING=true required)
 - ✅ Created `test_api_dev.py` with 15+ new tests
 - ✅ Tests cover both blocked and allowed scenarios
@@ -126,7 +128,7 @@ TOTAL           84.7%       935      147
 **Recommended Tests to Add:**
 
 ```python
-# tests/test_api_dev.py (CREATE THIS)
+# tests/integration/test_api_dev.py
 
 class TestDevEndpoints:
     """Test development API endpoints."""
@@ -423,7 +425,8 @@ class TestFeedEdgeCases:
 
 **Reference Solution:**
 
-See `backend/tests/test_api_dev.py` for a complete test suite that:
+See `backend/tests/integration/test_api_dev.py` for a complete test suite that:
+
 - Tests security guards (TESTING=true requirement)
 - Covers all dev endpoints
 - Tests edge cases (case-insensitive env vars)

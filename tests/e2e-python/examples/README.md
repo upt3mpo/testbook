@@ -18,11 +18,13 @@ These tests showcase the patterns taught in [Lab 4B: Advanced E2E Python](../../
 ### Prerequisites
 
 1. Backend and frontend must be running:
+
 ```bash
 ./start-dev.sh
 ```
 
 2. Install Python dependencies:
+
 ```bash
 cd tests/e2e-python
 pip install -r requirements.txt
@@ -31,19 +33,40 @@ playwright install chromium
 
 ### Run All Examples
 
+**macOS/Linux:**
+
 ```bash
 cd tests/e2e-python
-pytest examples/ -v --headed -m examples
+HEADLESS=false pytest examples/ -v -m examples
+```
+
+**Windows (PowerShell - Recommended):**
+
+```powershell
+cd tests/e2e-python
+$env:HEADLESS="false"; pytest examples/ -v -m examples
 ```
 
 ### Run Specific Examples
 
+**macOS/Linux:**
+
 ```bash
 # Page Object Model examples
-pytest examples/test_page_objects_example.py -v --headed
+HEADLESS=false pytest examples/test_page_objects_example.py -v
 
 # API + UI combined examples
-pytest examples/test_api_ui_combined_example.py -v --headed
+HEADLESS=false pytest examples/test_api_ui_combined_example.py -v
+```
+
+**Windows (PowerShell - Recommended):**
+
+```powershell
+# Page Object Model examples
+$env:HEADLESS="false"; pytest examples/test_page_objects_example.py -v
+
+# API + UI combined examples
+$env:HEADLESS="false"; pytest examples/test_api_ui_combined_example.py -v
 ```
 
 ---
@@ -51,12 +74,14 @@ pytest examples/test_api_ui_combined_example.py -v --headed
 ## 📚 What These Examples Demonstrate
 
 ### Page Object Model
+
 - Reusable page classes
 - Selector centralization
 - Maintainable test code
 - Professional organization
 
 ### Combined API + UI Testing
+
 - Fast test setup using API
 - UI verification of API actions
 - API verification of UI changes
@@ -67,12 +92,14 @@ pytest examples/test_api_ui_combined_example.py -v --headed
 ## 💡 Key Takeaways
 
 **Page Objects make tests:**
+
 - ✅ More readable
 - ✅ Easier to maintain
 - ✅ Reusable across tests
 - ✅ Professional quality
 
 **API + UI patterns enable:**
+
 - ✅ 10-100x faster test setup
 - ✅ More reliable assertions
 - ✅ Same language for both layers
@@ -85,4 +112,3 @@ pytest examples/test_api_ui_combined_example.py -v --headed
 - [Lab 4B: Advanced E2E Python](../../../labs/LAB_04B_Advanced_E2E_Python.md) - Full tutorial
 - [Section 8: Advanced E2E Patterns](../../../docs/course/SECTION_08_ADVANCED_E2E_PATTERNS.md) - Comprehensive guide
 - [Testing Comparison](../../../docs/guides/TESTING_COMPARISON_PYTHON_JS.md) - Python vs JavaScript
-

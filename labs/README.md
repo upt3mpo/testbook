@@ -59,6 +59,7 @@ Self-paced, practical exercises that build testing skills progressively. Perfect
 **🆕 Lab 4B: Advanced E2E Testing (Python)** 🐍
 *Master Page Object Model, advanced fixtures, network mocking*
 → [Start Lab 4B](LAB_04B_Advanced_E2E_Python.md)
+
 - Prerequisite: Lab 4 Python
 - 120 minutes
 - Page objects, pytest parametrization, data builders
@@ -66,6 +67,7 @@ Self-paced, practical exercises that build testing skills progressively. Perfect
 **🆕 Lab 6B: Advanced Component Testing (JavaScript)** ☕
 *MSW network mocking, async data loading, accessibility testing*
 → [Start Lab 6B](LAB_06B_Advanced_Component_Testing.md)
+
 - Prerequisite: Basic React knowledge
 - 120 minutes
 - MSW, stateful components, axe accessibility
@@ -73,6 +75,7 @@ Self-paced, practical exercises that build testing skills progressively. Perfect
 **🆕 Lab 6C: Frontend Integration & Contract Testing (JavaScript)** ☕
 *OpenAPI contract validation, integration testing, schema-based mocking*
 → [Start Lab 6C](LAB_06C_Frontend_Integration_Testing.md)
+
 - Prerequisite: Lab 6B
 - 90 minutes
 - Contract testing, OpenAPI validation, API client testing
@@ -82,6 +85,7 @@ Self-paced, practical exercises that build testing skills progressively. Perfect
 > **Note:** Additional advanced labs are planned. Current focus is on dual-stack coverage (Python & JavaScript). Check back for updates or contribute ideas via GitHub Issues!
 
 **Planned Future Labs:**
+
 - **Lab 7:** Integration Testing with Contract Testing
 - **Lab 8:** Database Testing Deep Dive
 - **Lab 9:** API Testing with Postman Collections
@@ -159,18 +163,23 @@ Self-paced, practical exercises that build testing skills progressively. Perfect
 ## 🎯 How to Use These Labs
 
 ### 1. **Follow in Order**
+
 Each lab builds on previous labs. Start with Lab 1!
 
 ### 2. **Do All Steps**
+
 Don't skip steps - each teaches something important
 
 ### 3. **Type the Code**
+
 Don't copy-paste! Typing helps you learn
 
 ### 4. **Experiment**
+
 After completing each lab, try variations
 
 ### 5. **Take Notes**
+
 Document what you learned
 
 ---
@@ -178,6 +187,7 @@ Document what you learned
 ## ⏱️ Time Commitment
 
 **Available Labs (Labs 1-6 + Debug Labs):**
+
 - **Each lab:** 30-90 minutes
 - **Total beginner labs (1-3):** ~2-3 hours
 - **Debug labs (DEBUG-01, DEBUG-02):** ~1.5 hours
@@ -202,6 +212,7 @@ By completing available labs (1-6 + Debug), you will:
 ✅ **Build portfolio** of testing projects
 
 **With future labs (7-12), you'll also learn:**
+
 - API testing with Postman/Newman
 - Performance testing with K6
 - Security testing best practices
@@ -228,6 +239,7 @@ Each lab includes:
 ### Prerequisites
 
 Before starting Lab 1:
+
 - ✅ Testbook installed and running
 - ✅ Basic Python or JavaScript knowledge
 - ✅ Terminal/command prompt familiarity
@@ -279,6 +291,7 @@ Mark your accomplishments:
 - [ ] 🌟 **Testing Expert** - Contributed to the project or built advanced tests
 
 **Current Lab Status:**
+
 - ✅ Labs 1-6: Available
 - ✅ Debug Labs: Available
 - ✅ 🆕 **Advanced Labs (4B, 6B): Available!**
@@ -287,6 +300,7 @@ Mark your accomplishments:
 **🎯 Skill Badges You Can Claim:**
 
 After completing your track, you can claim expertise in:
+
 - 🐍 **Python Testing** (Labs 1-6 + 4B)
 - ☕ **JavaScript Testing** (Labs 1-6 + 6B)
 - 🔄 **Full-Stack Testing** (All labs including 4B + 6B)
@@ -308,6 +322,7 @@ After completing your track, you can claim expertise in:
 6. Look at error messages - they usually tell you what's wrong!
 
 **Common Solutions:**
+
 - Backend not running? Start it: `cd backend && uvicorn main:app --reload`
 - Tests failing? Reset database: `./reset-database.sh`
 - Import errors? Install dependencies: `pip install -r requirements.txt`

@@ -21,20 +21,23 @@
 ### Step 1: Understand the API (10 minutes)
 
 **What is an API endpoint?**
+
 - URL that accepts requests: `/api/auth/login`
 - Returns data: `{"access_token": "xxx"}`
 - Like a function you call over HTTP
 
 **Testbook's Login Endpoint:**
+
 - **URL:** `POST /api/auth/login`
 - **Input:** `{"email": "...", "password": "..."}`
 - **Output:** `{"access_token": "...", "token_type": "bearer"}`
 
 ### Step 2: Look at Existing API Test (10 minutes)
 
-**Open:** `backend/tests/test_api_auth.py`
+**Open:** `backend/tests/integration/test_api_auth.py`
 
 **Find this test:**
+
 ```python
 def test_login_success(self, client, test_user):
     """Test successful login with correct credentials."""
@@ -53,6 +56,7 @@ def test_login_success(self, client, test_user):
 ```
 
 **Understand:**
+
 - `client` - TestClient (makes fake API calls)
 - `test_user` - Fixture that creates a test user
 - `response.status_code` - HTTP status (200 = success)
@@ -63,11 +67,12 @@ def test_login_success(self, client, test_user):
 ### Step 3: Run the API Test (5 minutes)
 
 ```bash
-pytest tests/test_api_auth.py::TestLoginEndpoint::test_login_success -v
+pytest tests/integration/test_api_auth.py::TestLoginEndpoint::test_login_success -v
 ```
 
 **Should see:**
-```
+
+```text
 tests/test_api_auth.py::TestLoginEndpoint::test_login_success PASSED ✓
 ```
 
@@ -78,6 +83,7 @@ tests/test_api_auth.py::TestLoginEndpoint::test_login_success PASSED ✓
 **Challenge:** Test that login fails with wrong password
 
 **Add to `TestLoginEndpoint` class:**
+
 ```python
 def test_login_with_my_wrong_password(self, client, test_user):
     """Test that login fails with incorrect password."""
@@ -99,8 +105,9 @@ def test_login_with_my_wrong_password(self, client, test_user):
 ```
 
 **Run your test:**
+
 ```bash
-pytest tests/test_api_auth.py::TestLoginEndpoint::test_login_with_my_wrong_password -v
+pytest tests/integration/test_api_auth.py::TestLoginEndpoint::test_login_with_my_wrong_password -v
 ```
 
 ✅ **Checkpoint:** Your test passes!
@@ -109,7 +116,8 @@ pytest tests/test_api_auth.py::TestLoginEndpoint::test_login_with_my_wrong_passw
 
 **Challenge:** Test the post creation endpoint
 
-**Create this test in `test_api_posts.py`:**
+**Create this test in `tests/integration/test_api_posts.py`:**
+
 ```python
 def test_create_my_post(self, client, auth_headers):
     """Test creating a post via API."""
@@ -133,8 +141,9 @@ def test_create_my_post(self, client, auth_headers):
 ```
 
 **Run it:**
+
 ```bash
-pytest tests/test_api_posts.py::TestCreatePost::test_create_my_post -v
+pytest tests/integration/test_api_posts.py::TestCreatePost::test_create_my_post -v
 ```
 
 ✅ **Checkpoint:** Post creation test passes!
@@ -154,15 +163,19 @@ pytest tests/test_api_posts.py::TestCreatePost::test_create_my_post -v
 ## 💪 Practice Challenges
 
 ### Challenge 1: Test Post Deletion
+
 Write a test that:
+
 1. Creates a post
 2. Deletes the post
 3. Verifies post is gone (GET returns 404)
 
-**Hint:** Look at `test_api_posts.py::TestDeletePost` for examples
+**Hint:** Look at `tests/integration/test_api_posts.py::TestDeletePost` for examples
 
 ### Challenge 2: Test Comment Creation
+
 Write a test that:
+
 1. Creates a post
 2. Adds a comment to the post
 3. Verifies comment appears
@@ -170,7 +183,9 @@ Write a test that:
 **Hint:** Endpoint is `POST /api/posts/{post_id}/comments`
 
 ### Challenge 3: Test Authorization
+
 Write a test that:
+
 1. User A creates a post
 2. User B tries to delete it
 3. Verifies it fails with 403 Forbidden
@@ -180,6 +195,7 @@ Write a test that:
 ## 🐛 Common Mistakes
 
 **Mistake 1:** Forgetting authentication
+
 ```python
 # ❌ Wrong
 response = client.post("/api/posts/", json={...})
@@ -189,12 +205,14 @@ response = client.post("/api/posts/", json={...}, headers=auth_headers)
 ```
 
 **Mistake 2:** Wrong status code
+
 ```python
 # Check what status code API actually returns
 assert response.status_code == 200  # Not always 201!
 ```
 
 **Mistake 3:** Not checking response structure
+
 ```python
 # ✅ Always verify response has expected fields
 data = response.json()
@@ -229,22 +247,25 @@ assert "content" in data
 
 ## 📚 Further Reading
 
-- [TESTING_GUIDE.md - API Testing Section](../TESTING_GUIDE.md#api-testing)
+- [TESTING_GUIDE.md - API Testing Section](../docs/guides/TESTING_GUIDE.md#api-testing)
 - [FastAPI Testing Docs](https://fastapi.tiangolo.com/tutorial/testing/)
-- Study: `tests/test_api_auth.py` (complete file)
+- Study: `tests/integration/test_api_auth.py` (complete file)
 
 ---
 
 **🎉 You're now testing real APIs like a pro!**
 
-**Next Lab:** [Lab 4: End-to-End Testing](labs/LAB_04_E2E_Testing.md)
+**Next Lab:** Choose your language:
+
+- [Lab 4: E2E Testing (Python)](LAB_04_E2E_Testing_Python.md)
+- [Lab 4: E2E Testing (JavaScript)](LAB_04_E2E_Testing_JavaScript.md)
 
 ---
 
 ### Quiz Answers
+
 1. 401 (Unauthorized)
 2. Makes a POST request to the API
 3. Because those endpoints require authentication
 4. A Python dictionary/list from JSON
 5. API testing tests whole endpoints (multiple functions together), unit testing tests single functions
-

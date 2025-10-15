@@ -46,6 +46,7 @@ The Page Object Model (POM) is a design pattern that creates an object repositor
 ### Why Use Page Object Model?
 
 **Without POM (❌ Brittle):**
+
 ```python
 # Every test duplicates selectors
 def test_login():
@@ -59,6 +60,7 @@ def test_register():
 ```
 
 **With POM (✅ Maintainable):**
+
 ```python
 # Update selector in ONE place
 class LoginPage:
@@ -608,6 +610,7 @@ module.exports = {
 ### Running Multi-Browser Tests
 
 **Python:**
+
 ```bash
 # Install browsers
 playwright install firefox webkit
@@ -619,6 +622,7 @@ pytest --browser webkit
 ```
 
 **JavaScript:**
+
 ```bash
 # Install browsers
 npx playwright install firefox webkit
@@ -649,7 +653,7 @@ jobs:
       - uses: actions/setup-python@v4
       - run: pip install -r tests/e2e-python/requirements.txt
       - run: playwright install --with-deps
-      - run: pytest tests/e2e-python/ --headed=false
+      - run: HEADLESS=true pytest tests/e2e-python/
 
   e2e-javascript:
     runs-on: ubuntu-latest
@@ -692,4 +696,3 @@ You've learned advanced E2E patterns in both Python and JavaScript:
 - [Playwright Best Practices](https://playwright.dev/docs/best-practices)
 
 **🎉 You've mastered advanced E2E testing in both stacks! These are production-ready skills!**
-

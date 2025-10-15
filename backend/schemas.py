@@ -10,6 +10,16 @@ class Token(BaseModel):
     token_type: str
 
 
+class RegisterResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    access_token: str
+    token_type: str
+    email: EmailStr
+    username: str
+    display_name: str
+
+
 class TokenData(BaseModel):
     email: Optional[str] = None
 
@@ -121,6 +131,7 @@ class CommentResponse(BaseModel):
 
     id: int
     content: str
+    post_id: int
     author_id: int
     author_username: str
     author_display_name: str

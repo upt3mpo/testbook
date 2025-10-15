@@ -8,7 +8,7 @@
 
 K6 is a modern load testing tool that lets you test your application's performance under various load conditions.
 
-**Official Docs:** https://k6.io/docs/
+**Official Docs:** <https://k6.io/docs/>
 
 ---
 
@@ -161,6 +161,7 @@ export const options = {
 ```
 
 **Interpreting Results:**
+
 - ✅ **Pass:** System handles minimal load, no errors
 - ❌ **Fail:** Basic functionality broken, fix before scaling
 
@@ -193,6 +194,7 @@ export const options = {
 ```
 
 **Interpreting Results:**
+
 - ✅ **Pass:** System handles normal load within acceptable time
 - ⚠️ **Warning:** Some thresholds close to limits, investigate
 - ❌ **Fail:** Can't handle normal load, optimization needed
@@ -230,6 +232,7 @@ export const options = {
 ```
 
 **Interpreting Results:**
+
 - ✅ Find breaking point (e.g., "System degrades at 150 VUs")
 - ✅ Identify bottlenecks
 - ✅ Plan capacity needs
@@ -240,7 +243,7 @@ export const options = {
 
 ### Key Metrics Explained
 
-```
+```text
 ✓ http_req_duration
   avg=245ms  min=120ms  med=230ms  max=890ms  p(90)=350ms  p(95)=456ms
 ```
@@ -257,7 +260,7 @@ export const options = {
 
 ### Threshold Status
 
-```
+```text
 ✓ http_req_duration.........: avg=245ms  p(95)=456ms
 ✗ http_req_failed...........: 2.3% ✗ 5.0%
 ```
@@ -338,7 +341,7 @@ thresholds: {
 
 ## 💡 Performance Optimization Tips
 
-### If Response Times Are High:
+### If Response Times Are High
 
 1. **Check database queries** - Add indexes, optimize joins
 2. **Enable caching** - Cache frequent queries
@@ -346,7 +349,7 @@ thresholds: {
 4. **Scale resources** - Add CPU/memory
 5. **Use connection pooling** - Reuse database connections
 
-### If Error Rate Is High:
+### If Error Rate Is High
 
 1. **Check logs** - What errors are occurring?
 2. **Check resources** - Out of memory? Disk full?
@@ -468,7 +471,7 @@ export default function() {
 
 ### Example Output
 
-```
+```text
 ✓ http_req_failed.....................: 0.23%  ✓ 7   ✗ 3000
 ✓ http_req_duration...................: avg=285ms min=45ms med=245ms max=2.1s p(90)=420ms p(95)=556ms
   { expected_response:true }...........: avg=285ms min=45ms med=245ms max=2.1s p(90)=420ms p(95)=556ms
@@ -483,9 +486,10 @@ export default function() {
 ✓ posts_created......................: 2800 counter
 ```
 
-### What This Tells You:
+### What This Tells You
 
 **Overall Health:** ✅ Good
+
 - Error rate: 0.23% (excellent, <1%)
 - Average response: 285ms (good, <300ms)
 - 95th percentile: 556ms (acceptable, <600ms)
@@ -497,6 +501,7 @@ export default function() {
 3. **Post Creation:** ✅ Working well (2800 created)
 
 **Recommendations:**
+
 - ✅ System handles 100 req/s with good performance
 - ⚠️ Feed endpoint needs optimization (database queries?)
 - ✅ Error rate very low
@@ -508,7 +513,7 @@ export default function() {
 
 ### When a Threshold Fails
 
-```
+```text
 ✗ http_req_duration: avg=1250ms, p(95)=2340ms
   ✗ p(95)<500 - failed
 ```
@@ -516,15 +521,18 @@ export default function() {
 **Steps to Debug:**
 
 1. **Identify the endpoint:**
+
    ```javascript
    // Add tags to track specific endpoints
    http.get(url, { tags: { endpoint: 'feed' }});
    ```
 
 2. **Check specific endpoint metrics:**
-   ```
+
+   ```text
    http_req_duration{endpoint:feed}: avg=2100ms
    ```
+
    Found it! Feed is slow.
 
 3. **Investigate why:**
@@ -620,4 +628,3 @@ const BASE_URL = __ENV.BASE_URL || 'http://localhost:8000';
 ---
 
 **🎯 Pro Tip:** Start with smoke tests, then load tests, then stress tests. Always establish a performance baseline before making changes!
-

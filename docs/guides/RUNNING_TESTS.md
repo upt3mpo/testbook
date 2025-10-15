@@ -9,14 +9,16 @@ Comprehensive cross-platform guide for running all Testbook tests.
 ## 🖥️ Platform-Specific Quick Start
 
 ### macOS / Linux
+
 ```bash
-cd backend && source venv/bin/activate && pytest -v
+cd backend && source .venv/bin/activate && pytest -v
 ```
 
 ### Windows
-```cmd
+
+```bat
 cd backend
-venv\Scripts\activate
+.venv\Scripts\activate
 pytest -v
 ```
 
@@ -27,12 +29,14 @@ pytest -v
 ## 📚 Test Categories
 
 ### Backend Tests (Python/pytest)
+
 - **166 tests** (unit, integration, database)
 - **84% coverage**
 - **Platform:** All (Python is cross-platform)
 - **Language:** Python
 
 ### E2E Tests (Playwright)
+
 - **60+ tests** (browser automation)
 - **Cross-browser** (Chrome, Firefox, Safari)
 - **Platform:** All
@@ -41,14 +45,17 @@ pytest -v
 > **Before you run E2E tests:** start the development servers with `./start-dev.sh` (macOS/Linux) or `start-dev.bat` (Windows). The UI will be available at `http://localhost:3000` and the API at `http://localhost:8000`.
 
 ### API Tests
+
 - **Tools:** Postman/Newman (all platforms) or Python requests
 - **Language:** Agnostic (HTTP calls)
 
 ### Performance Tests (K6)
+
 - **3 scripts** (smoke, load, stress)
 - **Platform:** All (K6 is cross-platform)
 
 ### Security Tests
+
 - **23 tests**
 - **Platform:** All
 - **Language:** Python
@@ -75,9 +82,9 @@ pytest -v
 cd backend
 
 # Activate virtual environment
-source venv/bin/activate  # macOS/Linux
+source .venv/bin/activate  # macOS/Linux
 # or
-venv\Scripts\activate     # Windows
+.venv\Scripts\activate     # Windows
 
 # Install dependencies (if not already installed)
 pip install -r requirements.txt
@@ -92,11 +99,15 @@ pytest
 # Run with verbose output
 pytest -v
 
+# Run specific test directory
+pytest tests/unit/
+pytest tests/integration/
+
 # Run specific test file
-pytest tests/test_unit_auth.py
+pytest tests/unit/test_auth.py
 
 # Run specific test
-pytest tests/test_unit_auth.py::TestPasswordHashing::test_password_is_hashed
+pytest tests/unit/test_auth.py::TestPasswordHashing::test_password_is_hashed
 
 # Run by marker
 pytest -m unit              # Only unit tests
@@ -127,12 +138,20 @@ start htmlcov/index.html # Windows
 
 ### Test Organization
 
-- `tests/test_unit_*.py` - Unit tests (fast, isolated)
-- `tests/test_api_*.py` - API endpoint tests
-- `tests/test_database.py` - Database-specific tests
+- `tests/unit/` - Unit tests (fast, isolated)
+  - `test_auth.py` - Password hashing, JWT tokens
+  - `test_models.py` - Database models, relationships
+- `tests/integration/` - Integration tests (API endpoints and database)
+  - `test_api_auth.py` - Authentication endpoints
+  - `test_api_posts.py` - Posts endpoints
+  - `test_api_users.py` - Users endpoints
+  - `test_api_feed.py` - Feed endpoints
+  - `test_api_contract.py` - API contract validation
+  - `test_database.py` - Database constraints
 - `tests/conftest.py` - Shared fixtures
+- `tests/factories.py` - Test data factories
 
-**Documentation:** [backend/tests/README.md](backend/tests/README.md)
+**Documentation:** [backend/tests/README.md](../../backend/tests/README.md)
 
 ---
 
@@ -198,7 +217,7 @@ npm run report
 - `e2e/posts.spec.js` - Post operations
 - `e2e/users.spec.js` - User profiles and interactions
 
-**Documentation:** [tests/README.md](tests/README.md)
+**Documentation:** [tests/README.md](../../tests/README.md)
 
 ---
 
@@ -256,7 +275,7 @@ python
 >>> posts = api.get_all_feed()
 ```
 
-**Documentation:** [tests/api/README.md](tests/api/README.md)
+**Documentation:** [tests/api/README.md](../../tests/api/README.md)
 
 ---
 
@@ -303,7 +322,7 @@ k6 run --out json=results.json tests/performance/load-test.js
 
 ### Understanding Results
 
-```
+```text
 ✓ health check returns 200
 ✓ login successful
 ✓ feed loads successfully
@@ -316,7 +335,7 @@ http_req_failed...........: 0.23%
 - `p(99)` = 99% of requests faster than this
 - Low error rate = good performance
 
-**Documentation:** [tests/performance/README.md](tests/performance/README.md)
+**Documentation:** [tests/performance/README.md](../../tests/performance/README.md)
 
 ---
 
@@ -366,6 +385,7 @@ pytest tests/security/test_rate_limiting.py -v
 **Expected:** 17-19/23 tests passing (74-83%) ✅
 
 **If you see failures:**
+
 1. Check if backend is in TESTING mode
 2. See `tests/security/README.md` for troubleshooting
 3. Read `labs/LAB_06_Testing_With_Rate_Limits.md` for complete explanation
@@ -382,7 +402,7 @@ pytest tests/security/test_rate_limiting.py -v
 - ✅ Data exposure prevention
 - ✅ Session management
 
-**Documentation:** [tests/security/README.md](tests/security/README.md)
+**Documentation:** [tests/security/README.md](../../tests/security/README.md)
 
 ---
 
@@ -514,7 +534,7 @@ pip install -r requirements.txt
 rm test_testbook.db
 
 # Run single test to debug
-pytest tests/test_unit_auth.py::test_password_is_hashed -v
+pytest tests/unit/test_auth.py::test_password_is_hashed -v
 ```
 
 ### E2E Tests Failing
@@ -596,7 +616,7 @@ uvicorn main:app --reload --log-level debug
 ```bash
 # Terminal 1: Start backend
 cd backend
-source venv/bin/activate
+source .venv/bin/activate
 python seed.py
 uvicorn main:app --reload
 
@@ -627,16 +647,16 @@ pytest tests/security/ -v
 ### Testing Guides
 
 - [Backend Testing Guide](TESTING_GUIDE.md#backend-testing)
-- [API Testing Guide](tests/api/README.md)
-- [E2E Testing Guide](tests/README.md)
-- [Performance Testing Guide](tests/performance/README.md)
-- [Security Testing Guide](tests/security/README.md)
+- [API Testing Guide](../../tests/api/README.md)
+- [E2E Testing Guide](../../tests/README.md)
+- [Performance Testing Guide](../../tests/performance/README.md)
+- [Security Testing Guide](../../tests/security/README.md)
 
 ### Quick References
 
-- [Testing Cheat Sheet](TESTING_CHEATSHEET.md)
-- [Testing Patterns](TESTING_PATTERNS.md)
-- [Testing Features](TESTING_FEATURES.md)
+- [Testing Cheat Sheet](../reference/TESTING_CHEATSHEET.md)
+- [Testing Patterns](../reference/TESTING_PATTERNS.md)
+- [Testing Features](../reference/TESTING_FEATURES.md)
 
 ### External Resources
 

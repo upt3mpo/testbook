@@ -1,10 +1,11 @@
 import os
 
+from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy.orm import Session
+
 import models
 from database import engine, get_db
-from fastapi import APIRouter, Depends, HTTPException, status
 from seed import seed_database
-from sqlalchemy.orm import Session
 
 router = APIRouter()
 

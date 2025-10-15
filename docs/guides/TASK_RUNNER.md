@@ -71,7 +71,7 @@ make setup            # Full setup + database seed
 ```bash
 make start            # Start both backend + frontend
 make start-backend    # Backend only (port 8000)
-make start-frontend   # Frontend only (port 5173)
+make start-frontend   # Frontend only (port 3000)
 ```
 
 ### Testing
@@ -126,7 +126,7 @@ make clean-all        # Deep clean (includes dependencies)
 ```bash
 # Have to remember multiple commands
 cd backend
-source venv/bin/activate
+source .venv/bin/activate  # Windows: .venv\Scripts\activate
 uvicorn main:app --reload
 
 # In another terminal
@@ -135,8 +135,8 @@ npm run dev
 
 # In another terminal for tests
 cd backend
-source venv/bin/activate
-TESTING=true pytest -v
+source .venv/bin/activate  # Windows: .venv\Scripts\activate
+TESTING=true pytest -v  # Windows (PowerShell): $env:TESTING="true"; pytest -v
 ```
 
 ### ✅ With Task Runners
@@ -157,33 +157,41 @@ make setup
 ## Benefits
 
 ### 1. **Simplified Commands**
+
 Replace complex multi-step commands with simple shortcuts.
 
 ### 2. **Cross-Platform**
+
 Works consistently across macOS, Linux, and Windows.
 
 ### 3. **Documentation**
+
 Self-documenting - `make help` or `just` shows all commands.
 
 ### 4. **Error Prevention**
+
 Reduces typos and mistakes in complex commands.
 
 ### 5. **Onboarding**
+
 New contributors can start immediately without memorizing commands.
 
 ### 6. **CI/CD Integration**
+
 Use same commands locally and in CI pipelines.
 
 ---
 
 ## Which Task Runner Should I Use?
 
-### Use **Make** if:
+### Use **Make** if
+
 - ✅ You're familiar with Make
 - ✅ You want maximum compatibility (Make is everywhere)
 - ✅ You don't want to install additional tools
 
-### Use **Just** if:
+### Use **Just** if
+
 - ✅ You want modern, clean syntax
 - ✅ You prefer better error messages
 - ✅ You're okay installing one extra tool
@@ -270,14 +278,16 @@ make test-performance
 Edit `Makefile` or `justfile` to add your own shortcuts:
 
 **Makefile:**
+
 ```makefile
 .PHONY: my-command
 my-command:
-	@echo "Running custom command..."
-	cd backend && ./my-script.sh
+ @echo "Running custom command..."
+ cd backend && ./my-script.sh
 ```
 
 **justfile:**
+
 ```just
 # My custom command
 my-command:
@@ -293,6 +303,7 @@ my-command:
 ### Make Issues
 
 **"make: command not found"**
+
 ```bash
 # macOS
 xcode-select --install
@@ -305,12 +316,14 @@ choco install make
 ```
 
 **"No rule to make target"**
+
 - Check you're in the project root directory
 - Verify command name with `make help`
 
 ### Just Issues
 
 **"just: command not found"**
+
 ```bash
 # Install just
 brew install just      # macOS
@@ -319,6 +332,7 @@ choco install just     # Windows
 ```
 
 **Syntax errors**
+
 - Just uses shell scripts in recipes
 - Ensure you have bash available
 
@@ -343,8 +357,8 @@ Use the same commands in GitHub Actions:
 
 ## Learn More
 
-- **Make Tutorial**: https://makefiletutorial.com/
-- **Just Documentation**: https://github.com/casey/just
+- **Make Tutorial**: <https://makefiletutorial.com/>
+- **Just Documentation**: <https://github.com/casey/just>
 - **Project Scripts**: See `scripts/` directory for platform-specific alternatives
 
 ---
@@ -362,4 +376,3 @@ See `WHICH_START_SCRIPT.md` for details.
 ---
 
 **Bottom Line**: Task runners are optional but highly recommended for a better developer experience!
-

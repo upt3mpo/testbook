@@ -21,7 +21,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const API_URL = process.env.API_URL || 'http://localhost:8000';
-const OUTPUT_FILE = path.join(__dirname, '../src/test/openapi-schema.json');
+const OUTPUT_FILE = path.join(__dirname, '../src/tests/openapi-schema.json');
 
 console.log(`📥 Fetching OpenAPI schema from ${API_URL}/openapi.json...`);
 

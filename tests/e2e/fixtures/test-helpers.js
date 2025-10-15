@@ -5,7 +5,7 @@
  * creating posts, and resetting test data.
  */
 
-const { expect } = require('@playwright/test');
+import { expect } from '@playwright/test';
 
 // Get backend URL from environment or use default
 const BACKEND_URL = process.env.BACKEND_URL || process.env.API_URL || 'http://localhost:8000';
@@ -248,19 +248,11 @@ function setupDialogHandler(page) {
   });
 }
 
-module.exports = {
-  resetDatabase,
-  seedDatabase,
-  loginUser,
-  registerUser,
-  createPost,
-  getFirstPost,
-  getPostsByAuthor,
-  getFirstOwnPost,
-  addReaction,
-  addComment,
-  setupDialogHandler,
-  TEST_USERS,
-  BACKEND_URL
+export {
+    addComment, addReaction, BACKEND_URL, createPost, getFirstOwnPost, getFirstPost,
+    getPostsByAuthor, loginUser,
+    registerUser, resetDatabase,
+    seedDatabase, setupDialogHandler,
+    TEST_USERS
 };
 

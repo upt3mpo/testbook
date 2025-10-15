@@ -176,7 +176,7 @@ TEST_USERS.newuser // For registration tests
 
 ## 📁 Test Structure
 
-```
+```text
 tests/e2e/
 ├── fixtures/
 │   └── test-helpers.js      # Reusable helper functions
@@ -480,6 +480,37 @@ test('verify post created via API', async ({ page, request }) => {
 - [Main Testing Guide](../../docs/guides/RUNNING_TESTS.md)
 - [Lab 4: E2E Testing (JavaScript)](../../labs/LAB_04_E2E_Testing_JavaScript.md)
 - [Python E2E Tests](../e2e-python/README.md) (alternative approach)
+- [Test Alignment Guide](./E2E_TEST_ALIGNMENT.md) (JS vs Python differences)
+
+---
+
+## 🎯 JavaScript-Specific Tests
+
+### Accessibility Tests (`accessibility-axe.spec.js`)
+
+**Why JavaScript-only?**
+
+- `axe-core` is the industry-standard accessibility testing library (by Deque)
+- `@axe-core/playwright` integration is mature and well-maintained
+- WCAG 2.1 compliance testing is more commonly done in JavaScript environments
+- Python accessibility tools (axe-playwright-python) are less mature
+
+**What it tests:**
+
+- ✅ WCAG 2.1 Level A and AA compliance
+- ✅ Color contrast ratios
+- ✅ ARIA attributes and semantic HTML
+- ✅ Keyboard navigation accessibility
+- ✅ Screen reader compatibility
+
+**Career Value:**
+
+- Accessibility testing is a specialized, high-demand skill
+- Shows awareness of inclusive design and legal compliance (ADA)
+- Many companies require WCAG compliance for their products
+
+**Interview Talking Points:**
+> "For Testbook, I implemented automated accessibility testing using axe-core and Playwright to ensure WCAG 2.1 AA compliance across all pages. This catches ~40% of accessibility issues automatically, which I then complement with manual keyboard navigation and screen reader testing."
 
 ---
 

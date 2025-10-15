@@ -98,7 +98,7 @@ else
     # Activate virtual environment if it exists
     if [ -d "venv" ]; then
         echo "   🐍 Activating virtual environment..."
-        source venv/bin/activate
+        source .venv/bin/activate
     else
         echo -e "${YELLOW}   ⚠️  Virtual environment not found, using system Python${NC}"
     fi

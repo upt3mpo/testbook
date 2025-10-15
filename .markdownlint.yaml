@@ -1,0 +1,76 @@
+# Testbook Markdown Linting Configuration
+# See: https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md
+
+default: true
+
+# ============================================================================
+# ENFORCED RULES - These are enabled and must pass
+# ============================================================================
+
+# MD001: Heading levels should only increment by one level at a time
+MD001: true
+
+# MD003: Heading style - Use ### (atx) style, not underline style
+MD003:
+  style: atx
+
+# MD004: Unordered list style - Use dashes (-)
+MD004:
+  style: dash
+
+# MD007: Unordered list indentation - 2 spaces
+MD007:
+  indent: 2
+
+# MD024: Multiple headings with same content - Allow if in different sections
+MD024:
+  siblings_only: true
+
+# MD028: Blank line inside blockquote - No blank lines inside blockquotes
+MD028: true
+
+# MD034: Bare URL without angle brackets - Wrap URLs in <> or []()
+MD034: true
+
+# MD040: Fenced code blocks should have a language specified
+# Enabled: All code blocks should have language tags for proper syntax highlighting
+MD040: true
+
+# MD042: No empty links - All links must have destinations
+MD042: true
+
+# Whitespace rules
+no-hard-tabs: true
+whitespace: true
+
+# ============================================================================
+# DISABLED RULES - These are turned off with reasons
+# ============================================================================
+
+# MD013: Line length
+# Disabled: Long code examples and URLs make this impractical
+MD013: false
+
+# MD029: Ordered list item prefix
+# Disabled: Stylistic preference, doesn't affect readability
+MD029: false
+
+# MD033: Inline HTML
+# Disabled: We use HTML for collapsible sections (<details>) and styling
+MD033: false
+
+# MD036: Emphasis used instead of a heading
+# Disabled: We intentionally use bold text for emphasis, not all are headings
+# Example: "**Step 1: Install**" is emphasis, not a heading
+MD036: false
+
+# MD041: First line in a file should be a top-level heading
+# Disabled: Some files start with badges, images, or other content
+MD041: false
+
+# MD051: Link fragments should be valid
+# Disabled: Our headings use emojis (e.g., "## 🔧 Setup") which creates mismatched anchors
+# Example: Link "#setup" doesn't match actual anchor "#🔧-setup"
+# The links still work in GitHub/most renderers, just don't match strict spec
+MD051: false
+

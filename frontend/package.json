@@ -1,7 +1,7 @@
 {
   "name": "testbook-frontend",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.1.0",
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
@@ -11,26 +11,40 @@
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage",
     "test:contracts": "node scripts/fetch-schema.js && npm test -- contract",
-    "validate:schema": "node scripts/fetch-schema.js"
+    "test:a11y": "npm test -- accessibility.test.jsx",
+    "validate:schema": "node scripts/fetch-schema.js",
+    "lint": "eslint src --ext .js,.jsx",
+    "lint:fix": "eslint src --ext .js,.jsx --fix",
+    "format": "prettier --write \"src/**/*.{js,jsx,css}\"",
+    "format:check": "prettier --check \"src/**/*.{js,jsx,css}\""
   },
   "dependencies": {
+    "axios": "^1.7.7",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.26.2",
-    "axios": "^1.7.7"
+    "react-router-dom": "^6.26.2"
   },
   "devDependencies": {
-    "@vitejs/plugin-react": "^4.3.2",
-    "vite": "^5.4.8",
-    "@testing-library/react": "^14.1.2",
+    "@lhci/cli": "^0.13.0",
     "@testing-library/jest-dom": "^6.1.5",
+    "@testing-library/react": "^14.1.2",
     "@testing-library/user-event": "^14.5.1",
-    "@vitest/ui": "^1.0.4",
-    "jsdom": "^23.0.1",
-    "vitest": "^1.0.4",
+    "@vitejs/plugin-react": "^4.3.2",
     "@vitest/coverage-v8": "^1.0.4",
+    "@vitest/ui": "^1.0.4",
     "axe-core": "^4.8.3",
-    "vitest-axe": "^0.1.0",
-    "msw": "^2.0.11"
+    "axe-playwright": "^2.0.1",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-jsx-a11y": "^6.8.0",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-vitest-globals": "^1.5.0",
+    "jsdom": "^23.0.1",
+    "msw": "^2.0.11",
+    "prettier": "^3.1.1",
+    "vite": "^5.4.8",
+    "vitest": "^1.0.4",
+    "vitest-axe": "^0.1.0"
   }
 }

@@ -1,11 +1,12 @@
 from typing import List, Optional, Set
 
+from fastapi import APIRouter, Depends
+from sqlalchemy.orm import Session
+
 import models
 import schemas
 from auth import get_current_user
 from database import get_db
-from fastapi import APIRouter, Depends
-from sqlalchemy.orm import Session
 
 router = APIRouter()
 
@@ -25,9 +26,7 @@ def get_all_feed(
     if blocked_user_ids:
         query = query.filter(~models.Post.author_id.in_(blocked_user_ids))
 
-    posts = (
-        query.order_by(models.Post.created_at.desc()).offset(skip).limit(limit).all()
-    )
+    posts = query.order_by(models.Post.created_at.desc()).offset(skip).limit(limit).all()
 
     if blocked_user_ids:
         posts = [post for post in posts if post.author_id not in blocked_user_ids]
@@ -83,9 +82,7 @@ def _format_posts(
         comments_count = len(post.comments)
         reactions_count = len(post.reactions)
         reposts_count = (
-            db.query(models.Post)
-            .filter(models.Post.original_post_id == post.id)
-            .count()
+            db.query(models.Post).filter(models.Post.original_post_id == post.id).count()
         )
 
         # Check user reaction
@@ -113,27 +110,31 @@ def _format_posts(
             if blocked_user_ids and orig.author_id in blocked_user_ids:
                 orig = None
 
-            original_post = schemas.PostResponse(
-                id=orig.id,
-                content=orig.content,
-                image_url=orig.image_url,
-                video_url=orig.video_url,
-                is_repost=False,
-                original_post_id=None,
-                original_post=None,
-                author_id=orig.author_id,
-                author_username=orig.author.username,
-                author_display_name=orig.author.display_name,
-                author_profile_picture=orig.author.profile_picture,
-                created_at=orig.created_at,
-                comments_count=len(orig.comments),
-                reactions_count=len(orig.reactions),
-                reposts_count=db.query(models.Post)
-                .filter(models.Post.original_post_id == orig.id)
-                .count(),
-                user_reaction=None,
-                has_reposted=False,
-            ) if orig else None
+            original_post = (
+                schemas.PostResponse(
+                    id=orig.id,
+                    content=orig.content,
+                    image_url=orig.image_url,
+                    video_url=orig.video_url,
+                    is_repost=False,
+                    original_post_id=None,
+                    original_post=None,
+                    author_id=orig.author_id,
+                    author_username=orig.author.username,
+                    author_display_name=orig.author.display_name,
+                    author_profile_picture=orig.author.profile_picture,
+                    created_at=orig.created_at,
+                    comments_count=len(orig.comments),
+                    reactions_count=len(orig.reactions),
+                    reposts_count=db.query(models.Post)
+                    .filter(models.Post.original_post_id == orig.id)
+                    .count(),
+                    user_reaction=None,
+                    has_reposted=False,
+                )
+                if orig
+                else None
+            )
 
         result.append(
             schemas.PostResponse(

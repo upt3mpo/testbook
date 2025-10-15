@@ -1,12 +1,12 @@
 // @ts-check
-const { defineConfig, devices } = require('@playwright/test');
+import { defineConfig, devices } from '@playwright/test';
 
 /**
  * Playwright configuration for Testbook E2E tests.
  *
  * @see https://playwright.dev/docs/test-configuration
  */
-module.exports = defineConfig({
+export default defineConfig({
   testDir: './e2e',
 
   /* Maximum time one test can run */
@@ -51,6 +51,9 @@ module.exports = defineConfig({
   },
 
   /* Configure projects for major browsers */
+  // NOTE: CI only runs 'chromium' (via --project=chromium flag) for speed
+  // Run locally with all browsers: npx playwright test
+  // Run specific browser: npx playwright test --project=firefox
   projects: [
     {
       name: 'chromium',

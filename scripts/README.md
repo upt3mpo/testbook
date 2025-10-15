@@ -11,6 +11,7 @@ Utility scripts for development and maintenance.
 **Purpose:** Validate all markdown files in the project for linting issues and broken links.
 
 **When to use:**
+
 - Before committing documentation changes
 - Before creating a pull request
 - To verify all links work
@@ -19,12 +20,14 @@ Utility scripts for development and maintenance.
 ### Quick Start
 
 **macOS/Linux:**
+
 ```bash
 ./scripts/check-markdown.sh
 ```
 
 **Windows:**
-```cmd
+
+```bat
 scripts\check-markdown.bat
 ```
 
@@ -46,10 +49,12 @@ scripts\check-markdown.bat
 ### First Time Setup
 
 The script will automatically install required tools:
+
 - `markdownlint-cli` - For markdown linting
 - `markdown-link-check` - For link validation
 
 **Manual installation:**
+
 ```bash
 npm install -g markdownlint-cli markdown-link-check
 ```
@@ -69,10 +74,12 @@ markdownlint --fix README.md
 ### Configuration Files
 
 **`.markdownlint.json`** - Linting rules
+
 - Controls which markdown rules are enforced
 - Customize to match project style
 
 **`.markdown-link-check.json`** - Link checking config
+
 - Ignores localhost URLs
 - Configures retries and timeouts
 - Handles rate limiting
@@ -95,6 +102,7 @@ Edit `.markdownlint.json` to customize:
 ```
 
 **Common rules:**
+
 - `MD013` - Line length (disabled for flexibility)
 - `MD033` - Inline HTML (allowed for badges, etc.)
 - `MD024` - Duplicate headings (only check siblings)
@@ -119,6 +127,7 @@ Edit `.markdown-link-check.json` to customize:
 ## 🚀 CI/CD Integration
 
 Markdown validation runs automatically in GitHub Actions when:
+
 - Markdown files are changed
 - Pull requests are created
 - Code is pushed to main/develop branches
@@ -137,7 +146,7 @@ Markdown validation runs automatically in GitHub Actions when:
 
 ### Successful Run
 
-```
+```text
 ✅ Markdown linting passed!
 ✅ Link validation passed!
 All markdown validation checks passed!
@@ -146,7 +155,7 @@ You're good to commit! 🚀
 
 ### Failed Linting
 
-```
+```text
 ❌ Markdown linting found issues
 
 README.md:45 MD022/blanks-around-headings
@@ -159,7 +168,7 @@ Run 'markdownlint --fix **/*.md' to auto-fix some issues
 
 ### Broken Links
 
-```
+```text
 ❌ README.md has broken links
 
 FILE: README.md
@@ -185,21 +194,25 @@ Add to your workflow to catch issues early:
 ### VS Code Integration
 
 Install extensions for real-time validation:
+
 - `DavidAnson.vscode-markdownlint` - Markdown linting
 - `yzhang.markdown-all-in-one` - Markdown productivity
 
 ### Common Fixes
 
 **Multiple blank lines:**
+
 ```bash
 markdownlint --fix **/*.md
 ```
 
 **Inconsistent list markers:**
+
 - Use `-` for unordered lists (dashes)
 - Use `1.` for ordered lists
 
 **Heading structure:**
+
 - Only one H1 (`#`) per file
 - Don't skip heading levels (H1 → H3)
 
@@ -210,17 +223,19 @@ markdownlint --fix **/*.md
 ### "Command not found: markdownlint"
 
 **Solution:**
+
 ```bash
 npm install -g markdownlint-cli markdown-link-check
 ```
 
 ### "npm: command not found"
 
-**Solution:** Install Node.js from https://nodejs.org/
+**Solution:** Install Node.js from <https://nodejs.org/>
 
 ### Too many link check failures
 
 **Solutions:**
+
 1. Check your internet connection
 2. Some sites rate-limit (retries will help)
 3. Add problematic domains to `.markdown-link-check.json` ignore patterns
@@ -229,6 +244,7 @@ npm install -g markdownlint-cli markdown-link-check
 ### Permission denied (macOS/Linux)
 
 **Solution:**
+
 ```bash
 chmod +x scripts/check-markdown.sh
 ```
@@ -247,6 +263,7 @@ chmod +x scripts/check-markdown.sh
 ## 📝 Future Scripts
 
 Potential additions to this directory:
+
 - Database migration scripts
 - Test data generation
 - Code generation utilities
@@ -257,4 +274,3 @@ Potential additions to this directory:
 ---
 
 **Keep your documentation clean!** 📝✨
-

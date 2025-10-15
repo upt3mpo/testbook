@@ -5,17 +5,17 @@
  * (comments, reactions, reposts).
  */
 
-const { test, expect } = require('@playwright/test');
-const {
-  resetDatabase,
-  loginUser,
-  createPost,
-  getFirstPost,
-  getFirstOwnPost,
-  addReaction,
-  setupDialogHandler,
-  TEST_USERS
-} = require('./fixtures/test-helpers');
+import { expect, test } from '@playwright/test';
+import {
+    addReaction,
+    createPost,
+    getFirstOwnPost,
+    getFirstPost,
+    loginUser,
+    resetDatabase,
+    setupDialogHandler,
+    TEST_USERS
+} from './fixtures/test-helpers.js';
 
 test.describe('Posts', () => {
   test.beforeEach(async ({ page }) => {
@@ -168,12 +168,25 @@ test.describe('Posts', () => {
       const ownPost = getFirstOwnPost(page);
       const postContent = await ownPost.textContent();
 
-      // Open menu and delete
-      await ownPost.locator('[data-testid$="-menu-button"]').click();
-      await ownPost.locator('[data-testid$="-delete-button"]').click();
+      // Scroll the post into view to ensure it's visible
+      await ownPost.scrollIntoViewIfNeeded();
+      await page.waitForTimeout(300);
 
-      // Confirm deletion if there's a confirmation dialog
+      // Open menu with force click to avoid pointer issues
+      const menuButton = ownPost.locator('[data-testid$="-menu-button"]');
+      await expect(menuButton).toBeVisible({ timeout: 5000 });
+      await menuButton.click({ force: true });
+
+      // Wait for dropdown animation
       await page.waitForTimeout(500);
+
+      // Click delete button (should be visible now within THIS post's context)
+      const deleteButton = ownPost.locator('[data-testid$="-delete-button"]');
+      await expect(deleteButton).toBeVisible({ timeout: 5000 });
+      await deleteButton.click({ force: true });
+
+      // Wait for browser confirm dialogs to be auto-handled
+      await page.waitForTimeout(1000);
 
       // Post should be removed
       await expect(page.locator(`text="${postContent}"`)).not.toBeVisible({ timeout: 5000 });
@@ -348,4 +361,34 @@ test.describe('Posts', () => {
     });
   });
 });
+
+// 🧠 Why These Tests Matter:
+//
+// E2E tests for posts functionality validate the CORE feature of Testbook:
+//
+// 1. **Main User Flow** - Creating, viewing, and interacting with posts is primary use case
+// 2. **Complex Interactions** - Posts involve CRUD, reactions, comments, reposts (multi-component)
+// 3. **Real-Time Feedback** - Tests verify UI updates immediately after actions
+// 4. **Authorization Enforcement** - Users can only edit/delete their own posts (security!)
+//
+// What These Tests Catch:
+// - ✅ Post creation failures (form doesn't submit, content not saved)
+// - ✅ Edit/delete permissions bugs (can edit others' posts = major security issue!)
+// - ✅ Reaction toggle issues (doesn't add/remove, wrong emoji shown)
+// - ✅ Feed filtering bugs (All vs Following tabs show wrong posts)
+// - ✅ UI state problems (buttons don't update, content doesn't refresh)
+//
+// In Real QA Teams:
+// - These are "smoke tests" - must pass before any release
+// - They verify the primary business logic of the application
+// - Failed post tests mean core feature is broken (deployment blocker)
+// - They catch frontend-backend integration issues before users do
+//
+// For Your Career:
+// - Posts/content management is tested in EVERY social media interview
+// - Demonstrates you can test complex, stateful interactions
+// - Shows understanding of authorization (user can only edit their own content)
+// - Interview question: "How would you test CRUD operations?" - Run this test live!
+// - Proves you can handle async operations, waits, and flaky selector issues
+
 

@@ -1,7 +1,7 @@
 """Example tests using Page Object Model
 
 These examples demonstrate the patterns taught in Lab 4B.
-Run with: pytest examples/test_page_objects_example.py -v --headed
+Run with: HEADLESS=false pytest examples/test_page_objects_example.py -v
 """
 
 import sys
@@ -44,15 +44,24 @@ class TestPageObjectExamples:
         profile = ProfilePage(page)
         profile.goto("mikechen")
 
-        # Get initial counts
+        # Get initial following state
+        was_following = profile.is_following(wait_timeout=3000)
         initial_followers = profile.get_follower_count()
 
-        # Follow user
+        # Follow user (or confirm already following)
         profile.follow_user()
 
+        # Wait for follow to complete and UI to update
+        page.wait_for_timeout(1000)
+
         # Verify follow worked
-        assert profile.is_following() is True
-        assert profile.get_follower_count() == initial_followers + 1
+        assert profile.is_following(wait_timeout=10000) is True
+
+        # If we weren't following before, count should increase
+        if not was_following:
+            assert profile.get_follower_count() == initial_followers + 1
+        else:
+            assert profile.get_follower_count() == initial_followers
 
     def test_complete_workflow_with_pom(self, page: Page, login_as, fresh_database):
         """Test complete workflow: create post → view profile → follow."""

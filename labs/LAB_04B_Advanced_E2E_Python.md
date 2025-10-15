@@ -211,7 +211,7 @@ class TestPageObjectExamples:
         assert profile.get_post_count() >= 1
 ```
 
-**🎯 Checkpoint:** Run `pytest test_page_objects.py -v -m pom --headed`
+**🎯 Checkpoint:** Run `HEADLESS=false pytest test_page_objects.py -v -m pom`
 
 ---
 
@@ -320,7 +320,7 @@ class TestAdvancedFixtures:
         assert feed_page.post_count() >= 1
 ```
 
-**🎯 Checkpoint:** Run `pytest test_advanced_fixtures.py -v -m fixtures --headed`
+**🎯 Checkpoint:** Run `HEADLESS=false pytest test_advanced_fixtures.py -v -m fixtures`
 
 ---
 
@@ -410,7 +410,7 @@ class TestNetworkInterception:
             pass  # Loading was too fast
 ```
 
-**🎯 Checkpoint:** Run `pytest test_network.py -v -m network --headed`
+**🎯 Checkpoint:** Run `HEADLESS=false pytest test_network.py -v -m network`
 
 ---
 
@@ -871,7 +871,7 @@ def test_ui_update_persists_to_database(
     assert user["bio"] == "Updated bio from UI test"
 ```
 
-**🎯 Checkpoint:** Run `pytest test_api_ui_combined.py -v -m combined --headed`
+**🎯 Checkpoint:** Run `HEADLESS=false pytest test_api_ui_combined.py -v -m combined`
 
 ---
 
@@ -894,6 +894,7 @@ def test_ui_update_persists_to_database(
 ### Challenge 1: Add More Page Objects
 
 Create page objects for:
+
 - LoginPage
 - RegistrationPage
 - SettingsPage
@@ -901,6 +902,7 @@ Create page objects for:
 ### Challenge 2: Advanced Network Mocking
 
 Create tests that mock:
+
 - Partial responses (some posts load, others fail)
 - Rate limit errors (429 status)
 - Pagination responses
@@ -908,6 +910,7 @@ Create tests that mock:
 ### Challenge 3: Complex Fixtures
 
 Create a fixture that:
+
 - Logs in as user A
 - Creates 3 posts
 - Logs in as user B
@@ -935,6 +938,7 @@ def pytest_runtest_makereport(item, call):
 ### Challenge 5: Combined API + UI Testing
 
 Create tests that:
+
 - Use API to create 10 posts, reactions, and follows
 - Verify all appear correctly in UI
 - Measure time saved vs clicking through UI
@@ -1038,18 +1042,21 @@ The concepts transfer directly between languages!
 ## 📚 Resources
 
 **Working Examples (Run These!):**
+
 - **`tests/e2e-python/examples/`** - ⭐ Complete working examples from this lab
   - `test_page_objects_example.py` - Page Object Model in action
   - `test_api_ui_combined_example.py` - API + UI validation patterns
-  - Run with: `pytest tests/e2e-python/examples/ -v --headed -m examples`
+  - Run with: `HEADLESS=false pytest tests/e2e-python/examples/ -v -m examples`
 - **`tests/e2e-python/pages/`** - Reusable page objects (base, feed, profile)
 - **`tests/e2e-python/conftest.py`** - Advanced fixtures added at bottom
 
 **Study Existing Tests:**
+
 - `tests/e2e-python/test_auth.py` - Authentication examples
 - `tests/e2e-python/test_posts.py` - Post management examples
 
 **Official Documentation:**
+
 - [Playwright Python Page Objects](https://playwright.dev/python/docs/pom)
 - [pytest fixtures](https://docs.pytest.org/en/stable/fixture.html)
 - [pytest markers](https://docs.pytest.org/en/stable/example/markers.html)
@@ -1061,8 +1068,8 @@ The concepts transfer directly between languages!
 **🐍 Python's Unique Advantage:** Unlike JavaScript, Python lets you use the same language for backend API manipulation AND frontend UI testing. This enables incredibly fast test setup by seeding data via API instead of clicking through UI!
 
 **Next Steps:**
+
 - Apply these patterns to the full test suite
 - Explore [Section 8: Advanced E2E Patterns](../docs/course/SECTION_08_ADVANCED_E2E_PATTERNS.md) for more examples
 - Compare with [JavaScript advanced patterns](../docs/guides/TESTING_COMPARISON_PYTHON_JS.md)
 - Set up [CI/CD automation](../docs/course/CI_CD_E2E_TESTING.md)
-

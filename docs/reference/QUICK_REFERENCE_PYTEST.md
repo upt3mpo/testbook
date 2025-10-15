@@ -18,14 +18,18 @@ pytest -v
 # Very verbose (shows print statements)
 pytest -vv -s
 
+# Run specific directory
+pytest tests/unit/
+pytest tests/integration/
+
 # Run specific file
-pytest tests/test_unit_auth.py
+pytest tests/unit/test_auth.py
 
 # Run specific test
-pytest tests/test_unit_auth.py::TestPasswordHashing::test_password_is_hashed
+pytest tests/unit/test_auth.py::TestPasswordHashing::test_password_is_hashed
 
 # Run specific class
-pytest tests/test_unit_auth.py::TestPasswordHashing
+pytest tests/unit/test_auth.py::TestPasswordHashing
 
 # Run by pattern
 pytest -k "password"  # Runs all tests with "password" in name
@@ -388,8 +392,8 @@ grep "def test_" tests/test_file.py
 ```bash
 # Issue: ModuleNotFoundError
 # Fix: Activate virtual environment
-source venv/bin/activate  # macOS/Linux
-venv\Scripts\activate     # Windows
+source .venv/bin/activate  # macOS/Linux
+.venv\Scripts\activate     # Windows
 
 # Fix: Install dependencies
 pip install -r requirements.txt
@@ -440,4 +444,3 @@ pytest -v --cov
 # Full verification
 pytest -v --cov --cov-fail-under=80 -n auto
 ```
-

@@ -38,12 +38,14 @@ Development mode works without Docker and is recommended for all labs.
 **A:** Yes! The scripts are now **idempotent**.
 
 This means:
+
 - ✅ Running it multiple times won't reinstall dependencies unnecessarily
 - ✅ It checks if dependencies are already installed and skips if present
 - ✅ It checks if ports are already in use and warns you
 - ✅ Safe to run even if a previous instance is running
 
 The script will:
+
 1. Check if Python venv exists (create only if needed)
 2. Check if dependencies are installed (install only if needed)
 3. Check if node_modules exists (install only if needed)
@@ -56,6 +58,7 @@ The script will:
 **A:** You might have a previous instance running.
 
 **Option 1:** Kill the process using the port:
+
 ```bash
 # macOS/Linux
 lsof -ti:8000 | xargs kill
@@ -91,11 +94,11 @@ Most students prefer Native Windows or WSL.
 ```bash
 # macOS/Linux
 cd backend
-source venv/bin/activate
+source .venv/bin/activate
 
 # Windows
 cd backend
-venv\Scripts\activate
+.venv\Scripts\activate
 ```
 
 You should see `(venv)` in your terminal prompt.
@@ -108,7 +111,7 @@ You should see `(venv)` in your terminal prompt.
 
 ```bash
 cd backend
-source venv/bin/activate  # Or venv\Scripts\activate on Windows
+source .venv/bin/activate  # Or .venv\Scripts\activate on Windows
 pip install -r requirements.txt
 ```
 
@@ -192,7 +195,7 @@ pytest -v  # Will create fresh database
 ```bash
 # Terminal 1: Start backend
 cd backend
-source venv/bin/activate
+source .venv/bin/activate
 uvicorn main:app --reload
 
 # Terminal 2: Run E2E tests
@@ -248,9 +251,10 @@ curl http://localhost:8000/api/health
 ```
 
 If not running, start it:
+
 ```bash
 cd backend
-source venv/bin/activate
+source .venv/bin/activate
 uvicorn main:app --reload
 ```
 
@@ -276,6 +280,7 @@ await page.locator('[data-testid="button"]').count()  // Should be > 0
 ```
 
 Common issues:
+
 - Typo in `data-testid`
 - Element is hidden
 - Page hasn't loaded yet
@@ -342,8 +347,8 @@ cd backend
 
 ```bash
 # ✅ GOOD
-test_auth.py
-test_api_users.py
+test_auth.py              # Simple, clear
+test_api_users.py         # Descriptive, standard naming
 
 # ❌ BAD
 auth_test.py
@@ -390,6 +395,7 @@ def clean_db(db_session):
 ```
 
 Or reset manually:
+
 ```bash
 ./reset-database.sh
 ```
@@ -471,7 +477,7 @@ Go at your own pace!
 python --version  # Should be 3.11+
 
 # Activate venv
-source venv/bin/activate
+source .venv/bin/activate
 
 # Verify venv Python
 which python  # Should point to venv
@@ -624,11 +630,13 @@ Full index: `docs/INDEX.md`
 ### Q: Can I use this for teaching or mentoring?
 
 **A:** Yes! While Testbook is designed for individual learning, it works great for:
+
 - Staff engineers guiding junior developers
 - Mentors introducing testing to manual QA professionals
 - Tech leads onboarding team members
 
 See:
+
 - `labs/solutions/` - Sample solutions for guidance
 - `docs/course/COURSE_AUTOMATION_TESTING_101.md` - Structured curriculum
 - `docs/course/LEARNING_PATHS.md` - Different learning paths by background
@@ -650,7 +658,7 @@ If your issue isn't here:
 
 ### Tip 1: Keep Two Terminals Open
 
-```
+```text
 Terminal 1: Backend running
 Terminal 2: Run tests
 ```
@@ -658,6 +666,7 @@ Terminal 2: Run tests
 ### Tip 2: Use Quick References
 
 Bookmark these for fast lookups:
+
 - `docs/reference/QUICK_REFERENCE_PYTEST.md`
 - `docs/reference/QUICK_REFERENCE_PLAYWRIGHT.md`
 
@@ -668,10 +677,11 @@ Bookmark these for fast lookups:
 ### Tip 4: Start Fresh
 
 When really stuck:
+
 ```bash
 # Reset everything
 ./reset-database.sh
-cd backend && deactivate && source venv/bin/activate
+cd backend && deactivate && source .venv/bin/activate
 pip install -r requirements.txt
 pytest -v
 ```
@@ -679,6 +689,7 @@ pytest -v
 ### Tip 5: Use Verbose Mode
 
 Always use `-v` for better output:
+
 ```bash
 pytest -v  # Shows test names and results
 ```
@@ -686,4 +697,3 @@ pytest -v  # Shows test names and results
 ---
 
 **Still have questions? Create an issue on GitHub!** 🚀
-

@@ -17,9 +17,7 @@ function Feed() {
     setError('');
     try {
       const response =
-        feedType === 'all'
-          ? await feedAPI.getAllFeed()
-          : await feedAPI.getFollowingFeed();
+        feedType === 'all' ? await feedAPI.getAllFeed() : await feedAPI.getFollowingFeed();
       setPosts(response.data);
       lastLoadedRef.current = Date.now();
     } catch (err) {
@@ -74,9 +72,7 @@ function Feed() {
     }
 
     try {
-      const lastBlockChange = Number(
-        window.localStorage.getItem(BLOCK_EVENT_STORAGE_KEY) || 0
-      );
+      const lastBlockChange = Number(window.localStorage.getItem(BLOCK_EVENT_STORAGE_KEY) || 0);
 
       if (lastBlockChange && lastBlockChange > lastLoadedRef.current) {
         loadFeed();
@@ -87,16 +83,16 @@ function Feed() {
   }, [loadFeed]);
 
   const handlePostCreated = useCallback((newPost) => {
-    setPosts(prevPosts => [newPost, ...prevPosts]);
+    setPosts((prevPosts) => [newPost, ...prevPosts]);
   }, []);
 
   const handlePostDeleted = useCallback((postId) => {
-    setPosts(prevPosts => prevPosts.filter(post => post.id !== postId));
+    setPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
   }, []);
 
   const handlePostUpdated = useCallback((updatedPost) => {
-    setPosts(prevPosts =>
-      prevPosts.map(post => (post.id === updatedPost.id ? updatedPost : post))
+    setPosts((prevPosts) =>
+      prevPosts.map((post) => (post.id === updatedPost.id ? updatedPost : post))
     );
   }, []);
 
@@ -122,13 +118,22 @@ function Feed() {
 
         <CreatePost onPostCreated={handlePostCreated} />
 
-        {error && <div className="error" data-testid="feed-error">{error}</div>}
+        {error && (
+          <div className="error" data-testid="feed-error">
+            {error}
+          </div>
+        )}
 
         {loading ? (
-          <div className="loading" data-testid="feed-loading">Loading posts...</div>
+          <div className="loading" data-testid="feed-loading">
+            Loading posts...
+          </div>
         ) : posts.length === 0 ? (
           <div className="empty-feed card" data-testid="feed-empty">
-            <p>No posts to show. {feedType === 'following' ? 'Try following some users!' : 'Be the first to post!'}</p>
+            <p>
+              No posts to show.{' '}
+              {feedType === 'following' ? 'Try following some users!' : 'Be the first to post!'}
+            </p>
           </div>
         ) : (
           <div className="posts-list" data-testid="posts-list">

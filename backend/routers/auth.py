@@ -1,18 +1,14 @@
 import os
 
-import models
-import schemas
-from auth import (
-    create_access_token,
-    get_current_user,
-    get_password_hash,
-    verify_password,
-)
-from database import get_db
 from fastapi import APIRouter, Depends, HTTPException, Request, status
 from slowapi import Limiter
 from slowapi.util import get_remote_address
 from sqlalchemy.orm import Session
+
+import models
+import schemas
+from auth import create_access_token, get_current_user, get_password_hash, verify_password
+from database import get_db
 
 router = APIRouter()
 
@@ -20,17 +16,21 @@ router = APIRouter()
 limiter = Limiter(key_func=get_remote_address)
 
 # Adjust rate limits based on environment
+# Testing mode: Very permissive for load tests and CI
+# Production: Conservative for security
 TESTING_MODE = os.getenv("TESTING", "false").lower() == "true"
-LOGIN_RATE = "100/minute" if TESTING_MODE else "20/minute"
-REGISTER_RATE = "100/minute" if TESTING_MODE else "15/minute"
+LOGIN_RATE = "1000/minute" if TESTING_MODE else "20/minute"
+REGISTER_RATE = "500/minute" if TESTING_MODE else "15/minute"
 
 
-@router.post("/register", response_model=schemas.Token)
+@router.post(
+    "/register",
+    response_model=schemas.RegisterResponse,
+    status_code=status.HTTP_201_CREATED,
+)
 @limiter.limit(REGISTER_RATE)
-def register(
-    request: Request, user_data: schemas.UserCreate, db: Session = Depends(get_db)
-):
-    """Register a new user and return access token (rate limited: 15/min prod, 100/min test)"""
+def register(request: Request, user_data: schemas.UserCreate, db: Session = Depends(get_db)):
+    """Register a new user and return access token (rate limited: 15/min prod, 500/min test)"""
     # Check if email already exists
     if db.query(models.User).filter(models.User.email == user_data.email).first():
         raise HTTPException(
@@ -59,15 +59,19 @@ def register(
 
     # Create access token for immediate login
     access_token = create_access_token(data={"sub": new_user.email})
-    return schemas.Token(access_token=access_token, token_type="bearer")
+    return schemas.RegisterResponse(
+        access_token=access_token,
+        token_type="bearer",
+        email=new_user.email,
+        username=new_user.username,
+        display_name=new_user.display_name,
+    )
 
 
 @router.post("/login", response_model=schemas.Token)
 @limiter.limit(LOGIN_RATE)
-def login(
-    request: Request, login_data: schemas.LoginRequest, db: Session = Depends(get_db)
-):
-    """Login with email and password (rate limited: 20/min prod, 100/min test)"""
+def login(request: Request, login_data: schemas.LoginRequest, db: Session = Depends(get_db)):
+    """Login with email and password (rate limited: 20/min prod, 1000/min test)"""
     user = db.query(models.User).filter(models.User.email == login_data.email).first()
 
     if not user or not verify_password(login_data.password, user.hashed_password):

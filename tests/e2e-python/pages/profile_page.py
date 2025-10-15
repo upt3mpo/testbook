@@ -13,39 +13,101 @@ class ProfilePage(BasePage):
 
         # Selectors
         self.profile_username = '[data-testid="profile-username"]'
-        self.follow_button = '[data-testid="profile-follow-button"]'
-        self.unfollow_button = '[data-testid="profile-unfollow-button"]'
-        self.followers_count = '[data-testid="profile-followers-count"]'
-        self.following_count = '[data-testid="profile-following-count"]'
+        self.follow_unfollow_button = '[data-testid="profile-follow-button"]'
+        self.followers_count = '[data-testid="profile-followers-link"]'
+        self.following_count = '[data-testid="profile-following-link"]'
 
-    def goto(self, username: str) -> None:
-        """Navigate to a user's profile."""
+    def goto(self, username: str, wait_for_load: bool = True) -> None:
+        """Navigate to a user's profile.
+
+        Args:
+            username: The username of the profile to visit
+            wait_for_load: If True, wait for profile data to load from API (default: True)
+        """
         super().goto(f"/profile/{username}")
         expect(self.page.locator(self.profile_username)).to_be_visible()
 
+        if wait_for_load:
+            # Wait for profile to finish loading from API
+            # This is important in CI where API calls may be slower
+            try:
+                self.page.wait_for_load_state("networkidle", timeout=5000)
+            except:
+                # If networkidle times out, wait a bit more for API calls
+                self.page.wait_for_timeout(2000)
+
     def follow_user(self) -> None:
-        """Click the follow button."""
-        self.page.click(self.follow_button)
-        self.page.wait_for_timeout(300)
+        """Ensure the user is followed (clicking Follow button if not already following)."""
+        button = self.page.locator(self.follow_unfollow_button)
+        expect(button).to_be_visible(timeout=5000)
+
+        # Check current state
+        current_text = button.inner_text()
+
+        if "Follow" in current_text:
+            # Not following yet, click to follow
+            button.click()
+            self.page.wait_for_timeout(500)
+        # If already following ("Unfollow"), do nothing
 
     def unfollow_user(self) -> None:
-        """Click the unfollow button."""
-        self.page.click(self.unfollow_button)
-        self.page.wait_for_timeout(300)
+        """Click the follow/unfollow button to unfollow the user."""
+        button = self.page.locator(self.follow_unfollow_button)
+        expect(button).to_be_visible(timeout=5000)
 
-    def is_following(self) -> bool:
-        """Check if currently following this user."""
-        return self.page.locator(self.unfollow_button).is_visible()
+        # Check current state and only unfollow if currently following
+        current_text = button.inner_text()
 
-    def get_follower_count(self) -> int:
-        """Get the number of followers."""
-        text = self.page.locator(self.followers_count).inner_text()
-        return int(text)
+        if "Unfollow" in current_text:
+            button.click()
+            self.page.wait_for_timeout(500)
 
-    def get_following_count(self) -> int:
-        """Get the number of following."""
-        text = self.page.locator(self.following_count).inner_text()
-        return int(text)
+    def is_following(self, wait_timeout: int = 5000) -> bool:
+        """Check if currently following this user.
+
+        Args:
+            wait_timeout: Maximum time to wait for button to appear (milliseconds)
+
+        Returns:
+            True if following (button says "Unfollow"), False if not (button says "Follow")
+        """
+        button = self.page.locator(self.follow_unfollow_button)
+        try:
+            expect(button).to_be_visible(timeout=wait_timeout)
+            button_text = button.inner_text()
+            return "Unfollow" in button_text
+        except:
+            return False
+
+    def get_follower_count(self, wait_timeout: int = 5000) -> int:
+        """Get the number of followers.
+
+        Args:
+            wait_timeout: Maximum time to wait for count to appear (milliseconds)
+        """
+        locator = self.page.locator(self.followers_count)
+        expect(locator).to_be_visible(timeout=wait_timeout)
+        text = locator.inner_text()
+        # Extract number from text like "5 followers"
+        import re
+
+        match = re.search(r"(\d+)", text)
+        return int(match.group(1)) if match else 0
+
+    def get_following_count(self, wait_timeout: int = 5000) -> int:
+        """Get the number of following.
+
+        Args:
+            wait_timeout: Maximum time to wait for count to appear (milliseconds)
+        """
+        locator = self.page.locator(self.following_count)
+        expect(locator).to_be_visible(timeout=wait_timeout)
+        text = locator.inner_text()
+        # Extract number from text like "10 following"
+        import re
+
+        match = re.search(r"(\d+)", text)
+        return int(match.group(1)) if match else 0
 
     def get_post_count(self) -> int:
         """Get the number of posts on profile."""

@@ -8,111 +8,111 @@
 
 > **🆕 Dual-Stack Learning:** Choose Python, JavaScript, or both! Paths branch at Intermediate+ level.
 
-```
+```text
 START HERE
     ↓
 ┌───────────────────────────────────────────────────┐
-│  🌟 COMPLETE BEGINNER                            │
-│  "I've never written a test"                     │
+│  🌟 COMPLETE BEGINNER                             │
+│  "I've never written a test"                      │
 │                                                   │
-│  → READ: START_HERE.md                           │
-│  → DO: Lab 1 (30 min)                            │
+│  → READ: START_HERE.md                            │
+│  → DO: Lab 1 (30 min)                             │
 │  → ACHIEVEMENT: First test written! ✅            │
 └───────────────────────────────────────────────────┘
     ↓
 ┌───────────────────────────────────────────────────┐
 │  📝 BEGINNER                                      │
-│  "I can run and modify tests"                    │
+│  "I can run and modify tests"                     │
 │                                                   │
-│  → DO: Labs 2-3 (2 hours)                        │
-│  → LEARN: pytest basics, fixtures, API testing   │
+│  → DO: Labs 2-3 (2 hours)                         │
+│  → LEARN: pytest basics, fixtures, API testing    │
 │  → ACHIEVEMENT: 10+ tests written! ✅             │
 └───────────────────────────────────────────────────┘
     ↓
 ┌───────────────────────────────────────────────────┐
 │  🔧 INTERMEDIATE                                  │
-│  "I can write backend tests"                     │
+│  "I can write backend tests"                      │
 │                                                   │
-│  → DO: Sections 3-5                              │
-│  → LEARN: Unit, integration, database testing    │
+│  → DO: Sections 3-5                               │
+│  → LEARN: Unit, integration, database testing     │
 │  → ACHIEVEMENT: 80% coverage achieved! ✅         │
 └───────────────────────────────────────────────────┘
     ↓
 ┌───────────────────────────────────────────────────┐
-│  🎭 INTERMEDIATE+ (Choose Your Path!)            │
-│  "I can write E2E tests"                         │
+│  🎭 INTERMEDIATE+ (Choose Your Path!)             │
+│  "I can write E2E tests"                          │
 │                                                   │
-│  🐍 Python Track:                                │
-│  → Lab 4 Python + Sections 7-8                   │
+│  🐍 Python Track:                                 │
+│  → Lab 4 Python + Sections 7-8                    │
 │                                                   │
-│  ☕ JavaScript Track:                             │
-│  → Lab 4 JavaScript + Section 6-8                │
+│  ☕ JavaScript Track:                              │
+│  → Lab 4 JavaScript + Section 6-8                 │
 │                                                   │
 │  🔄 Full-Stack:                                   │
-│  → Both Lab 4 versions + Sections 6-8            │
+│  → Both Lab 4 versions + Sections 6-8             │
 │                                                   │
 │  → ACHIEVEMENT: Complete user flow tested! ✅     │
 │  🆕 → READ: Testing Comparison Guide              │
 └───────────────────────────────────────────────────┘
     ↓
 ┌───────────────────────────────────────────────────┐
-│  🔥 ADVANCED E2E (Stack-Specific)                │
-│  "I write professional E2E tests"                │
+│  🔥 ADVANCED E2E (Stack-Specific)                 │
+│  "I write professional E2E tests"                 │
 │                                                   │
 │  🐍 Python:                                       │
-│  🆕 → Lab 4B: Advanced Python E2E (2 hours)      │
-│     • Page Object Model                          │
-│     • Advanced pytest fixtures                   │
-│     • Network interception                       │
+│  🆕 → Lab 4B: Advanced Python E2E (2 hours)       │
+│     • Page Object Model                           │
+│     • Advanced pytest fixtures                    │
+│     • Network interception                        │
 │                                                   │
 │  ☕ JavaScript:                                    │
-│  🆕 → Lab 6B: Advanced Component Testing (2 hrs) │
-│     • MSW network mocking                        │
-│     • Async data loading                         │
-│     • Accessibility testing                      │
+│  🆕 → Lab 6B: Advanced Component Testing (2 hrs)  │
+│     • MSW network mocking                         │
+│     • Async data loading                          │
+│     • Accessibility testing                       │
 │                                                   │
 │  🔄 Both:                                         │
-│  🆕 → Section 8: Advanced E2E Patterns Guide     │
-│  🆕 → CI/CD for E2E Testing Guide                │
+│  🆕 → Section 8: Advanced E2E Patterns Guide      │
+│  🆕 → CI/CD for E2E Testing Guide                 │
 │                                                   │
 │  → ACHIEVEMENT: Advanced patterns mastered! ✅    │
 └───────────────────────────────────────────────────┘
     ↓
 ┌───────────────────────────────────────────────────┐
-│  ⚡ SPECIALIZED TESTING                          │
-│  "I can test anything"                           │
+│  ⚡ SPECIALIZED TESTING                            │
+│  "I can test anything"                            │
 │                                                   │
-│  → DO: Sections 9-11                             │
-│  → LEARN: API, performance, security testing     │
+│  → DO: Sections 9-11                              │
+│  → LEARN: API, performance, security testing      │
 │  → ACHIEVEMENT: Full test suite! ✅               │
 └───────────────────────────────────────────────────┘
     ↓
 ┌───────────────────────────────────────────────────┐
-│  🚀 CI/CD AUTOMATION                             │
-│  "Tests run automatically"                       │
+│  🚀 CI/CD AUTOMATION                              │
+│  "Tests run automatically"                        │
 │                                                   │
-│  🆕 → Section 12 + CI/CD Guide                   │
-│  → LEARN: GitHub Actions for both stacks         │
+│  🆕 → Section 12 + CI/CD Guide                    │
+│  → LEARN: GitHub Actions for both stacks          │
 │  → ACHIEVEMENT: Pipeline configured! ✅           │
 └───────────────────────────────────────────────────┘
     ↓
 ┌───────────────────────────────────────────────────┐
 │  🏆 PROFESSIONAL                                  │
-│  "I'm job-ready for QA automation"               │
+│  "I'm job-ready for QA automation"                │
 │                                                   │
-│  → DO: Final Project (Section 14)                │
-│  → BUILD: Feature with complete test coverage    │
+│  → DO: Final Project (Section 14)                 │
+│  → BUILD: Feature with complete test coverage     │
 │  → ACHIEVEMENT: Portfolio-ready work! ✅          │
 └───────────────────────────────────────────────────┘
     ↓
 ┌───────────────────────────────────────────────────┐
-│  🌟 POST-ADVANCED (Continuous Learning)          │
-│  "I'm a testing expert"                          │
+│  🌟 POST-ADVANCED (Continuous Learning)           │
+│  "I'm a testing expert"                           │
 │                                                   │
-│  → Cross-stack mastery                           │
-│  → Contribute to testing communities             │
-│  → Mentor other learners                         │
-│  → Build advanced custom frameworks              │
+│  → Cross-stack mastery                            │
+│  → Contribute to testing communities              │
+│  → Mentor other learners                          │
+│  → Build advanced custom frameworks               │
 │  → ACHIEVEMENT: Expert level! ✅                  │
 └───────────────────────────────────────────────────┘
     ↓
@@ -125,7 +125,7 @@ START HERE
 
 ### Path A: Complete Learning Path - Python Focus (~35-45 hours)
 
-```
+```text
 Section 1-2:  📖 Foundations (4-6 hours)
               ├─ Introduction to testing
               ├─ Run existing tests
@@ -167,7 +167,7 @@ BEST FOR: Backend developers, Python-first learners
 
 ### Path B: Complete Learning Path - JavaScript Focus (~35-45 hours)
 
-```
+```text
 Section 1-2:  📖 Foundations (4-6 hours)
               ├─ Introduction to testing
               ├─ Run existing tests
@@ -209,7 +209,7 @@ BEST FOR: Frontend developers, JavaScript-first learners
 
 ### Path C: Hybrid Path - Python Backend + JavaScript Frontend (~35-40 hours) 🎯 **Most Common**
 
-```
+```text
 Section 1-2:  📖 Foundations (4-6 hours)
               ├─ Introduction to testing
               ├─ Run existing tests
@@ -250,7 +250,7 @@ BEST FOR: Most real-world teams (Python API + React UI)
 
 ### Path D: Complete Learning Path - Full-Stack (~40-50 hours) ⭐ **Maximum Mastery**
 
-```
+```text
 Section 1-2:  📖 Foundations (4-6 hours)
               ├─ Introduction to testing
               ├─ Run existing tests
@@ -293,7 +293,7 @@ BEST FOR: Full-stack developers, maximum career flexibility
 
 ### Path D: Fast Track Labs (~15-20 hours)
 
-```
+```text
 Phase 1:  🚀 Backend Basics (5-6 hours)
           ├─ Labs 1-2 (backend testing)
           └─ Write 20 unit tests
@@ -319,7 +319,7 @@ BEST FOR: Fast learners, experienced developers
 
 ### Path E: Self-Paced Exploration
 
-```
+```text
 Phase 1: Run & Explore (2 hours)
          ├─ Run all 166 tests
          ├─ Explore test files

@@ -79,7 +79,7 @@ Open `tests/security/test_security.py` and count how many tests use the `auth_to
 
 **Answer:** After 20 tests, the 21st test hits the rate limit!
 
-```
+```text
 Test 1-20: ✅ Get tokens successfully
 Test 21+:  ❌ Get 429 "Rate limit exceeded"
 ```
@@ -93,7 +93,7 @@ cd /Users/danmanez/Projects/Testbook
 
 # Start backend normally (with rate limiting)
 cd backend
-source venv/bin/activate
+source .venv/bin/activate  # Windows: .venv\Scripts\activate
 uvicorn main:app --reload --port 8000 &
 
 # Run security tests
@@ -553,7 +553,7 @@ This is a REAL problem in professional testing:
 
 ### The Solution Pattern
 
-```
+```text
 Problem: Feature works, tests fail together
 ├─ Root cause: Shared resources (IP, rate limits, state)
 ├─ Symptom: Pass individually, fail in suite

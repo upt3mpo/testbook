@@ -32,10 +32,12 @@ start-dev.bat   # Windows
 ### Port Configuration
 
 These tests expect **port 3000** (configured in `playwright.config.js`):
-- Frontend: http://localhost:3000 ✅
-- Backend: http://localhost:8000
+
+- Frontend: <http://localhost:3000> ✅
+- Backend: <http://localhost:8000>
 
 **If using production mode** (`start.sh` - port 8000):
+
 ```bash
 export BASE_URL=http://localhost:8000  # macOS/Linux
 npm test
@@ -159,6 +161,7 @@ npm run report
 ### Screenshots and Videos
 
 Failed tests automatically capture:
+
 - Screenshots (on failure)
 - Videos (on failure)
 - Traces (on first retry)
@@ -216,6 +219,7 @@ npx playwright show-trace test-results/path-to-trace.zip
 ## Cross-Browser Testing
 
 Tests run on:
+
 - Chromium
 - Firefox
 - WebKit (Safari)
@@ -233,9 +237,10 @@ npx playwright test --project=firefox
 ### Backend not starting
 
 Make sure backend is running:
+
 ```bash
 cd backend
-source venv/bin/activate
+source .venv/bin/activate
 uvicorn main:app --reload
 ```
 
@@ -248,6 +253,7 @@ npx playwright install
 ### Port conflicts
 
 Change `BASE_URL` in `playwright.config.js` or set environment variable:
+
 ```bash
 BASE_URL=http://localhost:3000 npm test
 ```
@@ -292,4 +298,3 @@ test.describe('My Feature', () => {
   });
 });
 ```
-

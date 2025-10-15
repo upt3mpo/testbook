@@ -20,7 +20,9 @@ function Login() {
       await login(email, password);
       navigate('/');
     } catch (err) {
-      setError(err.response?.data?.detail || 'Invalid credentials. Please check your email and password.');
+      setError(
+        err.response?.data?.detail || 'Invalid credentials. Please check your email and password.'
+      );
     } finally {
       setLoading(false);
     }
@@ -29,10 +31,16 @@ function Login() {
   return (
     <div className="auth-container" data-testid="login-page">
       <div className="auth-card card">
-        <h1 className="auth-title" data-testid="login-title">Testbook</h1>
+        <h1 className="auth-title" data-testid="login-title">
+          Testbook
+        </h1>
         <p className="auth-subtitle">Connect with friends and practice testing!</p>
 
-        {error && <div className="error" data-testid="login-error">{error}</div>}
+        {error && (
+          <div className="error" data-testid="login-error">
+            {error}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="auth-form" data-testid="login-form">
           <input
@@ -82,4 +90,3 @@ function Login() {
 }
 
 export default Login;
-

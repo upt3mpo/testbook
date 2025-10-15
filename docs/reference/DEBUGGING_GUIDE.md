@@ -34,18 +34,19 @@ client = <fastapi.testclient.TestClient object at 0x7f8b9c>
 E       AssertionError: assert 500 == 401
 E        +  where 500 = <Response [500]>.status_code
 
-tests/test_api_auth.py:45: AssertionError
+tests/integration/test_api_auth.py:45: AssertionError
 ```
 
 **How to Read This:**
 
 1. **Test Name**: `TestLogin::test_login_wrong_password` - Which test failed
-2. **Location**: `tests/test_api_auth.py:45` - Exact line that failed
+2. **Location**: `tests/integration/test_api_auth.py:45` - Exact line that failed
 3. **Expected**: `401` - What you expected
 4. **Actual**: `500` - What you got
 5. **Context**: Shows the code that failed with `>` marker
 
 **What to Do:**
+
 - 500 error means server error, not 401 (unauthorized)
 - Check backend logs for the actual error
 - Server might be crashing on wrong password
@@ -70,6 +71,7 @@ Call log:
 4. **Timeout**: 30000ms - How long it waited
 
 **What to Do:**
+
 - Element might not exist (typo in data-testid?)
 - Element might be created but hidden
 - Page might not have loaded
@@ -96,8 +98,9 @@ def test_something(client):
 ```
 
 **Run with `-s` to see prints:**
+
 ```bash
-pytest tests/test_api_auth.py::test_something -v -s
+pytest tests/integration/test_api_auth.py::test_something -v -s
 ```
 
 ---
@@ -107,10 +110,11 @@ pytest tests/test_api_auth.py::test_something -v -s
 **Drop into interactive debugger when test fails:**
 
 ```bash
-pytest tests/test_api_auth.py::test_something --pdb
+pytest tests/integration/test_api_auth.py::test_something --pdb
 ```
 
 **When test fails, you get:**
+
 ```python
 > /path/to/test_api_auth.py(45)test_something()
 -> assert response.status_code == 200
@@ -118,6 +122,7 @@ pytest tests/test_api_auth.py::test_something --pdb
 ```
 
 **Commands in debugger:**
+
 ```python
 (Pdb) print(response.status_code)  # See variable value
 500
@@ -164,8 +169,9 @@ def test_something(client):
 ```
 
 **Run normally:**
+
 ```bash
-pytest tests/test_api_auth.py::test_something -v
+pytest tests/integration/test_api_auth.py::test_something -v
 ```
 
 ---
@@ -175,10 +181,11 @@ pytest tests/test_api_auth.py::test_something -v
 **See all variables when test fails:**
 
 ```bash
-pytest tests/test_api_auth.py::test_something -v -l
+pytest tests/integration/test_api_auth.py::test_something -v -l
 ```
 
 **Output shows:**
+
 ```python
     def test_something(client):
 >       assert response.status_code == 200
@@ -207,7 +214,7 @@ pytest -v -x --pdb  # Stop and debug first failure
 
 ```bash
 # Run just one test
-pytest tests/test_api_auth.py::TestLogin::test_login_wrong_password -v
+pytest tests/integration/test_api_auth.py::TestLogin::test_login_wrong_password -v
 
 # Even more specific with -k
 pytest -k "login and wrong" -v
@@ -226,6 +233,7 @@ npx playwright test --headed
 ```
 
 **What you'll see:**
+
 - Browser opens and you watch test run
 - Can see what's happening visually
 - Helps identify timing issues
@@ -241,6 +249,7 @@ npx playwright test auth.spec.js --debug
 ```
 
 **What happens:**
+
 - Playwright Inspector opens
 - Browser opens
 - Test pauses at start
@@ -251,6 +260,7 @@ npx playwright test auth.spec.js --debug
   - ⏹️ Stop
 
 **In the inspector:**
+
 - See current line highlighted
 - See DOM on right side
 - Can click elements to inspect
@@ -303,6 +313,7 @@ test('debug login', async ({ page }) => {
 ```
 
 **View screenshots:**
+
 ```bash
 ls *.png
 open before-login.png  # macOS
@@ -348,11 +359,13 @@ use: {
 ```
 
 **View trace:**
+
 ```bash
 npx playwright show-trace trace.zip
 ```
 
 **Shows:**
+
 - Every action
 - Screenshots at each step
 - Network requests
@@ -366,13 +379,15 @@ npx playwright show-trace trace.zip
 ### Error Pattern 1: Element Not Found
 
 **Error:**
-```
+
+```text
 Error: Timeout waiting for selector "[data-testid="button"]"
 ```
 
 **Debugging Steps:**
 
 1. **Check if selector is correct:**
+
 ```javascript
 // Print all data-testid attributes
 await page.evaluate(() => {
@@ -382,18 +397,21 @@ await page.evaluate(() => {
 ```
 
 2. **Check if element exists at all:**
+
 ```javascript
 const count = await page.locator('[data-testid="button"]').count();
 console.log('Found elements:', count);
 ```
 
 3. **Check page HTML:**
+
 ```javascript
 const html = await page.content();
 console.log(html);  // See all HTML
 ```
 
 4. **Take screenshot:**
+
 ```javascript
 await page.screenshot({ path: 'debug.png', fullPage: true });
 ```
@@ -408,6 +426,7 @@ Tests pass individually but fail when run together.
 **Debugging Steps:**
 
 1. **Check for test data pollution:**
+
 ```python
 # Add to conftest.py or beforeEach
 def test_something(db_session):
@@ -420,20 +439,23 @@ def test_something(db_session):
 ```
 
 2. **Run tests in isolation:**
+
 ```bash
 # Run just one
-pytest tests/test_api_auth.py::test_login -v
+pytest tests/integration/test_api_auth.py::test_login -v
 
 # Run in order
-pytest tests/test_api_auth.py -v
+pytest tests/integration/test_api_auth.py -v
 ```
 
 3. **Check for shared state:**
+
 - Global variables
 - Database not reset
 - Files not cleaned up
 
 **Fix:**
+
 ```python
 @pytest.fixture(autouse=True)
 def reset_state(db_session):
@@ -451,30 +473,35 @@ def reset_state(db_session):
 ### Error Pattern 3: Import Errors
 
 **Error:**
-```
+
+```text
 ModuleNotFoundError: No module named 'pytest'
 ```
 
 **Debugging Steps:**
 
 1. **Check if in venv:**
+
 ```bash
 which python  # Should show path with venv
 echo $VIRTUAL_ENV  # Should show venv path
 ```
 
 2. **Activate venv:**
+
 ```bash
-source venv/bin/activate  # macOS/Linux
-venv\Scripts\activate  # Windows
+source .venv/bin/activate  # macOS/Linux
+.venv\Scripts\activate  # Windows
 ```
 
 3. **Reinstall dependencies:**
+
 ```bash
 pip install -r requirements.txt
 ```
 
 4. **Check Python path:**
+
 ```python
 import sys
 print(sys.path)  # Should include venv
@@ -485,7 +512,8 @@ print(sys.path)  # Should include venv
 ### Error Pattern 4: Async/Await Issues (Playwright)
 
 **Error:**
-```
+
+```text
 TypeError: Cannot read property 'click' of undefined
 ```
 
@@ -506,6 +534,7 @@ test('fixed', async ({ page }) => {
 ```
 
 **Debugging:**
+
 - Check every page. method has `await`
 - Use TypeScript to catch missing awaits
 
@@ -630,4 +659,3 @@ When a test fails, check:
 ---
 
 **🎯 Remember:** Every bug you fix makes you a better tester!
-

@@ -55,7 +55,7 @@ npm run test:ui
 
 ### Test Structure
 
-```
+```text
 src/
 ├── components/
 │   ├── __tests__/          # Component tests
@@ -104,12 +104,14 @@ describe('MyComponent', () => {
 ## Component Testing vs E2E Testing
 
 ### Component Tests (Vitest + React Testing Library)
+
 - **What:** Test individual React components in isolation
 - **When:** Testing component logic, rendering, and user interactions
 - **Speed:** Fast (milliseconds)
 - **Examples:** Button clicks, form inputs, conditional rendering
 
 ### E2E Tests (Playwright)
+
 - **What:** Test complete user flows through the app
 - **When:** Testing full features with backend integration
 - **Speed:** Slower (seconds)
@@ -119,7 +121,7 @@ describe('MyComponent', () => {
 
 ## Project Structure
 
-```
+```text
 frontend/
 ├── public/           # Static assets
 ├── src/
@@ -158,6 +160,7 @@ frontend/
 ## Contributing
 
 When adding new components:
+
 1. Write the component
 2. Write tests in `__tests__/` folder
 3. Ensure tests pass: `npm test`
@@ -166,4 +169,3 @@ When adding new components:
 ---
 
 *Part of the Testbook Testing Platform - Learn automation testing with a real application!*
-

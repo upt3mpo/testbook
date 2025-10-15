@@ -747,6 +747,7 @@ test('should delete account', async ({ page }) => {
 **Real example from Testbook:**
 
 When we had this in the frontend:
+
 ```javascript
 // Profile.jsx
 const handleBlock = async () => {
@@ -788,12 +789,14 @@ test.beforeEach(async ({ page }) => {
 ```
 
 **Why it's better:**
+
 - ✅ Handles confirms AND alerts
 - ✅ Works for all tests automatically
 - ✅ Logs what dialogs appear
 - ✅ No need to remember for each test
 
 **Note:** This fixed 5 Testbook E2E tests that were failing due to:
+
 - Edit post alert: "Post updated successfully!"
 - Block user confirm: "Are you sure you want to block?"
 - Delete account confirms: Two separate confirmations
@@ -821,6 +824,7 @@ test('should show count', async ({ page }) => {
 **Real example from Testbook:**
 
 Tests were looking for `profile-followers-count` but frontend had:
+
 ```jsx
 <Link data-testid="profile-followers-link">  {/* Different ID! */}
   <strong>{profile.followers_count}</strong> followers
@@ -838,6 +842,7 @@ await expect(page.locator('[data-testid="profile-followers-link"]')).toBeVisible
 ```
 
 **Best Practice:**
+
 - ✅ Keep a test ID reference document
 - ✅ Verify test IDs exist before writing tests
 - ✅ Use consistent naming conventions
@@ -865,6 +870,7 @@ test('should edit post', async ({ page }) => {
 **Real example from Testbook:**
 
 Our Post component has click-outside handler:
+
 ```javascript
 useEffect(() => {
   const handleClickOutside = (event) => {
@@ -888,6 +894,7 @@ test('should edit post', async ({ page }) => {
 ```
 
 **When to use `force: true`:**
+
 - ✅ Elements with CSS transitions
 - ✅ Dropdown menus with close handlers
 - ✅ Elements that become hidden quickly
@@ -924,7 +931,7 @@ Before committing your tests, check:
 - **[TESTING_CHEATSHEET.md](TESTING_CHEATSHEET.md)** - Quick reference (updated with critical patterns)
 - **[Common Mistakes](../course/COMMON_MISTAKES.md)** - Student errors
 - **[Test Examples](../../backend/tests/examples/)** - Good vs bad tests
-- **[Test Fix Summary](../../tests/FINAL_FIX_SUMMARY.md)** - How we fixed 18 tests
+- **[Flaky Tests Guide](../guides/FLAKY_TESTS_GUIDE.md)** - How to fix unreliable tests
 
 ---
 

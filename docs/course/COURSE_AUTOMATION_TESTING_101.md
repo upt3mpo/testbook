@@ -145,7 +145,7 @@ cd Testbook
 
 **Step 3: Explore the API**
 
-1. Open http://localhost:8000/docs
+1. Open <http://localhost:8000/docs>
 2. Try the `/api/auth/login` endpoint
 3. Use the token to call `/api/auth/me`
 4. Explore other endpoints
@@ -172,6 +172,7 @@ cd Testbook
    ```
 
 3. **Understanding the Flow**
+
    - User logs in → Token generated
    - Token sent with requests → API validates
    - Data from database → Returned as JSON
@@ -201,9 +202,9 @@ Document your progress:
 
 ### 📚 Resources
 
-- [README.md](README.md) - Project overview
-- [PROJECT_INFO.md](PROJECT_INFO.md) - Technical details
-- [QUICKSTART.md](QUICKSTART.md) - Setup guide
+- [README.md](../../README.md) - Project overview
+- [PROJECT_INFO.md](../reference/PROJECT_INFO.md) - Technical details
+- [QUICKSTART.md](../../QUICKSTART.md) - Setup guide
 
 ---
 
@@ -248,20 +249,20 @@ def test_something():
 ```bash
 
 cd backend
-source venv/bin/activate
+source .venv/bin/activate  # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
 **Step 2: Run Your First Test**
 
 ```bash
-pytest tests/test_unit_auth.py::TestPasswordHashing::test_password_is_hashed -v
+pytest tests/unit/test_auth.py::TestPasswordHashing::test_password_is_hashed -v
 ```
 
 **Expected Output:**
 
-```
-tests/test_unit_auth.py::TestPasswordHashing::test_password_is_hashed PASSED ✓
+```text
+tests/unit/test_auth.py::TestPasswordHashing::test_password_is_hashed PASSED ✓
 ```
 
 **Step 3: Run All Tests**
@@ -272,8 +273,10 @@ pytest tests/ -v
 
 **Expected Output:**
 
-```
+```text
+
 ====================== 166 passed in 51s =======================
+
 ```
 
 **Step 4: Generate Coverage Report**
@@ -289,7 +292,7 @@ open htmlcov/index.html
 
 **Step 1: Read a Simple Test**
 
-Open `backend/tests/test_unit_auth.py` and find this test:
+Open `backend/tests/unit/test_auth.py` and find this test:
 
 ```python
 def test_password_is_hashed(self):
@@ -342,7 +345,7 @@ def test_user(db_session: Session) -> User:
 
 **Challenge:** Modify an existing test
 
-**Step 1:** Find this test in `test_unit_auth.py`:
+**Step 1:** Find this test in `tests/unit/test_auth.py`:
 
 ```python
 def test_verify_correct_password(self):
@@ -371,7 +374,7 @@ def test_verify_correct_password(self):
 **Step 3:** Run your modified test:
 
 ```bash
-pytest tests/test_unit_auth.py::TestPasswordHashing::test_verify_correct_password -v
+pytest tests/unit/test_auth.py::TestPasswordHashing::test_verify_correct_password -v
 ```
 
 **Step 4:** Verify it still passes!
@@ -399,8 +402,8 @@ Reflect on these questions to verify your understanding:
 
 ### 📚 Resources
 
-- [backend/tests/README.md](backend/tests/README.md) - Backend testing guide
-- [RUNNING_TESTS.md](RUNNING_TESTS.md) - How to run tests
+- [backend/tests/README.md](../../backend/tests/README.md) - Backend testing guide
+- [RUNNING_TESTS.md](../guides/RUNNING_TESTS.md) - How to run tests
 
 ---
 
@@ -577,8 +580,8 @@ class TestEmailDomainValidation:
 
 ### 📚 Resources
 
-- Study: `tests/test_unit_auth.py`
-- Study: `tests/test_unit_models.py`
+- Study: `tests/unit/test_auth.py`
+- Study: `tests/unit/test_models.py`
 - Read: [Pytest Documentation](https://docs.pytest.org/)
 
 ---
@@ -613,7 +616,7 @@ class TestEmailDomainValidation:
 **Step 1:** Study existing test:
 
 ```python
-# From tests/test_api_auth.py
+# From tests/integration/test_api_auth.py
 def test_register_new_user_success(self, client):
     """Test successful user registration."""
     response = client.post(
@@ -723,7 +726,7 @@ def test_error_case_name(self, client):
 
 **Project:** Test the Feed Feature
 
-Create `backend/tests/test_api_feed_extended.py`:
+Create `backend/tests/integration/test_api_feed_extended.py`:
 
 **Requirements:**
 
@@ -743,8 +746,8 @@ Create `backend/tests/test_api_feed_extended.py`:
 
 ### 📚 Resources
 
-- Study: `tests/test_api_auth.py`
-- Study: `tests/test_api_posts.py`
+- Study: `tests/integration/test_api_auth.py`
+- Study: `tests/integration/test_api_posts.py`
 - Study: `tests/conftest.py` (fixtures)
 
 ---
@@ -870,8 +873,8 @@ Create comprehensive tests for the Comment model:
 
 ### 📚 Resources
 
-- Study: `tests/test_unit_models.py`
-- Study: `tests/test_database.py`
+- Study: `tests/unit/test_models.py`
+- Study: `tests/integration/test_database.py`
 - Read: `backend/models.py`
 
 ---
@@ -1151,13 +1154,24 @@ playwright install chromium
 
 **Step 2:** Run example test:
 
+**macOS/Linux:**
+
 ```bash
-pytest test_auth.py::TestAuthentication::test_login_success -v --headed
+HEADLESS=false pytest test_auth.py::TestAuthentication::test_login_success -v
+```
+
+**Windows (PowerShell - Recommended):**
+
+```powershell
+$env:HEADLESS="false"; pytest test_auth.py::TestAuthentication::test_login_success -v
 ```
 
 **Step 3:** Watch the test run in the browser!
 
-**✏️ Exercise:** Run in slow motion: `pytest test_auth.py -v --headed --slowmo=1000`
+**✏️ Exercise:** Run in slow motion:
+
+- **macOS/Linux:** `HEADLESS=false SLOW_MO=1000 pytest test_auth.py -v`
+- **Windows:** `$env:HEADLESS="false"; $env:SLOW_MO="1000"; pytest test_auth.py -v`
 
 ---
 
@@ -1212,9 +1226,18 @@ def test_login_successfully(page: Page):
 
 **Step 2:** Run your test:
 
+**macOS/Linux:**
+
 ```bash
 cd tests/e2e-python
-pytest test_my_first.py -v --headed
+HEADLESS=false pytest test_my_first.py -v
+```
+
+**Windows (PowerShell - Recommended):**
+
+```powershell
+cd tests/e2e-python
+$env:HEADLESS="false"; pytest test_my_first.py -v
 ```
 
 **Step 3:** Watch it work!
@@ -1357,7 +1380,7 @@ Write E2E test that:
 - Study: `tests/e2e/auth.spec.js` (JavaScript)
 - Study: `tests/e2e-python/test_auth.py` (Python)
 - Read: [Playwright Documentation](https://playwright.dev/)
-- Read: [tests/README.md](tests/README.md)
+- Read: [tests/README.md](../../tests/README.md)
 
 **Advanced E2E:**
 
@@ -1370,7 +1393,7 @@ Write E2E test that:
 ## Section 8: Advanced E2E Patterns
 
 > **🆕 Complete Dual-Stack Section Available!** This inline content introduces advanced concepts. For comprehensive dual-stack coverage (Python AND JavaScript), see the **🆕 [dedicated Advanced E2E Patterns guide](SECTION_08_ADVANCED_E2E_PATTERNS.md)**.
-
+>
 > **🎯 Hybrid learners (Python + JavaScript):** After completing [Lab 6C](../../labs/LAB_06C_Frontend_Integration_Testing.md), you now understand how your React frontend integrates with your FastAPI backend through contracts. Section 8 teaches you advanced E2E patterns for testing the complete stack!
 
 ### 🎯 Learning Objectives
@@ -1594,7 +1617,8 @@ def test_complete_workflow(page, login_as):
 
 **Beginner → Advanced Progression:**
 
-```
+```text
+
 Section 7 Basics (inline)
     ↓
 Choose Your Track:
@@ -1602,13 +1626,14 @@ Choose Your Track:
     └─ ☕ Section 8 Guide → CI/CD
 
 Optional: Testing Comparison Guide (any time)
+
 ```
 
 ### 📚 Resources
 
 **Inline Examples (JavaScript Focus):**
 
-- Study: [TESTING_PATTERNS.md](TESTING_PATTERNS.md)
+- Study: [TESTING_PATTERNS.md](../reference/TESTING_PATTERNS.md)
 - Study: `tests/e2e/users.spec.js`
 - Read: [Playwright Best Practices](https://playwright.dev/docs/best-practices)
 
@@ -1780,13 +1805,15 @@ k6 run tests/performance/smoke-test.js
 
 **Step 3:** Analyze results
 
-```
+```text
+
 ✓ health check returns 200
 ✓ login successful
 ✓ feed loads successfully
 
 http_req_duration.........: avg=245ms  p(95)=456ms
 http_req_failed...........: 0.23%
+
 ```
 
 **✏️ Exercise:** Document what each metric means
@@ -2154,7 +2181,7 @@ jobs:
 
 **1. Start Simple, Then Optimize:**
 
-```
+```text
 Basic workflow → Add caching → Add parallel execution → Add artifacts
 ```
 
@@ -2344,10 +2371,10 @@ You'll have built:
 
 ### Testbook Guides
 
-- [RUNNING_TESTS.md](RUNNING_TESTS.md) - Run all tests
-- [TESTING_GUIDE.md](TESTING_GUIDE.md) - Comprehensive guide
-- [TESTING_PATTERNS.md](TESTING_PATTERNS.md) - Testing patterns
-- [TESTING_CHEATSHEET.md](TESTING_CHEATSHEET.md) - Quick reference
+- [RUNNING_TESTS.md](../guides/RUNNING_TESTS.md) - Run all tests
+- [TESTING_GUIDE.md](../guides/TESTING_GUIDE.md) - Comprehensive guide
+- [TESTING_PATTERNS.md](../reference/TESTING_PATTERNS.md) - Testing patterns
+- [TESTING_CHEATSHEET.md](../reference/TESTING_CHEATSHEET.md) - Quick reference
 
 ### Learning Resources
 
@@ -2445,20 +2472,26 @@ Track your learning journey:
 
 Ready to begin? Start here:
 
+**1. Clone/setup Testbook**
+
 ```bash
-# 1. Clone/setup Testbook
 git clone https://github.com/upt3mpo/testbook.git
 cd testbook
-
-# 2. Start application
-./start-dev.sh
-
-# 3. Open course
-# Read this file (COURSE_AUTOMATION_TESTING_101.md)
-
-# 4. Start Section 1
-# Follow Section 1 instructions above
 ```
+
+**2. Start application**
+
+```bash
+./start-dev.sh  # macOS/Linux or start-dev.bat (Windows)
+```
+
+**3. Open course**
+
+*Read this file (COURSE_AUTOMATION_TESTING_101.md)*
+
+**4. Start Section 1**
+
+*Follow Section 1 instructions above*
 
 ---
 

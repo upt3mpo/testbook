@@ -9,6 +9,7 @@ ok# 🐛 Lab DEBUG-01: Reading Error Messages
 ## 🎯 What You'll Learn
 
 By the end of this lab, you will:
+
 - Read and understand pytest error messages
 - Identify the exact line where tests fail
 - Understand assertion errors
@@ -22,12 +23,14 @@ By the end of this lab, you will:
 ## 📋 Why This Matters
 
 **Reality Check:**
+
 - 80% of your testing time will be debugging
 - Error messages tell you EXACTLY what's wrong
 - Learning to read errors makes you 10x faster
 - Professional testers are expert error readers
 
 **What students say:**
+
 - ❌ "I got an error, I don't know what to do"
 - ✅ "The error says X is None on line 45, let me check that"
 
@@ -49,13 +52,15 @@ def test_simple_math():
 ```
 
 **Run it:**
+
 ```bash
 cd backend
 pytest tests/test_learn_errors.py::test_simple_math -v
 ```
 
 **You'll see:**
-```python
+
+```text
 ============================ FAILURES =============================
 __________________ test_simple_math ___________________
 
@@ -72,44 +77,52 @@ FAILED tests/test_learn_errors.py::test_simple_math - AssertionError: assert 4 =
 
 **Let's break this down:**
 
-```
+```text
 ============================ FAILURES =============================
 ```
+
 **Meaning:** The failures section starts here
 
-```
+```text
 __________________ test_simple_math ___________________
 ```
+
 **Meaning:** This is the name of the test that failed
 
-```
+```text
     def test_simple_math():
         """A test that will fail."""
         result = 2 + 2
 >       assert result == 5
 ```
+
 **Meaning:** Shows the code around the failure. The `>` arrow points to the EXACT line that failed
 
-```
+```text
 E       AssertionError: assert 4 == 5
 ```
+
 **Meaning:**
+
 - `E` means "Error"
 - `AssertionError` is the error type
 - `assert 4 == 5` shows what was asserted
 - It's saying: "You said 4 equals 5, but it doesn't!"
 
-```
+```text
 tests/test_learn_errors.py:4: AssertionError
 ```
+
 **Meaning:**
+
 - File: `tests/test_learn_errors.py`
 - Line: `4`
 - Error type: `AssertionError`
 
-```
+```text
 FAILED tests/test_learn_errors.py::test_simple_math - AssertionError: assert 4 == 5
 ```
+
 **Meaning:** Summary line showing what failed and why
 
 ---
@@ -129,11 +142,13 @@ def test_string_comparison():
 ```
 
 **Run it:**
+
 ```bash
 pytest tests/test_learn_errors.py::test_string_comparison -v
 ```
 
 **Questions to answer:**
+
 1. What line number failed?
 2. What was the expected value?
 3. What was the actual value?
@@ -148,7 +163,8 @@ pytest tests/test_learn_errors.py::test_string_comparison -v
 4. The 'W' vs 'w'
 
 **The Error Shows:**
-```
+
+```text
 E       AssertionError: assert 'Hello World' == 'Hello world'
 E         - Hello world
 E         + Hello World
@@ -173,6 +189,7 @@ def test_type_mismatch():
 ```
 
 **Run it and answer:**
+
 1. What types are being compared?
 2. Why doesn't Python automatically convert them?
 3. How would you fix this?
@@ -185,7 +202,8 @@ def test_type_mismatch():
 3. Either: `assert result == "42"` or `assert int(result) == 42`
 
 **The Error Shows:**
-```
+
+```text
 E       AssertionError: assert '42' == 42
 ```
 
@@ -207,6 +225,7 @@ def test_none_value():
 ```
 
 **Run it and answer:**
+
 1. What is `value`?
 2. What did we expect?
 3. Why might this happen in real code?
@@ -223,7 +242,8 @@ def test_none_value():
    - Variable not initialized
 
 **The Error Shows:**
-```
+
+```text
 E       AssertionError: assert None == 'something'
 ```
 
@@ -243,6 +263,7 @@ def test_list_length():
 ```
 
 **Run it and answer:**
+
 1. How many items are in the list?
 2. How many did we expect?
 3. How can you see what's actually in the list?
@@ -255,7 +276,8 @@ def test_list_length():
 3. Add `print(items)` before the assert, run with `pytest -s`
 
 **The Error Shows:**
-```
+
+```text
 E       AssertionError: assert 2 == 3
 E        +  where 2 = len(['apple', 'banana'])
 ```
@@ -284,17 +306,20 @@ def test_api_error():
 ```
 
 **Run it:**
+
 ```bash
 pytest tests/test_learn_errors.py::test_api_error -v
 ```
 
 **What you'll see:**
-```
+
+```text
 E       AssertionError: assert 404 == 200
 E        +  where 404 = <Response [404]>.status_code
 ```
 
 **Questions:**
+
 1. What status code did we get?
 2. What does 404 mean?
 3. Why did we get 404?
@@ -307,6 +332,7 @@ E        +  where 404 = <Response [404]>.status_code
 3. The endpoint `/api/nonexistent` doesn't exist!
 
 **Real Scenario:** This is what happens when:
+
 - You mistyped the endpoint URL
 - The endpoint hasn't been created yet
 - The route is under a different prefix
@@ -329,11 +355,13 @@ def test_import_error():
 **Run it - it will fail differently!**
 
 **You'll see:**
-```
+
+```text
 E   ModuleNotFoundError: No module named 'nonexistent_module'
 ```
 
 **Questions:**
+
 1. What's different about this error?
 2. Why did the test fail before running?
 3. How would you fix this?
@@ -374,12 +402,14 @@ def test_stack_trace():
 ```
 
 **Run it:**
+
 ```bash
 pytest tests/test_learn_errors.py::test_stack_trace -v
 ```
 
 **You'll see a STACK TRACE:**
-```python
+
+```text
 tests/test_learn_errors.py:X: in test_stack_trace
     result = another_helper(42)
 tests/test_learn_errors.py:Y: in another_helper
@@ -392,26 +422,33 @@ E   AttributeError: 'int' object has no attribute 'upper'
 **Reading the Stack Trace (bottom to top):**
 
 1. **Bottom (where error happened):**
-   ```
+
+   ```text
    return value.upper()
    E   AttributeError: 'int' object has no attribute 'upper'
    ```
+
    The actual error: tried to call `.upper()` on an integer
 
 2. **Middle (how we got there):**
-   ```
+
+   ```text
    return helper_function(data)
    ```
+
    `another_helper` called `helper_function`
 
 3. **Top (where it started):**
-   ```
+
+   ```text
    result = another_helper(42)
    ```
+
    We passed `42` (an integer) to `another_helper`
 
 **The Chain:**
-```
+
+```text
 test_stack_trace (called with 42)
     ↓
 another_helper (received 42)
@@ -428,6 +465,7 @@ helper_function (tried to call 42.upper())
 **Create tests that produce these errors, then fix them:**
 
 ### Challenge 1: Index Error
+
 ```python
 def test_challenge_index():
     """Create a test that causes IndexError."""
@@ -441,6 +479,7 @@ def test_challenge_index():
 ---
 
 ### Challenge 2: Key Error
+
 ```python
 def test_challenge_key():
     """Create a test that causes KeyError."""
@@ -454,6 +493,7 @@ def test_challenge_key():
 ---
 
 ### Challenge 3: Attribute Error
+
 ```python
 def test_challenge_attribute():
     """Create a test that causes AttributeError."""
@@ -484,54 +524,66 @@ When you see an error, check:
 ## 🚨 Common Errors and What They Mean
 
 ### AssertionError
-```
+
+```text
 E   AssertionError: assert 4 == 5
 ```
+
 **Means:** Your assertion is wrong. Expected one thing, got another.
 **Fix:** Check your expected value or your code logic.
 
 ---
 
 ### AttributeError
-```
+
+```text
 E   AttributeError: 'NoneType' object has no attribute 'email'
 ```
+
 **Means:** Trying to access `.email` on something that's `None`.
 **Fix:** Check why the value is `None`. Did a function forget to return?
 
 ---
 
 ### TypeError
-```
+
+```text
 E   TypeError: unsupported operand type(s) for +: 'int' and 'str'
 ```
+
 **Means:** Trying to do an operation with incompatible types.
 **Fix:** Convert types: `str(42) + "text"` or `42 + int("42")`
 
 ---
 
 ### KeyError
-```
+
+```text
 E   KeyError: 'email'
 ```
+
 **Means:** Trying to access a dictionary key that doesn't exist.
 **Fix:** Check spelling, or use `.get('email')` instead of `['email']`
 
 ---
 
 ### IndexError
-```
+
+```text
 E   IndexError: list index out of range
 ```
+
 **Means:** Trying to access index that doesn't exist.
 **Fix:** Check list length first, or use try/except.
 
 ---
 
 ### ModuleNotFoundError
-```
+
+```text
 E   ModuleNotFoundError: No module named 'pytest'
 ```
+
 **Means:** Python can't find the module.
 **Fix:** `pip install pytest` or activate virtualenv.
 
@@ -603,6 +655,7 @@ E   ModuleNotFoundError: No module named 'pytest'
 ## 📚 Next Steps
 
 **Now that you can read errors:**
+
 - **[LAB_DEBUG_02_Fixing_Broken_Tests.md](LAB_DEBUG_02_Fixing_Broken_Tests.md)** - Practice fixing real broken tests
 - **[DEBUGGING_GUIDE.md](../docs/reference/DEBUGGING_GUIDE.md)** - Advanced debugging techniques
 - **[COMMON_MISTAKES.md](../docs/course/COMMON_MISTAKES.md)** - Common errors and solutions
@@ -610,4 +663,3 @@ E   ModuleNotFoundError: No module named 'pytest'
 ---
 
 **🎉 Congratulations!** You can now read error messages like a pro! This skill will save you countless hours.
-
