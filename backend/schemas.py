@@ -131,6 +131,7 @@ class CommentResponse(BaseModel):
 
     id: int
     content: str
+    post_id: int
     author_id: int
     author_username: str
     author_display_name: str

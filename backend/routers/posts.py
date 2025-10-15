@@ -300,6 +300,7 @@ def get_post(
             schemas.CommentResponse(
                 id=comment.id,
                 content=comment.content,
+                post_id=comment.post_id,
                 author_id=comment.author_id,
                 author_username=comment.author.username,
                 author_display_name=comment.author.display_name,
@@ -398,6 +399,7 @@ def create_comment(
     return schemas.CommentResponse(
         id=new_comment.id,
         content=new_comment.content,
+        post_id=new_comment.post_id,
         author_id=current_user.id,
         author_username=current_user.username,
         author_display_name=current_user.display_name,
