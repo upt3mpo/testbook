@@ -216,11 +216,19 @@ jobs:
         uvicorn main:app --host 0.0.0.0 --port 8000 &
         sleep 10
 
+    - name: Wait for backend
+      run: |
+        timeout 30 bash -c 'until curl -f http://localhost:8000/api/health; do sleep 1; done'
+
     - name: Start frontend server
       run: |
         cd frontend
         npm run dev &
-        sleep 10
+        sleep 15
+
+    - name: Wait for frontend
+      run: |
+        timeout 60 bash -c 'until curl -f http://localhost:3000; do sleep 1; done'
 
     - name: Run JavaScript E2E tests
       run: |
@@ -284,11 +292,19 @@ jobs:
         uvicorn main:app --host 0.0.0.0 --port 8000 &
         sleep 10
 
+    - name: Wait for backend
+      run: |
+        timeout 30 bash -c 'until curl -f http://localhost:8000/api/health; do sleep 1; done'
+
     - name: Start frontend server
       run: |
         cd frontend
         npm run dev &
-        sleep 10
+        sleep 15
+
+    - name: Wait for frontend
+      run: |
+        timeout 60 bash -c 'until curl -f http://localhost:3000; do sleep 1; done'
 
     - name: Run Python E2E tests
       env:
