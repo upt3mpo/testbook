@@ -150,12 +150,22 @@ class TestAuthentication:
 class TestAuthorization:
     """Test authorization and access control."""
 
-    def test_cannot_edit_other_users_posts(self, api_client, auth_token):
+    def test_cannot_edit_other_users_posts(self, api_client):
         """Test that users cannot edit posts they don't own."""
-        headers = {"Authorization": f"Bearer {auth_token}"}
+        # Login as Mike to try to edit Sarah's post (ID 1)
+        login_response = api_client.post(
+            f"{BASE_URL}/auth/login",
+            json={"email": "mike.chen@testbook.com", "password": "MikeRocks88"},
+        )
 
-        # Get a post from another user (post ID 1 likely exists from seed)
-        # Try to update it
+        if login_response.status_code == 429:
+            pytest.skip("Rate limited - test cannot proceed")
+
+        assert login_response.status_code == 200
+        mike_token = login_response.json()["access_token"]
+        headers = {"Authorization": f"Bearer {mike_token}"}
+
+        # Try to update Sarah's post (ID 1 from seed)
         response = api_client.put(
             f"{BASE_URL}/posts/1",
             json={"content": "Trying to hack this post"},
@@ -165,9 +175,20 @@ class TestAuthorization:
         # Should either be 403 (forbidden) or 404 (if post doesn't exist)
         assert response.status_code in [403, 404]
 
-    def test_cannot_delete_other_users_posts(self, api_client, auth_token):
+    def test_cannot_delete_other_users_posts(self, api_client):
         """Test that users cannot delete posts they don't own."""
-        headers = {"Authorization": f"Bearer {auth_token}"}
+        # Login as Mike to try to delete Sarah's post (ID 1)
+        login_response = api_client.post(
+            f"{BASE_URL}/auth/login",
+            json={"email": "mike.chen@testbook.com", "password": "MikeRocks88"},
+        )
+
+        if login_response.status_code == 429:
+            pytest.skip("Rate limited - test cannot proceed")
+
+        assert login_response.status_code == 200
+        mike_token = login_response.json()["access_token"]
+        headers = {"Authorization": f"Bearer {mike_token}"}
 
         response = api_client.delete(f"{BASE_URL}/posts/1", headers=headers)
 
@@ -255,12 +276,16 @@ class TestInputValidation:
 
             # Post should be created (content should be sanitized by frontend)
             # Backend typically accepts it but frontend should escape it
-            if response.status_code == 201:
-                post_id = response.json()["id"]
+            # Skip if we hit rate limits or auth issues
+            if response.status_code in [403, 429]:
+                pytest.skip(f"Cannot test XSS - got {response.status_code}")
 
-                # Verify it's stored (backend stores as-is for frontend to handle)
-                get_response = api_client.get(f"{BASE_URL}/posts/{post_id}")
-                assert get_response.status_code == 200
+            assert response.status_code == 201, f"Expected 201, got {response.status_code}"
+            post_id = response.json()["id"]
+
+            # Verify it's stored (backend stores as-is for frontend to handle)
+            get_response = api_client.get(f"{BASE_URL}/posts/{post_id}")
+            assert get_response.status_code == 200
 
 
 class TestRateLimiting:
