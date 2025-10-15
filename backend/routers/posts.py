@@ -1,12 +1,13 @@
 import uuid
 from pathlib import Path
+from typing import Optional
 
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
 from sqlalchemy.orm import Session
 
 import models
 import schemas
-from auth import get_current_user
+from auth import get_current_user, get_optional_user
 from database import get_db
 
 router = APIRouter()
@@ -257,35 +258,40 @@ def delete_post(
 @router.get("/{post_id}", response_model=schemas.PostDetailResponse)
 def get_post(
     post_id: int,
-    current_user: models.User = Depends(get_current_user),
+    current_user: Optional[models.User] = Depends(get_optional_user),
     db: Session = Depends(get_db),
 ):
-    """Get a single post with all details"""
+    """Get a single post with all details (public endpoint)"""
     post = db.query(models.Post).filter(models.Post.id == post_id).first()
     if not post:
         raise HTTPException(status_code=404, detail="Post not found")
 
-    # Check if blocked
-    if post.author in current_user.blocking or current_user in post.author.blocking:
+    # Check if blocked (only if user is authenticated)
+    if current_user and (
+        post.author in current_user.blocking or current_user in post.author.blocking
+    ):
         raise HTTPException(status_code=403, detail="Cannot view this post")
 
-    # Get user reaction
+    # Get user reaction (only if authenticated)
     user_reaction = None
-    for reaction in post.reactions:
-        if reaction.user_id == current_user.id:
-            user_reaction = reaction.reaction_type
-            break
+    if current_user:
+        for reaction in post.reactions:
+            if reaction.user_id == current_user.id:
+                user_reaction = reaction.reaction_type
+                break
 
-    # Check if user has reposted
-    has_reposted = (
-        db.query(models.Post)
-        .filter(
-            models.Post.author_id == current_user.id,
-            models.Post.original_post_id == post.id,
+    # Check if user has reposted (only if authenticated)
+    has_reposted = False
+    if current_user:
+        has_reposted = (
+            db.query(models.Post)
+            .filter(
+                models.Post.author_id == current_user.id,
+                models.Post.original_post_id == post.id,
+            )
+            .first()
+            is not None
         )
-        .first()
-        is not None
-    )
 
     # Prepare comments
     comments = []
