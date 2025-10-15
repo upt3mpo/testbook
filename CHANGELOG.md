@@ -1268,4 +1268,4 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for:
 
 ---
 
-*For detailed version history and development journey, see [docs/VERSION_HISTORY.md](docs/VERSION_HISTORY.md)*
+_For detailed version history and development journey, see [docs/VERSION_HISTORY.md](docs/VERSION_HISTORY.md)_
