@@ -254,6 +254,7 @@ pytest -v
 ### Example Tests (`examples/` directory)
 
 **Why Python-only?**
+
 - Demonstrates advanced testing patterns for educational purposes (Lab 4B)
 - Showcases Python's OOP capabilities (Page Object Model)
 - Shows hybrid API + UI testing (Python's strength for full-stack testing)
@@ -262,16 +263,19 @@ pytest -v
 **What's included:**
 
 #### 1. API + UI Combined Testing (`test_api_ui_combined_example.py`)
+
 - **Pattern:** Fast API setup, then UI verification
 - **Example:** Create posts via API (fast), verify they appear in UI
 - **Why useful:** Faster test execution, demonstrates hybrid approach
 
 #### 2. Page Object Model (`test_page_objects_example.py`)
+
 - **Pattern:** Encapsulate page interactions in reusable classes
 - **Example:** `FeedPage`, `ProfilePage` classes with methods like `create_post()`, `follow_user()`
 - **Why useful:** Maintainable tests, reduced duplication
 
 **Career Value:**
+
 - Page Object Model is the industry-standard pattern for E2E tests
 - Shows understanding of OOP design patterns
 - Demonstrates ability to create maintainable test frameworks
