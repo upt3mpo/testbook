@@ -176,7 +176,7 @@ class TestComments:
             headers=auth_headers,
         )
 
-        assert response.status_code == 200  # API returns 200
+        assert response.status_code == 201  # API returns 201 Created
         data = response.json()
         assert data["content"] == "Great post!"
 
@@ -220,7 +220,7 @@ class TestReactions:
             headers=auth_headers,
         )
 
-        assert response.status_code == 200  # API returns 200
+        assert response.status_code == 201  # API returns 201 Created
 
     def test_change_reaction(self, client, test_post, auth_headers):
         """Test changing reaction type."""
@@ -238,7 +238,7 @@ class TestReactions:
             headers=auth_headers,
         )
 
-        assert response.status_code in [200, 201]
+        assert response.status_code == 201  # API returns 201 Created
 
     def test_remove_reaction(self, client, test_post, auth_headers):
         """Test removing a reaction."""
@@ -270,8 +270,8 @@ class TestReactions:
             headers=auth_headers,
         )
 
-        # Should either accept any string or validate
-        assert response.status_code in [200, 201, 400, 422]
+        # Should either accept any string or validate (returns 201 if accepted)
+        assert response.status_code in [201, 400, 422]
 
 
 @pytest.mark.integration
@@ -292,7 +292,7 @@ class TestReposts:
             headers=headers,
         )
 
-        assert response.status_code in [200, 201]
+        assert response.status_code == 201  # API returns 201 Created
         data = response.json()
         assert data["is_repost"] is True
         assert data["original_post_id"] == test_post.id
@@ -311,7 +311,7 @@ class TestReposts:
             headers=headers,
         )
 
-        if create_response.status_code in [200, 201]:
+        if create_response.status_code == 201:
             # Remove repost
             response = client.delete(f"/api/posts/repost/{test_post.id}", headers=headers)
 

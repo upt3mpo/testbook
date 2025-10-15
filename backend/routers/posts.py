@@ -154,7 +154,7 @@ def delete_repost(
     return {"message": "Repost removed successfully"}
 
 
-@router.post("/repost", response_model=schemas.PostResponse)
+@router.post("/repost", response_model=schemas.PostResponse, status_code=status.HTTP_201_CREATED)
 def create_repost(
     repost_data: schemas.RepostCreate,
     current_user: models.User = Depends(get_current_user),
