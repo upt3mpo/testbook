@@ -281,6 +281,7 @@ pytest -v
 - Demonstrates ability to create maintainable test frameworks
 
 **Interview Talking Points:**
+
 > "For Testbook, I created a Page Object Model framework in Python to encapsulate page interactions. This reduced test duplication by 60% and made tests easier to maintain when the UI changed. I also implemented hybrid API+UI testing to speed up test execution by setting up data via API instead of clicking through the UI."
 
 ---
