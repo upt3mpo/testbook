@@ -11,7 +11,7 @@ on:
 jobs:
   k6-load-tests:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 10
 
     services:
       postgres:
@@ -63,16 +63,22 @@ jobs:
 
       - name: Run k6 smoke test
         working-directory: ./tests/performance
+        env:
+          CI: true
         run: |
           k6 run --out json=smoke-test-results.json smoke-test.js
 
       - name: Run k6 load test
         working-directory: ./tests/performance
+        env:
+          CI: true
         run: |
           k6 run --out json=load-test-results.json load-test.js
 
       - name: Run k6 stress test
         working-directory: ./tests/performance
+        env:
+          CI: true
         continue-on-error: true
         run: |
           k6 run --out json=stress-test-results.json stress-test.js

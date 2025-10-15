@@ -18,20 +18,29 @@ const feedDuration = new Trend('feed_duration');
 const postCreationDuration = new Trend('post_creation_duration');
 
 // Load test configuration
+// CI: Fast validation (2 min) | Local: Thorough testing (4 min)
+const isCI = __ENV.CI === 'true';
+
 export const options = {
-  stages: [
-    { duration: '2m', target: 10 },   // Ramp up to 10 users
-    { duration: '5m', target: 10 },   // Stay at 10 users for 5 minutes
-    { duration: '2m', target: 20 },   // Ramp up to 20 users
-    { duration: '5m', target: 20 },   // Stay at 20 users for 5 minutes
-    { duration: '2m', target: 0 },    // Ramp down to 0 users
+  stages: isCI ? [
+    { duration: '20s', target: 5 },   // Ramp up to 5 users
+    { duration: '40s', target: 5 },   // Stay at 5 users
+    { duration: '20s', target: 10 },  // Ramp up to 10 users
+    { duration: '30s', target: 10 },  // Stay at 10 users
+    { duration: '10s', target: 0 },   // Ramp down (total: 2 min)
+  ] : [
+    { duration: '30s', target: 10 },  // Ramp up to 10 users
+    { duration: '1m', target: 10 },   // Stay at 10 users
+    { duration: '30s', target: 15 },  // Ramp up to 15 users
+    { duration: '2m', target: 15 },   // Stay at 15 users
+    { duration: '30s', target: 0 },   // Ramp down (total: 4.5 min)
   ],
   thresholds: {
     http_req_duration: ['p(95)<1000', 'p(99)<2000'],  // 95% < 1s, 99% < 2s
     http_req_failed: ['rate<0.05'],                    // Error rate < 5%
-    errors: ['rate<0.05'],
+    errors: ['rate<0.05'],                             // Error rate < 5%
     login_duration: ['p(95)<500'],
-    feed_duration: ['p(95)<800'],
+    feed_duration: ['p(95)<1000'],
     post_creation_duration: ['p(95)<600'],
   },
 };

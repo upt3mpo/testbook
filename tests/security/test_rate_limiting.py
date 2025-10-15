@@ -57,9 +57,9 @@ class TestRateLimiting:
         # The key test: Did we GET rate limited at some point?
         # We don't care about the exact limit (varies by environment)
         # We just care that rate limiting IS implemented
-        assert got_rate_limited, (
-            f"Rate limiting not working - completed {failures} attempts without hitting limit"
-        )
+        assert (
+            got_rate_limited
+        ), f"Rate limiting not working - completed {failures} attempts without hitting limit"
 
         # In production: should hit ~20 attempts
         # In testing: should hit ~100 attempts
@@ -86,9 +86,7 @@ class TestRateLimiting:
         # This test documents whether rate limiting headers are present
         # It doesn't fail if absent, but logs the result
         if not has_rate_limit_headers:
-            pytest.skip(
-                "Rate limit headers not implemented - consider adding for API transparency"
-            )
+            pytest.skip("Rate limit headers not implemented - consider adding for API transparency")
 
     def test_registration_rate_limiting(self):
         """Test that user registration is rate limited."""
@@ -96,10 +94,10 @@ class TestRateLimiting:
 
         session = requests.Session()
 
-        # In TESTING mode, rate limits are higher (100/min vs 15/min)
+        # In TESTING mode, rate limits are higher (500/min vs 15/min)
         # So we need to attempt more registrations to hit the limit
         testing_mode = os.getenv("TESTING", "false").lower() == "true"
-        attempts = 110 if testing_mode else 20
+        attempts = 550 if testing_mode else 20
 
         # Try to register multiple accounts rapidly
         registrations = 0
@@ -127,11 +125,12 @@ class TestRateLimiting:
             # time.sleep(0.1)
 
         # Should hit rate limit before all attempts complete
-        # In TESTING mode (100/min), should be rate limited before 110 attempts
+        # In TESTING mode (500/min), should be rate limited before 550 attempts
         # In production (15/min), should be rate limited before 20 attempts
-        assert rate_limited or registrations < attempts, (
-            f"Registration not rate limited - completed {registrations}/{attempts} attempts"
-        )
+        # Note: This test may be slow in TESTING mode - consider reducing attempts
+        assert (
+            rate_limited or registrations < attempts
+        ), f"Registration not rate limited - completed {registrations}/{attempts} attempts"
 
 
 class TestBruteForceProtection:
@@ -152,9 +151,7 @@ class TestBruteForceProtection:
 
     def test_temporary_ip_ban_on_suspicious_activity(self):
         """Test that suspicious IPs are temporarily banned."""
-        pytest.skip(
-            "IP-based banning not implemented - consider for high-security applications"
-        )
+        pytest.skip("IP-based banning not implemented - consider for high-security applications")
 
         # Example: Test rapid failed attempts from same IP trigger temporary ban
 
@@ -175,9 +172,11 @@ class TestDDoSProtection:
 
         # Should reject very large payloads
         # 413 = Payload Too Large, 400 = Bad Request
-        assert response.status_code in [400, 413, 422], (
-            "Server should reject excessively large payloads"
-        )
+        assert response.status_code in [
+            400,
+            413,
+            422,
+        ], "Server should reject excessively large payloads"
 
     def test_concurrent_request_handling(self):
         """Test server handles concurrent requests gracefully."""
