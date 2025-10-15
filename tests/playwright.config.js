@@ -51,6 +51,9 @@ export default defineConfig({
   },
 
   /* Configure projects for major browsers */
+  // NOTE: CI only runs 'chromium' (via --project=chromium flag) for speed
+  // Run locally with all browsers: npx playwright test
+  // Run specific browser: npx playwright test --project=firefox
   projects: [
     {
       name: 'chromium',

@@ -168,12 +168,25 @@ test.describe('Posts', () => {
       const ownPost = getFirstOwnPost(page);
       const postContent = await ownPost.textContent();
 
-      // Open menu and delete
-      await ownPost.locator('[data-testid$="-menu-button"]').click();
-      await ownPost.locator('[data-testid$="-delete-button"]').click();
+      // Scroll the post into view to ensure it's visible
+      await ownPost.scrollIntoViewIfNeeded();
+      await page.waitForTimeout(300);
 
-      // Confirm deletion if there's a confirmation dialog
+      // Open menu with force click to avoid pointer issues
+      const menuButton = ownPost.locator('[data-testid$="-menu-button"]');
+      await expect(menuButton).toBeVisible({ timeout: 5000 });
+      await menuButton.click({ force: true });
+
+      // Wait for dropdown animation
       await page.waitForTimeout(500);
+
+      // Click delete button (should be visible now within THIS post's context)
+      const deleteButton = ownPost.locator('[data-testid$="-delete-button"]');
+      await expect(deleteButton).toBeVisible({ timeout: 5000 });
+      await deleteButton.click({ force: true });
+
+      // Wait for browser confirm dialogs to be auto-handled
+      await page.waitForTimeout(1000);
 
       // Post should be removed
       await expect(page.locator(`text="${postContent}"`)).not.toBeVisible({ timeout: 5000 });
