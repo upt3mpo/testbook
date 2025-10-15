@@ -7,7 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [Unreleased] - v1.1 "Full Journey Release"
+## [Unreleased]
+
+_Future updates will be documented here._
+
+---
+
+## [1.1.0] - 2025-10-15 - "Full Journey Release"
 
 **Progress:** 6/6 milestones complete (100%) ✅
 
