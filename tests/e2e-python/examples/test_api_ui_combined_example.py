@@ -48,8 +48,8 @@ class TestAPIPlusUIValidation:
         feed = FeedPage(page)
         feed.goto()
 
-        # UI should show all API-created posts
-        assert feed.post_count() >= 5
+        # UI should show all API-created posts (wait for them to load)
+        assert feed.post_count(wait_for_load=True, timeout=10000) >= 5
         assert feed.find_post_by_content("API created post 1").is_visible()
 
         print("✅ API-seeded posts verified in UI!")
@@ -79,14 +79,15 @@ class TestAPIPlusUIValidation:
         profile = ProfilePage(page)
         profile.goto("mikechen")
 
+        # Wait a moment for profile to fully load follow status
+        page.wait_for_timeout(1000)
+
         # UI should reflect API action
-        assert profile.is_following() is True
+        assert profile.is_following(wait_timeout=10000) is True
 
         print("✅ API follow action verified in UI!")
 
-    def test_ui_action_verified_via_api(
-        self, page: Page, login_as, api_url: str, fresh_database
-    ):
+    def test_ui_action_verified_via_api(self, page: Page, login_as, api_url: str, fresh_database):
         """Reverse pattern: UI action, API verification"""
 
         # 1. Perform UI action
@@ -106,7 +107,7 @@ class TestAPIPlusUIValidation:
 
         # Get feed via API
         feed_response = requests.get(
-            f"{api_url}/api/feed", headers={"Authorization": f"Bearer {token}"}
+            f"{api_url}/api/feed/all", headers={"Authorization": f"Bearer {token}"}
         )
         posts = feed_response.json()
 
@@ -116,6 +117,6 @@ class TestAPIPlusUIValidation:
 
         # Verify exact structure returned by API
         created_post = next(p for p in posts if p["content"] == post_content)
-        assert created_post["author"]["username"] == "sarahjohnson"
+        assert created_post["author_username"] == "sarahjohnson"
 
         print("✅ UI action verified via API response!")

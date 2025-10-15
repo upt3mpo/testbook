@@ -49,9 +49,7 @@ class TestPosts:
     """Test suite for post functionality"""
 
     # Create Post Tests
-    def test_create_text_post(
-        self, page: Page, base_url: str, login_as, fresh_database
-    ):
+    def test_create_text_post(self, page: Page, base_url: str, login_as, fresh_database):
         """Test creating a text-only post"""
         login_as("sarah")
 
@@ -78,9 +76,7 @@ class TestPosts:
         page.fill('[data-testid="create-post-textarea"]', "Some content")
         expect(submit_button).to_be_enabled()
 
-    def test_create_post_clear_textarea(
-        self, page: Page, base_url: str, login_as, fresh_database
-    ):
+    def test_create_post_clear_textarea(self, page: Page, base_url: str, login_as, fresh_database):
         """Test textarea clears after posting"""
         login_as("sarah")
 
@@ -160,9 +156,7 @@ class TestPosts:
         expect(own_post).to_contain_text("Edited content", timeout=5000)
         expect(own_post).not_to_contain_text("Original content")
 
-    def test_edit_post_cancel(
-        self, page: Page, base_url: str, login_as, fresh_database
-    ):
+    def test_edit_post_cancel(self, page: Page, base_url: str, login_as, fresh_database):
         """Test canceling edit"""
         login_as("sarah")
 
@@ -222,9 +216,7 @@ class TestPosts:
 
         if is_visible:
             # Should not have edit menu
-            expect(
-                other_user_post.locator('[data-testid$="-menu-button"]')
-            ).not_to_be_visible()
+            expect(other_user_post.locator('[data-testid$="-menu-button"]')).not_to_be_visible()
 
     # Delete Post Tests
     def test_delete_own_post(self, page: Page, base_url: str, login_as, fresh_database):
@@ -236,12 +228,21 @@ class TestPosts:
         own_post = get_first_own_post(page)
         post_content = own_post.text_content()
 
-        # Open menu and delete
-        own_post.locator('[data-testid$="-menu-button"]').click()
-        own_post.locator('[data-testid$="-delete-button"]').click()
+        # Open menu with force click to avoid pointer issues
+        menu_button = own_post.locator('[data-testid$="-menu-button"]')
+        expect(menu_button).to_be_visible(timeout=5000)
+        menu_button.click(force=True)
+
+        # Wait for dropdown animation
+        page.wait_for_timeout(500)
+
+        # Click delete button directly (should be visible now)
+        delete_button = own_post.locator('[data-testid$="-delete-button"]')
+        expect(delete_button).to_be_visible(timeout=5000)
+        delete_button.click(force=True)
 
         # Confirm deletion if there's a dialog
-        page.wait_for_timeout(500)
+        page.wait_for_timeout(1000)
 
         # Post should be removed
         expect(page.locator(f'text="{post_content}"')).not_to_be_visible(timeout=5000)
@@ -265,9 +266,7 @@ class TestPosts:
         # Wait for button to show reaction
         expect(react_button).to_contain_text("👍", timeout=10000)
 
-    def test_change_reaction_type(
-        self, page: Page, base_url: str, login_as, fresh_database
-    ):
+    def test_change_reaction_type(self, page: Page, base_url: str, login_as, fresh_database):
         """Test changing reaction type"""
         login_as("sarah")
 
@@ -309,9 +308,7 @@ class TestPosts:
         # Should show default text after removal
         expect(react_button).to_contain_text("React", timeout=10000)
 
-    def test_show_all_reaction_types(
-        self, page: Page, base_url: str, login_as, fresh_database
-    ):
+    def test_show_all_reaction_types(self, page: Page, base_url: str, login_as, fresh_database):
         """Test all reaction types are visible"""
         login_as("sarah")
 
@@ -332,9 +329,7 @@ class TestPosts:
         # All reactions should be visible
         reactions = ["like", "love", "haha", "wow", "sad", "angry"]
         for reaction in reactions:
-            reaction_locator = first_post.locator(
-                f'[data-testid$="-reaction-{reaction}"]'
-            )
+            reaction_locator = first_post.locator(f'[data-testid$="-reaction-{reaction}"]')
             expect(reaction_locator).to_be_visible(timeout=5000)
 
     # Comment Tests
@@ -352,9 +347,7 @@ class TestPosts:
         # Wait for navigation or modal
         page.wait_for_timeout(500)
 
-    def test_show_comment_count(
-        self, page: Page, base_url: str, login_as, fresh_database
-    ):
+    def test_show_comment_count(self, page: Page, base_url: str, login_as, fresh_database):
         """Test comment count is displayed"""
         login_as("sarah")
 
@@ -369,9 +362,7 @@ class TestPosts:
 
         if is_visible:
             # Comment button should show count or icon
-            expect(
-                first_post.locator('[data-testid$="-comment-button"]')
-            ).to_be_visible()
+            expect(first_post.locator('[data-testid$="-comment-button"]')).to_be_visible()
 
     # Repost Tests
     def test_repost_a_post(self, page: Page, base_url: str, login_as, fresh_database):
@@ -426,9 +417,7 @@ class TestPosts:
             expect(repost_button).to_have_class(re.compile("btn-secondary"))
 
     # Feed Tab Tests
-    def test_switch_between_feed_tabs(
-        self, page: Page, base_url: str, login_as, fresh_database
-    ):
+    def test_switch_between_feed_tabs(self, page: Page, base_url: str, login_as, fresh_database):
         """Test switching between All and Following tabs"""
         login_as("sarah")
 
@@ -440,17 +429,13 @@ class TestPosts:
 
         # Switch to Following
         following_tab.click()
-        expect(following_tab).to_have_class(
-            re.compile("active|selected", re.IGNORECASE)
-        )
+        expect(following_tab).to_have_class(re.compile("active|selected", re.IGNORECASE))
 
         # Switch back to All
         all_tab.click()
         expect(all_tab).to_have_class(re.compile("active|selected", re.IGNORECASE))
 
-    def test_different_posts_in_feeds(
-        self, page: Page, base_url: str, login_as, fresh_database
-    ):
+    def test_different_posts_in_feeds(self, page: Page, base_url: str, login_as, fresh_database):
         """Test different posts in Following vs All feed"""
         login_as("sarah")
 

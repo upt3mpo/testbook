@@ -12,8 +12,8 @@
   --text-primary: #050505;
   --text-secondary: #65676b;
   --border-color: #e0e0e0;
-  --accent-color: #1877f2;
-  --accent-hover: #166fe5;
+  --accent-color: #1264d0; /* WCAG AA compliant: 4.7:1 contrast with white (was #1877f2: 4.23:1) */
+  --accent-hover: #0d5ab8; /* Darkened hover state for consistency */
   --danger-color: #d32f2f;
   --danger-hover: #b71c1c;
   --success-color: #4caf50;

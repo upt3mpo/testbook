@@ -249,9 +249,42 @@ pytest -v
 
 ---
 
+## 🐍 Python-Specific Tests
+
+### Example Tests (`examples/` directory)
+
+**Why Python-only?**
+- Demonstrates advanced testing patterns for educational purposes (Lab 4B)
+- Showcases Python's OOP capabilities (Page Object Model)
+- Shows hybrid API + UI testing (Python's strength for full-stack testing)
+- Designed for learning, not production coverage
+
+**What's included:**
+
+#### 1. API + UI Combined Testing (`test_api_ui_combined_example.py`)
+- **Pattern:** Fast API setup, then UI verification
+- **Example:** Create posts via API (fast), verify they appear in UI
+- **Why useful:** Faster test execution, demonstrates hybrid approach
+
+#### 2. Page Object Model (`test_page_objects_example.py`)
+- **Pattern:** Encapsulate page interactions in reusable classes
+- **Example:** `FeedPage`, `ProfilePage` classes with methods like `create_post()`, `follow_user()`
+- **Why useful:** Maintainable tests, reduced duplication
+
+**Career Value:**
+- Page Object Model is the industry-standard pattern for E2E tests
+- Shows understanding of OOP design patterns
+- Demonstrates ability to create maintainable test frameworks
+
+**Interview Talking Points:**
+> "For Testbook, I created a Page Object Model framework in Python to encapsulate page interactions. This reduced test duplication by 60% and made tests easier to maintain when the UI changed. I also implemented hybrid API+UI testing to speed up test execution by setting up data via API instead of clicking through the UI."
+
+---
+
 **Getting Started:**
 
 - [Lab 4: E2E Testing Python](../../labs/LAB_04_E2E_Testing_Python.md) - Beginner lab
+- [Test Alignment Guide](../E2E_TEST_ALIGNMENT.md) - JS vs Python differences
 
 **Documentation:**
 

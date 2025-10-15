@@ -14,15 +14,28 @@ class FeedPage(BasePage):
         # Selectors
         self.navbar = '[data-testid="navbar"]'
         self.create_post_textarea = '[data-testid="create-post-textarea"]'
-        self.create_post_submit = '[data-testid="create-post-submit"]'
+        self.create_post_submit = '[data-testid="create-post-submit-button"]'
         self.post_items = '[data-testid-generic="post-item"]'
         self.post_delete_button = '[data-testid$="-delete-button"]'
         self.post_react_button = '[data-testid$="-react-button"]'
 
-    def goto(self) -> None:
-        """Navigate to feed page."""
+    def goto(self, wait_for_posts: bool = True) -> None:
+        """Navigate to feed page.
+
+        Args:
+            wait_for_posts: If True, wait for posts to load from API (default: True)
+        """
         super().goto("/")
         expect(self.page.locator(self.navbar)).to_be_visible(timeout=10000)
+
+        if wait_for_posts:
+            # Wait for feed to finish loading posts from API
+            # This is important in CI where API calls may be slower
+            try:
+                self.page.wait_for_load_state("networkidle", timeout=5000)
+            except:
+                # If networkidle times out, wait a bit more for API calls
+                self.page.wait_for_timeout(2000)
 
     def create_post(self, content: str) -> None:
         """Create a new post."""
@@ -41,8 +54,24 @@ class FeedPage(BasePage):
         """Get all posts."""
         return self.page.locator(self.post_items)
 
-    def post_count(self) -> int:
-        """Count visible posts."""
+    def post_count(self, wait_for_load: bool = False, timeout: int = 5000) -> int:
+        """Count visible posts.
+
+        Args:
+            wait_for_load: If True, wait for at least one post to appear before counting
+            timeout: Maximum time to wait for posts (milliseconds)
+
+        Returns:
+            Number of visible posts
+        """
+        if wait_for_load:
+            try:
+                # Wait for at least one post to appear
+                expect(self.all_posts().first).to_be_visible(timeout=timeout)
+            except:
+                # No posts found within timeout, return 0
+                pass
+
         return self.all_posts().count()
 
     def find_post_by_content(self, content: str) -> Locator:

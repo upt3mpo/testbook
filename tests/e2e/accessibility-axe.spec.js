@@ -9,13 +9,14 @@
 
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
+import { loginUser, resetDatabase, TEST_USERS } from './fixtures/test-helpers.js';
 
 const BASE_URL = process.env.BASE_URL || 'http://localhost:3000';
 
 test.describe('Accessibility (axe-core)', () => {
   test.beforeEach(async ({ page }) => {
-    // Ensure app is running
-    await page.goto(BASE_URL);
+    // Reset database for clean state
+    await resetDatabase(page);
   });
 
   test('Home page should not have accessibility violations', async ({ page }) => {
@@ -54,13 +55,11 @@ test.describe('Accessibility (axe-core)', () => {
   test('Feed page (authenticated) should not have accessibility violations', async ({
     page,
   }) => {
-    // Login first
-    await page.goto(`${BASE_URL}/login`);
-    await page.fill('input[type="email"]', 'testuser@example.com');
-    await page.fill('input[type="password"]', 'TestPassword123!');
-    await page.click('button[type="submit"]');
-    await page.waitForURL('**/feed');
-    await page.waitForLoadState('networkidle');
+    // Login using test helper
+    await loginUser(page, TEST_USERS.sarah.email, TEST_USERS.sarah.password);
+
+    // Wait for feed to fully load
+    await page.waitForLoadState('networkidle', { timeout: 5000 }).catch(() => {});
 
     const accessibilityScanResults = await new AxeBuilder({ page })
       .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
@@ -70,16 +69,12 @@ test.describe('Accessibility (axe-core)', () => {
   });
 
   test('Profile page should not have accessibility violations', async ({ page }) => {
-    // Login first
-    await page.goto(`${BASE_URL}/login`);
-    await page.fill('input[type="email"]', 'testuser@example.com');
-    await page.fill('input[type="password"]', 'TestPassword123!');
-    await page.click('button[type="submit"]');
-    await page.waitForURL('**/feed');
+    // Login using test helper
+    await loginUser(page, TEST_USERS.sarah.email, TEST_USERS.sarah.password);
 
     // Go to profile
-    await page.click('a[href*="/profile"]');
-    await page.waitForLoadState('networkidle');
+    await page.click('[data-testid="navbar-profile-link"]');
+    await page.waitForLoadState('networkidle', { timeout: 5000 }).catch(() => {});
 
     const accessibilityScanResults = await new AxeBuilder({ page })
       .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])

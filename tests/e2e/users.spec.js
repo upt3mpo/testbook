@@ -343,16 +343,12 @@ test.describe('Users', () => {
       const deleteButton = page.locator('[data-testid="settings-delete-account-button"]');
       await expect(deleteButton).toBeVisible({ timeout: 5000 });
 
-      // Click delete (may have confirmation)
+      // Click delete button
+      // Note: Browser confirm dialogs are auto-accepted by the setupDialogHandler
       await deleteButton.click();
 
-      // Check if there's a confirmation dialog and click it
-      const confirmButton = page.locator('button:has-text("confirm"), button:has-text("delete"), button:has-text("yes")').first();
-      const hasConfirmation = await confirmButton.isVisible({ timeout: 2000 }).catch(() => false);
-
-      if (hasConfirmation) {
-        await confirmButton.click();
-      }
+      // Wait a moment for the browser confirms to be handled
+      await page.waitForTimeout(1000);
 
       // Wait for redirect to login page - this is the key indicator of successful deletion
       // Use waitForURL which is more reliable than checking for element visibility
