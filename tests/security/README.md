@@ -244,31 +244,37 @@ tests/security/
 ### ✅ Implemented & Tested
 
 1. **Authentication Security**
+
    - Invalid tokens rejected
    - Malformed headers rejected
    - Passwords never returned in responses
    - Wrong password properly rejected
 
 2. **Authorization**
+
    - Users can't edit others' posts (403)
    - Users can't delete others' posts (403)
    - Users can only update own profiles
 
 3. **Input Validation**
+
    - Email format validation
    - SQL injection protection
    - XSS protection
 
 4. **Rate Limiting**
+
    - Login endpoints rate limited (20/min prod, 100/min test)
    - Registration rate limited (15/min prod, 100/min test)
    - Excessive attempts blocked
 
 5. **Data Exposure Prevention**
+
    - User lists don't include passwords
    - Error messages don't expose internals
 
 6. **Session Management**
+
    - Tokens work for multiple requests
    - Multiple sessions supported
 
@@ -290,7 +296,7 @@ tests/security/
 4. **HTTP status codes matter** → 401 vs 403 understanding
 5. **Tests prove features work** → Rate limits work SO well they affect tests!
 
-**See [LAB_06: Testing with Rate Limiting](../../labs/LAB_06_Testing_With_Rate_Limits.md)** for a complete lesson on these concepts!
+**See [LAB_06: Testing with Rate Limiting](../../learn/stage_4_performance_security/exercises/LAB_06_Testing_With_Rate_Limits.md)** for a complete lesson on these concepts!
 
 ---
 
@@ -343,7 +349,7 @@ pytest tests/security/test_rate_limiting.py::TestRateLimiting::test_login_attemp
 
 ## 🔗 Related Documentation
 
-- [LAB_06: Testing with Rate Limiting](../../labs/LAB_06_Testing_With_Rate_Limits.md) - Complete lesson on this topic
+- [LAB_06: Testing with Rate Limiting](../../learn/stage_4_performance_security/exercises/LAB_06_Testing_With_Rate_Limits.md) - Complete lesson on this topic
 - [backend/main.py](../../backend/main.py) - Rate limiting implementation
 - [backend/routers/auth.py](../../backend/routers/auth.py) - Login/register rate limits
 - [slowapi Documentation](https://slowapi.readthedocs.io/) - Rate limiting library
@@ -372,8 +378,8 @@ pytest tests/security/test_rate_limiting.py::TestRateLimiting::test_login_attemp
 **See:**
 
 - This README (you're reading it!)
-- [LAB_06](../../labs/LAB_06_Testing_With_Rate_Limits.md)
-- [FAQ.md](../../FAQ.md)
+- [LAB_06](../../learn/stage_4_performance_security/exercises/LAB_06_Testing_With_Rate_Limits.md)
+- [README.md](../../README.md#frequently-asked-questions) - Learning questions and quick setup guidance
 - [RUNNING_TESTS.md](../../docs/guides/RUNNING_TESTS.md)
 
 **Or:** Create an issue with:

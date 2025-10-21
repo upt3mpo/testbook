@@ -28,6 +28,7 @@ playwright install chromium
 ```bash
 # Run all tests
 pytest -v
+# See [Quick Commands](docs/reference/QUICK_COMMANDS.md) for all pytest options
 
 # Run specific test file
 pytest test_auth.py -v
@@ -156,7 +157,7 @@ def test_api_setup_ui_verify(page, login_as, api_url):
     assert feed.post_count() == 10
 ```
 
-**Learn these patterns:** [Lab 4B: Advanced E2E Python](../../labs/LAB_04B_Advanced_E2E_Python.md)
+**Learn these patterns:** [Lab 4B: Advanced E2E Python](../../learn/stage_3_api_e2e/exercises/LAB_04B_Advanced_E2E_Python.md)
 
 ---
 
@@ -243,7 +244,7 @@ pytest -v
 
 - JavaScript E2E tests: `tests/e2e/`
 - [Testing Comparison Guide](../../docs/guides/TESTING_COMPARISON_PYTHON_JS.md)
-- [Section 8: Advanced E2E Patterns](../../docs/course/SECTION_08_ADVANCED_E2E_PATTERNS.md)
+- [Section 8: Advanced E2E Patterns](../../learn/stage_3_api_e2e/README.md#advanced-e2e-patterns)
 
 **Key difference:** Python uses synchronous syntax while JavaScript uses async/await. The Playwright API is otherwise identical!
 
@@ -288,7 +289,7 @@ pytest -v
 
 **Getting Started:**
 
-- [Lab 4: E2E Testing Python](../../labs/LAB_04_E2E_Testing_Python.md) - Beginner lab
+- [Lab 4: E2E Testing Python](../../learn/stage_3_api_e2e/exercises/LAB_04_E2E_Testing_Python.md) - Beginner lab
 - [Test Alignment Guide](../E2E_TEST_ALIGNMENT.md) - JS vs Python differences
 
 **Documentation:**
@@ -297,7 +298,7 @@ pytest -v
 
 **CI/CD:**
 
-- [CI/CD for E2E Testing](../../docs/course/CI_CD_E2E_TESTING.md) - Automate these tests
+- [CI/CD for E2E Testing](../../learn/stage_5_capstone/README.md#cicd-automation) - Automate these tests
 
 ---
 

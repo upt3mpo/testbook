@@ -14,6 +14,8 @@ npm install
 npx playwright install chromium
 ```
 
+**💡 Learning-Focused Configuration:** We configure Playwright to run only Chrome by default for faster execution. This reduces test time from ~5 minutes to ~1 minute, making the learning experience smoother. You can still run other browsers if needed for cross-browser testing.
+
 ### 2. Start Testbook
 
 ```bash
@@ -24,17 +26,20 @@ npx playwright install chromium
 ### 3. Run Tests
 
 ```bash
-# Run all tests
-npx playwright test
+# Run all tests (Chrome only by default)
+npm test
+
+# Run all browsers (slower)
+npm run test:all-browsers
 
 # Run specific test file
 npx playwright test auth.spec.js
 
 # Run with visible browser (headed mode)
-npx playwright test --headed
+npm run test:headed
 
 # Run in debug mode (step through tests)
-npx playwright test --debug
+npm run test:debug
 ```
 
 ---
@@ -58,12 +63,12 @@ cp env.example .env
 
 ### Available Configuration
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `BASE_URL` | `http://localhost:3000` | Frontend URL |
-| `BACKEND_URL` | `http://localhost:8000` | Backend API URL |
-| `HEADLESS` | `true` | Run in headless mode |
-| `CI` | `false` | Enable CI-specific behavior |
+| Variable      | Default                 | Description                 |
+| ------------- | ----------------------- | --------------------------- |
+| `BASE_URL`    | `http://localhost:3000` | Frontend URL                |
+| `BACKEND_URL` | `http://localhost:8000` | Backend API URL             |
+| `HEADLESS`    | `true`                  | Run in headless mode        |
+| `CI`          | `false`                 | Enable CI-specific behavior |
 
 **Override at runtime:**
 
@@ -82,9 +87,9 @@ All test helpers are in `fixtures/test-helpers.js`:
 **`resetDatabase(page)`** - Reset database to clean state
 
 ```javascript
-const { resetDatabase } = require('./fixtures/test-helpers');
+const { resetDatabase } = require("./fixtures/test-helpers");
 
-test('my test', async ({ page }) => {
+test("my test", async ({ page }) => {
   await resetDatabase(page);
   // Database is now clean
 });
@@ -93,7 +98,7 @@ test('my test', async ({ page }) => {
 **`seedDatabase(page, scenario)`** - Seed specific test data
 
 ```javascript
-await seedDatabase(page, 'users_with_posts');
+await seedDatabase(page, "users_with_posts");
 ```
 
 ### User Authentication
@@ -101,9 +106,9 @@ await seedDatabase(page, 'users_with_posts');
 **`loginUser(page, email, password)`** - Login a user
 
 ```javascript
-const { loginUser, TEST_USERS } = require('./fixtures/test-helpers');
+const { loginUser, TEST_USERS } = require("./fixtures/test-helpers");
 
-test('my test', async ({ page }) => {
+test("my test", async ({ page }) => {
   await loginUser(page, TEST_USERS.sarah.email, TEST_USERS.sarah.password);
   // Now logged in
 });
@@ -113,10 +118,10 @@ test('my test', async ({ page }) => {
 
 ```javascript
 await registerUser(page, {
-  email: 'newuser@example.com',
-  username: 'newuser',
-  displayName: 'New User',
-  password: 'Password123!'
+  email: "newuser@example.com",
+  username: "newuser",
+  displayName: "New User",
+  password: "Password123!",
 });
 ```
 
@@ -125,22 +130,22 @@ await registerUser(page, {
 **`createPost(page, content)`** - Create a post
 
 ```javascript
-const { createPost } = require('./fixtures/test-helpers');
+const { createPost } = require("./fixtures/test-helpers");
 
-await createPost(page, 'This is my test post!');
+await createPost(page, "This is my test post!");
 ```
 
 **`getFirstPost(page)`** - Get first post locator
 
 ```javascript
 const post = getFirstPost(page);
-await expect(post).toContainText('my post');
+await expect(post).toContainText("my post");
 ```
 
 **`getPostsByAuthor(page, username)`** - Get posts by specific author
 
 ```javascript
-const posts = getPostsByAuthor(page, 'sarahjohnson');
+const posts = getPostsByAuthor(page, "sarahjohnson");
 ```
 
 ### Interactions
@@ -149,14 +154,14 @@ const posts = getPostsByAuthor(page, 'sarahjohnson');
 
 ```javascript
 const post = getFirstPost(page);
-await addReaction(post, 'like');
+await addReaction(post, "like");
 ```
 
 **`addComment(post, commentText)`** - Add comment to post
 
 ```javascript
 const post = getFirstPost(page);
-await addComment(post, 'Great post!');
+await addComment(post, "Great post!");
 ```
 
 ### Test Users
@@ -164,12 +169,12 @@ await addComment(post, 'Great post!');
 Pre-configured test users available in `TEST_USERS`:
 
 ```javascript
-const { TEST_USERS } = require('./fixtures/test-helpers');
+const { TEST_USERS } = require("./fixtures/test-helpers");
 
-TEST_USERS.sarah   // Sarah Johnson
-TEST_USERS.mike    // Mike Chen
-TEST_USERS.emma    // Emma Davis
-TEST_USERS.newuser // For registration tests
+TEST_USERS.sarah; // Sarah Johnson
+TEST_USERS.mike; // Mike Chen
+TEST_USERS.emma; // Emma Davis
+TEST_USERS.newuser; // For registration tests
 ```
 
 ---
@@ -193,15 +198,15 @@ tests/e2e/
 ### Basic Test Example
 
 ```javascript
-const { test, expect } = require('@playwright/test');
-const { loginUser, TEST_USERS } = require('./fixtures/test-helpers');
+const { test, expect } = require("@playwright/test");
+const { loginUser, TEST_USERS } = require("./fixtures/test-helpers");
 
-test('user can create post', async ({ page }) => {
+test("user can create post", async ({ page }) => {
   // Login
   await loginUser(page, TEST_USERS.sarah.email, TEST_USERS.sarah.password);
 
   // Create post
-  await page.fill('[data-testid="create-post-textarea"]', 'Test post!');
+  await page.fill('[data-testid="create-post-textarea"]', "Test post!");
   await page.click('[data-testid="create-post-submit-button"]');
 
   // Verify
@@ -212,16 +217,16 @@ test('user can create post', async ({ page }) => {
 ### Using Test Helpers
 
 ```javascript
-const { test, expect } = require('@playwright/test');
+const { test, expect } = require("@playwright/test");
 const {
   resetDatabase,
   loginUser,
   createPost,
   getFirstPost,
-  TEST_USERS
-} = require('./fixtures/test-helpers');
+  TEST_USERS,
+} = require("./fixtures/test-helpers");
 
-test('complete post flow', async ({ page }) => {
+test("complete post flow", async ({ page }) => {
   // Reset database first
   await resetDatabase(page);
 
@@ -229,18 +234,18 @@ test('complete post flow', async ({ page }) => {
   await loginUser(page, TEST_USERS.sarah.email, TEST_USERS.sarah.password);
 
   // Create post
-  await createPost(page, 'My test post');
+  await createPost(page, "My test post");
 
   // Verify post appears
   const post = getFirstPost(page);
-  await expect(post).toContainText('My test post');
+  await expect(post).toContainText("My test post");
 });
 ```
 
 ### Test Hooks
 
 ```javascript
-test.describe('Post Tests', () => {
+test.describe("Post Tests", () => {
   test.beforeEach(async ({ page }) => {
     // Reset database before each test
     await resetDatabase(page);
@@ -249,9 +254,9 @@ test.describe('Post Tests', () => {
     await loginUser(page, TEST_USERS.sarah.email, TEST_USERS.sarah.password);
   });
 
-  test('create post', async ({ page }) => {
+  test("create post", async ({ page }) => {
     // Test already logged in due to beforeEach
-    await createPost(page, 'Test');
+    await createPost(page, "Test");
   });
 });
 ```
@@ -283,10 +288,10 @@ npx playwright test auth.spec.js --debug
 ### Using Pause
 
 ```javascript
-test('my test', async ({ page }) => {
-  await page.goto('/');
+test("my test", async ({ page }) => {
+  await page.goto("/");
 
-  await page.pause();  // Test pauses here - you can inspect
+  await page.pause(); // Test pauses here - you can inspect
 
   // Continue test...
 });
@@ -301,7 +306,7 @@ Videos are recorded only on failure (if configured).
 **Manual screenshot:**
 
 ```javascript
-await page.screenshot({ path: 'screenshot.png' });
+await page.screenshot({ path: "screenshot.png" });
 ```
 
 ---
@@ -437,33 +442,38 @@ npx playwright show-trace trace.zip
 ### Complete User Flow
 
 ```javascript
-test('complete user journey', async ({ page }) => {
-  const { loginUser, createPost, getFirstPost, addReaction, TEST_USERS } =
-    require('./fixtures/test-helpers');
+test("complete user journey", async ({ page }) => {
+  const {
+    loginUser,
+    createPost,
+    getFirstPost,
+    addReaction,
+    TEST_USERS,
+  } = require("./fixtures/test-helpers");
 
   // Login
   await loginUser(page, TEST_USERS.sarah.email, TEST_USERS.sarah.password);
 
   // Create post
-  await createPost(page, 'Hello Testbook!');
+  await createPost(page, "Hello Testbook!");
 
   // React to post
   const post = getFirstPost(page);
-  await addReaction(post, 'like');
+  await addReaction(post, "like");
 
   // Verify
-  await expect(post).toContainText('Hello Testbook!');
+  await expect(post).toContainText("Hello Testbook!");
 });
 ```
 
 ### API Setup + UI Verification
 
 ```javascript
-test('verify post created via API', async ({ page, request }) => {
+test("verify post created via API", async ({ page, request }) => {
   // Setup via API (faster)
-  const response = await request.post('http://localhost:8000/api/posts', {
-    headers: { 'Authorization': `Bearer ${token}` },
-    data: { content: 'Test post' }
+  const response = await request.post("http://localhost:8000/api/posts", {
+    headers: { Authorization: `Bearer ${token}` },
+    data: { content: "Test post" },
   });
 
   // Verify via UI
@@ -478,7 +488,7 @@ test('verify post created via API', async ({ page, request }) => {
 
 - [Playwright Test Docs](https://playwright.dev/docs/intro)
 - [Main Testing Guide](../../docs/guides/RUNNING_TESTS.md)
-- [Lab 4: E2E Testing (JavaScript)](../../labs/LAB_04_E2E_Testing_JavaScript.md)
+- [Lab 4: E2E Testing (JavaScript)](../../learn/stage_3_api_e2e/exercises/LAB_04_E2E_Testing_JavaScript.md)
 - [Python E2E Tests](../e2e-python/README.md) (alternative approach)
 - [Test Alignment Guide](./E2E_TEST_ALIGNMENT.md) (JS vs Python differences)
 
@@ -510,6 +520,7 @@ test('verify post created via API', async ({ page, request }) => {
 - Many companies require WCAG compliance for their products
 
 **Interview Talking Points:**
+
 > "For Testbook, I implemented automated accessibility testing using axe-core and Playwright to ensure WCAG 2.1 AA compliance across all pages. This catches ~40% of accessibility issues automatically, which I then complement with manual keyboard navigation and screen reader testing."
 
 ---
