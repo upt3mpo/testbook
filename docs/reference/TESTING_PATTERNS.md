@@ -1,6 +1,160 @@
-# 🎯 Testbook Testing Patterns - Handling Dynamic Content
+# 🎯 Testbook Testing Patterns
 
-## The Problem
+## Table of Contents
+
+- [Arrange-Act-Assert Pattern](#arrange-act-assert-pattern)
+- [Dynamic Content Patterns](#dynamic-content-patterns)
+- [Test Structure Best Practices](#test-structure-best-practices)
+
+---
+
+## Arrange-Act-Assert Pattern
+
+The **Arrange-Act-Assert (AAA)** pattern is the fundamental structure for all tests. It provides clarity, consistency, and makes tests easier to understand and maintain.
+
+### What is AAA?
+
+**Arrange** - Set up the test data and conditions
+**Act** - Execute the specific behavior being tested
+**Assert** - Verify the expected outcome
+
+### Why Use AAA?
+
+- **Clarity**: Each test has a clear structure
+- **Consistency**: All tests follow the same pattern
+- **Maintainability**: Easy to understand and modify
+- **Debugging**: Clear separation makes issues easier to identify
+
+### Python Example (pytest)
+
+```python
+def test_user_login_success():
+    # Arrange
+    user = create_test_user(email="test@example.com", password="password123")
+    login_data = {"email": "test@example.com", "password": "password123"}
+
+    # Act
+    response = client.post("/auth/login", json=login_data)
+
+    # Assert
+    assert response.status_code == 200
+    assert "access_token" in response.json()
+    assert response.json()["user"]["email"] == "test@example.com"
+```
+
+### JavaScript Example (Vitest)
+
+```javascript
+test('user login success', () => {
+  // Arrange
+  const user = createTestUser({ email: 'test@example.com', password: 'password123' });
+  const loginData = { email: 'test@example.com', password: 'password123' };
+
+  // Act
+  const response = await fetch('/auth/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(loginData)
+  });
+
+  // Assert
+  expect(response.status).toBe(200);
+  const data = await response.json();
+  expect(data.access_token).toBeDefined();
+  expect(data.user.email).toBe('test@example.com');
+});
+```
+
+### React Component Example (Vitest + Testing Library)
+
+```javascript
+test("renders login form with submit button", () => {
+  // Arrange
+  const mockOnSubmit = vi.fn();
+
+  // Act
+  render(<LoginForm onSubmit={mockOnSubmit} />);
+
+  // Assert
+  expect(screen.getByRole("form")).toBeInTheDocument();
+  expect(screen.getByRole("button", { name: /login/i })).toBeInTheDocument();
+  expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
+  expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
+});
+```
+
+### Playwright E2E Example
+
+```javascript
+test("user can create a new post", async ({ page }) => {
+  // Arrange
+  await page.goto("/login");
+  await page.fill('[data-testid="email-input"]', "test@example.com");
+  await page.fill('[data-testid="password-input"]', "password123");
+  await page.click('[data-testid="login-button"]');
+  await page.waitForURL("/dashboard");
+
+  // Act
+  await page.click('[data-testid="new-post-button"]');
+  await page.fill('[data-testid="post-content"]', "This is my new post!");
+  await page.click('[data-testid="submit-post-button"]');
+
+  // Assert
+  await expect(page.locator('[data-testid="post-content"]')).toContainText(
+    "This is my new post!"
+  );
+  await expect(page.locator('[data-testid="success-message"]')).toBeVisible();
+});
+```
+
+### AAA Best Practices
+
+1. **One concept per test**: Each test should verify one specific behavior
+2. **Clear naming**: Test names should describe what is being tested
+3. **Minimal setup**: Only arrange what's necessary for the test
+4. **Single assertion**: Focus on one outcome per test (when possible)
+5. **Descriptive assertions**: Use clear, specific assertion messages
+
+### Common AAA Mistakes
+
+❌ **Mixing concerns in one test**
+
+```python
+def test_user_management():
+    # This test does too much - user creation AND login
+    user = create_user()  # Arrange
+    login_response = login(user)  # Act
+    assert login_response.status_code == 200  # Assert
+
+    # This should be separate tests
+    user_data = get_user_data()  # Arrange
+    update_response = update_user(user_data)  # Act
+    assert update_response.status_code == 200  # Assert
+```
+
+✅ **Separate concerns into focused tests**
+
+```python
+def test_user_login_success():
+    # Arrange
+    user = create_user()
+    # Act
+    response = login(user)
+    # Assert
+    assert response.status_code == 200
+
+def test_user_data_update():
+    # Arrange
+    user_data = get_user_data()
+    # Act
+    response = update_user(user_data)
+    # Assert
+    assert response.status_code == 200
+```
+
+---
+
+## Dynamic Content Patterns
 
 When testing dynamic content like posts, comments, and user lists, you often don't know the ID in advance:
 
@@ -28,10 +182,14 @@ const firstPost = posts.first();
 const lastPost = posts.last();
 
 // Select own posts only
-const ownPosts = await page.locator('[data-testid-generic="post-item"][data-is-own-post="true"]');
+const ownPosts = await page.locator(
+  '[data-testid-generic="post-item"][data-is-own-post="true"]'
+);
 
 // Select posts by specific author
-const sarahPosts = await page.locator('[data-testid-generic="post-item"][data-post-author="sarahjohnson"]');
+const sarahPosts = await page.locator(
+  '[data-testid-generic="post-item"][data-post-author="sarahjohnson"]'
+);
 
 // Get count of posts
 const postCount = await posts.count();
@@ -54,10 +212,14 @@ await page.locator('[data-testid-generic="post-item"]').last();
 
 ```javascript
 // Filter by multiple attributes
-const reposts = await page.locator('[data-testid-generic="post-item"][data-is-repost="true"]');
+const reposts = await page.locator(
+  '[data-testid-generic="post-item"][data-is-repost="true"]'
+);
 
 // Chain filters
-const ownPosts = await page.locator('[data-testid-generic="post-item"][data-is-own-post="true"]');
+const ownPosts = await page.locator(
+  '[data-testid-generic="post-item"][data-is-own-post="true"]'
+);
 const firstOwnPost = ownPosts.first();
 ```
 
@@ -66,13 +228,13 @@ const firstOwnPost = ownPosts.first();
 ```javascript
 // Create post and get ID from response
 const postId = await page.evaluate(async () => {
-  const response = await fetch('http://localhost:8000/api/posts/', {
-    method: 'POST',
+  const response = await fetch("http://localhost:8000/api/posts/", {
+    method: "POST",
     headers: {
-      'Authorization': `Bearer ${localStorage.getItem('token')}`,
-      'Content-Type': 'application/json'
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify({ content: 'Test post' })
+    body: JSON.stringify({ content: "Test post" }),
   });
   const data = await response.json();
   return data.id;
@@ -87,14 +249,19 @@ await page.click(`[data-testid="post-${postId}-react-button"]`);
 ### Posts
 
 ```html
-<div
-  data-testid="post-{id}"           <!-- Unique ID if you know it -->
-  data-testid-generic="post-item"   <!-- Generic selector for all posts -->
-  data-post-id="{id}"               <!-- Post ID for filtering -->
-  data-post-author="{username}"     <!-- Author's username -->
-  data-is-own-post="true/false"     <!-- Is current user's post -->
-  data-is-repost="true/false"       <!-- Is this a repost -->
->
+<div data-testid="post-{id}" <!-- Unique id if you know it -->
+  data-testid-generic="post-item"
+  <!-- Generic selector for all posts -->
+  data-post-id="{id}"
+  <!-- Post ID for filtering -->
+  data-post-author="{username}"
+  <!-- Author's username -->
+  data-is-own-post="true/false"
+  <!-- Is current user's post -->
+  data-is-repost="true/false"
+  <!-- Is this a repost -->
+  >
+</div>
 ```
 
 **Usage examples:**
@@ -107,59 +274,79 @@ await page.locator('[data-testid-generic="post-item"]').first();
 cy.get('[data-testid-generic="post-item"][data-is-own-post="true"]');
 
 // Selenium - Select posts by author
-driver.find_elements(By.CSS_SELECTOR, '[data-post-author="sarahjohnson"]')
+driver.find_elements(By.CSS_SELECTOR, '[data-post-author="sarahjohnson"]');
 
 // Find and interact with first own post
-await page.locator('[data-is-own-post="true"]').first()
-  .locator('button:has-text("⋯")').click();
+await page
+  .locator('[data-is-own-post="true"]')
+  .first()
+  .locator('button:has-text("⋯")')
+  .click();
 ```
 
 ### Comments
 
 ```html
-<div
-  data-testid="comment-{id}"        <!-- Unique ID if you know it -->
-  data-testid-generic="comment-item" <!-- Generic selector -->
-  data-comment-id="{id}"            <!-- Comment ID -->
-  data-author="{username}"          <!-- Commenter's username -->
->
+<div data-testid="comment-{id}" <!-- Unique id if you know it -->
+  data-testid-generic="comment-item"
+  <!-- Generic selector -->
+  data-comment-id="{id}"
+  <!-- Comment ID -->
+  data-author="{username}"
+  <!-- Commenter's username -->
+  >
+</div>
 ```
 
 **Usage examples:**
 
 ```javascript
 // Count comments
-const commentCount = await page.locator('[data-testid-generic="comment-item"]').count();
+const commentCount = await page
+  .locator('[data-testid-generic="comment-item"]')
+  .count();
 
 // Select comments by specific author
-await page.locator('[data-testid-generic="comment-item"][data-author="mikechen"]');
+await page.locator(
+  '[data-testid-generic="comment-item"][data-author="mikechen"]'
+);
 
 // Verify your comment appears
 await expect(
-  page.locator('[data-testid-generic="comment-item"][data-author="sarahjohnson"]')
+  page.locator(
+    '[data-testid-generic="comment-item"][data-author="sarahjohnson"]'
+  )
 ).toBeVisible();
 ```
 
 ### Followers
 
 ```html
-<div
-  data-testid="follower-{id}"       <!-- Unique ID if you know it -->
-  data-testid-generic="follower-item" <!-- Generic selector -->
-  data-user-id="{id}"               <!-- User ID -->
-  data-username="{username}"        <!-- Username -->
-  data-is-blocked="true/false"      <!-- Block status -->
->
+<div data-testid="follower-{id}" <!-- Unique id if you know it -->
+  data-testid-generic="follower-item"
+  <!-- Generic selector -->
+  data-user-id="{id}"
+  <!-- User ID -->
+  data-username="{username}"
+  <!-- Username -->
+  data-is-blocked="true/false"
+  <!-- Block status -->
+  >
+</div>
 ```
 
 **Usage examples:**
 
 ```javascript
 // Count followers
-const followerCount = await page.locator('[data-testid-generic="follower-item"]').count();
+const followerCount = await page
+  .locator('[data-testid-generic="follower-item"]')
+  .count();
 
 // Find blocked followers
-await page.locator('[data-testid-generic="follower-item"][data-is-blocked="true"]');
+await page.locator(
+  '[data-testid-generic="follower-item"][data-is-blocked="true"]'
+);
 
 // Find specific follower by username
 await page.locator('[data-username="mikechen"]');
@@ -168,13 +355,17 @@ await page.locator('[data-username="mikechen"]');
 ### Following
 
 ```html
-<div
-  data-testid="following-{id}"      <!-- Unique ID if you know it -->
-  data-testid-generic="following-item" <!-- Generic selector -->
-  data-user-id="{id}"               <!-- User ID -->
-  data-username="{username}"        <!-- Username -->
-  data-is-following="true/false"    <!-- Follow status -->
->
+<div data-testid="following-{id}" <!-- Unique id if you know it -->
+  data-testid-generic="following-item"
+  <!-- Generic selector -->
+  data-user-id="{id}"
+  <!-- User ID -->
+  data-username="{username}"
+  <!-- Username -->
+  data-is-following="true/false"
+  <!-- Follow status -->
+  >
+</div>
 ```
 
 ## 🎯 Common Testing Patterns
@@ -182,11 +373,11 @@ await page.locator('[data-username="mikechen"]');
 ### Pattern 1: Test Newly Created Content
 
 ```javascript
-test('create post and verify it appears', async ({ page }) => {
-  await loginAs(page, 'sarah.johnson@testbook.com', 'Sarah2024!');
+test("create post and verify it appears", async ({ page }) => {
+  await loginAs(page, "sarah.johnson@testbook.com", "Sarah2024!");
 
   // Create post
-  await page.fill('[data-testid="create-post-textarea"]', 'New test post');
+  await page.fill('[data-testid="create-post-textarea"]', "New test post");
   await page.click('[data-testid="create-post-submit-button"]');
 
   // Wait for post to appear
@@ -194,19 +385,19 @@ test('create post and verify it appears', async ({ page }) => {
 
   // Verify by selecting first post (most recent)
   const firstPost = page.locator('[data-testid-generic="post-item"]').first();
-  await expect(firstPost).toContainText('New test post');
+  await expect(firstPost).toContainText("New test post");
 
   // Verify it's your own post
-  await expect(firstPost).toHaveAttribute('data-is-own-post', 'true');
-  await expect(firstPost).toHaveAttribute('data-post-author', 'sarahjohnson');
+  await expect(firstPost).toHaveAttribute("data-is-own-post", "true");
+  await expect(firstPost).toHaveAttribute("data-post-author", "sarahjohnson");
 });
 ```
 
 ### Pattern 2: Interact with Your Own Posts
 
 ```javascript
-test('edit your own post', async ({ page }) => {
-  await loginAs(page, 'sarah.johnson@testbook.com', 'Sarah2024!');
+test("edit your own post", async ({ page }) => {
+  await loginAs(page, "sarah.johnson@testbook.com", "Sarah2024!");
 
   // Find first own post
   const ownPost = page.locator('[data-is-own-post="true"]').first();
@@ -218,7 +409,9 @@ test('edit your own post', async ({ page }) => {
   await ownPost.locator('[data-testid$="-edit-button"]').click();
 
   // Edit content
-  await ownPost.locator('[data-testid$="-edit-textarea"]').fill('Edited content');
+  await ownPost
+    .locator('[data-testid$="-edit-textarea"]')
+    .fill("Edited content");
   await ownPost.locator('[data-testid$="-save-button"]').click();
 });
 ```
@@ -226,8 +419,8 @@ test('edit your own post', async ({ page }) => {
 ### Pattern 3: Count and Iterate
 
 ```javascript
-test('react to all posts in feed', async ({ page }) => {
-  await loginAs(page, 'sarah.johnson@testbook.com', 'Sarah2024!');
+test("react to all posts in feed", async ({ page }) => {
+  await loginAs(page, "sarah.johnson@testbook.com", "Sarah2024!");
 
   // Get all posts
   const posts = page.locator('[data-testid-generic="post-item"]');
@@ -242,8 +435,9 @@ test('react to all posts in feed', async ({ page }) => {
 
   // Verify all have reactions
   for (let i = 0; i < count; i++) {
-    await expect(posts.nth(i).locator('[data-testid$="-react-button"]'))
-      .toContainText('👍');
+    await expect(
+      posts.nth(i).locator('[data-testid$="-react-button"]')
+    ).toContainText("👍");
   }
 });
 ```
@@ -251,15 +445,16 @@ test('react to all posts in feed', async ({ page }) => {
 ### Pattern 4: Find by Content Then Get ID
 
 ```javascript
-test('find post by content and get its ID', async ({ page }) => {
-  await loginAs(page, 'sarah.johnson@testbook.com', 'Sarah2024!');
+test("find post by content and get its ID", async ({ page }) => {
+  await loginAs(page, "sarah.johnson@testbook.com", "Sarah2024!");
 
   // Find post containing specific text
-  const post = page.locator('[data-testid-generic="post-item"]')
-    .filter({ hasText: 'Morning workout' });
+  const post = page
+    .locator('[data-testid-generic="post-item"]')
+    .filter({ hasText: "Morning workout" });
 
   // Get the post ID for later use
-  const postId = await post.getAttribute('data-post-id');
+  const postId = await post.getAttribute("data-post-id");
 
   // Now can use specific selectors if needed
   await page.click(`[data-testid="post-${postId}-react-button"]`);
@@ -269,12 +464,14 @@ test('find post by content and get its ID', async ({ page }) => {
 ### Pattern 5: Filter by Multiple Criteria
 
 ```javascript
-test('find specific user in followers list', async ({ page }) => {
-  await loginAs(page, 'sarah.johnson@testbook.com', 'Sarah2024!');
-  await page.goto('/profile/sarahjohnson/followers');
+test("find specific user in followers list", async ({ page }) => {
+  await loginAs(page, "sarah.johnson@testbook.com", "Sarah2024!");
+  await page.goto("/profile/sarahjohnson/followers");
 
   // Find specific follower by username
-  const follower = page.locator('[data-testid-generic="follower-item"][data-username="mikechen"]');
+  const follower = page.locator(
+    '[data-testid-generic="follower-item"][data-username="mikechen"]'
+  );
 
   await expect(follower).toBeVisible();
 
@@ -282,7 +479,7 @@ test('find specific user in followers list', async ({ page }) => {
   await follower.locator('[data-testid$="-block-button"]').click();
 
   // Verify blocked state changed
-  await expect(follower).toHaveAttribute('data-is-blocked', 'true');
+  await expect(follower).toHaveAttribute("data-is-blocked", "true");
 });
 ```
 
@@ -323,19 +520,21 @@ cy.get('[data-testid-generic="post-item"]').first();
 cy.get('[data-is-own-post="true"]');
 
 // Find post by author and get ID
-cy.get('[data-post-author="sarahjohnson"]').first()
-  .invoke('attr', 'data-post-id')
+cy.get('[data-post-author="sarahjohnson"]')
+  .first()
+  .invoke("attr", "data-post-id")
   .then((postId) => {
     // Use the ID
     cy.get(`[data-testid="post-${postId}-react-button"]`).click();
   });
 
 // Count comments
-cy.get('[data-testid-generic="comment-item"]').should('have.length', 5);
+cy.get('[data-testid-generic="comment-item"]').should("have.length", 5);
 
 // Verify comment by specific user exists
-cy.get('[data-testid-generic="comment-item"][data-author="mikechen"]')
-  .should('exist');
+cy.get('[data-testid-generic="comment-item"][data-author="mikechen"]').should(
+  "exist"
+);
 ```
 
 ## 📊 Best Practices
@@ -357,7 +556,7 @@ await page.locator('[data-is-own-post="true"]').first();
 await page.click('[data-testid="post-99-react-button"]');
 
 // Bad - position might change
-await page.locator('.post').nth(3); // No data-testid!
+await page.locator(".post").nth(3); // No data-testid!
 ```
 
 ### ✅ DO: Combine API and UI Testing
@@ -427,61 +626,69 @@ await expect(posts).toHaveCount(22); // Was 21, now 22
 ### Scenario: User Registration Flow
 
 ```javascript
-test('new user registration and first post', async ({ page }) => {
+test("new user registration and first post", async ({ page }) => {
   // Register new user
-  await page.goto('http://localhost:3000/register');
-  await page.fill('[data-testid="register-email-input"]', 'newuser@test.com');
-  await page.fill('[data-testid="register-username-input"]', 'testuser');
-  await page.fill('[data-testid="register-displayname-input"]', 'Test User');
-  await page.fill('[data-testid="register-password-input"]', 'Test123!');
+  await page.goto("http://localhost:3000/register");
+  await page.fill('[data-testid="register-email-input"]', "newuser@test.com");
+  await page.fill('[data-testid="register-username-input"]', "testuser");
+  await page.fill('[data-testid="register-displayname-input"]', "Test User");
+  await page.fill('[data-testid="register-password-input"]', "Test123!");
   await page.click('[data-testid="register-submit-button"]');
 
   // Should auto-login and redirect to feed
-  await expect(page).toHaveURL('http://localhost:3000/');
+  await expect(page).toHaveURL("http://localhost:3000/");
   await expect(page.locator('[data-testid="navbar"]')).toBeVisible();
 
   // Create first post
-  await page.fill('[data-testid="create-post-textarea"]', 'My first post!');
+  await page.fill('[data-testid="create-post-textarea"]', "My first post!");
   await page.click('[data-testid="create-post-submit-button"]');
 
   // Verify post appears as first item
   const firstPost = page.locator('[data-testid-generic="post-item"]').first();
-  await expect(firstPost).toContainText('My first post!');
-  await expect(firstPost).toHaveAttribute('data-is-own-post', 'true');
-  await expect(firstPost).toHaveAttribute('data-post-author', 'testuser');
+  await expect(firstPost).toContainText("My first post!");
+  await expect(firstPost).toHaveAttribute("data-is-own-post", "true");
+  await expect(firstPost).toHaveAttribute("data-post-author", "testuser");
 });
 ```
 
 ### Scenario: Complex Interaction Flow
 
 ```javascript
-test('follow user, view their posts, react and comment', async ({ page }) => {
-  await loginAs(page, 'sarah.johnson@testbook.com', 'Sarah2024!');
+test("follow user, view their posts, react and comment", async ({ page }) => {
+  await loginAs(page, "sarah.johnson@testbook.com", "Sarah2024!");
 
   // Go to Mike's profile
-  await page.goto('http://localhost:3000/profile/mikechen');
+  await page.goto("http://localhost:3000/profile/mikechen");
 
   // Follow Mike
   await page.click('[data-testid="profile-follow-button"]');
-  await expect(page.locator('[data-testid="profile-follow-button"]')).toContainText('Unfollow');
+  await expect(
+    page.locator('[data-testid="profile-follow-button"]')
+  ).toContainText("Unfollow");
 
   // Switch to Following feed
   await page.click('[data-testid="navbar-home-link"]');
   await page.click('[data-testid="feed-tab-following"]');
 
   // Find Mike's post (should be in following feed now)
-  const mikesPost = page.locator('[data-testid-generic="post-item"][data-post-author="mikechen"]').first();
+  const mikesPost = page
+    .locator('[data-testid-generic="post-item"][data-post-author="mikechen"]')
+    .first();
 
   // React to it
   await mikesPost.locator('[data-testid$="-react-button"]').hover();
   await mikesPost.locator('[data-testid$="-reaction-love"]').click();
 
   // Verify reaction added
-  await expect(mikesPost.locator('[data-testid$="-react-button"]')).toContainText('❤️');
+  await expect(
+    mikesPost.locator('[data-testid$="-react-button"]')
+  ).toContainText("❤️");
 
   // Add comment
   await mikesPost.locator('[data-testid$="-comment-button"]').click();
-  await mikesPost.locator('[data-testid$="-comment-input"]').fill('Great post!');
+  await mikesPost
+    .locator('[data-testid$="-comment-input"]')
+    .fill("Great post!");
   await mikesPost.locator('[data-testid$="-comment-submit"]').click();
 });
 ```
@@ -489,27 +696,36 @@ test('follow user, view their posts, react and comment', async ({ page }) => {
 ### Scenario: File Upload Test
 
 ```javascript
-test('upload image and create post', async ({ page }) => {
-  await loginAs(page, 'sarah.johnson@testbook.com', 'Sarah2024!');
+test("upload image and create post", async ({ page }) => {
+  await loginAs(page, "sarah.johnson@testbook.com", "Sarah2024!");
 
   // Fill content
-  await page.fill('[data-testid="create-post-textarea"]', 'Check out this photo!');
+  await page.fill(
+    '[data-testid="create-post-textarea"]',
+    "Check out this photo!"
+  );
 
   // Upload file
-  await page.setInputFiles('[data-testid="create-post-file-input"]', './test-assets/image.jpg');
+  await page.setInputFiles(
+    '[data-testid="create-post-file-input"]',
+    "./test-assets/image.jpg"
+  );
 
   // Verify preview
-  await expect(page.locator('[data-testid="create-post-preview"]')).toBeVisible();
+  await expect(
+    page.locator('[data-testid="create-post-preview"]')
+  ).toBeVisible();
 
   // Submit
   await page.click('[data-testid="create-post-submit-button"]');
 
   // Find the new post (first post with your content)
-  const newPost = page.locator('[data-testid-generic="post-item"]')
-    .filter({ hasText: 'Check out this photo!' });
+  const newPost = page
+    .locator('[data-testid-generic="post-item"]')
+    .filter({ hasText: "Check out this photo!" });
 
   // Verify image is present
-  await expect(newPost.locator('img.post-media')).toBeVisible();
+  await expect(newPost.locator("img.post-media")).toBeVisible();
 });
 ```
 
@@ -518,8 +734,8 @@ test('upload image and create post', async ({ page }) => {
 ### React/Unreact
 
 ```javascript
-test('toggle reaction on post', async ({ page }) => {
-  await loginAs(page, 'sarah.johnson@testbook.com', 'Sarah2024!');
+test("toggle reaction on post", async ({ page }) => {
+  await loginAs(page, "sarah.johnson@testbook.com", "Sarah2024!");
 
   const firstPost = page.locator('[data-testid-generic="post-item"]').first();
   const reactButton = firstPost.locator('[data-testid$="-react-button"]');
@@ -527,32 +743,32 @@ test('toggle reaction on post', async ({ page }) => {
   // Add reaction
   await reactButton.hover();
   await firstPost.locator('[data-testid$="-reaction-like"]').click();
-  await expect(reactButton).toContainText('👍');
+  await expect(reactButton).toContainText("👍");
 
   // Remove reaction (click same emoji again)
   await reactButton.hover();
   await firstPost.locator('[data-testid$="-reaction-like"]').click();
-  await expect(reactButton).toContainText('React');
+  await expect(reactButton).toContainText("React");
 });
 ```
 
 ### Repost/Unrepost
 
 ```javascript
-test('toggle repost', async ({ page }) => {
-  await loginAs(page, 'sarah.johnson@testbook.com', 'Sarah2024!');
+test("toggle repost", async ({ page }) => {
+  await loginAs(page, "sarah.johnson@testbook.com", "Sarah2024!");
 
   const firstPost = page.locator('[data-testid-generic="post-item"]').first();
   const repostButton = firstPost.locator('[data-testid$="-repost-button"]');
 
   // Repost
   await repostButton.click();
-  await expect(repostButton).toContainText('✓ Reposted');
+  await expect(repostButton).toContainText("✓ Reposted");
   await expect(repostButton).toHaveClass(/btn-primary/);
 
   // Unrepost
   await repostButton.click();
-  await expect(repostButton).toContainText('Repost');
+  await expect(repostButton).toContainText("Repost");
   await expect(repostButton).toHaveClass(/btn-secondary/);
 });
 ```
@@ -582,7 +798,7 @@ test('toggle repost', async ({ page }) => {
 - **[TESTING_GUIDE.md](../guides/TESTING_GUIDE.md)** - Complete testing examples
 - **[TESTING_FEATURES.md](TESTING_FEATURES.md)** - All testable features
 - **[TESTING_CHEATSHEET.md](TESTING_CHEATSHEET.md)** - Quick reference guide
-- **[QUICKSTART.md](../../QUICKSTART.md)** - Get started quickly
+- **[README.md](../../README.md#quick-start-5-minutes)** - Get started quickly
 
 ---
 
@@ -604,7 +820,7 @@ Our block user feature had this:
 
 ```javascript
 const handleBlock = async () => {
-  if (!window.confirm('Are you sure you want to block this user?')) return;
+  if (!window.confirm("Are you sure you want to block this user?")) return;
   await blockUser();
 };
 ```
@@ -616,12 +832,14 @@ Tests that clicked the block button would hang, waiting for the dialog to be dis
 **Pattern 1: Per-Test Handler**
 
 ```javascript
-test('should block user', async ({ page }) => {
+test("should block user", async ({ page }) => {
   // Setup BEFORE the action that triggers dialog
-  page.on('dialog', dialog => dialog.accept());
+  page.on("dialog", (dialog) => dialog.accept());
 
   await page.click('[data-testid="block-button"]');
-  await expect(page.locator('[data-testid="block-button"]')).toContainText('Unblock');
+  await expect(page.locator('[data-testid="block-button"]')).toContainText(
+    "Unblock"
+  );
 });
 ```
 
@@ -630,7 +848,7 @@ test('should block user', async ({ page }) => {
 ```javascript
 // In test-helpers.js
 function setupDialogHandler(page) {
-  page.on('dialog', async dialog => {
+  page.on("dialog", async (dialog) => {
     console.log(`Auto-accepting ${dialog.type()}: ${dialog.message()}`);
     await dialog.accept();
   });
@@ -638,20 +856,20 @@ function setupDialogHandler(page) {
 
 // In your test files
 test.beforeEach(async ({ page }) => {
-  setupDialogHandler(page);  // Handles ALL dialogs automatically
+  setupDialogHandler(page); // Handles ALL dialogs automatically
   await resetDatabase(page);
-  await loginUser(page, 'user@example.com', 'password');
+  await loginUser(page, "user@example.com", "password");
 });
 ```
 
 **Pattern 3: Selective Handling**
 
 ```javascript
-page.on('dialog', async dialog => {
-  if (dialog.message().includes('delete')) {
-    await dialog.accept();  // Accept deletion
+page.on("dialog", async (dialog) => {
+  if (dialog.message().includes("delete")) {
+    await dialog.accept(); // Accept deletion
   } else {
-    await dialog.dismiss();  // Dismiss others
+    await dialog.dismiss(); // Dismiss others
   }
 });
 ```
@@ -676,10 +894,10 @@ page.on('dialog', async dialog => {
 
 ```javascript
 // Frontend
-if (!window.confirm('Delete?')) return;
+if (!window.confirm("Delete?")) return;
 
 // Test
-page.on('dialog', dialog => dialog.accept());
+page.on("dialog", (dialog) => dialog.accept());
 await page.click('[data-testid="delete-button"]');
 ```
 
@@ -687,11 +905,11 @@ await page.click('[data-testid="delete-button"]');
 
 ```javascript
 // Frontend has TWO confirms
-if (!window.confirm('Sure?')) return;
-if (!window.confirm('Really sure?')) return;
+if (!window.confirm("Sure?")) return;
+if (!window.confirm("Really sure?")) return;
 
 // Test - handler accepts all
-page.on('dialog', dialog => dialog.accept());
+page.on("dialog", (dialog) => dialog.accept());
 await page.click('[data-testid="delete-button"]');
 // Both dialogs auto-dismissed!
 ```
@@ -700,10 +918,10 @@ await page.click('[data-testid="delete-button"]');
 
 ```javascript
 // Frontend
-alert('Success!');
+alert("Success!");
 
 // Test
-page.on('dialog', dialog => dialog.accept());
+page.on("dialog", (dialog) => dialog.accept());
 await page.click('[data-testid="save-button"]');
 // Alert auto-dismissed, test continues
 ```
@@ -712,10 +930,10 @@ await page.click('[data-testid="save-button"]');
 
 ```javascript
 // Log all dialogs to see what's happening
-page.on('dialog', async dialog => {
-  console.log('Dialog type:', dialog.type());
-  console.log('Dialog message:', dialog.message());
-  console.log('Dialog default value:', dialog.defaultValue());
+page.on("dialog", async (dialog) => {
+  console.log("Dialog type:", dialog.type());
+  console.log("Dialog message:", dialog.message());
+  console.log("Dialog default value:", dialog.defaultValue());
   await dialog.accept();
 });
 ```
@@ -740,9 +958,9 @@ Our edit button is in a dropdown with click-outside handler:
 ```javascript
 useEffect(() => {
   const handleClickOutside = (event) => {
-    setShowDropdown(false);  // Closes dropdown
+    setShowDropdown(false); // Closes dropdown
   };
-  document.addEventListener('mousedown', handleClickOutside);
+  document.addEventListener("mousedown", handleClickOutside);
 }, [showDropdown]);
 ```
 
@@ -753,11 +971,11 @@ Tests would open menu, but dropdown closed before clicking edit!
 ```javascript
 // Normal click might fail
 await page.click('[data-testid="menu-button"]');
-await page.click('[data-testid="edit-button"]');  // ❌ Dropdown closed!
+await page.click('[data-testid="edit-button"]'); // ❌ Dropdown closed!
 
 // Force click bypasses some checks
 await page.click('[data-testid="menu-button"]');
-await page.locator('[data-testid="edit-button"]').click({ force: true });  // ✅ Works!
+await page.locator('[data-testid="edit-button"]').click({ force: true }); // ✅ Works!
 ```
 
 ### When to Use Force
@@ -786,7 +1004,7 @@ await expect(editButton).toBeVisible({ timeout: 5000 });
 await editButton.click();
 
 // Or wait for transitions to complete
-await page.waitForTimeout(200);  // CSS transition time
+await page.waitForTimeout(200); // CSS transition time
 await page.click('[data-testid="edit-button"]');
 ```
 
@@ -802,15 +1020,15 @@ await page.click('[data-testid="edit-button"]');
 
 ```javascript
 await page.click('[data-testid="follow-button"]');
-await page.waitForTimeout(1000);  // Hope it's enough!
-await expect(button).toContainText('Unfollow');
+await page.waitForTimeout(1000); // Hope it's enough!
+await expect(button).toContainText("Unfollow");
 ```
 
 **✅ GOOD - Wait for Actual Change:**
 
 ```javascript
 await page.click('[data-testid="follow-button"]');
-await expect(button).toContainText('Unfollow', { timeout: 10000 });  // Waits only as long as needed
+await expect(button).toContainText("Unfollow", { timeout: 10000 }); // Waits only as long as needed
 ```
 
 ### Real Examples from Testbook Fixes
@@ -835,8 +1053,8 @@ await expect(editTextarea).not.toBeVisible({ timeout: 5000 });
 
 ```javascript
 // After API-heavy operation
-await addReaction(post, 'like');
-await page.waitForLoadState('networkidle', { timeout: 3000 }).catch(() => {});
+await addReaction(post, "like");
+await page.waitForLoadState("networkidle", { timeout: 3000 }).catch(() => {});
 ```
 
 **Pattern 4: Wait for URL Change**
@@ -863,3 +1081,172 @@ await page.waitForURL(/.*\/login/, { timeout: 15000 });
 ---
 
 **Now you can test dynamic content AND handle all the edge cases!** 🎉
+
+---
+
+## Test Structure Best Practices
+
+### File Organization
+
+```
+tests/
+├── unit/           # Fast, isolated tests
+│   ├── test_auth.py
+│   ├── test_models.py
+│   └── test_utils.py
+├── integration/    # Component interaction tests
+│   ├── test_api_routes.py
+│   └── test_database.py
+├── e2e/           # End-to-end user workflows
+│   ├── test_user_flows.py
+│   └── test_admin_flows.py
+└── fixtures/      # Shared test data
+    ├── users.py
+    └── posts.py
+```
+
+### Test Naming Conventions
+
+**Python (pytest)**
+
+```python
+def test_user_login_success():
+def test_user_login_invalid_credentials():
+def test_user_login_missing_email():
+def test_user_login_empty_password():
+```
+
+**JavaScript (Vitest)**
+
+```javascript
+test("user login success", () => {});
+test("user login invalid credentials", () => {});
+test("user login missing email", () => {});
+test("user login empty password", () => {});
+```
+
+### Test Data Management
+
+**Use factories for consistent test data**
+
+```python
+# tests/factories.py
+def create_test_user(email="test@example.com", password="password123"):
+    return User(email=email, password=hash_password(password))
+
+def create_test_post(content="Test post", author_id=1):
+    return Post(content=content, author_id=author_id)
+```
+
+**Use fixtures for shared setup**
+
+```python
+# conftest.py
+@pytest.fixture
+def test_client():
+    app = create_app()
+    with app.test_client() as client:
+        yield client
+
+@pytest.fixture
+def authenticated_user(test_client):
+    user = create_test_user()
+    response = test_client.post("/auth/login", json={
+        "email": user.email,
+        "password": "password123"
+    })
+    token = response.json()["access_token"]
+    return {"user": user, "token": token}
+```
+
+### Test Isolation
+
+**Each test should be independent**
+
+```python
+def test_user_creation():
+    # This test creates its own data
+    user_data = {"email": "new@example.com", "password": "password123"}
+    response = client.post("/users", json=user_data)
+    assert response.status_code == 201
+
+def test_user_login():
+    # This test also creates its own data
+    user = create_test_user()
+    login_data = {"email": user.email, "password": "password123"}
+    response = client.post("/auth/login", json=login_data)
+    assert response.status_code == 200
+```
+
+### Assertion Best Practices
+
+**Use specific assertions**
+
+```python
+# ❌ Vague
+assert response.status_code == 200
+
+# ✅ Specific
+assert response.status_code == 200
+assert "access_token" in response.json()
+assert response.json()["user"]["email"] == "test@example.com"
+```
+
+**Use descriptive assertion messages**
+
+```python
+# ❌ Generic
+assert len(users) == 1
+
+# ✅ Descriptive
+assert len(users) == 1, f"Expected 1 user, got {len(users)}: {[u.email for u in users]}"
+```
+
+### Test Documentation
+
+**Write clear test descriptions**
+
+```python
+def test_user_can_update_own_profile():
+    """
+    Test that authenticated users can update their own profile information.
+
+    Given: A logged-in user
+    When: They submit a profile update request
+    Then: Their profile should be updated with the new information
+    """
+    # Test implementation...
+```
+
+### Performance Considerations
+
+**Use appropriate test types**
+
+- **Unit tests**: Fast (< 1ms), isolated, no I/O
+- **Integration tests**: Medium speed (< 100ms), test component interactions
+- **E2E tests**: Slower (< 5s), test complete user workflows
+
+**Parallel test execution**
+
+```bash
+# Run tests in parallel
+pytest -n auto  # Use all CPU cores
+pytest -n 4     # Use 4 processes
+```
+
+### Maintenance Tips
+
+1. **Keep tests simple**: One concept per test
+2. **Use meaningful names**: Test names should describe the behavior
+3. **Avoid test interdependencies**: Each test should work in isolation
+4. **Clean up after tests**: Use teardown methods when needed
+5. **Regular refactoring**: Update tests when code changes
+6. **Monitor test performance**: Keep test suite fast and reliable
+
+---
+
+**For more testing patterns and examples, see:**
+
+- [TESTING_CHEATSHEET.md](TESTING_CHEATSHEET.md) - Quick reference
+- [TESTING_ANTIPATTERNS.md](TESTING_ANTIPATTERNS.md) - What to avoid
+- [FLAKY_TESTS_GUIDE.md](../guides/FLAKY_TESTS_GUIDE.md) - Handling flaky tests

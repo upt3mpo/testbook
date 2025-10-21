@@ -43,6 +43,7 @@ pytest
 
 # Run with verbose output
 pytest -v
+# See [Quick Commands](docs/reference/QUICK_COMMANDS.md) for all pytest options
 
 # Run specific test directory
 pytest tests/unit/
@@ -73,6 +74,7 @@ pytest --cov
 
 # Generate HTML coverage report
 pytest --cov --cov-report=html
+# See [Quick Commands](docs/reference/QUICK_COMMANDS.md) for all coverage options
 
 # View HTML report
 open htmlcov/index.html  # macOS
@@ -133,7 +135,7 @@ Even though skipped, studying this test teaches you about:
 
 **Learn more:** [Contract Testing Guide](../../docs/guides/CONTRACT_TESTING.md) - Complete explanation with examples
 
-**Alternative:** Frontend contract testing works today! See [Lab 6C: Frontend Integration Testing](../../labs/LAB_06C_Frontend_Integration_Testing.md)
+**Alternative:** Frontend contract testing works today! See [Lab 6C: Frontend Integration Testing](../../learn/stage_4_performance_security/exercises/LAB_06C_Frontend_Integration_Testing.md)
 
 ## Test Markers
 
@@ -224,7 +226,7 @@ def test_database_operation(db_session, test_user):
 
 ## Best Practices
 
-1. **Arrange-Act-Assert** - Structure tests clearly
+1. **[Arrange-Act-Assert](../../docs/reference/TESTING_PATTERNS.md#arrange-act-assert-pattern)** - Structure tests clearly
 2. **One assertion per test** - Keep tests focused (when possible)
 3. **Use descriptive names** - Test name should describe what's being tested
 4. **Add docstrings** - Explain what the test verifies
@@ -259,15 +261,18 @@ Tests are automatically run on every commit via GitHub Actions. See `.github/wor
 ### Common Issues
 
 1. **Import errors**
+
    - Make sure you're in the backend directory
    - Activate virtual environment
    - Install all dependencies
 
 2. **Database locked errors**
+
    - Delete `test_testbook.db` if it exists
    - Each test creates a fresh database
 
 3. **Port already in use**
+
    - Tests use TestClient, no actual server needed
    - No port conflicts should occur
 
@@ -304,7 +309,7 @@ user = UserFactory.create(
 user, posts = create_user_with_posts(db_session, num_posts=5)
 ```
 
-See [LAB_05_Test_Data_Management.md](../../labs/LAB_05_Test_Data_Management.md) to learn more.
+See [LAB_05_Test_Data_Management.md](../../learn/stage_2_integration/exercises/LAB_05_Test_Data_Management.md) to learn more.
 
 ## Contributing
 

@@ -8,16 +8,16 @@ This guide helps you translate testing knowledge between Python and JavaScript, 
 
 ## 📚 Quick Reference Table
 
-| Concept | Python | JavaScript |
-|---------|--------|------------|
-| **Test Framework** | pytest | Vitest / Jest |
-| **E2E Framework** | Playwright (Python) | Playwright (JS) |
-| **Assertions** | `assert` | `expect()` |
-| **Mocking** | `pytest.mock` / `unittest.mock` | `vi.mock()` |
-| **Fixtures** | `@pytest.fixture` | Playwright fixtures |
-| **API Testing** | `requests` | `axios` / `fetch` |
-| **Component Testing** | N/A | Vitest + Testing Library |
-| **Coverage** | `pytest-cov` | `vitest --coverage` |
+| Concept               | Python                          | JavaScript               |
+| --------------------- | ------------------------------- | ------------------------ |
+| **Test Framework**    | pytest                          | Vitest / Jest            |
+| **E2E Framework**     | Playwright (Python)             | Playwright (JS)          |
+| **Assertions**        | `assert`                        | `expect()`               |
+| **Mocking**           | `pytest.mock` / `unittest.mock` | `vi.mock()`              |
+| **Fixtures**          | `@pytest.fixture`               | Playwright fixtures      |
+| **API Testing**       | `requests`                      | `axios` / `fetch`        |
+| **Component Testing** | N/A                             | Vitest + Testing Library |
+| **Coverage**          | `pytest-cov`                    | `vitest --coverage`      |
 
 ---
 
@@ -37,7 +37,7 @@ def test_addition():
 **JavaScript (Vitest)**
 
 ```javascript
-test('addition works correctly', () => {
+test("addition works correctly", () => {
   const result = 2 + 2;
   expect(result).toBe(4);
 });
@@ -61,13 +61,13 @@ class TestAuthentication:
 **JavaScript (Vitest)**
 
 ```javascript
-describe('Authentication', () => {
-  test('login succeeds with correct credentials', () => {
-    expect(login('user', 'pass')).toBe(true);
+describe("Authentication", () => {
+  test("login succeeds with correct credentials", () => {
+    expect(login("user", "pass")).toBe(true);
   });
 
-  test('login fails with wrong credentials', () => {
-    expect(login('user', 'wrong')).toBe(false);
+  test("login fails with wrong credentials", () => {
+    expect(login("user", "wrong")).toBe(false);
   });
 });
 ```
@@ -104,8 +104,8 @@ const test = base.extend({
   },
 });
 
-test('query returns users', async ({ database }) => {
-  const result = await database.query('SELECT * FROM users');
+test("query returns users", async ({ database }) => {
+  const result = await database.query("SELECT * FROM users");
   expect(result.length).toBeGreaterThan(0);
 });
 ```
@@ -129,11 +129,11 @@ def test_username_validation(username, valid):
 
 ```javascript
 test.each([
-  ['alice', true],
-  ['bob123', true],
-  ['a', false],  // too short
-  ['user@name', false],  // invalid chars
-])('validates username %s as %s', (username, valid) => {
+  ["alice", true],
+  ["bob123", true],
+  ["a", false], // too short
+  ["user@name", false], // invalid chars
+])("validates username %s as %s", (username, valid) => {
   expect(isValidUsername(username)).toBe(valid);
 });
 ```
@@ -162,12 +162,12 @@ def test_login(page: Page):
 **JavaScript**
 
 ```javascript
-const { test, expect } = require('@playwright/test');
+const { test, expect } = require("@playwright/test");
 
-test('login flow', async ({ page }) => {
-  await page.goto('http://localhost:3000');
-  await page.fill('[data-testid="email"]', 'user@test.com');
-  await page.fill('[data-testid="password"]', 'password');
+test("login flow", async ({ page }) => {
+  await page.goto("http://localhost:3000");
+  await page.fill('[data-testid="email"]', "user@test.com");
+  await page.fill('[data-testid="password"]', "password");
   await page.click('[data-testid="submit"]');
 
   await expect(page.locator('[data-testid="navbar"]')).toBeVisible();
@@ -218,9 +218,9 @@ class LoginPage {
 }
 
 // Usage
-test('login flow', async ({ page }) => {
+test("login flow", async ({ page }) => {
   const loginPage = new LoginPage(page);
-  await loginPage.login('user@test.com', 'password');
+  await loginPage.login("user@test.com", "password");
 });
 ```
 
@@ -248,18 +248,18 @@ def test_api_call():
 **JavaScript**
 
 ```javascript
-import { vi } from 'vitest';
+import { vi } from "vitest";
 
-test('API call with mock', async () => {
+test("API call with mock", async () => {
   const mockFetch = vi.fn().mockResolvedValue({
-    json: async () => ({ user: 'alice' }),
+    json: async () => ({ user: "alice" }),
   });
 
   global.fetch = mockFetch;
 
   const result = await fetchUser(1);
-  expect(result.user).toBe('alice');
-  expect(mockFetch).toHaveBeenCalledWith('/api/users/1');
+  expect(result.user).toBe("alice");
+  expect(mockFetch).toHaveBeenCalledWith("/api/users/1");
 });
 ```
 
@@ -290,19 +290,19 @@ def test_mocked_api(page: Page):
 **JavaScript**
 
 ```javascript
-test('mocked API response', async ({ page }) => {
-  await page.route('**/api/feed**', route => {
+test("mocked API response", async ({ page }) => {
+  await page.route("**/api/feed**", (route) => {
     route.fulfill({
       status: 200,
-      contentType: 'application/json',
+      contentType: "application/json",
       body: JSON.stringify({ posts: [] }),
     });
   });
 
-  await page.goto('http://localhost:3000');
+  await page.goto("http://localhost:3000");
 
   // Feed will show empty state
-  await expect(page.locator('text=/no posts/i')).toBeVisible();
+  await expect(page.locator("text=/no posts/i")).toBeVisible();
 });
 ```
 
@@ -341,25 +341,25 @@ def test_create_post():
 **JavaScript**
 
 ```javascript
-import axios from 'axios';
+import axios from "axios";
 
-test('GET /api/users endpoint', async () => {
-  const response = await axios.get('http://localhost:8000/api/users');
+test("GET /api/users endpoint", async () => {
+  const response = await axios.get("http://localhost:8000/api/users");
 
   expect(response.status).toBe(200);
   expect(response.data.length).toBeGreaterThan(0);
-  expect(response.data[0]).toHaveProperty('username');
+  expect(response.data[0]).toHaveProperty("username");
 });
 
-test('POST /api/posts endpoint', async () => {
+test("POST /api/posts endpoint", async () => {
   const response = await axios.post(
-    'http://localhost:8000/api/posts',
-    { content: 'Test post' },
-    { headers: { Authorization: 'Bearer token123' } }
+    "http://localhost:8000/api/posts",
+    { content: "Test post" },
+    { headers: { Authorization: "Bearer token123" } }
   );
 
   expect(response.status).toBe(200);
-  expect(response.data.content).toBe('Test post');
+  expect(response.data.content).toBe("Test post");
 });
 ```
 
@@ -369,14 +369,14 @@ test('POST /api/posts endpoint', async () => {
 
 ### Command Line
 
-| Task | Python | JavaScript |
-|------|--------|------------|
-| **Run all tests** | `pytest` | `npm test` |
-| **Run specific file** | `pytest test_auth.py` | `npm test auth.test.js` |
-| **Run with coverage** | `pytest --cov` | `npm test -- --coverage` |
-| **Verbose output** | `pytest -v` | `npm test -- --reporter=verbose` |
-| **Watch mode** | `pytest-watch` | `npm test -- --watch` |
-| **Run specific test** | `pytest -k "test_name"` | `npm test -- -t "test name"` |
+| Task                  | Python                  | JavaScript                       |
+| --------------------- | ----------------------- | -------------------------------- |
+| **Run all tests**     | `pytest`                | `npm test`                       |
+| **Run specific file** | `pytest test_auth.py`   | `npm test auth.test.js`          |
+| **Run with coverage** | `pytest --cov`          | `npm test -- --coverage`         |
+| **Verbose output**    | `pytest -v`             | `npm test -- --reporter=verbose` |
+| **Watch mode**        | `pytest-watch`          | `npm test -- --watch`            |
+| **Run specific test** | `pytest -k "test_name"` | `npm test -- -t "test name"`     |
 
 ### Pytest Markers vs Vitest Filters
 
@@ -398,11 +398,11 @@ def test_full_integration():
 **JavaScript**
 
 ```javascript
-test('critical path', { tag: '@smoke' }, async () => {
+test("critical path", { tag: "@smoke" }, async () => {
   // test code
 });
 
-test('full integration', { tag: '@slow' }, async () => {
+test("full integration", { tag: "@slow" }, async () => {
   // test code
 });
 
@@ -416,24 +416,24 @@ test('full integration', { tag: '@slow' }, async () => {
 
 ### Common Assertions
 
-| Check | Python | JavaScript |
-|-------|--------|------------|
-| **Equality** | `assert x == y` | `expect(x).toBe(y)` |
-| **Deep equality** | `assert x == y` | `expect(x).toEqual(y)` |
-| **Truthy/Falsy** | `assert x` | `expect(x).toBeTruthy()` |
-| **Contains** | `assert x in list` | `expect(list).toContain(x)` |
-| **Greater than** | `assert x > y` | `expect(x).toBeGreaterThan(y)` |
-| **Type check** | `assert isinstance(x, str)` | `expect(typeof x).toBe('string')` |
-| **Exception** | `with pytest.raises(Error):` | `expect(() => fn()).toThrow()` |
+| Check             | Python                       | JavaScript                        |
+| ----------------- | ---------------------------- | --------------------------------- |
+| **Equality**      | `assert x == y`              | `expect(x).toBe(y)`               |
+| **Deep equality** | `assert x == y`              | `expect(x).toEqual(y)`            |
+| **Truthy/Falsy**  | `assert x`                   | `expect(x).toBeTruthy()`          |
+| **Contains**      | `assert x in list`           | `expect(list).toContain(x)`       |
+| **Greater than**  | `assert x > y`               | `expect(x).toBeGreaterThan(y)`    |
+| **Type check**    | `assert isinstance(x, str)`  | `expect(typeof x).toBe('string')` |
+| **Exception**     | `with pytest.raises(Error):` | `expect(() => fn()).toThrow()`    |
 
 ### Playwright Assertions
 
-| Check | Python | JavaScript |
-|-------|--------|------------|
-| **Visible** | `expect(el).to_be_visible()` | `await expect(el).toBeVisible()` |
-| **Contains text** | `expect(el).to_contain_text("x")` | `await expect(el).toContainText('x')` |
+| Check             | Python                              | JavaScript                              |
+| ----------------- | ----------------------------------- | --------------------------------------- |
+| **Visible**       | `expect(el).to_be_visible()`        | `await expect(el).toBeVisible()`        |
+| **Contains text** | `expect(el).to_contain_text("x")`   | `await expect(el).toContainText('x')`   |
 | **Has attribute** | `expect(el).to_have_attribute("x")` | `await expect(el).toHaveAttribute('x')` |
-| **Count** | `expect(els).to_have_count(5)` | `await expect(els).toHaveCount(5)` |
+| **Count**         | `expect(els).to_have_count(5)`      | `await expect(els).toHaveCount(5)`      |
 
 ---
 
@@ -510,16 +510,16 @@ addopts = -v --tb=short
 **vitest.config.js**
 
 ```javascript
-import { defineConfig } from 'vitest/config';
+import { defineConfig } from "vitest/config";
 
 export default defineConfig({
   test: {
     globals: true,
-    environment: 'jsdom',
-    setupFiles: './src/test/setup.js',
+    environment: "jsdom",
+    setupFiles: "./src/test/setup.js",
     coverage: {
-      provider: 'v8',
-      reporter: ['text', 'html'],
+      provider: "v8",
+      reporter: ["text", "html"],
     },
   },
 });
@@ -533,12 +533,12 @@ export default defineConfig({
 
 ```javascript
 module.exports = {
-  testDir: './e2e',
+  testDir: "./e2e",
   timeout: 30000,
   use: {
-    baseURL: 'http://localhost:3000',
-    screenshot: 'only-on-failure',
-    video: 'retain-on-failure',
+    baseURL: "http://localhost:3000",
+    screenshot: "only-on-failure",
+    video: "retain-on-failure",
   },
 };
 ```
@@ -561,7 +561,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v4
         with:
-          python-version: '3.11'
+          python-version: "3.13"
       - run: pip install -r requirements.txt
       - run: pytest --cov --cov-report=xml
       - uses: codecov/codecov-action@v3
@@ -579,7 +579,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: "18"
       - run: npm ci
       - run: npm test -- --coverage
       - uses: codecov/codecov-action@v3
@@ -651,7 +651,7 @@ jobs:
 ### Both
 
 - [Testbook repository](../..) - See working examples in both languages!
-- [Compare Lab 4 Python vs JavaScript](../../labs/) - See same lab in both stacks
+- [Compare Lab 4 Python vs JavaScript](../../learn/stage_3_api_e2e/exercises/) - See same lab in both stacks
 
 ---
 

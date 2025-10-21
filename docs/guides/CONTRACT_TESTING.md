@@ -361,12 +361,12 @@ schema = schemathesis.from_asgi(
 
 **You CAN do contract testing today!**
 
-[Lab 6C: Frontend Integration Testing](../../labs/LAB_06C_Frontend_Integration_Testing.md) teaches contract testing from the **frontend perspective**:
+[Lab 6C: Frontend Integration Testing](../../learn/stage_4_performance_security/exercises/LAB_06C_Frontend_Integration_Testing.md) teaches contract testing from the **frontend perspective**:
 
 ```javascript
 // Frontend validates backend responses match OpenAPI schema
 const schema = await loadOpenAPISchema();
-const response = await fetch('/api/posts');
+const response = await fetch("/api/posts");
 const validation = validateAgainstSchema(response, schema);
 ```
 
@@ -496,21 +496,21 @@ For each endpoint, Schemathesis validates:
 
 ### Backend Contract Testing
 
-| Tool | Language | Approach | Status in Testbook |
-|------|----------|----------|-------------------|
-| **Schemathesis** | Python | Property-based from OpenAPI | ⚠️ Skipped (OpenAPI 3.1.0) |
-| **Dredd** | Any | Contract validation | Not implemented |
-| **Pact** | Multiple | Consumer-driven contracts | Not implemented |
-| **Postman** | Any | Manual contract tests | Available (see `tests/api/`) |
+| Tool             | Language | Approach                    | Status in Testbook           |
+| ---------------- | -------- | --------------------------- | ---------------------------- |
+| **Schemathesis** | Python   | Property-based from OpenAPI | ⚠️ Skipped (OpenAPI 3.1.0)   |
+| **Dredd**        | Any      | Contract validation         | Not implemented              |
+| **Pact**         | Multiple | Consumer-driven contracts   | Not implemented              |
+| **Postman**      | Any      | Manual contract tests       | Available (see `tests/api/`) |
 
 ### Frontend Contract Testing
 
-| Tool | Status in Testbook |
-|------|-------------------|
+| Tool                   | Status in Testbook        |
+| ---------------------- | ------------------------- |
 | **OpenAPI validation** | ✅ Available - See Lab 6C |
-| **MSW with schema** | ✅ Available - See Lab 6B |
+| **MSW with schema**    | ✅ Available - See Lab 6B |
 
-**Learn frontend contract testing:** [Lab 6C: Frontend Integration Testing](../../labs/LAB_06C_Frontend_Integration_Testing.md)
+**Learn frontend contract testing:** [Lab 6C: Frontend Integration Testing](../../learn/stage_4_performance_security/exercises/LAB_06C_Frontend_Integration_Testing.md)
 
 ---
 
@@ -530,7 +530,7 @@ For each endpoint, Schemathesis validates:
 
 ### Stage 3: Learn Frontend Contracts
 
-- 🧪 Complete [Lab 6C](../../labs/LAB_06C_Frontend_Integration_Testing.md)
+- 🧪 Complete [Lab 6C](../../learn/stage_4_performance_security/exercises/LAB_06C_Frontend_Integration_Testing.md)
 - ✅ This teaches contract validation that WORKS today
 - 🔄 Same concept, different angle (frontend → backend vs backend self-test)
 
@@ -620,8 +620,8 @@ pytest tests/integration/ -v
 
 ### Hands-On Labs
 
-- [Lab 3: Testing API Endpoints](../../labs/LAB_03_Testing_API_Endpoints.md) - Traditional API testing
-- [Lab 6C: Frontend Integration Testing](../../labs/LAB_06C_Frontend_Integration_Testing.md) - Contract validation (works today!)
+- [Lab 3: Testing API Endpoints](../../learn/stage_2_integration/exercises/LAB_03_Testing_API_Endpoints.md) - Traditional API testing
+- [Lab 6C: Frontend Integration Testing](../../learn/stage_4_performance_security/exercises/LAB_06C_Frontend_Integration_Testing.md) - Contract validation (works today!)
 
 ### Learning Stages
 

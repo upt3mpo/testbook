@@ -30,7 +30,7 @@ Test data scenarios provide consistent, repeatable test data setups for differen
 
 ```javascript
 // JavaScript/Playwright
-await seedDatabase(page, 'default');  // or just seedDatabase(page)
+await seedDatabase(page, "default"); // or just seedDatabase(page)
 ```
 
 ```python
@@ -58,7 +58,7 @@ seed_test_data('default')  # or omit parameter
 
 ```javascript
 // JavaScript/Playwright
-await seedDatabase(page, 'empty');
+await seedDatabase(page, "empty");
 // Now register your own test users
 ```
 
@@ -88,7 +88,7 @@ seed_test_data('empty')
 
 ```javascript
 // JavaScript/Playwright
-await seedDatabase(page, 'minimal');
+await seedDatabase(page, "minimal");
 // Users exist but feed is empty
 ```
 
@@ -118,7 +118,7 @@ seed_test_data('minimal')
 
 ```javascript
 // JavaScript/Playwright
-await seedDatabase(page, 'high_traffic');
+await seedDatabase(page, "high_traffic");
 // Feed now has many posts
 ```
 
@@ -134,12 +134,12 @@ print(f"Created {result['posts_created']} additional posts")
 
 All scenarios (except `empty`) include these users:
 
-| User | Email | Password | Use For |
-|------|-------|----------|---------|
-| **Sarah Johnson** | ``sarah.johnson@testbook.com`` | ``Sarah2024!`` | Primary test user |
-| **Mike Chen** | ``mike.chen@testbook.com`` | ``MikeRocks88`` | Secondary user, interactions |
-| **Emma Davis** | ``emma.davis@testbook.com`` | ``EmmaLovesPhotos`` | Third user, photo tests |
-| **New User** | ``newuser@testbook.com`` | ``NewUser123!`` | Fresh user, no history |
+| User              | Email                        | Password          | Use For                      |
+| ----------------- | ---------------------------- | ----------------- | ---------------------------- |
+| **Sarah Johnson** | `sarah.johnson@testbook.com` | `Sarah2024!`      | Primary test user            |
+| **Mike Chen**     | `mike.chen@testbook.com`     | `MikeRocks88`     | Secondary user, interactions |
+| **Emma Davis**    | `emma.davis@testbook.com`    | `EmmaLovesPhotos` | Third user, photo tests      |
+| **New User**      | `newuser@testbook.com`       | `NewUser123!`     | Fresh user, no history       |
 
 ---
 
@@ -149,19 +149,19 @@ All scenarios (except `empty`) include these users:
 
 ```javascript
 // Test what happens when feed is empty
-test('displays empty state message', async ({ page }) => {
-  await seedDatabase(page, 'empty');
+test("displays empty state message", async ({ page }) => {
+  await seedDatabase(page, "empty");
 
   // Register a new user (feed will be empty)
   await registerUser(page, {
-    email: 'test@example.com',
-    username: 'testuser',
-    displayName: 'Test User',
-    password: 'Test123!'
+    email: "test@example.com",
+    username: "testuser",
+    displayName: "Test User",
+    password: "Test123!",
   });
 
   // Verify empty state message shows
-  await expect(page.locator('text=No posts yet')).toBeVisible();
+  await expect(page.locator("text=No posts yet")).toBeVisible();
 });
 ```
 
@@ -182,22 +182,22 @@ def test_feed_pagination(page, seed_test_data):
 ### Example 3: Testing Fresh Registration
 
 ```javascript
-test('new user can register and post', async ({ page }) => {
-  await seedDatabase(page, 'empty');
+test("new user can register and post", async ({ page }) => {
+  await seedDatabase(page, "empty");
 
   // Register
   await registerUser(page, {
-    email: 'brand.new@test.com',
-    username: 'brandnew',
-    displayName: 'Brand New',
-    password: 'BrandNew123!'
+    email: "brand.new@test.com",
+    username: "brandnew",
+    displayName: "Brand New",
+    password: "BrandNew123!",
   });
 
   // Create first post
-  await createPost(page, 'My first post!');
+  await createPost(page, "My first post!");
 
   // Verify it appears
-  await expect(page.locator('text=My first post!')).toBeVisible();
+  await expect(page.locator("text=My first post!")).toBeVisible();
 });
 ```
 
@@ -245,13 +245,13 @@ Want to add your own scenario? Here's how:
 ### JavaScript (test-helpers.js)
 
 ```javascript
-async function seedDatabase(page, scenario = 'default') {
+async function seedDatabase(page, scenario = "default") {
   await resetDatabase(page);
 
-  if (scenario === 'my_custom_scenario') {
+  if (scenario === "my_custom_scenario") {
     // Create your custom test data
     await page.request.post(`${BACKEND_URL}/api/dev/create-post`, {
-      params: { user_id: 1, content: 'Custom post' }
+      params: { user_id: 1, content: "Custom post" },
     });
 
     // Add more setup as needed
@@ -310,12 +310,12 @@ def _seed(scenario: str = "default"):
 
 ## Scenario Comparison
 
-| Scenario | Users | Posts | Use Case | Setup Time |
-|----------|-------|-------|----------|------------|
-| `empty` | 0 | 0 | Registration, clean slate | Fast (~1s) |
-| `minimal` | 8 | 0 | Post creation, empty feeds | Fast (~1s) |
-| `default` | 8 | ~5 | General testing | Fast (~1s) |
-| `high_traffic` | 8 | ~11+ | Feed testing, performance | Medium (~2s) |
+| Scenario       | Users | Posts | Use Case                   | Setup Time   |
+| -------------- | ----- | ----- | -------------------------- | ------------ |
+| `empty`        | 0     | 0     | Registration, clean slate  | Fast (~1s)   |
+| `minimal`      | 8     | 0     | Post creation, empty feeds | Fast (~1s)   |
+| `default`      | 8     | ~5    | General testing            | Fast (~1s)   |
+| `high_traffic` | 8     | ~11+  | Feed testing, performance  | Medium (~2s) |
 
 ---
 
@@ -334,8 +334,8 @@ def _seed(scenario: str = "default"):
 
 ```javascript
 // Log scenario result
-const result = await seedDatabase(page, 'high_traffic');
-console.log('Seeding complete:', result);
+const result = await seedDatabase(page, "high_traffic");
+console.log("Seeding complete:", result);
 ```
 
 ### Posts not appearing?
@@ -354,8 +354,8 @@ console.log('Seeding complete:', result);
 - Backend Dev Endpoints: `backend/routers/dev.py`
 - Test Helpers (JavaScript): See E2E test files in `tests/e2e/`
 - Test Helpers (Python): `tests/e2e-python/conftest.py`
-- [LAB 05: Test Data Management](../../labs/LAB_05_Test_Data_Management.md)
+- [LAB 05: Test Data Management](../../learn/stage_2_integration/exercises/LAB_05_Test_Data_Management.md)
 
 ---
 
-*Part of the Testbook Testing Platform*
+_Part of the Testbook Testing Platform_

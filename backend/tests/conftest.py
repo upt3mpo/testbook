@@ -29,50 +29,44 @@ from models import Comment, Post, Reaction, User
 
 def pytest_configure(config):
     """Display welcome banner when pytest starts."""
-    terminal_width = 70
+    print("=" * 70)
+    print("Welcome to Testbook Testing Platform!")
+    print("Running 180+ backend tests (unit + integration + contract)")
+    print("Python pytest | FastAPI | SQLAlchemy")
+    print("Tip: Use -v for verbose output, -k to filter by name")
+    print("=" * 70)
 
-    banner = f"""
-╔{"═" * (terminal_width - 2)}╗
-║{" " * (terminal_width - 2)}║
-║  {"🧪 Welcome to Testbook Testing Platform!":^{terminal_width - 4}}  ║
-║{" " * (terminal_width - 2)}║
-║  {"▶ Running 180+ backend tests (unit + integration + contract)":^{terminal_width - 4}}  ║
-║  {"▶ Python pytest | FastAPI | SQLAlchemy":^{terminal_width - 4}}  ║
-║{" " * (terminal_width - 2)}║
-║  {"💡 Tip: Use -v for verbose output, -k to filter by name":^{terminal_width - 4}}  ║
-║{" " * (terminal_width - 2)}║
-╚{"═" * (terminal_width - 2)}╝
-"""
-
-    print(banner)
+    # print(banner.encode('utf-8', errors='ignore').decode('utf-8'))  # Disabled for Windows encoding issues
 
 
 def pytest_sessionfinish(session, exitstatus):
     """Display completion message after all tests run."""
     if exitstatus == 0:
-        message = """
-✅ All Backend Tests Passed!
+        print("""
+Congratulations! All Backend Tests Passed!
 
-🎉 Great work! Your backend is working correctly.
+You're mastering automation testing! Your backend is working correctly.
 
-📊 Next steps:
-  • Run coverage report: pytest --cov --cov-report=html
-  • View coverage: open htmlcov/index.html
-  • Run frontend tests: cd ../frontend && npm test
-  • Run E2E tests: cd ../tests && npx playwright test
-"""
+Next steps:
+  - Run coverage report: pytest --cov --cov-report=html
+  - View coverage: open htmlcov/index.html
+  - Run frontend tests: cd ../frontend && npm test
+  - Run E2E tests: cd ../tests && npx playwright test
+
+Keep up the great work!
+""")
     else:
-        message = """
-❌ Some Tests Failed
+        print("""
+Some Tests Failed
 
-🔍 Debug tips:
-  • Use pytest -v for more details
-  • Use pytest -x to stop at first failure
-  • Use pytest --lf to re-run last failed tests
-  • Check docs/guides/TROUBLESHOOTING.md for common issues
-"""
+Debug tips:
+  - Use pytest -v for more details
+  - Use pytest -x to stop at first failure
+  - Use pytest --lf to re-run last failed tests
+  - Check docs/reference/TROUBLESHOOTING.md for technical errors with exact fixes
+""")
 
-    print(message)
+    # print(message)  # Disabled for Windows encoding issues
 
 
 # Test database configuration

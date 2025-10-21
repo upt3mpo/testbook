@@ -56,8 +56,8 @@ npx playwright test --project=webkit
 npx playwright test --project=chromium --project=firefox --project=webkit
 
 # Install browsers
-npx playwright install
-npx playwright install chromium  # Just Chrome
+npx playwright install chromium  # Chrome only for faster setup
+npx playwright install  # All browsers (slower)
 ```
 
 ### Reports
@@ -83,34 +83,34 @@ npx playwright test --reporter=line
 ### Basic Test
 
 ```javascript
-const { test, expect } = require('@playwright/test');
+const { test, expect } = require("@playwright/test");
 
-test('basic test', async ({ page }) => {
+test("basic test", async ({ page }) => {
   // Navigate
-  await page.goto('http://localhost:3000');
+  await page.goto("http://localhost:3000");
 
   // Interact
-  await page.click('button');
+  await page.click("button");
 
   // Assert
-  await expect(page.locator('h1')).toHaveText('Welcome');
+  await expect(page.locator("h1")).toHaveText("Welcome");
 });
 ```
 
 ### Test Suite
 
 ```javascript
-test.describe('Feature Name', () => {
+test.describe("Feature Name", () => {
   test.beforeEach(async ({ page }) => {
     // Setup before each test
-    await page.goto('http://localhost:3000');
+    await page.goto("http://localhost:3000");
   });
 
-  test('first test', async ({ page }) => {
+  test("first test", async ({ page }) => {
     // Test code
   });
 
-  test('second test', async ({ page }) => {
+  test("second test", async ({ page }) => {
     // Test code
   });
 });
@@ -119,7 +119,7 @@ test.describe('Feature Name', () => {
 ### Test Hooks
 
 ```javascript
-test.describe('Suite', () => {
+test.describe("Suite", () => {
   test.beforeAll(async ({ browser }) => {
     // Runs once before all tests
   });
@@ -146,53 +146,54 @@ test.describe('Suite', () => {
 
 ```javascript
 // By data-testid (RECOMMENDED)
-page.locator('[data-testid="login-button"]')
+page.locator('[data-testid="login-button"]');
 
 // By text
-page.locator('text=Login')
-page.getByText('Login')
+page.locator("text=Login");
+page.getByText("Login");
 
 // By role
-page.getByRole('button', { name: 'Login' })
-page.getByRole('textbox', { name: 'Email' })
+page.getByRole("button", { name: "Login" });
+page.getByRole("textbox", { name: "Email" });
 
 // By label
-page.getByLabel('Email')
-page.getByLabel('Password')
+page.getByLabel("Email");
+page.getByLabel("Password");
 
 // By placeholder
-page.getByPlaceholder('Enter email')
+page.getByPlaceholder("Enter email");
 
 // By CSS selector
-page.locator('.button')
-page.locator('#login-form')
-page.locator('button.primary')
+page.locator(".button");
+page.locator("#login-form");
+page.locator("button.primary");
 
 // By XPath (avoid if possible)
-page.locator('xpath=//button[@type="submit"]')
+page.locator('xpath=//button[@type="submit"]');
 
 // Chaining locators
-page.locator('[data-testid="post-item"]').locator('button')
+page.locator('[data-testid="post-item"]').locator("button");
 
 // First/Last/Nth
-page.locator('[data-testid="post-item"]').first()
-page.locator('[data-testid="post-item"]').last()
-page.locator('[data-testid="post-item"]').nth(2)
+page.locator('[data-testid="post-item"]').first();
+page.locator('[data-testid="post-item"]').last();
+page.locator('[data-testid="post-item"]').nth(2);
 ```
 
 ### Locator Filters
 
 ```javascript
 // Has text
-page.locator('button').filter({ hasText: 'Submit' })
+page.locator("button").filter({ hasText: "Submit" });
 
 // Has child
-page.locator('div').filter({ has: page.locator('button') })
+page.locator("div").filter({ has: page.locator("button") });
 
 // Multiple filters
-page.locator('article')
-  .filter({ hasText: 'John' })
-  .filter({ has: page.locator('button') })
+page
+  .locator("article")
+  .filter({ hasText: "John" })
+  .filter({ has: page.locator("button") });
 ```
 
 ---
@@ -203,64 +204,61 @@ page.locator('article')
 
 ```javascript
 // Simple click
-await page.click('button')
-await page.locator('button').click()
+await page.click("button");
+await page.locator("button").click();
 
 // Click with options
-await page.click('button', {
-  button: 'right',  // right click
-  clickCount: 2,    // double click
-  delay: 100,       // delay between mousedown and mouseup
-})
+await page.click("button", {
+  button: "right", // right click
+  clickCount: 2, // double click
+  delay: 100, // delay between mousedown and mouseup
+});
 
 // Force click (bypass actionability checks)
-await page.click('button', { force: true })
+await page.click("button", { force: true });
 ```
 
 ### Fill
 
 ```javascript
 // Fill input
-await page.fill('input[name="email"]', 'test@example.com')
-await page.locator('input[name="email"]').fill('test@example.com')
+await page.fill('input[name="email"]', "test@example.com");
+await page.locator('input[name="email"]').fill("test@example.com");
 
 // Clear then fill
-await page.fill('input', '')
-await page.fill('input', 'new value')
+await page.fill("input", "");
+await page.fill("input", "new value");
 
 // Type with delay
-await page.type('input', 'slow typing', { delay: 100 })
+await page.type("input", "slow typing", { delay: 100 });
 ```
 
 ### Other Actions
 
 ```javascript
 // Check/uncheck
-await page.check('input[type="checkbox"]')
-await page.uncheck('input[type="checkbox"]')
+await page.check('input[type="checkbox"]');
+await page.uncheck('input[type="checkbox"]');
 
 // Select option
-await page.selectOption('select', 'value')
-await page.selectOption('select', { label: 'Option Text' })
+await page.selectOption("select", "value");
+await page.selectOption("select", { label: "Option Text" });
 
 // Hover
-await page.hover('button')
+await page.hover("button");
 
 // Focus
-await page.focus('input')
+await page.focus("input");
 
 // Press key
-await page.press('input', 'Enter')
-await page.press('input', 'Control+A')
+await page.press("input", "Enter");
+await page.press("input", "Control+A");
 
 // Upload file
-await page.setInputFiles('input[type="file"]', 'path/to/file.jpg')
+await page.setInputFiles('input[type="file"]', "path/to/file.jpg");
 
 // Multiple files
-await page.setInputFiles('input[type="file"]', [
-  'file1.jpg',
-  'file2.jpg'
-])
+await page.setInputFiles('input[type="file"]', ["file1.jpg", "file2.jpg"]);
 ```
 
 ---
@@ -271,58 +269,58 @@ await page.setInputFiles('input[type="file"]', [
 
 ```javascript
 // Element visible
-await expect(page.locator('button')).toBeVisible()
-await expect(page.locator('button')).not.toBeVisible()
+await expect(page.locator("button")).toBeVisible();
+await expect(page.locator("button")).not.toBeVisible();
 
 // Element hidden
-await expect(page.locator('button')).toBeHidden()
+await expect(page.locator("button")).toBeHidden();
 
 // Element enabled/disabled
-await expect(page.locator('button')).toBeEnabled()
-await expect(page.locator('button')).toBeDisabled()
+await expect(page.locator("button")).toBeEnabled();
+await expect(page.locator("button")).toBeDisabled();
 
 // Element editable
-await expect(page.locator('input')).toBeEditable()
+await expect(page.locator("input")).toBeEditable();
 ```
 
 ### Content
 
 ```javascript
 // Text content
-await expect(page.locator('h1')).toHaveText('Welcome')
-await expect(page.locator('h1')).toContainText('Wel')
+await expect(page.locator("h1")).toHaveText("Welcome");
+await expect(page.locator("h1")).toContainText("Wel");
 
 // Multiple elements text
-await expect(page.locator('li')).toHaveText(['Item 1', 'Item 2'])
+await expect(page.locator("li")).toHaveText(["Item 1", "Item 2"]);
 
 // Value
-await expect(page.locator('input')).toHaveValue('test@example.com')
+await expect(page.locator("input")).toHaveValue("test@example.com");
 
 // Attribute
-await expect(page.locator('button')).toHaveAttribute('type', 'submit')
-await expect(page.locator('button')).toHaveAttribute('disabled')
+await expect(page.locator("button")).toHaveAttribute("type", "submit");
+await expect(page.locator("button")).toHaveAttribute("disabled");
 
 // Class
-await expect(page.locator('div')).toHaveClass('active')
-await expect(page.locator('div')).toHaveClass(/active/)
+await expect(page.locator("div")).toHaveClass("active");
+await expect(page.locator("div")).toHaveClass(/active/);
 
 // Count
-await expect(page.locator('li')).toHaveCount(5)
+await expect(page.locator("li")).toHaveCount(5);
 ```
 
 ### Page
 
 ```javascript
 // URL
-await expect(page).toHaveURL('http://localhost:3000')
-await expect(page).toHaveURL(/login/)
+await expect(page).toHaveURL("http://localhost:3000");
+await expect(page).toHaveURL(/login/);
 
 // Title
-await expect(page).toHaveTitle('Testbook')
-await expect(page).toHaveTitle(/Fake/)
+await expect(page).toHaveTitle("Testbook");
+await expect(page).toHaveTitle(/Fake/);
 
 // Screenshot comparison
-await expect(page).toHaveScreenshot('screenshot.png')
+await expect(page).toHaveScreenshot("screenshot.png");
 ```
 
 ---
@@ -337,33 +335,33 @@ await expect(page).toHaveScreenshot('screenshot.png')
 // - Element to be enabled
 // - Element to be stable (not animating)
 
-await page.click('button')  // Waits automatically
+await page.click("button"); // Waits automatically
 ```
 
 ### Manual Waiting
 
 ```javascript
 // Wait for selector
-await page.waitForSelector('button')
-await page.waitForSelector('button', { state: 'visible' })
-await page.waitForSelector('button', { state: 'hidden' })
+await page.waitForSelector("button");
+await page.waitForSelector("button", { state: "visible" });
+await page.waitForSelector("button", { state: "hidden" });
 
 // Wait for URL
-await page.waitForURL('http://localhost:3000/profile')
-await page.waitForURL(/profile/)
+await page.waitForURL("http://localhost:3000/profile");
+await page.waitForURL(/profile/);
 
 // Wait for load state
-await page.waitForLoadState('load')  // DOMContentLoaded
-await page.waitForLoadState('domcontentloaded')
-await page.waitForLoadState('networkidle')
+await page.waitForLoadState("load"); // DOMContentLoaded
+await page.waitForLoadState("domcontentloaded");
+await page.waitForLoadState("networkidle");
 
 // Wait for timeout
-await page.waitForTimeout(1000)  // ⚠️ Avoid - use rarely!
+await page.waitForTimeout(1000); // ⚠️ Avoid - use rarely!
 
 // Wait for function
 await page.waitForFunction(() => {
-  return document.querySelectorAll('li').length > 5
-})
+  return document.querySelectorAll("li").length > 5;
+});
 ```
 
 ---
@@ -372,20 +370,17 @@ await page.waitForFunction(() => {
 
 ```javascript
 // Go to URL
-await page.goto('http://localhost:3000')
+await page.goto("http://localhost:3000");
 
 // Go back/forward
-await page.goBack()
-await page.goForward()
+await page.goBack();
+await page.goForward();
 
 // Reload
-await page.reload()
+await page.reload();
 
 // Wait for navigation
-await Promise.all([
-  page.waitForNavigation(),
-  page.click('a')
-])
+await Promise.all([page.waitForNavigation(), page.click("a")]);
 ```
 
 ---
@@ -419,7 +414,7 @@ use: {
 
 ```javascript
 async function loginUser(page, email, password) {
-  await page.goto('http://localhost:3000');
+  await page.goto("http://localhost:3000");
   await page.fill('[data-testid="login-email-input"]', email);
   await page.fill('[data-testid="login-password-input"]', password);
   await page.click('[data-testid="login-submit-button"]');
@@ -427,8 +422,8 @@ async function loginUser(page, email, password) {
 }
 
 // Usage
-test('test something', async ({ page }) => {
-  await loginUser(page, 'test@test.com', 'password');
+test("test something", async ({ page }) => {
+  await loginUser(page, "test@test.com", "password");
   // Continue test...
 });
 ```
@@ -449,7 +444,7 @@ await post.locator('[data-testid$="-like-button"]').click();
 
 ```javascript
 async function resetDatabase(page) {
-  await page.request.post('http://localhost:8000/api/dev/reset');
+  await page.request.post("http://localhost:8000/api/dev/reset");
 }
 
 // Usage in beforeEach
@@ -503,26 +498,26 @@ console.log(await page.locator('h1').textContent())
 
 ```javascript
 module.exports = {
-  testDir: './tests/e2e',
+  testDir: "./tests/e2e",
   timeout: 30000,
   retries: 2,
 
   use: {
-    baseURL: 'http://localhost:3000',
+    baseURL: "http://localhost:3000",
     headless: true,
-    screenshot: 'only-on-failure',
-    video: 'retain-on-failure',
-    trace: 'on-first-retry',
+    screenshot: "only-on-failure",
+    video: "retain-on-failure",
+    trace: "on-first-retry",
   },
 
   projects: [
-    { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
-    { name: 'firefox', use: { ...devices['Desktop Firefox'] } },
-    { name: 'webkit', use: { ...devices['Desktop Safari'] } },
+    { name: "chromium", use: { ...devices["Desktop Chrome"] } },
+    { name: "firefox", use: { ...devices["Desktop Firefox"] } },
+    { name: "webkit", use: { ...devices["Desktop Safari"] } },
   ],
 
   webServer: {
-    command: 'npm run dev',
+    command: "npm run dev",
     port: 3000,
     reuseExistingServer: true,
   },
@@ -538,13 +533,13 @@ module.exports = {
 ```javascript
 // Issue: Timeout waiting for element
 // Fix: Check selector is correct
-await page.locator('[data-testid="exact-name"]').click()
+await page.locator('[data-testid="exact-name"]').click();
 
 // Fix: Wait for page to load
-await page.waitForLoadState('domcontentloaded')
+await page.waitForLoadState("domcontentloaded");
 
 // Fix: Check element is visible
-await page.waitForSelector('[data-testid="element"]', { state: 'visible' })
+await page.waitForSelector('[data-testid="element"]', { state: "visible" });
 ```
 
 ### Flaky Tests
@@ -554,18 +549,18 @@ await page.waitForSelector('[data-testid="element"]', { state: 'visible' })
 
 // Fix 1: Don't use timeouts
 // ❌ BAD
-await page.waitForTimeout(1000)
-await page.click('button')
+await page.waitForTimeout(1000);
+await page.click("button");
 
 // ✅ GOOD
-await page.waitForSelector('button', { state: 'visible' })
-await page.click('button')
+await page.waitForSelector("button", { state: "visible" });
+await page.click("button");
 
 // Fix 2: Wait for network to settle
-await page.waitForLoadState('networkidle')
+await page.waitForLoadState("networkidle");
 
 // Fix 3: Use proper assertions with retries
-await expect(page.locator('h1')).toHaveText('Welcome')
+await expect(page.locator("h1")).toHaveText("Welcome");
 ```
 
 ### Click Not Working
@@ -574,14 +569,14 @@ await expect(page.locator('h1')).toHaveText('Welcome')
 // Issue: Element not clickable
 
 // Fix 1: Wait for element
-await page.waitForSelector('button', { state: 'visible' })
-await page.click('button')
+await page.waitForSelector("button", { state: "visible" });
+await page.click("button");
 
 // Fix 2: Force click (bypass checks)
-await page.click('button', { force: true })
+await page.click("button", { force: true });
 
 // Fix 3: Click by JavaScript
-await page.evaluate(() => document.querySelector('button').click())
+await page.evaluate(() => document.querySelector("button").click());
 ```
 
 ---
@@ -620,7 +615,7 @@ await page.evaluate(() => document.querySelector('button').click())
 5. **Use helper functions** - DRY principle
 
    ```javascript
-   const { loginUser, createPost } = require('./test-helpers');
+   const { loginUser, createPost } = require("./test-helpers");
    ```
 
 6. **Take screenshots on failure** - Configured in playwright.config.js

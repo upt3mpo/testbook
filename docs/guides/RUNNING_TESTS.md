@@ -82,9 +82,7 @@ pytest -v
 cd backend
 
 # Activate virtual environment
-source .venv/bin/activate  # macOS/Linux
-# or
-.venv\Scripts\activate     # Windows
+# See [Quick Commands](docs/reference/QUICK_COMMANDS.md#virtual-environment) for all platforms
 
 # Install dependencies (if not already installed)
 pip install -r requirements.txt
@@ -98,6 +96,7 @@ pytest
 
 # Run with verbose output
 pytest -v
+# See [Quick Commands](docs/reference/QUICK_COMMANDS.md) for all pytest options
 
 # Run specific test directory
 pytest tests/unit/
@@ -130,6 +129,7 @@ pytest --cov
 
 # Generate HTML coverage report
 pytest --cov --cov-report=html
+# See [Quick Commands](docs/reference/QUICK_COMMANDS.md) for all coverage options
 
 # View HTML report
 open htmlcov/index.html  # macOS
@@ -166,7 +166,7 @@ cd tests
 npm install
 
 # Install browsers (first time only)
-npx playwright install
+npx playwright install chromium  # Chrome only for faster setup
 ```
 
 ### Running Tests
@@ -388,7 +388,7 @@ pytest tests/security/test_rate_limiting.py -v
 
 1. Check if backend is in TESTING mode
 2. See `tests/security/README.md` for troubleshooting
-3. Read `labs/LAB_06_Testing_With_Rate_Limits.md` for complete explanation
+3. Read `learn/stage_4_performance_security/exercises/LAB_06_Testing_With_Rate_Limits.md` for complete explanation
 
 **The "failures" often prove security is working!**
 
@@ -413,16 +413,19 @@ All tests run automatically in GitHub Actions:
 ### Workflows
 
 1. **Backend Tests** - `.github/workflows/backend-tests.yml`
+
    - Unit, integration, and database tests
    - Coverage reporting
    - Multiple Python versions
 
 2. **E2E Tests** - `.github/workflows/e2e-tests.yml`
+
    - Playwright tests
    - Multiple browsers
    - Mobile testing
 
 3. **API Tests** - `.github/workflows/api-tests.yml`
+
    - Newman/Postman tests
    - Python API examples
 
@@ -502,19 +505,19 @@ requests.post('http://localhost:8000/api/dev/reset')
 
 ```javascript
 // JavaScript/Playwright
-await page.request.post('http://localhost:8000/api/dev/reset');
+await page.request.post("http://localhost:8000/api/dev/reset");
 ```
 
 ### Test Accounts
 
 All tests use these pre-seeded accounts:
 
-| Email | Password | Use Case |
-|-------|----------|----------|
-| <sarah.johnson@testbook.com> | Sarah2024! | Primary test user |
-| <mike.chen@testbook.com> | MikeRocks88 | Secondary test user |
-| <emma.davis@testbook.com> | EmmaLovesPhotos | Photographer user |
-| <newuser@testbook.com> | NewUser123! | Clean account |
+| Email                        | Password        | Use Case            |
+| ---------------------------- | --------------- | ------------------- |
+| <sarah.johnson@testbook.com> | Sarah2024!      | Primary test user   |
+| <mike.chen@testbook.com>     | MikeRocks88     | Secondary test user |
+| <emma.davis@testbook.com>    | EmmaLovesPhotos | Photographer user   |
+| <newuser@testbook.com>       | NewUser123!     | Clean account       |
 
 ---
 
@@ -545,7 +548,7 @@ curl http://localhost:8000/api/health
 
 # Reinstall Playwright browsers
 cd tests
-npx playwright install --with-deps
+npx playwright install chromium --with-deps  # Chrome only for faster setup
 
 # Run in headed mode to see what's happening
 npm run test:headed

@@ -64,7 +64,7 @@ echo ""
 
 run_check "README links to learn/" "grep -q 'learn/' README.md"
 run_check "README links to PORTFOLIO" "grep -q 'PORTFOLIO' README.md"
-run_check "START_HERE mentions learn/" "grep -q 'learn/' START_HERE.md"
+run_check "README mentions learn/" "grep -q 'learn/' README.md"
 run_check "INDEX has all guides" "grep -q 'QUALITY_CHECKS' docs/INDEX.md && grep -q 'ACCESSIBILITY_TESTING' docs/INDEX.md"
 
 # 3. Backend tests

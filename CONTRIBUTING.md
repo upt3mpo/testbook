@@ -33,7 +33,7 @@ Thank you for your interest in improving the Testbook Testing Platform! This doc
 
 ### Prerequisites
 
-- Python 3.11+
+- Python 3.13+
 - Node.js 20+
 - Git
 
@@ -203,10 +203,10 @@ npx eslint tests/
 **Example:**
 
 ```javascript
-test('user can login with valid credentials', async ({ page }) => {
-  await page.goto('http://localhost:3000');
-  await page.fill('[data-testid="login-email"]', 'test@test.com');
-  await page.fill('[data-testid="login-password"]', 'password');
+test("user can login with valid credentials", async ({ page }) => {
+  await page.goto("http://localhost:3000");
+  await page.fill('[data-testid="login-email"]', "test@test.com");
+  await page.fill('[data-testid="login-password"]', "password");
   await page.click('[data-testid="login-button"]');
 
   await expect(page.locator('[data-testid="navbar"]')).toBeVisible();
@@ -262,8 +262,8 @@ docs/
 └── reference/       # Reference materials
     └── *.md         # Quick lookups
 
-labs/
-├── LAB_*.md         # Lab files
+learn/
+├── stage_*/exercises/LAB_*.md  # Lab files
 └── solutions/       # Sample solutions
 ```
 
@@ -279,12 +279,15 @@ labs/
 **Prerequisites:** Lab Y completed
 
 ## 🎯 What You'll Learn
+
 [Clear learning objectives]
 
 ## 📋 Step-by-Step Instructions
+
 [Numbered steps with code examples]
 
 ## ✅ Completion Checklist
+
 [Checkboxes for verification]
 ```
 
@@ -298,9 +301,11 @@ When creating a PR, include:
 
 ```markdown
 ## Description
+
 [What does this PR do?]
 
 ## Type of Change
+
 - [ ] Bug fix
 - [ ] New feature
 - [ ] Documentation update
@@ -308,18 +313,21 @@ When creating a PR, include:
 - [ ] Test improvement
 
 ## Testing Done
+
 - [ ] Backend tests pass
 - [ ] E2E tests pass
 - [ ] Coverage maintained/improved
 - [ ] Manually tested
 
 ## Documentation Updated
+
 - [ ] README updated (if needed)
 - [ ] Lab content updated (if needed)
 - [ ] Docstrings added/updated
 - [ ] Markdown validation passed (if docs changed)
 
 ## Checklist
+
 - [ ] Code follows style guidelines
 - [ ] Self-reviewed code
 - [ ] Added tests for new features
@@ -375,7 +383,7 @@ When creating a PR, include:
 - [ ] Completion checklist
 - [ ] Estimated time provided
 - [ ] Common mistakes documented
-- [ ] Sample solution created (in `labs/solutions/`)
+- [ ] Sample solution created (in `learn/solutions/`)
 
 ---
 
@@ -399,6 +407,7 @@ When creating a PR, include:
 [Clear description]
 
 **To Reproduce:**
+
 1. Go to '...'
 2. Click on '....'
 3. See error
@@ -407,8 +416,9 @@ When creating a PR, include:
 **Actual:** [What actually happens]
 
 **Environment:**
+
 - OS: [e.g., macOS 13.0]
-- Python: [e.g., 3.11]
+- Python: [e.g., 3.13]
 - Node: [e.g., 20.0]
 
 **Screenshots:** [If applicable]

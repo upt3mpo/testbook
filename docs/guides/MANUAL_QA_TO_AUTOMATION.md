@@ -50,14 +50,14 @@ def test_login_success(client):
 
 ### Key Differences
 
-| Aspect | Manual Testing | Automated Testing |
-|--------|----------------|-------------------|
-| **Speed** | Slow (minutes per test) | Fast (seconds per test) |
-| **Consistency** | Can vary between runs | Identical every time |
-| **Cost** | High ongoing cost | High upfront, low maintenance |
-| **Skill Required** | Domain knowledge | Programming + domain knowledge |
-| **Good For** | Exploratory, UX, edge cases | Regression, repetitive tasks |
-| **Scalability** | Limited by testers | Unlimited parallelization |
+| Aspect             | Manual Testing              | Automated Testing              |
+| ------------------ | --------------------------- | ------------------------------ |
+| **Speed**          | Slow (minutes per test)     | Fast (seconds per test)        |
+| **Consistency**    | Can vary between runs       | Identical every time           |
+| **Cost**           | High ongoing cost           | High upfront, low maintenance  |
+| **Skill Required** | Domain knowledge            | Programming + domain knowledge |
+| **Good For**       | Exploratory, UX, edge cases | Regression, repetitive tasks   |
+| **Scalability**    | Limited by testers          | Unlimited parallelization      |
 
 ### When to Automate
 
@@ -185,16 +185,16 @@ def test_create_post(client, authenticated_user):
 **Example:**
 
 ```javascript
-test('Login form submits with valid credentials', async () => {
+test("Login form submits with valid credentials", async () => {
   const user = userEvent.setup();
   render(<LoginPage />);
 
   // User types in the form
-  await user.type(screen.getByLabelText(/username/i), 'testuser');
-  await user.type(screen.getByLabelText(/password/i), 'password123');
+  await user.type(screen.getByLabelText(/username/i), "testuser");
+  await user.type(screen.getByLabelText(/password/i), "password123");
 
   // User clicks submit
-  await user.click(screen.getByRole('button', { name: /log in/i }));
+  await user.click(screen.getByRole("button", { name: /log in/i }));
 
   // Verify submission
   expect(await screen.findByText(/welcome/i)).toBeInTheDocument();
@@ -217,19 +217,22 @@ test('Login form submits with valid credentials', async () => {
 **Example:**
 
 ```javascript
-test('User can create a post', async ({ page }) => {
+test("User can create a post", async ({ page }) => {
   // Login
-  await page.goto('http://localhost:3000/login');
-  await page.fill('[name="username"]', 'testuser');
-  await page.fill('[name="password"]', 'password123');
+  await page.goto("http://localhost:3000/login");
+  await page.fill('[name="username"]', "testuser");
+  await page.fill('[name="password"]', "password123");
   await page.click('button:has-text("Log In")');
 
   // Create post
-  await page.fill('[placeholder="What\'s on your mind?"]', 'Hello from automation!');
+  await page.fill(
+    '[placeholder="What\'s on your mind?"]',
+    "Hello from automation!"
+  );
   await page.click('button:has-text("Post")');
 
   // Verify post appears
-  await expect(page.locator('text=Hello from automation!')).toBeVisible();
+  await expect(page.locator("text=Hello from automation!")).toBeVisible();
 });
 ```
 
@@ -262,21 +265,21 @@ Expected Result:
 **Automated (E2E):**
 
 ```javascript
-test('Successful login redirects to home', async ({ page }) => {
-  await page.goto('http://localhost:3000/login');
+test("Successful login redirects to home", async ({ page }) => {
+  await page.goto("http://localhost:3000/login");
 
-  await page.fill('[name="email"]', 'sarah.johnson@testbook.com');
-  await page.fill('[name="password"]', 'Sarah2024!');
+  await page.fill('[name="email"]', "sarah.johnson@testbook.com");
+  await page.fill('[name="password"]', "Sarah2024!");
   await page.click('button:has-text("Login")');
 
   // Verify redirection
   await expect(page).toHaveURL(/.*\/home/);
 
   // Verify username in nav
-  await expect(page.locator('nav')).toContainText('Sarah Johnson');
+  await expect(page.locator("nav")).toContainText("Sarah Johnson");
 
   // Verify welcome message
-  await expect(page.locator('h1')).toContainText('Welcome');
+  await expect(page.locator("h1")).toContainText("Welcome");
 });
 ```
 
@@ -315,15 +318,15 @@ def test_register_invalid_email(client):
 **Automated (E2E):**
 
 ```javascript
-test('Registration fails with invalid email', async ({ page }) => {
-  await page.goto('http://localhost:3000/register');
+test("Registration fails with invalid email", async ({ page }) => {
+  await page.goto("http://localhost:3000/register");
 
-  await page.fill('[name="email"]', 'invalid-email');
-  await page.fill('[name="password"]', 'Test123!');
+  await page.fill('[name="email"]', "invalid-email");
+  await page.fill('[name="password"]', "Test123!");
   await page.click('button:has-text("Register")');
 
   // Verify error message
-  await expect(page.locator('.error')).toContainText('valid email');
+  await expect(page.locator(".error")).toContainText("valid email");
 
   // Verify still on registration page
   await expect(page).toHaveURL(/.*\/register/);
@@ -431,15 +434,13 @@ def test_health_check(client):
 
 ```javascript
 // ❌ Bad: Hardcoded wait
-await page.waitForTimeout(3000);  // Might be too short or too long
+await page.waitForTimeout(3000); // Might be too short or too long
 
 // ✅ Good: Wait for specific condition
-await page.waitForSelector('text=Welcome');
+await page.waitForSelector("text=Welcome");
 
 // ✅ Good: Wait for API
-await page.waitForResponse(response =>
-  response.url().includes('/api/posts')
-);
+await page.waitForResponse((response) => response.url().includes("/api/posts"));
 ```
 
 ```python
@@ -464,6 +465,7 @@ def test_user():
 **Solutions:**
 
 1. **Use unit/API tests** instead of E2E when possible
+
    - Unit: milliseconds
    - API: seconds
    - E2E: minutes
@@ -694,6 +696,6 @@ Now you're adding **automation** to amplify your impact. You'll:
 
 - **Questions:** Open an issue in the repository
 - **Stuck on a lab:** Check the solutions/ directory
-- **General learning:** See docs/course/LEARNING_PATHS.md
+- **General learning:** See [learn/README.md](../../learn/README.md#choose-your-track)
 
 **Remember:** Every expert was once a beginner. You've got this! 🚀

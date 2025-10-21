@@ -118,12 +118,12 @@ requests.post('http://localhost:8000/api/dev/reset')
 
 ### Available Test Accounts
 
-| Email | Password | Display Name | Relationships |
-|-------|----------|--------------|---------------|
-| <sarah.johnson@testbook.com> | Sarah2024! | Sarah Johnson | Follows: Mike, Emma, Lisa |
-| <mike.chen@testbook.com> | MikeRocks88 | Mike Chen | Follows: Sarah, Emma, Alex, Daniel |
-| <emma.davis@testbook.com> | EmmaLovesPhotos | Emma Davis | Follows: Sarah, Mike, Lisa, Olivia |
-| <newuser@testbook.com> | NewUser123! | New User | No followers/following |
+| Email                        | Password        | Display Name  | Relationships                      |
+| ---------------------------- | --------------- | ------------- | ---------------------------------- |
+| <sarah.johnson@testbook.com> | Sarah2024!      | Sarah Johnson | Follows: Mike, Emma, Lisa          |
+| <mike.chen@testbook.com>     | MikeRocks88     | Mike Chen     | Follows: Sarah, Emma, Alex, Daniel |
+| <emma.davis@testbook.com>    | EmmaLovesPhotos | Emma Davis    | Follows: Sarah, Mike, Lisa, Olivia |
+| <newuser@testbook.com>       | NewUser123!     | New User      | No followers/following             |
 
 ### Pre-seeded Content
 
@@ -646,21 +646,21 @@ print(me.json())
 
 ```javascript
 // JavaScript + Axios Example
-const axios = require('axios');
+const axios = require("axios");
 
-const BASE_URL = 'http://localhost:8000/api';
+const BASE_URL = "http://localhost:8000/api";
 
 // Login
 const loginResponse = await axios.post(`${BASE_URL}/auth/login`, {
-  email: 'sarah.johnson@testbook.com',
-  password: 'Sarah2024!'
+  email: "sarah.johnson@testbook.com",
+  password: "Sarah2024!",
 });
 
 const token = loginResponse.data.access_token;
 
 // Use token
 const me = await axios.get(`${BASE_URL}/auth/me`, {
-  headers: { Authorization: `Bearer ${token}` }
+  headers: { Authorization: `Bearer ${token}` },
 });
 console.log(me.data);
 ```
@@ -817,64 +817,78 @@ def test_get_followers_following():
 #### Login Test
 
 ```javascript
-const { test, expect } = require('@playwright/test');
+const { test, expect } = require("@playwright/test");
 
-test('user can login', async ({ page }) => {
-  await page.goto('http://localhost:8000');
+test("user can login", async ({ page }) => {
+  await page.goto("http://localhost:8000");
 
-  await page.fill('[data-testid="login-email-input"]', 'sarah.johnson@testbook.com');
-  await page.fill('[data-testid="login-password-input"]', 'Sarah2024!');
+  await page.fill(
+    '[data-testid="login-email-input"]',
+    "sarah.johnson@testbook.com"
+  );
+  await page.fill('[data-testid="login-password-input"]', "Sarah2024!");
   await page.click('[data-testid="login-submit-button"]');
 
   await expect(page.locator('[data-testid="navbar"]')).toBeVisible();
-  await expect(page.locator('[data-testid="navbar-username"]')).toContainText('Sarah Johnson');
+  await expect(page.locator('[data-testid="navbar-username"]')).toContainText(
+    "Sarah Johnson"
+  );
 });
 ```
 
 #### Create Post Test
 
 ```javascript
-test('user can create a post', async ({ page }) => {
+test("user can create a post", async ({ page }) => {
   // Login first
-  await loginAs(page, 'sarah.johnson@testbook.com', 'Sarah2024!');
+  await loginAs(page, "sarah.johnson@testbook.com", "Sarah2024!");
 
   // Create post
-  await page.fill('[data-testid="create-post-textarea"]', 'My test post');
+  await page.fill('[data-testid="create-post-textarea"]', "My test post");
   await page.click('[data-testid="create-post-submit-button"]');
 
   // Verify post appears
-  await expect(page.locator('[data-testid^="post-"]').first()).toContainText('My test post');
+  await expect(page.locator('[data-testid^="post-"]').first()).toContainText(
+    "My test post"
+  );
 });
 ```
 
 #### Upload Media Test
 
 ```javascript
-test('user can create post with uploaded image', async ({ page }) => {
-  await loginAs(page, 'sarah.johnson@testbook.com', 'Sarah2024!');
+test("user can create post with uploaded image", async ({ page }) => {
+  await loginAs(page, "sarah.johnson@testbook.com", "Sarah2024!");
 
   // Fill in post content
-  await page.fill('[data-testid="create-post-textarea"]', 'Post with image');
+  await page.fill('[data-testid="create-post-textarea"]', "Post with image");
 
   // Upload file via file picker
-  await page.setInputFiles('[data-testid="create-post-file-input"]', 'path/to/test-image.jpg');
+  await page.setInputFiles(
+    '[data-testid="create-post-file-input"]',
+    "path/to/test-image.jpg"
+  );
 
   // Verify preview appears
-  await expect(page.locator('[data-testid="create-post-preview"]')).toBeVisible();
+  await expect(
+    page.locator('[data-testid="create-post-preview"]')
+  ).toBeVisible();
 
   // Submit post
   await page.click('[data-testid="create-post-submit-button"]');
 
   // Verify post appears with image
-  await expect(page.locator('[data-testid^="post-"]').first()).toContainText('Post with image');
+  await expect(page.locator('[data-testid^="post-"]').first()).toContainText(
+    "Post with image"
+  );
 });
 ```
 
 #### Edit Post Test
 
 ```javascript
-test('user can edit their own post', async ({ page }) => {
-  await loginAs(page, 'sarah.johnson@testbook.com', 'Sarah2024!');
+test("user can edit their own post", async ({ page }) => {
+  await loginAs(page, "sarah.johnson@testbook.com", "Sarah2024!");
 
   // Click 3-dot menu on first post
   await page.click('[data-testid="post-1-menu-button"]');
@@ -886,19 +900,21 @@ test('user can edit their own post', async ({ page }) => {
   await expect(page.locator('[data-testid="post-1-edit-form"]')).toBeVisible();
 
   // Edit content
-  await page.fill('[data-testid="post-1-edit-textarea"]', 'Updated content');
+  await page.fill('[data-testid="post-1-edit-textarea"]', "Updated content");
   await page.click('[data-testid="post-1-save-button"]');
 
   // Verify updated
-  await expect(page.locator('[data-testid="post-1-content"]')).toContainText('Updated content');
+  await expect(page.locator('[data-testid="post-1-content"]')).toContainText(
+    "Updated content"
+  );
 });
 ```
 
 #### Toggle Reaction Test
 
 ```javascript
-test('user can toggle reactions', async ({ page }) => {
-  await loginAs(page, 'sarah.johnson@testbook.com', 'Sarah2024!');
+test("user can toggle reactions", async ({ page }) => {
+  await loginAs(page, "sarah.johnson@testbook.com", "Sarah2024!");
 
   // Hover over react button to show dropdown
   await page.hover('[data-testid="post-1-react-button"]');
@@ -907,22 +923,26 @@ test('user can toggle reactions', async ({ page }) => {
   await page.click('[data-testid="post-1-reaction-like"]');
 
   // Verify reaction is active
-  await expect(page.locator('[data-testid="post-1-react-button"]')).toContainText('👍');
+  await expect(
+    page.locator('[data-testid="post-1-react-button"]')
+  ).toContainText("👍");
 
   // Click again to remove
   await page.hover('[data-testid="post-1-react-button"]');
   await page.click('[data-testid="post-1-reaction-like"]');
 
   // Verify reaction removed
-  await expect(page.locator('[data-testid="post-1-react-button"]')).toContainText('React');
+  await expect(
+    page.locator('[data-testid="post-1-react-button"]')
+  ).toContainText("React");
 });
 ```
 
 #### Followers/Following Pages Test
 
 ```javascript
-test('user can view and manage followers', async ({ page }) => {
-  await loginAs(page, 'sarah.johnson@testbook.com', 'Sarah2024!');
+test("user can view and manage followers", async ({ page }) => {
+  await loginAs(page, "sarah.johnson@testbook.com", "Sarah2024!");
 
   // Go to own profile
   await page.click('[data-testid="navbar-profile-link"]');
@@ -947,7 +967,9 @@ test('user can view and manage followers', async ({ page }) => {
   await expect(page.locator('[data-testid="following-page"]')).toBeVisible();
 
   // Unfollow someone (if any exist)
-  const unfollowButton = page.locator('[data-testid$="-unfollow-button"]').first();
+  const unfollowButton = page
+    .locator('[data-testid$="-unfollow-button"]')
+    .first();
   if (await unfollowButton.isVisible()) {
     await unfollowButton.click();
   }
@@ -957,20 +979,25 @@ test('user can view and manage followers', async ({ page }) => {
 #### Profile Picture Upload Test
 
 ```javascript
-test('user can upload profile picture', async ({ page }) => {
-  await loginAs(page, 'sarah.johnson@testbook.com', 'Sarah2024!');
+test("user can upload profile picture", async ({ page }) => {
+  await loginAs(page, "sarah.johnson@testbook.com", "Sarah2024!");
 
   // Go to settings
   await page.click('[data-testid="navbar-settings-link"]');
 
   // Upload avatar
-  await page.setInputFiles('[data-testid="settings-avatar-input"]', 'path/to/avatar.jpg');
+  await page.setInputFiles(
+    '[data-testid="settings-avatar-input"]',
+    "path/to/avatar.jpg"
+  );
 
   // Wait for upload to complete
   await page.waitForTimeout(1000);
 
   // Verify success message
-  await expect(page.locator('[data-testid="settings-success"]')).toContainText('updated successfully');
+  await expect(page.locator('[data-testid="settings-success"]')).toContainText(
+    "updated successfully"
+  );
 
   // Go to profile
   await page.click('[data-testid="navbar-profile-link"]');
@@ -1019,38 +1046,45 @@ def test_login():
 ### Cypress Examples
 
 ```javascript
-describe('Testbook Tests', () => {
+describe("Testbook Tests", () => {
   beforeEach(() => {
     // Reset database
-    cy.request('POST', 'http://localhost:8000/api/dev/reset');
-    cy.visit('/');
+    cy.request("POST", "http://localhost:8000/api/dev/reset");
+    cy.visit("/");
   });
 
-  it('should login successfully', () => {
-    cy.get('[data-testid="login-email-input"]').type('sarah.johnson@testbook.com');
-    cy.get('[data-testid="login-password-input"]').type('Sarah2024!');
+  it("should login successfully", () => {
+    cy.get('[data-testid="login-email-input"]').type(
+      "sarah.johnson@testbook.com"
+    );
+    cy.get('[data-testid="login-password-input"]').type("Sarah2024!");
     cy.get('[data-testid="login-submit-button"]').click();
 
-    cy.get('[data-testid="navbar"]').should('be.visible');
-    cy.get('[data-testid="navbar-username"]').should('contain', 'Sarah Johnson');
+    cy.get('[data-testid="navbar"]').should("be.visible");
+    cy.get('[data-testid="navbar-username"]').should(
+      "contain",
+      "Sarah Johnson"
+    );
   });
 
-  it('should create and interact with post', () => {
+  it("should create and interact with post", () => {
     // Login
-    cy.login('sarah.johnson@testbook.com', 'Sarah2024!');
+    cy.login("sarah.johnson@testbook.com", "Sarah2024!");
 
     // Create post
-    cy.get('[data-testid="create-post-textarea"]').type('Test post');
+    cy.get('[data-testid="create-post-textarea"]').type("Test post");
     cy.get('[data-testid="create-post-submit-button"]').click();
 
     // React to post
-    cy.get('[data-testid^="post-"]').first().within(() => {
-      cy.get('[data-testid$="-react-button"]').click();
-      cy.get('[data-testid$="-reaction-like"]').click();
-    });
+    cy.get('[data-testid^="post-"]')
+      .first()
+      .within(() => {
+        cy.get('[data-testid$="-react-button"]').click();
+        cy.get('[data-testid$="-reaction-like"]').click();
+      });
 
     // Verify reaction
-    cy.get('[data-testid^="post-"]').first().should('contain', 'like');
+    cy.get('[data-testid^="post-"]').first().should("contain", "like");
   });
 });
 ```
@@ -1137,22 +1171,22 @@ def test_feed_filtering():
 **Goal:** Test user preferences persistence
 
 ```javascript
-test('theme persists across sessions', async ({ page, context }) => {
+test("theme persists across sessions", async ({ page, context }) => {
   // Login and change theme
-  await loginAs(page, 'sarah.johnson@testbook.com', 'Sarah2024!');
-  await page.goto('/settings');
-  await page.selectOption('[data-testid="settings-theme-select"]', 'dark');
+  await loginAs(page, "sarah.johnson@testbook.com", "Sarah2024!");
+  await page.goto("/settings");
+  await page.selectOption('[data-testid="settings-theme-select"]', "dark");
   await page.click('[data-testid="settings-save-button"]');
 
   // Verify dark theme applied
-  await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
 
   // Logout and login again
   await page.click('[data-testid="navbar-logout-button"]');
-  await loginAs(page, 'sarah.johnson@testbook.com', 'Sarah2024!');
+  await loginAs(page, "sarah.johnson@testbook.com", "Sarah2024!");
 
   // Verify theme persisted
-  await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
 });
 ```
 
@@ -1161,32 +1195,33 @@ test('theme persists across sessions', async ({ page, context }) => {
 ### Load Test Example (K6)
 
 ```javascript
-import http from 'k6/http';
-import { check, sleep } from 'k6';
+import http from "k6/http";
+import { check, sleep } from "k6";
 
 export let options = {
   vus: 10,
-  duration: '30s',
+  duration: "30s",
 };
 
 export default function () {
   // Login
-  let loginRes = http.post('http://localhost:8000/api/auth/login',
+  let loginRes = http.post(
+    "http://localhost:8000/api/auth/login",
     JSON.stringify({
-      email: 'sarah.johnson@testbook.com',
-      password: 'Sarah2024!'
+      email: "sarah.johnson@testbook.com",
+      password: "Sarah2024!",
     }),
-    { headers: { 'Content-Type': 'application/json' } }
+    { headers: { "Content-Type": "application/json" } }
   );
 
-  check(loginRes, { 'login successful': (r) => r.status === 200 });
+  check(loginRes, { "login successful": (r) => r.status === 200 });
 
-  let token = loginRes.json('access_token');
+  let token = loginRes.json("access_token");
   let headers = { Authorization: `Bearer ${token}` };
 
   // Get feed
-  let feedRes = http.get('http://localhost:8000/api/feed/all', { headers });
-  check(feedRes, { 'feed loaded': (r) => r.status === 200 });
+  let feedRes = http.get("http://localhost:8000/api/feed/all", { headers });
+  check(feedRes, { "feed loaded": (r) => r.status === 200 });
 
   sleep(1);
 }
@@ -1295,7 +1330,7 @@ class TestbookAPI:
 - **[TESTING_PATTERNS.md](../reference/TESTING_PATTERNS.md)** - Testing dynamic content patterns
 - **[TESTING_CHEATSHEET.md](../reference/TESTING_CHEATSHEET.md)** - Quick reference guide
 - **[TESTING_FEATURES.md](../reference/TESTING_FEATURES.md)** - All testable features
-- **[QUICKSTART.md](../../QUICKSTART.md)** - Get started quickly
+- **[README.md](../../README.md#quick-start-5-minutes)** - Get started quickly
 
 ---
 

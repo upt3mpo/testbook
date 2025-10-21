@@ -371,7 +371,7 @@ If you prefer not to use task runners, you can still use the original shell scri
 - `reset-database.sh` / `reset-database.bat` - Reset database
 - `run-all-tests.sh` - Run all tests
 
-See `WHICH_START_SCRIPT.md` for details.
+See [README.md](../../README.md#development-vs-production-mode) for details.
 
 ---
 

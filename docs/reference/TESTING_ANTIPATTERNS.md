@@ -200,9 +200,9 @@ def test_async_operation():
 **❌ BAD:**
 
 ```javascript
-test('wait for element', async ({ page }) => {
-  await page.goto('http://localhost:3000');
-  await page.waitForTimeout(3000);  // Arbitrary wait!
+test("wait for element", async ({ page }) => {
+  await page.goto("http://localhost:3000");
+  await page.waitForTimeout(3000); // Arbitrary wait!
   await page.click('[data-testid="button"]');
 });
 ```
@@ -216,10 +216,10 @@ test('wait for element', async ({ page }) => {
 **✅ GOOD:**
 
 ```javascript
-test('wait for element', async ({ page }) => {
-  await page.goto('http://localhost:3000');
+test("wait for element", async ({ page }) => {
+  await page.goto("http://localhost:3000");
   // Wait for specific element
-  await page.waitForSelector('[data-testid="button"]', { state: 'visible' });
+  await page.waitForSelector('[data-testid="button"]', { state: "visible" });
   await page.click('[data-testid="button"]');
 });
 ```
@@ -227,8 +227,8 @@ test('wait for element', async ({ page }) => {
 **✅ EVEN BETTER (Playwright auto-waits):**
 
 ```javascript
-test('wait for element', async ({ page }) => {
-  await page.goto('http://localhost:3000');
+test("wait for element", async ({ page }) => {
+  await page.goto("http://localhost:3000");
   // Playwright automatically waits for element!
   await page.click('[data-testid="button"]');
 });
@@ -659,10 +659,10 @@ def test_delete_user(test_db):
 **❌ BAD:**
 
 ```javascript
-test('click button', async ({ page }) => {
+test("click button", async ({ page }) => {
   // Fragile CSS selectors
-  await page.click('.btn.btn-primary.submit-button.large');
-  await page.click('div > div > button:nth-child(3)');
+  await page.click(".btn.btn-primary.submit-button.large");
+  await page.click("div > div > button:nth-child(3)");
   await page.click('button[style="color: blue"]');
 });
 ```
@@ -676,11 +676,11 @@ test('click button', async ({ page }) => {
 **✅ GOOD:**
 
 ```javascript
-test('click button', async ({ page }) => {
+test("click button", async ({ page }) => {
   // Stable selectors
   await page.click('[data-testid="submit-button"]');
   await page.click('[data-testid="cancel-button"]');
-  await page.getByRole('button', { name: 'Submit' }).click();
+  await page.getByRole("button", { name: "Submit" }).click();
 });
 ```
 
@@ -691,12 +691,12 @@ test('click button', async ({ page }) => {
 **❌ BAD:**
 
 ```javascript
-test('find element', async ({ page }) => {
+test("find element", async ({ page }) => {
   // Searching by text - breaks with typos or i18n
-  await page.click('text=Submit Form');
+  await page.click("text=Submit Form");
 
   // Searching by class - breaks when styles change
-  await page.click('.submit-btn');
+  await page.click(".submit-btn");
 });
 ```
 
@@ -709,7 +709,7 @@ test('find element', async ({ page }) => {
 **✅ GOOD:**
 
 ```javascript
-test('find element', async ({ page }) => {
+test("find element", async ({ page }) => {
   // Use data-testid
   await page.click('[data-testid="submit-button"]');
 });
@@ -718,9 +718,7 @@ test('find element', async ({ page }) => {
 **In your HTML:**
 
 ```html
-<button data-testid="submit-button" class="btn btn-primary">
-  Submit Form
-</button>
+<button data-testid="submit-button" class="btn btn-primary">Submit Form</button>
 ```
 
 ---
@@ -730,10 +728,10 @@ test('find element', async ({ page }) => {
 **❌ BAD:**
 
 ```javascript
-test('should delete account', async ({ page }) => {
+test("should delete account", async ({ page }) => {
   await page.click('[data-testid="delete-button"]');
   // Test hangs here! window.confirm() is blocking execution
-  await expect(page).toHaveURL('/login');  // Never gets here
+  await expect(page).toHaveURL("/login"); // Never gets here
 });
 ```
 
@@ -751,7 +749,7 @@ When we had this in the frontend:
 ```javascript
 // Profile.jsx
 const handleBlock = async () => {
-  if (!window.confirm('Are you sure you want to block this user?')) return;
+  if (!window.confirm("Are you sure you want to block this user?")) return;
   await blockUser();
 };
 ```
@@ -761,12 +759,12 @@ Tests that clicked the block button would hang waiting for the dialog to be dism
 **✅ GOOD:**
 
 ```javascript
-test('should delete account', async ({ page }) => {
+test("should delete account", async ({ page }) => {
   // Setup dialog handler BEFORE clicking
-  page.on('dialog', dialog => dialog.accept());
+  page.on("dialog", (dialog) => dialog.accept());
 
   await page.click('[data-testid="delete-button"]');
-  await expect(page).toHaveURL('/login');  // Works!
+  await expect(page).toHaveURL("/login"); // Works!
 });
 ```
 
@@ -775,7 +773,7 @@ test('should delete account', async ({ page }) => {
 ```javascript
 // In test-helpers.js
 function setupDialogHandler(page) {
-  page.on('dialog', async dialog => {
+  page.on("dialog", async (dialog) => {
     console.log(`Auto-accepting ${dialog.type()}: ${dialog.message()}`);
     await dialog.accept();
   });
@@ -783,7 +781,7 @@ function setupDialogHandler(page) {
 
 // In every test file
 test.beforeEach(async ({ page }) => {
-  setupDialogHandler(page);  // Handle all dialogs automatically
+  setupDialogHandler(page); // Handle all dialogs automatically
   // ... rest of setup
 });
 ```
@@ -809,7 +807,7 @@ test.beforeEach(async ({ page }) => {
 **❌ BAD:**
 
 ```javascript
-test('should show count', async ({ page }) => {
+test("should show count", async ({ page }) => {
   // Looking for element that doesn't exist!
   await expect(page.locator('[data-testid="followers-count"]')).toBeVisible();
 });
@@ -826,7 +824,9 @@ test('should show count', async ({ page }) => {
 Tests were looking for `profile-followers-count` but frontend had:
 
 ```jsx
-<Link data-testid="profile-followers-link">  {/* Different ID! */}
+<Link data-testid="profile-followers-link">
+  {" "}
+  {/* Different ID! */}
   <strong>{profile.followers_count}</strong> followers
 </Link>
 ```
@@ -835,10 +835,12 @@ Tests were looking for `profile-followers-count` but frontend had:
 
 ```javascript
 // Option 1: Match the actual test IDs
-await expect(page.locator('[data-testid="profile-followers-link"]')).toBeVisible();
+await expect(
+  page.locator('[data-testid="profile-followers-link"]')
+).toBeVisible();
 
 // Option 2: Add the missing test IDs to frontend
-<strong data-testid="profile-followers-count">{count}</strong>
+<strong data-testid="profile-followers-count">{count}</strong>;
 ```
 
 **Best Practice:**
@@ -855,9 +857,9 @@ await expect(page.locator('[data-testid="profile-followers-link"]')).toBeVisible
 **❌ BAD:**
 
 ```javascript
-test('should edit post', async ({ page }) => {
+test("should edit post", async ({ page }) => {
   await page.click('[data-testid="menu-button"]');
-  await page.click('[data-testid="edit-button"]');  // Fails! Dropdown closing
+  await page.click('[data-testid="edit-button"]'); // Fails! Dropdown closing
 });
 ```
 
@@ -874,9 +876,9 @@ Our Post component has click-outside handler:
 ```javascript
 useEffect(() => {
   const handleClickOutside = (event) => {
-    setShowDropdown(false);  // Closes dropdown
+    setShowDropdown(false); // Closes dropdown
   };
-  document.addEventListener('mousedown', handleClickOutside);
+  document.addEventListener("mousedown", handleClickOutside);
 }, [showDropdown]);
 ```
 
@@ -885,7 +887,7 @@ Tests would open the menu, but by the time they tried to click edit, the dropdow
 **✅ GOOD:**
 
 ```javascript
-test('should edit post', async ({ page }) => {
+test("should edit post", async ({ page }) => {
   await page.click('[data-testid="menu-button"]');
 
   // Force click to bypass visibility checks
@@ -929,7 +931,7 @@ Before committing your tests, check:
 - **[TESTING_PATTERNS.md](TESTING_PATTERNS.md)** - What TO do (now includes dialog handling & force clicks!)
 - **[FLAKY_TESTS_GUIDE.md](../guides/FLAKY_TESTS_GUIDE.md)** ⭐ - Real fixes from this project
 - **[TESTING_CHEATSHEET.md](TESTING_CHEATSHEET.md)** - Quick reference (updated with critical patterns)
-- **[Common Mistakes](../course/COMMON_MISTAKES.md)** - Student errors
+- **[Troubleshooting](TROUBLESHOOTING.md)** - Student errors
 - **[Test Examples](../../backend/tests/examples/)** - Good vs bad tests
 - **[Flaky Tests Guide](../guides/FLAKY_TESTS_GUIDE.md)** - How to fix unreliable tests
 
