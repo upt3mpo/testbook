@@ -51,7 +51,7 @@ See: testbook-notes/v1.2-contract-testing-plan.md
 FOR NOW:
 ✅ Study this test file to learn the pattern
 ✅ Read the comprehensive guide: docs/guides/CONTRACT_TESTING.md
-✅ Try frontend contract testing: labs/LAB_06C_Frontend_Integration_Testing.md (works today!)
+✅ Try frontend contract testing: learn/stage_4_performance_security/exercises/LAB_06C_Frontend_Integration_Testing.md (works today!)
 ✅ Understand the concept (valuable for interviews!)
 
 Reference: https://github.com/schemathesis/schemathesis/issues/494
@@ -61,7 +61,7 @@ Reference: https://github.com/schemathesis/schemathesis/issues/494
 LEARN MORE:
 📚 Full explanation: docs/guides/CONTRACT_TESTING.md
 🧪 What it would test: See concrete examples in that guide
-🔄 Frontend contract testing: labs/LAB_06C_Frontend_Integration_Testing.md
+🔄 Frontend contract testing: learn/stage_4_performance_security/exercises/LAB_06C_Frontend_Integration_Testing.md
 🛠️  Alternative tools: Dredd, Pact, Postman contract testing
 
 This test demonstrates an advanced technique used in production at major tech companies!

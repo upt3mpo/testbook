@@ -71,7 +71,7 @@ LINK_STATUS=0
 # Critical files that must pass
 CRITICAL_FILES=(
     "README.md"
-    "START_HERE.md"
+    "learn/README.md"
 )
 
 for file in "${CRITICAL_FILES[@]}"; do

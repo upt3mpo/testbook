@@ -6,11 +6,11 @@ This directory contains a small set of reference implementations that demonstrat
 
 ## Available Reference Solutions
 
-| Lab | File | Notes |
-|-----|------|-------|
-| Lab 1 – Your First Test | `LAB_01_solution.py` | Demonstrates pytest basics and assertion patterns. |
+| Lab                            | File                 | Notes                                                     |
+| ------------------------------ | -------------------- | --------------------------------------------------------- |
+| Lab 1 – Your First Test        | `LAB_01_solution.py` | Demonstrates pytest basics and assertion patterns.        |
 | Lab 2 – Testing Real Functions | `LAB_02_solution.py` | Shows password hashing tests that mirror the lab prompts. |
-| Lab 3 – Testing API Endpoints | `LAB_03_solution.py` | Covers TestClient usage and HTTP assertions. |
+| Lab 3 – Testing API Endpoints  | `LAB_03_solution.py` | Covers TestClient usage and HTTP assertions.              |
 
 > Advanced labs (fixtures, E2E testing, debugging, rate limiting, etc.) encourage learners to compare their work against the production codebase and test suite. We intentionally avoid including end-to-end solutions to preserve the exploratory experience.
 
@@ -34,14 +34,14 @@ When learners are stuck:
 3. Encourage running the relevant test suites to compare behaviour.
 4. Use these solutions as a last resort, ideally during code review or mentoring.
 
-The self-assessment checklists inside each lab and the progress trackers in `docs/course/COURSE_AUTOMATION_TESTING_101.md` should be your primary grading tools.
+The self-assessment checklists inside each lab and the progress trackers in `learn/README.md` should be your primary grading tools.
 
 ---
 
 ## Related Documentation
 
 - `docs/TESTBOOK_RELEASE_AUDIT.md` – Current release readiness report and curriculum rubric.
-- `docs/course/COMMON_MISTAKES.md` – Catalog of issues learners typically encounter.
+- `docs/reference/TROUBLESHOOTING.md` – Catalog of issues learners typically encounter.
 - `docs/guides/RUNNING_TESTS.md` – How to execute the full test suite referenced by the labs.
 
 Keep this directory lean so learners remain focused on discovery, while maintainers still have the guardrails they need.

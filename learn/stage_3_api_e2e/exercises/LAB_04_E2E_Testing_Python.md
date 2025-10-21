@@ -3,7 +3,7 @@
 **Estimated Time:** 90 minutes
 **Difficulty:** Intermediate
 **Language:** 🐍 Python
-**Prerequisites:** Labs 1-3 completed, Python 3.11+ installed
+**Prerequisites:** Labs 1-3 completed, Python 3.13 installed (recommended version)
 
 **Note:** There's also a [JavaScript version](LAB_04_E2E_Testing_JavaScript.md) that follows the same structure!
 
@@ -333,12 +333,12 @@ page.pause()  # Add this line anywhere in your test
 
 **Both versions of this lab teach the same concepts!**
 
-| Aspect | Python (this lab) | JavaScript |
-|--------|------------------|------------|
-| **Syntax** | Synchronous, clean | Async/await |
+| Aspect       | Python (this lab)                | JavaScript                    |
+| ------------ | -------------------------------- | ----------------------------- |
+| **Syntax**   | Synchronous, clean               | Async/await                   |
 | **Best For** | Python developers, backend teams | JS developers, frontend teams |
-| **Features** | Identical | Identical |
-| **Speed** | Same | Same |
+| **Features** | Identical                        | Identical                     |
+| **Speed**    | Same                             | Same                          |
 
 **Choose based on your comfort level!** Both are excellent.
 

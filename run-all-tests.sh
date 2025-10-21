@@ -109,7 +109,7 @@ if curl -s http://localhost:3000 > /dev/null 2>&1; then
 
     cd tests
 
-    if npx playwright test --project=chromium --workers=2; then
+    if npx playwright test --project=chromium --workers=2; then  # Chrome only for faster execution
         E2E_JS_PASSED=1
         echo ""
         echo -e "${GREEN}✅ JavaScript E2E tests PASSED${NC}"
@@ -154,7 +154,7 @@ if curl -s http://localhost:3000 > /dev/null 2>&1; then
             fi
         else
             echo -e "${YELLOW}⚠️  Python E2E tests skipped (playwright not installed)${NC}"
-            echo -e "${YELLOW}   Install with: cd tests/e2e-python && pip install -r requirements.txt && playwright install${NC}"
+            echo -e "${YELLOW}   Install with: cd tests/e2e-python && pip install -r requirements.txt && playwright install chromium${NC}"
             E2E_PY_PASSED=0
         fi
     else

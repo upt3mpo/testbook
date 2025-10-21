@@ -1,5 +1,5 @@
 // @ts-check
-import { defineConfig, devices } from '@playwright/test';
+import { defineConfig, devices } from "@playwright/test";
 
 /**
  * Playwright configuration for Testbook E2E tests.
@@ -7,7 +7,11 @@ import { defineConfig, devices } from '@playwright/test';
  * @see https://playwright.dev/docs/test-configuration
  */
 export default defineConfig({
-  testDir: './e2e',
+  testDir: "./e2e",
+
+  /* Global setup and teardown */
+  globalSetup: "./global-setup.js",
+  globalTeardown: "./global-teardown.js",
 
   /* Maximum time one test can run */
   timeout: 30 * 1000,
@@ -28,9 +32,9 @@ export default defineConfig({
   reporter: [
     // HTML report with open: 'never' prevents auto-opening browser
     // To view report manually: npx playwright show-report
-    ['html', { outputFolder: 'playwright-report', open: 'never' }],
-    ['json', { outputFile: 'test-results/results.json' }],
-    ['list']
+    ["html", { outputFolder: "playwright-report", open: "never" }],
+    ["json", { outputFile: "test-results/results.json" }],
+    ["list"],
   ],
 
   /* Shared settings for all projects */
@@ -38,47 +42,42 @@ export default defineConfig({
     /* Base URL to use in actions like `await page.goto('/')` */
     // IMPORTANT: Port 3000 is for development mode (start-dev.sh)
     // Use PORT 8000 only if running production mode (start.sh)
-    baseURL: process.env.BASE_URL || 'http://localhost:3000',
+    baseURL: process.env.BASE_URL || "http://localhost:3000",
 
     /* Collect trace when retrying the failed test */
-    trace: 'on-first-retry',
+    trace: "on-first-retry",
 
     /* Screenshot on failure */
-    screenshot: 'only-on-failure',
+    screenshot: "only-on-failure",
 
     /* Video on failure */
-    video: 'retain-on-failure',
+    video: "retain-on-failure",
   },
 
   /* Configure projects for major browsers */
-  // NOTE: CI only runs 'chromium' (via --project=chromium flag) for speed
-  // Run locally with all browsers: npx playwright test
-  // Run specific browser: npx playwright test --project=firefox
+  // LEARNING FOCUS: Chrome only for faster execution and simpler setup
+  // Run with Chrome: npx playwright test (default)
+  // Run with other browsers: npx playwright test --project=firefox
   projects: [
     {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      name: "chromium",
+      use: { ...devices["Desktop Chrome"] },
     },
 
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
-
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
-    },
-
-    /* Test against mobile viewports */
-    {
-      name: 'Mobile Chrome',
-      use: { ...devices['Pixel 5'] },
-    },
-    {
-      name: 'Mobile Safari',
-      use: { ...devices['iPhone 12'] },
-    },
+    // Additional browsers available but not run by default
+    // Uncomment to enable cross-browser testing:
+    // {
+    //   name: 'firefox',
+    //   use: { ...devices['Desktop Firefox'] },
+    // },
+    // {
+    //   name: 'webkit',
+    //   use: { ...devices['Desktop Safari'] },
+    // },
+    // {
+    //   name: 'Mobile Chrome',
+    //   use: { ...devices['Pixel 5'] },
+    // },
   ],
 
   /* Run your local dev server before starting the tests */
@@ -94,4 +93,3 @@ export default defineConfig({
   //   timeout: 120 * 1000,
   // },
 });
-

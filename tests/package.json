@@ -4,16 +4,18 @@
   "description": "End-to-end tests for Testbook",
   "type": "module",
   "scripts": {
-    "test": "playwright test",
-    "test:headed": "playwright test --headed",
-    "test:debug": "playwright test --debug",
-    "test:ui": "playwright test --ui",
-    "test:a11y": "playwright test accessibility-axe.spec.js",
+    "test": "playwright test --project=chromium",
+    "test:headed": "playwright test --project=chromium --headed",
+    "test:debug": "playwright test --project=chromium --debug",
+    "test:ui": "playwright test --project=chromium --ui",
+    "test:a11y": "playwright test --project=chromium accessibility-axe.spec.js",
+    "test:all-browsers": "playwright test",
+    "install-browsers": "playwright install chromium",
     "lighthouse": "lhci autorun"
   },
   "devDependencies": {
-    "@playwright/test": "^1.40.1",
+    "@playwright/test": "^1.56.1",
     "@axe-core/playwright": "^4.8.3",
-    "@lhci/cli": "^0.13.0"
+    "@lhci/cli": "^0.15.1"
   }
 }

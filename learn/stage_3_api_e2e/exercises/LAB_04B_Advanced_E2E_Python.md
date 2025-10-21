@@ -1027,13 +1027,13 @@ This pattern is **10-100x faster** than clicking through UI for setup!
 
 Both Python and JavaScript Playwright support these patterns!
 
-| Feature | Python (this lab) | JavaScript |
-|---------|------------------|------------|
-| **Page Objects** | Classes | Classes or functions |
-| **Fixtures** | pytest fixtures | Playwright fixtures |
-| **Markers** | `@pytest.mark` | `test.describe` tags |
-| **Network** | `page.route()` | `page.route()` |
-| **Syntax** | Synchronous | Async/await |
+| Feature          | Python (this lab) | JavaScript           |
+| ---------------- | ----------------- | -------------------- |
+| **Page Objects** | Classes           | Classes or functions |
+| **Fixtures**     | pytest fixtures   | Playwright fixtures  |
+| **Markers**      | `@pytest.mark`    | `test.describe` tags |
+| **Network**      | `page.route()`    | `page.route()`       |
+| **Syntax**       | Synchronous       | Async/await          |
 
 The concepts transfer directly between languages!
 
@@ -1070,6 +1070,6 @@ The concepts transfer directly between languages!
 **Next Steps:**
 
 - Apply these patterns to the full test suite
-- Explore [Section 8: Advanced E2E Patterns](../docs/course/SECTION_08_ADVANCED_E2E_PATTERNS.md) for more examples
+- Explore [Section 8: Advanced E2E Patterns](../learn/stage_3_api_e2e/README.md#advanced-e2e-patterns) for more examples
 - Compare with [JavaScript advanced patterns](../docs/guides/TESTING_COMPARISON_PYTHON_JS.md)
-- Set up [CI/CD automation](../docs/course/CI_CD_E2E_TESTING.md)
+- Set up [CI/CD automation](../learn/stage_5_capstone/README.md#cicd-automation)

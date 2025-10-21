@@ -56,13 +56,13 @@ if errorlevel 1 (
     echo ✅ README.md
 )
 
-echo Checking: START_HERE.md
-markdown-link-check START_HERE.md --config .markdown-link-check.json --quiet
+echo Checking: learn/README.md
+markdown-link-check learn/README.md --config .markdown-link-check.json --quiet
 if errorlevel 1 (
-    echo ❌ START_HERE.md has broken links
+    echo ❌ learn/README.md has broken links
     set LINK_FAILED=1
 ) else (
-    echo ✅ START_HERE.md
+    echo ✅ learn/README.md
 )
 
 echo.

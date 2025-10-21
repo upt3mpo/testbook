@@ -34,6 +34,7 @@ scripts\check-markdown.bat
 ### What It Checks
 
 1. **Markdown Linting**
+
    - Consistent heading styles
    - Proper list formatting
    - Code block syntax
@@ -114,9 +115,7 @@ Edit `.markdown-link-check.json` to customize:
 
 ```json
 {
-  "ignorePatterns": [
-    { "pattern": "^http://localhost" }
-  ],
+  "ignorePatterns": [{ "pattern": "^http://localhost" }],
   "timeout": "20s",
   "retryOn429": true
 }
@@ -138,7 +137,7 @@ Markdown validation runs automatically in GitHub Actions when:
 
 - **Markdown linting:** Must pass (blocking)
 - **Link validation:** Informational (non-blocking for most files)
-- **Critical files:** README.md and START_HERE.md must have valid links
+- **Critical files:** README.md and learn/README.md must have valid links
 
 ---
 

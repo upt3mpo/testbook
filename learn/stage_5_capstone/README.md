@@ -4,6 +4,17 @@
 
 You've learned unit, integration, E2E, performance, and security testing. Now it's time to showcase your skills! Build a complete test suite, document your work, and create portfolio artifacts that prove you're job-ready.
 
+## Your Progress
+
+[████████████████████████████] 100% complete
+✅ Stage 1: Unit Tests (completed)
+✅ Stage 2: Integration Tests (completed)
+✅ Stage 3: API & E2E Testing (completed)
+✅ Stage 4: Performance & Security (completed)
+→ **Stage 5: Capstone** (you are here)
+
+**Estimated time remaining:** 2-3 hours
+
 ---
 
 ## 🎯 Learning Goals
@@ -18,7 +29,7 @@ By the end of this stage, you will:
 - ✅ Understand how to present your testing work
 - ✅ Know what employers look for in QA candidates
 
-**Duration:** 2-3 hours
+**Duration:** 2-3 hours (Quick Path) | 6-10 hours (Comprehensive Path)
 
 **📚 Essential Resource: [Portfolio Guide](../../docs/guides/PORTFOLIO.md)** - Complete guide on turning your work into resume content, interview prep, and job-ready portfolio projects!
 
@@ -74,31 +85,38 @@ Before writing code, plan your test strategy:
 # Test Plan: [Feature Name]
 
 ## Feature Overview
+
 [Describe what the feature does]
 
 ## Test Strategy
 
 ### Unit Tests (Fast, isolated)
+
 - [ ] Test 1: ...
 - [ ] Test 2: ...
 
 ### Integration Tests (API endpoints)
+
 - [ ] Test 1: ...
 - [ ] Test 2: ...
 
 ### E2E Tests (User workflows)
+
 - [ ] Test 1: ...
 - [ ] Test 2: ...
 
 ### Security Tests
+
 - [ ] Test 1: ...
 - [ ] Test 2: ...
 
 ## Test Data Requirements
+
 - User accounts: ...
 - Sample data: ...
 
 ## Success Criteria
+
 - All tests pass
 - Coverage > 80%
 - All endpoints tested
@@ -268,6 +286,7 @@ pytest --html=test-report.html --self-contained-html
 Create `TESTING.md` for your feature:
 
 <!-- markdownlint-disable MD040 -->
+
 ````markdown
 # Testing Documentation: [Feature Name]
 
@@ -319,8 +338,8 @@ Areas for future testing:
 - Performance testing with k6
 - Accessibility testing
 - Cross-browser E2E tests
-
 ````
+
 <!-- markdownlint-enable MD040 -->
 
 ---
@@ -349,15 +368,17 @@ Use these templates (fill in your specifics):
 
 Create `PORTFOLIO.md`:
 
-````markdown
+```markdown
 # Testing Portfolio - [Your Name]
 
 ## Overview
+
 I completed Testbook's 5-stage learning path and built a comprehensive test suite demonstrating professional QA engineering skills.
 
 ## Skills Demonstrated
 
 ### Test Automation
+
 - Pytest (unit and integration testing)
 - Playwright (E2E browser automation)
 - k6 (performance testing)
@@ -365,6 +386,7 @@ I completed Testbook's 5-stage learning path and built a comprehensive test suit
 - Page Object Model pattern
 
 ### Testing Types
+
 - ✅ Unit testing
 - ✅ Integration testing
 - ✅ API testing
@@ -373,6 +395,7 @@ I completed Testbook's 5-stage learning path and built a comprehensive test suit
 - ✅ Performance testing
 
 ### Tools & Technologies
+
 - Python, pytest, Playwright
 - FastAPI, PostgreSQL
 - Git, GitHub Actions (CI/CD)
@@ -381,10 +404,12 @@ I completed Testbook's 5-stage learning path and built a comprehensive test suit
 ## Projects
 
 ### 1. Testbook Learning Path
+
 **Duration:** [Your timeframe]
 **Description:** Completed 5-stage curriculum covering all aspects of test automation
 
 **Achievements:**
+
 - Wrote 50+ tests across all test types
 - Achieved 85%+ coverage
 - Implemented Page Object Model
@@ -393,15 +418,18 @@ I completed Testbook's 5-stage learning path and built a comprehensive test suit
 [Link to code] | [Video demo] | [Coverage report]
 
 ### 2. Capstone: [Feature] Test Suite
+
 **Description:** Built complete test automation for [feature] from scratch
 
 **Test Coverage:**
+
 - 15 unit tests
 - 12 integration tests
 - 5 E2E tests
 - 3 security tests
 
 **Results:**
+
 - 87% code coverage
 - All critical paths tested
 - 0 production bugs in 30 days
@@ -410,15 +438,15 @@ I completed Testbook's 5-stage learning path and built a comprehensive test suit
 
 ## Metrics
 
-| Project | Tests | Coverage | Status |
-|---------|-------|----------|--------|
-| Testbook | 100+ | 84% | ✅ Complete |
-| Capstone | 35 | 87% | ✅ Complete |
+| Project  | Tests | Coverage | Status      |
+| -------- | ----- | -------- | ----------- |
+| Testbook | 100+  | 84%      | ✅ Complete |
+| Capstone | 35    | 87%      | ✅ Complete |
 
 ## Contact
 
 [Your professional links]
-````
+```
 
 ---
 
@@ -431,30 +459,30 @@ Practice answering these with examples from your work:
 #### Technical Questions
 
 **Q: "Explain the difference between unit, integration, and E2E tests."**
-*Use the test pyramid. Give examples from Testbook.*
+_Use the test pyramid. Give examples from Testbook._
 
 **Q: "How do you decide what to test?"**
-*Talk about risk-based testing, critical paths, test strategy.*
+_Talk about risk-based testing, critical paths, test strategy._
 
 **Q: "Walk me through how you'd test [feature]."**
-*Show your test plan from this capstone.*
+_Show your test plan from this capstone._
 
 **Q: "How do you handle flaky tests?"**
-*Discuss waits, retries, isolation, debugging techniques.*
+_Discuss waits, retries, isolation, debugging techniques._
 
 **Q: "What's your approach to security testing?"**
-*Reference OWASP Top 10, your security tests.*
+_Reference OWASP Top 10, your security tests._
 
 #### Behavioral Questions
 
 **Q: "Tell me about a bug you found."**
-*Prepare story: What was it? How'd you find it? Impact? How'd you document it?*
+_Prepare story: What was it? How'd you find it? Impact? How'd you document it?_
 
 **Q: "Describe a time you had to learn a new testing tool."**
-*Your Testbook journey! Playwright, pytest, k6.*
+_Your Testbook journey! Playwright, pytest, k6._
 
 **Q: "How do you prioritize testing when time is limited?"**
-*Risk-based testing, smoke tests, critical paths.*
+_Risk-based testing, smoke tests, critical paths._
 
 ### Show Your Work
 
@@ -594,6 +622,902 @@ You've completed all 5 stages of the Testbook learning path!
 
 ---
 
+## 🚀 CI/CD & Automation
+
+Professional testing teams use continuous integration and deployment pipelines to automatically run tests on every code change. This section teaches you how to set up production-ready CI/CD for both Python and JavaScript testing stacks.
+
+### 🎯 Learning Objectives
+
+By the end of this section, you will be able to:
+
+- ✅ Configure GitHub Actions for automated testing
+- ✅ Set up caching strategies for faster CI runs
+- ✅ Capture and manage test artifacts (screenshots, videos, reports)
+- ✅ Implement retry strategies for flaky tests
+- ✅ Run tests in parallel for efficiency
+- ✅ Upload coverage reports and track metrics
+- ✅ Handle test failures gracefully with notifications
+
+---
+
+## 📋 Prerequisites
+
+Before starting this section, ensure you have:
+
+- ✅ Tests working locally (Python and/or JavaScript)
+- ✅ GitHub repository (or GitLab/other CI platform)
+- ✅ Basic understanding of YAML configuration
+- ✅ Completed [Stage 3: API & E2E Testing](../stage_3_api_e2e/README.md)
+
+---
+
+## 🏗️ Architecture Overview
+
+### CI/CD Pipeline Structure
+
+```text
+┌─────────────────────────────────────────────────────────────┐
+│                    GitHub Actions CI/CD                    │
+├─────────────────────────────────────────────────────────────┤
+│  Push/PR → Install → Cache → Test → Report → Deploy       │
+│     ↓         ↓        ↓       ↓       ↓        ↓          │
+│  Trigger  Dependencies Browser  Run   Upload   Notify      │
+│           (pip/npm)   Install  Tests Results  Team        │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Test Execution Strategy
+
+```text
+┌─────────────────────────────────────────────────────────────┐
+│                    Test Execution Flow                     │
+├─────────────────────────────────────────────────────────────┤
+│  Backend Tests → Frontend Tests → E2E Tests → Security     │
+│     (Fast)        (Medium)       (Slow)      (Optional)    │
+│     ↓              ↓              ↓             ↓          │
+│  Fail Fast    Parallel Run   Full Browser   OWASP Scan    │
+└─────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 📚 Section 1: Understanding CI/CD for Testing
+
+### What is CI/CD?
+
+**Continuous Integration (CI):**
+
+- Automatically runs tests on every code change
+- Catches bugs early before they reach production
+- Provides immediate feedback to developers
+
+**Continuous Deployment (CD):**
+
+- Automatically deploys code that passes all tests
+- Reduces manual deployment errors
+- Enables rapid, reliable releases
+
+### Why E2E Tests in CI/CD?
+
+**Benefits:**
+
+- ✅ Catch integration issues between frontend and backend
+- ✅ Validate complete user workflows
+- ✅ Test across multiple browsers and environments
+- ✅ Ensure production readiness
+
+**Challenges:**
+
+- ⚠️ Slower execution than unit tests
+- ⚠️ More complex setup and maintenance
+- ⚠️ Can be flaky due to timing issues
+- ⚠️ Requires running application stack
+
+---
+
+## 🛠️ Section 2: GitHub Actions Setup
+
+### Basic Workflow Structure
+
+Every GitHub Actions workflow follows this pattern:
+
+```yaml
+name: Workflow Name
+on: [trigger events]
+jobs:
+  job-name:
+    runs-on: [operating system]
+    steps:
+      - name: Step Name
+        run: commands
+```
+
+### Essential Actions for Testing
+
+**Core Actions:**
+
+- `actions/checkout@v4` - Get your code
+- `actions/setup-python@v4` - Python environment
+- `actions/setup-node@v4` - Node.js environment
+- `actions/upload-artifact@v3` - Save test results
+
+---
+
+## 🐍 Section 3: Python E2E Testing Pipeline
+
+### Basic Python E2E Workflow
+
+Create `.github/workflows/e2e-python.yml`:
+
+```yaml
+name: E2E Tests (Python/Playwright)
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  e2e-python:
+    name: Python E2E Tests
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.13"
+          cache: "pip"
+
+      - name: Install Python dependencies
+        run: |
+          pip install -r tests/e2e-python/requirements.txt
+
+      - name: Install Playwright browsers
+        run: |
+          playwright install --with-deps chromium  # Chrome only for faster CI
+
+      - name: Start backend
+        run: |
+          cd backend
+          source .venv/bin/activate || python -m venv .venv && source .venv/bin/activate
+          pip install -r requirements.txt
+          uvicorn main:app --host 0.0.0.0 --port 8000 &
+          sleep 5
+
+      - name: Start frontend
+        run: |
+          cd frontend
+          npm ci
+          npm run dev &
+          sleep 10
+          curl http://localhost:3000 || (echo "Frontend failed to start" && exit 1)
+
+      - name: Run E2E tests
+        env:
+          BROWSER: ${{ matrix.browser }}
+          HEADLESS: true
+          BASE_URL: http://localhost:3000
+          API_URL: http://localhost:8000
+        run: |
+          cd tests/e2e-python
+          HEADLESS=true pytest --browser=${{ matrix.browser }} -v --tb=short
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: e2e-python-${{ matrix.browser }}-results
+          path: |
+            tests/e2e-python/test-results/
+            tests/e2e-python/screenshots/
+          retention-days: 30
+
+      - name: Upload videos on failure
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: e2e-python-${{ matrix.browser }}-videos
+          path: tests/e2e-python/test-results/videos/
+          retention-days: 30
+```
+
+### Key Features Explained
+
+**Matrix Strategy:**
+
+- Tests multiple browsers in parallel
+- `fail-fast: false` ensures all browsers are tested even if one fails
+
+**Service Startup:**
+
+- Backend and frontend started as background processes
+- Health checks ensure services are ready before tests
+
+**Artifact Management:**
+
+- Test results saved for debugging
+- Videos only uploaded on failure to save space
+
+---
+
+## 🟨 Section 4: JavaScript E2E Testing Pipeline
+
+### Basic JavaScript E2E Workflow
+
+Create `.github/workflows/e2e-javascript.yml`:
+
+```yaml
+name: E2E Tests (JavaScript/Playwright)
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  e2e-javascript:
+    name: JavaScript E2E Tests
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
+        shard: [1, 2] # Run in 2 parallel shards
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: |
+          cd tests
+          npm ci
+
+      - name: Install Playwright browsers
+        run: |
+          cd tests
+          npx playwright install --with-deps chromium  # Chrome only for faster CI
+
+      - name: Start backend
+        run: |
+          cd backend
+          python -m venv .venv
+          source .venv/bin/activate
+          pip install -r requirements.txt
+          uvicorn main:app --host 0.0.0.0 --port 8000 &
+          sleep 5
+
+      - name: Start frontend
+        run: |
+          cd frontend
+          npm ci
+          npm run dev &
+          sleep 10
+
+      - name: Run E2E tests
+        run: |
+          cd tests
+          npx playwright test --project=${{ matrix.browser }} --shard=${{ matrix.shard }}/${{ strategy.job-total }}
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: e2e-js-${{ matrix.browser }}-shard-${{ matrix.shard }}-results
+          path: |
+            tests/playwright-report/
+            tests/test-results/
+          retention-days: 30
+
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: playwright-report-${{ matrix.browser }}-${{ matrix.shard }}
+          path: tests/playwright-report/
+          retention-days: 30
+```
+
+### Advanced Features
+
+**Test Sharding:**
+
+- Splits tests across multiple parallel jobs
+- Reduces total execution time
+- `strategy.job-total` automatically calculates total shards
+
+**Multi-Browser Testing:**
+
+- Tests across Chromium, Firefox, and WebKit
+- Ensures cross-browser compatibility
+- Each browser runs in separate job
+
+---
+
+## 🧩 Section 5: Component Testing Integration
+
+### Vitest Component Test Workflow
+
+Create `.github/workflows/component-tests.yml`:
+
+```yaml
+name: Component Tests (Vitest)
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  component-tests:
+    name: React Component Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "npm"
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        run: |
+          cd frontend
+          npm ci
+
+      - name: Run component tests
+        run: |
+          cd frontend
+          npm test -- --coverage
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./frontend/coverage/coverage-final.json
+          flags: component-tests
+          name: component-coverage
+
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: component-test-coverage
+          path: frontend/coverage/
+          retention-days: 30
+```
+
+### Coverage Integration
+
+**Codecov Integration:**
+
+- Automatic coverage reporting
+- Trend tracking over time
+- Coverage badges for README
+
+**Local Coverage Reports:**
+
+- HTML reports for detailed analysis
+- Artifacts saved for 30 days
+- Easy access to coverage data
+
+---
+
+## 🔧 Section 6: Backend Testing Pipeline
+
+### Backend Test Workflow
+
+Create `.github/workflows/backend-tests.yml`:
+
+```yaml
+name: Backend Tests (pytest)
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  backend-tests:
+    name: Backend API Tests
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: testuser
+          POSTGRES_PASSWORD: testpass
+          POSTGRES_DB: testdb
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          cd backend
+          pip install -r requirements.txt
+          pip install pytest-cov
+
+      - name: Run tests with coverage
+        env:
+          DATABASE_URL: postgresql://testuser:testpass@localhost:5432/testdb
+        run: |
+          cd backend
+          pytest --cov --cov-report=xml --cov-report=html -v
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./backend/coverage.xml
+          flags: backend-tests
+          name: backend-coverage-py${{ matrix.python-version }}
+
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: backend-coverage-py${{ matrix.python-version }}
+          path: backend/htmlcov/
+          retention-days: 30
+```
+
+### Multi-Version Testing
+
+**Python Version Matrix:**
+
+- Tests across multiple Python versions
+- Ensures compatibility with different environments
+- Catches version-specific issues
+
+**Database Services:**
+
+- Uses GitHub Actions services for PostgreSQL
+- Health checks ensure database is ready
+- Isolated test environment
+
+---
+
+## 🚀 Section 7: Complete Test Suite Workflow
+
+### All-in-One Workflow
+
+Create `.github/workflows/test-suite.yml`:
+
+```yaml
+name: Complete Test Suite
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  backend-tests:
+    name: Backend Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.13"
+          cache: "pip"
+      - run: |
+          cd backend
+          pip install -r requirements.txt pytest-cov
+          pytest --cov --cov-report=xml
+      - uses: codecov/codecov-action@v3
+        with:
+          flags: backend
+
+  component-tests:
+    name: Component Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "npm"
+          cache-dependency-path: frontend/package-lock.json
+      - run: |
+          cd frontend
+          npm ci
+          npm test -- --coverage
+      - uses: codecov/codecov-action@v3
+        with:
+          flags: component
+
+  e2e-tests:
+    name: E2E Tests
+    runs-on: ubuntu-latest
+    needs: [backend-tests, component-tests] # Run after unit tests pass
+
+    strategy:
+      matrix:
+        test-suite: [python, javascript]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.13"
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
+      - name: Install Playwright
+        run: |
+          if [ "${{ matrix.test-suite }}" == "python" ]; then
+            pip install -r tests/e2e-python/requirements.txt
+            playwright install --with-deps chromium  # Chrome only for faster CI
+          else
+            cd tests && npm ci
+            npx playwright install --with-deps chromium  # Chrome only for faster CI
+          fi
+
+      - name: Start services
+        run: |
+          # Start backend
+          cd backend
+          pip install -r requirements.txt
+          uvicorn main:app --port 8000 &
+
+          # Start frontend
+          cd ../frontend
+          npm ci
+          npm run dev &
+
+          # Wait for services
+          sleep 15
+
+      - name: Run E2E tests
+        run: |
+          if [ "${{ matrix.test-suite }}" == "python" ]; then
+            cd tests/e2e-python
+            pytest -v
+          else
+            cd tests
+            npx playwright test
+          fi
+
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: e2e-${{ matrix.test-suite }}-results
+          path: tests/**/test-results/
+
+  security-tests:
+    name: Security Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.13"
+      - run: |
+          cd backend
+          pip install -r requirements.txt
+          uvicorn main:app --port 8000 &
+          sleep 5
+          cd ../tests/security
+          pip install -r requirements.txt
+          pytest -v
+```
+
+### Job Dependencies
+
+**Execution Order:**
+
+1. Backend tests (fastest)
+2. Component tests (medium speed)
+3. E2E tests (slowest, only if unit tests pass)
+4. Security tests (optional, can run in parallel)
+
+**Benefits:**
+
+- Fast feedback on unit tests
+- E2E tests only run if unit tests pass
+- Parallel execution where possible
+- Comprehensive coverage
+
+---
+
+## ⚡ Section 8: Optimization Strategies
+
+### Caching Dependencies
+
+**Python Caching:**
+
+```yaml
+- uses: actions/setup-python@v4
+  with:
+    python-version: "3.13"
+    cache: "pip"
+    cache-dependency-path: "**/requirements.txt"
+```
+
+**Node.js Caching:**
+
+```yaml
+- uses: actions/setup-node@v4
+  with:
+    node-version: "18"
+    cache: "npm"
+    cache-dependency-path: "**/package-lock.json"
+```
+
+### Caching Playwright Browsers
+
+```yaml
+- name: Cache Playwright browsers
+  uses: actions/cache@v3
+  id: playwright-cache
+  with:
+    path: ~/.cache/ms-playwright
+    key: ${{ runner.os }}-playwright-${{ hashFiles('**/package-lock.json') }}
+
+- name: Install Playwright browsers
+  if: steps.playwright-cache.outputs.cache-hit != 'true'
+  run: npx playwright install --with-deps chromium # Chrome only for faster CI
+```
+
+### Parallel Test Execution
+
+**Playwright Sharding:**
+
+```yaml
+strategy:
+  matrix:
+    shard: [1, 2, 3, 4]
+
+steps:
+  - run: npx playwright test --shard=${{ matrix.shard }}/4
+```
+
+**pytest-xdist:**
+
+```yaml
+- run: pytest -n auto # Auto-detect CPU count
+```
+
+---
+
+## 🔄 Section 9: Retry Strategies
+
+### Playwright Retry Configuration
+
+**playwright.config.js:**
+
+```javascript
+module.exports = {
+  retries: process.env.CI ? 2 : 0, // Retry 2x in CI
+  workers: process.env.CI ? 2 : undefined,
+};
+```
+
+### pytest Retry Configuration
+
+**pytest.ini:**
+
+```ini
+[pytest]
+addopts = --reruns 2 --reruns-delay 1
+```
+
+Install: `pip install pytest-rerun-failures`
+
+---
+
+## 🚨 Section 10: Handling Test Failures
+
+### Slack Notifications
+
+```yaml
+- name: Notify Slack on failure
+  if: failure()
+  uses: slackapi/slack-github-action@v1
+  with:
+    payload: |
+      {
+        "text": "E2E Tests Failed!",
+        "blocks": [
+          {
+            "type": "section",
+            "text": {
+              "type": "mrkdwn",
+              "text": "E2E tests failed on ${{ github.ref }}"
+            }
+          }
+        ]
+      }
+  env:
+    SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+```
+
+### GitHub Pull Request Comments
+
+```yaml
+- name: Comment PR with test results
+  if: github.event_name == 'pull_request'
+  uses: actions/github-script@v6
+  with:
+    script: |
+      github.rest.issues.createComment({
+        issue_number: context.issue.number,
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        body: '✅ All E2E tests passed!'
+      })
+```
+
+---
+
+## 🐳 Section 11: Docker-Based CI
+
+### Using Docker Compose in CI
+
+```yaml
+jobs:
+  e2e-docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Start services with Docker Compose
+        run: docker-compose up -d
+
+      - name: Wait for services
+        run: |
+          timeout 60 bash -c 'until curl -f http://localhost:3000; do sleep 2; done'
+          timeout 60 bash -c 'until curl -f http://localhost:8000/docs; do sleep 2; done'
+
+      - name: Run E2E tests
+        run: |
+          docker-compose exec -T backend pytest tests/
+          docker-compose exec -T frontend npm test
+
+      - name: Cleanup
+        if: always()
+        run: docker-compose down -v
+```
+
+---
+
+## 📊 Section 12: Monitoring & Metrics
+
+### Key Metrics to Track
+
+1. **Test execution time** - Should stay under 10 minutes
+2. **Flake rate** - Should be < 1%
+3. **Coverage percentage** - Track trends
+4. **Failure rate** - Monitor for patterns
+5. **CI queue time** - Optimize if growing
+
+### Tracking with Codecov
+
+```yaml
+- uses: codecov/codecov-action@v3
+  with:
+    files: ./coverage/coverage-final.json
+    flags: e2e-tests
+    fail_ci_if_error: true
+```
+
+---
+
+## 🎓 Best Practices Summary
+
+### ✅ Do's
+
+- **Cache dependencies** - Speeds up CI significantly
+- **Run unit tests first** - Fail fast strategy
+- **Retry flaky tests** - 1-2 retries in CI only
+- **Capture artifacts** - Screenshots, videos, reports
+- **Upload coverage** - Track coverage trends
+- **Use matrix builds** - Test across browsers/versions
+- **Parallelize tests** - Reduce CI time
+- **Use specific browser versions** - Avoid surprises
+
+### ❌ Don'ts
+
+- **Don't skip tests in CI** - CI should be stricter than local
+- **Don't ignore flaky tests** - Fix the root cause
+- **Don't run all tests serially** - Use parallel execution
+- **Don't use `latest` tags** - Pin versions for consistency
+- **Don't store secrets in code** - Use CI secrets
+- **Don't run E2E if unit tests fail** - Save CI time
+
+---
+
+## 🚀 Implementation Steps
+
+### Step 1: Start Simple
+
+1. Create basic workflow for your primary test suite
+2. Add caching for dependencies
+3. Upload test artifacts
+
+### Step 2: Add Optimization
+
+1. Implement test sharding
+2. Add retry strategies
+3. Optimize execution order
+
+### Step 3: Add Monitoring
+
+1. Integrate coverage reporting
+2. Add failure notifications
+3. Track key metrics
+
+### Step 4: Scale Up
+
+1. Add multi-browser testing
+2. Implement parallel execution
+3. Add security and performance tests
+
+---
+
+## 📚 Related Resources
+
+- [Testing Guide](../../docs/guides/TESTING_GUIDE.md) - Comprehensive testing examples
+- [Stage 3: API & E2E Testing](../stage_3_api_e2e/README.md) - E2E testing fundamentals
+- [Troubleshooting Guide](../../docs/reference/TROUBLESHOOTING.md) - Fix common CI/CD issues
+- [GitHub Actions Documentation](https://docs.github.com/en/actions)
+- [Playwright CI Guide](https://playwright.dev/docs/ci)
+
+---
+
+**🎉 You now have professional CI/CD pipelines for automated testing! This is exactly what production teams use to ensure code quality and reliability.**
+
+---
+
 ## 📞 Stay Connected
 
 **Completed Testbook?**
@@ -603,6 +1527,48 @@ You've completed all 5 stages of the Testbook learning path!
 - 🐛 Report bugs you find
 - 📝 Contribute improvements
 - 🤝 Help other learners
+
+---
+
+## 🧠 Final Self-Check Quiz (Optional)
+
+Before completing Testbook, can you answer these questions?
+
+1. **What's the main purpose of a CI/CD pipeline?**
+
+   - A) To make tests run faster
+   - B) To automatically test code when changes are made
+   - C) To organize test files
+   - D) To create test data
+
+2. **What should you include in a testing portfolio?**
+
+   - A) Only passing tests
+   - B) Test results, code samples, and documentation
+   - C) Only test failures
+   - D) Only unit tests
+
+3. **Why is documentation important in testing?**
+
+   - A) It makes tests run faster
+   - B) It helps others understand and maintain tests
+   - C) It's required by law
+   - D) It's not important
+
+4. **What's the difference between a test plan and test cases?**
+
+   - A) There's no difference
+   - B) Test plan is high-level strategy, test cases are specific steps
+   - C) Test cases are faster
+   - D) Test plan is for unit tests only
+
+5. **What makes a good QA engineer?**
+   - A) Only technical skills
+   - B) Only communication skills
+   - C) Technical skills, communication, and problem-solving
+   - D) Only experience
+
+**Answers:** [Check your answers here](solutions/stage_5_quiz_answers.md)
 
 ---
 
@@ -628,13 +1594,13 @@ You're no longer learning test automation — you're practicing it professionall
 
 ---
 
-*Remember: Every expert was once a beginner. You've done the hard work. Now go show the world what you can do! 💪*
+_Remember: Every expert was once a beginner. You've done the hard work. Now go show the world what you can do! 💪_
 
 ---
 
 **Need help or have questions?**
 
-- Check [FAQ](../../FAQ.md)
+- Check [README.md](../../README.md#frequently-asked-questions) - Learning questions and quick setup guidance
 - Read [CONTRIBUTING](../../CONTRIBUTING.md)
 - Open a GitHub Discussion
 - Connect with the community

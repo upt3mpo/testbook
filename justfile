@@ -1,5 +1,6 @@
 # Testbook Task Runner (just)
 # Modern command runner - Install: https://github.com/casey/just
+# Virtual environment commands - See docs/reference/QUICK_COMMANDS.md for all platforms
 
 # Show all available commands
 default:

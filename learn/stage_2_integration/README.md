@@ -4,6 +4,17 @@
 
 Integration tests verify that multiple parts of your system work correctly together. Unlike unit tests that isolate functions, integration tests check real API endpoints, database operations, and multi-component workflows.
 
+## Your Progress
+
+[████████████████░░░░] 40% complete
+✅ Stage 1: Unit Tests (completed)
+→ **Stage 2: Integration Tests** (you are here)
+⬜ Stage 3: API & E2E Testing
+⬜ Stage 4: Performance & Security
+⬜ Stage 5: Capstone
+
+**Estimated time remaining:** 9-12 hours
+
 ---
 
 ## 🎯 Learning Goals
@@ -32,21 +43,25 @@ By the end of this stage, you will:
 **📁 Folder:** `/backend/tests/integration/`
 
 1. **[`test_api_auth.py`](../../backend/tests/integration/test_api_auth.py)**
+
    - User registration and login endpoints
    - JWT token authentication
    - Authorization checks
 
 2. **[`test_api_posts.py`](../../backend/tests/integration/test_api_posts.py)**
+
    - Creating, reading, updating, deleting posts
    - Comments and reactions
    - Reposts and interactions
 
 3. **[`test_api_users.py`](../../backend/tests/integration/test_api_users.py)**
+
    - User profiles
    - Follow/unfollow functionality
    - Block/unblock operations
 
 4. **[`test_api_feed.py`](../../backend/tests/integration/test_api_feed.py)**
+
    - Feed generation
    - Filtering and ordering
    - Complex queries
@@ -70,14 +85,16 @@ By the end of this stage, you will:
 **📁 Folders:** `/frontend/src/tests/integration/`
 
 1. **[`contract.test.js`](../../frontend/src/tests/integration/contract.test.js)**
+
    - API contract validation (OpenAPI schema)
    - Ensures frontend/backend agreement
    - Request/response structure verification
 
 2. **Frontend component tests with MSW:**
+
    - [`CreatePost.test.jsx`](../../frontend/src/tests/unit/CreatePost.test.jsx) - API mocking
    - [`Navbar.test.jsx`](../../frontend/src/tests/unit/Navbar.test.jsx) - Context integration
-   - See [Lab 6B](../../labs/LAB_06B_Advanced_Component_Testing.md) for MSW patterns
+   - See [Lab 6B](../../learn/stage_4_performance_security/exercises/LAB_06B_Advanced_Component_Testing.md) for MSW patterns
 
 3. **[`tests/mocks/handlers.js`](../../frontend/src/tests/mocks/handlers.js)**
    - Mock Service Worker API handlers
@@ -235,7 +252,7 @@ FastAPI 0.115+ uses OpenAPI 3.1.0, but Schemathesis only has experimental suppor
 
 - 📚 **Yes!** Read [Contract Testing Guide](../../docs/guides/CONTRACT_TESTING.md) to understand the concept
 - 🎯 **For now:** Focus on the 180 integration tests that ARE running
-- 🔄 **Alternative:** Frontend contract testing works today! See [Lab 6C](../../labs/LAB_06C_Frontend_Integration_Testing.md)
+- 🔄 **Alternative:** Frontend contract testing works today! See [Lab 6C](../../learn/stage_4_performance_security/exercises/LAB_06C_Frontend_Integration_Testing.md)
 - 💼 **Career value:** Understanding contract testing is a professional differentiator
 
 **Come back to this after completing Stage 3.** The concept is important, but not critical for learning basic integration testing.
@@ -398,13 +415,13 @@ You're ready for Stage 3 when you can:
 
 **Compared to Unit Tests:**
 
-| Aspect | Unit Tests | Integration Tests |
-|--------|------------|-------------------|
-| **Speed** | Milliseconds | Seconds |
-| **Scope** | Single function | Multiple components |
-| **Dependencies** | Mocked | Real (database, APIs) |
-| **Purpose** | Verify logic | Verify interactions |
-| **Failures** | Pinpoint exact function | Show integration issues |
+| Aspect           | Unit Tests              | Integration Tests       |
+| ---------------- | ----------------------- | ----------------------- |
+| **Speed**        | Milliseconds            | Seconds                 |
+| **Scope**        | Single function         | Multiple components     |
+| **Dependencies** | Mocked                  | Real (database, APIs)   |
+| **Purpose**      | Verify logic            | Verify interactions     |
+| **Failures**     | Pinpoint exact function | Show integration issues |
 
 ### Test Pyramid
 
@@ -437,9 +454,9 @@ You're ready for Stage 3 when you can:
 
 ### Hands-On Practice
 
-- [Lab 3: Testing API Endpoints](../../labs/LAB_03_Testing_API_Endpoints.md)
-- [Lab 5: Test Data Management](../../labs/LAB_05_Test_Data_Management.md)
-- [Lab 6: Testing with Rate Limits](../../labs/LAB_06_Testing_With_Rate_Limits.md)
+- [Lab 3: Testing API Endpoints](exercises/LAB_03_Testing_API_Endpoints.md)
+- [Lab 5: Test Data Management](exercises/LAB_05_Test_Data_Management.md)
+- [Lab 6: Testing with Rate Limits](exercises/LAB_06_Testing_With_Rate_Limits.md)
 
 ### Documentation
 
@@ -450,7 +467,49 @@ You're ready for Stage 3 when you can:
 ### Reference
 
 - [Test Database Setup](../../backend/tests/README.md)
-- [Test Factories Documentation](../../labs/LAB_05_Test_Data_Management.md)
+- [Test Factories Documentation](exercises/LAB_05_Test_Data_Management.md)
+
+---
+
+## 🧠 Self-Check Quiz (Optional)
+
+Before moving to Stage 3, can you answer these questions?
+
+1. **What's the main difference between unit tests and integration tests?**
+
+   - A) Integration tests are slower
+   - B) Integration tests test multiple components together
+   - C) Unit tests use mocks, integration tests don't
+   - D) Integration tests are more important
+
+2. **What does FastAPI TestClient do?**
+
+   - A) Runs tests faster
+   - B) Provides a test interface for FastAPI apps
+   - C) Creates test data automatically
+   - D) Validates API responses
+
+3. **Why do integration tests need database setup?**
+
+   - A) To make tests run faster
+   - B) To test real database operations
+   - C) To avoid using mocks
+   - D) To test multiple functions at once
+
+4. **What's the purpose of test factories?**
+
+   - A) To create test data easily
+   - B) To run tests in parallel
+   - C) To mock external services
+   - D) To generate random test cases
+
+5. **When testing API endpoints, what should you verify?**
+   - A) Only the response status code
+   - B) Only the response data
+   - C) Status code, response data, and headers
+   - D) Only that the endpoint doesn't crash
+
+**Answers:** [Check your answers here](solutions/stage_2_quiz_answers.md)
 
 ---
 
@@ -480,4 +539,4 @@ You now understand how to test multi-component systems!
 
 ---
 
-*Pro tip: Integration tests are where most QA engineers spend their time. Master this, and you're job-ready! 💼*
+_Pro tip: Integration tests are where most QA engineers spend their time. Master this, and you're job-ready! 💼_

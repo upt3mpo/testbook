@@ -11,6 +11,10 @@ React frontend for the Testbook testing platform.
 - **Vitest** - Unit testing framework
 - **React Testing Library** - Component testing
 
+## Scripts
+
+See [scripts/README.md](scripts/README.md) for utility scripts including schema fetching for contract testing.
+
 ## Getting Started
 
 ### Development
@@ -168,4 +172,4 @@ When adding new components:
 
 ---
 
-*Part of the Testbook Testing Platform - Learn automation testing with a real application!*
+_Part of the Testbook Testing Platform - Learn automation testing with a real application!_

@@ -34,4 +34,4 @@ API_URL=https://api.testbook.com node scripts/fetch-schema.js
 - After backend API changes
 - Before running contract tests
 
-**Learn more:** [Lab 6C: Frontend Integration & Contract Testing](../../labs/LAB_06C_Frontend_Integration_Testing.md)
+**Learn more:** [Lab 6C: Frontend Integration & Contract Testing](../../learn/stage_4_performance_security/exercises/LAB_06C_Frontend_Integration_Testing.md)

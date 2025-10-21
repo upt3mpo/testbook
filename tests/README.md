@@ -13,9 +13,11 @@ End-to-end tests for Testbook using Playwright.
 cd tests
 npm install
 
-# Install Playwright browsers
-npx playwright install
+# Install Playwright browsers (Chrome only for faster setup)
+npx playwright install chromium
 ```
+
+**💡 Learning-Focused Configuration:** We configure Playwright to run only Chrome by default for faster execution. This reduces test time from ~5 minutes to ~1 minute, making the learning experience smoother. You can still run other browsers if needed for cross-browser testing.
 
 ## Running Tests
 
@@ -46,11 +48,14 @@ npm test
 ### Basic Commands
 
 ```bash
-# Run all tests
+# Run all tests (Chrome only by default)
 npm test
 
 # Run tests in headed mode (see browser)
 npm run test:headed
+
+# Run all browsers (slower)
+npm run test:all-browsers
 
 # Run tests in UI mode (interactive)
 npm run test:ui
@@ -105,7 +110,7 @@ Located in `e2e/fixtures/test-helpers.js`:
 ### Basic Test Structure
 
 ```javascript
-test('should do something', async ({ page }) => {
+test("should do something", async ({ page }) => {
   // Arrange
   await resetDatabase(page);
   await loginUser(page, TEST_USERS.sarah.email, TEST_USERS.sarah.password);
@@ -121,14 +126,19 @@ test('should do something', async ({ page }) => {
 ### Using Test Helpers
 
 ```javascript
-const { loginUser, createPost, getFirstPost, TEST_USERS } = require('./fixtures/test-helpers');
+const {
+  loginUser,
+  createPost,
+  getFirstPost,
+  TEST_USERS,
+} = require("./fixtures/test-helpers");
 
-test('should create and view post', async ({ page }) => {
+test("should create and view post", async ({ page }) => {
   await loginUser(page, TEST_USERS.sarah.email, TEST_USERS.sarah.password);
-  await createPost(page, 'My test post');
+  await createPost(page, "My test post");
 
   const firstPost = getFirstPost(page);
-  await expect(firstPost).toContainText('My test post');
+  await expect(firstPost).toContainText("My test post");
 });
 ```
 
@@ -284,16 +294,20 @@ BASE_URL=http://localhost:3000 npm test
 Example:
 
 ```javascript
-const { test, expect } = require('@playwright/test');
-const { resetDatabase, loginUser, TEST_USERS } = require('./fixtures/test-helpers');
+const { test, expect } = require("@playwright/test");
+const {
+  resetDatabase,
+  loginUser,
+  TEST_USERS,
+} = require("./fixtures/test-helpers");
 
-test.describe('My Feature', () => {
+test.describe("My Feature", () => {
   test.beforeEach(async ({ page }) => {
     await resetDatabase(page);
     await loginUser(page, TEST_USERS.sarah.email, TEST_USERS.sarah.password);
   });
 
-  test('should test my feature', async ({ page }) => {
+  test("should test my feature", async ({ page }) => {
     // Your test here
   });
 });

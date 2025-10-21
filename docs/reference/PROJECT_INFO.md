@@ -26,7 +26,7 @@ Testbook is a fully functional fake social media application built specifically 
 
 ### Backend
 
-- **FastAPI** (Python 3.11) - Fast, modern API framework
+- **FastAPI** (Python 3.13) - Fast, modern API framework
 - **SQLAlchemy** - SQL toolkit and ORM
 - **SQLite** - Lightweight database
 - **JWT** - Secure authentication
@@ -49,36 +49,26 @@ Testbook is a fully functional fake social media application built specifically 
 
 ## Architecture
 
-```text
-┌───────────────────────────────────────┐
-│           React Frontend              │
-│  - Login/Register                     │
-│  - Feed (All / Following)             │
-│  - Posts, Comments, Reactions         │
-│  - User Profiles                      │
-│  - Settings                           │
-└──────────────┬────────────────────────┘
-               │ HTTP/REST
-┌──────────────┴────────────────────────┐
-│        FastAPI Backend                │
-│  ┌─────────────────────────────────┐  │
-│  │ Routers                         │  │
-│  │ - Auth (login, register)        │  │
-│  │ - Users (profile, follow/block) │  │
-│  │ - Posts (CRUD, reactions)       │  │
-│  │ - Feed (all, following)         │  │
-│  │ - Dev (reset, seed, utils)      │  │
-│  └─────────────┬───────────────────┘  │
-│                │                      │
-│  ┌─────────────┴───────────────────┐  │
-│  │ Models & Database               │  │
-│  │ - User                          │  │
-│  │ - Post                          │  │
-│  │ - Comment                       │  │
-│  │ - Reaction                      │  │
-│  │ - Relationships (follow, block) │  │
-│  └─────────────────────────────────┘  │
-└───────────────────────────────────────┘
+```mermaid
+flowchart TB
+    %% Frontend
+    A["⚛️ **React Frontend**<br/>• Login / Register<br/>• Feed (All / Following)<br/>• Posts, Comments, Reactions<br/>• User Profiles<br/>• Settings"]:::fe
+
+    %% Backend as a subgraph
+    subgraph FASTAPI["🌀 **FastAPI Backend**"]
+      direction TB
+      C["📦 **Routers**<br/>• Auth (login, register)<br/>• Users (profile, follow/block)<br/>• Posts (CRUD, reactions)<br/>• Feed (all, following)<br/>• Dev (reset, seed, utils)"]:::comp
+      D["🗃️ **Models & Database**<br/>• User<br/>• Post<br/>• Comment<br/>• Reaction<br/>• Relationships (follow, block)"]:::comp
+      C --> D
+    end
+
+    %% Edges
+    A -->|HTTP / REST| FASTAPI
+
+    %% Styling
+    classDef fe fill:#1f6feb,color:#fff,stroke:#0d419d,stroke-width:1px;
+    classDef comp fill:#30363d,color:#fff,stroke:#666,stroke-width:1px;
+
 ```
 
 ## File Structure
@@ -128,7 +118,7 @@ Testbook/
 ├── start-dev.sh             # Dev mode script
 │
 ├── README.md                # Main documentation
-├── QUICKSTART.md            # Quick setup guide
+├── README.md#quick-start-5-minutes  # Quick setup guide
 ├── TESTING_GUIDE.md         # Testing examples
 └── PROJECT_INFO.md          # This file
 ```
@@ -399,7 +389,7 @@ For questions or issues:
 ## 📚 More Resources
 
 - **[README.md](../../README.md)** - Main documentation and project overview
-- **[QUICKSTART.md](../../QUICKSTART.md)** - Get started in 5 minutes
+- **[README.md](../../README.md#quick-start-5-minutes)** - Get started in 5 minutes
 - **[TESTING_GUIDE.md](../guides/TESTING_GUIDE.md)** - Complete testing examples
 - **[TESTING_PATTERNS.md](TESTING_PATTERNS.md)** - Testing dynamic content patterns
 - **[TESTING_CHEATSHEET.md](TESTING_CHEATSHEET.md)** - Quick reference guide

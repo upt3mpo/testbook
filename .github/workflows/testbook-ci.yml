@@ -2,9 +2,9 @@ name: Testbook CI
 
 on:
   push:
-    branches: [ main, dev ]
+    branches: [main, dev]
   pull_request:
-    branches: [ main, dev ]
+    branches: [main, dev]
   workflow_dispatch: # Allow manual trigger
 
 jobs:
@@ -13,65 +13,65 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Set up Python 3.11
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.11'
-        cache: 'pip'
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
 
-    - name: Install linting tools
-      run: |
-        cd backend
-        python -m pip install --upgrade pip
-        pip install black==23.12.1 flake8==7.0.0 isort==5.13.2
+      - name: Install linting tools
+        run: |
+          cd backend
+          python -m pip install --upgrade pip
+          pip install black==23.12.1 flake8==7.0.0 isort==5.13.2
 
-    - name: Run Black (format check)
-      run: |
-        cd backend
-        black --check --diff .
+      - name: Run Black (format check)
+        run: |
+          cd backend
+          black --check --diff .
 
-    - name: Run isort (import sort check)
-      run: |
-        cd backend
-        isort --check-only --diff .
+      - name: Run isort (import sort check)
+        run: |
+          cd backend
+          isort --check-only --diff .
 
-    - name: Run Flake8 (linting)
-      run: |
-        cd backend
-        flake8 .
+      - name: Run Flake8 (linting)
+        run: |
+          cd backend
+          flake8 .
 
   lint-frontend:
     name: Lint Frontend (JavaScript)
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
-        cache: 'npm'
-        cache-dependency-path: frontend/package-lock.json
+      - name: Set up Node.js 20 (LTS)
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: frontend/package-lock.json
 
-    - name: Install dependencies
-      run: |
-        cd frontend
-        npm ci
+      - name: Install dependencies
+        run: |
+          cd frontend
+          npm ci
 
-    - name: Run ESLint
-      run: |
-        cd frontend
-        npm run lint
+      - name: Run ESLint
+        run: |
+          cd frontend
+          npm run lint
 
-    - name: Run Prettier (format check)
-      run: |
-        cd frontend
-        npm run format:check
+      - name: Run Prettier (format check)
+        run: |
+          cd frontend
+          npm run format:check
 
   backend-tests:
     name: Backend Tests (Python)
@@ -79,50 +79,50 @@ jobs:
     needs: lint-backend
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Set up Python 3.11
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.11'
-        cache: 'pip'
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
 
-    - name: Install dependencies
-      run: |
-        cd backend
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+      - name: Install dependencies
+        run: |
+          cd backend
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
-    - name: Run backend tests with coverage
-      env:
-        TESTING: true
-      run: |
-        cd backend
-        pytest --cov --cov-report=xml --cov-report=html --cov-report=term-missing --cov-fail-under=80 -v --ignore=tests/integration/test_api_contract.py
+      - name: Run backend tests with coverage
+        env:
+          TESTING: true
+        run: |
+          cd backend
+          pytest --cov --cov-report=xml --cov-report=html --cov-report=term-missing --cov-fail-under=80 -v --ignore=tests/integration/test_api_contract.py
 
-    - name: Upload backend coverage to Codecov
-      uses: codecov/codecov-action@v4
-      with:
-        files: ./backend/coverage.xml
-        flags: backend
-        name: backend-coverage
-        fail_ci_if_error: false
+      - name: Upload backend coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          files: ./backend/coverage.xml
+          flags: backend
+          name: backend-coverage
+          fail_ci_if_error: false
 
-    - name: Upload backend coverage HTML
-      uses: actions/upload-artifact@v4
-      with:
-        name: backend-coverage-report
-        path: backend/htmlcov/
-        retention-days: 30
+      - name: Upload backend coverage HTML
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-coverage-report
+          path: backend/htmlcov/
+          retention-days: 30
 
-    - name: Backend coverage summary
-      run: |
-        cd backend
-        echo "## Backend Test Coverage" >> $GITHUB_STEP_SUMMARY
-        echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
-        coverage report >> $GITHUB_STEP_SUMMARY
-        echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+      - name: Backend coverage summary
+        run: |
+          cd backend
+          echo "## Backend Test Coverage" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          coverage report >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
 
   frontend-tests:
     name: Frontend Tests (JavaScript)
@@ -130,40 +130,50 @@ jobs:
     needs: lint-frontend
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
-        cache: 'npm'
-        cache-dependency-path: frontend/package-lock.json
+      - name: Set up Node.js 20 (LTS)
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: frontend/package-lock.json
 
-    - name: Install dependencies
-      run: |
-        cd frontend
-        npm ci
+      - name: Show Node.js and dependency versions
+        run: |
+          echo "Node.js version: $(node --version)"
+          echo "npm version: $(npm --version)"
+          cd frontend
+          echo "Frontend dependencies:"
+          npm list --depth=0 | head -10
 
-    - name: Run frontend tests with coverage
-      run: |
-        cd frontend
-        npm test -- --coverage --run
+      - name: Install dependencies
+        run: |
+          cd frontend
+          npm ci
 
-    - name: Upload frontend coverage to Codecov
-      uses: codecov/codecov-action@v4
-      with:
-        files: ./frontend/coverage/coverage-final.json
-        flags: frontend
-        name: frontend-coverage
-        fail_ci_if_error: false
+       - name: Run frontend tests with coverage
+         env:
+           FORCE_COLOR: 0
+         run: |
+           cd frontend
+           npm test -- --coverage --run
 
-    - name: Upload frontend coverage HTML
-      uses: actions/upload-artifact@v4
-      with:
-        name: frontend-coverage-report
-        path: frontend/coverage/
-        retention-days: 30
+      - name: Upload frontend coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          files: ./frontend/coverage/coverage-final.json
+          flags: frontend
+          name: frontend-coverage
+          fail_ci_if_error: false
+
+      - name: Upload frontend coverage HTML
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-coverage-report
+          path: frontend/coverage/
+          retention-days: 30
 
   e2e-tests-js:
     name: E2E Tests (Playwright JavaScript)
@@ -186,88 +196,97 @@ jobs:
           - 5432:5432
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
-        cache: 'npm'
-        cache-dependency-path: |
-          frontend/package-lock.json
-          tests/package-lock.json
+      - name: Set up Node.js 20 (LTS)
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: |
+            frontend/package-lock.json
+            tests/package-lock.json
 
-    - name: Set up Python 3.11
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.11'
-        cache: 'pip'
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
 
-    - name: Install backend dependencies
-      run: |
-        cd backend
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+      - name: Install backend dependencies
+        run: |
+          cd backend
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
-    - name: Install frontend dependencies
-      run: |
-        cd frontend
-        npm ci
+      - name: Install frontend dependencies
+        run: |
+          cd frontend
+          npm ci
 
-    - name: Install Playwright browsers
-      run: |
-        cd tests
-        npm ci
-        npx playwright install --with-deps chromium
+      - name: Show Playwright and test dependencies
+        run: |
+          echo "Node.js version: $(node --version)"
+          echo "npm version: $(npm --version)"
+          cd tests
+          echo "Test dependencies:"
+          npm list --depth=0 | head -10
 
-    - name: Start backend server
-      env:
-        TESTING: true
-        SECRET_KEY: test-secret-key-for-ci
-        DATABASE_URL: postgresql://testbook:testbook@localhost:5432/testbook_test
-      run: |
-        cd backend
-        python seed.py
-        uvicorn main:app --host 0.0.0.0 --port 8000 &
-        sleep 10
+      - name: Install Playwright browsers
+        run: |
+          cd tests
+          npm ci
+          npx playwright install --with-deps chromium
 
-    - name: Wait for backend
-      run: |
-        timeout 30 bash -c 'until curl -f http://localhost:8000/api/health; do sleep 1; done'
+      - name: Start backend server
+        env:
+          TESTING: true
+          SECRET_KEY: test-secret-key-for-ci
+          DATABASE_URL: postgresql://testbook:testbook@localhost:5432/testbook_test
+        run: |
+          cd backend
+          python seed.py
+          uvicorn main:app --host 0.0.0.0 --port 8000 &
+          sleep 10
 
-    - name: Start frontend server
-      run: |
-        cd frontend
-        npm run dev &
-        sleep 15
+      - name: Wait for backend
+        run: |
+          timeout 30 bash -c 'until curl -f http://localhost:8000/api/health; do sleep 1; done'
 
-    - name: Wait for frontend
-      run: |
-        timeout 60 bash -c 'until curl -f http://localhost:3000; do sleep 1; done'
-        echo "Frontend server responding, waiting for app to load..."
-        sleep 10
+      - name: Start frontend server
+        run: |
+          cd frontend
+          npm run dev &
+          sleep 15
 
-    - name: Verify frontend is fully loaded
-      run: |
-        curl http://localhost:3000 | grep -q 'root' || echo "Warning: Frontend may not be fully loaded"
+      - name: Wait for frontend
+        run: |
+          timeout 60 bash -c 'until curl -f http://localhost:3000; do sleep 1; done'
+          echo "Frontend server responding, waiting for app to load..."
+          sleep 10
 
-    - name: Run JavaScript E2E tests
-      env:
-        BASE_URL: http://localhost:3000
-        BACKEND_URL: http://localhost:8000
-        API_URL: http://localhost:8000
-      run: |
-        cd tests
-        npx playwright test --project=chromium
+      - name: Verify frontend is fully loaded
+        run: |
+          curl http://localhost:3000 | grep -q 'root' || echo "Warning: Frontend may not be fully loaded"
 
-    - name: Upload Playwright report
-      uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: playwright-report-js
-        path: tests/playwright-report/
-        retention-days: 30
+       - name: Run JavaScript E2E tests
+         env:
+           BASE_URL: http://localhost:3000
+           BACKEND_URL: http://localhost:8000
+           API_URL: http://localhost:8000
+           FORCE_COLOR: 0
+         run: |
+           cd tests
+           npx playwright test --project=chromium
+
+      - name: Upload Playwright report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report-js
+          path: tests/playwright-report/
+          retention-days: 30
 
   e2e-tests-python:
     name: E2E Tests (Playwright Python)
@@ -290,86 +309,86 @@ jobs:
           - 5432:5432
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Set up Python 3.11
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.11'
-        cache: 'pip'
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
-        cache: 'npm'
-        cache-dependency-path: frontend/package-lock.json
+      - name: Set up Node.js 20 (LTS)
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: frontend/package-lock.json
 
-    - name: Install backend dependencies
-      run: |
-        cd backend
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+      - name: Install backend dependencies
+        run: |
+          cd backend
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
-    - name: Install Python E2E dependencies
-      run: |
-        cd tests/e2e-python
-        pip install -r requirements.txt
-        playwright install --with-deps chromium
+      - name: Install Python E2E dependencies
+        run: |
+          cd tests/e2e-python
+          pip install -r requirements.txt
+          playwright install --with-deps chromium
 
-    - name: Install frontend dependencies
-      run: |
-        cd frontend
-        npm ci
+      - name: Install frontend dependencies
+        run: |
+          cd frontend
+          npm ci
 
-    - name: Start backend server
-      env:
-        TESTING: true
-        SECRET_KEY: test-secret-key-for-ci
-        DATABASE_URL: postgresql://testbook:testbook@localhost:5432/testbook_test
-      run: |
-        cd backend
-        python seed.py
-        uvicorn main:app --host 0.0.0.0 --port 8000 &
-        sleep 10
+      - name: Start backend server
+        env:
+          TESTING: true
+          SECRET_KEY: test-secret-key-for-ci
+          DATABASE_URL: postgresql://testbook:testbook@localhost:5432/testbook_test
+        run: |
+          cd backend
+          python seed.py
+          uvicorn main:app --host 0.0.0.0 --port 8000 &
+          sleep 10
 
-    - name: Wait for backend
-      run: |
-        timeout 30 bash -c 'until curl -f http://localhost:8000/api/health; do sleep 1; done'
+      - name: Wait for backend
+        run: |
+          timeout 30 bash -c 'until curl -f http://localhost:8000/api/health; do sleep 1; done'
 
-    - name: Start frontend server
-      run: |
-        cd frontend
-        npm run dev &
-        sleep 15
+      - name: Start frontend server
+        run: |
+          cd frontend
+          npm run dev &
+          sleep 15
 
-    - name: Wait for frontend
-      run: |
-        timeout 60 bash -c 'until curl -f http://localhost:3000; do sleep 1; done'
-        echo "Frontend server responding, waiting for app to load..."
-        sleep 10
+      - name: Wait for frontend
+        run: |
+          timeout 60 bash -c 'until curl -f http://localhost:3000; do sleep 1; done'
+          echo "Frontend server responding, waiting for app to load..."
+          sleep 10
 
-    - name: Verify frontend is fully loaded
-      run: |
-        curl http://localhost:3000 | grep -q 'root' || echo "Warning: Frontend may not be fully loaded"
+      - name: Verify frontend is fully loaded
+        run: |
+          curl http://localhost:3000 | grep -q 'root' || echo "Warning: Frontend may not be fully loaded"
 
-    - name: Run Python E2E tests
-      env:
-        HEADLESS: true
-        FRONTEND_URL: http://localhost:3000
-        BACKEND_URL: http://localhost:8000
-      run: |
-        cd tests/e2e-python
-        pytest -v
+      - name: Run Python E2E tests
+        env:
+          HEADLESS: true
+          FRONTEND_URL: http://localhost:3000
+          BACKEND_URL: http://localhost:8000
+        run: |
+          cd tests/e2e-python
+          pytest -v
 
-    - name: Upload Python E2E artifacts
-      uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: e2e-python-artifacts
-        path: tests/e2e-python/test-results/
-        retention-days: 30
+      - name: Upload Python E2E artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: e2e-python-artifacts
+          path: tests/e2e-python/test-results/
+          retention-days: 30
 
   security-tests:
     name: Security Tests
@@ -392,58 +411,66 @@ jobs:
           - 5432:5432
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Set up Python 3.11
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.11'
-        cache: 'pip'
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
 
-    - name: Install dependencies
-      run: |
-        cd backend
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+      - name: Install dependencies
+        run: |
+          cd backend
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
-    - name: Install security test dependencies
-      run: |
-        cd tests/security
-        pip install -r requirements.txt
+      - name: Install security test dependencies
+        run: |
+          cd tests/security
+          pip install -r requirements.txt
 
-    - name: Start backend server
-      env:
-        TESTING: true
-        SECRET_KEY: test-secret-key-for-ci
-        DATABASE_URL: postgresql://testbook:testbook@localhost:5432/testbook_test
-      run: |
-        cd backend
-        python seed.py
-        uvicorn main:app --host 0.0.0.0 --port 8000 &
-        sleep 10
+      - name: Start backend server
+        env:
+          TESTING: true
+          SECRET_KEY: test-secret-key-for-ci
+          DATABASE_URL: postgresql://testbook:testbook@localhost:5432/testbook_test
+        run: |
+          cd backend
+          python seed.py
+          uvicorn main:app --host 0.0.0.0 --port 8000 &
+          sleep 10
 
-    - name: Run security tests
-      env:
-        TESTING: true
-      run: |
-        cd tests/security
-        pytest -v
+      - name: Run security tests
+        env:
+          TESTING: true
+        run: |
+          cd tests/security
+          pytest -v
 
   badge-update:
     name: Update Badges
     runs-on: ubuntu-latest
-    needs: [lint-backend, lint-frontend, backend-tests, frontend-tests, e2e-tests-js, e2e-tests-python, security-tests]
+    needs:
+      [
+        lint-backend,
+        lint-frontend,
+        backend-tests,
+        frontend-tests,
+        e2e-tests-js,
+        e2e-tests-python,
+        security-tests,
+      ]
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
 
     steps:
-    - name: Create status badge
-      run: |
-        echo "All tests and quality checks passed! ✅" >> $GITHUB_STEP_SUMMARY
-        echo "- **Linting:** Black, isort, Flake8 (Python) | ESLint, Prettier (JS)" >> $GITHUB_STEP_SUMMARY
-        echo "- **Backend:** 180+ tests | 86% coverage (enforced minimum: 80%)" >> $GITHUB_STEP_SUMMARY
-        echo "- **Frontend:** 30 tests | 95% coverage" >> $GITHUB_STEP_SUMMARY
-        echo "- **E2E (JS):** Full suite" >> $GITHUB_STEP_SUMMARY
-        echo "- **E2E (Python):** Full suite" >> $GITHUB_STEP_SUMMARY
-        echo "- **Security:** OWASP checks" >> $GITHUB_STEP_SUMMARY
-
+      - name: Create status badge
+        run: |
+          echo "All tests and quality checks passed! ✅" >> $GITHUB_STEP_SUMMARY
+          echo "- **Linting:** Black, isort, Flake8 (Python) | ESLint, Prettier (JS)" >> $GITHUB_STEP_SUMMARY
+          echo "- **Backend:** 180+ tests | 86% coverage (enforced minimum: 80%)" >> $GITHUB_STEP_SUMMARY
+          echo "- **Frontend:** 30 tests | 95% coverage" >> $GITHUB_STEP_SUMMARY
+          echo "- **E2E (JS):** Full suite" >> $GITHUB_STEP_SUMMARY
+          echo "- **E2E (Python):** Full suite" >> $GITHUB_STEP_SUMMARY
+          echo "- **Security:** OWASP checks" >> $GITHUB_STEP_SUMMARY

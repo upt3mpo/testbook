@@ -13,7 +13,7 @@ Every interactive element has a unique `data-testid` attribute for reliable elem
 ```javascript
 // Easy element selection
 await page.click('[data-testid="profile-edit-button"]');
-await page.fill('[data-testid="create-post-textarea"]', 'Test content');
+await page.fill('[data-testid="create-post-textarea"]', "Test content");
 ```
 
 **For dynamic content** (posts, comments, followers), we provide **both specific and generic selectors**:
@@ -220,12 +220,12 @@ Scripts work on all platforms:
 
 All accounts have **known passwords** for easy testing:
 
-| Email | Password | Use Case |
-|-------|----------|----------|
-| ``sarah.johnson@testbook.com`` | ``Sarah2024!`` | Active user with followers |
-| ``mike.chen@testbook.com`` | ``MikeRocks88`` | User with many posts |
-| ``emma.davis@testbook.com`` | ``EmmaLovesPhotos`` | Photographer with images |
-| ``newuser@testbook.com`` | ``NewUser123!`` | Fresh account, no activity |
+| Email                        | Password          | Use Case                   |
+| ---------------------------- | ----------------- | -------------------------- |
+| `sarah.johnson@testbook.com` | `Sarah2024!`      | Active user with followers |
+| `mike.chen@testbook.com`     | `MikeRocks88`     | User with many posts       |
+| `emma.davis@testbook.com`    | `EmmaLovesPhotos` | Photographer with images   |
+| `newuser@testbook.com`       | `NewUser123!`     | Fresh account, no activity |
 
 ### Dynamic Test Data
 
@@ -335,8 +335,8 @@ await page.click('button:has-text("Submit")');
 ```javascript
 // Wait for API response
 await Promise.all([
-  page.waitForResponse(resp => resp.url().includes('/api/posts/')),
-  page.click('[data-testid="create-post-submit-button"]')
+  page.waitForResponse((resp) => resp.url().includes("/api/posts/")),
+  page.click('[data-testid="create-post-submit-button"]'),
 ]);
 ```
 
@@ -344,7 +344,7 @@ await Promise.all([
 
 ```javascript
 // Test with invalid data
-await page.fill('[data-testid="create-post-textarea"]', '');
+await page.fill('[data-testid="create-post-textarea"]', "");
 await page.click('[data-testid="create-post-submit-button"]');
 // Button should be disabled
 ```
@@ -354,7 +354,7 @@ await page.click('[data-testid="create-post-submit-button"]');
 ```javascript
 // Test drag and drop
 const dropZone = await page.locator('[data-testid="create-post-drop-zone"]');
-await dropZone.setInputFiles('test-image.jpg');
+await dropZone.setInputFiles("test-image.jpg");
 await expect(page.locator('[data-testid="create-post-preview"]')).toBeVisible();
 ```
 
@@ -410,6 +410,7 @@ await expect(page.locator('[data-testid="create-post-preview"]')).toBeVisible();
    ```
 
 3. **Run your tests**:
+
    - Frontend: <http://localhost:3000>
    - Backend: <http://localhost:8000>
    - API Docs: <http://localhost:8000/docs>
@@ -426,7 +427,7 @@ await expect(page.locator('[data-testid="create-post-preview"]')).toBeVisible();
 - **TESTING_CHEATSHEET.md** - Quick reference card
 - **README.md** - Complete feature list and setup
 - **TESTING_GUIDE.md** - Detailed test examples
-- **QUICKSTART.md** - Get started in 5 minutes
+- **README.md#quick-start-5-minutes** - Get started in 5 minutes
 - **PROJECT_INFO.md** - Technical architecture
 - **API Docs** - Interactive docs at `/docs` endpoint
 
@@ -449,7 +450,7 @@ await expect(page.locator('[data-testid="create-post-preview"]')).toBeVisible();
 - **[TESTING_GUIDE.md](../guides/TESTING_GUIDE.md)** - Complete testing examples
 - **[TESTING_PATTERNS.md](TESTING_PATTERNS.md)** - Testing dynamic content patterns
 - **[TESTING_CHEATSHEET.md](TESTING_CHEATSHEET.md)** - Quick reference guide
-- **[QUICKSTART.md](../../QUICKSTART.md)** - Get started in 5 minutes
+- **[README.md](../../README.md#quick-start-5-minutes)** - Get started in 5 minutes
 
 ---
 

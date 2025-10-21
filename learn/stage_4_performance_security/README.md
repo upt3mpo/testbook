@@ -4,6 +4,17 @@
 
 Performance and security testing ensure your application is fast, scalable, and safe. These tests catch issues that functional tests miss: bottlenecks, vulnerabilities, and edge cases under load.
 
+## Your Progress
+
+[████████████████████████] 80% complete
+✅ Stage 1: Unit Tests (completed)
+✅ Stage 2: Integration Tests (completed)
+✅ Stage 3: API & E2E Testing (completed)
+→ **Stage 4: Performance & Security** (you are here)
+⬜ Stage 5: Capstone
+
+**Estimated time remaining:** 3-6 hours
+
 ---
 
 ## 🎯 Learning Goals
@@ -35,14 +46,17 @@ By the end of this stage, you will:
 **All tracks use k6 (JavaScript-based):**
 
 1. **[`smoke-test.js`](../../tests/performance/smoke-test.js)**
+
    - Basic performance baseline
    - Single user, minimal load
 
 2. **[`load-test.js`](../../tests/performance/load-test.js)**
+
    - Sustained traffic simulation
    - Multiple concurrent users
 
 3. **[`stress-test.js`](../../tests/performance/stress-test.js)**
+
    - Breaking point testing
    - Gradually increasing load
 
@@ -61,12 +75,14 @@ By the end of this stage, you will:
 **All tracks use pytest (Python-based):**
 
 1. **[`test_security.py`](../../tests/security/test_security.py)**
+
    - Input validation
    - SQL injection protection
    - XSS prevention
    - CSRF protection
 
 2. **[`test_rate_limiting.py`](../../tests/security/test_rate_limiting.py)**
+
    - Rate limit enforcement
    - API abuse prevention
    - DDoS protection
@@ -90,28 +106,28 @@ By the end of this stage, you will:
 ### 1. Load Test Structure (k6)
 
 ```javascript
-import http from 'k6/http';
-import { check, sleep } from 'k6';
+import http from "k6/http";
+import { check, sleep } from "k6";
 
 export let options = {
-    stages: [
-        { duration: '30s', target: 10 },  // Ramp up
-        { duration: '1m', target: 10 },   // Stay at 10 users
-        { duration: '30s', target: 0 },   // Ramp down
-    ],
+  stages: [
+    { duration: "30s", target: 10 }, // Ramp up
+    { duration: "1m", target: 10 }, // Stay at 10 users
+    { duration: "30s", target: 0 }, // Ramp down
+  ],
 };
 
-export default function() {
-    // Test scenario
-    let response = http.get('http://localhost:8000/posts');
+export default function () {
+  // Test scenario
+  let response = http.get("http://localhost:8000/posts");
 
-    // Verify performance
-    check(response, {
-        'status is 200': (r) => r.status === 200,
-        'response time < 200ms': (r) => r.timings.duration < 200,
-    });
+  // Verify performance
+  check(response, {
+    "status is 200": (r) => r.status === 200,
+    "response time < 200ms": (r) => r.timings.duration < 200,
+  });
 
-    sleep(1);
+  sleep(1);
 }
 ```
 
@@ -342,13 +358,13 @@ You're ready for Stage 5 when you can:
 
 ### Performance Testing Types
 
-| Type | Purpose | Example |
-|------|---------|---------|
-| **Smoke Test** | Verify basic functionality | 1-2 users, happy path |
-| **Load Test** | Test expected traffic | 50 concurrent users, 10 minutes |
-| **Stress Test** | Find breaking point | Gradually increase to 500 users |
-| **Spike Test** | Test sudden traffic | Jump from 10 to 100 users instantly |
-| **Soak Test** | Test extended duration | 50 users for 4 hours |
+| Type            | Purpose                    | Example                             |
+| --------------- | -------------------------- | ----------------------------------- |
+| **Smoke Test**  | Verify basic functionality | 1-2 users, happy path               |
+| **Load Test**   | Test expected traffic      | 50 concurrent users, 10 minutes     |
+| **Stress Test** | Find breaking point        | Gradually increase to 500 users     |
+| **Spike Test**  | Test sudden traffic        | Jump from 10 to 100 users instantly |
+| **Soak Test**   | Test extended duration     | 50 users for 4 hours                |
 
 ### Key Performance Metrics
 
@@ -394,7 +410,7 @@ The most critical web application security risks:
 
 ### Hands-On Practice
 
-- [Lab 6: Rate Limiting & Security](../../labs/LAB_06_Testing_With_Rate_Limits.md)
+- [Lab 6: Rate Limiting & Security](exercises/LAB_06_Testing_With_Rate_Limits.md)
 
 ### Documentation
 
@@ -407,6 +423,48 @@ The most critical web application security risks:
 - [k6](https://k6.io/) - Performance testing
 - [OWASP ZAP](https://www.zaproxy.org/) - Security scanning
 - [Burp Suite](https://portswigger.net/burp) - Security testing
+
+---
+
+## 🧠 Self-Check Quiz (Optional)
+
+Before moving to Stage 5, can you answer these questions?
+
+1. **What's the main purpose of performance testing?**
+
+   - A) To find bugs in the code
+   - B) To ensure the app works under load
+   - C) To test individual functions
+   - D) To verify API endpoints
+
+2. **What does p95 response time mean?**
+
+   - A) The average response time
+   - B) 95% of requests are faster than this time
+   - C) The slowest response time
+   - D) The response time for 95% of users
+
+3. **What is the OWASP Top 10?**
+
+   - A) The 10 most common web vulnerabilities
+   - B) The 10 best testing tools
+   - C) The 10 most important test cases
+   - D) The 10 fastest testing frameworks
+
+4. **Why is security testing important?**
+
+   - A) It makes apps run faster
+   - B) It protects against attacks and data breaches
+   - C) It improves user experience
+   - D) It reduces development time
+
+5. **What's the difference between load testing and stress testing?**
+   - A) Load testing uses more users
+   - B) Load testing checks normal load, stress testing checks breaking point
+   - C) Stress testing is faster
+   - D) There's no difference
+
+**Answers:** [Check your answers here](solutions/stage_4_quiz_answers.md)
 
 ---
 
@@ -436,4 +494,4 @@ You now understand non-functional testing that protects users and business!
 
 ---
 
-*Pro tip: Security vulnerabilities make excellent interview stories. "I found and prevented a SQL injection vulnerability" is resume gold! 🏆*
+_Pro tip: Security vulnerabilities make excellent interview stories. "I found and prevented a SQL injection vulnerability" is resume gold! 🏆_

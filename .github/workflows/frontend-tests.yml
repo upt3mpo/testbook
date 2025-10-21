@@ -4,20 +4,20 @@ on:
   push:
     branches: [main, develop]
     paths:
-      - 'frontend/**'
-      - '.github/workflows/frontend-tests.yml'
+      - "frontend/**"
+      - ".github/workflows/frontend-tests.yml"
   pull_request:
     branches: [main, develop]
     paths:
-      - 'frontend/**'
-      - '.github/workflows/frontend-tests.yml'
+      - "frontend/**"
+      - ".github/workflows/frontend-tests.yml"
 
 jobs:
   test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [18, 20, 22]
+        node-version: [20, 22]
 
     steps:
       - uses: actions/checkout@v4
@@ -26,7 +26,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'npm'
+          cache: "npm"
           cache-dependency-path: frontend/package-lock.json
 
       - name: Install dependencies
@@ -40,14 +40,20 @@ jobs:
 
       - name: Run unit tests
         working-directory: ./frontend
+        env:
+          FORCE_COLOR: 0
         run: npm test -- --run
 
       - name: Run accessibility tests
         working-directory: ./frontend
+        env:
+          FORCE_COLOR: 0
         run: npm run test:a11y
 
       - name: Generate coverage report
         working-directory: ./frontend
+        env:
+          FORCE_COLOR: 0
         run: npm run test:coverage -- --run
 
       - name: Upload coverage to artifacts
@@ -67,4 +73,3 @@ jobs:
           name: frontend-dist-node${{ matrix.node-version }}
           path: frontend/dist/
           retention-days: 7
-

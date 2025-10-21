@@ -4,20 +4,18 @@ import { defineConfig } from 'vitest/config';
 export default defineConfig({
   plugins: [react()],
   test: {
+    pool: 'threads',
     globals: true,
     environment: 'jsdom',
-    setupFiles: './src/tests/setup.js',
+    setupFiles: ['./src/tests/global-setup.js', './src/tests/setup.js'],
     css: true,
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
-      exclude: [
-        'node_modules/',
-        'src/tests/',
-        '**/*.config.js',
-        '**/main.jsx',
-      ],
+      exclude: ['node_modules/', 'src/tests/', '**/*.config.js', '**/main.jsx'],
     },
   },
+  define: {
+    global: 'globalThis',
+  },
 });
-

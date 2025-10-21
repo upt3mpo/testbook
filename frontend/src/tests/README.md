@@ -113,7 +113,7 @@ MSW intercepts network requests at the network level, providing realistic API mo
 
 **Learn more:**
 
-- [Lab 6B: Advanced Component Testing](../../../labs/LAB_06B_Advanced_Component_Testing.md)
+- [Lab 6B: Advanced Component Testing](../../../learn/stage_4_performance_security/exercises/LAB_06B_Advanced_Component_Testing.md)
 - [MSW README](mocks/README.md)
 
 ---
@@ -171,8 +171,8 @@ npm test -- --coverage
 
 ### For Component Testing Labs
 
-- [Lab 6B: Advanced Component Testing](../../../labs/LAB_06B_Advanced_Component_Testing.md)
-- [Lab 6C: Frontend Integration Testing](../../../labs/LAB_06C_Frontend_Integration_Testing.md)
+- [Lab 6B: Advanced Component Testing](../../../learn/stage_4_performance_security/exercises/LAB_06B_Advanced_Component_Testing.md)
+- [Lab 6C: Frontend Integration Testing](../../../learn/stage_4_performance_security/exercises/LAB_06C_Frontend_Integration_Testing.md)
 
 ---
 
@@ -193,7 +193,7 @@ npm test -- --coverage
 
 ## ✅ Test Structure (AAA Pattern)
 
-Our tests follow the **Arrange-Act-Assert** pattern:
+Our tests follow the **[Arrange-Act-Assert pattern](../../../docs/reference/TESTING_PATTERNS.md#arrange-act-assert-pattern)**:
 
 ```jsx
 it('should enable submit button when form is valid', () => {
@@ -202,7 +202,7 @@ it('should enable submit button when form is valid', () => {
 
   // Act - Perform user actions
   fireEvent.change(screen.getByRole('textbox'), {
-    target: { value: 'Test post content' }
+    target: { value: 'Test post content' },
   });
 
   // Assert - Verify expected outcomes
@@ -234,13 +234,13 @@ it('should enable submit button when form is valid', () => {
 
 ## 🆚 Comparison with Backend Tests
 
-| Aspect | Frontend (JavaScript) | Backend (Python) |
-|--------|----------------------|-------------------|
-| **Framework** | Vitest | pytest |
-| **Structure** | `tests/unit/`, `tests/integration/` | `tests/unit/`, `tests/integration/` |
-| **Mocking** | MSW (network level) | pytest fixtures |
-| **Component Tests** | React Testing Library | N/A |
-| **Contract Tests** | OpenAPI validation | Schema validation |
+| Aspect              | Frontend (JavaScript)               | Backend (Python)                    |
+| ------------------- | ----------------------------------- | ----------------------------------- |
+| **Framework**       | Vitest                              | pytest                              |
+| **Structure**       | `tests/unit/`, `tests/integration/` | `tests/unit/`, `tests/integration/` |
+| **Mocking**         | MSW (network level)                 | pytest fixtures                     |
+| **Component Tests** | React Testing Library               | N/A                                 |
+| **Contract Tests**  | OpenAPI validation                  | Schema validation                   |
 
 **Both use the same test organization philosophy!**
 
@@ -254,4 +254,4 @@ it('should enable submit button when form is valid', () => {
 
 ---
 
-*For more details, see [Testing Guide](../../../docs/guides/TESTING_GUIDE.md)*
+_For more details, see [Testing Guide](../../../docs/guides/TESTING_GUIDE.md)_

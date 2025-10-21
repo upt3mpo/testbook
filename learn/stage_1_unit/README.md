@@ -4,6 +4,17 @@
 
 Unit tests are the building blocks of test automation. They're fast, focused, and test individual functions in isolation. Master unit testing, and everything else becomes easier.
 
+## Your Progress
+
+[████████████░░░░░░░░] 20% complete
+→ **Stage 1: Unit Tests** (you are here)
+⬜ Stage 2: Integration Tests
+⬜ Stage 3: API & E2E Testing
+⬜ Stage 4: Performance & Security
+⬜ Stage 5: Capstone
+
+**Estimated time remaining:** 12-15 hours
+
 ---
 
 ## 🎯 Learning Goals
@@ -13,7 +24,7 @@ By the end of this stage, you will:
 - ✅ Understand what unit tests are and why they matter
 - ✅ Read and understand existing unit tests
 - ✅ Use pytest fixtures for test setup
-- ✅ Apply the Arrange-Act-Assert (AAA) pattern
+- ✅ Apply the [Arrange-Act-Assert (AAA) pattern](../../docs/reference/TESTING_PATTERNS.md#arrange-act-assert-pattern)
 - ✅ Test edge cases and error conditions
 - ✅ Mock external dependencies
 
@@ -32,6 +43,7 @@ By the end of this stage, you will:
 **📁 Folder:** `/backend/tests/unit/`
 
 1. **[`test_auth.py`](../../backend/tests/unit/test_auth.py)**
+
    - Password hashing and verification
    - JWT token creation and validation
    - Example of testing security functions
@@ -55,6 +67,7 @@ By the end of this stage, you will:
 **📁 Folder:** `/frontend/src/tests/unit/`
 
 1. **[`CreatePost.test.jsx`](../../frontend/src/tests/unit/CreatePost.test.jsx)**
+
    - React component rendering
    - User interaction testing (typing, clicking)
    - API mocking with Vitest
@@ -104,7 +117,7 @@ def test_example():
     assert result == 84
 ```
 
-**Find this pattern** in the test files. Can you identify Arrange, Act, and Assert in each test?
+**Find this pattern** in the test files. Can you identify Arrange, Act, and Assert in each test? See [TESTING_PATTERNS.md](../../docs/reference/TESTING_PATTERNS.md#arrange-act-assert-pattern) for detailed examples.
 
 ### 2. Fixtures
 
@@ -239,7 +252,7 @@ You're ready for Stage 2 when you can:
 **Core concepts (all tracks):**
 
 - [ ] Explain what a unit test is
-- [ ] Identify Arrange-Act-Assert in any test
+- [ ] Identify [Arrange-Act-Assert](../../docs/reference/TESTING_PATTERNS.md#arrange-act-assert-pattern) in any test
 - [ ] Understand what fixtures/mocks do
 - [ ] Run unit tests from the command line
 - [ ] Read a test and explain what it verifies
@@ -298,7 +311,7 @@ You're ready for Stage 2 when you can:
 
 ✅ Tests one thing
 ✅ Has a clear name
-✅ Follows AAA pattern
+✅ Follows [AAA pattern](../../docs/reference/TESTING_PATTERNS.md#arrange-act-assert-pattern)
 ✅ Uses fixtures appropriately
 ✅ Tests edge cases
 ✅ Fails clearly when broken
@@ -316,9 +329,9 @@ You're ready for Stage 2 when you can:
 
 ### Hands-On Practice
 
-- [Lab 1: Your First Test](../../labs/LAB_01_Your_First_Test.md)
-- [Lab 2: Testing Real Functions](../../labs/LAB_02_Testing_Real_Functions.md)
-- [Lab 2.5: Understanding Fixtures](../../labs/LAB_02.5_Understanding_Fixtures.md)
+- [Lab 1: Your First Test](exercises/LAB_01_Your_First_Test.md)
+- [Lab 2: Testing Real Functions](exercises/LAB_02_Testing_Real_Functions.md)
+- [Lab 2.5: Understanding Fixtures](exercises/LAB_02.5_Understanding_Fixtures.md)
 
 ### Documentation
 
@@ -330,6 +343,48 @@ You're ready for Stage 2 when you can:
 
 - [Good Test Examples](../../backend/tests/examples/good_tests.py)
 - [Bad Test Examples](../../backend/tests/examples/bad_tests.py)
+
+---
+
+## 🧠 Self-Check Quiz (Optional)
+
+Before moving to Stage 2, can you answer these questions?
+
+1. **What is the difference between unit tests and integration tests?**
+
+   - A) Unit tests are faster
+   - B) Unit tests test individual functions in isolation
+   - C) Integration tests are more important
+   - D) There's no difference
+
+2. **What does AAA stand for in test structure?**
+
+   - A) Always Assert Actions
+   - B) Arrange, Act, Assert
+   - C) All About Assertions
+   - D) Arrange, Act, Analyze
+
+3. **When would you use a pytest fixture?**
+
+   - A) When you need to test multiple functions
+   - B) When you need to share setup code between tests
+   - C) When you want to skip a test
+   - D) When you need to test async functions
+
+4. **What makes a good test name?**
+
+   - A) Short and simple
+   - B) Describes what the test does
+   - C) Uses numbers (test_1, test_2)
+   - D) Matches the function name
+
+5. **Why do we test edge cases?**
+   - A) They're easier to write
+   - B) They catch bugs that happy path tests miss
+   - C) They run faster
+   - D) They're more fun
+
+**Answers:** [Check your answers here](solutions/stage_1_quiz_answers.md)
 
 ---
 
@@ -359,4 +414,4 @@ Once you've met the success criteria and reflected on the questions:
 
 ---
 
-*Pro tip: Come back to this stage after completing later stages. You'll notice things you missed the first time! 🎯*
+_Pro tip: Come back to this stage after completing later stages. You'll notice things you missed the first time! 🎯_

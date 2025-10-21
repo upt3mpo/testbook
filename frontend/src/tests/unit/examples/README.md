@@ -2,7 +2,7 @@
 
 **Example tests demonstrating advanced patterns from Lab 6B**
 
-These tests showcase the patterns taught in [Lab 6B: Advanced Component Testing](../../../../labs/LAB_06B_Advanced_Component_Testing.md).
+These tests showcase the patterns taught in [Lab 6B: Advanced Component Testing](../../../../learn/stage_3_api_e2e/exercises/LAB_06B_Advanced_Component_Testing.md).
 
 ---
 
@@ -68,7 +68,7 @@ describe('MyComponent', () => {
 
 ## 🎓 Learn More
 
-- [Lab 6B: Advanced Component Testing](../../../../labs/LAB_06B_Advanced_Component_Testing.md)
+- [Lab 6B: Advanced Component Testing](../../../../learn/stage_4_performance_security/exercises/LAB_06B_Advanced_Component_Testing.md)
 - [Vitest Documentation](https://vitest.dev/)
 - [Testing Library](https://testing-library.com/)
 - [MSW Documentation](https://mswjs.io/)

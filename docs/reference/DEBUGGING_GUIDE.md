@@ -273,15 +273,15 @@ npx playwright test auth.spec.js --debug
 **Add breakpoint in test:**
 
 ```javascript
-test('debug login', async ({ page }) => {
-  await page.goto('http://localhost:3000');
+test("debug login", async ({ page }) => {
+  await page.goto("http://localhost:3000");
 
-  await page.fill('[data-testid="login-email-input"]', 'test@test.com');
+  await page.fill('[data-testid="login-email-input"]', "test@test.com");
 
   // Pause here - inspector opens
   await page.pause();
 
-  await page.fill('[data-testid="login-password-input"]', 'password');
+  await page.fill('[data-testid="login-password-input"]', "password");
   await page.click('[data-testid="login-submit-button"]');
 });
 ```
@@ -293,22 +293,22 @@ test('debug login', async ({ page }) => {
 **Take screenshot at specific point:**
 
 ```javascript
-test('debug login', async ({ page }) => {
-  await page.goto('http://localhost:3000');
+test("debug login", async ({ page }) => {
+  await page.goto("http://localhost:3000");
 
   // Screenshot before
-  await page.screenshot({ path: 'before-login.png' });
+  await page.screenshot({ path: "before-login.png" });
 
-  await page.fill('[data-testid="login-email-input"]', 'test@test.com');
-  await page.fill('[data-testid="login-password-input"]', 'password');
+  await page.fill('[data-testid="login-email-input"]', "test@test.com");
+  await page.fill('[data-testid="login-password-input"]', "password");
 
   // Screenshot after
-  await page.screenshot({ path: 'after-fill.png' });
+  await page.screenshot({ path: "after-fill.png" });
 
   await page.click('[data-testid="login-submit-button"]');
 
   // Screenshot result
-  await page.screenshot({ path: 'after-click.png' });
+  await page.screenshot({ path: "after-click.png" });
 });
 ```
 
@@ -327,21 +327,21 @@ start before-login.png  # Windows
 **See what's happening:**
 
 ```javascript
-test('debug login', async ({ page }) => {
+test("debug login", async ({ page }) => {
   // Log page URL
-  console.log('Current URL:', page.url());
+  console.log("Current URL:", page.url());
 
   // Log element text
-  const text = await page.locator('h1').textContent();
-  console.log('Page title:', text);
+  const text = await page.locator("h1").textContent();
+  console.log("Page title:", text);
 
   // Log element count
-  const count = await page.locator('button').count();
-  console.log('Number of buttons:', count);
+  const count = await page.locator("button").count();
+  console.log("Number of buttons:", count);
 
   // Log if element exists
-  const exists = await page.locator('[data-testid="navbar"]').count() > 0;
-  console.log('Navbar exists:', exists);
+  const exists = (await page.locator('[data-testid="navbar"]').count()) > 0;
+  console.log("Navbar exists:", exists);
 });
 ```
 
@@ -391,8 +391,8 @@ Error: Timeout waiting for selector "[data-testid="button"]"
 ```javascript
 // Print all data-testid attributes
 await page.evaluate(() => {
-  const elements = document.querySelectorAll('[data-testid]');
-  elements.forEach(el => console.log(el.getAttribute('data-testid')));
+  const elements = document.querySelectorAll("[data-testid]");
+  elements.forEach((el) => console.log(el.getAttribute("data-testid")));
 });
 ```
 
@@ -400,20 +400,20 @@ await page.evaluate(() => {
 
 ```javascript
 const count = await page.locator('[data-testid="button"]').count();
-console.log('Found elements:', count);
+console.log("Found elements:", count);
 ```
 
 3. **Check page HTML:**
 
 ```javascript
 const html = await page.content();
-console.log(html);  // See all HTML
+console.log(html); // See all HTML
 ```
 
 4. **Take screenshot:**
 
 ```javascript
-await page.screenshot({ path: 'debug.png', fullPage: true });
+await page.screenshot({ path: "debug.png", fullPage: true });
 ```
 
 ---
@@ -521,15 +521,15 @@ TypeError: Cannot read property 'click' of undefined
 
 ```javascript
 // ❌ BAD - Missing await
-test('bug', async ({ page }) => {
-  page.goto('http://localhost:3000');  // Missing await!
-  await page.click('button');  // Clicks before page loads
+test("bug", async ({ page }) => {
+  page.goto("http://localhost:3000"); // Missing await!
+  await page.click("button"); // Clicks before page loads
 });
 
 // ✅ GOOD - All awaits present
-test('fixed', async ({ page }) => {
-  await page.goto('http://localhost:3000');
-  await page.click('button');
+test("fixed", async ({ page }) => {
+  await page.goto("http://localhost:3000");
+  await page.click("button");
 });
 ```
 
@@ -650,7 +650,7 @@ When a test fails, check:
 
 ## 📚 Related Resources
 
-- [COMMON_MISTAKES.md](../course/COMMON_MISTAKES.md) - Common errors and fixes
+- [TROUBLESHOOTING.md](TROUBLESHOOTING.md) - Common errors and fixes
 - [QUICK_REFERENCE_PYTEST.md](QUICK_REFERENCE_PYTEST.md) - Pytest commands
 - [QUICK_REFERENCE_PLAYWRIGHT.md](QUICK_REFERENCE_PLAYWRIGHT.md) - Playwright commands
 - [Python Debugger (pdb) Docs](https://docs.python.org/3/library/pdb.html)

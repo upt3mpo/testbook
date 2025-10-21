@@ -63,40 +63,44 @@ Create `frontend/scripts/fetch-schema.js`:
 
 ```javascript
 #!/usr/bin/env node
-const fs = require('fs');
-const https = require('https');
-const http = require('http');
+const fs = require("fs");
+const https = require("https");
+const http = require("http");
 
-const API_URL = process.env.API_URL || 'http://localhost:8000';
-const OUTPUT_FILE = 'src/tests/openapi-schema.json';
+const API_URL = process.env.API_URL || "http://localhost:8000";
+const OUTPUT_FILE = "src/tests/openapi-schema.json";
 
 console.log(`📥 Fetching OpenAPI schema from ${API_URL}/openapi.json...`);
 
-const client = API_URL.startsWith('https') ? https : http;
+const client = API_URL.startsWith("https") ? https : http;
 
-client.get(`${API_URL}/openapi.json`, (res) => {
-  let data = '';
+client
+  .get(`${API_URL}/openapi.json`, (res) => {
+    let data = "";
 
-  res.on('data', (chunk) => {
-    data += chunk;
+    res.on("data", (chunk) => {
+      data += chunk;
+    });
+
+    res.on("end", () => {
+      try {
+        const schema = JSON.parse(data);
+        fs.writeFileSync(OUTPUT_FILE, JSON.stringify(schema, null, 2));
+        console.log(`✅ Schema saved to ${OUTPUT_FILE}`);
+        console.log(
+          `📊 Found ${Object.keys(schema.paths || {}).length} API endpoints`
+        );
+      } catch (error) {
+        console.error("❌ Failed to parse schema:", error.message);
+        process.exit(1);
+      }
+    });
+  })
+  .on("error", (error) => {
+    console.error("❌ Failed to fetch schema:", error.message);
+    console.error("💡 Make sure backend is running on", API_URL);
+    process.exit(1);
   });
-
-  res.on('end', () => {
-    try {
-      const schema = JSON.parse(data);
-      fs.writeFileSync(OUTPUT_FILE, JSON.stringify(schema, null, 2));
-      console.log(`✅ Schema saved to ${OUTPUT_FILE}`);
-      console.log(`📊 Found ${Object.keys(schema.paths || {}).length} API endpoints`);
-    } catch (error) {
-      console.error('❌ Failed to parse schema:', error.message);
-      process.exit(1);
-    }
-  });
-}).on('error', (error) => {
-  console.error('❌ Failed to fetch schema:', error.message);
-  console.error('💡 Make sure backend is running on', API_URL);
-  process.exit(1);
-});
 ```
 
 Make it executable and run:
@@ -124,8 +128,8 @@ npm install --save-dev openapi-validator-middleware jest-openapi
 Create `frontend/src/tests/contract-helpers.js`:
 
 ```javascript
-import jestOpenAPI from 'jest-openapi';
-import schema from './openapi-schema.json';
+import jestOpenAPI from "jest-openapi";
+import schema from "./openapi-schema.json";
 
 // Load the OpenAPI schema
 jestOpenAPI(schema);
@@ -158,7 +162,7 @@ export function validateContract(response, path, method, status = 200) {
 export function getResponseSchema(path, method, status = 200) {
   const operation = schema.paths[path]?.[method.toLowerCase()];
   const response = operation?.responses?.[status.toString()];
-  return response?.content?.['application/json']?.schema;
+  return response?.content?.["application/json"]?.schema;
 }
 
 /**
@@ -184,7 +188,7 @@ export function matchesSchema(data, schemaRef) {
 function resolveSchemaRef(schemaRef) {
   if (schemaRef.$ref) {
     // Simple ref resolution - extend for full JSON Schema support
-    const refPath = schemaRef.$ref.split('/').slice(2);
+    const refPath = schemaRef.$ref.split("/").slice(2);
     let resolved = schema;
     for (const key of refPath) {
       resolved = resolved[key];
@@ -200,32 +204,32 @@ function resolveSchemaRef(schemaRef) {
 Create `frontend/src/tests/integration/api-client.test.js`:
 
 ```javascript
-import { describe, it, expect, beforeAll } from 'vitest';
-import axios from 'axios';
-import { validateContract } from './contract-helpers';
+import { describe, it, expect, beforeAll } from "vitest";
+import axios from "axios";
+import { validateContract } from "./contract-helpers";
 
-const API_BASE = 'http://localhost:8000';
+const API_BASE = "http://localhost:8000";
 
-describe('API Client Contract Tests', () => {
+describe("API Client Contract Tests", () => {
   let authToken;
 
   beforeAll(async () => {
     // Login to get token
     const response = await axios.post(`${API_BASE}/api/auth/login`, {
-      email: 'sarah.johnson@testbook.com',
-      password: 'Sarah2024!',
+      email: "sarah.johnson@testbook.com",
+      password: "Sarah2024!",
     });
     authToken = response.data.access_token;
   });
 
-  describe('GET /api/feed', () => {
-    it('returns feed posts matching schema', async () => {
+  describe("GET /api/feed", () => {
+    it("returns feed posts matching schema", async () => {
       const response = await axios.get(`${API_BASE}/api/feed`, {
         headers: { Authorization: `Bearer ${authToken}` },
       });
 
       // Validate against OpenAPI schema
-      validateContract(response, '/api/feed', 'get', 200);
+      validateContract(response, "/api/feed", "get", 200);
 
       // Validate response structure
       expect(Array.isArray(response.data)).toBe(true);
@@ -234,64 +238,57 @@ describe('API Client Contract Tests', () => {
         const post = response.data[0];
 
         // Required fields per schema
-        expect(post).toHaveProperty('id');
-        expect(post).toHaveProperty('content');
-        expect(post).toHaveProperty('author');
-        expect(post).toHaveProperty('created_at');
-        expect(post).toHaveProperty('reaction_counts');
+        expect(post).toHaveProperty("id");
+        expect(post).toHaveProperty("content");
+        expect(post).toHaveProperty("author");
+        expect(post).toHaveProperty("created_at");
+        expect(post).toHaveProperty("reaction_counts");
 
         // Author object structure
-        expect(post.author).toHaveProperty('id');
-        expect(post.author).toHaveProperty('username');
-        expect(post.author).toHaveProperty('display_name');
+        expect(post.author).toHaveProperty("id");
+        expect(post.author).toHaveProperty("username");
+        expect(post.author).toHaveProperty("display_name");
       }
     });
   });
 
-  describe('POST /api/posts/', () => {
-    it('creates post with schema-compliant request/response', async () => {
+  describe("POST /api/posts/", () => {
+    it("creates post with schema-compliant request/response", async () => {
       const newPost = {
-        content: 'Contract testing is awesome!',
+        content: "Contract testing is awesome!",
       };
 
-      const response = await axios.post(
-        `${API_BASE}/api/posts/`,
-        newPost,
-        {
-          headers: { Authorization: `Bearer ${authToken}` },
-        }
-      );
+      const response = await axios.post(`${API_BASE}/api/posts/`, newPost, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      });
 
       // Validate response matches schema
-      validateContract(response, '/api/posts/', 'post', 200);
+      validateContract(response, "/api/posts/", "post", 200);
 
       // Verify response structure
-      expect(response.data).toHaveProperty('id');
-      expect(response.data).toHaveProperty('content');
+      expect(response.data).toHaveProperty("id");
+      expect(response.data).toHaveProperty("content");
       expect(response.data.content).toBe(newPost.content);
     });
   });
 
-  describe('GET /api/users/{username}', () => {
-    it('returns user profile matching schema', async () => {
-      const response = await axios.get(
-        `${API_BASE}/api/users/sarahjohnson`,
-        {
-          headers: { Authorization: `Bearer ${authToken}` },
-        }
-      );
+  describe("GET /api/users/{username}", () => {
+    it("returns user profile matching schema", async () => {
+      const response = await axios.get(`${API_BASE}/api/users/sarahjohnson`, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      });
 
-      validateContract(response, '/api/users/{username}', 'get', 200);
+      validateContract(response, "/api/users/{username}", "get", 200);
 
       const user = response.data;
 
       // Schema-defined fields
-      expect(user).toHaveProperty('id');
-      expect(user).toHaveProperty('username');
-      expect(user).toHaveProperty('display_name');
-      expect(user).toHaveProperty('bio');
-      expect(user).toHaveProperty('follower_count');
-      expect(user).toHaveProperty('following_count');
+      expect(user).toHaveProperty("id");
+      expect(user).toHaveProperty("username");
+      expect(user).toHaveProperty("display_name");
+      expect(user).toHaveProperty("bio");
+      expect(user).toHaveProperty("follower_count");
+      expect(user).toHaveProperty("following_count");
     });
   });
 });
@@ -306,10 +303,10 @@ describe('API Client Contract Tests', () => {
 Create `frontend/src/tests/mocks/schema-based-handlers.js`:
 
 ```javascript
-import { rest } from 'msw';
-import schema from '../openapi-schema.json';
+import { rest } from "msw";
+import schema from "../openapi-schema.json";
 
-const API_BASE = 'http://localhost:8000';
+const API_BASE = "http://localhost:8000";
 
 /**
  * Generate MSW handlers that match OpenAPI schema
@@ -323,14 +320,14 @@ export const schemaBasedHandlers = [
       ctx.json([
         {
           id: 1,
-          content: 'Schema-compliant post',
+          content: "Schema-compliant post",
           author: {
             id: 1,
-            username: 'testuser',
-            display_name: 'Test User',
+            username: "testuser",
+            display_name: "Test User",
           },
           created_at: new Date().toISOString(),
-          reaction_counts: { '👍': 5 },
+          reaction_counts: { "👍": 5 },
           is_own_post: false,
         },
       ])
@@ -342,11 +339,8 @@ export const schemaBasedHandlers = [
     const body = await req.json();
 
     // Validate request matches schema
-    if (!body.content || typeof body.content !== 'string') {
-      return res(
-        ctx.status(422),
-        ctx.json({ detail: 'Invalid request body' })
-      );
+    if (!body.content || typeof body.content !== "string") {
+      return res(ctx.status(422), ctx.json({ detail: "Invalid request body" }));
     }
 
     // Return schema-compliant response
@@ -357,8 +351,8 @@ export const schemaBasedHandlers = [
         content: body.content,
         author: {
           id: 1,
-          username: 'testuser',
-          display_name: 'Test User',
+          username: "testuser",
+          display_name: "Test User",
         },
         created_at: new Date().toISOString(),
         reaction_counts: {},
@@ -369,23 +363,20 @@ export const schemaBasedHandlers = [
 
   // GET /api/auth/me - Current user
   rest.get(`${API_BASE}/api/auth/me`, (req, res, ctx) => {
-    const authHeader = req.headers.get('Authorization');
+    const authHeader = req.headers.get("Authorization");
 
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return res(
-        ctx.status(401),
-        ctx.json({ detail: 'Not authenticated' })
-      );
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res(ctx.status(401), ctx.json({ detail: "Not authenticated" }));
     }
 
     return res(
       ctx.status(200),
       ctx.json({
         id: 1,
-        email: 'test@testbook.com',
-        username: 'testuser',
-        display_name: 'Test User',
-        bio: 'Test user bio',
+        email: "test@testbook.com",
+        username: "testuser",
+        display_name: "Test User",
+        bio: "Test user bio",
       })
     );
   }),
@@ -397,12 +388,12 @@ export const schemaBasedHandlers = [
 Create `frontend/src/components/__tests__/FeedWithContracts.test.jsx`:
 
 ```javascript
-import { render, screen, waitFor } from '@testing-library/react';
-import { describe, it, expect, beforeAll, afterEach, afterAll } from 'vitest';
-import { setupServer } from 'msw/node';
-import { schemaBasedHandlers } from '../../test/mocks/schema-based-handlers';
-import { BrowserRouter } from 'react-router-dom';
-import { AuthContext } from '../../AuthContext';
+import { render, screen, waitFor } from "@testing-library/react";
+import { describe, it, expect, beforeAll, afterEach, afterAll } from "vitest";
+import { setupServer } from "msw/node";
+import { schemaBasedHandlers } from "../../test/mocks/schema-based-handlers";
+import { BrowserRouter } from "react-router-dom";
+import { AuthContext } from "../../AuthContext";
 
 // Setup MSW server with schema-based handlers
 const server = setupServer(...schemaBasedHandlers);
@@ -417,9 +408,9 @@ function Feed() {
   const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
-    fetch('http://localhost:8000/api/feed')
-      .then(res => res.json())
-      .then(data => {
+    fetch("http://localhost:8000/api/feed")
+      .then((res) => res.json())
+      .then((data) => {
         setPosts(data);
         setLoading(false);
       });
@@ -429,7 +420,7 @@ function Feed() {
 
   return (
     <div data-testid="feed">
-      {posts.map(post => (
+      {posts.map((post) => (
         <article key={post.id} data-testid={`post-${post.id}`}>
           <p>{post.content}</p>
           <span>{post.author.display_name}</span>
@@ -439,10 +430,10 @@ function Feed() {
   );
 }
 
-describe('Feed Integration with Contract Validation', () => {
+describe("Feed Integration with Contract Validation", () => {
   const renderFeed = () => {
     const mockAuth = {
-      user: { id: 1, username: 'testuser', display_name: 'Test User' },
+      user: { id: 1, username: "testuser", display_name: "Test User" },
       login: vi.fn(),
       logout: vi.fn(),
     };
@@ -456,33 +447,33 @@ describe('Feed Integration with Contract Validation', () => {
     );
   };
 
-  it('displays posts with schema-compliant data', async () => {
+  it("displays posts with schema-compliant data", async () => {
     renderFeed();
 
     // Wait for loading to complete
     await waitFor(() => {
-      expect(screen.queryByTestId('loading')).not.toBeInTheDocument();
+      expect(screen.queryByTestId("loading")).not.toBeInTheDocument();
     });
 
     // Verify feed loaded
-    expect(screen.getByTestId('feed')).toBeInTheDocument();
+    expect(screen.getByTestId("feed")).toBeInTheDocument();
 
     // Verify post data matches schema structure
-    const post = screen.getByTestId('post-1');
-    expect(post).toHaveTextContent('Schema-compliant post');
-    expect(post).toHaveTextContent('Test User');
+    const post = screen.getByTestId("post-1");
+    expect(post).toHaveTextContent("Schema-compliant post");
+    expect(post).toHaveTextContent("Test User");
   });
 
-  it('handles schema-compliant error responses', async () => {
+  it("handles schema-compliant error responses", async () => {
     // Override handler to return error
-    const { rest } = await import('msw');
+    const { rest } = await import("msw");
 
     server.use(
-      rest.get('http://localhost:8000/api/feed', (req, res, ctx) => {
+      rest.get("http://localhost:8000/api/feed", (req, res, ctx) => {
         // FastAPI error format
         return res(
           ctx.status(500),
-          ctx.json({ detail: 'Internal server error' })
+          ctx.json({ detail: "Internal server error" })
         );
       })
     );
@@ -491,7 +482,7 @@ describe('Feed Integration with Contract Validation', () => {
 
     // Component should handle error gracefully
     await waitFor(() => {
-      expect(screen.queryByTestId('loading')).not.toBeInTheDocument();
+      expect(screen.queryByTestId("loading")).not.toBeInTheDocument();
     });
   });
 });
@@ -506,10 +497,10 @@ Create comprehensive tests for your API client.
 Create `frontend/src/__tests__/api.contract.test.js`:
 
 ```javascript
-import { describe, it, expect, beforeAll, afterEach, afterAll } from 'vitest';
-import { setupServer } from 'msw/node';
-import { schemaBasedHandlers } from '../test/mocks/schema-based-handlers';
-import { postsAPI, authAPI, usersAPI } from '../api';
+import { describe, it, expect, beforeAll, afterEach, afterAll } from "vitest";
+import { setupServer } from "msw/node";
+import { schemaBasedHandlers } from "../test/mocks/schema-based-handlers";
+import { postsAPI, authAPI, usersAPI } from "../api";
 
 const server = setupServer(...schemaBasedHandlers);
 
@@ -517,25 +508,25 @@ beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
-describe('Posts API Contract Tests', () => {
-  it('create() sends correct request and handles response', async () => {
+describe("Posts API Contract Tests", () => {
+  it("create() sends correct request and handles response", async () => {
     const postData = {
-      content: 'Test post from contract test',
+      content: "Test post from contract test",
     };
 
     const result = await postsAPI.create(postData);
 
     // Verify response structure matches schema
-    expect(result.data).toHaveProperty('id');
-    expect(result.data).toHaveProperty('content');
+    expect(result.data).toHaveProperty("id");
+    expect(result.data).toHaveProperty("content");
     expect(result.data.content).toBe(postData.content);
-    expect(result.data).toHaveProperty('author');
-    expect(result.data.author).toHaveProperty('id');
-    expect(result.data.author).toHaveProperty('username');
-    expect(result.data.author).toHaveProperty('display_name');
+    expect(result.data).toHaveProperty("author");
+    expect(result.data.author).toHaveProperty("id");
+    expect(result.data.author).toHaveProperty("username");
+    expect(result.data.author).toHaveProperty("display_name");
   });
 
-  it('list() returns schema-compliant feed', async () => {
+  it("list() returns schema-compliant feed", async () => {
     const result = await postsAPI.list();
 
     expect(Array.isArray(result.data)).toBe(true);
@@ -544,55 +535,55 @@ describe('Posts API Contract Tests', () => {
       const post = result.data[0];
 
       // Verify all required fields per schema
-      expect(post).toHaveProperty('id');
-      expect(post).toHaveProperty('content');
-      expect(post).toHaveProperty('author');
-      expect(post).toHaveProperty('created_at');
-      expect(post).toHaveProperty('reaction_counts');
+      expect(post).toHaveProperty("id");
+      expect(post).toHaveProperty("content");
+      expect(post).toHaveProperty("author");
+      expect(post).toHaveProperty("created_at");
+      expect(post).toHaveProperty("reaction_counts");
 
       // Verify types
-      expect(typeof post.id).toBe('number');
-      expect(typeof post.content).toBe('string');
-      expect(typeof post.author).toBe('object');
-      expect(typeof post.reaction_counts).toBe('object');
+      expect(typeof post.id).toBe("number");
+      expect(typeof post.content).toBe("string");
+      expect(typeof post.author).toBe("object");
+      expect(typeof post.reaction_counts).toBe("object");
     }
   });
 });
 
-describe('Auth API Contract Tests', () => {
-  it('getCurrentUser() returns schema-compliant user', async () => {
+describe("Auth API Contract Tests", () => {
+  it("getCurrentUser() returns schema-compliant user", async () => {
     const result = await authAPI.getCurrentUser();
 
     // Verify user object matches schema
-    expect(result.data).toHaveProperty('id');
-    expect(result.data).toHaveProperty('email');
-    expect(result.data).toHaveProperty('username');
-    expect(result.data).toHaveProperty('display_name');
-    expect(result.data).toHaveProperty('bio');
+    expect(result.data).toHaveProperty("id");
+    expect(result.data).toHaveProperty("email");
+    expect(result.data).toHaveProperty("username");
+    expect(result.data).toHaveProperty("display_name");
+    expect(result.data).toHaveProperty("bio");
 
     // Verify types
-    expect(typeof result.data.id).toBe('number');
-    expect(typeof result.data.email).toBe('string');
-    expect(typeof result.data.username).toBe('string');
-    expect(typeof result.data.display_name).toBe('string');
+    expect(typeof result.data.id).toBe("number");
+    expect(typeof result.data.email).toBe("string");
+    expect(typeof result.data.username).toBe("string");
+    expect(typeof result.data.display_name).toBe("string");
   });
 });
 
-describe('Users API Contract Tests', () => {
-  it('getProfile() returns complete user profile', async () => {
-    const result = await usersAPI.getProfile('testuser');
+describe("Users API Contract Tests", () => {
+  it("getProfile() returns complete user profile", async () => {
+    const result = await usersAPI.getProfile("testuser");
 
     // Verify profile matches schema
-    expect(result.data).toHaveProperty('id');
-    expect(result.data).toHaveProperty('username');
-    expect(result.data).toHaveProperty('display_name');
-    expect(result.data).toHaveProperty('bio');
-    expect(result.data).toHaveProperty('follower_count');
-    expect(result.data).toHaveProperty('following_count');
+    expect(result.data).toHaveProperty("id");
+    expect(result.data).toHaveProperty("username");
+    expect(result.data).toHaveProperty("display_name");
+    expect(result.data).toHaveProperty("bio");
+    expect(result.data).toHaveProperty("follower_count");
+    expect(result.data).toHaveProperty("following_count");
 
     // Verify types match schema
-    expect(typeof result.data.follower_count).toBe('number');
-    expect(typeof result.data.following_count).toBe('number');
+    expect(typeof result.data.follower_count).toBe("number");
+    expect(typeof result.data.following_count).toBe("number");
   });
 });
 ```
@@ -612,28 +603,28 @@ Test against the actual running backend to validate real contracts.
 Create `frontend/src/test/integration/backend-integration.test.js`:
 
 ```javascript
-import { describe, it, expect, beforeAll } from 'vitest';
-import axios from 'axios';
+import { describe, it, expect, beforeAll } from "vitest";
+import axios from "axios";
 
-const API_BASE = 'http://localhost:8000';
+const API_BASE = "http://localhost:8000";
 
 /**
  * These tests run against the REAL backend
  * Make sure backend is running: ./start-dev.sh
  */
-describe('Backend Integration Tests', () => {
+describe("Backend Integration Tests", () => {
   let authToken;
 
   beforeAll(async () => {
     // Real login
     const response = await axios.post(`${API_BASE}/api/auth/login`, {
-      email: 'sarah.johnson@testbook.com',
-      password: 'Sarah2024!',
+      email: "sarah.johnson@testbook.com",
+      password: "Sarah2024!",
     });
     authToken = response.data.access_token;
   });
 
-  it('GET /api/feed returns real data matching expected structure', async () => {
+  it("GET /api/feed returns real data matching expected structure", async () => {
     const response = await axios.get(`${API_BASE}/api/feed`, {
       headers: { Authorization: `Bearer ${authToken}` },
     });
@@ -646,47 +637,43 @@ describe('Backend Integration Tests', () => {
       const post = response.data[0];
 
       // These fields MUST exist for frontend to work
-      expect(post).toHaveProperty('id');
-      expect(post).toHaveProperty('content');
-      expect(post).toHaveProperty('author');
-      expect(post.author).toHaveProperty('username');
-      expect(post.author).toHaveProperty('display_name');
+      expect(post).toHaveProperty("id");
+      expect(post).toHaveProperty("content");
+      expect(post).toHaveProperty("author");
+      expect(post.author).toHaveProperty("username");
+      expect(post.author).toHaveProperty("display_name");
     }
   });
 
-  it('POST /api/posts/ creates post and returns correct structure', async () => {
+  it("POST /api/posts/ creates post and returns correct structure", async () => {
     const postData = {
-      content: 'Integration test post',
+      content: "Integration test post",
     };
 
-    const response = await axios.post(
-      `${API_BASE}/api/posts/`,
-      postData,
-      {
-        headers: { Authorization: `Bearer ${authToken}` },
-      }
-    );
+    const response = await axios.post(`${API_BASE}/api/posts/`, postData, {
+      headers: { Authorization: `Bearer ${authToken}` },
+    });
 
     expect(response.status).toBe(200);
 
     // Verify backend returns what frontend needs
-    expect(response.data).toHaveProperty('id');
+    expect(response.data).toHaveProperty("id");
     expect(response.data.content).toBe(postData.content);
-    expect(response.data).toHaveProperty('author');
-    expect(response.data).toHaveProperty('created_at');
-    expect(response.data).toHaveProperty('reaction_counts');
+    expect(response.data).toHaveProperty("author");
+    expect(response.data).toHaveProperty("created_at");
+    expect(response.data).toHaveProperty("reaction_counts");
   });
 
-  it('handles authentication errors with correct format', async () => {
+  it("handles authentication errors with correct format", async () => {
     try {
       await axios.get(`${API_BASE}/api/auth/me`);
       // Should not reach here
-      expect.fail('Should have thrown error');
+      expect.fail("Should have thrown error");
     } catch (error) {
       expect(error.response.status).toBe(401);
 
       // FastAPI error format
-      expect(error.response.data).toHaveProperty('detail');
+      expect(error.response.data).toHaveProperty("detail");
     }
   });
 });
@@ -716,15 +703,15 @@ npx openapi-typescript src/test/openapi-schema.json -o src/types/api.d.ts
 **Use in code:**
 
 ```typescript
-import type { components } from './types/api';
+import type { components } from "./types/api";
 
-type Post = components['schemas']['Post'];
-type User = components['schemas']['User'];
+type Post = components["schemas"]["Post"];
+type User = components["schemas"]["User"];
 
 // Now TypeScript ensures you use correct field names!
 function displayPost(post: Post) {
-  console.log(post.display_name);  // ❌ Error! Field doesn't exist
-  console.log(post.author.display_name);  // ✅ Correct!
+  console.log(post.display_name); // ❌ Error! Field doesn't exist
+  console.log(post.author.display_name); // ✅ Correct!
 }
 ```
 
@@ -798,13 +785,14 @@ Test that error responses match FastAPI's error format:
 Create a test that compares the fetched schema with a baseline to detect API changes:
 
 ```javascript
-it('API schema has not changed unexpectedly', () => {
-  const currentSchema = require('../test/openapi-schema.json');
-  const baselineSchema = require('../test/baseline-schema.json');
+it("API schema has not changed unexpectedly", () => {
+  const currentSchema = require("../test/openapi-schema.json");
+  const baselineSchema = require("../test/baseline-schema.json");
 
   // Compare endpoint counts
-  expect(Object.keys(currentSchema.paths).length)
-    .toBe(Object.keys(baselineSchema.paths).length);
+  expect(Object.keys(currentSchema.paths).length).toBe(
+    Object.keys(baselineSchema.paths).length
+  );
 });
 ```
 
@@ -846,12 +834,12 @@ Contract tests ensure structure; E2E tests ensure behavior:
 
 ```javascript
 // Contract test (fast)
-it('response has correct structure', () => {
+it("response has correct structure", () => {
   expect(response.data).toMatchSchema();
 });
 
 // E2E test (realistic)
-test('user can create post', async ({ page }) => {
+test("user can create post", async ({ page }) => {
   // Tests actual UI flow
 });
 ```
@@ -871,14 +859,14 @@ test('user can create post', async ({ page }) => {
 
 ## 🆚 Contract Testing vs E2E Testing
 
-| Aspect | Contract Testing | E2E Testing |
-|--------|-----------------|-------------|
-| **Speed** | Fast (< 1s) | Slower (5-30s) |
-| **Scope** | API structure | Complete user flow |
-| **Catches** | Schema mismatches | UI bugs, workflow issues |
-| **Setup** | Schema + mocks | Full app running |
-| **Best For** | API integration | User journeys |
-| **When to Run** | Every commit | Before deploy |
+| Aspect          | Contract Testing  | E2E Testing              |
+| --------------- | ----------------- | ------------------------ |
+| **Speed**       | Fast (< 1s)       | Slower (5-30s)           |
+| **Scope**       | API structure     | Complete user flow       |
+| **Catches**     | Schema mismatches | UI bugs, workflow issues |
+| **Setup**       | Schema + mocks    | Full app running         |
+| **Best For**    | API integration   | User journeys            |
+| **When to Run** | Every commit      | Before deploy            |
 
 **💡 Use Both:** Contract tests catch API breaking changes fast. E2E tests verify complete workflows work.
 
@@ -905,8 +893,8 @@ test('user can create post', async ({ page }) => {
 
 **Next Steps:**
 
-- [Section 8: Advanced E2E Patterns](../docs/course/SECTION_08_ADVANCED_E2E_PATTERNS.md) - Complete E2E patterns
-- [CI/CD Guide](../docs/course/CI_CD_E2E_TESTING.md) - Automate contract tests
+- [Section 8: Advanced E2E Patterns](../learn/stage_3_api_e2e/README.md#advanced-e2e-patterns) - Complete E2E patterns
+- [CI/CD Guide](../learn/stage_5_capstone/README.md#cicd-automation) - Automate contract tests
 
 **External Documentation:**
 

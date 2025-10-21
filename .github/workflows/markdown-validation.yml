@@ -2,19 +2,19 @@ name: Markdown Validation
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [main, develop]
     paths:
-      - '**.md'
-      - '.markdownlint.json'
-      - '.markdown-link-check.json'
-      - '.github/workflows/markdown-validation.yml'
+      - "**.md"
+      - ".markdownlint.json"
+      - ".markdown-link-check.json"
+      - ".github/workflows/markdown-validation.yml"
   pull_request:
-    branches: [ main, develop ]
+    branches: [main, develop]
     paths:
-      - '**.md'
-      - '.markdownlint.json'
-      - '.markdown-link-check.json'
-      - '.github/workflows/markdown-validation.yml'
+      - "**.md"
+      - ".markdownlint.json"
+      - ".markdown-link-check.json"
+      - ".github/workflows/markdown-validation.yml"
 
 jobs:
   markdown-lint:
@@ -28,7 +28,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: "20"
 
       - name: Install markdownlint-cli
         run: npm install -g markdownlint-cli
@@ -48,16 +48,13 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: "20"
 
       - name: Install markdown-link-check
         run: npm install -g markdown-link-check
 
       - name: Check links in root README
         run: markdown-link-check README.md --config .markdown-link-check.json
-
-      - name: Check links in START_HERE
-        run: markdown-link-check START_HERE.md --config .markdown-link-check.json
 
       - name: Check links in QUICKSTART
         run: markdown-link-check QUICKSTART.md --config .markdown-link-check.json
@@ -131,4 +128,3 @@ jobs:
           echo "### Files Checked" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           find . -name "*.md" -not -path "*/node_modules/*" -not -path "*/venv/*" -not -path "*/.git/*" | wc -l | xargs -I {} echo "- Total Markdown files: {}" >> $GITHUB_STEP_SUMMARY
-

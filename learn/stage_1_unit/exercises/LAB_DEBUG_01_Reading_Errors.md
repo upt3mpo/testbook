@@ -615,18 +615,21 @@ E   ModuleNotFoundError: No module named 'pytest'
 ## 📝 Quiz
 
 1. **Where does the `>` arrow point?**
+
    - A) To the test name
    - B) To the exact line that failed
    - C) To the file name
    - D) To the error type
 
 2. **What does `assert 4 == 5` mean in an error?**
+
    - A) 4 equals 5
    - B) You expected 5 but got 4
    - C) You expected 4 but got 5
    - D) Both are wrong
 
 3. **How do you read a stack trace?**
+
    - A) Top to bottom
    - B) Bottom to top
    - C) Left to right
@@ -658,7 +661,7 @@ E   ModuleNotFoundError: No module named 'pytest'
 
 - **[LAB_DEBUG_02_Fixing_Broken_Tests.md](LAB_DEBUG_02_Fixing_Broken_Tests.md)** - Practice fixing real broken tests
 - **[DEBUGGING_GUIDE.md](../docs/reference/DEBUGGING_GUIDE.md)** - Advanced debugging techniques
-- **[COMMON_MISTAKES.md](../docs/course/COMMON_MISTAKES.md)** - Common errors and solutions
+- **[TROUBLESHOOTING.md](../../docs/reference/TROUBLESHOOTING.md)** - Common errors and solutions
 
 ---
 

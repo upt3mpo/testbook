@@ -41,17 +41,12 @@ newman run Testbook.postman_collection.json
   ✓ Get Current User
   ...
 
-┌─────────────────────────┬─────────────┬────────────┐
-│                         │    executed │     failed │
-├─────────────────────────┼─────────────┼────────────┤
-│              iterations │           1 │          0 │
-├─────────────────────────┼─────────────┼────────────┤
-│                requests │          15 │          0 │
-├─────────────────────────┼─────────────┼────────────┤
-│            test-scripts │          30 │          0 │
-├─────────────────────────┼─────────────┼────────────┤
-│      assertions         │          45 │          0 │
-└─────────────────────────┴─────────────┴────────────┘
+| Metric       | Executed | Failed |
+|--------------|----------|--------|
+| iterations   | 1        | 0      |
+| requests     | 15       | 0      |
+| test-scripts | 30       | 0      |
+| assertions   | 45       | 0      |
 ```
 
 ---
@@ -313,9 +308,9 @@ newman run collection.json \
 
 ```javascript
 // In Postman test script
-pm.test("Save token", function() {
-    var data = pm.response.json();
-    pm.environment.set("authToken", data.access_token);
+pm.test("Save token", function () {
+  var data = pm.response.json();
+  pm.environment.set("authToken", data.access_token);
 });
 
 // Next request uses {{authToken}}
@@ -325,19 +320,19 @@ pm.test("Save token", function() {
 
 ```javascript
 // Verify status code
-pm.test("Status is 200", function() {
-    pm.response.to.have.status(200);
+pm.test("Status is 200", function () {
+  pm.response.to.have.status(200);
 });
 
 // Verify response structure
-pm.test("Has access token", function() {
-    var data = pm.response.json();
-    pm.expect(data).to.have.property("access_token");
+pm.test("Has access token", function () {
+  var data = pm.response.json();
+  pm.expect(data).to.have.property("access_token");
 });
 
 // Verify response time
-pm.test("Response time < 500ms", function() {
-    pm.expect(pm.response.responseTime).to.be.below(500);
+pm.test("Response time < 500ms", function () {
+  pm.expect(pm.response.responseTime).to.be.below(500);
 });
 ```
 
