@@ -12,4 +12,4 @@ async function globalSetup(config) {
   console.log("=" * 70);
 }
 
-module.exports = globalSetup;
+export default globalSetup;

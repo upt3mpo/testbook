@@ -10,8 +10,8 @@ export default defineConfig({
   testDir: "./e2e",
 
   /* Global setup and teardown */
-  globalSetup: require.resolve("./global-setup.js"),
-  globalTeardown: require.resolve("./global-teardown.js"),
+  globalSetup: "./global-setup.js",
+  globalTeardown: "./global-teardown.js",
 
   /* Maximum time one test can run */
   timeout: 30 * 1000,

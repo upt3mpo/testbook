@@ -3,10 +3,15 @@
  * Runs once after all tests complete
  */
 
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 async function globalTeardown(config) {
   // Check if tests passed by looking at the results
-  const fs = require("fs");
-  const path = require("path");
 
   try {
     const resultsPath = path.join(__dirname, "test-results", "results.json");
@@ -46,4 +51,4 @@ Debug tips:
   }
 }
 
-module.exports = globalTeardown;
+export default globalTeardown;
