@@ -4,6 +4,7 @@ import { defineConfig } from 'vitest/config';
 export default defineConfig({
   plugins: [react()],
   test: {
+    pool: 'forks',
     globals: true,
     environment: 'jsdom',
     setupFiles: ['./src/tests/global-setup.js', './src/tests/setup.js'],

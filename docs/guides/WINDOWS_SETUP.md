@@ -463,6 +463,7 @@ rustc --version
 - You won't be able to run the backend server
 - The frontend will load but show connection errors
 - You'll see errors like: `'python' is not recognized as an internal or external command`
+
 </details>
 
 **Download:** [python.org/downloads](https://www.python.org/downloads/)
@@ -529,6 +530,7 @@ python --version
 - You'll see errors like: `'node' is not recognized` or `'npm' is not recognized`
 - The website won't load in your browser
 - The setup script will fail when trying to install frontend dependencies
+
 </details>
 
 **Download:** [nodejs.org](https://nodejs.org/) (choose LTS version)
@@ -586,6 +588,7 @@ npm --version
 - You'll see errors like: `'git' is not recognized as an internal or external command`
 - The setup script will fail when trying to clone the repository
 - You'll have to manually download and extract ZIP files instead
+
 </details>
 
 **Download:** [git-scm.com/download/win](https://git-scm.com/download/win)
@@ -684,6 +687,7 @@ curl --version
    ```
 
 4. **Verify installation:**
+
    ```powershell
    npx playwright --version
    # Should show: Playwright version 1.x.x
@@ -1030,7 +1034,7 @@ Or use prebuilt wheels: see [Issue 2.6](#issue-26-cargo-the-rust-package-manager
 
 **Symptoms:**
 
-```
+```text
 'python' is not recognized as an internal or external command
 ```
 
@@ -1052,7 +1056,7 @@ Or use prebuilt wheels: see [Issue 2.6](#issue-26-cargo-the-rust-package-manager
 
 **Symptoms:**
 
-```
+```text
 'npm' is not recognized as an internal or external command
 'node' is not recognized as an internal or external command
 ```
@@ -1070,7 +1074,7 @@ Or use prebuilt wheels: see [Issue 2.6](#issue-26-cargo-the-rust-package-manager
 
 **Symptoms:**
 
-```
+```text
 Error: pg_config executable not found.
 pg_config is required to build psycopg2 from source.
 Failed to build `psycopg2-binary==2.9.9`
@@ -1082,6 +1086,7 @@ Failed to build `psycopg2-binary==2.9.9`
 
 1. **Update your repository:** Pull the latest changes to get the fixed requirements.txt
 2. **Clean install:**
+
    ```powershell
    cd backend
    Remove-Item -Recurse -Force .venv
@@ -1089,13 +1094,14 @@ Failed to build `psycopg2-binary==2.9.9`
    .venv\Scripts\activate
    pip install -r requirements.txt
    ```
+
 3. **If still failing:** The dependency has been removed from requirements.txt in the latest version
 
 #### Issue 2.6: "Cargo, the Rust package manager, is not installed" or pydantic-core build failure
 
 **Symptoms:**
 
-```
+```text
 Cargo, the Rust package manager, is not installed or is not on PATH.
 This package requires Rust and Cargo to compile extensions.
 error: metadata-generation-failed
@@ -1149,7 +1155,7 @@ choco install visualstudio2022buildtools
 
 **Symptoms:**
 
-```
+```text
 Failed building wheel for pillow
 The headers or library files could not be found for zlib
 Pillow 10.4.0 does not support Python 3.14
@@ -1212,7 +1218,7 @@ pip install -r requirements.txt  # For remaining packages
 
 **Symptoms:**
 
-```
+```text
 'git' is not recognized as an internal or external command
 ```
 
@@ -1228,7 +1234,7 @@ pip install -r requirements.txt  # For remaining packages
 
 **Symptoms:**
 
-```
+```text
 'curl' is not recognized as an internal or external command
 ```
 
@@ -1248,7 +1254,7 @@ choco install curl
 
 **Symptoms:**
 
-```
+```text
 Port 8000 is already in use by another process
 Port 3000 is already in use by another process
 ```
@@ -1270,7 +1276,7 @@ netstat -ano | findstr :8000 | ForEach-Object { $pid = ($_ -split '\s+')[-1]; ta
 
 **Symptoms:**
 
-```
+```text
 sqlite3.OperationalError: unable to open database file
 ```
 
@@ -1284,7 +1290,7 @@ sqlite3.OperationalError: unable to open database file
 
 **Symptoms:**
 
-```
+```text
 Permission denied
 Access is denied
 ```
@@ -1300,7 +1306,7 @@ Access is denied
 
 **Symptoms:**
 
-```
+```text
 execution of scripts is disabled on this system
 ```
 
@@ -1321,7 +1327,7 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 
 **Symptoms:**
 
-```
+```text
 Installing chocolatey...
 ERROR: The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: Access to the path 'C:\ProgramData\chocolatey' is denied.
 ```
@@ -1345,6 +1351,7 @@ ERROR: The running command stopped because the preference variable "ErrorActionP
    ```
 
 3. **If you must use Chocolatey:**
+
    ```powershell
    # Check if you have admin rights
    ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")
@@ -1492,7 +1499,7 @@ If the app starts but you can't access it in browser:
 
 **Best for:** Developers comfortable with Linux, or those who want full bash script compatibility and better performance.
 
-### 🎯 Perfect for you if:
+### 🎯 Perfect for you if
 
 - **You're learning from Linux/Mac tutorials** - Same commands, same file structure
 - **You want industry-standard commands** - Learn the same tools used by professional developers
@@ -1501,7 +1508,7 @@ If the app starts but you can't access it in browser:
 - **You want better performance** - Linux file system is faster for development tasks
 - **You're planning to deploy on Linux** - Same environment as production servers
 
-### ❌ Not recommended if:
+### ❌ Not recommended if
 
 - **You're completely new to coding** - Native Windows is simpler for beginners
 - **You just want to get started quickly** - WSL requires more setup time
@@ -1749,7 +1756,7 @@ free -h
 
 When running `.\start-dev.bat`, you may see deprecation warnings like:
 
-```
+```text
 npm warn deprecated eslint@8.57.1: This version is no longer supported
 npm warn deprecated @humanwhocodes/config-array@0.13.0: Use @eslint/config-array instead
 ```
@@ -2033,6 +2040,7 @@ Works great with native Windows or WSL. Configure interpreters:
 - **Use `Select-String`** instead of `grep` (or create aliases)
 - **Use `Where-Object`** instead of `awk` (or create aliases)
 - **Create Unix-like aliases:**
+
   ```powershell
   Set-Alias -Name ll -Value Get-ChildItem
   Set-Alias -Name grep -Value Select-String
@@ -2200,7 +2208,7 @@ Once your environment is running:
 3. **Run your first test:** Complete [Stage 1 Exercises](../../learn/stage_1_unit/exercises/)
 4. **Explore the codebase:** Check out [docs/INDEX.md](../../docs/INDEX.md)
 
-## Getting Help
+## Troubleshooting
 
 **Script not working?**
 

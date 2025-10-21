@@ -42,7 +42,8 @@ def pytest_configure(config):
 def pytest_sessionfinish(session, exitstatus):
     """Display completion message after all tests run."""
     if exitstatus == 0:
-        print("""
+        print(
+            """
 Congratulations! All Backend Tests Passed!
 
 You're mastering automation testing! Your backend is working correctly.
@@ -54,9 +55,11 @@ Next steps:
   - Run E2E tests: cd ../tests && npx playwright test
 
 Keep up the great work!
-""")
+"""
+        )
     else:
-        print("""
+        print(
+            """
 Some Tests Failed
 
 Debug tips:
@@ -64,7 +67,8 @@ Debug tips:
   - Use pytest -x to stop at first failure
   - Use pytest --lf to re-run last failed tests
   - Check docs/reference/TROUBLESHOOTING.md for technical errors with exact fixes
-""")
+"""
+        )
 
     # print(message)  # Disabled for Windows encoding issues
 

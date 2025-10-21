@@ -1,4 +1,4 @@
-# 🎉 Congratulations! You've Completed Testbook!
+# 🎉 Congratulations! You've Completed Testbook
 
 **You've mastered automation testing!** 🚀
 
@@ -10,7 +10,7 @@ You've successfully completed all 5 stages of Testbook and now have the skills t
 
 **Self-Issued Certificate**
 
-```
+```text
 ╔══════════════════════════════════════════════════════════════╗
 ║                                                              ║
 ║                    🎓 TESTBOOK COMPLETION                    ║

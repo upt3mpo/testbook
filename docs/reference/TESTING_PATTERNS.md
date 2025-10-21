@@ -1088,7 +1088,7 @@ await page.waitForURL(/.*\/login/, { timeout: 15000 });
 
 ### File Organization
 
-```
+```text
 tests/
 ├── unit/           # Fast, isolated tests
 │   ├── test_auth.py

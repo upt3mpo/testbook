@@ -8,7 +8,7 @@ Whether you're returning after a break or want to refresh your knowledge, this g
 
 ## 🧭 Quick Navigation
 
-### I Want To...
+### I Want To
 
 - [**Check my progress**](#check-my-progress) - See what I've completed
 - [**Skip to a specific stage**](#skip-to-a-specific-stage) - Jump to where I want to be
@@ -326,7 +326,7 @@ cd tests && npx playwright test
 
 ---
 
-## 🎉 You've Got This!
+## 🎉 You've Got This
 
 **Remember:**
 
