@@ -43,7 +43,7 @@ else:
 app = FastAPI(
     title="Testbook API",
     description="A social media API for testing purposes",
-    version="1.0.0",
+    version="1.3.0",
     lifespan=lifespan,
 )
 

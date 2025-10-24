@@ -66,6 +66,7 @@ dist-ssr/
 # IDE
 .vscode/
 .idea/
+.cursor/
 *.swp
 *.swo
 *~

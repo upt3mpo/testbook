@@ -4,7 +4,7 @@ This guide helps Windows users set up and run Testbook from scratch, even if you
 
 There are three approaches you can use:
 
-## ⚡ Ultra-Quick Start
+<h2 id="ultra-quick-start">⚡ Ultra-Quick Start</h2>
 
 **Not sure which path to take?** Use this decision tree:
 
@@ -40,11 +40,11 @@ flowchart TD
 
 ---
 
-## 🎯 Quick Navigation
+<h2 id="quick-navigation">🎯 Quick Navigation</h2>
 
 **I want to get started quickly:**
 
-- [Native Windows Quick Setup](#-quick-setup-advanced-users) (5 minutes)
+- [Native Windows Quick Setup](#quick-setup-advanced-users) (5 minutes)
 - [WSL Quick Setup](#complete-wsl-setup) (10 minutes)
 - [Docker Quick Setup](#option-3-docker-cross-platform) (5 minutes)
 
@@ -58,15 +58,15 @@ flowchart TD
 - [Setup Comparison](#detailed-comparison-table)
 - [Recommendations by User Type](#recommendations-by-user-type)
 
-## 📋 Table of Contents
+<h2 id="table-of-contents">📋 Table of Contents</h2>
 
 ### 🚀 Quick Start
 
-- [PowerShell vs Command Prompt](#-powershell-vs-command-prompt)
-  - [Installing PowerShell on Linux](#-installing-powershell-on-linux)
-  - [Installing PowerShell on macOS](#-installing-powershell-on-macos)
-  - [Why Choose PowerShell Over Native Terminal?](#-why-choose-powershell-over-native-terminal)
-  - [Cross-Platform Development Benefits](#-cross-platform-development-benefits)
+- [PowerShell vs Command Prompt](#powershell-vs-command-prompt)
+  - [Installing PowerShell on Linux](#installing-powershell-on-linux)
+  - [Installing PowerShell on macOS](#installing-powershell-on-macos)
+  - [Why Choose PowerShell Over Native Terminal?](#why-choose-powershell-over-native-terminal)
+  - [Cross-Platform Development Benefits](#cross-platform-development-benefits)
 - [Option 1: Native Windows (Recommended for Beginners)](#option-1-native-windows-recommended-for-beginners)
 - [Option 2: WSL (Windows Subsystem for Linux) ⭐ Recommended for Developers](#option-2-wsl-windows-subsystem-for-linux--recommended-for-developers)
 - [Option 3: Docker (Cross-Platform)](#option-3-docker-cross-platform)
@@ -74,8 +74,8 @@ flowchart TD
 ### 📥 Native Windows Setup
 
 - [Complete Prerequisites Checklist](#complete-prerequisites-checklist)
-  - [Quick Setup (Advanced Users)](#-quick-setup-advanced-users)
-  - [Manual Installation (Recommended for Beginners)](#-manual-installation-recommended-for-beginners)
+  - [Quick Setup (Advanced Users)](#quick-setup-advanced-users)
+  - [Manual Installation (Recommended for Beginners)](#manual-installation-recommended-for-beginners)
 - [Verification Commands](#verification-commands)
 - [Setup Steps](#setup-steps)
 - [Common Issues and Solutions](#common-issues-and-solutions)
@@ -107,8 +107,9 @@ flowchart TD
 - [Issue 6: Database connection errors](#issue-6-database-connection-errors)
 - [Issue 7: Permission denied errors](#issue-7-permission-denied-errors)
 - [Issue 8: Script execution policy errors](#issue-8-script-execution-policy-errors)
-- [Issue 9: PowerShell profile helper](#issue-9-powershell-profile-helper-optional-enhancement)
-- [Issue 10: Playwright not found](#issue-10-playwright-not-found-or-e2e-tests-fail)
+- [Issue 10: PowerShell profile helper (Optional Enhancement)](#issue-10-powershell-profile-helper-optional-enhancement)
+- [Issue 9: Chocolatey installation failed](#issue-9-chocolatey-installation-failed-or-access-denied)
+- [Issue 11: Playwright not found](#issue-11-playwright-not-found-or-e2e-tests-fail)
 
 ### 🛠️ Advanced Topics
 
@@ -128,11 +129,11 @@ flowchart TD
 ### 🎯 Next Steps
 
 - [Next Steps](#next-steps)
-- [Getting Help](#getting-help-1)
+- [Getting Help](#getting-help)
 
 ---
 
-## 🪟 PowerShell vs Command Prompt
+<h2 id="powershell-vs-command-prompt">🪟 PowerShell vs Command Prompt</h2>
 
 Throughout this guide, we provide commands for both shells (the program that runs your commands):
 
@@ -164,7 +165,7 @@ Throughout this guide, we provide commands for both shells (the program that run
 - ✅ **Advanced features** - IntelliSense, error handling, remote management
 - ✅ **Consistent scripting** - Same language on Windows, Linux, macOS
 
-#### 🐧 Installing PowerShell on Linux
+<h4 id="installing-powershell-on-linux">🐧 Installing PowerShell on Linux</h4>
 
 **Ubuntu/Debian:**
 
@@ -199,7 +200,7 @@ yay -S powershell-bin
 pwsh
 ```
 
-#### 🍎 Installing PowerShell on macOS
+<h4 id="installing-powershell-on-macos">🍎 Installing PowerShell on macOS</h4>
 
 **Using Homebrew (Recommended):**
 
@@ -219,7 +220,7 @@ curl -L -o /tmp/powershell.pkg https://github.com/PowerShell/PowerShell/releases
 sudo installer -pkg /tmp/powershell.pkg -target /
 ```
 
-#### 🚀 Why Choose PowerShell Over Native Terminal?
+<h4 id="why-choose-powershell-over-native-terminal">🚀 Why Choose PowerShell Over Native Terminal?</h4>
 
 **PowerShell Advantages:**
 
@@ -273,7 +274,7 @@ sudo installer -pkg /tmp/powershell.pkg -target /
 
 💡 **Note:** Most developers use their platform's native terminal (Terminal on macOS, Terminal/Gnome Terminal on Linux). Some prefer terminal replacements like iTerm2 (macOS) for extra customization and features, but PowerShell offers a different approach - cross-platform consistency rather than platform-specific enhancements.
 
-#### 🎯 Cross-Platform Development Benefits
+<h4 id="cross-platform-development-benefits">🎯 Cross-Platform Development Benefits</h4>
 
 **Same commands everywhere:**
 
@@ -314,7 +315,7 @@ sudo apt install python3.13          # Linux (via PowerShell)
 
 Before starting, you need to install these tools:
 
-## 🛠️ What Each Tool Does
+<h2 id="what-each-tool-does">🛠️ What Each Tool Does</h2>
 
 **Don't know what these tools are?** Here's what each one does in simple terms:
 
@@ -362,7 +363,7 @@ Before starting, you need to install these tools:
 
 ---
 
-#### 🚀 Quick Setup (Advanced Users)
+<h4 id="quick-setup-advanced-users">🚀 Quick Setup (Advanced Users)</h4>
 
 **Choose your package manager (a tool that installs software for you):**
 
@@ -439,7 +440,7 @@ rustc --version
 
 ---
 
-#### 📥 Manual Installation (Recommended for Beginners)
+<h4 id="manual-installation-recommended-for-beginners">📥 Manual Installation (Recommended for Beginners)</h4>
 
 #### 1. Python 3.13 (Required - Recommended Version)
 
@@ -732,7 +733,7 @@ npx playwright --version
 # Should show: Playwright version 1.x.x
 ```
 
-## 📊 Installation Workflow
+<h2 id="installation-workflow">📊 Installation Workflow</h2>
 
 **Here's what the setup process looks like:**
 
@@ -787,6 +788,42 @@ flowchart TB
    .\start-dev.bat
    ```
 
+3. **Optional: Configure Environment Variables**
+
+   **Skip this if you use `start-dev.bat`** - it handles everything automatically!
+
+   For manual testing or running individual commands:
+
+   ```powershell
+   # Copy the environment template
+   Copy-Item backend\env.example backend\.env
+
+   # View/edit the file (optional - defaults are good!)
+   notepad backend\.env
+   ```
+
+   **What this does:**
+
+   - ✅ Sets `TESTING=true` automatically (no more `$env:TESTING='true'` needed!)
+   - ✅ Enables dev endpoints for testing
+   - ✅ Increases rate limits to prevent test failures
+
+   **Now you can run:**
+
+   ```powershell
+   cd backend
+   .venv\Scripts\activate
+   uvicorn main:app --reload --port 8000
+   ```
+
+   Instead of:
+
+   ```powershell
+   cd backend
+   .venv\Scripts\activate
+   $env:TESTING='true'; uvicorn main:app --reload --port 8000
+   ```
+
 The script will:
 
 - ✅ Check if ports (numbered doors for network connections) 8000 and 3000 are available
@@ -833,7 +870,7 @@ Test accounts:
 Ready to start? → learn\README.md
 ```
 
-## 🔧 Troubleshooting (Fast Triage)
+<h2 id="troubleshooting-fast-triage">🔧 Troubleshooting (Fast Triage)</h2>
 
 **Having issues?** Start here. Pick your symptom, run the quick check, then jump straight to the fix.
 
@@ -884,8 +921,8 @@ Write-Host "ExecutionPolicy: $pol" -ForegroundColor DarkCyan
 | `Port 8000/3000 already in use`        | Another app is using the port          | Kill process on that port                  | [Issue 5](#issue-5-port-already-in-use)                                                               |
 | `Permission denied / Access is denied` | Needs elevated rights or blocked by AV | Run as Admin, check AV                     | [Issue 7](#issue-7-permission-denied-errors)                                                          |
 | Script won’t run due to policy         | Execution policy too strict            | Set policy for CurrentUser                 | [Issue 8](#issue-8-script-execution-policy-errors)                                                    |
-| Chocolatey install fails               | No admin rights                        | Use winget or run as Admin                 | [Issue 10](#issue-10-chocolatey-installation-failed-or-access-denied)                                 |
-| `playwright not found` / tests fail    | Playwright/browsers not installed      | `npm i && npx playwright install chromium` | [Issue 10](#issue-10-playwright-not-found-or-e2e-tests-fail)                                          |
+| Chocolatey install fails               | No admin rights                        | Use winget or run as Admin                 | [Issue 9](#issue-9-chocolatey-installation-failed-or-access-denied)                                   |
+| `playwright not found` / tests fail    | Playwright/browsers not installed      | `npm i && npx playwright install chromium` | [Issue 11](#issue-11-playwright-not-found-or-e2e-tests-fail)                                          |
 | Rust / pydantic-core errors            | Needs Rust toolchain                   | `winget install Rustlang.Rust.MSVC`        | [Issue 2.6](#issue-26-cargo-the-rust-package-manager-is-not-installed-or-pydantic-core-build-failure) |
 | Pillow / Python 3.14 errors            | 3.14 too new                           | Use Python 3.13                            | [Issue 2.7](#issue-27-failed-building-wheel-for-pillow-or-python-314-not-supported)                   |
 
@@ -951,7 +988,7 @@ npx playwright install chromium
 npx playwright --version
 ```
 
-Details: [Issue 10](#issue-10-playwright-not-found-or-e2e-tests-fail).
+Details: [Issue 11](#issue-11-playwright-not-found-or-e2e-tests-fail).
 
 </details>
 
@@ -1002,14 +1039,14 @@ Or use prebuilt wheels: see [Issue 2.6](#issue-26-cargo-the-rust-package-manager
 - Ports in use → [Issue 5](#issue-5-port-already-in-use)
 - Permission denied → [Issue 7](#issue-7-permission-denied-errors)
 - Execution policy → [Issue 8](#issue-8-script-execution-policy-errors)
-- Chocolatey access denied → [Issue 10](#issue-10-chocolatey-installation-failed-or-access-denied)
+- Chocolatey access denied → [Issue 9](#issue-9-chocolatey-installation-failed-or-access-denied)
 
 </details>
 
 <details>
 <summary>🎭 Testing / Playwright</summary>
 
-- Playwright not found / browsers missing → [Issue 10](#issue-10-playwright-not-found-or-e2e-tests-fail)
+- Playwright not found / browsers missing → [Issue 11](#issue-11-playwright-not-found-or-e2e-tests-fail)
 
 </details>
 
@@ -1021,8 +1058,8 @@ Or use prebuilt wheels: see [Issue 2.6](#issue-26-cargo-the-rust-package-manager
 2. **"npm not found"** → [Issue 2](#issue-2-npm-is-not-recognized-or-node-is-not-recognized) - Install Node.js
 3. **"Port already in use"** → [Issue 5](#issue-5-port-already-in-use) - Kill process using the port
 4. **"Permission denied"** → [Issue 7](#issue-7-permission-denied-errors) - Run as Administrator
-5. **"Chocolatey access denied"** → [Issue 10](#issue-10-chocolatey-installation-failed-or-access-denied) - Run PowerShell as Administrator
-6. **"Playwright not found"** → [Issue 10](#issue-10-playwright-not-found-or-e2e-tests-fail) - Install Playwright and browsers
+5. **"Chocolatey access denied"** → [Issue 9](#issue-9-chocolatey-installation-failed-or-access-denied) - Run PowerShell as Administrator
+6. **"Playwright not found"** → [Issue 11](#issue-11-playwright-not-found-or-e2e-tests-fail) - Install Playwright and browsers
 
 **📖 Need more help?** Check [TROUBLESHOOTING.md](../reference/TROUBLESHOOTING.md) for technical errors with exact fixes | [README.md](../../README.md#frequently-asked-questions) for learning questions.
 
@@ -1323,7 +1360,7 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 .\start-dev.bat
 ```
 
-### Issue 10: "Chocolatey installation failed" or "Access denied"
+### Issue 9: "Chocolatey installation failed" or "Access denied"
 
 **Symptoms:**
 
@@ -1400,7 +1437,7 @@ testbook
 
 **Note:** Adjust the path `"D:\Projects\testbook\backend\.venv\Scripts\Activate.ps1"` to match your actual project location.
 
-#### Issue 10: "Playwright not found" or E2E tests fail
+#### Issue 11: "Playwright not found" or E2E tests fail
 
 **Symptoms:**
 
@@ -1491,7 +1528,7 @@ If the app starts but you can't access it in browser:
 3. **Try different ports:** Modify `start-dev.bat` to use different ports
 4. **Use localhost instead of 0.0.0.0:** Change `--host 0.0.0.0` to `--host localhost`
 
-[↑ Back to Top](#windows-setup-guide) | [📋 Table of Contents](#-table-of-contents)
+[↑ Back to Top](#windows-setup-guide) | [📋 Table of Contents](#table-of-contents)
 
 ---
 
@@ -1723,7 +1760,7 @@ free -h
 # Use VS Code Remote - WSL extension
 ```
 
-[↑ Back to Top](#windows-setup-guide) | [📋 Table of Contents](#-table-of-contents)
+[↑ Back to Top](#windows-setup-guide) | [📋 Table of Contents](#table-of-contents)
 
 ---
 
@@ -1775,7 +1812,7 @@ npm warn deprecated @humanwhocodes/config-array@0.13.0: Use @eslint/config-array
 - Updating to ESLint 9.x requires configuration changes beyond the scope of this learning project
 - Focus on learning the testing concepts rather than package maintenance
 
-[↑ Back to Top](#windows-setup-guide) | [📋 Table of Contents](#-table-of-contents)
+[↑ Back to Top](#windows-setup-guide) | [📋 Table of Contents](#table-of-contents)
 
 ---
 
@@ -2229,4 +2266,4 @@ Once your environment is running:
 
 ---
 
-[↑ Back to Top](#windows-setup-guide) | [📋 Table of Contents](#-table-of-contents)
+[↑ Back to Top](#windows-setup-guide) | [📋 Table of Contents](#table-of-contents)

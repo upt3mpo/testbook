@@ -3,6 +3,16 @@ Unit tests for authentication utilities.
 
 These tests verify the core authentication functions work correctly,
 including password hashing, token creation, and token validation.
+
+Key Testing Concepts Demonstrated:
+- Unit testing isolated functions (no external dependencies)
+- AAA Pattern (Arrange-Act-Assert) for clear test structure
+- Testing both success and failure scenarios
+- Security-focused assertions (password hashing, token validation)
+- Edge case testing (empty inputs, invalid tokens)
+
+This file is referenced in Stage 1 learning materials as an example
+of professional unit testing practices.
 """
 
 from datetime import datetime, timedelta, timezone
@@ -15,10 +25,57 @@ from auth import ALGORITHM, SECRET_KEY, create_access_token, get_password_hash, 
 
 @pytest.mark.unit
 class TestPasswordHashing:
-    """Test password hashing and verification functions."""
+    """
+    Test password hashing and verification functions.
+
+    This class demonstrates unit testing of security-critical functions.
+    Password hashing is essential for user security - we never store
+    plain text passwords, only their bcrypt hashes.
+
+    Key Learning Points:
+    - Testing cryptographic functions requires understanding the algorithm
+    - We test both positive (correct password) and negative (wrong password) cases
+    - We verify the hash format matches bcrypt standards
+    - We ensure each hash is unique (salt prevents rainbow table attacks)
+    """
 
     def test_password_is_hashed(self):
-        """Test that password hashing produces a different string."""
+        """
+        Test that password hashing produces a different string.
+
+        WHY THIS TEST MATTERS:
+        This test verifies the fundamental security principle: passwords
+        must be transformed, not stored in plain text. Without this test:
+        1. Developers might accidentally store plain text passwords
+        2. Security vulnerabilities could go undetected
+        3. User data could be compromised in a breach
+        4. The application would fail security audits
+
+        REAL-WORLD IMPACT:
+        - In 2019, Facebook stored 600M passwords in plain text
+        - In 2020, Zoom had a similar issue with 500K accounts
+        - These breaches cost millions in fines and lost trust
+        - Proper password hashing prevents these disasters
+
+        WHAT WE'RE TESTING:
+        1. Hash is different from original password (transformation works)
+        2. Hash is longer (bcrypt adds salt and metadata)
+        3. Hash follows bcrypt format ($2b$ prefix)
+
+        SECURITY PRINCIPLES:
+        - Never store passwords in plain text
+        - Use strong hashing algorithms (bcrypt, scrypt, Argon2)
+        - Add salt to prevent rainbow table attacks
+        - Use appropriate work factors (cost parameter)
+
+        TESTING PATTERN: AAA (Arrange-Act-Assert)
+        - Arrange: Set up test data
+        - Act: Execute the function being tested
+        - Assert: Verify the expected behavior
+
+        This is a critical security test - if this fails, user passwords
+        would be stored in plain text, which is a major security vulnerability.
+        """
         # Arrange - Set up test data
         password = "TestPassword123!"
 
@@ -31,22 +88,51 @@ class TestPasswordHashing:
         assert hashed.startswith("$2b$")  # bcrypt hash format (industry standard)
 
     def test_verify_correct_password(self):
-        """Test that correct password verification succeeds."""
+        """
+        Test that correct password verification succeeds.
+
+        This test verifies the positive case: when a user provides the
+        correct password, the verification function should return True.
+        This is essential for user login functionality.
+        """
+        # Arrange - Set up test data
         password = "TestPassword123!"
         hashed = get_password_hash(password)
 
-        assert verify_password(password, hashed) is True
+        # Act - Verify the correct password
+        result = verify_password(password, hashed)
+
+        # Assert - Verification should succeed
+        assert result is True
 
     def test_verify_incorrect_password(self):
-        """Test that incorrect password verification fails."""
+        """
+        Test that incorrect password verification fails.
+
+        This test verifies the negative case: when a user provides the
+        wrong password, verification should fail. This is crucial for
+        security - we must reject incorrect passwords.
+        """
+        # Arrange - Set up test data with wrong password
         password = "TestPassword123!"
         wrong_password = "WrongPassword456!"
         hashed = get_password_hash(password)
 
-        assert verify_password(wrong_password, hashed) is False
+        # Act - Verify the incorrect password
+        result = verify_password(wrong_password, hashed)
+
+        # Assert - Verification should fail
+        assert result is False
 
     def test_different_hashes_for_same_password(self):
-        """Test that same password produces different hashes (salt)."""
+        """
+        Test that same password produces different hashes (salt).
+
+        This test verifies bcrypt's salt functionality. Each password
+        should produce a unique hash, even if the password is identical.
+        This prevents rainbow table attacks where attackers pre-compute
+        hashes for common passwords.
+        """
         # Arrange - Set up test password
         password = "TestPassword123!"
 

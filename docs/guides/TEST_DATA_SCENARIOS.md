@@ -227,10 +227,28 @@ POST /api/dev/seed
 
 **⚠️ Important:** Set `TESTING=true` environment variable to enable these endpoints.
 
+**💡 Pro Tip:** Instead of typing `TESTING=true` every time, create a `.env` file:
+
+```bash
+# Copy the template (already has TESTING=true)
+cp backend/env.example backend/.env
+
+# Now you can just run:
+uvicorn main:app --reload
+```
+
+The environment variable will be loaded automatically!
+
+---
+
 ```bash
 # Terminal 1: Start backend with test mode
 cd backend
+# Linux/Mac
 TESTING=true uvicorn main:app --reload
+
+# Windows (PowerShell)
+$env:TESTING='true'; uvicorn main:app --reload
 
 # Terminal 2: Run tests
 pytest tests/e2e-python/ -v

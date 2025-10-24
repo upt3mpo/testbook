@@ -1,8 +1,21 @@
 """
 Security tests for Testbook API.
 
-These tests verify authentication, authorization, input validation,
-and other security-critical functionality.
+This file demonstrates comprehensive security testing practices using pytest.
+It verifies authentication, authorization, input validation, and other
+security-critical functionality to protect against common vulnerabilities.
+
+Key Testing Concepts Demonstrated:
+- OWASP Top 10 vulnerability testing (SQL injection, XSS, etc.)
+- Authentication and authorization testing
+- Input validation and sanitization testing
+- Rate limiting and DoS protection testing
+- Security header validation
+- Error handling and information disclosure testing
+- Session management and token security
+
+This file is referenced in Stage 4 learning materials as an example
+of professional security testing practices.
 
 ⚠️ IMPORTANT: IF THESE TESTS FAIL
 ────────────────────────────────────────────────────────────────────
@@ -30,13 +43,25 @@ BASE_URL = "http://localhost:8000/api"
 
 @pytest.fixture(scope="session")
 def api_client():
-    """API client for making requests."""
+    """
+    API client for making requests.
+
+    This fixture provides a requests.Session for making HTTP requests
+    to the API. Using a session allows for connection pooling and
+    cookie persistence across requests.
+    """
     return requests.Session()
 
 
 @pytest.fixture(scope="session")
 def auth_token():
-    """Get authentication token for testing (session-scoped to avoid rate limits)."""
+    """
+    Get authentication token for testing (session-scoped to avoid rate limits).
+
+    This fixture handles the complexity of obtaining an authentication
+    token for testing, including retry logic for rate limiting scenarios.
+    The token is session-scoped to minimize API calls and avoid rate limits.
+    """
     import time
 
     client = requests.Session()

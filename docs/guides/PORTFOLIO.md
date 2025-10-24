@@ -4,7 +4,7 @@
 
 ---
 
-## 🎯 Why This Matters
+<h2 id="why-this-matters">🎯 Why This Matters</h2>
 
 Testing experience is **highly valued** in the software industry, but it's often hard to demonstrate without professional work history. Testbook gives you:
 
@@ -16,7 +16,7 @@ Testing experience is **highly valued** in the software industry, but it's often
 
 ---
 
-## 📋 Quick Checklist
+<h2 id="quick-checklist">📋 Quick Checklist</h2>
 
 - [ ] Fork Testbook to your GitHub account
 - [ ] Customize the README with your name
@@ -79,12 +79,12 @@ See [Stage 5: Job-Ready Capstone](../../learn/stage_5_capstone/README.md) for bu
 
 ---
 
-*Original project: https://github.com/upt3mpo/testbook*
+_Original project: https://github.com/upt3mpo/testbook_
 ```
 
 ---
 
-## 🧪 Step 2: Add Your Own Contribution
+<h2 id="step-2-add-your-own-contribution">🧪 Step 2: Add Your Own Contribution</h2>
 
 **Don't just fork — contribute something unique!**
 
@@ -171,7 +171,7 @@ I built a complete test suite for [feature description].
 
 ### What I Built
 
-- [X] tests covering [functionality]
+- [x] tests covering [functionality]
 - Unit tests for [components]
 - Integration tests for [endpoints]
 - E2E tests for [user workflows]
@@ -203,7 +203,7 @@ I built a complete test suite for [feature description].
 
 ---
 
-## 📸 Step 3: Capture Evidence
+<h2 id="step-3-capture-evidence">📸 Step 3: Capture Evidence</h2>
 
 ### Screenshot 1: Test Suite Passing
 
@@ -389,7 +389,7 @@ Skills: Test Automation • Python • JavaScript • pytest • Playwright • 
 
 ---
 
-## 🗣️ Step 5: Interview Preparation
+<h2 id="step-5-interview-preparation">🗣️ Step 5: Interview Preparation</h2>
 
 ### Talking Points by Test Type
 
@@ -443,7 +443,7 @@ Skills: Test Automation • Python • JavaScript • pytest • Playwright • 
 
 ---
 
-## 🌐 Step 6: GitHub Repository Polish
+<h2 id="step-6-github-repository-polish">🌐 Step 6: GitHub Repository Polish</h2>
 
 ### Add a Pinned Repository
 
@@ -483,7 +483,7 @@ In your repo settings, add topics:
 
 ---
 
-## 🎤 Step 7: Practice Your Pitch
+<h2 id="step-7-practice-your-pitch">🎤 Step 7: Practice Your Pitch</h2>
 
 ### 30-Second Elevator Pitch
 
@@ -507,7 +507,7 @@ In your repo settings, add topics:
 
 ---
 
-## 📊 Step 8: Quantify Your Impact
+<h2 id="step-8-quantify-your-impact">📊 Step 8: Quantify Your Impact</h2>
 
 ### Before/After Metrics
 
@@ -515,17 +515,17 @@ If you added tests or improved coverage, show the impact:
 
 **Example Table in Your README:**
 
-| Metric | Before | After | Improvement |
-|--------|--------|-------|-------------|
-| **Backend Coverage** | 82% | 86% | +4% |
-| **Total Tests** | 195 | 210 | +15 tests |
-| **Critical Path Coverage** | 75% | 95% | +20% |
-| **Bug Detection** | 3 issues | 8 issues | +5 found |
+| Metric                     | Before   | After    | Improvement |
+| -------------------------- | -------- | -------- | ----------- |
+| **Backend Coverage**       | 82%      | 86%      | +4%         |
+| **Total Tests**            | 195      | 210      | +15 tests   |
+| **Critical Path Coverage** | 75%      | 95%      | +20%        |
+| **Bug Detection**          | 3 issues | 8 issues | +5 found    |
 
 ### Show CI/CD Improvement
 
 ```markdown
-## 🚀 CI/CD Impact
+<h2 id="cicd-impact">🚀 CI/CD Impact</h2>
 
 After implementing the GitHub Actions pipeline:
 
@@ -542,19 +542,23 @@ After implementing the GitHub Actions pipeline:
 **5-minute video showing:**
 
 1. **Intro (30 seconds)**
+
    - "Hi, I'm [Name], and this is my automation testing portfolio..."
 
 2. **Demo Tests Running (1 minute)**
+
    - Show backend tests passing
    - Show frontend tests passing
    - Highlight coverage numbers
 
 3. **Code Walkthrough (2 minutes)**
+
    - Show one test you wrote
    - Explain Arrange-Act-Assert
    - Explain why this test matters
 
 4. **E2E Demo (1 minute)**
+
    - Show Playwright test running in headed mode
    - Explain what it's validating
 
@@ -631,4 +635,4 @@ After implementing the GitHub Actions pipeline:
 
 **Good luck with your job search!** 🚀
 
-*Questions? Open an issue on the main Testbook repo or join the discussions.*
+_Questions? Open an issue on the main Testbook repo or join the discussions._

@@ -14,7 +14,7 @@
 
 ---
 
-## 📖 Reading Error Messages
+<h2 id="reading-error-messages">📖 Reading Error Messages</h2>
 
 ### Anatomy of a Pytest Error
 
@@ -79,7 +79,7 @@ Call log:
 
 ---
 
-## 🐍 Debugging Pytest Tests
+<h2 id="debugging-pytest-tests">🐍 Debugging Pytest Tests</h2>
 
 ### Method 1: Print Statements
 
@@ -222,7 +222,7 @@ pytest -k "login and wrong" -v
 
 ---
 
-## 🎭 Debugging Playwright Tests
+<h2 id="debugging-playwright-tests">🎭 Debugging Playwright Tests</h2>
 
 ### Method 1: Headed Mode
 
@@ -374,7 +374,7 @@ npx playwright show-trace trace.zip
 
 ---
 
-## 🔍 Common Error Patterns
+<h2 id="common-error-patterns">🔍 Common Error Patterns</h2>
 
 ### Error Pattern 1: Element Not Found
 
@@ -540,7 +540,7 @@ test("fixed", async ({ page }) => {
 
 ---
 
-## 🔬 Advanced Debugging Techniques
+<h2 id="advanced-debugging-techniques">⚡ Advanced Debugging Techniques</h2>
 
 ### Technique 1: Binary Search
 

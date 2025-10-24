@@ -12,7 +12,33 @@ from models import Comment, Post, Reaction, User
 
 
 class UserFactory:
-    """Factory for creating User instances with defaults."""
+    """
+    Factory for creating User instances with sensible defaults.
+
+    This factory follows the Factory Pattern to create test users easily.
+    It provides sensible defaults while allowing customization when needed.
+
+    Key Features:
+    - Auto-generates unique emails and usernames
+    - Handles password hashing automatically
+    - Saves to database and returns committed instance
+    - Supports batch creation for multiple users
+
+    Usage Examples:
+        # Simple user creation
+        user = UserFactory.create(db_session)
+
+        # Custom user with specific data
+        user = UserFactory.create(
+            db_session,
+            email="custom@test.com",
+            username="customuser",
+            display_name="Custom User"
+        )
+
+        # Batch creation for multiple users
+        users = UserFactory.create_batch(db_session, 5)
+    """
 
     _counter = 0
 
@@ -27,19 +53,24 @@ class UserFactory:
         bio: Optional[str] = None,
         **kwargs,
     ) -> User:
-        """Create a user with sensible defaults.
+        """
+        Create a user with sensible defaults.
+
+        This method creates a User instance with auto-generated values for
+        required fields, handles password hashing, and saves to the database.
+        Each call generates unique values to avoid conflicts.
 
         Args:
-            db_session: Database session
-            email: User email (auto-generated if not provided)
-            username: Username (auto-generated if not provided)
-            display_name: Display name (auto-generated if not provided)
-            password: Plain password (will be hashed)
-            bio: User bio
+            db_session: Database session for saving the user
+            email: User email (auto-generated as "user{N}@test.com" if not provided)
+            username: Username (auto-generated as "user{N}" if not provided)
+            display_name: Display name (auto-generated as "Test User {N}" if not provided)
+            password: Plain password (will be hashed using bcrypt)
+            bio: User bio (auto-generated if not provided)
             **kwargs: Additional User model fields
 
         Returns:
-            User: Created and committed user instance
+            User: Created and committed user instance ready for testing
         """
         cls._counter += 1
 

@@ -153,7 +153,13 @@ Test the FastAPI backend with unit tests, integration tests, and database tests.
 ```bash
 cd backend
 python -m venv .venv
-source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+# Linux/Mac
+source .venv/bin/activate
+pip install -r requirements.txt
+pip install pytest pytest-asyncio httpx
+
+# Windows (PowerShell)
+.venv\Scripts\activate
 pip install -r requirements.txt
 pip install pytest pytest-asyncio httpx
 ```
@@ -1324,10 +1330,10 @@ class TestbookAPI:
 
 ---
 
-## 📚 More Resources
+<h2 id="more-resources">📚 More Resources</h2>
 
 - **[README.md](../../README.md)** - Main documentation and project overview
-- **[TESTING_PATTERNS.md](../reference/TESTING_PATTERNS.md)** - Testing dynamic content patterns
+- **[TESTING_PATTERNS.md](../concepts/TESTING_PATTERNS.md)** - Testing dynamic content patterns
 - **[TESTING_CHEATSHEET.md](../reference/TESTING_CHEATSHEET.md)** - Quick reference guide
 - **[TESTING_FEATURES.md](../reference/TESTING_FEATURES.md)** - All testable features
 - **[README.md](../../README.md#quick-start-5-minutes)** - Get started quickly

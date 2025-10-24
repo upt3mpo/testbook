@@ -2,48 +2,189 @@
 
 **Build Your Testing Portfolio**
 
-You've learned unit, integration, E2E, performance, and security testing. Now it's time to showcase your skills! Build a complete test suite, document your work, and create portfolio artifacts that prove you're job-ready.
+> **💡 Language Selection**: This guide includes both Python and JavaScript examples. Both are expanded by default so you can see all approaches. Click the language tabs to collapse sections you don't need.
 
 ## Your Progress
 
 [████████████████████████████] 100% complete
-✅ Stage 1: Unit Tests (completed)
-✅ Stage 2: Integration Tests (completed)
-✅ Stage 3: API & E2E Testing (completed)
-✅ Stage 4: Performance & Security (completed)
+
+✅ Stage 1: Unit Tests (completed)<br>
+✅ Stage 2: Integration Tests (completed)<br>
+✅ Stage 3: API & E2E Testing (completed)<br>
+✅ Stage 4: Performance & Security (completed)<br>
 → **Stage 5: Capstone** (you are here)
 
-**Estimated time remaining:** 2-3 hours
+**Estimated time remaining:** 4-6 hours (core content) + 2-4 hours (optional exercises)
+
+<h2 id="table-of-contents">📋 Table of Contents</h2>
+
+- [Why a Testing Portfolio Matters: Your Gateway to Career Success](#why-a-testing-portfolio-matters-your-gateway-to-career-success)
+- [Part 1: What Is a Testing Portfolio? 📚](#part-1-what-is-a-testing-portfolio)
+- [Part 2: Building Your Test Suite 🏗️](#part-2-building-your-test-suite)
+- [Part 3: Implementation Guide 🛠️](#part-3-implementation-guide)
+- [Part 4: Creating Portfolio Artifacts 📸](#part-4-creating-portfolio-artifacts)
+- [Part 5: Professional Presentation 🎤](#part-5-professional-presentation)
+- [Part 6: Interview Preparation 🎯](#part-6-interview-preparation)
+- [Part 7: Additional Patterns 🚀](#part-7-additional-patterns)
+- [✅ Success Criteria](#success-criteria)
+- [🧠 Why This Matters](#why-this-matters)
+- [🔗 Related Resources](#related-resources)
+- [🧠 Self-Check Quiz (Optional)](#self-check-quiz-optional)
+- [🤔 Reflection](#reflection)
+- [🎉 Stage Complete](#stage-complete)
 
 ---
 
-## 🎯 Learning Goals
+## Why a Testing Portfolio Matters: Your Gateway to Career Success
 
-By the end of this stage, you will:
+### The Real-World Impact
 
-- ✅ Build a complete test suite from scratch
-- ✅ Create professional testing documentation
-- ✅ Capture visual artifacts (screenshots, videos)
-- ✅ Write resume-worthy project descriptions
-- ✅ Prepare for QA engineering interviews
-- ✅ Understand how to present your testing work
-- ✅ Know what employers look for in QA candidates
+**The Problem Without a Portfolio:**
+Sarah applied for 50 QA engineer positions but only got 3 interviews. She had a computer science degree and knew how to write tests, but employers couldn't see her actual work. When she finally got an interview, the hiring manager asked: "Can you show me some test code you've written?" Sarah had nothing to show, and she didn't get the job.
 
-**Duration:** 2-3 hours (Quick Path) | 6-10 hours (Comprehensive Path)
+**The Solution With a Portfolio:**
+After building a comprehensive testing portfolio, Sarah applied for the same types of positions. This time, she got 15 interviews from 20 applications. When asked to show her work, she could demonstrate real test code, explain her testing strategy, and discuss the challenges she solved. She received 5 job offers and chose the best one.
 
-**📚 Essential Resource: [Portfolio Guide](../../docs/guides/PORTFOLIO.md)** - Complete guide on turning your work into resume content, interview prep, and job-ready portfolio projects!
+**What a Portfolio Demonstrates:**
+
+1. **Practical Skills**: You can actually write and maintain tests
+2. **Problem-Solving**: You can identify and solve testing challenges
+3. **Industry Knowledge**: You understand testing best practices
+4. **Communication**: You can explain technical concepts clearly
+5. **Professionalism**: You can deliver quality work on time
+
+### The Career Impact
+
+**Portfolio Benefits:**
+
+- **Stand Out**: Most candidates don't have portfolios
+- **Demonstrate Skills**: Show rather than tell
+- **Build Confidence**: Know you can do the work
+- **Network**: Share your work with the community
+- **Learn**: Building a portfolio teaches you new skills
+
+**Real Example:**
+John built a testing portfolio featuring:
+
+- A complete test suite for a web application
+- Performance tests using k6
+- Security tests using OWASP ZAP
+- Documentation explaining his testing strategy
+
+Result:
+
+- 10 job interviews from 15 applications
+- 4 job offers
+- 30% higher salary than expected
+- Chose a position at a top tech company
+
+### The Learning Impact
+
+**Building a Portfolio Teaches You:**
+
+1. **Complete Testing Strategy**: How to test a real application
+2. **Tool Mastery**: Deep understanding of testing tools
+3. **Documentation Skills**: How to explain technical concepts
+4. **Project Management**: How to plan and execute testing projects
+5. **Industry Practices**: How testing works in real companies
+
+### The Industry Standards
+
+**What Employers Look For:**
+
+- **Code Quality**: Clean, maintainable test code
+- **Testing Strategy**: Thoughtful approach to testing
+- **Tool Knowledge**: Proficiency with industry-standard tools
+- **Documentation**: Clear explanations of your work
+- **Problem-Solving**: How you approach testing challenges
+
+**Companies That Value Portfolios:**
+
+- Google: "Show us your code"
+- Microsoft: "Demonstrate your skills"
+- Amazon: "Prove you can do the work"
+- Netflix: "Show us your testing approach"
+
+### The Portfolio Mindset
+
+**Key Questions to Ask:**
+
+1. **What skills do I want to demonstrate?** Unit testing, E2E testing, performance testing
+2. **What tools should I use?** Industry-standard tools that employers recognize
+3. **How do I explain my work?** Clear documentation and code comments
+4. **What challenges can I solve?** Real problems that show your problem-solving skills
+5. **How do I make it professional?** Clean code, good documentation, proper structure
+
+**Common Portfolio Patterns:**
+
+- **Complete Test Suite**: Test all aspects of an application
+- **Tool Demonstrations**: Show proficiency with different tools
+- **Problem-Solving**: Solve real testing challenges
+- **Documentation**: Explain your testing strategy
+- **Code Quality**: Write clean, maintainable code
 
 ---
 
-## 📋 Capstone Project
+<h2 id="part-1-what-is-a-testing-portfolio">Part 1: What Is a Testing Portfolio? 📚</h2>
 
-### Project: Build a Test Suite for a New Feature
+### The Job Interview Analogy
 
-Choose one of these options:
+Imagine you're applying for a job as a chef. You could tell the interviewer "I know how to cook," or you could show them a portfolio of your best dishes, cooking techniques, and kitchen management skills. A testing portfolio works the same way.
 
-#### Option A: Messaging Feature
+A **testing portfolio** is a collection of your best testing work that demonstrates your skills to potential employers.
 
-Imagine Testbook adds direct messaging. Build tests for:
+### Why Portfolios Matter
+
+1. **Proof of skills**: Shows you can actually do the work
+2. **Differentiation**: Sets you apart from other candidates
+3. **Conversation starter**: Gives interviewers something specific to discuss
+4. **Confidence**: Proves you're ready for the job
+
+### What Makes a Great Testing Portfolio
+
+**Essential Elements:**
+
+- **Working code**: Real tests that actually run
+- **Documentation**: Clear explanations of what you built
+- **Visual proof**: Screenshots, videos, coverage reports
+- **Professional presentation**: Clean, organized, easy to navigate
+
+**Portfolio vs Resume:**
+
+- **Resume**: Lists your skills and experience
+- **Portfolio**: Shows your skills in action
+
+### The Testing Portfolio Pyramid
+
+```text
+       /\      ← Visual Demos (videos, screenshots)
+      /  \     ← Documentation (test plans, reports)
+     /____\    ← Working Code (actual test suites)
+    /      \   ← Test Results (coverage, metrics)
+   /________\  ← Project Descriptions (what you built)
+```
+
+**Bottom to top:** Start with working code, add documentation, create visual proof, then package it professionally.
+
+---
+
+<h2 id="part-2-building-your-test-suite">Part 2: Building Your Test Suite 🏗️</h2>
+
+### The Construction Analogy
+
+Think of building a test suite like constructing a house. You need:
+
+- **Foundation** (unit tests) - The base that everything else builds on
+- **Framework** (integration tests) - The structure that holds everything together
+- **Finishing touches** (E2E tests) - The final verification that everything works
+- **Safety systems** (security tests) - Protection against threats
+
+### Test Suite Planning Process
+
+**Step 1: Choose Your Feature**
+Pick one of these capstone projects:
+
+**Option A: Messaging Feature**
 
 - Sending messages
 - Receiving messages
@@ -51,9 +192,7 @@ Imagine Testbook adds direct messaging. Build tests for:
 - Read receipts
 - Message notifications
 
-#### Option B: Bookmarks Feature
-
-Imagine users can bookmark posts. Build tests for:
+**Option B: Bookmarks Feature**
 
 - Adding bookmarks
 - Viewing bookmarks
@@ -61,9 +200,7 @@ Imagine users can bookmark posts. Build tests for:
 - Bookmark count updates
 - Bookmark permissions
 
-#### Option C: Search Feature
-
-Imagine Testbook adds search. Build tests for:
+**Option C: Search Feature**
 
 - Searching posts
 - Searching users
@@ -71,15 +208,9 @@ Imagine Testbook adds search. Build tests for:
 - Empty results
 - Search performance
 
----
+**Step 2: Plan Your Test Strategy**
 
-## 🏗️ Building Your Suite
-
-### Step 1: Plan Your Tests
-
-Before writing code, plan your test strategy:
-
-**Create a test plan document:**
+Create a test plan document:
 
 ```markdown
 # Test Plan: [Feature Name]
@@ -92,69 +223,218 @@ Before writing code, plan your test strategy:
 
 ### Unit Tests (Fast, isolated)
 
-- [ ] Test 1: ...
-- [ ] Test 2: ...
+- [ ] Test 1: Business logic validation
+- [ ] Test 2: Edge case handling
 
 ### Integration Tests (API endpoints)
 
-- [ ] Test 1: ...
-- [ ] Test 2: ...
+- [ ] Test 1: Create resource
+- [ ] Test 2: Read resource
+- [ ] Test 3: Update resource
+- [ ] Test 4: Delete resource
 
 ### E2E Tests (User workflows)
 
-- [ ] Test 1: ...
-- [ ] Test 2: ...
+- [ ] Test 1: Complete user journey
+- [ ] Test 2: Error handling
 
 ### Security Tests
 
-- [ ] Test 1: ...
-- [ ] Test 2: ...
-
-## Test Data Requirements
-
-- User accounts: ...
-- Sample data: ...
-
-## Success Criteria
-
-- All tests pass
-- Coverage > 80%
-- All endpoints tested
-- Security verified
+- [ ] Test 1: Input validation
+- [ ] Test 2: Authorization
 ```
 
-### Step 2: Write Unit Tests
+### Test Implementation Pattern
 
-Create `test_unit_<feature>.py`:
+**The Recipe for Success:**
+
+1. **Start with unit tests** - Test individual functions
+2. **Add integration tests** - Test API endpoints
+3. **Create E2E tests** - Test complete workflows
+4. **Include security tests** - Test for vulnerabilities
+5. **Document everything** - Write clear explanations
+
+---
+
+<h2 id="part-3-implementation-guide">Part 3: Implementation Guide 🛠️</h2>
+
+Now let's build your test suite! Choose your track:
+
+### 🐍 Python Track: Complete Test Suite
+
+**Step 1: Unit Tests**
+
+<details open>
+<summary><strong>🐍 Python - Create `test_unit_<feature>.py`</strong></summary>
 
 ```python
+"""
+Unit tests for [Feature Name] functionality.
+
+This file demonstrates comprehensive unit testing practices for a
+complete feature implementation. These tests verify individual
+functions and components in isolation.
+
+Key Testing Concepts Demonstrated:
+- Unit testing isolated functions and components
+- AAA Pattern (Arrange-Act-Assert) for clear test structure
+- Edge case testing and error handling
+- Test organization and clear naming
+- Comprehensive coverage of business logic
+
+This file serves as a portfolio example of professional
+unit testing practices.
+"""
+
 import pytest
 from your_feature import some_function
 
 @pytest.mark.unit
 class TestFeatureLogic:
-    """Unit tests for [feature] business logic."""
+    """
+    Unit tests for [feature] business logic.
+
+    This class demonstrates unit testing of core business logic
+    functions. Each test focuses on a single function or method,
+    testing it in isolation from external dependencies.
+
+    Key Learning Points:
+    - Testing business logic in isolation
+    - Clear test naming and organization
+    - Comprehensive edge case coverage
+    - Professional test documentation
+    """
 
     def test_basic_functionality(self):
-        """Verify basic function works correctly."""
-        # Arrange
+        """
+        Verify basic function works correctly.
+
+        This test verifies the core functionality of the feature
+        works as expected with normal input. This is the foundation
+        test that ensures the feature works in the happy path scenario.
+        """
+        # Arrange - Set up test data
         input_data = "test"
 
-        # Act
+        # Act - Execute the function being tested
         result = some_function(input_data)
 
-        # Assert
+        # Assert - Verify the results
         assert result is not None
+        assert result == "expected_output"
 
     def test_edge_case(self):
-        """Verify handling of edge cases."""
-        # Test with empty input, None, etc.
-        pass
+        """
+        Verify handling of edge cases.
+
+        This test verifies the feature handles edge cases gracefully,
+        including empty inputs, null values, and boundary conditions.
+        Robust error handling is crucial for production applications.
+        """
+        # Test with empty input
+        result = some_function("")
+        assert result == "default_value"
+
+        # Test with None
+        result = some_function(None)
+        assert result == "default_value"
+
+        # Test with very long input
+        long_input = "x" * 1000
+        result = some_function(long_input)
+        assert len(result) <= 100  # Should be truncated or handled appropriately
 ```
 
-### Step 3: Write Integration Tests
+</details>
 
-Create `test_api_<feature>.py`:
+<details open>
+<summary><strong>☕ JavaScript - Create `test_unit_<feature>.test.js`</strong></summary>
+
+```javascript
+/**
+ * Unit tests for [Feature Name] functionality.
+ *
+ * This file demonstrates comprehensive unit testing practices for a
+ * complete feature implementation. These tests verify individual
+ * functions and components in isolation.
+ *
+ * Key Testing Concepts Demonstrated:
+ * - Unit testing isolated functions and components
+ * - AAA Pattern (Arrange-Act-Assert) for clear test structure
+ * - Edge case testing and error handling
+ * - Test organization and clear naming
+ * - Comprehensive coverage of business logic
+ *
+ * This file serves as a portfolio example of professional
+ * unit testing practices.
+ */
+
+import { describe, it, expect } from "vitest";
+import { someFunction } from "../your-feature";
+
+describe("Feature Logic", () => {
+  /**
+   * Unit tests for [feature] business logic.
+   *
+   * This describe block demonstrates unit testing of core business logic
+   * functions. Each test focuses on a single function or method,
+   * testing it in isolation from external dependencies.
+   *
+   * Key Learning Points:
+   * - Testing business logic in isolation
+   * - Clear test naming and organization
+   * - Comprehensive edge case coverage
+   * - Professional test documentation
+   */
+
+  it("basic functionality", () => {
+    /**
+     * Verify basic function works correctly.
+     *
+     * This test verifies the core functionality of the feature
+     * works as expected with normal input. This is the foundation
+     * test that ensures the feature works in the happy path scenario.
+     */
+    // Arrange - Set up test data
+    const inputData = "test";
+
+    // Act - Execute the function being tested
+    const result = someFunction(inputData);
+
+    // Assert - Verify the results
+    expect(result).toBeTruthy();
+    expect(result).toBe("expected_output");
+  });
+
+  it("handles edge cases gracefully", () => {
+    /**
+     * Verify handling of edge cases.
+     *
+     * This test verifies the feature handles edge cases gracefully,
+     * including empty inputs, null values, and boundary conditions.
+     * Robust error handling is crucial for production applications.
+     */
+    // Test with empty input
+    const emptyResult = someFunction("");
+    expect(emptyResult).toBe("default_value");
+
+    // Test with null
+    const nullResult = someFunction(null);
+    expect(nullResult).toBe("default_value");
+
+    // Test with very long input
+    const longInput = "x".repeat(1000);
+    const longResult = someFunction(longInput);
+    expect(longResult.length).toBeLessThanOrEqual(100); // Should be truncated
+  });
+});
+```
+
+</details>
+
+**Step 2: Integration Tests**
+
+**Python - Create `test_api_<feature>.py`:**
 
 ```python
 import pytest
@@ -182,9 +462,47 @@ class TestFeatureAPI:
         assert response.status_code == 401
 ```
 
-### Step 4: Write E2E Tests
+**JavaScript - Create `test_api_<feature>.test.js`:**
 
-Create `test_e2e_<feature>.py`:
+```javascript
+import { describe, it, expect } from "vitest";
+
+describe("Feature API", () => {
+  // Integration tests for [feature] API endpoints
+
+  it("create resource", async () => {
+    // Arrange
+    const payload = { data: "test" };
+    const authHeaders = { Authorization: "Bearer token123" };
+
+    // Act
+    const response = await fetch("/feature", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...authHeaders },
+      body: JSON.stringify(payload),
+    });
+
+    // Assert
+    expect(response.status).toBe(201);
+    const data = await response.json();
+    expect(data.id).toBeDefined();
+  });
+
+  it("unauthorized access", async () => {
+    // Verify authentication is required
+    const response = await fetch("/feature", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({}),
+    });
+    expect(response.status).toBe(401);
+  });
+});
+```
+
+**Step 3: E2E Tests**
+
+**Python - Create `test_e2e_<feature>.py`:**
 
 ```python
 import pytest
@@ -204,7 +522,28 @@ async def test_user_can_use_feature(page, login):
     await expect(page.locator(".success-message")).to_be_visible()
 ```
 
-### Step 5: Add Security Tests
+**JavaScript - Create `test_e2e_<feature>.spec.js`:**
+
+```javascript
+import { test, expect } from "@playwright/test";
+
+test("user can use feature", async ({ page }) => {
+  // End-to-end test of complete user workflow
+  // Navigate to feature
+  await page.goto("http://localhost:3000/feature");
+
+  // Interact with UI
+  await page.fill("#input", "test data");
+  await page.click("#submit");
+
+  // Verify result
+  await expect(page.locator(".success-message")).toBeVisible();
+});
+```
+
+**Step 4: Security Tests**
+
+**Python:**
 
 ```python
 @pytest.mark.security
@@ -219,75 +558,200 @@ def test_feature_security(client, auth_headers):
     assert response.status_code in [400, 422]
 ```
 
-### Step 6: Run and Document Results
+**JavaScript:**
 
-```bash
-# Run all tests with coverage
-pytest --cov=your_feature --cov-report=html
-
-# Run E2E tests with video
-VIDEO_ON_FAILURE=true HEADLESS=false pytest test_e2e_<feature>.py
-
-# Generate report
-pytest --html=report.html
+```javascript
+test("feature security", async () => {
+  // Verify security measures in feature
+  // Test SQL injection
+  const maliciousInput = "'; DROP TABLE--";
+  const response = await fetch("/feature", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer token123",
+    },
+    body: JSON.stringify({ data: maliciousInput }),
+  });
+  expect([400, 422]).toContain(response.status);
+});
 ```
+
+### ☕ JavaScript Track: Complete Test Suite
+
+**Step 1: Unit Tests**
+
+Create `test_unit_<feature>.test.js`:
+
+```javascript
+import { describe, test, expect } from "vitest";
+import { someFunction } from "../your-feature";
+
+describe("Feature Logic", () => {
+  test("basic functionality works correctly", () => {
+    // Arrange
+    const inputData = "test";
+
+    // Act
+    const result = someFunction(inputData);
+
+    // Assert
+    expect(result).toBeDefined();
+  });
+
+  test("handles edge cases", () => {
+    // Test with empty input, null, etc.
+  });
+});
+```
+
+**Step 2: Integration Tests**
+
+Create `test_api_<feature>.test.js`:
+
+```javascript
+import { describe, test, expect } from "vitest";
+import { setupServer } from "msw/node";
+import { rest } from "msw";
+
+describe("Feature API", () => {
+  test("creates resource successfully", async () => {
+    // Arrange
+    const payload = { data: "test" };
+
+    // Act
+    const response = await fetch("/api/feature", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    // Assert
+    expect(response.status).toBe(201);
+    const data = await response.json();
+    expect(data).toHaveProperty("id");
+  });
+});
+```
+
+**Step 3: E2E Tests**
+
+Create `test_e2e_<feature>.spec.js`:
+
+```javascript
+import { test, expect } from "@playwright/test";
+
+test("user can use feature", async ({ page }) => {
+  // Navigate to feature
+  await page.goto("http://localhost:3000/feature");
+
+  // Interact with UI
+  await page.fill("#input", "test data");
+  await page.click("#submit");
+
+  // Verify result
+  await expect(page.locator(".success-message")).toBeVisible();
+});
+```
+
+### 🔄 Hybrid Track
+
+**Build both!** This shows you can work with multiple technologies:
+
+1. **Start with Python backend tests** (unit, integration, security)
+2. **Add JavaScript frontend tests** (unit, E2E)
+3. **Create documentation** that covers both approaches
+4. **Show the connection** between backend and frontend testing
 
 ---
 
-## 📸 Creating Portfolio Artifacts
+<h2 id="part-4-creating-portfolio-artifacts">Part 4: Creating Portfolio Artifacts 📸</h2>
 
-### Artifact 1: Test Coverage Report
+### The Showcase Analogy
+
+Think of portfolio artifacts like a museum exhibit. You need:
+
+- **The artwork** (your code) - The main attraction
+- **The placard** (documentation) - Explains what it is
+- **The video tour** (demos) - Shows it in action
+- **The curator's notes** (test reports) - Professional analysis
+
+### Essential Portfolio Artifacts
+
+**Artifact 1: Test Coverage Report**
 
 ```bash
 # Generate HTML coverage report
 pytest --cov --cov-report=html
 
+# Generate detailed coverage report with missing lines
+pytest --cov --cov-report=html --cov-report=term-missing
+
+# Generate coverage report for specific modules
+pytest --cov=backend.auth --cov=backend.models --cov-report=html
+
 # Screenshot the coverage report
 # Open htmlcov/index.html and capture screenshot
 ```
 
-**Include in portfolio:**
+**What to include in your portfolio:**
+
+- Overall coverage percentage (aim for 80%+)
+- File-by-file coverage breakdown
+- Highlight: "Achieved 85% test coverage across 15 test files"
+- Screenshot of the HTML coverage report
+
+**What to include:**
 
 - Overall coverage percentage
-- File-by-file coverage
-- Highlighted: "Achieved 85% test coverage"
+- File-by-file coverage breakdown
+- Highlight: "Achieved 85% test coverage"
 
-### Artifact 2: Test Execution Video
+**Artifact 2: Test Execution Video**
 
 ```bash
 # Run E2E test with recording
 VIDEO_ON_FAILURE=true HEADLESS=false pytest tests/test_e2e_feature.py
 
+# Run with slow motion for better video
+VIDEO_ON_FAILURE=true HEADLESS=false pytest tests/test_e2e_feature.py --slow-mo=1000
+
+# Run specific test with video
+VIDEO_ON_FAILURE=true HEADLESS=false pytest tests/e2e-python/test_auth.py::test_register_new_user_successfully -v
+
 # Result: video of test running
 ```
 
-**Include in portfolio:**
+**What to include in your portfolio:**
+
+- 30-60 second clip showing test execution
+- Clear view of browser automation
+- Highlight: "E2E test demonstrating complete user registration workflow"
+- Optional: Voiceover explaining what's being tested
+
+**What to include:**
 
 - 30-60 second clip
 - Shows test in action
 - Voiceover explaining what's being tested (optional)
 
-### Artifact 3: Test Report
-
-Generate professional test report:
+**Artifact 3: Test Report**
 
 ```bash
 pytest --html=test-report.html --self-contained-html
 ```
 
-**Include in portfolio:**
+**What to include:**
 
 - Pass/fail statistics
 - Test execution time
 - Any failures and how you fixed them
 
-### Artifact 4: Test Documentation
+**Artifact 4: Test Documentation**
 
 Create `TESTING.md` for your feature:
 
-<!-- markdownlint-disable MD040 -->
-
-````markdown
+```markdown
 # Testing Documentation: [Feature Name]
 
 ## Test Coverage
@@ -297,56 +761,35 @@ Create `TESTING.md` for your feature:
 - **E2E Tests:** 5 tests, critical paths verified
 - **Security Tests:** 3 tests, OWASP Top 10 addressed
 
-## Running Tests
-
-```bash
-# Run all tests
-pytest -v
-
-# Run specific suite
-pytest -m unit
-pytest -m integration
-pytest -m e2e
-```
-
 ## Test Strategy
 
-### Unit Tests
-
-Focus on business logic validation...
-
-### Integration Tests
-
-Verify API contracts and data flow...
-
-### E2E Tests
-
-Confirm user workflows work end-to-end...
+[Explain your approach]
 
 ## Notable Test Cases
 
-### Test: Unauthorized Access Prevention
+[Highlight interesting tests]
 
-**Why it matters:** Prevents users from accessing others' data
-**How it works:** Attempts to access resource with wrong credentials
-**Result:** Returns 403 Forbidden
+## Results
 
-## Continuous Improvement
-
-Areas for future testing:
-
-- Performance testing with k6
-- Accessibility testing
-- Cross-browser E2E tests
-````
-
-<!-- markdownlint-enable MD040 -->
+[Show metrics and outcomes]
+```
 
 ---
 
-## 📝 Resume & Portfolio
+<h2 id="part-5-professional-presentation">Part 5: Professional Presentation 🎤</h2>
 
-### Resume Bullet Points
+### The Job Interview Analogy
+
+Think of presenting your portfolio like giving a TED talk. You need:
+
+- **A compelling story** (what you built and why)
+- **Visual aids** (screenshots, videos, code)
+- **Clear explanations** (what each part does)
+- **Confident delivery** (you know your stuff)
+
+### Resume & Portfolio Content
+
+**Resume Bullet Points:**
 
 Use these templates (fill in your specifics):
 
@@ -394,13 +837,6 @@ I completed Testbook's 5-stage learning path and built a comprehensive test suit
 - ✅ Security testing
 - ✅ Performance testing
 
-### Tools & Technologies
-
-- Python, pytest, Playwright
-- FastAPI, PostgreSQL
-- Git, GitHub Actions (CI/CD)
-- k6, coverage.py
-
 ## Projects
 
 ### 1. Testbook Learning Path
@@ -414,8 +850,6 @@ I completed Testbook's 5-stage learning path and built a comprehensive test suit
 - Achieved 85%+ coverage
 - Implemented Page Object Model
 - Created security test suite
-
-[Link to code] | [Video demo] | [Coverage report]
 
 ### 2. Capstone: [Feature] Test Suite
 
@@ -433,30 +867,24 @@ I completed Testbook's 5-stage learning path and built a comprehensive test suit
 - 87% code coverage
 - All critical paths tested
 - 0 production bugs in 30 days
-
-[Link to code] | [Documentation] | [Demo video]
-
-## Metrics
-
-| Project  | Tests | Coverage | Status      |
-| -------- | ----- | -------- | ----------- |
-| Testbook | 100+  | 84%      | ✅ Complete |
-| Capstone | 35    | 87%      | ✅ Complete |
-
-## Contact
-
-[Your professional links]
 ```
 
 ---
 
-## 🎤 Interview Preparation
+<h2 id="part-6-interview-preparation">Part 6: Interview Preparation 🎯</h2>
+
+### The Performance Analogy
+
+Think of job interviews like performing in a play. You need:
+
+- **Know your lines** (practice common questions)
+- **Know your character** (understand your role as a QA engineer)
+- **Rehearse your scenes** (practice explaining your work)
+- **Bring your props** (have your portfolio ready)
 
 ### Common QA Interview Questions
 
-Practice answering these with examples from your work:
-
-#### Technical Questions
+**Technical Questions:**
 
 **Q: "Explain the difference between unit, integration, and E2E tests."**
 _Use the test pyramid. Give examples from Testbook._
@@ -473,7 +901,7 @@ _Discuss waits, retries, isolation, debugging techniques._
 **Q: "What's your approach to security testing?"**
 _Reference OWASP Top 10, your security tests._
 
-#### Behavioral Questions
+**Behavioral Questions:**
 
 **Q: "Tell me about a bug you found."**
 _Prepare story: What was it? How'd you find it? Impact? How'd you document it?_
@@ -500,1109 +928,222 @@ _Risk-based testing, smoke tests, critical paths._
 
 ---
 
-## ✅ Capstone Checklist
+<h2 id="part-7-additional-patterns">Part 7: Additional Patterns 🚀</h2>
 
-You're portfolio-ready when you have:
+**📝 Note:** The patterns below are **additional enhancements** to your professional testing capabilities. All the **core concepts** needed to meet the Stage 5 success criteria are covered in Parts 1-6 above.
 
-### Tests Written
+These patterns enhance your professional testing capabilities:
 
-- [ ] 10+ unit tests with good coverage
-- [ ] 8+ integration tests covering all endpoints
-- [ ] 3+ E2E tests for critical workflows
-- [ ] 2+ security tests for OWASP risks
-- [ ] All tests passing
+### CI/CD Integration
 
-### Documentation Created
-
-- [ ] Test plan document
-- [ ] TESTING.md with instructions
-- [ ] Code comments explaining complex tests
-- [ ] README with clear setup instructions
-- [ ] **📚 [Portfolio guide](../../docs/guides/PORTFOLIO.md) followed** for resume/LinkedIn
-
-### Artifacts Captured
-
-- [ ] Coverage report (HTML screenshot)
-- [ ] Test execution video (1-2 minutes)
-- [ ] Test report (pytest HTML report)
-- [ ] Before/after metrics (if applicable)
-
-### Portfolio Prepared
-
-- [ ] GitHub repo is public and clean
-- [ ] README explains project clearly
-- [ ] Code is well-organized and formatted
-- [ ] No sensitive data or credentials
-- [ ] Professional commit history
-
-### Interview Ready
-
-- [ ] Can demo tests running live
-- [ ] Can explain testing strategy
-- [ ] Can discuss challenges and solutions
-- [ ] Have prepared answers to common questions
-- [ ] Resume includes testing experience
-
----
-
-## 🎯 Next Steps After Completion
-
-### 1. Share Your Work
-
-**Post on LinkedIn:**
-
-```text
-Excited to share that I completed Testbook's comprehensive test automation curriculum!
-
-🧪 Built test suites covering unit, integration, E2E, performance, and security testing
-🛠️ Technologies: Python, pytest, Playwright, k6, FastAPI
-📊 Achieved 85%+ test coverage across 50+ tests
-🎯 Created portfolio-ready artifacts and documentation
-
-Check out my work: [GitHub link]
-
-#QA #TestAutomation #Python #Playwright #Testing
-```
-
-### 2. Contribute to Testbook
-
-Now that you understand the codebase:
-
-- Add new tests
-- Improve documentation
-- Fix bugs
-- Help other learners
-
-### 3. Apply Your Skills
-
-**Job Search:**
-
-- Update resume with Testbook experience
-- Apply for junior QA/SDET roles
-- Use portfolio in applications
-- Practice technical interviews
-
-**Personal Projects:**
-
-- Add testing to your own projects
-- Test open source projects
-- Build testing tools
-- Write testing blog posts
-
-### 4. Keep Learning
-
-**Advanced Topics:**
-
-- CI/CD pipelines (GitHub Actions)
-- Test automation frameworks
-- Mobile testing (Appium)
-- API testing (Postman, REST Assured)
-- Performance testing (JMeter)
-
----
-
-## 🏆 Congratulations
-
-You've completed all 5 stages of the Testbook learning path!
-
-### What You've Accomplished
-
-✅ **Mastered test automation** from unit to E2E
-✅ **Built professional test suites** with 85%+ coverage
-✅ **Learned industry-standard tools** (pytest, Playwright, k6)
-✅ **Created portfolio artifacts** for job applications
-✅ **Developed QA engineering mindset** (quality, security, user experience)
-
-### You're Now Ready For
-
-🎯 **Junior QA Engineer** roles
-🎯 **SDET (Software Development Engineer in Test)** roles
-🎯 **Test Automation Engineer** roles
-🎯 **Quality Assurance** positions
-
----
-
-## 🚀 CI/CD & Automation
-
-Professional testing teams use continuous integration and deployment pipelines to automatically run tests on every code change. This section teaches you how to set up production-ready CI/CD for both Python and JavaScript testing stacks.
-
-### 🎯 Learning Objectives
-
-By the end of this section, you will be able to:
-
-- ✅ Configure GitHub Actions for automated testing
-- ✅ Set up caching strategies for faster CI runs
-- ✅ Capture and manage test artifacts (screenshots, videos, reports)
-- ✅ Implement retry strategies for flaky tests
-- ✅ Run tests in parallel for efficiency
-- ✅ Upload coverage reports and track metrics
-- ✅ Handle test failures gracefully with notifications
-
----
-
-## 📋 Prerequisites
-
-Before starting this section, ensure you have:
-
-- ✅ Tests working locally (Python and/or JavaScript)
-- ✅ GitHub repository (or GitLab/other CI platform)
-- ✅ Basic understanding of YAML configuration
-- ✅ Completed [Stage 3: API & E2E Testing](../stage_3_api_e2e/README.md)
-
----
-
-## 🏗️ Architecture Overview
-
-### CI/CD Pipeline Structure
-
-```text
-┌─────────────────────────────────────────────────────────────┐
-│                    GitHub Actions CI/CD                    │
-├─────────────────────────────────────────────────────────────┤
-│  Push/PR → Install → Cache → Test → Report → Deploy       │
-│     ↓         ↓        ↓       ↓       ↓        ↓          │
-│  Trigger  Dependencies Browser  Run   Upload   Notify      │
-│           (pip/npm)   Install  Tests Results  Team        │
-└─────────────────────────────────────────────────────────────┘
-```
-
-### Test Execution Strategy
-
-```text
-┌─────────────────────────────────────────────────────────────┐
-│                    Test Execution Flow                     │
-├─────────────────────────────────────────────────────────────┤
-│  Backend Tests → Frontend Tests → E2E Tests → Security     │
-│     (Fast)        (Medium)       (Slow)      (Optional)    │
-│     ↓              ↓              ↓             ↓          │
-│  Fail Fast    Parallel Run   Full Browser   OWASP Scan    │
-└─────────────────────────────────────────────────────────────┘
-```
-
----
-
-## 📚 Section 1: Understanding CI/CD for Testing
-
-### What is CI/CD?
-
-**Continuous Integration (CI):**
-
-- Automatically runs tests on every code change
-- Catches bugs early before they reach production
-- Provides immediate feedback to developers
-
-**Continuous Deployment (CD):**
-
-- Automatically deploys code that passes all tests
-- Reduces manual deployment errors
-- Enables rapid, reliable releases
-
-### Why E2E Tests in CI/CD?
-
-**Benefits:**
-
-- ✅ Catch integration issues between frontend and backend
-- ✅ Validate complete user workflows
-- ✅ Test across multiple browsers and environments
-- ✅ Ensure production readiness
-
-**Challenges:**
-
-- ⚠️ Slower execution than unit tests
-- ⚠️ More complex setup and maintenance
-- ⚠️ Can be flaky due to timing issues
-- ⚠️ Requires running application stack
-
----
-
-## 🛠️ Section 2: GitHub Actions Setup
-
-### Basic Workflow Structure
-
-Every GitHub Actions workflow follows this pattern:
+Set up automated testing in GitHub Actions:
 
 ```yaml
-name: Workflow Name
-on: [trigger events]
+name: Test Suite
+on: [push, pull_request]
 jobs:
-  job-name:
-    runs-on: [operating system]
-    steps:
-      - name: Step Name
-        run: commands
-```
-
-### Essential Actions for Testing
-
-**Core Actions:**
-
-- `actions/checkout@v4` - Get your code
-- `actions/setup-python@v4` - Python environment
-- `actions/setup-node@v4` - Node.js environment
-- `actions/upload-artifact@v3` - Save test results
-
----
-
-## 🐍 Section 3: Python E2E Testing Pipeline
-
-### Basic Python E2E Workflow
-
-Create `.github/workflows/e2e-python.yml`:
-
-```yaml
-name: E2E Tests (Python/Playwright)
-
-on:
-  push:
-    branches: [main, develop]
-  pull_request:
-    branches: [main, develop]
-
-jobs:
-  e2e-python:
-    name: Python E2E Tests
+  test:
     runs-on: ubuntu-latest
-
-    strategy:
-      fail-fast: false
-      matrix:
-        browser: [chromium, firefox]
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
+      - uses: actions/checkout@v4
       - name: Set up Python
         uses: actions/setup-python@v4
-        with:
-          python-version: "3.13"
-          cache: "pip"
-
-      - name: Install Python dependencies
-        run: |
-          pip install -r tests/e2e-python/requirements.txt
-
-      - name: Install Playwright browsers
-        run: |
-          playwright install --with-deps chromium  # Chrome only for faster CI
-
-      - name: Start backend
-        run: |
-          cd backend
-          source .venv/bin/activate || python -m venv .venv && source .venv/bin/activate
-          pip install -r requirements.txt
-          uvicorn main:app --host 0.0.0.0 --port 8000 &
-          sleep 5
-
-      - name: Start frontend
-        run: |
-          cd frontend
-          npm ci
-          npm run dev &
-          sleep 10
-          curl http://localhost:3000 || (echo "Frontend failed to start" && exit 1)
-
-      - name: Run E2E tests
-        env:
-          BROWSER: ${{ matrix.browser }}
-          HEADLESS: true
-          BASE_URL: http://localhost:3000
-          API_URL: http://localhost:8000
-        run: |
-          cd tests/e2e-python
-          HEADLESS=true pytest --browser=${{ matrix.browser }} -v --tb=short
-
-      - name: Upload test results
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: e2e-python-${{ matrix.browser }}-results
-          path: |
-            tests/e2e-python/test-results/
-            tests/e2e-python/screenshots/
-          retention-days: 30
-
-      - name: Upload videos on failure
-        if: failure()
-        uses: actions/upload-artifact@v3
-        with:
-          name: e2e-python-${{ matrix.browser }}-videos
-          path: tests/e2e-python/test-results/videos/
-          retention-days: 30
-```
-
-### Key Features Explained
-
-**Matrix Strategy:**
-
-- Tests multiple browsers in parallel
-- `fail-fast: false` ensures all browsers are tested even if one fails
-
-**Service Startup:**
-
-- Backend and frontend started as background processes
-- Health checks ensure services are ready before tests
-
-**Artifact Management:**
-
-- Test results saved for debugging
-- Videos only uploaded on failure to save space
-
----
-
-## 🟨 Section 4: JavaScript E2E Testing Pipeline
-
-### Basic JavaScript E2E Workflow
-
-Create `.github/workflows/e2e-javascript.yml`:
-
-```yaml
-name: E2E Tests (JavaScript/Playwright)
-
-on:
-  push:
-    branches: [main, develop]
-  pull_request:
-    branches: [main, develop]
-
-jobs:
-  e2e-javascript:
-    name: JavaScript E2E Tests
-    runs-on: ubuntu-latest
-
-    strategy:
-      fail-fast: false
-      matrix:
-        browser: [chromium, firefox, webkit]
-        shard: [1, 2] # Run in 2 parallel shards
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "18"
-          cache: "npm"
-
       - name: Install dependencies
-        run: |
-          cd tests
-          npm ci
-
-      - name: Install Playwright browsers
-        run: |
-          cd tests
-          npx playwright install --with-deps chromium  # Chrome only for faster CI
-
-      - name: Start backend
-        run: |
-          cd backend
-          python -m venv .venv
-          source .venv/bin/activate
-          pip install -r requirements.txt
-          uvicorn main:app --host 0.0.0.0 --port 8000 &
-          sleep 5
-
-      - name: Start frontend
-        run: |
-          cd frontend
-          npm ci
-          npm run dev &
-          sleep 10
-
-      - name: Run E2E tests
-        run: |
-          cd tests
-          npx playwright test --project=${{ matrix.browser }} --shard=${{ matrix.shard }}/${{ strategy.job-total }}
-
-      - name: Upload test results
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: e2e-js-${{ matrix.browser }}-shard-${{ matrix.shard }}-results
-          path: |
-            tests/playwright-report/
-            tests/test-results/
-          retention-days: 30
-
-      - name: Upload Playwright report
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: playwright-report-${{ matrix.browser }}-${{ matrix.shard }}
-          path: tests/playwright-report/
-          retention-days: 30
-```
-
-### Advanced Features
-
-**Test Sharding:**
-
-- Splits tests across multiple parallel jobs
-- Reduces total execution time
-- `strategy.job-total` automatically calculates total shards
-
-**Multi-Browser Testing:**
-
-- Tests across Chromium, Firefox, and WebKit
-- Ensures cross-browser compatibility
-- Each browser runs in separate job
-
----
-
-## 🧩 Section 5: Component Testing Integration
-
-### Vitest Component Test Workflow
-
-Create `.github/workflows/component-tests.yml`:
-
-```yaml
-name: Component Tests (Vitest)
-
-on:
-  push:
-    branches: [main, develop]
-  pull_request:
-    branches: [main, develop]
-
-jobs:
-  component-tests:
-    name: React Component Tests
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "18"
-          cache: "npm"
-          cache-dependency-path: frontend/package-lock.json
-
-      - name: Install dependencies
-        run: |
-          cd frontend
-          npm ci
-
-      - name: Run component tests
-        run: |
-          cd frontend
-          npm test -- --coverage
-
-      - name: Upload coverage to Codecov
+        run: pip install -r requirements.txt
+      - name: Run tests
+        run: pytest --cov --cov-report=xml
+      - name: Upload coverage
         uses: codecov/codecov-action@v3
-        with:
-          files: ./frontend/coverage/coverage-final.json
-          flags: component-tests
-          name: component-coverage
-
-      - name: Upload coverage report
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: component-test-coverage
-          path: frontend/coverage/
-          retention-days: 30
 ```
 
-### Coverage Integration
+### Test Data Management
 
-**Codecov Integration:**
+Create realistic test data factories:
 
-- Automatic coverage reporting
-- Trend tracking over time
-- Coverage badges for README
+```python
+from factory import Factory, Faker
+from your_models import User, Post
 
-**Local Coverage Reports:**
+class UserFactory(Factory):
+    class Meta:
+        model = User
 
-- HTML reports for detailed analysis
-- Artifacts saved for 30 days
-- Easy access to coverage data
+    username = Faker('user_name')
+    email = Faker('email')
+    is_active = True
 
----
+class PostFactory(Factory):
+    class Meta:
+        model = Post
 
-## 🔧 Section 6: Backend Testing Pipeline
-
-### Backend Test Workflow
-
-Create `.github/workflows/backend-tests.yml`:
-
-```yaml
-name: Backend Tests (pytest)
-
-on:
-  push:
-    branches: [main, develop]
-  pull_request:
-    branches: [main, develop]
-
-jobs:
-  backend-tests:
-    name: Backend API Tests
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        python-version: ["3.11", "3.12", "3.13"]
-
-    services:
-      postgres:
-        image: postgres:15
-        env:
-          POSTGRES_USER: testuser
-          POSTGRES_PASSWORD: testpass
-          POSTGRES_DB: testdb
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{ matrix.python-version }}
-          cache: "pip"
-
-      - name: Install dependencies
-        run: |
-          cd backend
-          pip install -r requirements.txt
-          pip install pytest-cov
-
-      - name: Run tests with coverage
-        env:
-          DATABASE_URL: postgresql://testuser:testpass@localhost:5432/testdb
-        run: |
-          cd backend
-          pytest --cov --cov-report=xml --cov-report=html -v
-
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
-        with:
-          files: ./backend/coverage.xml
-          flags: backend-tests
-          name: backend-coverage-py${{ matrix.python-version }}
-
-      - name: Upload coverage report
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: backend-coverage-py${{ matrix.python-version }}
-          path: backend/htmlcov/
-          retention-days: 30
+    content = Faker('text', max_nb_chars=280)
+    user = SubFactory(UserFactory)
 ```
 
-### Multi-Version Testing
+### Performance Testing
 
-**Python Version Matrix:**
-
-- Tests across multiple Python versions
-- Ensures compatibility with different environments
-- Catches version-specific issues
-
-**Database Services:**
-
-- Uses GitHub Actions services for PostgreSQL
-- Health checks ensure database is ready
-- Isolated test environment
-
----
-
-## 🚀 Section 7: Complete Test Suite Workflow
-
-### All-in-One Workflow
-
-Create `.github/workflows/test-suite.yml`:
-
-```yaml
-name: Complete Test Suite
-
-on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
-
-jobs:
-  backend-tests:
-    name: Backend Tests
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v4
-        with:
-          python-version: "3.13"
-          cache: "pip"
-      - run: |
-          cd backend
-          pip install -r requirements.txt pytest-cov
-          pytest --cov --cov-report=xml
-      - uses: codecov/codecov-action@v3
-        with:
-          flags: backend
-
-  component-tests:
-    name: Component Tests
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "18"
-          cache: "npm"
-          cache-dependency-path: frontend/package-lock.json
-      - run: |
-          cd frontend
-          npm ci
-          npm test -- --coverage
-      - uses: codecov/codecov-action@v3
-        with:
-          flags: component
-
-  e2e-tests:
-    name: E2E Tests
-    runs-on: ubuntu-latest
-    needs: [backend-tests, component-tests] # Run after unit tests pass
-
-    strategy:
-      matrix:
-        test-suite: [python, javascript]
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: "3.13"
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "18"
-
-      - name: Install Playwright
-        run: |
-          if [ "${{ matrix.test-suite }}" == "python" ]; then
-            pip install -r tests/e2e-python/requirements.txt
-            playwright install --with-deps chromium  # Chrome only for faster CI
-          else
-            cd tests && npm ci
-            npx playwright install --with-deps chromium  # Chrome only for faster CI
-          fi
-
-      - name: Start services
-        run: |
-          # Start backend
-          cd backend
-          pip install -r requirements.txt
-          uvicorn main:app --port 8000 &
-
-          # Start frontend
-          cd ../frontend
-          npm ci
-          npm run dev &
-
-          # Wait for services
-          sleep 15
-
-      - name: Run E2E tests
-        run: |
-          if [ "${{ matrix.test-suite }}" == "python" ]; then
-            cd tests/e2e-python
-            pytest -v
-          else
-            cd tests
-            npx playwright test
-          fi
-
-      - uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: e2e-${{ matrix.test-suite }}-results
-          path: tests/**/test-results/
-
-  security-tests:
-    name: Security Tests
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v4
-        with:
-          python-version: "3.13"
-      - run: |
-          cd backend
-          pip install -r requirements.txt
-          uvicorn main:app --port 8000 &
-          sleep 5
-          cd ../tests/security
-          pip install -r requirements.txt
-          pytest -v
-```
-
-### Job Dependencies
-
-**Execution Order:**
-
-1. Backend tests (fastest)
-2. Component tests (medium speed)
-3. E2E tests (slowest, only if unit tests pass)
-4. Security tests (optional, can run in parallel)
-
-**Benefits:**
-
-- Fast feedback on unit tests
-- E2E tests only run if unit tests pass
-- Parallel execution where possible
-- Comprehensive coverage
-
----
-
-## ⚡ Section 8: Optimization Strategies
-
-### Caching Dependencies
-
-**Python Caching:**
-
-```yaml
-- uses: actions/setup-python@v4
-  with:
-    python-version: "3.13"
-    cache: "pip"
-    cache-dependency-path: "**/requirements.txt"
-```
-
-**Node.js Caching:**
-
-```yaml
-- uses: actions/setup-node@v4
-  with:
-    node-version: "18"
-    cache: "npm"
-    cache-dependency-path: "**/package-lock.json"
-```
-
-### Caching Playwright Browsers
-
-```yaml
-- name: Cache Playwright browsers
-  uses: actions/cache@v3
-  id: playwright-cache
-  with:
-    path: ~/.cache/ms-playwright
-    key: ${{ runner.os }}-playwright-${{ hashFiles('**/package-lock.json') }}
-
-- name: Install Playwright browsers
-  if: steps.playwright-cache.outputs.cache-hit != 'true'
-  run: npx playwright install --with-deps chromium # Chrome only for faster CI
-```
-
-### Parallel Test Execution
-
-**Playwright Sharding:**
-
-```yaml
-strategy:
-  matrix:
-    shard: [1, 2, 3, 4]
-
-steps:
-  - run: npx playwright test --shard=${{ matrix.shard }}/4
-```
-
-**pytest-xdist:**
-
-```yaml
-- run: pytest -n auto # Auto-detect CPU count
-```
-
----
-
-## 🔄 Section 9: Retry Strategies
-
-### Playwright Retry Configuration
-
-**playwright.config.js:**
+Add k6 performance tests:
 
 ```javascript
-module.exports = {
-  retries: process.env.CI ? 2 : 0, // Retry 2x in CI
-  workers: process.env.CI ? 2 : undefined,
+import http from "k6/http";
+import { check } from "k6";
+
+export let options = {
+  stages: [
+    { duration: "2m", target: 10 },
+    { duration: "5m", target: 10 },
+    { duration: "2m", target: 0 },
+  ],
 };
-```
 
-### pytest Retry Configuration
-
-**pytest.ini:**
-
-```ini
-[pytest]
-addopts = --reruns 2 --reruns-delay 1
-```
-
-Install: `pip install pytest-rerun-failures`
-
----
-
-## 🚨 Section 10: Handling Test Failures
-
-### Slack Notifications
-
-```yaml
-- name: Notify Slack on failure
-  if: failure()
-  uses: slackapi/slack-github-action@v1
-  with:
-    payload: |
-      {
-        "text": "E2E Tests Failed!",
-        "blocks": [
-          {
-            "type": "section",
-            "text": {
-              "type": "mrkdwn",
-              "text": "E2E tests failed on ${{ github.ref }}"
-            }
-          }
-        ]
-      }
-  env:
-    SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
-```
-
-### GitHub Pull Request Comments
-
-```yaml
-- name: Comment PR with test results
-  if: github.event_name == 'pull_request'
-  uses: actions/github-script@v6
-  with:
-    script: |
-      github.rest.issues.createComment({
-        issue_number: context.issue.number,
-        owner: context.repo.owner,
-        repo: context.repo.repo,
-        body: '✅ All E2E tests passed!'
-      })
+export default function () {
+  let response = http.get("http://localhost:8000/feature");
+  check(response, {
+    "status is 200": (r) => r.status === 200,
+    "response time < 200ms": (r) => r.timings.duration < 200,
+  });
+}
 ```
 
 ---
 
-## 🐳 Section 11: Docker-Based CI
+<h2 id="success-criteria">✅ Success Criteria</h2>
 
-### Using Docker Compose in CI
+You're ready for QA engineering roles when you can:
 
-```yaml
-jobs:
-  e2e-docker:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
+**Portfolio Requirements:**
 
-      - name: Start services with Docker Compose
-        run: docker-compose up -d
+- [ ] Complete test suite with 80%+ coverage
+- [ ] Professional documentation
+- [ ] Visual artifacts (screenshots, videos)
+- [ ] Clean, public GitHub repository
+- [ ] Resume-ready project descriptions
 
-      - name: Wait for services
-        run: |
-          timeout 60 bash -c 'until curl -f http://localhost:3000; do sleep 2; done'
-          timeout 60 bash -c 'until curl -f http://localhost:8000/docs; do sleep 2; done'
+**Technical Skills:**
 
-      - name: Run E2E tests
-        run: |
-          docker-compose exec -T backend pytest tests/
-          docker-compose exec -T frontend npm test
+- [ ] Write unit, integration, and E2E tests
+- [ ] Use test fixtures and page objects
+- [ ] Implement security testing
+- [ ] Generate coverage reports
+- [ ] Debug failing tests
 
-      - name: Cleanup
-        if: always()
-        run: docker-compose down -v
-```
+**Professional Skills:**
 
----
-
-## 📊 Section 12: Monitoring & Metrics
-
-### Key Metrics to Track
-
-1. **Test execution time** - Should stay under 10 minutes
-2. **Flake rate** - Should be < 1%
-3. **Coverage percentage** - Track trends
-4. **Failure rate** - Monitor for patterns
-5. **CI queue time** - Optimize if growing
-
-### Tracking with Codecov
-
-```yaml
-- uses: codecov/codecov-action@v3
-  with:
-    files: ./coverage/coverage-final.json
-    flags: e2e-tests
-    fail_ci_if_error: true
-```
+- [ ] Document your work clearly
+- [ ] Present your portfolio confidently
+- [ ] Answer technical questions
+- [ ] Explain your testing approach
+- [ ] Show continuous learning
 
 ---
 
-## 🎓 Best Practices Summary
+<h2 id="why-this-matters">🧠 Why This Matters</h2>
 
-### ✅ Do's
+### For Your Career
 
-- **Cache dependencies** - Speeds up CI significantly
-- **Run unit tests first** - Fail fast strategy
-- **Retry flaky tests** - 1-2 retries in CI only
-- **Capture artifacts** - Screenshots, videos, reports
-- **Upload coverage** - Track coverage trends
-- **Use matrix builds** - Test across browsers/versions
-- **Parallelize tests** - Reduce CI time
-- **Use specific browser versions** - Avoid surprises
+- **Portfolio differentiation** - Stand out from other candidates
+- **Technical credibility** - Prove you can do the work
+- **Interview confidence** - Have concrete examples to discuss
+- **Career advancement** - Show growth and learning
+- **Professional reputation** - Build your brand as a QA engineer
 
-### ❌ Don'ts
+### In Real QA Teams
 
-- **Don't skip tests in CI** - CI should be stricter than local
-- **Don't ignore flaky tests** - Fix the root cause
-- **Don't run all tests serially** - Use parallel execution
-- **Don't use `latest` tags** - Pin versions for consistency
-- **Don't store secrets in code** - Use CI secrets
-- **Don't run E2E if unit tests fail** - Save CI time
+- **Portfolio thinking** - Always document your work
+- **Continuous improvement** - Keep learning and growing
+- **Knowledge sharing** - Help others learn from your work
+- **Professional development** - Build skills systematically
+- **Career planning** - Know where you want to go
 
 ---
 
-## 🚀 Implementation Steps
+<h2 id="related-resources">🔗 Related Resources</h2>
 
-### Step 1: Start Simple
+### Portfolio Development
 
-1. Create basic workflow for your primary test suite
-2. Add caching for dependencies
-3. Upload test artifacts
+- [Portfolio Guide](../../docs/guides/PORTFOLIO.md)
+- [Interview Prep](../../docs/guides/INTERVIEW_PREP.md)
 
-### Step 2: Add Optimization
+### Technical Resources
 
-1. Implement test sharding
-2. Add retry strategies
-3. Optimize execution order
+- [Testing Best Practices](../../docs/guides/TESTING_GUIDE.md)
+- [CI/CD Setup](../../docs/guides/CI_CD_SETUP.md)
+- [Coverage Reports](../../docs/guides/COVERAGE_REPORTS.md)
 
-### Step 3: Add Monitoring
+### Career Resources
 
-1. Integrate coverage reporting
-2. Add failure notifications
-3. Track key metrics
-
-### Step 4: Scale Up
-
-1. Add multi-browser testing
-2. Implement parallel execution
-3. Add security and performance tests
+- [QA Job Market Guide](../../docs/guides/QA_JOB_MARKET.md)
+- [Salary Negotiation](../../docs/guides/SALARY_NEGOTIATION.md)
+- [Networking Tips](../../docs/guides/NETWORKING.md)
 
 ---
 
-## 📚 Related Resources
+<h2 id="self-check-quiz-optional">🧠 Self-Check Quiz (Optional)</h2>
 
-- [Testing Guide](../../docs/guides/TESTING_GUIDE.md) - Comprehensive testing examples
-- [Stage 3: API & E2E Testing](../stage_3_api_e2e/README.md) - E2E testing fundamentals
-- [Troubleshooting Guide](../../docs/reference/TROUBLESHOOTING.md) - Fix common CI/CD issues
-- [GitHub Actions Documentation](https://docs.github.com/en/actions)
-- [Playwright CI Guide](https://playwright.dev/docs/ci)
+Before considering yourself job-ready, can you answer these questions?
 
----
+1. **What's the main purpose of a testing portfolio?**
 
-**🎉 You now have professional CI/CD pipelines for automated testing! This is exactly what production teams use to ensure code quality and reliability.**
+   - A) To show off your coding skills
+   - B) To demonstrate your testing abilities to employers
+   - C) To replace your resume
+   - D) To get more GitHub stars
 
----
-
-## 📞 Stay Connected
-
-**Completed Testbook?**
-
-- ⭐ Star the repo on GitHub
-- 💬 Share your experience in Discussions
-- 🐛 Report bugs you find
-- 📝 Contribute improvements
-- 🤝 Help other learners
-
----
-
-## 🧠 Final Self-Check Quiz (Optional)
-
-Before completing Testbook, can you answer these questions?
-
-1. **What's the main purpose of a CI/CD pipeline?**
-
-   - A) To make tests run faster
-   - B) To automatically test code when changes are made
-   - C) To organize test files
-   - D) To create test data
-
-2. **What should you include in a testing portfolio?**
+2. **What should you include in your portfolio?**
 
    - A) Only passing tests
    - B) Test results, code samples, and documentation
-   - C) Only test failures
-   - D) Only unit tests
+   - C) Only code, no documentation
+   - D) Only screenshots
 
 3. **Why is documentation important in testing?**
 
    - A) It makes tests run faster
    - B) It helps others understand and maintain tests
    - C) It's required by law
-   - D) It's not important
+   - D) It makes tests more fun
 
 4. **What's the difference between a test plan and test cases?**
 
-   - A) There's no difference
+   - A) Test plan is faster
    - B) Test plan is high-level strategy, test cases are specific steps
-   - C) Test cases are faster
-   - D) Test plan is for unit tests only
+   - C) Test cases are more important
+   - D) There's no difference
 
 5. **What makes a good QA engineer?**
    - A) Only technical skills
    - B) Only communication skills
    - C) Technical skills, communication, and problem-solving
-   - D) Only experience
+   - D) Only problem-solving skills
 
 **Answers:** [Check your answers here](solutions/stage_5_quiz_answers.md)
 
 ---
 
-## 🎉 Final Reflection
+<h2 id="reflection">🤔 Reflection</h2>
 
-Take a moment to look back at your journey:
+Before considering yourself job-ready, answer these:
 
-1. **What was the most challenging part?**
-2. **What surprised you most about testing?**
-3. **What's your favorite type of testing and why?**
-4. **How has your understanding of software quality changed?**
-5. **What's next in your QA journey?**
+1. **What was the most challenging part of building your test suite?**
+
+2. **How did you decide what to test and what to skip?**
+
+3. **What would you do differently if you started over?**
+
+4. **How confident do you feel explaining your testing approach to others?**
+
+5. **What's one area you want to improve before applying for jobs?**
 
 **Document your answers** in [reflection.md](reflection.md).
 
 ---
 
-## 🚀 You Did It
+<h2 id="stage-complete">🎉 Stage Complete</h2>
 
-You're no longer learning test automation — you're practicing it professionally.
+You now have a complete testing portfolio and are ready for QA engineering roles!
 
-**Go build amazing things. Test them well. Ship them confidently.**
-
----
-
-_Remember: Every expert was once a beginner. You've done the hard work. Now go show the world what you can do! 💪_
+### 👉 [View Your Portfolio](../../docs/guides/PORTFOLIO.md)
 
 ---
 
-**Need help or have questions?**
-
-- Check [README.md](../../README.md#frequently-asked-questions) - Learning questions and quick setup guidance
-- Read [CONTRIBUTING](../../CONTRIBUTING.md)
-- Open a GitHub Discussion
-- Connect with the community
-
-**Thank you for completing Testbook! 🎓✨**
+_Pro tip: Your portfolio is never "done" - keep updating it as you learn new skills and complete new projects! 🚀_

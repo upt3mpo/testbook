@@ -34,11 +34,11 @@ else:
 
 ### Default Limits
 
-| Environment | Default Limit | Use Case |
-|-------------|---------------|----------|
-| **Development** | 100/minute | Local testing, normal usage |
-| **Testing** | 1000/minute | Automated tests, CI/CD |
-| **Production** | 100/minute | Real users, security-focused |
+| Environment     | Default Limit | Use Case                     |
+| --------------- | ------------- | ---------------------------- |
+| **Development** | 100/minute    | Local testing, normal usage  |
+| **Testing**     | 1000/minute   | Automated tests, CI/CD       |
+| **Production**  | 100/minute    | Real users, security-focused |
 
 ---
 
@@ -46,7 +46,7 @@ else:
 
 ### Example: Custom Limits for Specific Endpoints
 
-**Note:** Testbook currently uses environment-based default limits (100/minute in production, 1000/minute in testing). The examples below show how you *could* implement per-endpoint limits if needed.
+**Note:** Testbook currently uses environment-based default limits (100/minute in production, 1000/minute in testing). The examples below show how you _could_ implement per-endpoint limits if needed.
 
 ```python
 from slowapi import Limiter
@@ -79,14 +79,14 @@ async def create_post(request: Request, post_data: PostCreate):
 
 ### Recommended Limits by Endpoint Type
 
-| Endpoint Type | Suggested Limit | Reasoning |
-|---------------|-----------------|-----------|
-| **Authentication** | 5-10/minute | Prevent brute force attacks |
-| **Read-only (GET)** | 100-200/minute | Allow normal browsing |
-| **Create/Update** | 10-30/minute | Prevent spam, abuse |
-| **Search/Filter** | 30-50/minute | Resource-intensive operations |
-| **Health Checks** | 100-200/minute | Monitoring tools need access |
-| **File Uploads** | 5-10/minute | Large payloads, storage concerns |
+| Endpoint Type       | Suggested Limit | Reasoning                        |
+| ------------------- | --------------- | -------------------------------- |
+| **Authentication**  | 5-10/minute     | Prevent brute force attacks      |
+| **Read-only (GET)** | 100-200/minute  | Allow normal browsing            |
+| **Create/Update**   | 10-30/minute    | Prevent spam, abuse              |
+| **Search/Filter**   | 30-50/minute    | Resource-intensive operations    |
+| **Health Checks**   | 100-200/minute  | Monitoring tools need access     |
+| **File Uploads**    | 5-10/minute     | Large payloads, storage concerns |
 
 ---
 
@@ -320,8 +320,12 @@ async def rate_limit_handler(request: Request, exc: RateLimitExceeded):
 
 ```bash
 # In test environment
+# Linux/Mac
 export TESTING=true
 pytest -v
+
+# Windows (PowerShell)
+$env:TESTING='true'; pytest -v
 ```
 
 Or in `conftest.py`:
@@ -427,8 +431,13 @@ Set up alerts for:
 
 ```bash
 # Core settings
+# Linux/Mac
 export TESTING=true              # Enable high limits for tests
 export RATE_LIMIT_STORAGE=memory # memory or redis
+
+# Windows (PowerShell)
+$env:TESTING='true'              # Enable high limits for tests
+$env:RATE_LIMIT_STORAGE='memory' # memory or redis
 
 # Custom limits (if implemented)
 export DEFAULT_RATE_LIMIT=100/minute

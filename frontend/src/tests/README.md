@@ -193,7 +193,7 @@ npm test -- --coverage
 
 ## ✅ Test Structure (AAA Pattern)
 
-Our tests follow the **[Arrange-Act-Assert pattern](../../../docs/reference/TESTING_PATTERNS.md#arrange-act-assert-pattern)**:
+Our tests follow the **[Arrange-Act-Assert pattern](../../../docs/concepts/TESTING_PATTERNS.md#arrange-act-assert-pattern)**:
 
 ```jsx
 it('should enable submit button when form is valid', () => {

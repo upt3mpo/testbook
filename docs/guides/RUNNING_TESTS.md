@@ -6,12 +6,16 @@ Comprehensive cross-platform guide for running all Testbook tests.
 
 ---
 
-## 🖥️ Platform-Specific Quick Start
+<h2 id="platform-specific-quick-start">🖥️ Platform-Specific Quick Start</h2>
 
 ### macOS / Linux
 
 ```bash
+# Linux/Mac
 cd backend && source .venv/bin/activate && pytest -v
+
+# Windows (PowerShell)
+cd backend; .venv\Scripts\activate; pytest -v
 ```
 
 ### Windows
@@ -120,6 +124,74 @@ pytest -m "not slow"
 # Run in parallel (faster)
 pytest -n auto
 ```
+
+### Understanding Pytest Flags
+
+Pytest offers many flags to customize test execution. Here are the most commonly used ones:
+
+**Basic Output Control:**
+
+- `-v` / `--verbose` - Show detailed test names and results
+- `-vv` - Extra verbose (show print statements and more detail)
+- `-s` - Don't capture output (see print statements and logs)
+- `-q` - Quiet mode (less output)
+
+**Test Selection:**
+
+- `-k "pattern"` - Run tests matching pattern (e.g., `-k "login"`)
+- `-m marker` - Run tests with specific markers (e.g., `-m unit`)
+- `-x` - Stop on first failure
+- `--maxfail=N` - Stop after N failures
+
+**Debugging:**
+
+- `--pdb` - Drop into debugger on failure
+- `-l` - Show local variables on failure
+- `--tb=short` - Shorter traceback format
+- `--tb=long` - Longer traceback format
+
+**Performance:**
+
+- `-n auto` - Run tests in parallel (requires pytest-xdist)
+- `--durations=10` - Show slowest 10 tests
+
+**Common Flag Combinations:**
+
+```bash
+# Quick test run (no coverage)
+pytest -v
+
+# Full suite with coverage
+pytest -v --cov=. --cov-report=html
+
+# Debugging mode
+pytest -vv -s -x
+
+# Just unit tests
+pytest -m unit
+
+# Run specific test with verbose output
+pytest -vv -s tests/unit/test_auth.py::test_password_is_hashed
+```
+
+### Understanding Coverage Flags
+
+When running tests, you can choose whether to collect coverage data. Coverage shows which lines of code are executed during tests.
+
+**Coverage Flags Explained:**
+
+- `--cov=.` - Collect coverage for current directory
+- `--cov-report=html` - Generate HTML coverage report (opens in browser)
+- `--cov-report=term-missing` - Show missing lines in terminal output
+- `--cov-config=.coveragerc` - Use custom coverage configuration
+
+**When to Use Coverage:**
+
+- ✅ **Full test suite runs** - See overall code coverage
+- ✅ **CI/CD pipelines** - Ensure quality standards
+- ✅ **Before committing** - Verify new code is tested
+- ❌ **Single test debugging** - Adds noise to output
+- ❌ **Quick test runs** - Slows down execution
 
 ### With Coverage
 
@@ -341,6 +413,29 @@ http_req_failed...........: 0.23%
 
 ## Security Tests
 
+### 💡 Pro Tip: Use .env File
+
+Tired of typing `TESTING=true` every time? Create a `.env` file:
+
+```bash
+# Copy the template (has TESTING=true by default)
+cp backend/env.example backend/.env
+
+# Now just run:
+uvicorn main:app --reload --port 8000
+pytest tests/security/ -v
+```
+
+The `.env` file is automatically loaded by the backend, so you never have to type environment variables again!
+
+**Windows users:**
+
+```powershell
+Copy-Item backend\env.example backend\.env
+```
+
+---
+
 ### ⚠️ IMPORTANT: Security Tests & Rate Limiting
 
 **These tests may fail if run without TESTING mode!**
@@ -352,7 +447,11 @@ Why? Rate limiting is implemented (good for security!) but tests compete for the
 ```bash
 # Start backend in TESTING mode
 cd backend
+# Linux/Mac
 TESTING=true uvicorn main:app --reload --port 8000
+
+# Windows (PowerShell)
+$env:TESTING='true'; uvicorn main:app --reload --port 8000
 
 # In another terminal, run security tests
 pytest tests/security/ -v
@@ -367,7 +466,11 @@ cd ..
 ```bash
 # Recommended: Start backend in TESTING mode first
 cd backend
+# Linux/Mac
 TESTING=true uvicorn main:app --reload
+
+# Windows (PowerShell)
+$env:TESTING='true'; uvicorn main:app --reload
 
 # Then run security tests
 cd ..
@@ -449,15 +552,15 @@ All tests run automatically in GitHub Actions:
 ```bash
 cd backend
 
-# Generate coverage report
-pytest --cov --cov-report=html --cov-report=term
+# Generate coverage report (explicit flags required)
+pytest --cov=. --cov-report=html --cov-report=term-missing
 
 # View HTML report
 open htmlcov/index.html  # macOS
 start htmlcov/index.html # Windows
 
 # Check coverage threshold
-pytest --cov --cov-fail-under=70
+pytest --cov=. --cov-fail-under=70
 ```
 
 ### Coverage Goals
@@ -619,7 +722,13 @@ uvicorn main:app --reload --log-level debug
 ```bash
 # Terminal 1: Start backend
 cd backend
+# Linux/Mac
 source .venv/bin/activate
+python seed.py
+uvicorn main:app --reload
+
+# Windows (PowerShell)
+.venv\Scripts\activate
 python seed.py
 uvicorn main:app --reload
 
@@ -658,7 +767,7 @@ pytest tests/security/ -v
 ### Quick References
 
 - [Testing Cheat Sheet](../reference/TESTING_CHEATSHEET.md)
-- [Testing Patterns](../reference/TESTING_PATTERNS.md)
+- [Testing Patterns](../concepts/TESTING_PATTERNS.md)
 - [Testing Features](../reference/TESTING_FEATURES.md)
 
 ### External Resources

@@ -4,7 +4,7 @@
 
 ---
 
-## 🎯 Start Here
+<h2 id="start-here">🎯 Start Here</h2>
 
 **🆕 Self-Guided Learning Path** → [../learn/](../learn/) ⭐ **RECOMMENDED**
 
@@ -33,6 +33,9 @@ Testbook/
 │   ├── course/                 👨‍🎓 Course materials
 │   ├── guides/                 📖 How-to guides
 │   ├── reference/              📚 Reference documentation
+│   ├── concepts/               🧠 Deep conceptual understanding
+│   ├── industry/               🏢 Real-world context & practices
+│   ├── advanced/               🚀 Beyond the basics
 │   └── INDEX.md               📑 This file
 │
 ├── backend/tests/              🔬 Backend test suite
@@ -41,7 +44,7 @@ Testbook/
 
 ---
 
-## 🎓 Self-Guided Learning Path (`learn/`) **⭐ RECOMMENDED**
+<h2 id="self-guided-learning-path">🎓 Self-Guided Learning Path (`learn/`) **⭐ RECOMMENDED**</h2>
 
 **The structured 5-stage journey to job-ready testing skills**
 
@@ -69,14 +72,14 @@ Testbook/
 
 ## 👨‍🎓 Course Materials (`docs/course/`)
 
-| Resource                                                                                 | Time Estimate | Experience Level          | Description                                   |
-| ---------------------------------------------------------------------------------------- | ------------- | ------------------------- | --------------------------------------------- |
-| **[COURSE_AUTOMATION_TESTING_101.md](course/COURSE_AUTOMATION_TESTING_101.md)**          | 30-40 hours   | 🟢 Beginner → 🔴 Advanced | Self-paced curriculum with 12 sections        |
-| **[Learning Paths](../learn/README.md#choose-your-track)**                               | 15 min        | 🟢 All levels             | Choose path based on your background          |
-| **🆕 [SECTION_08_ADVANCED_E2E_PATTERNS.md](course/SECTION_08_ADVANCED_E2E_PATTERNS.md)** | 8-10 hours    | 🔴 Advanced               | Advanced E2E patterns for Python & JavaScript |
-| **🆕 [CI_CD_E2E_TESTING.md](course/CI_CD_E2E_TESTING.md)**                               | 3-4 hours     | 🔴 Advanced               | CI/CD automation for both stacks              |
-| **[TROUBLESHOOTING.md](reference/TROUBLESHOOTING.md)**                                   | 30 min        | 🟢 Beginner               | 24+ common errors and solutions               |
-| **[Learning Roadmap](../learn/README.md#visual-learning-journey)**                       | 10 min        | 🟢 All levels             | Visual skill progression guide                |
+| Resource                                                                        | Time Estimate | Experience Level          | Description                                   |
+| ------------------------------------------------------------------------------- | ------------- | ------------------------- | --------------------------------------------- |
+| **[COURSE_AUTOMATION_TESTING_101.md](course/COURSE_AUTOMATION_TESTING_101.md)** | 30-40 hours   | 🟢 Beginner → 🔴 Advanced | Self-paced curriculum with 12 sections        |
+| **[Learning Paths](../learn/README.md#choose-your-track)**                      | 15 min        | 🟢 All levels             | Choose path based on your background          |
+| **🆕 [SECTION_08_ADVANCED_E2E_PATTERNS.md](advanced/ADVANCED_E2E_PATTERNS.md)** | 8-10 hours    | 🔴 Advanced               | Advanced E2E patterns for Python & JavaScript |
+| **🆕 [CI_CD_E2E_TESTING.md](course/CI_CD_E2E_TESTING.md)**                      | 3-4 hours     | 🔴 Advanced               | CI/CD automation for both stacks              |
+| **[TROUBLESHOOTING.md](reference/TROUBLESHOOTING.md)**                          | 30 min        | 🟢 Beginner               | 24+ common errors and solutions               |
+| **[Learning Roadmap](../learn/README.md#visual-learning-journey)**              | 10 min        | 🟢 All levels             | Visual skill progression guide                |
 
 ### Learning Path Details
 
@@ -111,10 +114,13 @@ Testbook/
 
 ---
 
-## 📖 How-To Guides (`docs/guides/`)
+<h2 id="how-to-guides">📖 How-To Guides (`docs/guides/`)</h2>
 
 | Guide                                                                            | Time   | Level           | Purpose                                               |
 | -------------------------------------------------------------------------------- | ------ | --------------- | ----------------------------------------------------- |
+| **🆕 [QUICK_START.md](guides/QUICK_START.md)** ⭐                                | 15 min | 🟢 Beginner     | Complete setup guide for all platforms                |
+| **🆕 [DEPLOYMENT_MODES.md](guides/DEPLOYMENT_MODES.md)** ⭐                      | 10 min | 🟢 Beginner     | Development vs Production mode explained              |
+| **🆕 [FAQ.md](guides/FAQ.md)** ⭐                                                | 20 min | 🟢 All          | Frequently asked questions and answers                |
 | **[RUNNING_TESTS.md](guides/RUNNING_TESTS.md)**                                  | 15 min | 🟢 Beginner     | How to run all test types                             |
 | **[TESTING_GUIDE.md](guides/TESTING_GUIDE.md)**                                  | 45 min | 🟡 Intermediate | Comprehensive examples                                |
 | **🆕 [TESTING_COMPARISON_PYTHON_JS.md](guides/TESTING_COMPARISON_PYTHON_JS.md)** | 45 min | 🟡 Intermediate | Side-by-side Python vs JavaScript testing             |
@@ -225,13 +231,13 @@ Includes environment config, fixtures, test helpers, and patterns.
 
 ### In-Depth References (📖 15-45 min each)
 
-| Reference                                                        | Time   | Level           | Purpose                           |
-| ---------------------------------------------------------------- | ------ | --------------- | --------------------------------- |
-| **[DEBUGGING_GUIDE.md](reference/DEBUGGING_GUIDE.md)**           | 30 min | 🟡 Intermediate | Debug strategies & error patterns |
-| **[TESTING_PATTERNS.md](reference/TESTING_PATTERNS.md)**         | 20 min | 🟡 Intermediate | Patterns for dynamic content      |
-| **[TESTING_ANTIPATTERNS.md](reference/TESTING_ANTIPATTERNS.md)** | 25 min | 🟡 Intermediate | 16 mistakes to avoid              |
-| **[TESTING_FEATURES.md](reference/TESTING_FEATURES.md)**         | 15 min | 🟢 Beginner     | All testable Testbook features    |
-| **[PROJECT_INFO.md](reference/PROJECT_INFO.md)**                 | 20 min | 🟡 Intermediate | Technical architecture details    |
+| Reference                                                       | Time   | Level           | Purpose                           |
+| --------------------------------------------------------------- | ------ | --------------- | --------------------------------- |
+| **[DEBUGGING_GUIDE.md](reference/DEBUGGING_GUIDE.md)**          | 30 min | 🟡 Intermediate | Debug strategies & error patterns |
+| **[TESTING_PATTERNS.md](concepts/TESTING_PATTERNS.md)**         | 20 min | 🟡 Intermediate | Patterns for dynamic content      |
+| **[TESTING_ANTIPATTERNS.md](concepts/TESTING_ANTIPATTERNS.md)** | 25 min | 🟡 Intermediate | 16 mistakes to avoid              |
+| **[TESTING_FEATURES.md](reference/TESTING_FEATURES.md)**        | 15 min | 🟢 Beginner     | All testable Testbook features    |
+| **[PROJECT_INFO.md](reference/PROJECT_INFO.md)**                | 20 min | 🟡 Intermediate | Technical architecture details    |
 
 ### Content Highlights
 
@@ -269,7 +275,93 @@ Includes environment config, fixtures, test helpers, and patterns.
 
 ---
 
-## 🧪 Hands-On Exercises (`../learn/`)
+<h2 id="deep-conceptual-understanding">🧠 Deep Conceptual Understanding (`docs/concepts/`)</h2>
+
+### Core Testing Philosophy
+
+| Resource                                                            | Time   | Level           | Purpose                       |
+| ------------------------------------------------------------------- | ------ | --------------- | ----------------------------- |
+| **[TESTING_PHILOSOPHY.md](concepts/TESTING_PHILOSOPHY.md)**         | 30 min | 🟡 Intermediate | The "WHY" behind testing      |
+| **[TEST_DESIGN_PRINCIPLES.md](concepts/TEST_DESIGN_PRINCIPLES.md)** | 25 min | 🟡 Intermediate | How to design effective tests |
+| **[TESTING_PATTERNS.md](concepts/TESTING_PATTERNS.md)**             | 20 min | 🟡 Intermediate | Patterns for dynamic content  |
+| **[TESTING_ANTIPATTERNS.md](concepts/TESTING_ANTIPATTERNS.md)**     | 25 min | 🟡 Intermediate | 16 mistakes to avoid          |
+
+### Content Highlights
+
+**Testing Philosophy:**
+
+- Real-world impact stories
+- Business case for testing
+- Quality mindset development
+- Industry standards
+
+**Test Design Principles:**
+
+- SOLID testing principles
+- Test maintainability
+- Readability best practices
+- Documentation standards
+
+---
+
+## 🏢 Real-World Context & Practices (`docs/industry/`)
+
+### Industry Insights
+
+| Resource                                                    | Time   | Level           | Purpose                            |
+| ----------------------------------------------------------- | ------ | --------------- | ---------------------------------- |
+| **[CASE_STUDIES.md](industry/CASE_STUDIES.md)**             | 45 min | 🟡 Intermediate | Real testing disasters & successes |
+| **[INDUSTRY_PRACTICES.md](industry/INDUSTRY_PRACTICES.md)** | 30 min | 🟡 Intermediate | How top companies test             |
+| **[TOOL_COMPARISON.md](industry/TOOL_COMPARISON.md)**       | 25 min | 🟡 Intermediate | When to use what testing tool      |
+| **[CAREER_GUIDE.md](industry/CAREER_GUIDE.md)**             | 20 min | 🟢 All levels   | QA career paths & salary data      |
+
+### Content Highlights
+
+**Case Studies:**
+
+- Knight Capital $440M loss
+- E-commerce platform outages
+- Airline booking system bugs
+- Video conferencing failures
+
+**Industry Practices:**
+
+- Google's testing culture
+- Netflix's chaos engineering
+- Amazon's testing strategies
+- Microsoft's quality gates
+
+---
+
+<h2 id="beyond-the-basics">🚀 Beyond the Basics (`docs/advanced/`)</h2>
+
+### Advanced Topics
+
+| Resource                                                                      | Time   | Level       | Purpose                          |
+| ----------------------------------------------------------------------------- | ------ | ----------- | -------------------------------- |
+| **[ADVANCED_TOPICS.md](advanced/ADVANCED_TOPICS.md)**                         | 40 min | 🔴 Advanced | Mutation testing, property-based |
+| **[ADVANCED_E2E_PATTERNS.md](advanced/ADVANCED_E2E_PATTERNS.md)**             | 35 min | 🔴 Advanced | Advanced E2E patterns            |
+| **[ADVANCED_TESTING_STRATEGIES.md](advanced/ADVANCED_TESTING_STRATEGIES.md)** | 30 min | 🔴 Advanced | Enterprise testing strategies    |
+
+### Content Highlights
+
+**Advanced Topics:**
+
+- Mutation testing techniques
+- Property-based testing
+- Test-driven development (TDD)
+- Behavior-driven development (BDD)
+
+**Advanced E2E Patterns:**
+
+- Visual regression testing
+- Cross-browser strategies
+- Mobile testing patterns
+- Performance testing integration
+
+---
+
+<h2 id="hands-on-exercises">🧪 Hands-On Exercises (`../learn/`)</h2>
 
 **All lab exercises have been moved into the structured learning stages!**
 
@@ -350,7 +442,7 @@ Security testing guide
 
 ---
 
-## 🎯 Quick Navigation
+<h2 id="quick-navigation">🎯 Quick Navigation</h2>
 
 ### "I want to..."
 
@@ -382,7 +474,7 @@ Security testing guide
 
 ---
 
-## 🖥️ Platform-Specific Guides
+<h2 id="platform-specific-guides">🖥️ Platform-Specific Guides</h2>
 
 ### Windows Users
 
@@ -417,7 +509,7 @@ source .venv/bin/activate  # Activate Python (macOS/Linux)
 
 ---
 
-## 🐍☕ Language-Specific Guides
+<h2 id="language-specific-guides">🐍☕ Language-Specific Guides</h2>
 
 ### Python Testing
 

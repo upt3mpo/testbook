@@ -2,11 +2,13 @@
 
 **A side-by-side guide for test automation across both stacks**
 
+> **💡 Language Selection**: This guide includes both Python and JavaScript examples. Both are expanded by default so you can see all approaches. Click the language tabs to collapse sections you don't need.
+
 This guide helps you translate testing knowledge between Python and JavaScript, showing equivalent patterns and tools for common testing scenarios.
 
 ---
 
-## 📚 Quick Reference Table
+<h2 id="quick-reference-table">📚 Quick Reference Table</h2>
 
 | Concept               | Python                          | JavaScript               |
 | --------------------- | ------------------------------- | ------------------------ |
@@ -21,11 +23,12 @@ This guide helps you translate testing knowledge between Python and JavaScript, 
 
 ---
 
-## 🧪 Test Structure Comparison
+<h2 id="test-structure-comparison">🧪 Test Structure Comparison</h2>
 
 ### Basic Test
 
-**Python (pytest)**
+<details open>
+<summary><strong>🐍 Python (pytest)</strong></summary>
 
 ```python
 def test_addition():
@@ -34,7 +37,10 @@ def test_addition():
     assert result == 4
 ```
 
-**JavaScript (Vitest)**
+</details>
+
+<details open>
+<summary><strong>☕ JavaScript (Vitest)</strong></summary>
 
 ```javascript
 test("addition works correctly", () => {
@@ -43,9 +49,12 @@ test("addition works correctly", () => {
 });
 ```
 
+</details>
+
 ### Test Classes/Groups
 
-**Python (pytest)**
+<details open>
+<summary><strong>🐍 Python (pytest)</strong></summary>
 
 ```python
 class TestAuthentication:
@@ -58,7 +67,10 @@ class TestAuthentication:
         assert login("user", "wrong") == False
 ```
 
-**JavaScript (Vitest)**
+</details>
+
+<details open>
+<summary><strong>☕ JavaScript (Vitest)</strong></summary>
 
 ```javascript
 describe("Authentication", () => {
@@ -72,13 +84,16 @@ describe("Authentication", () => {
 });
 ```
 
+</details>
+
 ---
 
-## 🔧 Fixtures & Setup
+<h2 id="fixtures-setup">🔧 Fixtures & Setup</h2>
 
 ### Basic Fixture
 
-**Python (pytest)**
+<details open>
+<summary><strong>🐍 Python (pytest)</strong></summary>
 
 ```python
 @pytest.fixture
@@ -93,7 +108,10 @@ def test_query(database):
     assert len(result) > 0
 ```
 
-**JavaScript (Playwright)**
+</details>
+
+<details open>
+<summary><strong>☕ JavaScript (Playwright)</strong></summary>
 
 ```javascript
 const test = base.extend({
@@ -110,9 +128,12 @@ test("query returns users", async ({ database }) => {
 });
 ```
 
+</details>
+
 ### Parametrized Tests
 
-**Python (pytest)**
+<details open>
+<summary><strong>🐍 Python (pytest)</strong></summary>
 
 ```python
 @pytest.mark.parametrize("username,valid", [
@@ -125,7 +146,10 @@ def test_username_validation(username, valid):
     assert is_valid_username(username) == valid
 ```
 
-**JavaScript (Vitest)**
+</details>
+
+<details open>
+<summary><strong>☕ JavaScript (Vitest)</strong></summary>
 
 ```javascript
 test.each([
@@ -138,13 +162,16 @@ test.each([
 });
 ```
 
+</details>
+
 ---
 
-## 🌐 E2E Testing with Playwright
+<h2 id="e2e-testing-with-playwright">🌐 E2E Testing with Playwright</h2>
 
 ### Basic E2E Test
 
-**Python**
+<details open>
+<summary><strong>🐍 Python</strong></summary>
 
 ```python
 from playwright.sync_api import Page, expect
@@ -159,7 +186,10 @@ def test_login(page: Page):
     expect(page.locator('[data-testid="navbar"]')).to_be_visible()
 ```
 
-**JavaScript**
+</details>
+
+<details open>
+<summary><strong>☕ JavaScript</strong></summary>
 
 ```javascript
 const { test, expect } = require("@playwright/test");
@@ -174,11 +204,14 @@ test("login flow", async ({ page }) => {
 });
 ```
 
+</details>
+
 **Key Difference:** Python uses synchronous syntax while JavaScript uses async/await.
 
 ### Page Object Model
 
-**Python**
+<details open>
+<summary><strong>🐍 Python</strong></summary>
 
 ```python
 class LoginPage:
@@ -199,7 +232,10 @@ def test_login(page: Page):
     login_page.login("user@test.com", "password")
 ```
 
-**JavaScript**
+</details>
+
+<details open>
+<summary><strong>☕ JavaScript</strong></summary>
 
 ```javascript
 class LoginPage {
@@ -224,13 +260,16 @@ test("login flow", async ({ page }) => {
 });
 ```
 
+</details>
+
 ---
 
-## 🎭 Mocking & Stubbing
+<h2 id="mocking-stubbing">🎭 Mocking & Stubbing</h2>
 
 ### Mocking Functions
 
-**Python**
+<details open>
+<summary><strong>🐍 Python</strong></summary>
 
 ```python
 from unittest.mock import Mock, patch
@@ -245,7 +284,10 @@ def test_api_call():
         mock_get.assert_called_once_with('/api/users/1')
 ```
 
-**JavaScript**
+</details>
+
+<details open>
+<summary><strong>☕ JavaScript</strong></summary>
 
 ```javascript
 import { vi } from "vitest";
@@ -263,9 +305,12 @@ test("API call with mock", async () => {
 });
 ```
 
+</details>
+
 ### Network Mocking (Playwright)
 
-**Python**
+<details open>
+<summary><strong>🐍 Python</strong></summary>
 
 ```python
 import json
@@ -287,7 +332,10 @@ def test_mocked_api(page: Page):
     expect(page.locator("text=/no posts/i")).to_be_visible()
 ```
 
-**JavaScript**
+</details>
+
+<details open>
+<summary><strong>☕ JavaScript</strong></summary>
 
 ```javascript
 test("mocked API response", async ({ page }) => {
@@ -306,13 +354,16 @@ test("mocked API response", async ({ page }) => {
 });
 ```
 
+</details>
+
 ---
 
 ## 📡 API Testing
 
 ### Testing REST Endpoints
 
-**Python**
+<details open>
+<summary><strong>🐍 Python</strong></summary>
 
 ```python
 import requests
@@ -338,7 +389,10 @@ def test_create_post():
     assert response.json()["content"] == "Test post"
 ```
 
-**JavaScript**
+</details>
+
+<details open>
+<summary><strong>☕ JavaScript</strong></summary>
 
 ```javascript
 import axios from "axios";
@@ -363,9 +417,11 @@ test("POST /api/posts endpoint", async () => {
 });
 ```
 
+</details>
+
 ---
 
-## 🏃 Running Tests
+<h2 id="running-tests">🏃 Running Tests</h2>
 
 ### Command Line
 
@@ -375,12 +431,13 @@ test("POST /api/posts endpoint", async () => {
 | **Run specific file** | `pytest test_auth.py`   | `npm test auth.test.js`          |
 | **Run with coverage** | `pytest --cov`          | `npm test -- --coverage`         |
 | **Verbose output**    | `pytest -v`             | `npm test -- --reporter=verbose` |
-| **Watch mode**        | `pytest-watch`          | `npm test -- --watch`            |
+| **Watch mode**        | `pytest-watch`          | `npm run test:watch`             |
 | **Run specific test** | `pytest -k "test_name"` | `npm test -- -t "test name"`     |
 
 ### Pytest Markers vs Vitest Filters
 
-**Python**
+<details open>
+<summary><strong>🐍 Python</strong></summary>
 
 ```python
 @pytest.mark.smoke
@@ -395,7 +452,10 @@ def test_full_integration():
 # Run: pytest -m "not slow"
 ```
 
-**JavaScript**
+</details>
+
+<details open>
+<summary><strong>☕ JavaScript</strong></summary>
 
 ```javascript
 test("critical path", { tag: "@smoke" }, async () => {
@@ -410,9 +470,11 @@ test("full integration", { tag: "@slow" }, async () => {
 // Run: npm test -- --grep @slow --invert
 ```
 
+</details>
+
 ---
 
-## 🔍 Assertions Comparison
+<h2 id="assertions-comparison">🔍 Assertions Comparison</h2>
 
 ### Common Assertions
 
@@ -437,7 +499,7 @@ test("full integration", { tag: "@slow" }, async () => {
 
 ---
 
-## 🗂️ Test Organization
+<h2 id="test-organization">🗂️ Test Organization</h2>
 
 ### File Structure
 
@@ -487,7 +549,7 @@ tests/
 
 ---
 
-## ⚙️ Configuration Files
+<h2 id="configuration-files">⚙️ Configuration Files</h2>
 
 ### Pytest Configuration
 

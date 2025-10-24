@@ -98,9 +98,9 @@ test/increase-security-coverage
 3. **Test your changes**:
 
    ```bash
-   # Backend tests
+   # Backend tests (with coverage for quality assurance)
    cd backend
-   pytest -v --cov
+   pytest -v --cov=. --cov-report=html --cov-report=term-missing
 
    # E2E tests
    cd ../tests
@@ -131,8 +131,8 @@ test/increase-security-coverage
 cd backend
 pytest -v
 
-# Coverage check (must be 80%+)
-pytest --cov --cov-report=term-missing
+# Coverage check (must be 80%+) - explicit flags required
+pytest --cov=. --cov-report=term-missing
 
 # E2E tests (must pass)
 cd ../tests

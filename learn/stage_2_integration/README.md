@@ -2,231 +2,1089 @@
 
 **Testing Components Working Together**
 
-Integration tests verify that multiple parts of your system work correctly together. Unlike unit tests that isolate functions, integration tests check real API endpoints, database operations, and multi-component workflows.
+> **💡 Language Selection**: This guide includes both Python and JavaScript examples. Both are expanded by default so you can see all approaches. Click the language tabs to collapse sections you don't need.
 
 ## Your Progress
 
-[████████████████░░░░] 40% complete
-✅ Stage 1: Unit Tests (completed)
-→ **Stage 2: Integration Tests** (you are here)
-⬜ Stage 3: API & E2E Testing
-⬜ Stage 4: Performance & Security
-⬜ Stage 5: Capstone
+[████████░░░░░░░░░░░░] 40% complete
 
-**Estimated time remaining:** 9-12 hours
+✅ Stage 1: Unit Tests (completed)<br>
+→ **Stage 2: Integration Tests** (you are here)<br>
+⬜ Stage 3: E2E Testing<br>
+⬜ Stage 4: Performance & Security<br>
+⬜ Stage 5: Capstone<br>
 
----
+**Estimated time remaining:** 5-7 hours (core content) + 3-5 hours (optional exercises)
 
-## 🎯 Learning Goals
+<h2 id="table-of-contents">📋 Table of Contents</h2>
 
-By the end of this stage, you will:
-
-- ✅ Understand integration vs unit testing
-- ✅ Test HTTP API endpoints with FastAPI TestClient
-- ✅ Verify database operations and transactions
-- ✅ Test authentication and authorization flows
-- ✅ Organize larger, more complex test suites
-- ✅ Use test factories for realistic data
-
-**Duration:** 3-4 hours
-
----
-
-## 📂 Where to Look
-
-**Choose your track:** Integration testing looks different for backend APIs vs frontend components!
+- [Why Integration Testing Matters: The Glue That Holds Systems Together](#why-integration-testing-matters-the-glue-that-holds-systems-together)
+- [Part 1: What Are Integration Tests? 📚](#part-1-what-are-integration-tests)
+- [Part 2: HTTP API Testing 🌐](#part-2-http-api-testing)
+- [Part 3: Database Integration 🗄️](#part-3-database-integration)
+- [Part 4: Implementation Guide 🛠️](#part-4-implementation-guide)
+- [Part 5: Hands-On Practice 🏃](#part-5-hands-on-practice)
+- [Part 6: Additional Patterns 🚀](#part-6-additional-patterns)
+- [✅ Success Criteria](#success-criteria)
+- [🧠 Why This Matters](#why-this-matters)
+- [🔗 Related Resources](#related-resources)
+- [🧠 Self-Check Quiz (Optional)](#self-check-quiz-optional)
+- [🤔 Reflection](#reflection)
+- [🎉 Stage Complete](#stage-complete)
 
 ---
 
-### 🐍 Python Track (Backend API Integration)
+## Why Integration Testing Matters: The Glue That Holds Systems Together
 
-**📁 Folder:** `/backend/tests/integration/`
+### The Real-World Impact
 
-1. **[`test_api_auth.py`](../../backend/tests/integration/test_api_auth.py)**
+**The Problem Without Integration Tests:**
+In 2018, a major e-commerce platform experienced a 2-hour outage during Black Friday, losing $100M in sales. The issue? Their unit tests all passed, but they missed that a database connection pool wasn't being properly initialized when the API server started. The integration between the API and database was broken, but no integration test caught it.
 
-   - User registration and login endpoints
-   - JWT token authentication
-   - Authorization checks
+**What Integration Tests Prevent:**
 
-2. **[`test_api_posts.py`](../../backend/tests/integration/test_api_posts.py)**
+1. **API Contract Violations**: Services that can't communicate properly
+2. **Database Inconsistencies**: Data that gets corrupted between systems
+3. **Configuration Mismatches**: Settings that work in isolation but fail together
+4. **Performance Bottlenecks**: Systems that work alone but slow down together
+5. **Security Vulnerabilities**: Authentication that works in tests but fails in production
 
-   - Creating, reading, updating, deleting posts
-   - Comments and reactions
-   - Reposts and interactions
+### The Testing Pyramid Applied
 
-3. **[`test_api_users.py`](../../backend/tests/integration/test_api_users.py)**
-
-   - User profiles
-   - Follow/unfollow functionality
-   - Block/unblock operations
-
-4. **[`test_api_feed.py`](../../backend/tests/integration/test_api_feed.py)**
-
-   - Feed generation
-   - Filtering and ordering
-   - Complex queries
-
-5. **[`test_database.py`](../../backend/tests/integration/test_database.py)**
-   - Database constraints
-   - Transactions and rollbacks
-   - Cascade deletes
-
-**Supporting Files:**
-
-- [`backend/tests/conftest.py`](../../backend/tests/conftest.py) - pytest fixtures
-- [`backend/tests/factories.py`](../../backend/tests/factories.py) - Test data factories
-
-**Tools:** pytest, FastAPI TestClient, SQLAlchemy
-
----
-
-### ☕ JavaScript Track (Frontend Integration)
-
-**📁 Folders:** `/frontend/src/tests/integration/`
-
-1. **[`contract.test.js`](../../frontend/src/tests/integration/contract.test.js)**
-
-   - API contract validation (OpenAPI schema)
-   - Ensures frontend/backend agreement
-   - Request/response structure verification
-
-2. **Frontend component tests with MSW:**
-
-   - [`CreatePost.test.jsx`](../../frontend/src/tests/unit/CreatePost.test.jsx) - API mocking
-   - [`Navbar.test.jsx`](../../frontend/src/tests/unit/Navbar.test.jsx) - Context integration
-   - See [Lab 6B](../../learn/stage_4_performance_security/exercises/LAB_06B_Advanced_Component_Testing.md) for MSW patterns
-
-3. **[`tests/mocks/handlers.js`](../../frontend/src/tests/mocks/handlers.js)**
-   - Mock Service Worker API handlers
-   - Realistic network mocking
-   - Schema-compliant responses
-
-**Supporting Files:**
-
-- [`frontend/src/tests/setup.js`](../../frontend/src/tests/setup.js) - MSW server setup
-- [`frontend/src/tests/contract-helpers.js`](../../frontend/src/tests/contract-helpers.js) - Contract validation utilities
-
-**Tools:** Vitest, MSW (Mock Service Worker), axios, OpenAPI validation
-
----
-
-### 🔄 Hybrid Track
-
-**Test the full stack!** This is what most QA roles require.
-
-1. Backend APIs (Python) - How endpoints work
-2. Frontend integration (JavaScript) - How UI consumes those APIs
-3. Contract tests (JavaScript) - Verify they agree on structure
-4. See how changes in backend schema break frontend tests!
-
-**Time:** 4-5 hours (both tracks)
-
----
-
-## 🔍 What to Look For
-
-### 1. HTTP Testing Pattern
-
-```python
-def test_api_endpoint(client, auth_headers):
-    # Arrange - Prepare request data
-    payload = {"title": "Test Post"}
-
-    # Act - Make HTTP request
-    response = client.post("/posts", json=payload, headers=auth_headers)
-
-    # Assert - Verify response
-    assert response.status_code == 201
-    assert response.json()["title"] == "Test Post"
+```text
+                ▲
+               /_\  ← Manual / Exploratory Testing
+              /   \
+             / E2E \  ← Playwright (JS / Python)
+            /_______\
+           /         \
+          / Component \  ← Vitest + RTL (JS only)
+         /_____________\
+        /               \
+       /  Integration    \  ← API / Component tests ← STAGE 2: CONNECTING COMPONENTS
+      /___________________\
+     /                     \
+    /      Unit Tests       \  ← Vitest (JS) | pytest (Python)
+   /_________________________\
 ```
 
-**Key observations:**
+**Integration Tests (15% of your test suite):**
 
-- `client` fixture provides FastAPI TestClient
-- `auth_headers` handles authentication
-- We test the full HTTP request/response cycle
+- Medium speed: Run in seconds to minutes
+- More reliable than E2E tests
+- Test real interactions between components
+- Catch bugs that unit tests miss
 
-### 2. Database Integration
+**Why 15%?**
+
+- Unit tests catch most bugs (80%)
+- Integration tests catch the bugs unit tests miss (15%)
+- E2E tests catch the remaining bugs (5%)
+- Balance between coverage and speed
+
+### The Business Case
+
+**Real Example:**
+A banking application has:
+
+- User service (handles authentication)
+- Account service (manages accounts)
+- Transaction service (processes payments)
+
+Without integration tests:
+
+- User service works alone ✅
+- Account service works alone ✅
+- Transaction service works alone ✅
+- But when a user tries to transfer money... 💥
+- The services can't communicate properly
+- Money disappears or gets duplicated
+- Customer loses trust, bank loses money
+
+With integration tests:
+
+- Test the complete transfer flow
+- Verify all services work together
+- Catch integration bugs before production
+- Maintain customer trust
+
+### The Developer Experience
+
+**Without Integration Tests:**
+
+- "It works on my machine"
+- "The unit tests pass, so it should work"
+- "I don't know why it's failing in production"
+- "Let me check the logs... there are 10,000 lines"
+
+**With Integration Tests:**
+
+- "I know the components work together"
+- "I can see exactly where the integration fails"
+- "I can test real scenarios"
+- "I have confidence in the system"
+
+### The Quality Mindset
+
+**Integration Testing Teaches You:**
+
+1. **Think About System Boundaries**: How do components interact?
+2. **Design for Integration**: Make components easy to integrate
+3. **Test Real Scenarios**: Test what users actually do
+4. **Handle Failures Gracefully**: What happens when a component fails?
+5. **Monitor System Health**: How do you know if integration is working?
+
+### Industry Standards
+
+**Companies That Require Integration Tests:**
+
+- Netflix: Integration tests for all microservices
+- Uber: Integration tests for all API endpoints
+- Airbnb: Integration tests for all service interactions
+- Spotify: Integration tests for all data flows
+
+**Why They Do This:**
+
+- Prevents integration failures
+- Enables faster deployment
+- Reduces production bugs
+- Improves system reliability
+- Builds team confidence
+
+### The Integration Testing Mindset
+
+**Key Questions to Ask:**
+
+1. **What can go wrong?** Network failures, timeouts, data corruption
+2. **How do components communicate?** APIs, databases, message queues
+3. **What are the dependencies?** External services, databases, file systems
+4. **How do we handle failures?** Retries, fallbacks, error handling
+5. **How do we monitor health?** Logs, metrics, alerts
+
+**Common Integration Patterns:**
+
+- **API Integration**: Test HTTP endpoints with real data
+- **Database Integration**: Test database operations with real data
+- **Message Queue Integration**: Test async communication
+- **File System Integration**: Test file operations
+- **External Service Integration**: Test third-party APIs
+
+---
+
+<h2 id="part-1-what-are-integration-tests">Part 1: What Are Integration Tests? 📚</h2>
+
+### The Restaurant Kitchen Analogy
+
+Imagine you're testing a restaurant kitchen. Unit tests would be like testing each chef individually - "Can Chef Sarah chop vegetables?" But integration tests would be like testing the entire kitchen workflow - "Can Chef Sarah chop vegetables AND pass them to Chef Mike who cooks them AND the food gets to the customer hot and on time?"
+
+**Integration tests** verify that multiple parts of your system work correctly together.
+
+### Why Integration Tests Matter
+
+1. **Real interactions**: Tests how components actually work together
+2. **Catch integration bugs**: Issues that only appear when parts connect
+3. **Verify business workflows**: Complete user journeys, not just individual functions
+4. **Test with real data**: Database, APIs, external services
+
+### Unit vs Integration: The Key Difference
+
+<details open>
+<summary><strong>🐍 Python</strong></summary>
 
 ```python
-def test_database_operation(db_session, test_user):
-    # Create via API or directly in DB
-    post = Post(title="Test", user_id=test_user.id)
+# Unit Test - Tests ONE function in isolation
+def test_validate_password():
+    result = validate_password("password123")
+    assert result == True
+
+    result = validate_password("weak")
+    assert result == False
+
+# Integration Test - Tests MULTIPLE components working together
+def test_user_login_workflow():
+    # 1. User submits credentials (API call)
+    # 2. Password gets validated (validation function)
+    # 3. User record is looked up (database query)
+    # 4. JWT token is generated (auth service)
+    # 5. Token is returned to client (API response)
+```
+
+</details>
+
+<details open>
+<summary><strong>☕ JavaScript</strong></summary>
+
+```javascript
+// Unit Test - Tests ONE function in isolation
+test("validate password", () => {
+  const result = validatePassword("password123");
+  expect(result).toBe(true);
+
+  const weakResult = validatePassword("weak");
+  expect(weakResult).toBe(false);
+});
+
+// Integration Test - Tests MULTIPLE components working together
+test("user login workflow", async () => {
+  // 1. User submits credentials (API call)
+  // 2. Password gets validated (validation function)
+  // 3. User record is looked up (database query)
+  // 4. JWT token is generated (auth service)
+  // 5. Token is returned to client (API response)
+});
+```
+
+</details>
+
+### Integration Test Characteristics
+
+**Compared to Unit Tests:**
+
+| Aspect           | Unit Tests              | Integration Tests       |
+| ---------------- | ----------------------- | ----------------------- |
+| **Speed**        | Milliseconds            | Seconds                 |
+| **Scope**        | Single function         | Multiple components     |
+| **Dependencies** | Mocked                  | Real (database, APIs)   |
+| **Purpose**      | Verify logic            | Verify interactions     |
+| **Failures**     | Pinpoint exact function | Show integration issues |
+
+---
+
+<h2 id="part-2-http-api-testing">Part 2: HTTP API Testing 🌐</h2>
+
+### The Restaurant Order Analogy
+
+Think of API testing like testing a restaurant's order system:
+
+**Arrange** = Customer places order (prepare request data)<br>
+**Act** = Kitchen processes order (send HTTP request)<br>
+**Assert** = Food arrives correctly (verify response)
+
+### HTTP Testing Pattern
+
+<details open>
+<summary><strong>🐍 Python</strong></summary>
+
+```python
+def test_create_post_api():
+    # Arrange - Prepare request data
+    payload = {"content": "Hello world!", "user_id": 123}
+    headers = {"Authorization": "Bearer token123"}
+
+    # Act - Make HTTP request
+    response = client.post("/api/posts", json=payload, headers=headers)
+
+    # Assert - Verify response
+    assert response.status_code == 201  # Created
+    assert response.json()["content"] == "Hello world!"
+    assert "id" in response.json()  # Post was assigned an ID
+```
+
+</details>
+
+<details open>
+<summary><strong>☕ JavaScript</strong></summary>
+
+```javascript
+test("create post API", async () => {
+  // Arrange - Prepare request data
+  const payload = { content: "Hello world!", user_id: 123 };
+  const headers = { Authorization: "Bearer token123" };
+
+  // Act - Make HTTP request
+  const response = await fetch("/api/posts", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...headers },
+    body: JSON.stringify(payload),
+  });
+
+  // Assert - Verify response
+  expect(response.status).toBe(201); // Created
+  const data = await response.json();
+  expect(data.content).toBe("Hello world!");
+  expect(data.id).toBeDefined(); // Post was assigned an ID
+});
+```
+
+</details>
+
+### HTTP Status Codes You Need to Know
+
+- `200 OK` - Success (GET, PATCH)
+- `201 Created` - Success (POST)
+- `204 No Content` - Success (DELETE)
+- `400 Bad Request` - Invalid input
+- `401 Unauthorized` - Not authenticated
+- `403 Forbidden` - Authenticated but not authorized
+- `404 Not Found` - Resource doesn't exist
+- `500 Internal Server Error` - Server bug
+
+### Testing Different Scenarios
+
+```python
+def test_api_endpoint_scenarios():
+    # Happy path
+    response = client.post("/api/posts", json=valid_data)
+    assert response.status_code == 201
+
+    # Missing authentication
+    response = client.post("/api/posts", json=valid_data)  # No headers
+    assert response.status_code == 401
+
+    # Invalid data
+    response = client.post("/api/posts", json={"invalid": "data"})
+    assert response.status_code == 400
+
+    # Wrong user tries to delete someone else's post
+    response = client.delete("/api/posts/123", headers=wrong_user_headers)
+    assert response.status_code == 403
+```
+
+---
+
+<h2 id="part-3-database-integration">Part 3: Database Integration 🗄️</h2>
+
+### The Library System Analogy
+
+Think of database integration like testing a library system:
+
+1. **Check out a book** (create record)
+2. **Search for books** (query database)
+3. **Return a book** (update record)
+4. **Remove old books** (delete records)
+
+### Database Testing Pattern
+
+<details open>
+<summary><strong>🐍 Python</strong></summary>
+
+```python
+def test_database_operations():
+    # Arrange - Set up test data
+    user = User(username="testuser", email="test@example.com")
+    db_session.add(user)
+    db_session.commit()
+
+    # Act - Perform database operations
+    post = Post(content="Test post", user_id=user.id)
     db_session.add(post)
     db_session.commit()
 
-    # Query and verify
-    found = db_session.query(Post).filter_by(id=post.id).first()
-    assert found is not None
-    assert found.title == "Test"
+    # Assert - Verify data was saved
+    found_post = db_session.query(Post).filter_by(id=post.id).first()
+    assert found_post is not None
+    assert found_post.content == "Test post"
+    assert found_post.user_id == user.id
 ```
 
-**Notice:**
+</details>
 
-- Tests interact with real database
-- Fixtures handle cleanup between tests
-- We verify data persistence
+<details open>
+<summary><strong>☕ JavaScript</strong></summary>
 
-### 3. Test Organization
+```javascript
+test("database operations", async () => {
+  // Arrange - Set up test data
+  const user = await createTestUser({
+    username: "testuser",
+    email: "test@example.com",
+  });
 
-Look at how tests are grouped:
+  // Act - Perform database operations
+  const post = await createTestPost({
+    content: "Test post",
+    userId: user.id,
+  });
+
+  // Assert - Verify data was saved
+  const foundPost = await Post.findById(post.id);
+  expect(foundPost).toBeTruthy();
+  expect(foundPost.content).toBe("Test post");
+  expect(foundPost.userId).toBe(user.id);
+});
+```
+
+</details>
+
+### Why Test the Database?
+
+1. **Data persistence**: Verify data actually gets saved
+2. **Relationships**: Test foreign keys and associations
+3. **Constraints**: Ensure database rules are enforced
+4. **Transactions**: Test rollbacks and commits
+
+### Test Data Management
+
+<details open>
+<summary><strong>🐍 Python</strong></summary>
 
 ```python
-class TestPostCreation:
-    """Tests for creating posts."""
+# Without factories (repetitive)
+def test_user_posts():
+    user = User(username="testuser", email="test@example.com")
+    db_session.add(user)
+    db_session.commit()
+    # ... test logic
+
+# With factories (clean)
+def test_user_posts(user_factory):
+    user = user_factory.create()
+    # ... test logic
+```
+
+</details>
+
+<details open>
+<summary><strong>☕ JavaScript</strong></summary>
+
+```javascript
+// Without factories (repetitive)
+test("user posts", async () => {
+  const user = await User.create({
+    username: "testuser",
+    email: "test@example.com",
+  });
+  // ... test logic
+});
+
+// With factories (clean)
+test("user posts", async () => {
+  const user = await createTestUser();
+  // ... test logic
+});
+```
+
+</details>
+
+---
+
+<h2 id="part-4-implementation-guide">Part 4: Implementation Guide 🛠️</h2>
+
+Now let's see these concepts in real code! Choose your track:
+
+<details open>
+<summary><strong>🐍 Python Track: Testing API Endpoints</strong></summary>
+
+**Open `backend/tests/integration/test_api_auth.py` and find `test_register_new_user_success`:**
+
+```python
+def test_register_new_user_success(self, client):
+    """
+    Test successful user registration.
+
+    This test verifies the complete user registration workflow:
+    1. User submits registration data
+    2. System validates the data
+    3. Password is hashed and stored securely
+    4. User record is created in database
+    5. JWT token is generated for auto-login
+    6. User data is returned (without sensitive information)
+
+    This is a critical integration test that ensures the entire
+    registration flow works end-to-end.
+    """
+    # Arrange - Prepare new user data
+    new_user = {
+        "email": "newuser@example.com",
+        "username": "newuser",
+        "display_name": "New User",
+        "password": "SecurePass123!",
+        "bio": "This is my bio",
+    }
+
+    # Act - Send POST request to registration endpoint
+    response = client.post("/api/auth/register", json=new_user)
+
+    # Assert - Verify successful registration and auto-login
+    assert response.status_code == 201  # API returns 201 Created
+    data = response.json()
+    assert "access_token" in data  # Returns token for auto-login
+    assert data["token_type"] == "bearer"  # JWT bearer token format
+    assert data["email"] == "newuser@example.com"  # Returns user data
+    assert data["username"] == "newuser"
+    assert data["display_name"] == "New User"
+    assert "hashed_password" not in data  # Security: password never exposed
+```
+
+**Guided Walkthrough:**
+
+1. **Arrange**: We prepare user registration data
+2. **Act**: We send a POST request to the registration endpoint
+3. **Assert**: We verify:
+   - HTTP status code is 201 (Created)
+   - Response contains expected data
+   - User was actually saved to the database
+
+**Try This:**
+
+1. **Run the test from command line:**
+
+   ```bash
+   # Run specific test
+   pytest backend/tests/integration/test_api_auth.py::TestRegisterEndpoint::test_register_new_user_success -v
+
+   # Run all integration tests
+   pytest backend/tests/integration/ -v
+
+   # Run with detailed output for debugging
+   pytest backend/tests/integration/test_api_auth.py -v -s
+   ```
+
+2. **Make it fail intentionally to understand error messages:**
+
+   ```python
+   # Temporarily change this line in the test:
+   assert response.status_code == 201  # Change to: assert response.status_code == 200
+   ```
+
+   Then run the test and see the detailed error message that helps you debug!
+
+3. **Debug integration test failures:**
+
+   ```bash
+   # Run with detailed logging
+   pytest backend/tests/integration/test_api_auth.py -v -s --log-cli-level=DEBUG
+
+   # Run with database state inspection
+   pytest backend/tests/integration/test_api_auth.py -v --capture=no
+   ```
+
+4. **Fix it back and run again to see it pass**
+
+**What you'll learn:**
+
+- How to run integration tests from command line
+- How to interpret HTTP status code errors
+- How to debug API integration issues
+- The importance of understanding HTTP response codes
+
+**More Examples:**
+
+- `test_login_success` - See authentication flow
+- `test_create_post_unauthorized` - Learn about authorization
+- Full file: [test_api_auth.py](../../backend/tests/integration/test_api_auth.py)
+
+</details>
+
+<details open>
+<summary><strong>☕ JavaScript Track: Testing API Contracts</strong></summary>
+
+**Open `frontend/src/tests/unit/Register.test.jsx` and find the registration integration test:**
+
+```javascript
+it("handles registration API errors gracefully", async () => {
+  /**
+   * This test demonstrates integration testing by verifying that the Register component
+   * properly handles API errors and displays appropriate user feedback.
+   *
+   * Key Integration Testing Concepts:
+   * - Mocking external dependencies (API calls)
+   * - Testing component behavior with real error structures
+   * - Verifying user experience during error states
+   * - Testing async error handling patterns
+   */
+
+  // Arrange - Mock register function to return error with proper structure
+  // Note: The error structure matches what real APIs return (response.data.detail)
+  const mockRegister = vi.fn().mockRejectedValue({
+    response: {
+      data: {
+        detail: "Email already exists", // Specific error message from API
+      },
+    },
+  });
+
+  // Create mock auth context with our failing register function
+  const mockAuth = {
+    user: null,
+    login: vi.fn(),
+    logout: vi.fn(),
+    register: mockRegister, // This will fail when called
+  };
+
+  // Render component with mocked dependencies
+  renderRegister(mockAuth);
+
+  // Get all form elements - we need ALL required fields for form submission
+  const emailInput = screen.getByTestId("register-email-input");
+  const usernameInput = screen.getByTestId("register-username-input");
+  const displayNameInput = screen.getByTestId("register-displayname-input");
+  const passwordInput = screen.getByTestId("register-password-input");
+  const submitButton = screen.getByTestId("register-submit-button");
+
+  // Act - Simulate complete user registration flow that will fail
+  // Fill all required form fields (form validation requires all fields)
+  fireEvent.change(emailInput, { target: { value: "test@example.com" } });
+  fireEvent.change(usernameInput, { target: { value: "testuser" } });
+  fireEvent.change(displayNameInput, { target: { value: "Test User" } });
+  fireEvent.change(passwordInput, { target: { value: "password123" } });
+
+  // Submit form - this will trigger our mocked API call that fails
+  fireEvent.click(submitButton);
+
+  // Assert - Verify error handling works correctly
+  // Wait for async error handling to complete
+  await waitFor(() => {
+    expect(screen.getByTestId("register-error")).toHaveTextContent(
+      "Email already exists"
+    );
+  });
+
+  // Additional assertions we could add:
+  // - Verify submit button is re-enabled after error
+  // - Verify form fields are still accessible for retry
+  // - Verify specific error styling is applied
+});
+```
+
+**Guided Walkthrough:**
+
+1. **Arrange**:
+
+   - Mock the registration API to return a realistic error structure (`response.data.detail`)
+   - Create a mock auth context that uses our failing register function
+   - Render the Register component with all necessary providers (BrowserRouter, AuthContext)
+
+2. **Act**:
+
+   - Simulate complete user registration flow by filling ALL required form fields
+   - Submit the form, which triggers our mocked API call that will fail
+   - This tests the integration between form submission and API error handling
+
+3. **Assert**:
+   - Verify the component displays the specific error message from the API
+   - Use `waitFor()` to handle the async nature of error handling
+   - Test that the user experience remains functional during error states
+
+**Why This Test Matters:**
+
+- **Real-world scenario**: Users will encounter API errors during registration
+- **Integration testing**: Tests how the component handles external API failures
+- **User experience**: Ensures users get clear feedback when things go wrong
+- **Error handling**: Verifies the app doesn't crash on API errors
+
+**Try This:**
+
+1. Run this test: `npm test -- Register.test.jsx`
+2. Make it fail by changing the expected error message text
+3. Understand the error message
+4. Fix it back
+
+**More Examples:**
+
+- `renders registration form` - Basic component rendering
+- `calls register API with correct data on form submission` - API integration testing
+- `shows loading state during submission` - User experience testing
+- `navigates to home page after successful registration` - Navigation flow testing
+- Full file: [Register.test.jsx](../../frontend/src/tests/unit/Register.test.jsx)
+
+</details>
+
+<details open>
+<summary><strong>🔄 Hybrid Track</strong></summary>
+
+**Test the full stack!** This is what most QA roles require.
+
+1. **Backend APIs (Python)** - How endpoints work
+2. **Frontend integration (JavaScript)** - How UI consumes those APIs
+3. **Contract tests (JavaScript)** - Verify they agree on structure
+4. **See the connection**: Make a breaking change to backend API response and watch frontend contract tests fail!
+
+</details>
+
+---
+
+<h2 id="part-5-hands-on-practice">Part 5: Hands-On Practice 🏃</h2>
+
+### Step 1: Run Integration Tests
+
+**Python Track:**
+
+```bash
+cd backend
+# Linux/Mac
+source .venv/bin/activate
+
+# Windows (PowerShell)
+.venv\Scripts\activate
+
+# Run all integration tests
+pytest -m integration -v
+
+# Run specific test file
+pytest tests/integration/test_api_auth.py -v
+```
+
+**JavaScript Track:**
+
+```bash
+cd frontend
+
+# Run contract tests
+npm test -- tests/integration/contract.test.js
+
+# Run component tests with MSW
+npm test -- tests/unit/CreatePost.test.jsx
+```
+
+### Step 2: Trace Complete Workflows
+
+**Pick a complete user journey and trace it:**
+
+1. **User Registration Flow:**
+
+   - HTTP POST to `/api/auth/register`
+   - Data validation
+   - Password hashing
+   - Database insertion
+   - Response generation
+
+2. **Post Creation Flow:**
+   - User authentication
+   - POST to `/api/posts`
+   - Database insertion
+   - Feed update
+   - Response to frontend
+
+### Step 3: Experiment with Tests
+
+**Try these experiments:**
+
+1. **Make a test fail intentionally** - Change an assertion and see what happens
+2. **Test error scenarios** - Send invalid data and verify proper error responses
+3. **Test authorization** - Try to access resources you shouldn't have access to
+
+### Step 4: Write Your First Integration Test
+
+**Python Track - Test a simple API endpoint:**
+
+```python
+def test_get_user_profile(client, test_user):
+    # Arrange
+    user_id = test_user.id
+
+    # Act
+    response = client.get(f"/api/users/{user_id}")
+
+    # Assert
+    assert response.status_code == 200
+    data = response.json()
+    assert data["username"] == test_user.username
+    assert data["email"] == test_user.email
+```
+
+**JavaScript Track - Test API contract:**
+
+```javascript
+test("GET /api/users/:id contract validation", async () => {
+  // Arrange
+  const userId = 1;
+
+  // Act
+  const response = await fetch(`/api/users/${userId}`);
+
+  // Assert
+  expect(response.status).toBe(200);
+  const data = await response.json();
+  expect(data).toHaveProperty("id");
+  expect(data).toHaveProperty("username");
+  expect(data).toHaveProperty("email");
+});
+```
+
+---
+
+<h2 id="part-6-additional-patterns">Part 6: Additional Patterns 🚀</h2>
+
+**📝 Note:** The patterns below are **additional enhancements** to your integration testing skills. All the **core concepts** needed to meet the Stage 2 success criteria are covered in Parts 1-5 above.
+
+These patterns enhance your testing capabilities:
+
+### Test Factories
+
+Create realistic test data easily:
+
+<details open>
+<summary><strong>🐍 Python</strong></summary>
+
+**Real factories from `backend/tests/factories.py`:**
+
+```python
+class UserFactory:
+    """
+    Factory for creating User instances with sensible defaults.
+
+    This factory follows the Factory Pattern to create test users easily.
+    It provides sensible defaults while allowing customization when needed.
+
+    Key Features:
+    - Auto-generates unique emails and usernames
+    - Handles password hashing automatically
+    - Saves to database and returns committed instance
+    - Supports batch creation for multiple users
+    """
+
+    @classmethod
+    def create(cls, db_session, email=None, username=None, **kwargs):
+        """
+        Create a user with sensible defaults.
+
+        This method creates a User instance with auto-generated values for
+        required fields, handles password hashing, and saves to the database.
+        Each call generates unique values to avoid conflicts.
+        """
+        if email is None:
+            email = f"user{cls._counter}@test.com"
+        if username is None:
+            username = f"user{cls._counter}"
+
+        user = User(
+            email=email,
+            username=username,
+            display_name=display_name,
+            hashed_password=get_password_hash(password),  # Auto-hash password
+            **kwargs,
+        )
+        db_session.add(user)
+        db_session.commit()
+        return user
+
+# Usage examples from factories.py:
+# Simple user creation
+user = UserFactory.create(db_session)
+
+# Custom user with specific data
+user = UserFactory.create(
+    db_session,
+    email="custom@test.com",
+    username="customuser",
+    display_name="Custom User"
+)
+
+# Batch creation for multiple users
+users = UserFactory.create_batch(db_session, 10)
+```
+
+</details>
+
+<details open>
+<summary><strong>☕ JavaScript</strong></summary>
+
+```javascript
+// Without factory (repetitive)
+test("user posts", async () => {
+  const user = await User.create({
+    username: "testuser",
+    email: "test@example.com",
+    display_name: "Test User",
+  });
+  // ... test logic
+});
+
+// With factory (clean)
+test("user posts", async () => {
+  const user = await createTestUser();
+  // ... test logic
+});
+```
+
+</details>
+
+### MSW (Mock Service Worker) for API Mocking
+
+<details open>
+<summary><strong>☕ JavaScript</strong></summary>
+
+**Real MSW handlers from `frontend/src/tests/mocks/handlers.js`:**
+
+```javascript
+/**
+ * MSW (Mock Service Worker) handlers for component testing
+ *
+ * These handlers provide realistic API mocking for testing React components
+ * without needing a running backend. All responses match the actual FastAPI
+ * backend schema, ensuring tests accurately reflect real API behavior.
+ *
+ * Key Features:
+ * - Network-level mocking (intercepts actual fetch/axios calls)
+ * - Realistic response data matching backend schema
+ * - Support for different HTTP methods and status codes
+ * - Easy to override for specific test scenarios
+ */
+
+import { http, HttpResponse } from "msw";
+
+const API_BASE = "http://localhost:8000/api";
+
+export const handlers = [
+  /**
+   * GET /api/feed - Returns user's feed posts
+   *
+   * This handler mocks the feed endpoint that returns posts from users
+   * the current user follows. Used for testing PostList, Feed, and
+   * other components that display user feeds.
+   */
+  http.get(`${API_BASE}/feed`, () => {
+    return HttpResponse.json([
+      {
+        id: 1,
+        content: "Mocked post from MSW",
+        author: {
+          id: 1,
+          username: "testuser",
+          display_name: "Test User",
+        },
+        created_at: new Date().toISOString(),
+        reaction_counts: { "👍": 5, "❤️": 2 },
+        is_own_post: false,
+      },
+    ]);
+  }),
+
+  /**
+   * POST /api/posts/ - Create a new post
+   *
+   * This handler mocks post creation, simulating the backend's response
+   * when a user creates a new post. Used for testing CreatePost component
+   * and post creation workflows.
+   *
+   * Request body: { content: string, image_url?: string, video_url?: string }
+   * Response: Post object with generated ID and author info
+   */
+  http.post(`${API_BASE}/posts/`, async ({ request }) => {
+    const body = await request.json();
+    return HttpResponse.json({
+      id: Date.now(), // Simulate auto-generated ID
+      content: body.content,
+      author: {
+        id: 1,
+        username: "testuser",
+        display_name: "Test User",
+      },
+      created_at: new Date().toISOString(),
+      reaction_counts: {},
+      is_own_post: true,
+    });
+  }),
+];
+```
+
+**Using MSW in tests:**
+
+```javascript
+// From frontend/src/tests/unit/examples/README.md
+import { setupServer } from "msw/node";
+import { handlers } from "../../../test/mocks/handlers";
+
+const server = setupServer(...handlers);
+
+beforeAll(() => server.listen());
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
+
+test("component fetches data", async () => {
+  render(<MyComponent />);
+
+  await waitFor(() => {
+    expect(screen.getByText("Mocked post from MSW")).toBeInTheDocument();
+  });
+});
+```
+
+</details>
+
+### API Contract Validation
+
+<details open>
+<summary><strong>☕ JavaScript</strong></summary>
+
+```javascript
+// Contract validation with OpenAPI schema
+import { validateContract } from "../contract-helpers.js";
+
+test("API response matches OpenAPI schema", async () => {
+  const response = await fetch("/api/posts");
+  const data = await response.json();
+
+  // Validate response structure matches schema
+  expect(() => {
+    validateContract(data, "/api/posts", "get", 200);
+  }).not.toThrow();
+
+  // Verify required fields exist
+  expect(data).toHaveProperty("id");
+  expect(data).toHaveProperty("content");
+  expect(data).toHaveProperty("created_at");
+});
+
+// Testing components that fetch data
+test("PostList component fetches and displays data", async () => {
+  // MSW mocks the API call
+  render(<PostList />);
+
+  // Wait for data to load
+  await waitFor(() => {
+    expect(screen.getByText("Loading...")).toBeInTheDocument();
+  });
+
+  await waitFor(() => {
+    expect(screen.getByText("Test post")).toBeInTheDocument();
+  });
+});
+```
+
+</details>
+
+### Test Organization
+
+Group related tests together:
+
+<details open>
+<summary><strong>🐍 Python</strong></summary>
+
+```python
+class TestPostAPI:
+    """Tests for post-related API endpoints."""
 
     def test_create_post_success(self):
-        pass
+        # ... test implementation
 
     def test_create_post_unauthorized(self):
-        pass
+        # ... test implementation
 
     def test_create_post_invalid_data(self):
-        pass
+        # ... test implementation
 ```
 
-**Benefits:**
+</details>
 
-- Related tests grouped together
-- Shared setup via class fixtures
-- Clear test categories
+<details open>
+<summary><strong>☕ JavaScript</strong></summary>
 
-### 4. Authorization Testing
+```javascript
+describe("Post API", () => {
+  // Tests for post-related API endpoints
 
-```python
-def test_delete_other_users_post(client, test_user, test_user_2):
-    # test_user_2 tries to delete test_user's post
-    response = client.delete(
-        f"/posts/{post_id}",
-        headers=auth_headers_user_2
-    )
-    assert response.status_code == 403  # Forbidden
+  test("create post success", () => {
+    // ... test implementation
+  });
+
+  test("create post unauthorized", () => {
+    // ... test implementation
+  });
+
+  test("create post invalid data", () => {
+    // ... test implementation
+  });
+});
 ```
 
-**Security matters!** Tests verify users can't access what they shouldn't.
+</details>
 
-### 5. Test Factories
+### API Contract Testing
 
-```python
-from tests.factories import UserFactory, PostFactory
+**Additional Pattern:** Property-based contract testing with Schemathesis
 
-user = UserFactory.create(db_session)
-posts = PostFactory.create_batch(db_session, user_id=user.id, count=5)
-```
-
-**Factories provide:**
-
-- Realistic test data
-- Flexible data generation
-- Reduced boilerplate
-
-### 6. 🔍 Advanced Topic: API Contract Testing
-
-**File:** [`backend/tests/integration/test_api_contract.py`](../../backend/tests/integration/test_api_contract.py)
-
-This file demonstrates **property-based contract testing** with Schemathesis - an advanced technique that automatically generates hundreds of test cases from your API schema.
-
-**What is it?**
 Instead of writing individual test cases, Schemathesis reads your OpenAPI schema and automatically generates 500+ test cases to validate:
 
 - All endpoints match documentation
@@ -234,15 +1092,6 @@ Instead of writing individual test cases, Schemathesis reads your OpenAPI schema
 - Data types are correct
 - Edge cases are handled
 - Security vulnerabilities are found (fuzzing)
-
-**Example:** One test for POST /api/posts generates:
-
-- Valid inputs (happy path)
-- Missing required fields
-- Wrong data types
-- Boundary values
-- XSS/injection attempts
-- 50+ more scenarios you'd never think to test!
 
 **Current Status:** ⚠️ **Skipped** (OpenAPI 3.1.0 compatibility)
 
@@ -252,113 +1101,12 @@ FastAPI 0.115+ uses OpenAPI 3.1.0, but Schemathesis only has experimental suppor
 
 - 📚 **Yes!** Read [Contract Testing Guide](../../docs/guides/CONTRACT_TESTING.md) to understand the concept
 - 🎯 **For now:** Focus on the 180 integration tests that ARE running
-- 🔄 **Alternative:** Frontend contract testing works today! See [Lab 6C](../../learn/stage_4_performance_security/exercises/LAB_06C_Frontend_Integration_Testing.md)
+- 🔄 **Alternative:** Frontend contract testing works today! See [Lab 6C](../../learn/stage_3_api_e2e/exercises/LAB_06C_Frontend_Integration_Testing_Python.md)
 - 💼 **Career value:** Understanding contract testing is a professional differentiator
 
-**Come back to this after completing Stage 3.** The concept is important, but not critical for learning basic integration testing.
-
 ---
 
-## 🏃 How to Practice
-
-**Pick your track below:**
-
----
-
-### 🐍 Python Track Practice
-
-**Step 1: Run Backend Integration Tests**
-
-```bash
-cd backend
-source .venv/bin/activate  # Windows: .venv\Scripts\activate
-
-# Run all integration tests
-pytest -m integration -v
-
-# Run specific test file
-pytest tests/integration/test_api_auth.py -v
-```
-
-**Expected:** All tests pass. Note they take longer than unit tests (database, HTTP).
-
-**Step 2: Trace Complete API Flow**
-
-Pick registration flow in `tests/integration/test_api_auth.py`:
-
-1. Find `test_register_new_user_success`
-2. Trace: HTTP POST → Validation → Database → Response
-3. Verify by looking at actual endpoint code in `routers/auth.py`
-
-**Step 3: Test Authorization**
-
-Find test verifying authorization (e.g., deleting someone else's post).
-
-**Questions:**
-
-- What HTTP status code means "forbidden"? (403)
-- What happens if you remove the auth check?
-- How does the test verify security?
-
----
-
-### ☕ JavaScript Track Practice
-
-**Step 1: Run Frontend Integration Tests**
-
-```bash
-cd frontend
-
-# Run contract tests (validate against backend API schema)
-npm test -- tests/integration/contract.test.js
-
-# Run component tests with MSW (mocked API)
-npm test -- tests/unit/CreatePost.test.jsx
-```
-
-**Expected:** Tests pass, MSW intercepts API calls.
-
-**Step 2: Understand Contract Testing**
-
-Open `src/tests/integration/contract.test.js`:
-
-1. Notice OpenAPI schema validation
-2. See how frontend validates response structure
-3. Understand: If backend changes API, these tests fail!
-
-**Step 3: Explore MSW (Mock Service Worker)**
-
-Open `src/tests/mocks/handlers.js`:
-
-**Questions:**
-
-- How does MSW mock the `/api/posts` endpoint?
-- What response structure does it return?
-- Why mock instead of calling real API?
-
-**Step 4: Test Component + API Integration**
-
-Look at `tests/unit/CreatePost.test.jsx`:
-
-- Notice: `api.postsAPI.createPost.mockResolvedValueOnce()`
-- This tests component behavior when API succeeds/fails
-- Integration: Component logic + API calls (without real server)
-
----
-
-### 🔄 Hybrid Track Practice
-
-**Test both sides of the API contract!**
-
-1. Run backend integration tests (Python)
-2. Run frontend contract tests (JavaScript)
-3. Make a breaking change to backend API response
-4. See which tests fail (contract tests should catch it!)
-5. Understand: This is how teams prevent integration bugs
-
----
-
-## ✅ Success Criteria
+<h2 id="success-criteria">✅ Success Criteria</h2>
 
 You're ready for Stage 3 when you can:
 
@@ -391,7 +1139,7 @@ You're ready for Stage 3 when you can:
 
 ---
 
-## 🧠 Why This Matters
+<h2 id="why-this-matters">🧠 Why This Matters</h2>
 
 ### In Real QA Teams
 
@@ -409,54 +1157,23 @@ You're ready for Stage 3 when you can:
 
 ---
 
-## 💡 Key Concepts
-
-### Integration Test Characteristics
-
-**Compared to Unit Tests:**
-
-| Aspect           | Unit Tests              | Integration Tests       |
-| ---------------- | ----------------------- | ----------------------- |
-| **Speed**        | Milliseconds            | Seconds                 |
-| **Scope**        | Single function         | Multiple components     |
-| **Dependencies** | Mocked                  | Real (database, APIs)   |
-| **Purpose**      | Verify logic            | Verify interactions     |
-| **Failures**     | Pinpoint exact function | Show integration issues |
-
-### Test Pyramid
-
-```text
-         /\
-        /  \      ← Few E2E tests (slow, expensive)
-       /____\
-      /      \    ← More integration tests (moderate speed)
-     /________\
-    /          \  ← Many unit tests (fast, cheap)
-   /____________\
-```
-
-**Integration tests** are the middle layer - balanced between speed and realism.
-
-### HTTP Status Codes to Know
-
-- `200 OK` - Success (GET, PATCH)
-- `201 Created` - Success (POST)
-- `204 No Content` - Success (DELETE)
-- `400 Bad Request` - Invalid input
-- `401 Unauthorized` - Not authenticated
-- `403 Forbidden` - Authenticated but not authorized
-- `404 Not Found` - Resource doesn't exist
-- `500 Internal Server Error` - Server bug
-
----
-
-## 🔗 Related Resources
+<h2 id="related-resources">🔗 Related Resources</h2>
 
 ### Hands-On Practice
 
-- [Lab 3: Testing API Endpoints](exercises/LAB_03_Testing_API_Endpoints.md)
-- [Lab 5: Test Data Management](exercises/LAB_05_Test_Data_Management.md)
-- [Lab 6: Testing with Rate Limits](exercises/LAB_06_Testing_With_Rate_Limits.md)
+**🐍 Python Track:**
+
+- [Lab 5: API Endpoint Testing (Python)](exercises/LAB_05_API_Endpoint_Testing_Python.md)
+- [Lab 6: Advanced API Testing (Python)](exercises/LAB_06_Advanced_API_Testing_Python.md)
+- [Lab 7: Test Data Management (Python)](exercises/LAB_07_Test_Data_Management_Python.md)
+- [Lab 8: Contract Testing Foundations (Python)](exercises/LAB_08_Contract_Testing_Foundations_Python.md)
+
+**🟨 JavaScript Track:**
+
+- [Lab 5: API Endpoint Testing (JavaScript)](exercises/LAB_05_API_Endpoint_Testing_JavaScript.md)
+- [Lab 6: Component Testing (JavaScript)](exercises/LAB_06_Component_Testing_JavaScript.md)
+- [Lab 7: Test Data Management (JavaScript)](exercises/LAB_07_Test_Data_Management_JavaScript.md)
+- [Lab 8: Contract Testing Foundations (JavaScript)](exercises/LAB_08_Contract_Testing_Foundations_JavaScript.md)
 
 ### Documentation
 
@@ -467,11 +1184,11 @@ You're ready for Stage 3 when you can:
 ### Reference
 
 - [Test Database Setup](../../backend/tests/README.md)
-- [Test Factories Documentation](exercises/LAB_05_Test_Data_Management.md)
+- [Test Factories Documentation](exercises/LAB_07_Test_Data_Management_Python.md)
 
 ---
 
-## 🧠 Self-Check Quiz (Optional)
+<h2 id="self-check-quiz-optional">🧠 Self-Check Quiz (Optional)</h2>
 
 Before moving to Stage 3, can you answer these questions?
 
@@ -509,11 +1226,11 @@ Before moving to Stage 3, can you answer these questions?
    - C) Status code, response data, and headers
    - D) Only that the endpoint doesn't crash
 
-**Answers:** [Check your answers here](solutions/stage_2_quiz_answers.md)
+**Answers:** [Check your answers here](../solutions/stage_2_quiz_answers.md)
 
 ---
 
-## 🤔 Reflection
+<h2 id="reflection">🤔 Reflection</h2>
 
 Before moving to Stage 3, answer these:
 
@@ -531,7 +1248,7 @@ Before moving to Stage 3, answer these:
 
 ---
 
-## 🎉 Stage Complete
+<h2 id="stage-complete">🎉 Stage Complete</h2>
 
 You now understand how to test multi-component systems!
 

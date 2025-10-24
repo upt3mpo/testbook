@@ -4,7 +4,7 @@ End-to-end tests for Testbook using JavaScript and Playwright Test.
 
 ---
 
-## 🚀 Quick Start
+<h2 id="quick-start">🚀 Quick Start</h2>
 
 ### 1. Install Dependencies
 
@@ -44,7 +44,7 @@ npm run test:debug
 
 ---
 
-## ⚙️ Configuration
+<h2 id="configuration">⚙️ Configuration</h2>
 
 ### Environment Variables
 
@@ -78,7 +78,7 @@ BASE_URL=http://localhost:3000 npx playwright test
 
 ---
 
-## 🧪 Test Helpers
+<h2 id="test-helpers">🧪 Test Helpers</h2>
 
 All test helpers are in `fixtures/test-helpers.js`:
 
@@ -193,7 +193,7 @@ tests/e2e/
 
 ---
 
-## 🎯 Writing Tests
+<h2 id="writing-tests">🎯 Writing Tests</h2>
 
 ### Basic Test Example
 
@@ -263,7 +263,7 @@ test.describe("Post Tests", () => {
 
 ---
 
-## 🐛 Debugging Tests
+<h2 id="debugging-tests">🐛 Debugging Tests</h2>
 
 ### Run with Visible Browser
 
@@ -311,7 +311,7 @@ await page.screenshot({ path: "screenshot.png" });
 
 ---
 
-## 🏃 Running Specific Tests
+<h2 id="running-specific-tests">🏃 Running Specific Tests</h2>
 
 ### By File
 
@@ -343,7 +343,7 @@ npx playwright test --project=firefox
 
 ---
 
-## 📊 Test Reports
+<h2 id="test-reports">📊 Test Reports</h2>
 
 ### HTML Report
 
@@ -372,7 +372,7 @@ npx playwright show-trace trace.zip
 
 ---
 
-## 🔧 Troubleshooting
+<h2 id="troubleshooting">🔧 Troubleshooting</h2>
 
 ### "net::ERR_CONNECTION_REFUSED"
 
@@ -417,7 +417,7 @@ npx playwright show-trace trace.zip
 
 ---
 
-## 📚 Best Practices
+<h2 id="best-practices">📚 Best Practices</h2>
 
 ### ✅ Do
 

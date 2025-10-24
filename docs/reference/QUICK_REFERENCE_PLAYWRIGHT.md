@@ -486,7 +486,11 @@ use: {
 
 ```javascript
 // Enable debug logs
+// Linux/Mac
 DEBUG=pw:api npx playwright test
+
+// Windows (PowerShell)
+$env:DEBUG='pw:api'; npx playwright test
 
 // Log to console
 console.log(await page.locator('h1').textContent())
@@ -632,7 +636,7 @@ await page.evaluate(() => document.querySelector("button").click());
 
 - [Playwright Documentation](https://playwright.dev/)
 - [tests/README.md](../../tests/README.md) - Testbook E2E tests
-- [TESTING_PATTERNS.md](TESTING_PATTERNS.md) - Testing dynamic content
+- [TESTING_PATTERNS.md](../concepts/TESTING_PATTERNS.md) - Testing dynamic content
 
 ---
 

@@ -391,7 +391,7 @@ For questions or issues:
 - **[README.md](../../README.md)** - Main documentation and project overview
 - **[README.md](../../README.md#quick-start-5-minutes)** - Get started in 5 minutes
 - **[TESTING_GUIDE.md](../guides/TESTING_GUIDE.md)** - Complete testing examples
-- **[TESTING_PATTERNS.md](TESTING_PATTERNS.md)** - Testing dynamic content patterns
+- **[TESTING_PATTERNS.md](../concepts/TESTING_PATTERNS.md)** - Testing dynamic content patterns
 - **[TESTING_CHEATSHEET.md](TESTING_CHEATSHEET.md)** - Quick reference guide
 - **[TESTING_FEATURES.md](TESTING_FEATURES.md)** - All testable features
 
