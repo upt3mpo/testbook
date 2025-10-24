@@ -782,13 +782,13 @@ flowchart TB
    cd testbook
 ```
 
-2. **Run the start script:**
+1. **Run the start script:**
 
    ```powershell
    .\start-dev.bat
    ```
 
-3. **Optional: Configure Environment Variables**
+2. **Optional: Configure Environment Variables**
 
    **Skip this if you use `start-dev.bat`** - it handles everything automatically!
 
@@ -1087,7 +1087,7 @@ Or use prebuilt wheels: see [Issue 2.6](#issue-26-cargo-the-rust-package-manager
 - Add: `C:\Users\[YourUsername]\AppData\Local\Programs\Python\Python313\`
 - Add: `C:\Users\[YourUsername]\AppData\Local\Programs\Python\Python313\Scripts\`
 
-3. **Restart terminal** after PATH changes
+1. **Restart terminal** after PATH changes
 
 #### Issue 2: "npm is not recognized" or "node is not recognized"
 

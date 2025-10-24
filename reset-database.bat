@@ -70,4 +70,3 @@ echo.
 echo 🎯 You can now test with a clean database!
 echo.
 pause
-

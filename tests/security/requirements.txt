@@ -24,4 +24,3 @@ python-dotenv>=1.0.0
 
 # Rate limiting tests
 pytest-timeout>=2.2.0
-

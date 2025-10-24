@@ -113,7 +113,9 @@ class TestDevEndpointsWithTestMode:
 
     def test_create_post_with_invalid_user(self):
         """POST /api/dev/create-post should handle invalid user gracefully"""
-        response = client.post("/api/dev/create-post", params={"user_id": 99999, "content": "Test"})
+        response = client.post(
+            "/api/dev/create-post", params={"user_id": 99999, "content": "Test"}
+        )
         assert response.status_code == 200
         assert "error" in response.json()
 

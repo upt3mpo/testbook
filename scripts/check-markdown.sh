@@ -129,4 +129,3 @@ echo -e "${GREEN}✅ All markdown validation checks passed!${NC}"
 echo ""
 echo "You're good to commit! 🚀"
 exit 0
-

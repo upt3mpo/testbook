@@ -54,7 +54,9 @@ class TestCreatePost:
 
     def test_create_empty_post(self, client, auth_headers):
         """Test creating post with empty content."""
-        response = client.post("/api/posts/", json={"content": ""}, headers=auth_headers)
+        response = client.post(
+            "/api/posts/", json={"content": ""}, headers=auth_headers
+        )
 
         # Should either fail validation or accept empty content (returns 201 if accepted)
         assert response.status_code in [201, 400, 422]
@@ -182,7 +184,9 @@ class TestComments:
 
     def test_add_comment_without_auth(self, client, test_post):
         """Test that adding comment requires authentication."""
-        response = client.post(f"/api/posts/{test_post.id}/comments", json={"content": "Comment"})
+        response = client.post(
+            f"/api/posts/{test_post.id}/comments", json={"content": "Comment"}
+        )
 
         assert response.status_code in [401, 403, 422]
 
@@ -196,7 +200,9 @@ class TestComments:
 
         assert response.status_code == 404
 
-    def test_get_post_with_comments(self, client, test_post, test_comment, auth_headers):
+    def test_get_post_with_comments(
+        self, client, test_post, test_comment, auth_headers
+    ):
         """Test that getting post includes comments."""
         response = client.get(f"/api/posts/{test_post.id}", headers=auth_headers)
 
@@ -211,7 +217,9 @@ class TestComments:
 class TestReactions:
     """Test reaction functionality."""
 
-    @pytest.mark.parametrize("reaction_type", ["like", "love", "haha", "wow", "sad", "angry"])
+    @pytest.mark.parametrize(
+        "reaction_type", ["like", "love", "haha", "wow", "sad", "angry"]
+    )
     def test_add_reaction_to_post(self, client, test_post, auth_headers, reaction_type):
         """Test adding different reaction types to a post."""
         response = client.post(
@@ -250,7 +258,9 @@ class TestReactions:
         )
 
         # Remove reaction
-        response = client.delete(f"/api/posts/{test_post.id}/reactions", headers=auth_headers)
+        response = client.delete(
+            f"/api/posts/{test_post.id}/reactions", headers=auth_headers
+        )
 
         assert response.status_code == 200
 
@@ -313,13 +323,17 @@ class TestReposts:
 
         if create_response.status_code == 201:
             # Remove repost
-            response = client.delete(f"/api/posts/repost/{test_post.id}", headers=headers)
+            response = client.delete(
+                f"/api/posts/repost/{test_post.id}", headers=headers
+            )
 
             assert response.status_code == 200
 
     def test_repost_without_auth(self, client, test_post):
         """Test that reposting requires authentication."""
-        response = client.post("/api/posts/repost", json={"original_post_id": test_post.id})
+        response = client.post(
+            "/api/posts/repost", json={"original_post_id": test_post.id}
+        )
 
         assert response.status_code in [401, 403, 422]
 

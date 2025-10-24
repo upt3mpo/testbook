@@ -20,7 +20,13 @@ from datetime import datetime, timedelta, timezone
 import pytest
 from jose import JWTError, jwt
 
-from auth import ALGORITHM, SECRET_KEY, create_access_token, get_password_hash, verify_password
+from auth import (
+    ALGORITHM,
+    SECRET_KEY,
+    create_access_token,
+    get_password_hash,
+    verify_password,
+)
 
 
 @pytest.mark.unit
@@ -241,7 +247,9 @@ class TestJWTTokens:
         """Test that expired tokens can be detected."""
         email = "test@example.com"
         # Create token that expires immediately
-        token = create_access_token(data={"sub": email}, expires_delta=timedelta(seconds=-1))
+        token = create_access_token(
+            data={"sub": email}, expires_delta=timedelta(seconds=-1)
+        )
 
         with pytest.raises(jwt.ExpiredSignatureError):
             jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])

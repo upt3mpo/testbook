@@ -55,4 +55,3 @@ Any other relevant information.
 
 - [ ] I'd be willing to submit a PR to fix this
 - [ ] I just want to report the issue
-

@@ -134,4 +134,3 @@ echo "   - emma.davis@testbook.com / EmmaLovesPhotos"
 echo ""
 echo "🎯 You can now test with a clean database!"
 echo ""
-

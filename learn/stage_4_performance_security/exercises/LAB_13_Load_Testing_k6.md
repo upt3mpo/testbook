@@ -109,7 +109,7 @@ k6 run load-test-basic.js
 
 **Expected output:**
 
-```
+```text
      ✓ status is 200
      ✓ response time < 200ms
      ✓ response has status field

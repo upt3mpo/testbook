@@ -7,12 +7,8 @@ Complete solutions for password hashing and JWT token testing.
 from datetime import datetime, timedelta
 
 import pytest
-from auth import (
-    create_access_token,
-    decode_token,
-    get_password_hash,
-    verify_password,
-)
+
+from auth import create_access_token, decode_token, get_password_hash, verify_password
 
 
 @pytest.mark.unit

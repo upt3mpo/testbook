@@ -78,6 +78,7 @@ def test_user_posts():
 
 **Create:** `backend/tests/test_data_builders.py`
 
+````python
 """
 Test Data Builders and Factories
 
@@ -91,6 +92,7 @@ from models import User, Post, Comment
 from auth import get_password_hash
 
 class UserBuilder:
+```python
 """
 Builder pattern for creating test users with custom data.
 
@@ -101,7 +103,6 @@ Builder pattern for creating test users with custom data.
     Example:
         user = UserBuilder().with_email("custom@test.com").with_username("custom").build()
     """
-
     def __init__(self):
         """Initialize with default test user data."""
         self.email = "testuser@example.com"      # Default email for testing
@@ -147,10 +148,10 @@ Builder pattern for creating test users with custom data.
         db_session.refresh(user)
         return user
 
+```python
 @pytest.mark.unit
 class TestUserBuilder:
-"""Test the UserBuilder."""
-
+    """Test the UserBuilder."""
     def test_build_default_user(self, db_session):
         """Test building user with defaults."""
         user = UserBuilder().build(db_session)
@@ -193,7 +194,7 @@ class TestUserBuilder:
 ```bash
 cd backend
 pytest tests/test_data_builders.py::TestUserBuilder -v
-````
+```
 
 ✅ **Checkpoint:** All builder tests pass
 

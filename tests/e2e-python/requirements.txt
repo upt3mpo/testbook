@@ -21,4 +21,3 @@ pytest-rerunfailures>=12.0  # Retry flaky tests
 # Optional: For test reporting
 pytest-html>=4.0.0          # HTML reports
 pytest-json-report>=1.5.0   # JSON reports
-

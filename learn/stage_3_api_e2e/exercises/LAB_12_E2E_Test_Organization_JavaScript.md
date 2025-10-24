@@ -45,7 +45,7 @@ Organize tests with clear structure, proper data management, and CI/CD integrati
 
 Create the following directory structure:
 
-```
+```text
 tests/e2e/
 ├── playwright.config.js        # Playwright configuration
 ├── package.json                # E2E test dependencies

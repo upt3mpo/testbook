@@ -66,7 +66,9 @@ class TestUpdateUserProfile:
 
     def test_update_theme(self, client, auth_headers):
         """Test updating user theme preference."""
-        response = client.put("/api/users/me", json={"theme": "dark"}, headers=auth_headers)
+        response = client.put(
+            "/api/users/me", json={"theme": "dark"}, headers=auth_headers
+        )
 
         assert response.status_code == 200
         data = response.json()
@@ -90,32 +92,42 @@ class TestFollowUnfollow:
 
     def test_follow_user(self, client, test_user_2, auth_headers):
         """Test following another user."""
-        response = client.post(f"/api/users/{test_user_2.username}/follow", headers=auth_headers)
+        response = client.post(
+            f"/api/users/{test_user_2.username}/follow", headers=auth_headers
+        )
 
         assert response.status_code == 200
         assert "following" in response.json()["message"].lower()
 
-    def test_unfollow_user(self, client, test_user_2, auth_headers, db_session, test_user):
+    def test_unfollow_user(
+        self, client, test_user_2, auth_headers, db_session, test_user
+    ):
         """Test unfollowing a user."""
         # Follow first
         test_user.following.append(test_user_2)
         db_session.commit()
 
         # Then unfollow
-        response = client.delete(f"/api/users/{test_user_2.username}/follow", headers=auth_headers)
+        response = client.delete(
+            f"/api/users/{test_user_2.username}/follow", headers=auth_headers
+        )
 
         assert response.status_code == 200
         assert "unfollowed" in response.json()["message"].lower()
 
     def test_follow_nonexistent_user(self, client, auth_headers):
         """Test following non-existent user."""
-        response = client.post("/api/users/nonexistentuser/follow", headers=auth_headers)
+        response = client.post(
+            "/api/users/nonexistentuser/follow", headers=auth_headers
+        )
 
         assert response.status_code == 404
 
     def test_follow_yourself(self, client, auth_headers, test_user):
         """Test that you cannot follow yourself."""
-        response = client.post(f"/api/users/{test_user.username}/follow", headers=auth_headers)
+        response = client.post(
+            f"/api/users/{test_user.username}/follow", headers=auth_headers
+        )
 
         # Should either fail or be ignored
         assert response.status_code in [200, 400]
@@ -126,14 +138,18 @@ class TestFollowUnfollow:
 
         assert response.status_code in [401, 403, 422]
 
-    def test_double_follow(self, client, test_user_2, auth_headers, db_session, test_user):
+    def test_double_follow(
+        self, client, test_user_2, auth_headers, db_session, test_user
+    ):
         """Test following the same user twice."""
         # Follow once
         test_user.following.append(test_user_2)
         db_session.commit()
 
         # Try to follow again
-        response = client.post(f"/api/users/{test_user_2.username}/follow", headers=auth_headers)
+        response = client.post(
+            f"/api/users/{test_user_2.username}/follow", headers=auth_headers
+        )
 
         # Should handle gracefully
         assert response.status_code in [200, 400]
@@ -146,26 +162,34 @@ class TestBlockUnblock:
 
     def test_block_user(self, client, test_user_2, auth_headers):
         """Test blocking another user."""
-        response = client.post(f"/api/users/{test_user_2.username}/block", headers=auth_headers)
+        response = client.post(
+            f"/api/users/{test_user_2.username}/block", headers=auth_headers
+        )
 
         assert response.status_code == 200
         assert "blocked" in response.json()["message"].lower()
 
-    def test_unblock_user(self, client, test_user_2, auth_headers, db_session, test_user):
+    def test_unblock_user(
+        self, client, test_user_2, auth_headers, db_session, test_user
+    ):
         """Test unblocking a user."""
         # Block first
         test_user.blocking.append(test_user_2)
         db_session.commit()
 
         # Then unblock
-        response = client.delete(f"/api/users/{test_user_2.username}/block", headers=auth_headers)
+        response = client.delete(
+            f"/api/users/{test_user_2.username}/block", headers=auth_headers
+        )
 
         assert response.status_code == 200
         assert "unblocked" in response.json()["message"].lower()
 
     def test_block_yourself(self, client, auth_headers, test_user):
         """Test that you cannot block yourself."""
-        response = client.post(f"/api/users/{test_user.username}/block", headers=auth_headers)
+        response = client.post(
+            f"/api/users/{test_user.username}/block", headers=auth_headers
+        )
 
         # Should either fail or be ignored
         assert response.status_code in [200, 400]
@@ -182,26 +206,34 @@ class TestBlockUnblock:
 class TestGetFollowersFollowing:
     """Test get followers/following list endpoints."""
 
-    def test_get_followers_list(self, client, test_user, test_user_2, db_session, auth_headers):
+    def test_get_followers_list(
+        self, client, test_user, test_user_2, db_session, auth_headers
+    ):
         """Test getting user's followers list."""
         # Make test_user_2 follow test_user
         test_user_2.following.append(test_user)
         db_session.commit()
 
-        response = client.get(f"/api/users/{test_user.username}/followers", headers=auth_headers)
+        response = client.get(
+            f"/api/users/{test_user.username}/followers", headers=auth_headers
+        )
 
         assert response.status_code == 200
         data = response.json()
         assert isinstance(data, list)
         assert len(data) >= 1
 
-    def test_get_following_list(self, client, test_user, test_user_2, db_session, auth_headers):
+    def test_get_following_list(
+        self, client, test_user, test_user_2, db_session, auth_headers
+    ):
         """Test getting user's following list."""
         # Make test_user follow test_user_2
         test_user.following.append(test_user_2)
         db_session.commit()
 
-        response = client.get(f"/api/users/{test_user.username}/following", headers=auth_headers)
+        response = client.get(
+            f"/api/users/{test_user.username}/following", headers=auth_headers
+        )
 
         assert response.status_code == 200
         data = response.json()
@@ -210,7 +242,9 @@ class TestGetFollowersFollowing:
 
     def test_get_followers_empty_list(self, client, test_user, auth_headers):
         """Test getting followers list when user has no followers."""
-        response = client.get(f"/api/users/{test_user.username}/followers", headers=auth_headers)
+        response = client.get(
+            f"/api/users/{test_user.username}/followers", headers=auth_headers
+        )
 
         assert response.status_code == 200
         data = response.json()
@@ -231,7 +265,9 @@ class TestGetUserPosts:
 
     def test_get_user_posts(self, client, test_user, test_post, auth_headers):
         """Test getting a user's posts."""
-        response = client.get(f"/api/users/{test_user.username}/posts", headers=auth_headers)
+        response = client.get(
+            f"/api/users/{test_user.username}/posts", headers=auth_headers
+        )
 
         assert response.status_code == 200
         data = response.json()
@@ -241,7 +277,9 @@ class TestGetUserPosts:
 
     def test_get_posts_for_user_with_no_posts(self, client, test_user_2, auth_headers):
         """Test getting posts for user with no posts."""
-        response = client.get(f"/api/users/{test_user_2.username}/posts", headers=auth_headers)
+        response = client.get(
+            f"/api/users/{test_user_2.username}/posts", headers=auth_headers
+        )
 
         assert response.status_code == 200
         data = response.json()
@@ -261,7 +299,9 @@ class TestDeleteAccount:
 
         # Verify user is deleted - create new auth headers to try accessing
         try:
-            get_response = client.get(f"/api/users/{test_user.username}", headers=auth_headers)
+            get_response = client.get(
+                f"/api/users/{test_user.username}", headers=auth_headers
+            )
             # Should either be 404 or 401 (if token is invalidated)
             assert get_response.status_code in [401, 404]
         except Exception:
@@ -279,14 +319,18 @@ class TestDeleteAccount:
 class TestUserRelationships:
     """Test complex user relationship scenarios."""
 
-    def test_follow_then_block(self, client, test_user, test_user_2, auth_headers, db_session):
+    def test_follow_then_block(
+        self, client, test_user, test_user_2, auth_headers, db_session
+    ):
         """Test following then blocking a user."""
         # Follow
         test_user.following.append(test_user_2)
         db_session.commit()
 
         # Block
-        response = client.post(f"/api/users/{test_user_2.username}/block", headers=auth_headers)
+        response = client.post(
+            f"/api/users/{test_user_2.username}/block", headers=auth_headers
+        )
 
         assert response.status_code == 200
 
@@ -294,7 +338,9 @@ class TestUserRelationships:
         db_session.refresh(test_user)
         assert test_user_2 in test_user.blocking
 
-    def test_mutual_follow(self, client, test_user, test_user_2, auth_headers, db_session):
+    def test_mutual_follow(
+        self, client, test_user, test_user_2, auth_headers, db_session
+    ):
         """Test mutual following between two users."""
         from auth import create_access_token
 
@@ -306,7 +352,9 @@ class TestUserRelationships:
         token2 = create_access_token(data={"sub": test_user_2.email})
         headers2 = {"Authorization": f"Bearer {token2}"}
 
-        response = client.post(f"/api/users/{test_user.username}/follow", headers=headers2)
+        response = client.post(
+            f"/api/users/{test_user.username}/follow", headers=headers2
+        )
 
         assert response.status_code == 200
 

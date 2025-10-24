@@ -45,7 +45,7 @@ Organize tests with clear structure, proper data management, and CI/CD integrati
 
 Create the following directory structure:
 
-```
+```text
 tests/e2e/
 ├── conftest.py                 # Shared fixtures and configuration
 ├── pytest.ini                 # E2E-specific pytest configuration

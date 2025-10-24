@@ -264,7 +264,9 @@ class TestCommentModel:
         assert comment.author.id == test_user_2.id
         assert comment.author.username == test_user_2.username
 
-    def test_post_comments_relationship(self, db_session, test_post, test_user_2, test_user_3):
+    def test_post_comments_relationship(
+        self, db_session, test_post, test_user_2, test_user_3
+    ):
         """Test that post.comments relationship works."""
         comment1 = Comment(
             post_id=test_post.id,
@@ -289,7 +291,9 @@ class TestCommentModel:
 class TestReactionModel:
     """Test Reaction model functionality."""
 
-    @pytest.mark.parametrize("reaction_type", ["like", "love", "haha", "wow", "sad", "angry"])
+    @pytest.mark.parametrize(
+        "reaction_type", ["like", "love", "haha", "wow", "sad", "angry"]
+    )
     def test_create_reaction(self, db_session, test_post, test_user_2, reaction_type):
         """Test creating different types of reactions."""
         reaction = Reaction(
@@ -330,7 +334,9 @@ class TestReactionModel:
 
         assert reaction.user.id == test_user_2.id
 
-    def test_post_reactions_relationship(self, db_session, test_post, test_user_2, test_user_3):
+    def test_post_reactions_relationship(
+        self, db_session, test_post, test_user_2, test_user_3
+    ):
         """Test that post.reactions relationship works."""
         reaction1 = Reaction(
             post_id=test_post.id,
@@ -418,7 +424,9 @@ class TestCascadeDeletes:
         db_session.delete(test_post)
         db_session.commit()
 
-        assert db_session.query(Comment).filter(Comment.id == comment_id).first() is None
+        assert (
+            db_session.query(Comment).filter(Comment.id == comment_id).first() is None
+        )
 
     def test_delete_post_deletes_reactions(self, db_session, test_post, test_user_2):
         """Test that deleting a post deletes its reactions."""
@@ -434,7 +442,10 @@ class TestCascadeDeletes:
         db_session.delete(test_post)
         db_session.commit()
 
-        assert db_session.query(Reaction).filter(Reaction.id == reaction_id).first() is None
+        assert (
+            db_session.query(Reaction).filter(Reaction.id == reaction_id).first()
+            is None
+        )
 
 
 # 🧠 Why These Tests Matter:

@@ -640,15 +640,15 @@ source .venv/bin/activate  # Activate Python (macOS/Linux)
 
 ### Day 2-7
 
-4. [../learn/stage_1_unit/exercises/](../learn/stage_1_unit/exercises/) - First test exercises (30 min)
-5. [../learn/stage_1_unit/exercises/](../learn/stage_1_unit/exercises/) - Unit testing exercises (45 min)
-6. [../learn/stage_2_integration/exercises/](../learn/stage_2_integration/exercises/) - Integration test exercises (60 min)
+1. [../learn/stage_1_unit/exercises/](../learn/stage_1_unit/exercises/) - First test exercises (30 min)
+2. [../learn/stage_1_unit/exercises/](../learn/stage_1_unit/exercises/) - Unit testing exercises (45 min)
+3. [../learn/stage_2_integration/exercises/](../learn/stage_2_integration/exercises/) - Integration test exercises (60 min)
 
 ### Week 2+
 
-7. [course/COURSE_AUTOMATION_TESTING_101.md](course/COURSE_AUTOMATION_TESTING_101.md) - Self-paced curriculum
-8. [guides/RUNNING_TESTS.md](guides/RUNNING_TESTS.md) - Reference
-9. [reference/TESTING_CHEATSHEET.md](reference/TESTING_CHEATSHEET.md) - Quick lookups
+1. [course/COURSE_AUTOMATION_TESTING_101.md](course/COURSE_AUTOMATION_TESTING_101.md) - Self-paced curriculum
+2. [guides/RUNNING_TESTS.md](guides/RUNNING_TESTS.md) - Reference
+3. [reference/TESTING_CHEATSHEET.md](reference/TESTING_CHEATSHEET.md) - Quick lookups
 
 ---
 

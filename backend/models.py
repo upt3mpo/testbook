@@ -1,6 +1,15 @@
 from datetime import datetime, timezone
 
-from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, String, Table, Text
+from sqlalchemy import (
+    Boolean,
+    Column,
+    DateTime,
+    ForeignKey,
+    Integer,
+    String,
+    Table,
+    Text,
+)
 from sqlalchemy.orm import relationship
 
 from database import Base
@@ -37,8 +46,12 @@ class User(Base):
 
     # Relationships
     posts = relationship("Post", back_populates="author", cascade="all, delete-orphan")
-    comments = relationship("Comment", back_populates="author", cascade="all, delete-orphan")
-    reactions = relationship("Reaction", back_populates="user", cascade="all, delete-orphan")
+    comments = relationship(
+        "Comment", back_populates="author", cascade="all, delete-orphan"
+    )
+    reactions = relationship(
+        "Reaction", back_populates="user", cascade="all, delete-orphan"
+    )
 
     # Following relationships
     following = relationship(
@@ -73,8 +86,12 @@ class Post(Base):
 
     # Relationships
     author = relationship("User", back_populates="posts")
-    comments = relationship("Comment", back_populates="post", cascade="all, delete-orphan")
-    reactions = relationship("Reaction", back_populates="post", cascade="all, delete-orphan")
+    comments = relationship(
+        "Comment", back_populates="post", cascade="all, delete-orphan"
+    )
+    reactions = relationship(
+        "Reaction", back_populates="post", cascade="all, delete-orphan"
+    )
     original_post = relationship("Post", remote_side=[id], backref="reposts")
 
 

@@ -338,13 +338,13 @@ class TestFeedEdgeCases:
 
 **Estimated Time:** 4 hours
 
-3. ⚠️ Test user edge cases
+1. ⚠️ Test user edge cases
 
    - Add TestUsersEdgeCases class
    - 5 additional tests
    - Estimated gain: +2% coverage
 
-4. ⚠️ Test feed edge cases
+2. ⚠️ Test feed edge cases
    - Add TestFeedEdgeCases class
    - 3 additional tests
    - Estimated gain: +1% coverage
@@ -357,10 +357,10 @@ class TestFeedEdgeCases:
 
 **Estimated Time:** 8 hours
 
-5. ✅ Comprehensive error handling tests
-6. ✅ All pagination scenarios
-7. ✅ All validation edge cases
-8. ✅ Integration test improvements
+1. ✅ Comprehensive error handling tests
+2. ✅ All pagination scenarios
+3. ✅ All validation edge cases
+4. ✅ Integration test improvements
 
 **Result:** 90% → 95%+ coverage
 

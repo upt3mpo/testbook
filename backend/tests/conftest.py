@@ -85,7 +85,9 @@ Debug tips:
 
 # Test database configuration
 TEST_DATABASE_URL = "sqlite:///./test_testbook.db"
-test_engine = create_engine(TEST_DATABASE_URL, connect_args={"check_same_thread": False})
+test_engine = create_engine(
+    TEST_DATABASE_URL, connect_args={"check_same_thread": False}
+)
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=test_engine)
 
 
@@ -401,10 +403,14 @@ def test_posts(db_session: Session, test_user: User, test_user_2: User) -> list[
         list[Post]: List of test posts
     """
     posts = [
-        Post(author_id=test_user.id, content=f"Test post {i} from user 1") for i in range(1, 4)
+        Post(author_id=test_user.id, content=f"Test post {i} from user 1")
+        for i in range(1, 4)
     ]
     posts.extend(
-        [Post(author_id=test_user_2.id, content=f"Test post {i} from user 2") for i in range(1, 3)]
+        [
+            Post(author_id=test_user_2.id, content=f"Test post {i} from user 2")
+            for i in range(1, 3)
+        ]
     )
 
     for post in posts:
@@ -481,7 +487,9 @@ def login_user(client: TestClient, email: str, password: str) -> dict:
     Returns:
         dict: Response containing access_token
     """
-    response = client.post("/api/auth/login", json={"email": email, "password": password})
+    response = client.post(
+        "/api/auth/login", json={"email": email, "password": password}
+    )
     assert response.status_code == 200
     return response.json()
 

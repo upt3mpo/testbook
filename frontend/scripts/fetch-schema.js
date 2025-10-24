@@ -65,4 +65,3 @@ client.get(`${API_URL}/openapi.json`, (res) => {
   console.error('   Run: ./start-dev.sh');
   process.exit(1);
 });
-

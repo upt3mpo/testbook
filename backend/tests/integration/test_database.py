@@ -154,7 +154,12 @@ class TestDatabaseRelationships:
         db_session.commit()
 
         # Join query
-        result = db_session.query(User, Post).join(Post).filter(User.id == test_user.id).first()
+        result = (
+            db_session.query(User, Post)
+            .join(Post)
+            .filter(User.id == test_user.id)
+            .first()
+        )
 
         assert result is not None
         user, post = result
@@ -218,7 +223,9 @@ class TestDatabaseTransactions:
         db_session.commit()
 
         # All posts should be created
-        created_posts = db_session.query(Post).filter(Post.author_id == test_user.id).all()
+        created_posts = (
+            db_session.query(Post).filter(Post.author_id == test_user.id).all()
+        )
         assert len(created_posts) == 5
 
 
@@ -322,10 +329,14 @@ class TestCascadeOperations:
             comment = db_session.query(Comment).filter(Comment.id == comment_id).first()
             assert comment is None
 
-    def test_delete_post_cascades_to_reactions(self, db_session, test_post, test_user_2):
+    def test_delete_post_cascades_to_reactions(
+        self, db_session, test_post, test_user_2
+    ):
         """Test that deleting post deletes reactions."""
         # Create reactions
-        reaction = Reaction(post_id=test_post.id, user_id=test_user_2.id, reaction_type="like")
+        reaction = Reaction(
+            post_id=test_post.id, user_id=test_user_2.id, reaction_type="like"
+        )
         db_session.add(reaction)
         db_session.commit()
         reaction_id = reaction.id
@@ -347,7 +358,9 @@ class TestDatabasePerformance:
     def test_bulk_insert_performance(self, db_session, test_user):
         """Test bulk inserting many posts."""
         # Create 100 posts
-        posts = [Post(author_id=test_user.id, content=f"Bulk post {i}") for i in range(100)]
+        posts = [
+            Post(author_id=test_user.id, content=f"Bulk post {i}") for i in range(100)
+        ]
 
         for post in posts:
             db_session.add(post)
@@ -369,6 +382,11 @@ class TestDatabasePerformance:
         db_session.commit()
 
         # Query should still be fast
-        posts = db_session.query(Post).filter(Post.author_id == test_user.id).limit(10).all()
+        posts = (
+            db_session.query(Post)
+            .filter(Post.author_id == test_user.id)
+            .limit(10)
+            .all()
+        )
 
         assert len(posts) == 10

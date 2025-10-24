@@ -128,4 +128,3 @@ test.describe('Accessibility (axe-core)', () => {
  *     other 60%: keyboard navigation flow, screen reader output, focus management,
  *     and context-dependent issues. Both are necessary."
  */
-

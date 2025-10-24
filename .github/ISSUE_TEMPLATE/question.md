@@ -54,4 +54,3 @@ If applicable, add screenshots.
 - [START_HERE.md](../../START_HERE.md) - Learning paths
 - [RUNNING_TESTS.md](../../docs/guides/RUNNING_TESTS.md) - How to run tests
 - [DEBUGGING_GUIDE.md](../../docs/reference/DEBUGGING_GUIDE.md) - Debug strategies
-

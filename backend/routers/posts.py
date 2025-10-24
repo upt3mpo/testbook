@@ -59,7 +59,9 @@ async def upload_media(
     return {"url": file_url, "filename": file.filename}
 
 
-@router.post("/", response_model=schemas.PostResponse, status_code=status.HTTP_201_CREATED)
+@router.post(
+    "/", response_model=schemas.PostResponse, status_code=status.HTTP_201_CREATED
+)
 def create_post(
     post_data: schemas.PostCreate,
     current_user: models.User = Depends(get_current_user),
@@ -112,7 +114,9 @@ def update_post(
         raise HTTPException(status_code=404, detail="Post not found")
 
     if post.author_id != current_user.id:
-        raise HTTPException(status_code=403, detail="Not authorized to update this post")
+        raise HTTPException(
+            status_code=403, detail="Not authorized to update this post"
+        )
 
     # Update post content
     post.content = post_data.content
@@ -154,7 +158,9 @@ def delete_repost(
     return {"message": "Repost removed successfully"}
 
 
-@router.post("/repost", response_model=schemas.PostResponse, status_code=status.HTTP_201_CREATED)
+@router.post(
+    "/repost", response_model=schemas.PostResponse, status_code=status.HTTP_201_CREATED
+)
 def create_repost(
     repost_data: schemas.RepostCreate,
     current_user: models.User = Depends(get_current_user),
@@ -162,7 +168,9 @@ def create_repost(
 ):
     """Create a repost of an existing post"""
     original_post = (
-        db.query(models.Post).filter(models.Post.id == repost_data.original_post_id).first()
+        db.query(models.Post)
+        .filter(models.Post.id == repost_data.original_post_id)
+        .first()
     )
     if not original_post:
         raise HTTPException(status_code=404, detail="Original post not found")
@@ -247,7 +255,9 @@ def delete_post(
         raise HTTPException(status_code=404, detail="Post not found")
 
     if post.author_id != current_user.id:
-        raise HTTPException(status_code=403, detail="Not authorized to delete this post")
+        raise HTTPException(
+            status_code=403, detail="Not authorized to delete this post"
+        )
 
     db.delete(post)
     db.commit()
@@ -364,7 +374,9 @@ def get_post(
         created_at=post.created_at,
         comments_count=len(post.comments),
         reactions_count=len(post.reactions),
-        reposts_count=db.query(models.Post).filter(models.Post.original_post_id == post.id).count(),
+        reposts_count=db.query(models.Post)
+        .filter(models.Post.original_post_id == post.id)
+        .count(),
         user_reaction=user_reaction,
         has_reposted=has_reposted,
         comments=comments,
@@ -409,7 +421,9 @@ def create_comment(
 
 
 @router.post(
-    "/{post_id}/reactions", response_model=schemas.PostResponse, status_code=status.HTTP_201_CREATED
+    "/{post_id}/reactions",
+    response_model=schemas.PostResponse,
+    status_code=status.HTTP_201_CREATED,
 )
 def add_reaction(
     post_id: int,
@@ -491,7 +505,9 @@ def _format_single_post(
     # Get counts
     comments_count = len(post.comments)
     reactions_count = len(post.reactions)
-    reposts_count = db.query(models.Post).filter(models.Post.original_post_id == post.id).count()
+    reposts_count = (
+        db.query(models.Post).filter(models.Post.original_post_id == post.id).count()
+    )
 
     # Check user reaction
     user_reaction = None
