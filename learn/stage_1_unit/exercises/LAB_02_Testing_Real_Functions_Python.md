@@ -1,12 +1,17 @@
 # 🧪 Lab 2: Testing Real Functions
 
-**Estimated Time:** 45 minutes
-**Difficulty:** Beginner
+**Estimated Time:** 45 minutes<br>
+**Difficulty:** Beginner<br>
+**Language:** 🐍 Python<br>
 **Prerequisites:** Lab 1 completed
+
+**💡 Need JavaScript instead?** Try [Lab 2: Testing Real Functions (JavaScript)](LAB_02_Testing_Real_Functions_JavaScript.md)!
+
+**What This Adds:** Move from testing simple examples to testing real production code - learn to test actual functions that handle authentication, password hashing, and other critical application logic.
 
 ---
 
-## 🎯 What You'll Learn
+<h2 id="what-youll-learn">🎯 What You'll Learn</h2>
 
 - Test real Testbook functions
 - Test password hashing
@@ -16,7 +21,7 @@
 
 ---
 
-## 📋 Step-by-Step Instructions
+<h2 id="step-by-step-instructions">📋 Step-by-Step Instructions</h2>
 
 ### Step 1: Explore Real Functions (10 minutes)
 
@@ -98,20 +103,28 @@ pytest tests/unit/test_auth.py::TestPasswordHashing -v
 
 ```python
 def test_same_password_different_hashes(self):
-    """Test that hashing the same password twice gives different results."""
-    # Arrange
+    """
+    Test that hashing the same password twice gives different results.
+
+    This is a critical security test - bcrypt uses a random salt for each hash,
+    so the same password should produce different hashes every time.
+    This prevents rainbow table attacks and makes passwords more secure.
+    """
+    # Arrange: Use a strong password for testing
     password = "MyPassword123!"
 
-    # Act
+    # Act: Hash the same password twice
+    # Each call to get_password_hash() generates a new random salt
     hash1 = get_password_hash(password)
     hash2 = get_password_hash(password)
 
-    # Assert
-    assert hash1 != hash2  # Different hashes!
-    # But both should verify correctly
+    # Assert: The hashes should be different due to different salts
+    assert hash1 != hash2, "Same password should produce different hashes due to salt"
 
-    assert verify_password(password, hash1) is True
-    assert verify_password(password, hash2) is True
+    # But both hashes should still verify correctly with the original password
+    # This proves the salt doesn't break password verification
+    assert verify_password(password, hash1) is True, "First hash should verify correctly"
+    assert verify_password(password, hash2) is True, "Second hash should verify correctly"
 ```
 
 **Run your test:**
@@ -130,16 +143,26 @@ pytest tests/unit/test_auth.py::TestPasswordHashing::test_same_password_differen
 
 ```python
 def test_wrong_password_fails(self):
-    """Test that wrong password doesn't verify."""
-    # Arrange
+    """
+    Test that wrong password doesn't verify.
+
+    This test ensures that our password verification is working correctly -
+    only the exact password that was hashed should verify successfully.
+    Wrong passwords should be rejected, even if they're similar.
+    """
+    # Arrange: Set up correct and wrong passwords
     correct_password = "CorrectPassword123!"
     wrong_password = "WrongPassword456!"
+
+    # Create a hash from the correct password
     hashed = get_password_hash(correct_password)
 
+    # Act & Assert: Test both scenarios
+    # The correct password should verify successfully
+    assert verify_password(correct_password, hashed) is True, "Correct password should verify"
 
-    # Act & Assert
-    assert verify_password(correct_password, hashed) is True
-    assert verify_password(wrong_password, hashed) is False
+    # The wrong password should be rejected
+    assert verify_password(wrong_password, hashed) is False, "Wrong password should be rejected"
 ```
 
 **Run it:**
@@ -152,7 +175,7 @@ pytest tests/unit/test_auth.py::TestPasswordHashing::test_wrong_password_fails -
 
 ---
 
-## 🎓 What You Learned
+<h2 id="what-you-learned">🎓 What You Learned</h2>
 
 - ✅ How to test real application functions
 - ✅ How password hashing works
@@ -195,7 +218,7 @@ Find and run tests for:
 
 ---
 
-## 🐛 Troubleshooting
+<h2 id="troubleshooting">🐛 Troubleshooting</h2>
 
 **Problem:** `ModuleNotFoundError: No module named 'auth'`
 **Solution:** Make sure you're in the `backend/` directory and venv is activated
@@ -208,7 +231,7 @@ Find and run tests for:
 
 ---
 
-## ✅ Lab Completion Checklist
+<h2 id="lab-completion-checklist">✅ Lab Completion Checklist</h2>
 
 Before moving to Lab 3, ensure you:
 
@@ -231,4 +254,4 @@ Answer these to solidify your learning:
 
 **🎉 Great job! You're testing real security code!**
 
-**Next Lab:** [Lab 3: Testing API Endpoints](LAB_03_Testing_API_Endpoints.md)
+**Next Lab:** [Lab 3: Testing API Endpoints (Python)](LAB_03_Testing_API_Endpoints_Python.md)

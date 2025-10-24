@@ -1,6 +1,6 @@
 # 🧪 E2E Python Examples
 
-**Example tests demonstrating advanced patterns from Lab 4B**
+## Example tests demonstrating advanced patterns from Lab 4B
 
 These tests showcase the patterns taught in [Lab 4B: Advanced E2E Python](../../../learn/stage_3_api_e2e/exercises/LAB_04B_Advanced_E2E_Python.md).
 
@@ -23,7 +23,7 @@ These tests showcase the patterns taught in [Lab 4B: Advanced E2E Python](../../
 ./start-dev.sh
 ```
 
-2. Install Python dependencies:
+1. Install Python dependencies:
 
 ```bash
 cd tests/e2e-python
@@ -109,6 +109,9 @@ $env:HEADLESS="false"; pytest examples/test_api_ui_combined_example.py -v
 
 ## 🎓 Learn More
 
-- [Lab 4B: Advanced E2E Python](../../../learn/stage_3_api_e2e/exercises/LAB_04B_Advanced_E2E_Python.md) - Full tutorial
-- [Section 8: Advanced E2E Patterns](../../../learn/stage_3_api_e2e/README.md#advanced-e2e-patterns) - Comprehensive guide
-- [Testing Comparison](../../../docs/guides/TESTING_COMPARISON_PYTHON_JS.md) - Python vs JavaScript
+- [Lab 4B: Advanced E2E Python](../../../learn/stage_3_api_e2e/exercises/LAB_04B_Advanced_E2E_Python.md) -
+  Full tutorial
+- [Section 8: Advanced E2E Patterns](../../../learn/stage_3_api_e2e/README.md#advanced-e2e-patterns) -
+  Comprehensive guide
+- [Testing Comparison](../../../docs/guides/TESTING_COMPARISON_PYTHON_JS.md) -
+  Python vs JavaScript

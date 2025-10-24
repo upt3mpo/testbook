@@ -19,13 +19,13 @@ Anti-patterns are common solutions that seem reasonable but cause problems. In t
 
 ## 📚 Table of Contents
 
-1. [Hardcoded Data Anti-Patterns](#hardcoded-data-anti-patterns)
-2. [Time and Sleep Anti-Patterns](#time-and-sleep-anti-patterns)
-3. [Dependency Anti-Patterns](#dependency-anti-patterns)
-4. [Assertion Anti-Patterns](#assertion-anti-patterns)
-5. [Test Structure Anti-Patterns](#test-structure-anti-patterns)
-6. [Database Anti-Patterns](#database-anti-patterns)
-7. [E2E Testing Anti-Patterns](#e2e-testing-anti-patterns)
+1. [Hardcoded Data Anti-Patterns](#1-hardcoded-data-anti-patterns)
+2. [Time and Sleep Anti-Patterns](#2-time-and-sleep-anti-patterns)
+3. [Dependency Anti-Patterns](#3-dependency-anti-patterns)
+4. [Assertion Anti-Patterns](#4-assertion-anti-patterns)
+5. [Test Structure Anti-Patterns](#5-test-structure-anti-patterns)
+6. [Database Anti-Patterns](#6-database-anti-patterns)
+7. [E2E Testing Anti-Patterns](#7-e2e-testing-anti-patterns)
 
 ---
 

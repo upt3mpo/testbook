@@ -135,8 +135,13 @@ npm run dev
 
 # In another terminal for tests
 cd backend
-source .venv/bin/activate  # Windows: .venv\Scripts\activate
-TESTING=true pytest -v  # Windows (PowerShell): $env:TESTING="true"; pytest -v
+# Linux/Mac
+source .venv/bin/activate
+TESTING=true pytest -v
+
+# Windows (PowerShell)
+.venv\Scripts\activate
+$env:TESTING='true'; pytest -v
 ```
 
 ### ✅ With Task Runners

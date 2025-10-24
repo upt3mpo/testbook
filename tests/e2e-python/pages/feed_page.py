@@ -1,4 +1,21 @@
-"""Page object for the Feed page"""
+"""
+Page object for the Feed page.
+
+This file demonstrates the Page Object Model (POM) pattern for E2E testing.
+The Page Object Model encapsulates page-specific logic and selectors,
+making tests more maintainable and readable.
+
+Key Testing Concepts Demonstrated:
+- Page Object Model pattern for maintainable E2E tests
+- Centralized selector management
+- Reusable page interaction methods
+- Async operation handling (waiting for API calls)
+- Error handling and fallback strategies
+- Test data verification and assertions
+
+This file is referenced in Stage 3 learning materials as an example
+of professional Page Object Model implementation.
+"""
 
 from playwright.sync_api import Locator, Page, expect
 
@@ -6,12 +23,26 @@ from .base_page import BasePage
 
 
 class FeedPage(BasePage):
-    """Reusable helpers for interacting with the feed."""
+    """
+    Reusable helpers for interacting with the feed page.
+
+    This class encapsulates all interactions with the feed page,
+    including post creation, viewing, and management. It follows
+    the Page Object Model pattern to provide a clean interface
+    for tests while hiding the complexity of selectors and timing.
+
+    Key Learning Points:
+    - Centralized selector management (change selectors in one place)
+    - Reusable methods for common actions (create_post, get_posts)
+    - Proper async handling (waiting for API calls, network idle)
+    - Error handling and fallback strategies
+    - Clear method names that describe user actions
+    """
 
     def __init__(self, page: Page):
         super().__init__(page)
 
-        # Selectors
+        # Centralized selectors - change here if UI changes
         self.navbar = '[data-testid="navbar"]'
         self.create_post_textarea = '[data-testid="create-post-textarea"]'
         self.create_post_submit = '[data-testid="create-post-submit-button"]'
@@ -20,7 +51,11 @@ class FeedPage(BasePage):
         self.post_react_button = '[data-testid$="-react-button"]'
 
     def goto(self, wait_for_posts: bool = True) -> None:
-        """Navigate to feed page.
+        """
+        Navigate to feed page and wait for it to be ready.
+
+        This method handles the complexity of navigating to the feed
+        and ensuring all content is loaded before tests interact with it.
 
         Args:
             wait_for_posts: If True, wait for posts to load from API (default: True)
@@ -38,7 +73,18 @@ class FeedPage(BasePage):
                 self.page.wait_for_timeout(2000)
 
     def create_post(self, content: str) -> None:
-        """Create a new post."""
+        """
+        Create a new post and verify it appears.
+
+        This method encapsulates the complete post creation workflow:
+        1. Fill in the post content
+        2. Submit the post
+        3. Wait for the post to appear
+        4. Verify the content is correct
+
+        Args:
+            content: The text content for the new post
+        """
         self.page.fill(self.create_post_textarea, content)
         self.page.click(self.create_post_submit)
         self.page.wait_for_timeout(500)

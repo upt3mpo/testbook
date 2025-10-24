@@ -87,7 +87,9 @@ class TestAPIPlusUIValidation:
 
         print("✅ API follow action verified in UI!")
 
-    def test_ui_action_verified_via_api(self, page: Page, login_as, api_url: str, fresh_database):
+    def test_ui_action_verified_via_api(
+        self, page: Page, login_as, api_url: str, fresh_database
+    ):
         """Reverse pattern: UI action, API verification"""
 
         # 1. Perform UI action

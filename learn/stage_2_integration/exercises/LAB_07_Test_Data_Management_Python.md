@@ -1,12 +1,17 @@
-# 📦 Lab 5: Test Data Management
+# 📦 Lab 7: Test Data Management (Python)
 
 **Estimated Time:** 45 minutes
 **Difficulty:** Intermediate
-**Prerequisites:** Labs 1-4 and LAB_02.5 completed
+**Language:** 🐍 Python
+**Prerequisites:** Labs 1-6 completed
+
+**💡 Need JavaScript instead?** Try [Lab 7: Test Data Management (JavaScript)](LAB_07_Test_Data_Management_JavaScript.md)!
+
+**What This Adds:** Master test data management with builder patterns and factories - learn to create reusable, maintainable test data that eliminates duplication and makes tests more reliable.
 
 ---
 
-## 🎯 What You'll Learn
+<h2 id="what-youll-learn">🎯 What You'll Learn</h2>
 
 By the end of this lab, you will:
 
@@ -67,32 +72,55 @@ def test_user_posts():
 
 ---
 
-## 📋 Step-by-Step Instructions
+<h2 id="step-by-step-instructions">📋 Step-by-Step Instructions</h2>
 
 ### Step 1: Create a Test Data Builder (15 minutes)
 
 **Create:** `backend/tests/test_data_builders.py`
 
-```python
-"""Test data builders and factories."""
+````python
+"""
+Test Data Builders and Factories
+
+This module provides builder patterns and factory functions for creating
+test data in a clean, reusable way. This eliminates code duplication
+and makes tests more maintainable.
+"""
 
 import pytest
 from models import User, Post, Comment
 from auth import get_password_hash
 
-
 class UserBuilder:
-    """Builder for creating test users with custom data."""
+```python
+"""
+Builder pattern for creating test users with custom data.
 
+    This class allows you to create user objects with specific attributes
+    using a fluent interface. This makes test data creation more readable
+    and maintainable.
+
+    Example:
+        user = UserBuilder().with_email("custom@test.com").with_username("custom").build()
+    """
     def __init__(self):
-        self.email = "testuser@example.com"
-        self.username = "testuser"
-        self.display_name = "Test User"
-        self.password = "TestPassword123!"
-        self.bio = "Test bio"
+        """Initialize with default test user data."""
+        self.email = "testuser@example.com"      # Default email for testing
+        self.username = "testuser"               # Default username for testing
+        self.display_name = "Test User"          # Default display name
+        self.password = "TestPassword123!"       # Default password (will be hashed)
+        self.bio = "Test bio"                    # Default bio text
 
     def with_email(self, email):
-        """Set custom email."""
+        """
+        Set a custom email for the test user.
+
+        Args:
+            email (str): The email address to use
+
+        Returns:
+            UserBuilder: Self for method chaining
+        """
         self.email = email
         return self
 
@@ -120,11 +148,10 @@ class UserBuilder:
         db_session.refresh(user)
         return user
 
-
+```python
 @pytest.mark.unit
 class TestUserBuilder:
     """Test the UserBuilder."""
-
     def test_build_default_user(self, db_session):
         """Test building user with defaults."""
         user = UserBuilder().build(db_session)
@@ -159,7 +186,8 @@ class TestUserBuilder:
 
         assert user1.id != user2.id
         assert user1.email != user2.email
-```
+
+````
 
 **Run it:**
 
@@ -445,7 +473,7 @@ class CommentBuilder:
 
 ---
 
-## 🎓 Best Practices for Test Data
+<h2 id="best-practices-for-test-data">🎓 Best Practices for Test Data</h2>
 
 ### 1. Make Data Creation Easy
 
@@ -524,14 +552,14 @@ def test_2():
 
 ---
 
-## 📊 When to Use Each Approach
+<h2 id="when-to-use-each-approach">📊 When to Use Each Approach</h2>
 
-| Approach | Use When | Example |
-|----------|----------|---------|
-| **Fixtures** | Data used by many tests | `test_user`, `test_post` |
-| **Builders** | Need variations of data | `UserBuilder().with_email(...)` |
-| **Factory Functions** | Creating complex scenarios | `create_social_network()` |
-| **Inline Creation** | Simple, one-off data | `value = "test"` |
+| Approach              | Use When                   | Example                         |
+| --------------------- | -------------------------- | ------------------------------- |
+| **Fixtures**          | Data used by many tests    | `test_user`, `test_post`        |
+| **Builders**          | Need variations of data    | `UserBuilder().with_email(...)` |
+| **Factory Functions** | Creating complex scenarios | `create_social_network()`       |
+| **Inline Creation**   | Simple, one-off data       | `value = "test"`                |
 
 ---
 
@@ -583,7 +611,7 @@ def test_get_user():
 
 ---
 
-## ✅ Completion Checklist
+<h2 id="completion-checklist">✅ Completion Checklist</h2>
 
 - [ ] Created UserBuilder and PostBuilder
 - [ ] Created scenario builder functions
@@ -593,7 +621,7 @@ def test_get_user():
 
 ---
 
-## 🎯 Key Takeaways
+<h2 id="key-takeaways">🎯 Key Takeaways</h2>
 
 1. **Builders make test data easy** - Fluent API with `.with_*()` methods
 2. **Fixtures provide reusable setup** - Automatic cleanup
@@ -603,7 +631,7 @@ def test_get_user():
 
 ---
 
-## 📚 Next Steps
+<h2 id="next-steps">📚 Next Steps</h2>
 
 **Apply your skills:**
 
@@ -615,3 +643,5 @@ def test_get_user():
 ---
 
 **🎉 Congratulations!** You can now manage test data like a professional!
+
+**Next Lab:** Move to [Stage 3: API & E2E Testing](../../stage_3_api_e2e/README.md) or explore other labs

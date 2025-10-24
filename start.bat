@@ -50,4 +50,3 @@ echo 🛑 To stop: docker-compose down
 echo 📋 View logs: docker-compose logs -f
 echo.
 pause
-

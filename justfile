@@ -112,7 +112,7 @@ test-backend:
     echo "🧪 Running backend tests..."
     cd backend
     source .venv/bin/activate
-    TESTING=true pytest -v
+    TESTING=true pytest -v --cov=. --cov-report=html --cov-report=term-missing
 
 # Run frontend tests
 test-frontend:
@@ -120,11 +120,41 @@ test-frontend:
     echo "🧪 Running frontend tests..."
     cd frontend && npm test -- --run
 
-# Run E2E tests
+# Run frontend accessibility tests
+test-frontend-a11y:
+    #!/usr/bin/env bash
+    echo "♿ Running frontend accessibility tests..."
+    cd frontend && npm run test:a11y
+
+# Run frontend contract tests
+test-frontend-contracts:
+    #!/usr/bin/env bash
+    echo "📋 Running frontend contract tests..."
+    cd frontend && npm run test:contracts
+
+# Run frontend tests with coverage
+test-frontend-coverage:
+    #!/usr/bin/env bash
+    echo "📊 Running frontend tests with coverage..."
+    cd frontend && npm run test:coverage
+
+# Run E2E tests (Chrome only)
 test-e2e:
     #!/usr/bin/env bash
-    echo "🧪 Running E2E tests..."
-    cd tests && npx playwright test
+    echo "🧪 Running E2E tests (Chrome only)..."
+    cd tests && npm test
+
+# Run E2E tests (all browsers)
+test-e2e-all:
+    #!/usr/bin/env bash
+    echo "🧪 Running E2E tests (all browsers)..."
+    cd tests && npm run test:all-browsers
+
+# Run E2E accessibility tests
+test-e2e-a11y:
+    #!/usr/bin/env bash
+    echo "♿ Running E2E accessibility tests..."
+    cd tests && npm run test:a11y
 
 # Run security tests
 test-security:
@@ -146,13 +176,19 @@ test-contract:
     source .venv/bin/activate
     TESTING=true pytest tests/test_api_contract.py -v
 
+# Run comprehensive test suite
+test-all:
+    #!/usr/bin/env bash
+    echo "🧪 Running comprehensive test suite..."
+    bash run-all-tests.sh
+
 # Generate coverage report
 coverage:
     #!/usr/bin/env bash
     echo "📊 Generating coverage..."
     cd backend
     source .venv/bin/activate
-    TESTING=true pytest --cov=. --cov-report=html --cov-report=term
+    TESTING=true pytest --cov=. --cov-report=html --cov-report=term-missing
     echo "Report: backend/htmlcov/index.html"
 
 # Lint all code
@@ -177,6 +213,25 @@ format:
     cd backend && pip install black && black .
     cd frontend && npx prettier --write "src/**/*.{js,jsx,css}"
 
+# Check formatting without fixing
+format-check:
+    #!/usr/bin/env bash
+    echo "🔍 Checking code formatting..."
+    cd backend && pip install black && black --check --diff .
+    cd frontend && npx prettier --check "src/**/*.{js,jsx,css}"
+
+# Run comprehensive quality checks
+quality-check:
+    #!/usr/bin/env bash
+    echo "🔍 Running comprehensive quality checks..."
+    bash scripts/quality-check.sh
+
+# Run pre-release verification
+verify-release:
+    #!/usr/bin/env bash
+    echo "🔍 Running pre-release verification..."
+    bash scripts/verify-release.sh
+
 # Reset database
 reset-db:
     #!/usr/bin/env bash
@@ -190,6 +245,30 @@ seed:
     cd backend
     source .venv/bin/activate
     python seed.py
+
+# Install Playwright browsers (Chrome only)
+install-browsers:
+    #!/usr/bin/env bash
+    echo "🌐 Installing Playwright browsers (Chrome only)..."
+    cd tests && npm run install-browsers
+
+# Install all Playwright browsers
+install-browsers-all:
+    #!/usr/bin/env bash
+    echo "🌐 Installing all Playwright browsers..."
+    cd tests && npx playwright install
+
+# Run comprehensive test suite
+run-all-tests:
+    #!/usr/bin/env bash
+    echo "🧪 Running comprehensive test suite..."
+    bash run-all-tests.sh
+
+# Run tests without color warnings
+run-tests-no-warnings:
+    #!/usr/bin/env bash
+    echo "🧪 Running tests without color warnings..."
+    bash scripts/run-tests-no-warnings.sh
 
 # Start Docker services
 docker-up:
@@ -223,4 +302,3 @@ clean-all: clean
     rm -rf frontend/node_modules 2>/dev/null || true
     rm -rf tests/node_modules 2>/dev/null || true
     echo "✅ Deep cleanup complete"
-

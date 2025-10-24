@@ -33,9 +33,9 @@ def context(browser: Browser):
 
     context = browser.new_context(
         viewport={"width": 1280, "height": 720},
-        record_video_dir="test-results/videos"
-        if os.getenv("VIDEO_ON_FAILURE") == "true"
-        else None,
+        record_video_dir=(
+            "test-results/videos" if os.getenv("VIDEO_ON_FAILURE") == "true" else None
+        ),
     )
     context.set_default_timeout(timeout)
     yield context

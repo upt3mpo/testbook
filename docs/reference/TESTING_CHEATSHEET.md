@@ -2,7 +2,7 @@
 
 Quick reference for testers and automation engineers.
 
-> **📖 Testing Dynamic Content?** See [TESTING_PATTERNS.md](TESTING_PATTERNS.md) for selecting posts/comments without hardcoded IDs!
+> **📖 Testing Dynamic Content?** See [TESTING_PATTERNS.md](../concepts/TESTING_PATTERNS.md) for selecting posts/comments without hardcoded IDs!
 
 ## 🧰 Recommended Testing Tools
 
@@ -14,7 +14,7 @@ Quick reference for testers and automation engineers.
 
 **More options**: See [README.md](../../README.md#-testing-frameworks-you-can-use) for a complete list
 
-## 🚀 Quick Start
+<h2 id="quick-start">🚀 Quick Start</h2>
 
 ```bash
 # Start app (choose one)
@@ -44,7 +44,7 @@ reset-database.bat    # Windows
 | <emma.davis@testbook.com> | EmmaLovesPhotos | Photographer |
 | <newuser@testbook.com> | NewUser123! | Clean account |
 
-## 🎯 Common Test IDs
+<h2 id="common-test-ids">🎯 Common Test IDs</h2>
 
 ### For Dynamic Content (When You Don't Know the ID)
 
@@ -64,7 +64,7 @@ page.locator('[data-testid-generic="post-item"]').first()
 [data-author="username"]                 // Comments by user
 ```
 
-See **[TESTING_PATTERNS.md](TESTING_PATTERNS.md)** for complete guide!
+See **[TESTING_PATTERNS.md](../concepts/TESTING_PATTERNS.md)** for complete guide!
 
 ### Authentication
 
@@ -199,19 +199,22 @@ GET  /api/dev/users        # Get all users + passwords
 POST /api/dev/create-post  # Create test post
 ```
 
-## 🧪 Quick Test Examples
+<h2 id="quick-test-examples">🧪 Quick Test Examples</h2>
 
 ### Playwright
 
 ```javascript
 // Login
-await page.goto('http://localhost:3000');
-await page.fill('[data-testid="login-email-input"]', 'sarah.johnson@testbook.com');
-await page.fill('[data-testid="login-password-input"]', 'Sarah2024!');
+await page.goto("http://localhost:3000");
+await page.fill(
+  '[data-testid="login-email-input"]',
+  "sarah.johnson@testbook.com"
+);
+await page.fill('[data-testid="login-password-input"]', "Sarah2024!");
 await page.click('[data-testid="login-submit-button"]');
 
 // Create post
-await page.fill('[data-testid="create-post-textarea"]', 'Test post');
+await page.fill('[data-testid="create-post-textarea"]', "Test post");
 await page.click('[data-testid="create-post-submit-button"]');
 
 // React to first post (most recent) - no hardcoded ID!
@@ -223,7 +226,7 @@ await firstPost.locator('[data-testid$="-reaction-like"]').click();
 const ownPost = page.locator('[data-is-own-post="true"]').first();
 await ownPost.locator('[data-testid$="-menu-button"]').click();
 await ownPost.locator('[data-testid$="-edit-button"]').click();
-await ownPost.locator('[data-testid$="-edit-textarea"]').fill('Edited');
+await ownPost.locator('[data-testid$="-edit-textarea"]').fill("Edited");
 await ownPost.locator('[data-testid$="-save-button"]').click();
 ```
 
@@ -264,34 +267,40 @@ requests.post(f"{BASE_URL}/users/mikechen/follow", headers=headers)
 ### Cypress
 
 ```javascript
-describe('Testbook Tests', () => {
+describe("Testbook Tests", () => {
   beforeEach(() => {
-    cy.request('POST', 'http://localhost:8000/api/dev/reset');
-    cy.visit('/');
+    cy.request("POST", "http://localhost:8000/api/dev/reset");
+    cy.visit("/");
   });
 
-  it('should create post with file upload', () => {
-    cy.get('[data-testid="login-email-input"]').type('sarah.johnson@testbook.com');
-    cy.get('[data-testid="login-password-input"]').type('Sarah2024!');
+  it("should create post with file upload", () => {
+    cy.get('[data-testid="login-email-input"]').type(
+      "sarah.johnson@testbook.com"
+    );
+    cy.get('[data-testid="login-password-input"]').type("Sarah2024!");
     cy.get('[data-testid="login-submit-button"]').click();
 
-    cy.get('[data-testid="create-post-textarea"]').type('Post with image');
-    cy.get('[data-testid="create-post-file-input"]').attachFile('test-image.jpg');
+    cy.get('[data-testid="create-post-textarea"]').type("Post with image");
+    cy.get('[data-testid="create-post-file-input"]').attachFile(
+      "test-image.jpg"
+    );
     cy.get('[data-testid="create-post-submit-button"]').click();
 
-    cy.get('[data-testid^="post-"]').first().should('contain', 'Post with image');
+    cy.get('[data-testid^="post-"]')
+      .first()
+      .should("contain", "Post with image");
   });
 });
 ```
 
-## 🔄 Reset Commands
+<h2 id="reset-commands">🔄 Reset Commands</h2>
 
-| Platform | Command |
-|----------|---------|
-| macOS/Linux | `./reset-database.sh` |
-| Windows CMD | `reset-database.bat` |
-| Windows PS | `.\reset-database.ps1` |
-| API | `curl -X POST http://localhost:8000/api/dev/reset` |
+| Platform    | Command                                            |
+| ----------- | -------------------------------------------------- |
+| macOS/Linux | `./reset-database.sh`                              |
+| Windows CMD | `reset-database.bat`                               |
+| Windows PS  | `.\reset-database.ps1`                             |
+| API         | `curl -X POST http://localhost:8000/api/dev/reset` |
 
 ## 🔧 Backend Testing (PyTest)
 
@@ -360,7 +369,7 @@ def test_login():
 
 ## 📖 More Resources
 
-- **[TESTING_PATTERNS.md](TESTING_PATTERNS.md)** - ⭐ How to handle dynamic content (posts, comments, etc.)
+- **[TESTING_PATTERNS.md](../concepts/TESTING_PATTERNS.md)** - ⭐ How to handle dynamic content (posts, comments, etc.)
 - **[TESTING_GUIDE.md](../guides/TESTING_GUIDE.md)** - Detailed examples (UI, API, Backend)
   - [Backend Testing Section](../guides/TESTING_GUIDE.md#backend-testing) - Unit & integration tests
 - **[TESTING_FEATURES.md](TESTING_FEATURES.md)** - Comprehensive testing capabilities
@@ -380,7 +389,7 @@ def test_login():
 ```javascript
 // Add to test-helpers.js
 function setupDialogHandler(page) {
-  page.on('dialog', async dialog => {
+  page.on("dialog", async (dialog) => {
     console.log(`Auto-accepting ${dialog.type()}: ${dialog.message()}`);
     await dialog.accept();
   });
@@ -388,7 +397,7 @@ function setupDialogHandler(page) {
 
 // Call in every test file's beforeEach
 test.beforeEach(async ({ page }) => {
-  setupDialogHandler(page);  // Essential!
+  setupDialogHandler(page); // Essential!
   // ... rest of setup
 });
 ```
@@ -425,7 +434,7 @@ await page.waitForTimeout(1000);
 
 // ✅ GOOD
 await button.click();
-await expect(button).toContainText('Updated', { timeout: 10000 });
+await expect(button).toContainText("Updated", { timeout: 10000 });
 ```
 
 ### 5. Retry Complex Interactions
@@ -450,6 +459,6 @@ for (let i = 0; i < 3 && !clicked; i++) {
 
 ---
 
-**Quick tip**: Read [TESTING_PATTERNS.md](TESTING_PATTERNS.md) first if you're testing dynamic content! 🔖
+**Quick tip**: Read [TESTING_PATTERNS.md](../concepts/TESTING_PATTERNS.md) first if you're testing dynamic content! 🔖
 
 **See also**: [docs/guides/FLAKY_TESTS_GUIDE.md](../guides/FLAKY_TESTS_GUIDE.md) for detailed examples and fixes

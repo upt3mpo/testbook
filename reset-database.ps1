@@ -70,4 +70,3 @@ Write-Host "   - emma.davis@testbook.com / EmmaLovesPhotos"
 Write-Host ""
 Write-Host "🎯 You can now test with a clean database!" -ForegroundColor Green
 Write-Host ""
-

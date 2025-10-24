@@ -63,11 +63,17 @@ class TestUserProfile:
         page.goto(f"{base_url}/profile/{test_users['sarah']['username']}")
 
         # Wait for profile data to load
-        expect(page.locator('[data-testid="profile-display-name"]')).to_be_visible(timeout=10000)
+        expect(page.locator('[data-testid="profile-display-name"]')).to_be_visible(
+            timeout=10000
+        )
 
         # Then wait for count links to appear
-        expect(page.locator('[data-testid="profile-followers-link"]')).to_be_visible(timeout=10000)
-        expect(page.locator('[data-testid="profile-following-link"]')).to_be_visible(timeout=10000)
+        expect(page.locator('[data-testid="profile-followers-link"]')).to_be_visible(
+            timeout=10000
+        )
+        expect(page.locator('[data-testid="profile-following-link"]')).to_be_visible(
+            timeout=10000
+        )
 
     def test_show_posts_count(
         self, page: Page, base_url: str, login_as, test_users: dict, fresh_database
@@ -98,13 +104,17 @@ class TestFollowing:
         follow_button.click()
 
         # Wait for button to update to "Unfollow"
-        expect(follow_button).to_contain_text(re.compile("unfollow", re.IGNORECASE), timeout=10000)
+        expect(follow_button).to_contain_text(
+            re.compile("unfollow", re.IGNORECASE), timeout=10000
+        )
 
         # Verify following count increased on own profile
         page.goto(f"{base_url}/profile/{test_users['sarah']['username']}")
 
         # Wait for profile to load
-        expect(page.locator('[data-testid="profile-display-name"]')).to_be_visible(timeout=10000)
+        expect(page.locator('[data-testid="profile-display-name"]')).to_be_visible(
+            timeout=10000
+        )
 
         # Check the following link contains a number greater than 0
         following_link = page.locator('[data-testid="profile-following-link"]')
@@ -122,11 +132,15 @@ class TestFollowing:
 
         # Follow first
         follow_button.click()
-        expect(follow_button).to_contain_text(re.compile("unfollow", re.IGNORECASE), timeout=10000)
+        expect(follow_button).to_contain_text(
+            re.compile("unfollow", re.IGNORECASE), timeout=10000
+        )
 
         # Then unfollow
         follow_button.click()
-        expect(follow_button).to_contain_text(re.compile("^follow$", re.IGNORECASE), timeout=10000)
+        expect(follow_button).to_contain_text(
+            re.compile("^follow$", re.IGNORECASE), timeout=10000
+        )
 
     def test_followed_users_in_following_feed(
         self, page: Page, base_url: str, login_as, test_users: dict, fresh_database
@@ -146,7 +160,9 @@ class TestFollowing:
         page.click('[data-testid="feed-tab-following"]')
 
         # Should show Mike's posts (if he has any)
-        mike_posts = page.locator(f'[data-post-author="{test_users["mike"]["username"]}"]')
+        mike_posts = page.locator(
+            f'[data-post-author="{test_users["mike"]["username"]}"]'
+        )
         count = mike_posts.count()
         assert count >= 0
 
@@ -175,7 +191,9 @@ class TestBlocking:
             pass
 
         # Button should change to Unblock - wait for this state change
-        expect(block_button).to_contain_text(re.compile("unblock", re.IGNORECASE), timeout=10000)
+        expect(block_button).to_contain_text(
+            re.compile("unblock", re.IGNORECASE), timeout=10000
+        )
 
     def test_unblock_user(
         self, page: Page, base_url: str, login_as, test_users: dict, fresh_database
@@ -199,7 +217,9 @@ class TestBlocking:
 
         # Re-query button after state change
         block_button = page.locator('[data-testid="profile-block-button"]')
-        expect(block_button).to_contain_text(re.compile("unblock", re.IGNORECASE), timeout=10000)
+        expect(block_button).to_contain_text(
+            re.compile("unblock", re.IGNORECASE), timeout=10000
+        )
 
         # Then unblock and wait for state change
         block_button.click()
@@ -211,7 +231,9 @@ class TestBlocking:
 
         # Re-query button after state change
         block_button = page.locator('[data-testid="profile-block-button"]')
-        expect(block_button).to_contain_text(re.compile("^block$", re.IGNORECASE), timeout=10000)
+        expect(block_button).to_contain_text(
+            re.compile("^block$", re.IGNORECASE), timeout=10000
+        )
 
     def test_blocked_users_not_in_feed(
         self, page: Page, base_url: str, login_as, test_users: dict, fresh_database
@@ -230,7 +252,9 @@ class TestBlocking:
         except:
             pass
 
-        expect(block_button).to_contain_text(re.compile("unblock", re.IGNORECASE), timeout=10000)
+        expect(block_button).to_contain_text(
+            re.compile("unblock", re.IGNORECASE), timeout=10000
+        )
 
         # Go to All feed
         page.goto(base_url)
@@ -248,7 +272,9 @@ class TestBlocking:
         page.wait_for_timeout(500)
 
         # Should not see Mike's posts
-        mike_posts = page.locator(f'[data-post-author="{test_users["mike"]["username"]}"]')
+        mike_posts = page.locator(
+            f'[data-post-author="{test_users["mike"]["username"]}"]'
+        )
         expect(mike_posts).to_have_count(0)
 
 
@@ -301,7 +327,9 @@ class TestFollowersFollowingLists:
         page.click('[data-testid="profile-following-link"]')
 
         # Unfollow Mike
-        mike_in_list = page.locator(f'[data-username="{test_users["mike"]["username"]}"]')
+        mike_in_list = page.locator(
+            f'[data-username="{test_users["mike"]["username"]}"]'
+        )
         try:
             is_visible = mike_in_list.is_visible(timeout=5000)
         except:
@@ -341,7 +369,9 @@ class TestFollowersFollowingLists:
             block_button.click()
 
             # Wait for blocked state to be applied
-            expect(first_follower).to_have_attribute("data-is-blocked", "true", timeout=10000)
+            expect(first_follower).to_have_attribute(
+                "data-is-blocked", "true", timeout=10000
+            )
 
 
 class TestSettings:
@@ -365,7 +395,9 @@ class TestSettings:
 
         # Verify on profile
         page.goto(f"{base_url}/profile/{test_users['sarah']['username']}")
-        expect(page.locator('[data-testid="profile-display-name"]')).to_contain_text("Updated Name")
+        expect(page.locator('[data-testid="profile-display-name"]')).to_contain_text(
+            "Updated Name"
+        )
 
     def test_update_bio(
         self, page: Page, base_url: str, login_as, test_users: dict, fresh_database
@@ -398,7 +430,9 @@ class TestSettings:
         html = page.locator("html")
         expect(html).to_have_attribute("data-theme", "dark")
 
-    def test_change_text_density(self, page: Page, base_url: str, login_as, fresh_database):
+    def test_change_text_density(
+        self, page: Page, base_url: str, login_as, fresh_database
+    ):
         """Test changing text density"""
         login_as("sarah")
 
@@ -434,7 +468,9 @@ class TestSettings:
 class TestProfilePicture:
     """Test suite for profile picture functionality"""
 
-    def test_upload_profile_picture(self, page: Page, base_url: str, login_as, fresh_database):
+    def test_upload_profile_picture(
+        self, page: Page, base_url: str, login_as, fresh_database
+    ):
         """Test uploading profile picture"""
         login_as("sarah")
 
@@ -444,7 +480,9 @@ class TestProfilePicture:
         file_input = page.locator('[data-testid="settings-avatar-input"]')
         expect(file_input).to_be_attached()
 
-    def test_clear_profile_picture(self, page: Page, base_url: str, login_as, fresh_database):
+    def test_clear_profile_picture(
+        self, page: Page, base_url: str, login_as, fresh_database
+    ):
         """Test clearing profile picture"""
         login_as("sarah")
 
@@ -484,4 +522,6 @@ class TestAccountDeletion:
             page.wait_for_url(re.compile(r".*/(login|$)"), timeout=15000)
         except:
             # Fallback: check for login input if URL didn't change
-            expect(page.locator('[data-testid="login-email-input"]')).to_be_visible(timeout=5000)
+            expect(page.locator('[data-testid="login-email-input"]')).to_be_visible(
+                timeout=5000
+            )

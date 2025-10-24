@@ -51,4 +51,3 @@ echo "  • Frontend accessibility: cd frontend && npm run test:a11y"
 echo "  • E2E accessibility: cd tests && npm run test:a11y"
 echo "  • Lighthouse: npx lhci autorun"
 echo "  • Pre-commit hooks: pre-commit install && pre-commit run --all-files"
-

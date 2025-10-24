@@ -390,5 +390,3 @@ test.describe('Posts', () => {
 // - Shows understanding of authorization (user can only edit their own content)
 // - Interview question: "How would you test CRUD operations?" - Run this test live!
 // - Proves you can handle async operations, waits, and flaky selector issues
-
-

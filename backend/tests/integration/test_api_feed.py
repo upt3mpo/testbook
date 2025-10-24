@@ -120,10 +120,14 @@ class TestFeedFiltering:
         data = response.json()
 
         # Should not include posts from blocked user
-        blocked_posts = [post for post in data if post["author_username"] == test_user_2.username]
+        blocked_posts = [
+            post for post in data if post["author_username"] == test_user_2.username
+        ]
         assert len(blocked_posts) == 0
 
-    def test_following_feed_includes_own_posts(self, client, test_user, test_post, auth_headers):
+    def test_following_feed_includes_own_posts(
+        self, client, test_user, test_post, auth_headers
+    ):
         """Test that following feed includes own posts."""
         response = client.get("/api/feed/following", headers=auth_headers)
 
@@ -152,7 +156,8 @@ class TestFeedOrdering:
             from datetime import datetime
 
             dates = [
-                datetime.fromisoformat(post["created_at"].replace("Z", "+00:00")) for post in data
+                datetime.fromisoformat(post["created_at"].replace("Z", "+00:00"))
+                for post in data
             ]
 
             # Each date should be >= the next date (descending order)
@@ -165,7 +170,9 @@ class TestFeedOrdering:
 class TestFeedWithReposts:
     """Test feed behavior with reposts."""
 
-    def test_feed_includes_reposts(self, client, test_post, test_user_2, auth_headers, db_session):
+    def test_feed_includes_reposts(
+        self, client, test_post, test_user_2, auth_headers, db_session
+    ):
         """Test that feed includes reposted content."""
         from models import Post
 
@@ -194,7 +201,9 @@ class TestFeedWithReposts:
 class TestFeedPagination:
     """Test feed pagination if implemented."""
 
-    def test_feed_returns_reasonable_number_of_posts(self, client, test_posts, auth_headers):
+    def test_feed_returns_reasonable_number_of_posts(
+        self, client, test_posts, auth_headers
+    ):
         """Test that feed doesn't return unlimited posts."""
         response = client.get("/api/feed/all", headers=auth_headers)
 
@@ -216,7 +225,9 @@ class TestFeedPerformance:
         from models import Post
 
         # Create many posts
-        posts = [Post(author_id=test_user.id, content=f"Test post {i}") for i in range(50)]
+        posts = [
+            Post(author_id=test_user.id, content=f"Test post {i}") for i in range(50)
+        ]
 
         for post in posts:
             db_session.add(post)

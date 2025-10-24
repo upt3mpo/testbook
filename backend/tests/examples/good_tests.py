@@ -1,7 +1,19 @@
 """
 Examples of GOOD tests - Best practices to follow.
 
-Use these patterns in your actual tests.
+This file demonstrates professional testing patterns and best practices
+that should be used in production test suites. Each example shows:
+
+Key Testing Concepts Demonstrated:
+- Proper use of fixtures for test data management
+- Independent test design (no test dependencies)
+- Clear test naming and documentation
+- Appropriate assertions and error handling
+- Performance considerations (waiting vs sleeping)
+- Security testing patterns
+
+This file is referenced in Stage 1 learning materials as examples
+of professional testing practices students should emulate.
 """
 
 import time
@@ -12,7 +24,20 @@ import pytest
 
 # ✅ GOOD PATTERN 1: Use fixtures, no hardcoded IDs
 def test_get_user_good(client, test_user):
-    """GOOD: Uses fixture to create test data."""
+    """
+    GOOD: Uses fixture to create test data.
+
+    This test demonstrates the proper use of fixtures for test data.
+    Instead of hardcoding user IDs or creating data inline, we use
+    the test_user fixture which provides a consistent, reusable
+    test user for all tests.
+
+    Benefits:
+    - Consistent test data across all tests
+    - Easy to modify test data in one place
+    - No hardcoded values that might break
+    - Automatic cleanup handled by fixture
+    """
     response = client.get(f"/api/users/{test_user.id}")
     assert response.status_code == 200
     assert response.json()["id"] == test_user.id

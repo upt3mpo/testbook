@@ -1,8 +1,21 @@
 """
 Security tests for Testbook API.
 
-These tests verify authentication, authorization, input validation,
-and other security-critical functionality.
+This file demonstrates comprehensive security testing practices using pytest.
+It verifies authentication, authorization, input validation, and other
+security-critical functionality to protect against common vulnerabilities.
+
+Key Testing Concepts Demonstrated:
+- OWASP Top 10 vulnerability testing (SQL injection, XSS, etc.)
+- Authentication and authorization testing
+- Input validation and sanitization testing
+- Rate limiting and DoS protection testing
+- Security header validation
+- Error handling and information disclosure testing
+- Session management and token security
+
+This file is referenced in Stage 4 learning materials as an example
+of professional security testing practices.
 
 ⚠️ IMPORTANT: IF THESE TESTS FAIL
 ────────────────────────────────────────────────────────────────────
@@ -30,13 +43,25 @@ BASE_URL = "http://localhost:8000/api"
 
 @pytest.fixture(scope="session")
 def api_client():
-    """API client for making requests."""
+    """
+    API client for making requests.
+
+    This fixture provides a requests.Session for making HTTP requests
+    to the API. Using a session allows for connection pooling and
+    cookie persistence across requests.
+    """
     return requests.Session()
 
 
 @pytest.fixture(scope="session")
 def auth_token():
-    """Get authentication token for testing (session-scoped to avoid rate limits)."""
+    """
+    Get authentication token for testing (session-scoped to avoid rate limits).
+
+    This fixture handles the complexity of obtaining an authentication
+    token for testing, including retry logic for rate limiting scenarios.
+    The token is session-scoped to minimize API calls and avoid rate limits.
+    """
     import time
 
     client = requests.Session()
@@ -61,7 +86,9 @@ def auth_token():
         if response.status_code == 429:
             pytest.skip("Rate limited - cannot get auth token")
         else:
-            pytest.fail(f"Failed to get auth token: {response.status_code} - {response.text}")
+            pytest.fail(
+                f"Failed to get auth token: {response.status_code} - {response.text}"
+            )
 
     pytest.skip("Rate limited after retries - cannot get auth token")
 
@@ -241,7 +268,9 @@ class TestInputValidation:
                     "password": "Test123!",
                 },
             )
-            assert response.status_code == 422, f"Invalid email {email} should be rejected"
+            assert (
+                response.status_code == 422
+            ), f"Invalid email {email} should be rejected"
 
     def test_sql_injection_in_login(self, api_client):
         """Test that SQL injection attempts are blocked."""
@@ -280,7 +309,9 @@ class TestInputValidation:
             if response.status_code in [403, 429]:
                 pytest.skip(f"Cannot test XSS - got {response.status_code}")
 
-            assert response.status_code == 201, f"Expected 201, got {response.status_code}"
+            assert (
+                response.status_code == 201
+            ), f"Expected 201, got {response.status_code}"
             post_id = response.json()["id"]
 
             # Verify it's stored (backend stores as-is for frontend to handle)
@@ -318,7 +349,9 @@ class TestDataExposure:
         headers = {"Authorization": f"Bearer {auth_token}"}
 
         # Get followers list
-        response = api_client.get(f"{BASE_URL}/users/sarahjohnson/followers", headers=headers)
+        response = api_client.get(
+            f"{BASE_URL}/users/sarahjohnson/followers", headers=headers
+        )
 
         if response.status_code == 200:
             users = response.json()
@@ -382,8 +415,12 @@ class TestSessionManagement:
         headers1 = {"Authorization": f"Bearer {token1}"}
         headers2 = {"Authorization": f"Bearer {token2}"}
 
-        assert api_client.get(f"{BASE_URL}/auth/me", headers=headers1).status_code == 200
-        assert api_client.get(f"{BASE_URL}/auth/me", headers=headers2).status_code == 200
+        assert (
+            api_client.get(f"{BASE_URL}/auth/me", headers=headers1).status_code == 200
+        )
+        assert (
+            api_client.get(f"{BASE_URL}/auth/me", headers=headers2).status_code == 200
+        )
 
 
 # Set timestamp for unique test data

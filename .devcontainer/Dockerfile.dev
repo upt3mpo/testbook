@@ -29,4 +29,3 @@ USER vscode
 
 # The actual dependency installation will happen in post-create.sh
 # This keeps the image light and allows for easier updates
-

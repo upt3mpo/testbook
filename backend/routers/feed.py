@@ -26,7 +26,9 @@ def get_all_feed(
     if blocked_user_ids:
         query = query.filter(~models.Post.author_id.in_(blocked_user_ids))
 
-    posts = query.order_by(models.Post.created_at.desc()).offset(skip).limit(limit).all()
+    posts = (
+        query.order_by(models.Post.created_at.desc()).offset(skip).limit(limit).all()
+    )
 
     if blocked_user_ids:
         posts = [post for post in posts if post.author_id not in blocked_user_ids]
@@ -82,7 +84,9 @@ def _format_posts(
         comments_count = len(post.comments)
         reactions_count = len(post.reactions)
         reposts_count = (
-            db.query(models.Post).filter(models.Post.original_post_id == post.id).count()
+            db.query(models.Post)
+            .filter(models.Post.original_post_id == post.id)
+            .count()
         )
 
         # Check user reaction

@@ -4,21 +4,21 @@
 
 ---
 
-## 🎯 Overview
+<h2 id="overview">🎯 Overview</h2>
 
 Testbook uses automated quality checks to maintain code standards:
 
-| Check Type | Backend (Python) | Frontend (JavaScript) |
-|------------|------------------|----------------------|
-| **Formatting** | Black | Prettier |
-| **Import Sorting** | isort | ESLint import rules |
-| **Linting** | Flake8 | ESLint + plugins |
-| **Coverage Gate** | 80% minimum | No gate (95%+ actual) |
-| **Pre-commit Hooks** | ✅ Enabled | ✅ Enabled |
+| Check Type           | Backend (Python) | Frontend (JavaScript) |
+| -------------------- | ---------------- | --------------------- |
+| **Formatting**       | Black            | Prettier              |
+| **Import Sorting**   | isort            | ESLint import rules   |
+| **Linting**          | Flake8           | ESLint + plugins      |
+| **Coverage Gate**    | 80% minimum      | No gate (95%+ actual) |
+| **Pre-commit Hooks** | ✅ Enabled       | ✅ Enabled            |
 
 ---
 
-## 🚀 Quick Start
+<h2 id="quick-start">🚀 Quick Start</h2>
 
 ### Run All Quality Checks
 
@@ -38,7 +38,7 @@ This runs:
 
 ---
 
-## 🐍 Backend (Python)
+<h2 id="backend-python">🐍 Backend (Python)</h2>
 
 ### Formatting with Black
 
@@ -130,7 +130,7 @@ pytest --cov --cov-fail-under=80
 
 ---
 
-## ☕ Frontend (JavaScript)
+<h2 id="frontend-javascript">☕ Frontend (JavaScript)</h2>
 
 ### Linting with ESLint
 
@@ -274,20 +274,20 @@ lint-frontend → frontend-tests ↗
 
 ---
 
-## 📊 Quality Metrics
+<h2 id="quality-metrics">📊 Quality Metrics</h2>
 
 ### Current Status
 
-| Metric | Value | Target | Status |
-|--------|-------|--------|--------|
-| Backend Coverage | 86% | 80% | ✅ +6% |
-| Frontend Coverage | 95% | N/A | ✅ Excellent |
-| Linting Violations | 0 | 0 | ✅ Clean |
-| Accessibility Violations | 0 | 0 | ✅ WCAG 2.1 AA |
+| Metric                   | Value | Target | Status         |
+| ------------------------ | ----- | ------ | -------------- |
+| Backend Coverage         | 86%   | 80%    | ✅ +6%         |
+| Frontend Coverage        | 95%   | N/A    | ✅ Excellent   |
+| Linting Violations       | 0     | 0      | ✅ Clean       |
+| Accessibility Violations | 0     | 0      | ✅ WCAG 2.1 AA |
 
 ---
 
-## 🛠️ IDE Integration
+<h2 id="ide-integration">🛠️ IDE Integration</h2>
 
 ### VS Code
 
@@ -319,7 +319,7 @@ lint-frontend → frontend-tests ↗
 
 ---
 
-## 🐛 Common Issues & Fixes
+<h2 id="common-issues-fixes">🐛 Common Issues & Fixes</h2>
 
 ### Issue: "Black would make changes"
 
@@ -341,7 +341,7 @@ git commit
 
 // Option 2: Disable for specific line
 // eslint-disable-next-line no-console
-console.log('Debug info');
+console.log("Debug info");
 ```
 
 ### Issue: "Coverage below 80%"
@@ -362,7 +362,7 @@ open htmlcov/index.html
 
 ---
 
-## 🎯 Best Practices
+<h2 id="best-practices">🎯 Best Practices</h2>
 
 ### For Backend (Python)
 
@@ -402,16 +402,16 @@ open htmlcov/index.html
 
    ```javascript
    // Bad
-   const x = users.filter(u => u.active);
+   const x = users.filter((u) => u.active);
 
    // Good
-   const activeUsers = users.filter(user => user.isActive);
+   const activeUsers = users.filter((user) => user.isActive);
    ```
 
 2. **Add prop-types or TypeScript**
 
    ```javascript
-   import PropTypes from 'prop-types';
+   import PropTypes from "prop-types";
 
    MyComponent.propTypes = {
      name: PropTypes.string.isRequired,
@@ -431,7 +431,7 @@ open htmlcov/index.html
 
 ---
 
-## 📚 Additional Resources
+<h2 id="additional-resources">📚 Additional Resources</h2>
 
 - [Black Documentation](https://black.readthedocs.io/)
 - [Flake8 Rules](https://flake8.pycqa.org/en/latest/user/error-codes.html)

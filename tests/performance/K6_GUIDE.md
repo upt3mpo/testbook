@@ -4,7 +4,7 @@
 
 ---
 
-## 🎯 What is K6?
+<h2 id="what-is-k6">🎯 What is K6?</h2>
 
 K6 is a modern load testing tool that lets you test your application's performance under various load conditions.
 
@@ -12,7 +12,7 @@ K6 is a modern load testing tool that lets you test your application's performan
 
 ---
 
-## 📦 Installation
+<h2 id="installation">📦 Installation</h2>
 
 ```bash
 # macOS
@@ -37,7 +37,7 @@ k6 version
 
 ---
 
-## 🚀 Running Tests
+<h2 id="running-tests">🚀 Running Tests</h2>
 
 ### Basic Usage
 
@@ -54,13 +54,13 @@ k6 run tests/performance/stress-test.js
 
 ---
 
-## 📊 Understanding K6 Test Scripts
+<h2 id="understanding-k6-test-scripts">📊 Understanding K6 Test Scripts</h2>
 
 ### Test Structure with Thresholds
 
 ```javascript
-import http from 'k6/http';
-import { check, sleep } from 'k6';
+import http from "k6/http";
+import { check, sleep } from "k6";
 
 // Define test options with thresholds
 export const options = {
@@ -68,34 +68,34 @@ export const options = {
   vus: 10,
 
   // Test duration
-  duration: '30s',
+  duration: "30s",
 
   // Thresholds (PASS/FAIL criteria)
   thresholds: {
     // HTTP errors should be less than 1%
-    http_req_failed: ['rate<0.01'],
+    http_req_failed: ["rate<0.01"],
 
     // 95% of requests should be below 500ms
-    http_req_duration: ['p(95)<500'],
+    http_req_duration: ["p(95)<500"],
 
     // 99% of requests should be below 1000ms
-    http_req_duration: ['p(99)<1000'],
+    http_req_duration: ["p(99)<1000"],
 
     // Average should be below 300ms
-    http_req_duration: ['avg<300'],
+    http_req_duration: ["avg<300"],
 
     // Specific checks should pass 95%+ of the time
-    checks: ['rate>0.95'],
+    checks: ["rate>0.95"],
   },
 };
 
-export default function() {
+export default function () {
   // Your test scenario
-  const res = http.get('http://localhost:8000/api/health');
+  const res = http.get("http://localhost:8000/api/health");
 
   check(res, {
-    'status is 200': (r) => r.status === 200,
-    'response time < 200ms': (r) => r.timings.duration < 200,
+    "status is 200": (r) => r.status === 200,
+    "response time < 200ms": (r) => r.timings.duration < 200,
   });
 
   sleep(1);
@@ -104,7 +104,7 @@ export default function() {
 
 ---
 
-## 🎯 Threshold Reference
+<h2 id="threshold-reference">🎯 Threshold Reference</h2>
 
 ### Common Threshold Patterns
 
@@ -152,10 +152,10 @@ thresholds: {
 // smoke-test.js
 export const options = {
   vus: 2,
-  duration: '2m',
+  duration: "2m",
   thresholds: {
-    http_req_failed: ['rate<0.01'],
-    http_req_duration: ['p(95)<500'],
+    http_req_failed: ["rate<0.01"],
+    http_req_duration: ["p(95)<500"],
   },
 };
 ```
@@ -177,18 +177,18 @@ export const options = {
 // load-test.js with realistic thresholds
 export const options = {
   stages: [
-    { duration: '2m', target: 10 },   // Ramp up to 10 users
-    { duration: '5m', target: 10 },   // Stay at 10 users
-    { duration: '2m', target: 30 },   // Ramp up to 30 users
-    { duration: '5m', target: 30 },   // Stay at 30 users
-    { duration: '2m', target: 0 },    // Ramp down
+    { duration: "2m", target: 10 }, // Ramp up to 10 users
+    { duration: "5m", target: 10 }, // Stay at 10 users
+    { duration: "2m", target: 30 }, // Ramp up to 30 users
+    { duration: "5m", target: 30 }, // Stay at 30 users
+    { duration: "2m", target: 0 }, // Ramp down
   ],
 
   thresholds: {
-    http_req_failed: ['rate<0.05'],      // <5% errors allowed
-    http_req_duration: ['p(95)<800'],    // 95% under 800ms
-    http_req_duration: ['p(99)<1500'],   // 99% under 1.5s
-    http_req_duration: ['avg<400'],      // Average under 400ms
+    http_req_failed: ["rate<0.05"], // <5% errors allowed
+    http_req_duration: ["p(95)<800"], // 95% under 800ms
+    http_req_duration: ["p(99)<1500"], // 99% under 1.5s
+    http_req_duration: ["avg<400"], // Average under 400ms
   },
 };
 ```
@@ -211,22 +211,22 @@ export const options = {
 // stress-test.js
 export const options = {
   stages: [
-    { duration: '2m', target: 10 },
-    { duration: '5m', target: 10 },
-    { duration: '2m', target: 50 },    // Increase
-    { duration: '5m', target: 50 },
-    { duration: '2m', target: 100 },   // Increase more
-    { duration: '5m', target: 100 },
-    { duration: '2m', target: 200 },   // Keep increasing
-    { duration: '5m', target: 200 },
-    { duration: '10m', target: 0 },    // Ramp down and recover
+    { duration: "2m", target: 10 },
+    { duration: "5m", target: 10 },
+    { duration: "2m", target: 50 }, // Increase
+    { duration: "5m", target: 50 },
+    { duration: "2m", target: 100 }, // Increase more
+    { duration: "5m", target: 100 },
+    { duration: "2m", target: 200 }, // Keep increasing
+    { duration: "5m", target: 200 },
+    { duration: "10m", target: 0 }, // Ramp down and recover
   ],
 
   thresholds: {
     // More lenient thresholds (expect degradation)
-    http_req_failed: ['rate<0.10'],      // <10% errors
-    http_req_duration: ['p(95)<2000'],   // 95% under 2s
-    http_req_duration: ['p(99)<5000'],   // 99% under 5s
+    http_req_failed: ["rate<0.10"], // <10% errors
+    http_req_duration: ["p(95)<2000"], // 95% under 2s
+    http_req_duration: ["p(99)<5000"], // 99% under 5s
   },
 };
 ```
@@ -239,7 +239,7 @@ export const options = {
 
 ---
 
-## 📊 Interpreting K6 Metrics
+<h2 id="interpreting-k6-metrics">📊 Interpreting K6 Metrics</h2>
 
 ### Key Metrics Explained
 
@@ -270,7 +270,7 @@ export const options = {
 
 ---
 
-## 🎯 Recommended Thresholds by Endpoint Type
+<h2 id="recommended-thresholds-by-endpoint-type">🎯 Recommended Thresholds by Endpoint Type</h2>
 
 ### Fast Endpoints (Health, Static)
 
@@ -320,22 +320,22 @@ thresholds: {
 
 ### Response Time Benchmarks
 
-| User Experience | p(95) Response Time | Action |
-|-----------------|---------------------|--------|
-| **Excellent** | <200ms | 🎉 Great! |
-| **Good** | 200-500ms | ✅ Acceptable |
-| **Acceptable** | 500-1000ms | ⚠️ Consider optimizing |
-| **Poor** | 1000-2000ms | 🔧 Optimize soon |
-| **Unacceptable** | >2000ms | 🚨 Optimize immediately |
+| User Experience  | p(95) Response Time | Action                  |
+| ---------------- | ------------------- | ----------------------- |
+| **Excellent**    | <200ms              | 🎉 Great!               |
+| **Good**         | 200-500ms           | ✅ Acceptable           |
+| **Acceptable**   | 500-1000ms          | ⚠️ Consider optimizing  |
+| **Poor**         | 1000-2000ms         | 🔧 Optimize soon        |
+| **Unacceptable** | >2000ms             | 🚨 Optimize immediately |
 
 ### Error Rate Benchmarks
 
-| Error Rate | Status | Action |
-|------------|--------|--------|
-| **<0.1%** | 🎉 Excellent | Keep monitoring |
-| **0.1-1%** | ✅ Good | Investigate errors |
-| **1-5%** | ⚠️ Warning | Fix error sources |
-| **>5%** | 🚨 Critical | Immediate fix needed |
+| Error Rate | Status       | Action               |
+| ---------- | ------------ | -------------------- |
+| **<0.1%**  | 🎉 Excellent | Keep monitoring      |
+| **0.1-1%** | ✅ Good      | Investigate errors   |
+| **1-5%**   | ⚠️ Warning   | Fix error sources    |
+| **>5%**    | 🚨 Critical  | Immediate fix needed |
 
 ---
 
@@ -359,100 +359,108 @@ thresholds: {
 
 ---
 
-## 📚 Sample K6 Test with Full Configuration
+<h2 id="sample-k6-test-with-full-configuration">📚 Sample K6 Test with Full Configuration</h2>
 
 ```javascript
-import http from 'k6/http';
-import { check, sleep, group } from 'k6';
-import { Rate, Trend, Counter } from 'k6/metrics';
+import http from "k6/http";
+import { check, sleep, group } from "k6";
+import { Rate, Trend, Counter } from "k6/metrics";
 
 // Custom metrics
-const loginErrors = new Rate('login_errors');
-const feedLoadTime = new Trend('feed_load_time');
-const postsCreated = new Counter('posts_created');
+const loginErrors = new Rate("login_errors");
+const feedLoadTime = new Trend("feed_load_time");
+const postsCreated = new Counter("posts_created");
 
 export const options = {
   stages: [
-    { duration: '1m', target: 10 },
-    { duration: '3m', target: 10 },
-    { duration: '1m', target: 0 },
+    { duration: "1m", target: 10 },
+    { duration: "3m", target: 10 },
+    { duration: "1m", target: 0 },
   ],
 
   thresholds: {
     // Overall metrics
-    http_req_failed: ['rate<0.01'],
-    http_req_duration: ['p(95)<500', 'p(99)<1000'],
+    http_req_failed: ["rate<0.01"],
+    http_req_duration: ["p(95)<500", "p(99)<1000"],
 
     // Custom metrics
-    login_errors: ['rate<0.05'],
-    feed_load_time: ['p(95)<800'],
-    posts_created: ['count>100'],
+    login_errors: ["rate<0.05"],
+    feed_load_time: ["p(95)<800"],
+    posts_created: ["count>100"],
 
     // Per-endpoint thresholds
-    'http_req_duration{endpoint:login}': ['p(95)<400'],
-    'http_req_duration{endpoint:feed}': ['p(95)<600'],
+    "http_req_duration{endpoint:login}": ["p(95)<400"],
+    "http_req_duration{endpoint:feed}": ["p(95)<600"],
   },
 };
 
-const BASE_URL = 'http://localhost:8000/api';
+const BASE_URL = "http://localhost:8000/api";
 
-export default function() {
+export default function () {
   let authToken;
 
   // Login
-  group('Authentication', function() {
-    const loginRes = http.post(`${BASE_URL}/auth/login`, JSON.stringify({
-      email: 'sarah.johnson@testbook.com',
-      password: 'Sarah2024!',
-    }), {
-      headers: { 'Content-Type': 'application/json' },
-      tags: { endpoint: 'login' },
-    });
+  group("Authentication", function () {
+    const loginRes = http.post(
+      `${BASE_URL}/auth/login`,
+      JSON.stringify({
+        email: "sarah.johnson@testbook.com",
+        password: "Sarah2024!",
+      }),
+      {
+        headers: { "Content-Type": "application/json" },
+        tags: { endpoint: "login" },
+      }
+    );
 
     const loginSuccess = check(loginRes, {
-      'login status is 200': (r) => r.status === 200,
-      'has access token': (r) => r.json('access_token') !== undefined,
+      "login status is 200": (r) => r.status === 200,
+      "has access token": (r) => r.json("access_token") !== undefined,
     });
 
     loginErrors.add(!loginSuccess);
 
     if (loginSuccess) {
-      authToken = loginRes.json('access_token');
+      authToken = loginRes.json("access_token");
     }
   });
 
   if (authToken) {
     // Get Feed
-    group('Feed', function() {
+    group("Feed", function () {
       const feedStart = new Date();
       const feedRes = http.get(`${BASE_URL}/feed/all`, {
-        headers: { 'Authorization': `Bearer ${authToken}` },
-        tags: { endpoint: 'feed' },
+        headers: { Authorization: `Bearer ${authToken}` },
+        tags: { endpoint: "feed" },
       });
       const feedDuration = new Date() - feedStart;
 
       check(feedRes, {
-        'feed status is 200': (r) => r.status === 200,
-        'feed has posts': (r) => r.json().length > 0,
+        "feed status is 200": (r) => r.status === 200,
+        "feed has posts": (r) => r.json().length > 0,
       });
 
       feedLoadTime.add(feedDuration);
     });
 
     // Create Post
-    group('Post Creation', function() {
-      const postRes = http.post(`${BASE_URL}/posts/`, JSON.stringify({
-        content: `Load test post ${Date.now()}`,
-      }), {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${authToken}`,
-        },
-        tags: { endpoint: 'posts' },
-      });
+    group("Post Creation", function () {
+      const postRes = http.post(
+        `${BASE_URL}/posts/`,
+        JSON.stringify({
+          content: `Load test post ${Date.now()}`,
+        }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authToken}`,
+          },
+          tags: { endpoint: "posts" },
+        }
+      );
 
       const postCreated = check(postRes, {
-        'post created': (r) => r.status === 200,
+        "post created": (r) => r.status === 200,
       });
 
       if (postCreated) {
@@ -467,7 +475,7 @@ export default function() {
 
 ---
 
-## 📊 Interpreting Results
+<h2 id="interpreting-results">📊 Interpreting Results</h2>
 
 ### Example Output
 
@@ -524,7 +532,7 @@ export default function() {
 
    ```javascript
    // Add tags to track specific endpoints
-   http.get(url, { tags: { endpoint: 'feed' }});
+   http.get(url, { tags: { endpoint: "feed" } });
    ```
 
 2. **Check specific endpoint metrics:**
@@ -536,6 +544,7 @@ export default function() {
    Found it! Feed is slow.
 
 3. **Investigate why:**
+
    - Check database queries
    - Check N+1 query problems
    - Check missing indexes
@@ -561,22 +570,26 @@ After running tests, create a report:
 **Environment:** Development (local)
 
 ## Summary
+
 - Total Requests: 5,432
 - Error Rate: 0.18%
 - Avg Response Time: 287ms
 - P95 Response Time: 523ms
 
 ## Threshold Results
+
 ✅ Error rate < 1%
 ✅ P95 < 600ms
 ✅ Average < 400ms
 
 ## Findings
+
 1. Login endpoint: Excellent (avg 145ms)
 2. Feed endpoint: Acceptable (avg 456ms)
 3. Post creation: Good (avg 234ms)
 
 ## Recommendations
+
 - System ready for 50+ concurrent users
 - Consider caching for feed queries
 - Monitor error rate in production

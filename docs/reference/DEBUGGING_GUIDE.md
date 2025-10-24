@@ -14,7 +14,7 @@
 
 ---
 
-## 📖 Reading Error Messages
+<h2 id="reading-error-messages">📖 Reading Error Messages</h2>
 
 ### Anatomy of a Pytest Error
 
@@ -79,7 +79,7 @@ Call log:
 
 ---
 
-## 🐍 Debugging Pytest Tests
+<h2 id="debugging-pytest-tests">🐍 Debugging Pytest Tests</h2>
 
 ### Method 1: Print Statements
 
@@ -222,7 +222,7 @@ pytest -k "login and wrong" -v
 
 ---
 
-## 🎭 Debugging Playwright Tests
+<h2 id="debugging-playwright-tests">🎭 Debugging Playwright Tests</h2>
 
 ### Method 1: Headed Mode
 
@@ -374,7 +374,7 @@ npx playwright show-trace trace.zip
 
 ---
 
-## 🔍 Common Error Patterns
+<h2 id="common-error-patterns">🔍 Common Error Patterns</h2>
 
 ### Error Pattern 1: Element Not Found
 
@@ -386,7 +386,7 @@ Error: Timeout waiting for selector "[data-testid="button"]"
 
 **Debugging Steps:**
 
-1. **Check if selector is correct:**
+- **Check if selector is correct:**
 
 ```javascript
 // Print all data-testid attributes
@@ -396,21 +396,21 @@ await page.evaluate(() => {
 });
 ```
 
-2. **Check if element exists at all:**
+- **Check if element exists at all:**
 
 ```javascript
 const count = await page.locator('[data-testid="button"]').count();
 console.log("Found elements:", count);
 ```
 
-3. **Check page HTML:**
+- **Check page HTML:**
 
 ```javascript
 const html = await page.content();
 console.log(html); // See all HTML
 ```
 
-4. **Take screenshot:**
+- **Take screenshot:**
 
 ```javascript
 await page.screenshot({ path: "debug.png", fullPage: true });
@@ -438,7 +438,7 @@ def test_something(db_session):
     ...
 ```
 
-2. **Run tests in isolation:**
+- **Run tests in isolation:**
 
 ```bash
 # Run just one
@@ -448,7 +448,7 @@ pytest tests/integration/test_api_auth.py::test_login -v
 pytest tests/integration/test_api_auth.py -v
 ```
 
-3. **Check for shared state:**
+- **Check for shared state:**
 
 - Global variables
 - Database not reset
@@ -487,20 +487,20 @@ which python  # Should show path with venv
 echo $VIRTUAL_ENV  # Should show venv path
 ```
 
-2. **Activate venv:**
+- **Activate venv:**
 
 ```bash
 source .venv/bin/activate  # macOS/Linux
 .venv\Scripts\activate  # Windows
 ```
 
-3. **Reinstall dependencies:**
+- **Reinstall dependencies:**
 
 ```bash
 pip install -r requirements.txt
 ```
 
-4. **Check Python path:**
+- **Check Python path:**
 
 ```python
 import sys
@@ -540,7 +540,7 @@ test("fixed", async ({ page }) => {
 
 ---
 
-## 🔬 Advanced Debugging Techniques
+<h2 id="advanced-debugging-techniques">⚡ Advanced Debugging Techniques</h2>
 
 ### Technique 1: Binary Search
 

@@ -1,13 +1,17 @@
-# 🧪 Lab 6: Testing Applications with Rate Limiting & Security
+# 🧪 Lab 15: Rate Limiting Testing (Python)
 
-**Estimated Time:** 60-90 minutes
-**Difficulty:** Advanced
-**Prerequisites:** Labs 1-5 completed
-**Concepts:** Rate limiting, test infrastructure, environment configuration, fixture design
+**Estimated Time:** 60-90 minutes<br>
+**Difficulty:** Advanced<br>
+**Language:** 🐍 Python<br>
+**Prerequisites:** Lab 14 completed
+
+**💡 Need JavaScript instead?** Try [Lab 15: Rate Limiting Testing (JavaScript)](LAB_15_Rate_Limiting_Production_JavaScript.md)!
+
+**What This Adds:** Master rate limiting testing to ensure your application can handle high traffic and prevent abuse. Learn to test and implement rate limiting strategies for production applications.
 
 ---
 
-## 🎯 What You'll Learn
+<h2 id="what-youll-learn">🎯 What You'll Learn</h2>
 
 - How security features (like rate limiting) affect your tests
 - Why tests pass individually but fail together
@@ -18,7 +22,7 @@
 
 ---
 
-## 📚 Background: When Your Code Works TOO Well
+<h2 id="background-when-your-code-works-too-well">📚 Background: When Your Code Works TOO Well</h2>
 
 ### The Scenario
 
@@ -37,7 +41,7 @@ def login(request: Request, ...):
 
 ---
 
-## 🐛 The Problem
+<h2 id="the-problem">🐛 The Problem</h2>
 
 ### Test Results That Don't Make Sense
 
@@ -55,7 +59,7 @@ ERROR: KeyError: 'access_token'
 
 ---
 
-## 🔍 Lab Exercise 1: Reproduce the Issue
+<h2 id="lab-exercise-1-reproduce-the-issue">🔍 Lab Exercise 1: Reproduce the Issue</h2>
 
 ### Step 1: Check Current Rate Limits
 
@@ -93,8 +97,13 @@ cd /Users/danmanez/Projects/Testbook
 
 # Start backend normally (with rate limiting)
 cd backend
-source .venv/bin/activate  # Windows: .venv\Scripts\activate
+# Linux/Mac
+source .venv/bin/activate
 uvicorn main:app --reload --port 8000 &
+
+# Windows (PowerShell)
+.venv\Scripts\activate
+Start-Process -NoNewWindow pwsh -ArgumentList "-Command", "uvicorn main:app --reload --port 8000"
 
 # Run security tests
 cd ..
@@ -132,7 +141,7 @@ def auth_token():
 
 ---
 
-## 🔧 Lab Exercise 2: Solutions
+<h2 id="lab-exercise-2-solutions">🔧 Lab Exercise 2: Solutions</h2>
 
 ### Solution A: Testing Mode (Recommended)
 
@@ -175,11 +184,19 @@ def login(...):
 
 ```bash
 # Kill old backend
+# Linux/Mac
 lsof -ti:8000 | xargs kill
+
+# Windows (PowerShell)
+netstat -ano | findstr :8000 | ForEach-Object { $pid = ($_ -split '\s+')[-1]; taskkill /PID $pid /F }
 
 # Start in testing mode
 cd backend
+# Linux/Mac
 TESTING=true uvicorn main:app --reload --port 8000 &
+
+# Windows (PowerShell)
+$env:TESTING='true'; Start-Process -NoNewWindow pwsh -ArgumentList "-Command", "uvicorn main:app --reload --port 8000"
 
 # Run tests
 cd ..
@@ -241,7 +258,7 @@ def slow_down_tests():
 
 ---
 
-## 🎓 Lab Exercise 3: Test the Rate Limiting
+<h2 id="lab-exercise-3-test-the-rate-limiting">🎓 Lab Exercise 3: Test the Rate Limiting</h2>
 
 ### Task: Verify Rate Limiting Actually Works
 
@@ -288,14 +305,18 @@ def test_rate_limiting_works():
 pytest tests/security/test_rate_limit_demo.py -v -s
 
 # WITH testing mode - should allow all requests
+# Linux/Mac
 TESTING=true pytest tests/security/test_rate_limit_demo.py -v -s
+
+# Windows (PowerShell)
+$env:TESTING='true'; pytest tests/security/test_rate_limit_demo.py -v -s
 ```
 
 ✅ **Checkpoint:** You can see rate limiting in action!
 
 ---
 
-## 🧠 Lab Exercise 4: Understand HTTP Status Codes
+<h2 id="lab-exercise-4-understand-http-status-codes">🧠 Lab Exercise 4: Understand HTTP Status Codes</h2>
 
 ### The 401 vs 403 Confusion
 
@@ -303,10 +324,10 @@ Some tests fail because they expect `401` but get `403`.
 
 **Both are valid auth errors!**
 
-| Code | Meaning | When to Use |
-|------|---------|-------------|
-| **401** | Unauthorized | "You need to authenticate" (no token or bad token) |
-| **403** | Forbidden | "You're authenticated but can't access this" (valid token, insufficient permissions) |
+| Code    | Meaning      | When to Use                                                                          |
+| ------- | ------------ | ------------------------------------------------------------------------------------ |
+| **401** | Unauthorized | "You need to authenticate" (no token or bad token)                                   |
+| **403** | Forbidden    | "You're authenticated but can't access this" (valid token, insufficient permissions) |
 
 ### Which Should You Use?
 
@@ -345,7 +366,7 @@ assert response.status_code in [401, 403]  # Accepts both valid auth errors
 
 ---
 
-## 🎯 Lab Exercise 5: Fix a Real Issue
+<h2 id="lab-exercise-5-fix-a-real-issue">🎯 Lab Exercise 5: Fix a Real Issue</h2>
 
 ### Task: Make Tests Work With Rate Limiting
 
@@ -378,7 +399,7 @@ if not TESTING_MODE:
 
 ---
 
-## 🐛 Debugging Exercise
+<h2 id="debugging-exercise">🐛 Debugging Exercise</h2>
 
 ### Challenge: Why Does This Test Hang?
 
@@ -643,16 +664,19 @@ limiter = Limiter(
 ## 🎓 Discussion Questions
 
 1. **Should you disable security features in tests?**
+
    - Pro: Tests run reliably
    - Con: Not testing real behavior
    - Answer: Use relaxed limits, not disabled
 
 2. **How do you test a rate limiter without hitting it?**
+
    - Test mode with high limits
    - Separate tests specifically for rate limiting
    - Mock the limiter for unit tests
 
 3. **Is it okay for tests to fail due to infrastructure?**
+
    - No - tests should be reliable
    - But it's a sign your security works!
    - Fix infrastructure, not the feature
@@ -694,8 +718,8 @@ print(f"TESTING_MODE: {TESTING_MODE}")
 - [slowapi Documentation](https://slowapi.readthedocs.io/)
 - [HTTP Status Codes](https://httpstatuses.com/)
 - [pytest Fixture Scopes](https://docs.pytest.org/en/latest/reference/fixtures.html#scope)
-- [Lab 5: Test Data Management](LAB_05_Test_Data_Management.md)
-- [TESTING_ANTIPATTERNS.md](../docs/reference/TESTING_ANTIPATTERNS.md)
+- [Lab 5: Test Data Management (Python)](LAB_05_Test_Data_Management_Python.md)
+- [TESTING_ANTIPATTERNS.md](../../../docs/concepts/TESTING_ANTIPATTERNS.md)
 
 ---
 
@@ -704,8 +728,13 @@ print(f"TESTING_MODE: {TESTING_MODE}")
 **Tip 1:** Always use environment variables for test configuration
 
 ```bash
+# Linux/Mac
 TESTING=true pytest  # High rate limits
 TESTING=false pytest  # Real rate limits (will fail!)
+
+# Windows (PowerShell)
+$env:TESTING='true'; pytest  # High rate limits
+$env:TESTING='false'; pytest  # Real rate limits (will fail!)
 ```
 
 **Tip 2:** Document your rate limits clearly
@@ -761,6 +790,7 @@ You've mastered this lab when you can:
 > "Tell me about a time when your tests failed even though your code was correct."
 
 **Your answer:**
+
 > "I implemented rate limiting for security. Tests started failing together due to hitting the rate limit. I debugged it by running tests individually, identified the shared resource issue, and implemented environment-based configuration so tests use relaxed limits while production uses strict limits. This taught me how security features can affect test infrastructure."
 
 🎯 **That's a senior-level answer!**
@@ -769,7 +799,7 @@ You've mastered this lab when you can:
 
 **🎉 Congratulations!** You now understand advanced testing infrastructure challenges that many senior engineers struggle with!
 
-**Next Lab:** Coming soon - Advanced CI/CD Integration
+**Next Lab:** Move to [Stage 5: Capstone](../../stage_5_capstone/README.md) or explore other labs
 
 ---
 

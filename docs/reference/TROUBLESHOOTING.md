@@ -10,13 +10,13 @@ This comprehensive guide covers both technical troubleshooting (specific error m
 
 ### Technical Troubleshooting
 
-- [Python Virtual Environment Errors](#-python-virtual-environment-errors)
-- [Node.js & npm Errors](#nodejs--npm-errors)
-- [Docker & Permissions Errors](#docker--permissions-errors)
+- [Python Virtual Environment Errors](#python-virtual-environment-errors)
+- [Node.js & npm Errors](#nodejs-npm-errors)
+- [Docker & Permissions Errors](#docker-permissions-errors)
 - [Database Issues](#database-issues)
 - [Port Conflicts](#port-conflicts)
 - [Test Execution Errors](#test-execution-errors)
-- [Coverage & Reporting Errors](#coverage--reporting-errors)
+- [Coverage & Reporting Errors](#coverage-reporting-errors)
 - [Playwright Issues](#playwright-issues)
 - [Platform-Specific Issues](#platform-specific-issues)
 
@@ -24,15 +24,15 @@ This comprehensive guide covers both technical troubleshooting (specific error m
 
 - [Environment Setup Mistakes](#environment-setup-mistakes)
 - [Testing Command Mistakes](#testing-command-mistakes)
-- [Python/Pytest Mistakes](#pythonpytest-mistakes)
-- [Playwright/E2E Mistakes](#playwrighte2e-mistakes)
+- [Python/Pytest Mistakes](#python-pytest-mistakes)
+- [Playwright/E2E Mistakes](#playwright-e2e-mistakes)
 - [Test Writing Mistakes](#test-writing-mistakes)
-- [Git & Version Control Mistakes](#git--version-control-mistakes)
+- [Git & Version Control Mistakes](#git-version-control-mistakes)
 - [Conceptual Mistakes](#conceptual-mistakes)
 
 ---
 
-## 🐍 Python Virtual Environment Errors
+<h2 id="python-virtual-environment-errors">🐍 Python Virtual Environment Errors</h2>
 
 ### Error: `command not found: pytest`
 
@@ -97,7 +97,7 @@ pip install -r requirements.txt
 
 ---
 
-## 📦 Node.js & npm Errors
+<h2 id="nodejs-npm-errors">📦 Node.js & npm Errors</h2>
 
 ### Error: `npm: command not found`
 
@@ -160,7 +160,7 @@ npm install
 
 ---
 
-## 🐳 Docker & Permissions Errors
+<h2 id="docker-permissions-errors">🐳 Docker & Permissions Errors</h2>
 
 ### Error: `permission denied while trying to connect`
 
@@ -203,7 +203,7 @@ docker compose up  # No hyphen
 
 ---
 
-## 🗄️ Database Issues
+<h2 id="database-issues"> 🗄️ Database Issues</h2>
 
 ### Error: `database is locked`
 
@@ -250,7 +250,7 @@ python seed.py  # Creates tables and seed data
 
 ---
 
-## 🔌 Port Conflicts
+<h2 id="port-conflicts">🔌 Port Conflicts</h2>
 
 ### Error: `Address already in use`
 
@@ -279,7 +279,7 @@ uvicorn main:app --port 8001
 
 ---
 
-## 🧪 Test Execution Errors
+<h2 id="test-execution-errors">🧪 Test Execution Errors</h2>
 
 ### Error: `pytest: command not found`
 
@@ -313,7 +313,7 @@ pytest tests/  # Not test/
 
 ---
 
-## 📊 Coverage & Reporting Errors
+<h2 id="coverage-reporting-errors">📊 Coverage & Reporting Errors</h2>
 
 ### Error: `No source for code`
 
@@ -348,7 +348,7 @@ open htmlcov/index.html  # macOS
 
 ---
 
-## 🎭 Playwright Issues
+<h2 id="playwright-issues">🎭 Playwright Issues</h2>
 
 ### Error: `Browser not found`
 
@@ -399,7 +399,7 @@ await page.waitForLoadState('networkidle')
 
 ---
 
-## 💻 Platform-Specific Issues
+<h2 id="platform-specific-issues">💻 Platform-Specific Issues</h2>
 
 ### Windows: PowerShell Execution Policy
 
@@ -448,7 +448,7 @@ nvm install node
 
 ---
 
-## 🔧 Environment Setup Mistakes
+<h2 id="environment-setup-mistakes">🔧 Environment Setup Mistakes</h2>
 
 ### Mistake 1: Not Activating Virtual Environment
 
@@ -535,7 +535,7 @@ npx playwright test
 
 ---
 
-## 🧪 Testing Command Mistakes
+<h2 id="testing-command-mistakes">🧪 Testing Command Mistakes</h2>
 
 ### Mistake 1: Running All Tests When You Want One
 
@@ -596,7 +596,7 @@ pytest --lf  # Run last failed tests only
 
 ---
 
-## 🐍 Python/Pytest Mistakes
+<h2 id="python-pytest-mistakes">🐍 Python/Pytest Mistakes</h2>
 
 ### Mistake 1: Not Using Fixtures
 
@@ -679,7 +679,7 @@ def test_create_post_too_long(client, auth_headers):
 
 ---
 
-## 🎭 Playwright/E2E Mistakes
+<h2 id="playwright-e2e-mistakes">🎭 Playwright/E2E Mistakes</h2>
 
 ### Mistake 1: Using Hard Waits
 
@@ -728,7 +728,7 @@ await expect(page.locator("text=Success")).toBeVisible(); // Reliable
 
 ---
 
-## ✍️ Test Writing Mistakes
+<h2 id="test-writing-mistakes"> ✍️ Test Writing Mistakes</h2>
 
 ### Mistake 1: Testing Implementation, Not Behavior
 
@@ -817,7 +817,7 @@ def test_create_post():
 
 ---
 
-## 🔄 Git & Version Control Mistakes
+<h2 id="git-version-control-mistakes">🔄 Git & Version Control Mistakes</h2>
 
 ### Mistake 1: Committing Test Failures
 
@@ -884,7 +884,7 @@ git commit -m "Update README with new installation instructions"
 
 ---
 
-## 🧠 Conceptual Mistakes
+<h2 id="conceptual-mistakes">🧠 Conceptual Mistakes</h2>
 
 ### Mistake 1: Testing Everything with E2E
 
@@ -980,7 +980,7 @@ def create_user(email, password):
 ## 📚 Related Resources
 
 - [Testing Guide](../guides/TESTING_GUIDE.md) - Comprehensive testing examples
-- [Testing Patterns](TESTING_PATTERNS.md) - Advanced testing techniques
+- [Testing Patterns](../concepts/TESTING_PATTERNS.md) - Advanced testing techniques
 - [Debugging Guide](DEBUGGING_GUIDE.md) - Debugging strategies
 - [README.md](../../README.md#frequently-asked-questions) - Learning-related questions
 

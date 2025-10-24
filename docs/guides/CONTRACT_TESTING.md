@@ -4,7 +4,7 @@
 
 ---
 
-## 🎯 Quick Start (30 seconds)
+<h2 id="quick-start-30-seconds">🎯 Quick Start (30 seconds)</h2>
 
 **Contract testing** ensures your API does exactly what your documentation says it does.
 
@@ -62,7 +62,7 @@ For an API with 30 endpoints (like Testbook):
 
 ---
 
-## 🚀 Enter Schemathesis
+<h2 id="enter-schemathesis">🚀 Enter Schemathesis</h2>
 
 ### What It Is
 
@@ -164,7 +164,7 @@ You define **properties** that should always be true:
 
 ---
 
-## 📊 Example: What Schemathesis Would Test in Testbook
+<h2 id="example-what-schemathesis-would-test-in-testbook">📊 Example: What Schemathesis Would Test in Testbook</h2>
 
 ### Endpoint: `POST /api/posts`
 
@@ -299,7 +299,7 @@ Using `force_schema_version="30"` makes Schemathesis work with OpenAPI 3.1.0! Ho
 
 ---
 
-## 🔄 How to Enable When Ready
+<h2 id="how-to-enable-when-ready">🔄 How to Enable When Ready</h2>
 
 When Schemathesis adds full OpenAPI 3.1.0 support:
 
@@ -631,7 +631,7 @@ pytest tests/integration/ -v
 ### Reference Docs
 
 - [Testing Guide](TESTING_GUIDE.md) - API testing examples
-- [Testing Patterns](../reference/TESTING_PATTERNS.md) - Advanced techniques
+- [Testing Patterns](../concepts/TESTING_PATTERNS.md) - Advanced techniques
 - [Backend Tests README](../../backend/tests/README.md) - Test organization
 
 ---

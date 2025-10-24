@@ -55,4 +55,3 @@ echo ""
 echo "📚 Begin learning:"
 echo "  - Open START_HERE.md to choose your learning path"
 echo "  - Check labs/LAB_01_Your_First_Test.md to begin"
-

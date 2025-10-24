@@ -39,4 +39,3 @@ echo "  - mike.chen@testbook.com / MikeRocks88"
 echo ""
 echo "To stop: docker-compose down"
 echo "To view logs: docker-compose logs -f"
-

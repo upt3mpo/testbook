@@ -1,12 +1,17 @@
-# 🧪 Lab 3: Testing API Endpoints
+# 🧪 Lab 5: API Endpoint Testing (Python)
 
-**Estimated Time:** 60 minutes
-**Difficulty:** Intermediate
-**Prerequisites:** Labs 1-2 completed
+**Estimated Time:** 60 minutes<br>
+**Difficulty:** Intermediate<br>
+**Language:** 🐍 Python<br>
+**Prerequisites:** Labs 1-4 completed
+
+**💡 Need JavaScript instead?** Try [Lab 5: API Endpoint Testing (JavaScript)](LAB_05_API_Endpoint_Testing_JavaScript.md)!
+
+**What This Adds:** Master API testing with FastAPI TestClient - learn to test real HTTP endpoints, handle authentication, and verify JSON responses. This is essential for testing backend services.
 
 ---
 
-## 🎯 What You'll Learn
+<h2 id="what-youll-learn">🎯 What You'll Learn</h2>
 
 - Test real API endpoints
 - Use FastAPI TestClient
@@ -16,7 +21,7 @@
 
 ---
 
-## 📋 Step-by-Step Instructions
+<h2 id="step-by-step-instructions">📋 Step-by-Step Instructions</h2>
 
 ### Step 1: Understand the API (10 minutes)
 
@@ -40,19 +45,38 @@
 
 ```python
 def test_login_success(self, client, test_user):
-    """Test successful login with correct credentials."""
+    """
+    Test successful login with correct credentials.
+
+    This test verifies the complete login flow:
+    1. User provides valid email and password
+    2. API validates credentials against database
+    3. API returns JWT token for authentication
+    4. Response includes proper token format
+    """
+    # Arrange: Use the test_user fixture (already created in database)
+    # The test_user has email "testuser@example.com" and password "TestPassword123!"
+
+    # Act: Send POST request to login endpoint with valid credentials
     response = client.post(
         "/api/auth/login",
         json={
-            "email": "testuser@example.com",
-            "password": "TestPassword123!",
+            "email": "testuser@example.com",    # Valid email from test_user fixture
+            "password": "TestPassword123!",     # Valid password from test_user fixture
         },
     )
 
-    assert response.status_code == 200
+    # Assert: Verify the response is successful and contains expected data
+    assert response.status_code == 200, f"Expected 200 OK, got {response.status_code}"
+
+    # Parse the JSON response
     data = response.json()
-    assert "access_token" in data
-    assert data["token_type"] == "bearer"
+
+    # Verify the response contains an access token
+    assert "access_token" in data, "Response should contain access_token"
+
+    # Verify the token type is correct (JWT standard)
+    assert data["token_type"] == "bearer", f"Expected 'bearer', got '{data['token_type']}'"
 ```
 
 **Understand:**
@@ -150,7 +174,7 @@ pytest tests/integration/test_api_posts.py::TestCreatePost::test_create_my_post 
 
 ---
 
-## 🎓 What You Learned
+<h2 id="what-you-learned">🎓 What You Learned</h2>
 
 - ✅ How to test API endpoints with TestClient
 - ✅ How to check HTTP status codes
@@ -192,7 +216,7 @@ Write a test that:
 
 ---
 
-## 🐛 Common Mistakes
+<h2 id="common-mistakes">🐛 Common Mistakes</h2>
 
 **Mistake 1:** Forgetting authentication
 
@@ -222,7 +246,7 @@ assert "content" in data
 
 ---
 
-## ✅ Lab Completion Checklist
+<h2 id="lab-completion-checklist">✅ Lab Completion Checklist</h2>
 
 - [ ] Ran existing API tests
 - [ ] Wrote `test_login_with_my_wrong_password` (passes)
@@ -233,7 +257,7 @@ assert "content" in data
 
 ---
 
-## 🎯 Quiz
+<h2 id="quiz">🎯 Quiz</h2>
 
 1. What HTTP status code means "Unauthorized"?
 2. What does `client.post()` do?
@@ -241,11 +265,11 @@ assert "content" in data
 4. What does `response.json()` return?
 5. How is API testing different from unit testing?
 
-**Answers at bottom of page*
+\*_Answers at bottom of page_
 
 ---
 
-## 📚 Further Reading
+<h2 id="further-reading">📚 Further Reading</h2>
 
 - [TESTING_GUIDE.md - API Testing Section](../docs/guides/TESTING_GUIDE.md#api-testing)
 - [FastAPI Testing Docs](https://fastapi.tiangolo.com/tutorial/testing/)
@@ -255,10 +279,7 @@ assert "content" in data
 
 **🎉 You're now testing real APIs like a pro!**
 
-**Next Lab:** Choose your language:
-
-- [Lab 4: E2E Testing (Python)](LAB_04_E2E_Testing_Python.md)
-- [Lab 4: E2E Testing (JavaScript)](LAB_04_E2E_Testing_JavaScript.md)
+**Next Lab:** [Lab 5: Test Data Management (Python)](LAB_05_Test_Data_Management_Python.md)
 
 ---
 

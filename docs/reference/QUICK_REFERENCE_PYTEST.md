@@ -4,7 +4,7 @@
 
 ---
 
-## 🚀 Essential Commands
+<h2 id="essential-commands">🚀 Essential Commands</h2>
 
 ### Running Tests
 
@@ -92,11 +92,13 @@ pytest --no-header --no-summary
 
 ---
 
-## 📊 Coverage
+<h2 id="coverage">📊 Coverage</h2>
+
+> **Note:** Coverage is opt-in! It's not included in pytest.ini by default to keep individual test runs clean. Use explicit flags when you need coverage data.
 
 ```bash
-# Run with coverage
-pytest --cov
+# Run with coverage (explicit flags required)
+pytest --cov=.
 
 # Coverage for specific module
 pytest --cov=auth
@@ -105,7 +107,7 @@ pytest --cov=auth
 pytest --cov=auth --cov-report=term-missing
 
 # Generate HTML report
-pytest --cov --cov-report=html
+pytest --cov=. --cov-report=html
 
 # Open coverage report
 open htmlcov/index.html  # macOS
@@ -113,12 +115,31 @@ start htmlcov/index.html  # Windows
 xdg-open htmlcov/index.html  # Linux
 
 # Coverage with minimum threshold
-pytest --cov --cov-fail-under=80
+pytest --cov=. --cov-fail-under=80
+```
+
+### Common Flag Combinations
+
+```bash
+# Quick test run (no coverage)
+pytest -v
+
+# Full suite with coverage
+pytest -v --cov=. --cov-report=html
+
+# Debugging mode
+pytest -vv -s -x
+
+# Just unit tests
+pytest -m unit
+
+# Run specific test with verbose output
+pytest -vv -s tests/unit/test_auth.py::test_password_is_hashed
 ```
 
 ---
 
-## ⚡ Performance
+<h2 id="performance">⚡ Performance</h2>
 
 ```bash
 # Run tests in parallel (requires pytest-xdist)
@@ -134,7 +155,7 @@ pytest -m "not slow"
 
 ---
 
-## 🔍 Finding Tests
+<h2 id="finding-tests">🔍 Finding Tests</h2>
 
 ```bash
 # List all tests without running

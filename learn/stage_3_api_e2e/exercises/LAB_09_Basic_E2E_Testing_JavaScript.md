@@ -1,17 +1,17 @@
-# 🧪 Lab 4: End-to-End Testing with Playwright (JavaScript)
+# 🧪 Lab 9: Basic E2E Testing (JavaScript)
 
-**Estimated Time:** 90 minutes
-**Difficulty:** Intermediate
-**Language:** 🟨 JavaScript
-**Prerequisites:** Labs 1-3 completed, Node.js installed, basic JavaScript knowledge
+**Estimated Time:** 90 minutes<br>
+**Difficulty:** Intermediate<br>
+**Language:** 🟨 JavaScript<br>
+**Prerequisites:** Lab 8 completed
 
-**💡 Need JavaScript basics?** Try [learn-js.org](https://www.learn-js.org/) for free interactive tutorials!
+**💡 Need Python instead?** Try [Lab 9: Basic E2E Testing (Python)](LAB_09_Basic_E2E_Testing_Python.md)!
 
-**Note:** There's also a [Python version](LAB_04_E2E_Testing_Python.md) that follows the same structure!
+**What This Adds:** Master end-to-end testing with Playwright - learn to test complete user workflows in real browsers, ensuring your application works as users expect it to.
 
 ---
 
-## 🎯 What You'll Learn
+<h2 id="what-youll-learn">🎯 What You'll Learn</h2>
 
 - Write E2E tests with Playwright (JavaScript)
 - Test in a real browser
@@ -21,7 +21,7 @@
 
 ---
 
-## 📋 Step-by-Step Instructions
+<h2 id="step-by-step-instructions">📋 Step-by-Step Instructions</h2>
 
 ### Step 1: Setup Playwright (10 minutes)
 
@@ -131,7 +131,7 @@ await page.fill('[data-testid="login-email-input"]', email);
 ```javascript
 await page.click('[data-testid="login-submit-button"]');
 await page.locator('[data-testid="navbar"]').toBeVisible();
-await page.fill('[data-testid="create-post-textarea"]', 'My post');
+await page.fill('[data-testid="create-post-textarea"]', "My post");
 ```
 
 ✅ **Checkpoint:** You understand how to find elements
@@ -141,33 +141,36 @@ await page.fill('[data-testid="create-post-textarea"]', 'My post');
 **Create:** `tests/e2e/my_first_e2e.spec.js`
 
 ```javascript
-const { test, expect } = require('@playwright/test');
+const { test, expect } = require("@playwright/test");
 
-test('My first E2E test - Login and create post', async ({ page }) => {
+test("My first E2E test - Login and create post", async ({ page }) => {
   // Step 1: Go to Testbook
-await page.goto('http://localhost:3000');
+  await page.goto("http://localhost:3000");
 
   // Step 2: Login
-  await page.fill('[data-testid="login-email-input"]',
-                  'sarah.johnson@testbook.com');
-  await page.fill('[data-testid="login-password-input"]',
-                  'Sarah2024!');
+  await page.fill(
+    '[data-testid="login-email-input"]',
+    "sarah.johnson@testbook.com"
+  );
+  await page.fill('[data-testid="login-password-input"]', "Sarah2024!");
   await page.click('[data-testid="login-submit-button"]');
 
   // Step 3: Wait for page to load
   await expect(page.locator('[data-testid="navbar"]')).toBeVisible();
 
   // Step 4: Create a post
-  await page.fill('[data-testid="create-post-textarea"]',
-                  'My first E2E test post!');
+  await page.fill(
+    '[data-testid="create-post-textarea"]',
+    "My first E2E test post!"
+  );
   await page.click('[data-testid="create-post-submit-button"]');
 
   // Step 5: Verify post appears
-  await page.waitForTimeout(1000);  // Wait for post to appear
+  await page.waitForTimeout(1000); // Wait for post to appear
   const firstPost = page.locator('[data-testid-generic="post-item"]').first();
-  await expect(firstPost).toContainText('My first E2E test post!');
+  await expect(firstPost).toContainText("My first E2E test post!");
 
-  console.log('✅ Test passed! Post created successfully!');
+  console.log("✅ Test passed! Post created successfully!");
 });
 ```
 
@@ -189,7 +192,7 @@ npx playwright test my_first_e2e.spec.js --headed
 
 ---
 
-## 🎓 What You Learned
+<h2 id="what-you-learned">🎓 What You Learned</h2>
 
 - ✅ How to write E2E tests with Playwright
 - ✅ How to select elements with data-testid
@@ -235,7 +238,7 @@ Write a test that:
 
 ---
 
-## 🐛 Troubleshooting
+<h2 id="troubleshooting">🐛 Troubleshooting</h2>
 
 **Problem:** `page.goto: net::ERR_CONNECTION_REFUSED`
 **Solution:** Make sure the dev servers are running (`./start-dev.sh`) so the frontend is available on <http://localhost:3000> and the API on <http://localhost:8000>
@@ -248,7 +251,7 @@ Write a test that:
 
 ---
 
-## ✅ Lab Completion Checklist
+<h2 id="lab-completion-checklist">✅ Lab Completion Checklist</h2>
 
 - [ ] Playwright installed successfully
 - [ ] Watched test run in headed mode
@@ -259,7 +262,7 @@ Write a test that:
 
 ---
 
-## 🎯 Pro Tips
+<h2 id="pro-tips">🎯 Pro Tips</h2>
 
 **Tip 1:** Always run in headed mode while developing
 
@@ -287,12 +290,12 @@ npx playwright codegen http://localhost:3000
 
 **Both versions of this lab teach the same concepts!**
 
-| Aspect | JavaScript (this lab) | Python |
-|--------|-----------------------|--------|
-| **Syntax** | Async/await | Synchronous, clean |
+| Aspect       | JavaScript (this lab)         | Python                           |
+| ------------ | ----------------------------- | -------------------------------- |
+| **Syntax**   | Async/await                   | Synchronous, clean               |
 | **Best For** | JS developers, frontend teams | Python developers, backend teams |
-| **Features** | Identical | Identical |
-| **Speed** | Same | Same |
+| **Features** | Identical                     | Identical                        |
+| **Speed**    | Same                          | Same                             |
 
 **Choose based on your comfort level!** Both are excellent.
 
@@ -300,4 +303,4 @@ npx playwright codegen http://localhost:3000
 
 **🎉 You're now writing E2E tests! This is professional-level testing!**
 
-**Next Lab:** [Lab 5: Test Data Management](LAB_05_Test_Data_Management.md)
+**Next Lab:** [Lab 5: Test Data Management (JavaScript)](LAB_05_Test_Data_Management_JavaScript.md)

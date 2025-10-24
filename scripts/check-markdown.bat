@@ -117,4 +117,3 @@ echo ❌ Markdown validation failed!
 echo.
 echo Fix the issues above before committing.
 exit /b 1
-

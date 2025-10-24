@@ -159,4 +159,3 @@ echo ❌ Startup failed. Please check the errors above.
 cd ..
 pause
 exit /b 1
-

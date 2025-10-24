@@ -1,11 +1,13 @@
-# 🧪 Lab 4B: Advanced E2E Testing with Playwright (Python)
+# 🧪 Lab 10: Advanced E2E Patterns (Python)
 
-**Estimated Time:** 120 minutes
-**Difficulty:** Advanced
-**Language:** 🐍 Python
-**Prerequisites:** Lab 4 (E2E Python) completed
+**Estimated Time:** 120 minutes<br>
+**Difficulty:** Advanced<br>
+**Language:** 🐍 Python<br>
+**Prerequisites:** Lab 9 completed
 
-**What This Adds:** This lab builds on Lab 4 by introducing professional patterns like Page Object Model, advanced fixtures, network stubbing, and pytest markers.
+**💡 Need JavaScript instead?** Try [Lab 10: Advanced E2E Patterns (JavaScript)](LAB_10_Advanced_E2E_Patterns_JavaScript.md)!
+
+**What This Adds:** Master advanced E2E testing patterns including page objects, data-driven tests, and complex user workflows. This takes your E2E testing to the next level.
 
 ---
 
@@ -1066,6 +1068,8 @@ The concepts transfer directly between languages!
 **🎉 You've mastered advanced E2E testing patterns in Python! These are professional-level skills used in production!**
 
 **🐍 Python's Unique Advantage:** Unlike JavaScript, Python lets you use the same language for backend API manipulation AND frontend UI testing. This enables incredibly fast test setup by seeding data via API instead of clicking through UI!
+
+**Next Lab:** [Lab 7: Playwright Deep Dive (Python)](LAB_07_Playwright_Deep_Dive_Python.md)
 
 **Next Steps:**
 

@@ -4,7 +4,7 @@
 
 ---
 
-## 🎯 Why Accessibility Matters
+<h2 id="why-accessibility-matters">🎯 Why Accessibility Matters</h2>
 
 **Legal Requirements:**
 
@@ -21,7 +21,7 @@
 
 ---
 
-## 📊 Accessibility Testing Pyramid
+<h2 id="accessibility-testing-pyramid">📊 Accessibility Testing Pyramid</h2>
 
 ```text
      Manual Testing (60%)
@@ -40,7 +40,7 @@
 
 ---
 
-## 🧪 Testing Approaches in Testbook
+<h2 id="testing-approaches-in-testbook">🧪 Testing Approaches in Testbook</h2>
 
 ### 1. Unit-Level Accessibility (Frontend Component Tests)
 
@@ -63,9 +63,9 @@ npm test -- accessibility.test.jsx
 **Example test:**
 
 ```jsx
-import { axe } from 'vitest-axe';
+import { axe } from "vitest-axe";
 
-it('Login page should have no accessibility violations', async () => {
+it("Login page should have no accessibility violations", async () => {
   const { container } = render(<LoginPage />);
   const results = await axe(container);
   expect(results).toHaveNoViolations();
@@ -95,13 +95,13 @@ npm run test:a11y
 **Example test:**
 
 ```javascript
-import AxeBuilder from '@axe-core/playwright';
+import AxeBuilder from "@axe-core/playwright";
 
-test('Home page should not have accessibility violations', async ({ page }) => {
-  await page.goto('http://localhost:3000/');
+test("Home page should not have accessibility violations", async ({ page }) => {
+  await page.goto("http://localhost:3000/");
 
   const accessibilityScanResults = await new AxeBuilder({ page })
-    .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
+    .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
     .analyze();
 
   expect(accessibilityScanResults.violations).toEqual([]);
@@ -136,7 +136,7 @@ npx lhci autorun
 
 ---
 
-## 🔍 What We Test For
+<h2 id="what-we-test-for">🔍 What We Test For</h2>
 
 ### WCAG 2.1 Level AA Criteria
 
@@ -170,7 +170,7 @@ npx lhci autorun
 
 ---
 
-## 🛠️ Tools We Use
+<h2 id="tools-we-use">🛠️ Tools We Use</h2>
 
 ### 1. axe-core
 
@@ -210,7 +210,7 @@ npm install --save-dev eslint-plugin-jsx-a11y
 
 ---
 
-## 🚀 Running Tests
+<h2 id="running-tests">🚀 Running Tests</h2>
 
 ### Quick Check (All Accessibility Tests)
 
@@ -237,7 +237,7 @@ All accessibility tests run automatically on every PR:
 
 ---
 
-## 🐛 Common Issues & Fixes
+<h2 id="common-issues-fixes">🐛 Common Issues & Fixes</h2>
 
 ### Issue: "Form elements must have labels"
 
@@ -297,7 +297,9 @@ background: #fff;
 **Bad:**
 
 ```jsx
-<button><Icon /></button>
+<button>
+  <Icon />
+</button>
 ```
 
 **Good:**
@@ -360,13 +362,13 @@ background: #fff;
 
 ### Current Testbook Scores
 
-| Page | axe-core Violations | Lighthouse Score |
-|------|---------------------|------------------|
-| Home | 0 | TBD |
-| Register | 0 | TBD |
-| Login | 0 | TBD |
-| Feed | 0 | TBD |
-| Profile | 0 | TBD |
+| Page     | axe-core Violations | Lighthouse Score |
+| -------- | ------------------- | ---------------- |
+| Home     | 0                   | TBD              |
+| Register | 0                   | TBD              |
+| Login    | 0                   | TBD              |
+| Feed     | 0                   | TBD              |
+| Profile  | 0                   | TBD              |
 
 **Goal:** 0 violations, 90+ Lighthouse score
 
@@ -377,14 +379,16 @@ background: #fff;
 When discussing accessibility in interviews:
 
 **Example talking point:**
+
 > "I implemented comprehensive accessibility testing for Testbook using a three-tier approach: component-level testing with vitest-axe, E2E testing with Playwright and axe-core for full WCAG 2.1 AA compliance, and Lighthouse CI for performance and accessibility baselines. I achieved zero accessibility violations across all key pages and maintained a 90+ Lighthouse accessibility score."
 
 **Resume bullet:**
+
 > • Implemented automated WCAG 2.1 AA accessibility testing using axe-core and Lighthouse CI, achieving zero violations across 5 key user flows and maintaining 90+ accessibility score
 
 ---
 
-## 📚 Additional Resources
+<h2 id="additional-resources">📚 Additional Resources</h2>
 
 - [WCAG 2.1 Guidelines](https://www.w3.org/WAI/WCAG21/quickref/)
 - [axe-core Documentation](https://github.com/dequelabs/axe-core)
@@ -394,7 +398,7 @@ When discussing accessibility in interviews:
 
 ---
 
-## ✅ Checklist for New Features
+<h2 id="checklist-for-new-features">✅ Checklist for New Features</h2>
 
 When adding new features, ensure:
 

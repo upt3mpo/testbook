@@ -1,17 +1,19 @@
-# 🧪 Lab 4: End-to-End Testing with Playwright (Python)
+# 🧪 Lab 9: Basic E2E Testing (Python)
 
-**Estimated Time:** 90 minutes
-**Difficulty:** Intermediate
-**Language:** 🐍 Python
-**Prerequisites:** Labs 1-3 completed, Python 3.13 installed (recommended version)
+**Estimated Time:** 90 minutes<br>
+**Difficulty:** Intermediate<br>
+**Language:** 🐍 Python<br>
+**Prerequisites:** Lab 8 completed
 
-**Note:** There's also a [JavaScript version](LAB_04_E2E_Testing_JavaScript.md) that follows the same structure!
+**💡 Need JavaScript instead?** Try [Lab 9: Basic E2E Testing (JavaScript)](LAB_09_Basic_E2E_Testing_JavaScript.md)!
+
+**What This Adds:** Master end-to-end testing with Playwright - learn to test complete user workflows in real browsers, ensuring your application works as users expect it to.
 
 **💡 About Commands:** This lab shows commands for macOS/Linux and Windows. Use the one that matches your operating system.
 
 ---
 
-## 🎯 What You'll Learn
+<h2 id="what-youll-learn">🎯 What You'll Learn</h2>
 
 - Write E2E tests with Playwright (Python)
 - Test in a real browser
@@ -21,7 +23,7 @@
 
 ---
 
-## 📋 Step-by-Step Instructions
+<h2 id="step-by-step-instructions">📋 Step-by-Step Instructions</h2>
 
 ### Step 1: Setup Playwright (10 minutes)
 
@@ -227,7 +229,7 @@ pytest test_my_first.py -v
 
 ---
 
-## 🎓 What You Learned
+<h2 id="what-you-learned">🎓 What You Learned</h2>
 
 - ✅ How to write E2E tests with Playwright (Python)
 - ✅ How to select elements with data-testid
@@ -273,7 +275,7 @@ Write a test that:
 
 ---
 
-## 🐛 Troubleshooting
+<h2 id="troubleshooting">🐛 Troubleshooting</h2>
 
 **Problem:** `page.goto: net::ERR_CONNECTION_REFUSED`
 **Solution:** Make sure the dev servers are running (`./start-dev.sh`) so the frontend is available on <http://localhost:3000> and the API on <http://localhost:8000>
@@ -286,7 +288,7 @@ Write a test that:
 
 ---
 
-## ✅ Lab Completion Checklist
+<h2 id="lab-completion-checklist">✅ Lab Completion Checklist</h2>
 
 - [ ] Playwright installed successfully
 - [ ] Watched test run in headed mode
@@ -297,7 +299,7 @@ Write a test that:
 
 ---
 
-## 🎯 Pro Tips
+<h2 id="pro-tips">🎯 Pro Tips</h2>
 
 **Tip 1:** Always run in headed mode while developing
 
@@ -346,4 +348,4 @@ page.pause()  # Add this line anywhere in your test
 
 **🎉 You're now writing E2E tests! This is professional-level testing!**
 
-**Next Lab:** [Lab 5: Test Data Management](LAB_05_Test_Data_Management.md)
+**Next Lab:** [Lab 5: Test Data Management (Python)](LAB_05_Test_Data_Management_Python.md)

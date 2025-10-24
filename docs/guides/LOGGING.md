@@ -52,25 +52,37 @@ logger.info(
 
 ### When to Use Each Level
 
-| Level | When to Use | Example |
-|-------|-------------|---------|
-| **DEBUG** | Detailed diagnostic info | "Query executed: SELECT * FROM users WHERE id=1" |
-| **INFO** | General informational events | "User logged in successfully" |
-| **WARNING** | Unusual but recoverable events | "Rate limit approaching threshold" |
-| **ERROR** | Errors that need attention | "Failed to send email notification" |
-| **CRITICAL** | System-wide failures | "Database connection lost" |
+| Level        | When to Use                    | Example                                           |
+| ------------ | ------------------------------ | ------------------------------------------------- |
+| **DEBUG**    | Detailed diagnostic info       | "Query executed: SELECT \* FROM users WHERE id=1" |
+| **INFO**     | General informational events   | "User logged in successfully"                     |
+| **WARNING**  | Unusual but recoverable events | "Rate limit approaching threshold"                |
+| **ERROR**    | Errors that need attention     | "Failed to send email notification"               |
+| **CRITICAL** | System-wide failures           | "Database connection lost"                        |
 
 ### Setting Log Level
 
 ```bash
 # Development (verbose)
+# Linux/Mac
 export LOG_LEVEL=DEBUG
 
+# Windows (PowerShell)
+$env:LOG_LEVEL='DEBUG'
+
 # Production (less verbose)
+# Linux/Mac
 export LOG_LEVEL=INFO
 
+# Windows (PowerShell)
+$env:LOG_LEVEL='INFO'
+
 # Troubleshooting specific issues
+# Linux/Mac
 export LOG_LEVEL=WARNING
+
+# Windows (PowerShell)
+$env:LOG_LEVEL='WARNING'
 ```
 
 ---
@@ -99,7 +111,11 @@ export LOG_LEVEL=WARNING
 **For production & log aggregation:**
 
 ```bash
+# Linux/Mac
 export LOG_FORMAT=json
+
+# Windows (PowerShell)
+$env:LOG_FORMAT='json'
 ```
 
 ```json
@@ -462,13 +478,25 @@ def test_error_logging(caplog):
 
 ```bash
 # Log level
+# Linux/Mac
 export LOG_LEVEL=DEBUG          # DEBUG, INFO, WARNING, ERROR, CRITICAL
 
+# Windows (PowerShell)
+$env:LOG_LEVEL='DEBUG'          # DEBUG, INFO, WARNING, ERROR, CRITICAL
+
 # Log format
+# Linux/Mac
 export LOG_FORMAT=json          # json or human
 
+# Windows (PowerShell)
+$env:LOG_FORMAT='json'          # json or human
+
 # Log output
+# Linux/Mac
 export LOG_FILE=logs/app.log    # File path (optional)
+
+# Windows (PowerShell)
+$env:LOG_FILE='logs/app.log'    # File path (optional)
 ```
 
 ### Rotating Logs

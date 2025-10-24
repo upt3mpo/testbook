@@ -104,4 +104,3 @@ export default function () {
 export function teardown(data) {
   console.log('Smoke test completed');
 }
-

@@ -53,4 +53,3 @@ Add any other context, mockups, or examples here.
 - [ ] I'd be willing to work on this
 - [ ] I'd be willing to help review/test this
 - [ ] I just want to suggest the idea
-

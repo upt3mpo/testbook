@@ -38,7 +38,8 @@ def get_followers(
                 bio=follower.bio,
                 profile_picture=follower.profile_picture,
                 is_following=follower in current_user.following,
-                is_blocked=follower in current_user.blocking or current_user in follower.blocking,
+                is_blocked=follower in current_user.blocking
+                or current_user in follower.blocking,
             )
         )
 
@@ -145,7 +146,11 @@ async def upload_avatar(
     # Delete old uploaded avatar if it exists (but not default avatars)
     if old_picture and old_picture.startswith("/static/uploads/avatars/"):
         old_path = (
-            Path(__file__).parent.parent / "static" / "uploads" / "avatars" / Path(old_picture).name
+            Path(__file__).parent.parent
+            / "static"
+            / "uploads"
+            / "avatars"
+            / Path(old_picture).name
         )
         if old_path.exists():
             old_path.unlink()
@@ -212,7 +217,9 @@ def follow_user(
     db: Session = Depends(get_db),
 ):
     """Follow a user"""
-    user_to_follow = db.query(models.User).filter(models.User.username == username).first()
+    user_to_follow = (
+        db.query(models.User).filter(models.User.username == username).first()
+    )
     if not user_to_follow:
         raise HTTPException(status_code=404, detail="User not found")
 
@@ -235,7 +242,9 @@ def unfollow_user(
     db: Session = Depends(get_db),
 ):
     """Unfollow a user"""
-    user_to_unfollow = db.query(models.User).filter(models.User.username == username).first()
+    user_to_unfollow = (
+        db.query(models.User).filter(models.User.username == username).first()
+    )
     if not user_to_unfollow:
         raise HTTPException(status_code=404, detail="User not found")
 
@@ -255,7 +264,9 @@ def block_user(
     db: Session = Depends(get_db),
 ):
     """Block a user"""
-    user_to_block = db.query(models.User).filter(models.User.username == username).first()
+    user_to_block = (
+        db.query(models.User).filter(models.User.username == username).first()
+    )
     if not user_to_block:
         raise HTTPException(status_code=404, detail="User not found")
 
@@ -284,7 +295,9 @@ def unblock_user(
     db: Session = Depends(get_db),
 ):
     """Unblock a user"""
-    user_to_unblock = db.query(models.User).filter(models.User.username == username).first()
+    user_to_unblock = (
+        db.query(models.User).filter(models.User.username == username).first()
+    )
     if not user_to_unblock:
         raise HTTPException(status_code=404, detail="User not found")
 
@@ -329,7 +342,9 @@ def get_user_posts(
         comments_count = len(post.comments)
         reactions_count = len(post.reactions)
         reposts_count = (
-            db.query(models.Post).filter(models.Post.original_post_id == post.id).count()
+            db.query(models.Post)
+            .filter(models.Post.original_post_id == post.id)
+            .count()
         )
 
         # Check user reaction

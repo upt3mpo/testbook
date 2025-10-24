@@ -480,7 +480,7 @@ pytest -n 4
 npx playwright test --workers=4
 ```
 
-3. **Run only changed tests**
+- **Run only changed tests**
 
 ```bash
 # Only test what changed
@@ -488,7 +488,7 @@ pytest --lf  # Last failed
 pytest --testmon  # Test related to code changes
 ```
 
-4. **Use test tags**
+- **Use test tags**
 
 ```python
 @pytest.mark.smoke

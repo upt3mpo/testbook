@@ -1,5 +1,7 @@
 # 🎯 Testbook Testing Patterns
 
+> **💡 Language Selection**: This guide includes both Python and JavaScript examples. Both are expanded by default so you can see all approaches. Click the language tabs to collapse sections you don't need.
+
 ## Table of Contents
 
 - [Arrange-Act-Assert Pattern](#arrange-act-assert-pattern)
@@ -25,7 +27,8 @@ The **Arrange-Act-Assert (AAA)** pattern is the fundamental structure for all te
 - **Maintainability**: Easy to understand and modify
 - **Debugging**: Clear separation makes issues easier to identify
 
-### Python Example (pytest)
+<details open>
+<summary><strong>🐍 Python Example (pytest)</strong></summary>
 
 ```python
 def test_user_login_success():
@@ -42,7 +45,10 @@ def test_user_login_success():
     assert response.json()["user"]["email"] == "test@example.com"
 ```
 
-### JavaScript Example (Vitest)
+</details>
+
+<details open>
+<summary><strong>☕ JavaScript Example (Vitest)</strong></summary>
 
 ```javascript
 test('user login success', () => {
@@ -64,6 +70,8 @@ test('user login success', () => {
   expect(data.user.email).toBe('test@example.com');
 });
 ```
+
+</details>
 
 ### React Component Example (Vitest + Testing Library)
 
@@ -163,7 +171,7 @@ When testing dynamic content like posts, comments, and user lists, you often don
 await page.click('[data-testid="post-24-react-button"]');
 ```
 
-## ✅ The Solution
+<h2 id="the-solution">✅ The Solution</h2>
 
 Testbook provides **multiple selection strategies** for dynamic content:
 
@@ -244,7 +252,7 @@ const postId = await page.evaluate(async () => {
 await page.click(`[data-testid="post-${postId}-react-button"]`);
 ```
 
-## 📋 Available Attributes
+<h2 id="available-attributes">📋 Available Attributes</h2>
 
 ### Posts
 
@@ -368,7 +376,7 @@ await page.locator('[data-username="mikechen"]');
 </div>
 ```
 
-## 🎯 Common Testing Patterns
+<h2 id="common-testing-patterns">🎯 Common Testing Patterns</h2>
 
 ### Pattern 1: Test Newly Created Content
 
@@ -483,7 +491,7 @@ test("find specific user in followers list", async ({ page }) => {
 });
 ```
 
-## 🐍 Python/Selenium Examples
+<h2 id="python-selenium-examples">🐍 Python/Selenium Examples</h2>
 
 ```python
 from selenium.webdriver.common.by import By
@@ -507,7 +515,7 @@ post_id = first_post.get_attribute('data-post-id')
 react_button = driver.find_element(By.CSS_SELECTOR, f'[data-testid="post-{post_id}-react-button"]')
 ```
 
-## 🎭 Cypress Examples
+<h2 id="cypress-examples">🎭 Cypress Examples</h2>
 
 ```javascript
 // Select all posts
@@ -537,7 +545,7 @@ cy.get('[data-testid-generic="comment-item"][data-author="mikechen"]').should(
 );
 ```
 
-## 📊 Best Practices
+<h2 id="best-practices">📊 Best Practices</h2>
 
 ### ✅ DO: Use Generic Selectors for Dynamic Content
 
@@ -587,7 +595,7 @@ const posts = page.locator('[data-testid-generic="post-item"]');
 await expect(posts).toHaveCount(22); // Was 21, now 22
 ```
 
-## 🔍 Complete Selector Reference
+<h2 id="complete-selector-reference">🔍 Complete Selector Reference</h2>
 
 ### Posts
 
@@ -621,7 +629,7 @@ await expect(posts).toHaveCount(22); // Was 21, now 22
 [data-is-following="true"]                  /* Currently following */
 ```
 
-## 🧪 Real-World Test Scenarios
+<h2 id="real-world-test-scenarios">🧪 Real-World Test Scenarios</h2>
 
 ### Scenario: User Registration Flow
 
@@ -729,7 +737,7 @@ test("upload image and create post", async ({ page }) => {
 });
 ```
 
-## 🔄 Testing Toggle Actions
+<h2 id="testing-toggle-actions">🔄 Testing Toggle Actions</h2>
 
 ### React/Unreact
 

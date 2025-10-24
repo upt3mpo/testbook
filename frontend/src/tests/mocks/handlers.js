@@ -1,11 +1,26 @@
 /**
  * MSW (Mock Service Worker) handlers for component testing
  *
- * These handlers provide realistic API mocking for testing components
- * without needing a running backend. Responses match the actual FastAPI
- * backend schema.
+ * These handlers provide realistic API mocking for testing React components
+ * without needing a running backend. All responses match the actual FastAPI
+ * backend schema, ensuring tests accurately reflect real API behavior.
  *
- * Learn more in Lab 6B: Advanced Component Testing
+ * Key Features:
+ * - Network-level mocking (intercepts actual fetch/axios calls)
+ * - Realistic response data matching backend schema
+ * - Support for different HTTP methods and status codes
+ * - Easy to override for specific test scenarios
+ *
+ * Usage:
+ *   import { setupServer } from 'msw/node';
+ *   import { handlers } from './handlers';
+ *
+ *   const server = setupServer(...handlers);
+ *   beforeAll(() => server.listen());
+ *   afterEach(() => server.resetHandlers());
+ *   afterAll(() => server.close());
+ *
+ * Learn more: Lab 6B: Advanced Component Testing
  */
 
 import { http, HttpResponse } from 'msw';
@@ -13,7 +28,13 @@ import { http, HttpResponse } from 'msw';
 const API_BASE = 'http://localhost:8000/api';
 
 export const handlers = [
-  // GET /api/feed - Returns feed posts
+  /**
+   * GET /api/feed - Returns user's feed posts
+   *
+   * This handler mocks the feed endpoint that returns posts from users
+   * the current user follows. Used for testing PostList, Feed, and
+   * other components that display user feeds.
+   */
   http.get(`${API_BASE}/feed`, () => {
     return HttpResponse.json([
       {
@@ -43,12 +64,21 @@ export const handlers = [
     ]);
   }),
 
-  // POST /api/posts/ - Create a post
+  /**
+   * POST /api/posts/ - Create a new post
+   *
+   * This handler mocks post creation, simulating the backend's response
+   * when a user creates a new post. Used for testing CreatePost component
+   * and post creation workflows.
+   *
+   * Request body: { content: string, image_url?: string, video_url?: string }
+   * Response: Post object with generated ID and author info
+   */
   http.post(`${API_BASE}/posts/`, async ({ request }) => {
     const body = await request.json();
 
     return HttpResponse.json({
-      id: Date.now(),
+      id: Date.now(), // Simulate auto-generated ID
       content: body.content,
       author: {
         id: 1,

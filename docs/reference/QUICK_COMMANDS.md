@@ -6,7 +6,7 @@ This is the single source of truth for frequently used commands. Other documenta
 
 ---
 
-## 🐍 Python Backend Commands
+<h2 id="python-backend-commands">🐍 Python Backend Commands</h2>
 
 ### Virtual Environment
 
@@ -103,7 +103,7 @@ cd tests/e2e-python && pytest -v --headed
 
 ---
 
-## 🔧 Utility Commands
+<h2 id="utility-commands">🔧 Utility Commands</h2>
 
 ### Database
 
@@ -127,7 +127,7 @@ start-dev.bat
 
 ---
 
-## 📊 Coverage Commands
+<h2 id="coverage-commands">📊 Coverage Commands</h2>
 
 ### Backend Coverage
 
@@ -145,7 +145,7 @@ npm run test:coverage
 
 ---
 
-## 🚀 CI/CD Commands
+<h2 id="cicd-commands">🚀 CI/CD Commands</h2>
 
 ### Run All Tests
 

@@ -1,6 +1,21 @@
 """
 Authentication E2E Tests - Python/Playwright
-Tests user registration, login, and logout flows
+
+This file demonstrates comprehensive end-to-end testing of user authentication
+flows using Playwright for Python. These tests simulate real user interactions
+with the browser to verify complete user journeys.
+
+Key Testing Concepts Demonstrated:
+- End-to-end user workflow testing (registration, login, logout)
+- Browser automation with Playwright
+- Real user interaction simulation (clicking, typing, navigation)
+- Cross-page testing (registration → login → feed)
+- Error handling and edge case testing
+- Visual verification of UI elements
+- Async operation handling (waiting for elements, navigation)
+
+This file is referenced in Stage 3 learning materials as an example
+of professional E2E testing practices.
 """
 
 import re
@@ -10,16 +25,44 @@ from playwright.sync_api import Page, expect
 
 
 class TestAuthentication:
-    """Test suite for authentication flows"""
+    """
+    Test suite for authentication flows.
+
+    This class demonstrates E2E testing of complete user authentication
+    workflows. Unlike unit or integration tests, these tests verify the
+    entire user experience from browser interaction to database persistence.
+
+    Key Learning Points:
+    - Testing complete user journeys (not just individual functions)
+    - Simulating real user behavior in a real browser
+    - Handling async operations and timing issues
+    - Verifying both positive and negative user flows
+    - Cross-page navigation and state management
+    """
 
     # Registration Tests
     def test_register_new_user_successfully(
         self, page: Page, base_url: str, test_users: dict, fresh_database
     ):
-        """Test new user registration"""
+        """
+        Test new user registration with complete user workflow.
+
+        This test verifies the entire user registration journey:
+        1. User navigates to registration page
+        2. User fills out registration form
+        3. User submits form
+        4. System processes registration
+        5. User is automatically logged in
+        6. User is redirected to feed page
+        7. User sees their profile in navigation
+
+        This is a critical E2E test that ensures the complete
+        registration flow works from the user's perspective.
+        """
         # Arrange - Navigate to registration page and prepare unique user data
         page.goto(f"{base_url}/register")
 
+        # Generate unique user data to avoid conflicts
         timestamp = int(time.time())
         new_user = {
             "email": f"testuser{timestamp}@testbook.com",

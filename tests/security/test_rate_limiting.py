@@ -91,7 +91,9 @@ class TestRateLimiting:
         # This test documents whether rate limiting headers are present
         # It doesn't fail if absent, but logs the result
         if not has_rate_limit_headers:
-            pytest.skip("Rate limit headers not implemented - consider adding for API transparency")
+            pytest.skip(
+                "Rate limit headers not implemented - consider adding for API transparency"
+            )
 
     def test_registration_rate_limiting(self):
         """Test that user registration is rate limited."""
@@ -157,7 +159,9 @@ class TestBruteForceProtection:
 
     def test_temporary_ip_ban_on_suspicious_activity(self):
         """Test that suspicious IPs are temporarily banned."""
-        pytest.skip("IP-based banning not implemented - consider for high-security applications")
+        pytest.skip(
+            "IP-based banning not implemented - consider for high-security applications"
+        )
 
         # Example: Test rapid failed attempts from same IP trigger temporary ban
 

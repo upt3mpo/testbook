@@ -73,4 +73,3 @@ MD041: false
 # Example: Link "#setup" doesn't match actual anchor "#🔧-setup"
 # The links still work in GitHub/most renderers, just don't match strict spec
 MD051: false
-

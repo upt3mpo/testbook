@@ -72,7 +72,9 @@ class RequestSizeLimitMiddleware(BaseHTTPMiddleware):
         if request.method in ["POST", "PUT", "PATCH"]:
             content_length = request.headers.get("content-length")
             if content_length and int(content_length) > self.max_upload_size:
-                return JSONResponse(status_code=413, content={"detail": "Request body too large"})
+                return JSONResponse(
+                    status_code=413, content={"detail": "Request body too large"}
+                )
         return await call_next(request)
 
 

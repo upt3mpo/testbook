@@ -3,6 +3,17 @@ Integration tests for authentication API endpoints.
 
 These tests verify the authentication endpoints work correctly,
 including registration, login, and token-based authentication.
+
+Key Testing Concepts Demonstrated:
+- Integration testing (API + Database + Business Logic)
+- HTTP status code validation
+- JSON response structure validation
+- Security testing (password exposure, token validation)
+- Error handling and edge cases
+- Database state verification
+
+This file is referenced in Stage 2 learning materials as an example
+of professional API integration testing practices.
 """
 
 import pytest
@@ -12,10 +23,36 @@ import pytest
 @pytest.mark.api
 @pytest.mark.auth
 class TestRegisterEndpoint:
-    """Test user registration endpoint."""
+    """
+    Test user registration endpoint.
+
+    This class demonstrates integration testing of API endpoints.
+    Unlike unit tests, these tests verify the entire request/response
+    cycle including database operations, validation, and business logic.
+
+    Key Learning Points:
+    - Testing complete user workflows (registration → login)
+    - Validating HTTP status codes and response structure
+    - Testing security aspects (password hashing, token generation)
+    - Testing error conditions and edge cases
+    - Verifying database state changes
+    """
 
     def test_register_new_user_success(self, client):
-        """Test successful user registration."""
+        """
+        Test successful user registration.
+
+        This test verifies the complete user registration workflow:
+        1. User submits registration data
+        2. System validates the data
+        3. Password is hashed and stored securely
+        4. User record is created in database
+        5. JWT token is generated for auto-login
+        6. User data is returned (without sensitive information)
+
+        This is a critical integration test that ensures the entire
+        registration flow works end-to-end.
+        """
         # Arrange - Prepare new user data
         new_user = {
             "email": "newuser@example.com",

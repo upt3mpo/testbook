@@ -29,7 +29,7 @@ await page.click('[data-testid="post-1-react-button"]');
 await page.locator('[data-is-own-post="true"]').first();
 ```
 
-📖 **See [TESTING_PATTERNS.md](TESTING_PATTERNS.md) for complete guide on testing dynamic content!**
+📖 **See [TESTING_PATTERNS.md](../concepts/TESTING_PATTERNS.md) for complete guide on testing dynamic content!**
 
 ### 2. **RESTful API Endpoints**
 
@@ -448,7 +448,7 @@ await expect(page.locator('[data-testid="create-post-preview"]')).toBeVisible();
 
 - **[README.md](../../README.md)** - Main documentation and project overview
 - **[TESTING_GUIDE.md](../guides/TESTING_GUIDE.md)** - Complete testing examples
-- **[TESTING_PATTERNS.md](TESTING_PATTERNS.md)** - Testing dynamic content patterns
+- **[TESTING_PATTERNS.md](../concepts/TESTING_PATTERNS.md)** - Testing dynamic content patterns
 - **[TESTING_CHEATSHEET.md](TESTING_CHEATSHEET.md)** - Quick reference guide
 - **[README.md](../../README.md#quick-start-5-minutes)** - Get started in 5 minutes
 

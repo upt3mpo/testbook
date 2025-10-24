@@ -4,7 +4,7 @@
 
 ---
 
-## 🎯 Overview
+<h2 id="overview">🎯 Overview</h2>
 
 Testbook uses automated markdown validation to ensure documentation stays accurate, well-formatted, and free of broken links.
 
@@ -27,7 +27,7 @@ Testbook uses automated markdown validation to ensure documentation stays accura
 
 ---
 
-## 🚀 Usage
+<h2 id="usage">🚀 Usage</h2>
 
 ### Local Validation (Before Committing)
 
@@ -71,7 +71,7 @@ The `.github/workflows/markdown-validation.yml` workflow automatically runs on:
 
 ---
 
-## 📦 Installation (Local Development)
+<h2 id="installation-local-development">📦 Installation (Local Development)</h2>
 
 ### Install Tools
 
@@ -97,7 +97,7 @@ markdown-link-check --version
 
 ---
 
-## ⚙️ Configuration
+<h2 id="configuration">⚙️ Configuration</h2>
 
 ### markdownlint Config (`.markdownlint.json`)
 
@@ -141,14 +141,14 @@ markdown-link-check --version
 
 ---
 
-## 🔍 What Each Check Does
+<h2 id="what-each-check-does">🔍 What Each Check Does</h2>
 
 ### Markdown Linting
 
 **Checks:**
 
 - ✅ Heading levels increment by one
-- ✅ Consistent list markers (-, not *)
+- ✅ Consistent list markers (-, not \*)
 - ✅ Proper spacing around headings
 - ✅ Code blocks have language specified
 - ✅ No trailing spaces
@@ -159,9 +159,9 @@ markdown-link-check --version
 ```markdown
 # Heading 1
 
-### Heading 3  ❌ Skipped level 2
+### Heading 3 ❌ Skipped level 2
 
-## Heading 2  ✅ Correct
+## Heading 2 ✅ Correct
 ```
 
 ### Link Validation
@@ -176,16 +176,16 @@ markdown-link-check --version
 **Example Issues:**
 
 ```markdown
-[Broken](docs/missing.md)        ❌ File doesn't exist
-[Good](docs/INDEX.md)             ✅ File exists
+[Broken](docs/missing.md) ❌ File doesn't exist
+[Good](docs/INDEX.md) ✅ File exists
 
-[Broken](#week-1)                 ❌ Anchor doesn't exist
-[Good](#section-1)                ✅ Anchor exists
+[Broken](#week-1) ❌ Anchor doesn't exist
+[Good](#section-1) ✅ Anchor exists
 ```
 
 ---
 
-## 🛠️ Fixing Common Issues
+<h2 id="fixing-common-issues">🛠️ Fixing Common Issues</h2>
 
 ### Issue 1: Heading Level Skips
 
@@ -193,14 +193,16 @@ markdown-link-check --version
 
 ```markdown
 # Main Heading
-### Subheading  ❌ Skipped H2
+
+### Subheading ❌ Skipped H2
 ```
 
 **Fix:**
 
 ```markdown
 # Main Heading
-## Subheading   ✅ Correct hierarchy
+
+## Subheading ✅ Correct hierarchy
 ```
 
 ### Issue 2: Inconsistent List Markers
@@ -209,7 +211,9 @@ markdown-link-check --version
 
 ```markdown
 - Item 1
-* Item 2  ❌ Mixed markers
+
+* Item 2 ❌ Mixed markers
+
 - Item 3
 ```
 
@@ -217,7 +221,7 @@ markdown-link-check --version
 
 ```markdown
 - Item 1
-- Item 2  ✅ Consistent
+- Item 2 ✅ Consistent
 - Item 3
 ```
 
@@ -226,13 +230,13 @@ markdown-link-check --version
 **Problem:**
 
 ```markdown
-[Jump to section](#week-1-introduction)  ❌ Anchor doesn't exist
+[Jump to section](#week-1-introduction) ❌ Anchor doesn't exist
 ```
 
 **Fix:**
 
 ```markdown
-[Jump to section](#section-1-introduction)  ✅ Correct anchor
+[Jump to section](#section-1-introduction) ✅ Correct anchor
 ```
 
 ### Issue 4: Trailing Spaces
@@ -240,7 +244,7 @@ markdown-link-check --version
 **Problem:**
 
 ```markdown
-This line has trailing spaces    ❌
+This line has trailing spaces ❌
 ```
 
 **Fix:**
@@ -251,7 +255,7 @@ make fix-markdown  # Auto-fixes many issues
 
 ---
 
-## 🎯 Best Practices
+<h2 id="best-practices">🎯 Best Practices</h2>
 
 ### When Writing Documentation
 
@@ -259,7 +263,9 @@ make fix-markdown  # Auto-fixes many issues
 
 ```markdown
 # Title (H1)
+
 ## Section (H2)
+
 ### Subsection (H3)
 ```
 
@@ -302,9 +308,9 @@ make check-markdown
 on:
   push:
     branches: [main, develop]
-    paths: ['**.md']
+    paths: ["**.md"]
   pull_request:
-    paths: ['**.md']
+    paths: ["**.md"]
 ```
 
 **Jobs:**
@@ -377,8 +383,9 @@ Config ignores `http://localhost:*` URLs since they can't be checked in CI.
 Check capitalization and special characters:
 
 ```markdown
-# Section 1: Introduction    → #section-1-introduction
-# FAQ (Frequently Asked)     → #faq-frequently-asked
+# Section 1: Introduction → #section-1-introduction
+
+# FAQ (Frequently Asked) → #faq-frequently-asked
 ```
 
 ---

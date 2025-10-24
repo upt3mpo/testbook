@@ -68,18 +68,38 @@ pytest -m "not slow"
 
 ### Coverage Reports
 
+> **💡 When to Use Coverage:** Coverage is great for full test suite runs and CI/CD, but skip it when debugging individual tests to keep output clean.
+
 ```bash
-# Run with coverage
-pytest --cov
+# Run with coverage (explicit flags required)
+pytest --cov=.
 
 # Generate HTML coverage report
-pytest --cov --cov-report=html
+pytest --cov=. --cov-report=html
 # See [Quick Commands](docs/reference/QUICK_COMMANDS.md) for all coverage options
 
 # View HTML report
 open htmlcov/index.html  # macOS
 start htmlcov/index.html # Windows
 ```
+
+### When to Use Coverage
+
+**✅ Use Coverage For:**
+
+- Full test suite runs (`make test-backend` or `just test-backend`)
+- CI/CD pipelines
+- Before committing code
+- Quality assurance checks
+
+**❌ Skip Coverage For:**
+
+- Single test debugging (`pytest tests/unit/test_auth.py::test_password_is_hashed -v`)
+- Quick test runs during development
+- When you need clean, focused output
+
+**Performance Impact:**
+Coverage collection adds ~20-30% overhead to test execution time. For 166 tests, this means ~15-20 seconds additional time.
 
 ### Parallel Execution
 
@@ -226,7 +246,7 @@ def test_database_operation(db_session, test_user):
 
 ## Best Practices
 
-1. **[Arrange-Act-Assert](../../docs/reference/TESTING_PATTERNS.md#arrange-act-assert-pattern)** - Structure tests clearly
+1. **[Arrange-Act-Assert](../../docs/concepts/TESTING_PATTERNS.md#arrange-act-assert-pattern)** - Structure tests clearly
 2. **One assertion per test** - Keep tests focused (when possible)
 3. **Use descriptive names** - Test name should describe what's being tested
 4. **Add docstrings** - Explain what the test verifies

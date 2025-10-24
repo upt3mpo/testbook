@@ -7,7 +7,12 @@ from sqlalchemy.orm import Session
 
 import models
 import schemas
-from auth import create_access_token, get_current_user, get_password_hash, verify_password
+from auth import (
+    create_access_token,
+    get_current_user,
+    get_password_hash,
+    verify_password,
+)
 from database import get_db
 
 router = APIRouter()
@@ -29,7 +34,9 @@ REGISTER_RATE = "500/minute" if TESTING_MODE else "15/minute"
     status_code=status.HTTP_201_CREATED,
 )
 @limiter.limit(REGISTER_RATE)
-def register(request: Request, user_data: schemas.UserCreate, db: Session = Depends(get_db)):
+def register(
+    request: Request, user_data: schemas.UserCreate, db: Session = Depends(get_db)
+):
     """Register a new user and return access token (rate limited: 15/min prod, 500/min test)"""
     # Check if email already exists
     if db.query(models.User).filter(models.User.email == user_data.email).first():
@@ -70,7 +77,9 @@ def register(request: Request, user_data: schemas.UserCreate, db: Session = Depe
 
 @router.post("/login", response_model=schemas.Token)
 @limiter.limit(LOGIN_RATE)
-def login(request: Request, login_data: schemas.LoginRequest, db: Session = Depends(get_db)):
+def login(
+    request: Request, login_data: schemas.LoginRequest, db: Session = Depends(get_db)
+):
     """Login with email and password (rate limited: 20/min prod, 1000/min test)"""
     user = db.query(models.User).filter(models.User.email == login_data.email).first()
 

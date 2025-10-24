@@ -1,8 +1,13 @@
-# 🧪 Lab 2.5: Understanding Fixtures
+# 🧪 Lab 3: Fixtures And Test Data (Python)
 
-**Estimated Time:** 45 minutes
-**Difficulty:** Intermediate
+**Estimated Time:** 45 minutes<br>
+**Difficulty:** Intermediate<br>
+**Language:** 🐍 Python<br>
 **Prerequisites:** Labs 1 & 2 completed
+
+**💡 Need JavaScript instead?** Try [Lab 3: Fixtures And Test Data (JavaScript)](LAB_03_Fixtures_And_Test_Data_JavaScript.md)!
+
+**What This Adds:** Master test data management with pytest fixtures - learn to create reusable test setup that eliminates code duplication and makes your tests more maintainable and reliable.
 
 ---
 
@@ -82,16 +87,33 @@ def test_user_username(test_user):
 ```python
 @pytest.fixture
 def test_user(db_session) -> User:
-    """Create a test user in the database."""
+    """
+    Create a test user in the database.
+
+    This fixture creates a complete user record with all required fields.
+    It's automatically cleaned up after each test that uses it.
+
+    Args:
+        db_session: Database session fixture (dependency injection)
+
+    Returns:
+        User: A fully created and committed user object
+    """
+    # Create a user with all required fields
     user = User(
-        email="testuser@example.com",
-        username="testuser",
-        display_name="Test User",
-        hashed_password=get_password_hash("TestPassword123!"),
+        email="testuser@example.com",  # Unique email for testing
+        username="testuser",           # Unique username for testing
+        display_name="Test User",      # Human-readable display name
+        hashed_password=get_password_hash("TestPassword123!"),  # Securely hashed password
     )
+
+    # Add to database and commit the transaction
     db_session.add(user)
     db_session.commit()
+
+    # Refresh to get the auto-generated ID and ensure data is loaded
     db_session.refresh(user)
+
     return user
 ```
 
@@ -519,24 +541,28 @@ def test_2(counter):
 Test your understanding:
 
 1. **What is a fixture?**
+
    - A) A test function
    - B) A reusable setup function
    - C) A bug
    - D) A Python class
 
 2. **How do you use a fixture in a test?**
+
    - A) Call it like a function
    - B) Import it
    - C) Add it as a parameter
    - D) Use @fixture decorator
 
 3. **What scope runs once per test?**
+
    - A) `scope="function"`
    - B) `scope="class"`
    - C) `scope="module"`
    - D) `scope="session"`
 
 4. **Can fixtures use other fixtures?**
+
    - A) Yes
    - B) No
 
@@ -570,10 +596,12 @@ Test your understanding:
 
 **Ready for more?**
 
-- **[LAB_03_Testing_API_Endpoints.md](LAB_03_Testing_API_Endpoints.md)** - Use fixtures with API tests
+- **[LAB_03_Testing_API_Endpoints_Python.md](LAB_03_Testing_API_Endpoints_Python.md)** - Use fixtures with API tests
 - **[backend/tests/conftest.py](../backend/tests/conftest.py)** - Study professional fixtures
 - **[Pytest Fixtures Documentation](https://docs.pytest.org/en/latest/fixture.html)** - Deep dive
 
 ---
 
 **🎉 Congratulations!** You now understand one of the most powerful features of pytest!
+
+**Next Lab:** [Lab DEBUG 01: Reading Errors (Python)](LAB_DEBUG_01_Reading_Errors_Python.md)
