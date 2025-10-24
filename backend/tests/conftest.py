@@ -44,7 +44,7 @@ def pytest_sessionfinish(session, exitstatus):
     if exitstatus == 0:
         # Only show completion message for comprehensive test runs (50+ tests)
         # Skip for individual tests, small subsets, or specific test classes
-        collected_tests = len(session.items) if hasattr(session, 'items') else 0
+        collected_tests = len(session.items) if hasattr(session, "items") else 0
 
         if collected_tests >= 50:  # Only for comprehensive runs
             print(
@@ -65,7 +65,7 @@ Keep up the great work!
     else:
         # Only show failure message for comprehensive test runs (50+ tests)
         # Skip for individual tests, small subsets, or specific test classes
-        collected_tests = len(session.items) if hasattr(session, 'items') else 0
+        collected_tests = len(session.items) if hasattr(session, "items") else 0
 
         if collected_tests >= 50:  # Only for comprehensive runs
             print(
@@ -233,6 +233,7 @@ def client(db_session: Session) -> TestClient:
     - Dependency Injection: Martin Fowler's "Inversion of Control"
     - Test Doubles: "Growing Object-Oriented Software" by Freeman & Pryce
     """
+
     # Override the database dependency to use our test database
     def override_get_db():
         try:

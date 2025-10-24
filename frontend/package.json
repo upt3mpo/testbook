@@ -7,7 +7,7 @@
     "dev": "vite --host 0.0.0.0",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "vitest --run",
+    "test": "vitest",
     "test:watch": "vitest",
     "test:run": "vitest --run",
     "test:ui": "vitest --ui",
