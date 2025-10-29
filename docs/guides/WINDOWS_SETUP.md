@@ -325,7 +325,7 @@ Before starting, you need to install these tools:
 - **Why you need it:** Testbook's backend is written in Python, so you need Python to run it
 - **Think of it as:** The engine that powers the server
 
-### 🟢 Node.js 20+
+### 🟢 Node.js 24+
 
 - **What it does:** Runs the frontend development server and build tools
 - **Why you need it:** Testbook's frontend is built with modern web tools that need Node.js
@@ -508,7 +508,7 @@ python --version
   - Add: `C:\Users\[YourUsername]\AppData\Local\Programs\Python\Python313\`
   - Add: `C:\Users\[YourUsername]\AppData\Local\Programs\Python\Python313\Scripts\`
 
-#### 2. Node.js 20+ and npm (Required)
+#### 2. Node.js 24+ and npm (Required)
 
 <details>
 <summary>🤔 Why do I need this?</summary>
@@ -555,8 +555,8 @@ choco install nodejs
 ```powershell
 node --version
 npm --version
-# Should show: Node v20.x.x+ and npm 10.x.x+
-# ✅ Success: Node v20.11.0, npm 10.2.4
+# Should show: Node v24.x.x+ and npm 10.x.x+
+# ✅ Success: Node v24.4.0, npm 10.7.0
 # ❌ Error: 'node' is not recognized
 ```
 
@@ -725,7 +725,7 @@ git --version
 curl --version
 
 # All should return version numbers without errors
-# Success looks like: Python 3.13.0, Node v20.11.0, npm 10.2.4, git version 2.41.0
+# Success looks like: Python 3.13.0, Node v24.4.0, npm 10.7.0, git version 2.41.0
 
 # Required: Check Playwright (for E2E testing)
 cd tests
@@ -749,7 +749,7 @@ flowchart TB
     subgraph TOOLS["🔧 Tools"]
         direction TB
         D1["🐍 Python 3.13"]:::tool
-        D2["🟩 Node.js 20+"]:::tool
+        D2["🟩 Node.js 24+"]:::tool
         D3["🔧 Git (code)"]:::tool
         D4["🌐 curl (API)"]:::tool
         D5["🎭 Playwright (E2E)"]:::tool
@@ -917,7 +917,7 @@ Write-Host "ExecutionPolicy: $pol" -ForegroundColor DarkCyan
 | Symptom you see                        | Likely cause                           | Quick action                               | Full fix                                                                                              |
 | -------------------------------------- | -------------------------------------- | ------------------------------------------ | ----------------------------------------------------------------------------------------------------- |
 | `'python' is not recognized`           | Python not installed or not on PATH    | Install 3.13 or add PATH                   | [Issue 1](#issue-1-python-not-found-or-python-is-not-recognized)                                      |
-| `'npm'/'node' is not recognized`       | Node not installed / PATH              | Install Node 20+                           | [Issue 2](#issue-2-npm-is-not-recognized-or-node-is-not-recognized)                                   |
+| `'npm'/'node' is not recognized`       | Node not installed / PATH              | Install Node 24+                           | [Issue 2](#issue-2-npm-is-not-recognized-or-node-is-not-recognized)                                   |
 | `Port 8000/3000 already in use`        | Another app is using the port          | Kill process on that port                  | [Issue 5](#issue-5-port-already-in-use)                                                               |
 | `Permission denied / Access is denied` | Needs elevated rights or blocked by AV | Run as Admin, check AV                     | [Issue 7](#issue-7-permission-denied-errors)                                                          |
 | Script won't run due to policy         | Execution policy too strict            | Set policy for CurrentUser                 | [Issue 8](#issue-8-script-execution-policy-errors)                                                    |
@@ -943,7 +943,7 @@ If still not found, add PATH as shown in [Issue 1](#issue-1-python-not-found-or-
 </details>
 
 <details>
-<summary><strong>Fix Node/npm fast</strong> – install Node 20+ and verify</summary>
+<summary><strong>Fix Node/npm fast</strong> – install Node 24+ and verify</summary>
 
 ```powershell
 winget install OpenJS.NodeJS
@@ -1619,8 +1619,8 @@ sudo add-apt-repository ppa:deadsnakes/ppa -y
 sudo apt update
 sudo apt install -y python3.13 python3.13-venv python3.13-pip python3.13-dev
 
-# Install Node.js 20+ via NodeSource
-curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+# Install Node.js 24+ via NodeSource
+curl -fsSL https://deb.nodesource.com/setup_24.x | sudo -E bash -
 sudo apt-get install -y nodejs
 
 # Install other required tools
@@ -1638,7 +1638,7 @@ sudo ln -sf /usr/bin/python3.13 /usr/bin/python3
 
 # Verify installations
 python3 --version    # Should show Python 3.13.x
-node --version       # Should show Node.js 20+
+node --version       # Should show Node.js 24+
 npm --version        # Should show npm 10+
 git --version        # Should show Git 2.x+
 curl --version       # Should show curl 7.x+
@@ -1823,7 +1823,7 @@ npm warn deprecated @humanwhocodes/config-array@0.13.0: Use @eslint/config-array
 #### Option A: Native Windows (5 minutes)
 
 ```powershell
-# Prerequisites: Python 3.13, Node.js 20+, Git, Rust
+# Prerequisites: Python 3.13, Node.js 24+, Git, Rust
 git clone https://github.com/upt3mpo/testbook.git
 cd testbook
 .\start-dev.bat
@@ -1841,7 +1841,7 @@ sudo apt install -y software-properties-common
 sudo add-apt-repository ppa:deadsnakes/ppa -y
 sudo apt update
 sudo apt install -y python3.13 python3.13-venv python3.13-pip python3.13-dev
-curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+curl -fsSL https://deb.nodesource.com/setup_24.x | sudo -E bash -
 sudo apt-get install -y nodejs
 sudo apt install -y git curl build-essential
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
