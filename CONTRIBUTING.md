@@ -34,7 +34,7 @@ Thank you for your interest in improving the Testbook Testing Platform! This doc
 ### Prerequisites
 
 - Python 3.13+
-- Node.js 20+
+- Node.js 24+
 - Git
 
 ### Setup Steps

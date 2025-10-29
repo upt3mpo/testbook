@@ -6,7 +6,7 @@ This directory contains the configuration for VS Code DevContainers, providing a
 
 ### Development Tools
 - Python 3.13 with virtual environment
-- Node.js 20 for frontend development
+ - Node.js 24 for frontend development
 - Git for version control
 - Build tools for package compilation
 

@@ -13,6 +13,33 @@ _Future updates will be documented here._
 
 ---
 
+## [1.3.2] - 2025-10-29 - "Node 24 baseline + majors"
+
+### Added
+
+- Node 24 LTS baseline across repo: engines set in `frontend/` and `tests/`, CI matrices, and devcontainer install
+
+### Changed
+
+- Frontend: ESLint 9 flat config, Vite 7, React 19, React Router 7 confirmed; build and tests green
+- Backend: Dependency majors aligned with FastAPI/Starlette stack
+  - uvicorn 0.38.0, pillow 12.x, schemathesis 4.x, pytest-asyncio 1.x, pytest-cov 7.x
+  - Kept bcrypt at 4.0.1 for passlib compatibility (bcrypt 5.x caused hashing errors with long inputs)
+- Tests workspace: Playwright 1.56.x, LHCI 0.15.x verified
+- CI: Node 24 and Python 3.13 used across workflows
+
+### Documentation
+
+- Updated version references to Node 24 in `.devcontainer/README.md`, `README.md`, and contributing docs
+
+### Validation
+
+- Backend unit+integration: 180 passed
+- Frontend unit+a11y: 40 passed; Vite build successful
+- E2E: Covered in CI workflows; local sanity checks for tool versions
+
+---
+
 ## [1.3.1] - 2025-10-29 - "Repo Hygiene, Versions, Faster CI"
 
 ### Added
