@@ -21,16 +21,16 @@
     "format:check": "prettier --check \"src/**/*.{js,jsx,css}\""
   },
   "dependencies": {
-    "axios": "^1.7.7",
+    "axios": "^1.13.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.26.2"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^6.1.5",
-    "@testing-library/react": "^14.1.2",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.5.1",
-    "@vitejs/plugin-react": "^5.0.4",
+    "@vitejs/plugin-react": "^5.1.0",
     "@vitest/coverage-v8": "^4.0.0",
     "@vitest/ui": "^4.0.0",
     "axe-core": "^4.8.3",
@@ -41,7 +41,7 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-vitest-globals": "^1.5.0",
-    "jsdom": "^24.0.0",
+    "jsdom": "^27.0.1",
     "msw": "^2.11.6",
     "prettier": "^3.1.1",
     "vite": "^6.0.7",

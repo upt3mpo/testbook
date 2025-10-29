@@ -30,6 +30,7 @@ _Future updates will be documented here._
 - Reduced CI artifact retention (coverage 7d; E2E report 7d; videos 3d)
 - Enabled manual triggers on key workflows; added pre-commit workflow
 - Frontend: Upgraded Vitest stack to address esbuild advisory — `vitest` 4.x, `@vitest/coverage-v8` 4.x, `@vitest/ui` 4.x; kept Vite 6.x and updated `@vitejs/plugin-react` to latest compatible. Test config remains `jsdom` with existing setup files. `npm audit` shows 0 vulnerabilities.
+- Backend: Bumped dependencies (SQLAlchemy 2.0.44, Pydantic 2.12.x, Pydantic Settings 2.11.x, python-jose 3.5.x, python-multipart 0.0.20, psycopg 3.2.12, requests 2.32.5, httpx 0.28.x, pytest 8.4.x, pytest-xdist 3.8.x, flake8 7.3.x, pre-commit 4.3.x). All backend tests pass (180), minor deprecation warning noted from Starlette/multipart.
 
 ### Removed
 
