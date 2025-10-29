@@ -21,7 +21,7 @@ pytest-xdist==3.8.0
 httpx==0.28.1
 faker==30.8.2
 requests==2.32.5
-schemathesis==3.27.1
+schemathesis==4.3.15
 
 # Code quality tools
 black==24.10.0
