@@ -5,10 +5,20 @@ __pycache__/
 *.so
 .Python
 venv/
+**/venv/
+.venv/
+**/.venv/
 ENV/
 *.db
 *.sqlite
 *.sqlite3
+
+# Python caches and tooling
+.pytest_cache/
+.tox/
+.hypothesis/
+.mypy_cache/
+.ruff_cache/
 
 # Node
 node_modules/
@@ -17,12 +27,22 @@ yarn-debug.log*
 yarn-error.log*
 dist/
 dist-ssr/
+build/
+.cache/
+.eslintcache
+pnpm-debug.log*
+lerna-debug.log*
+out/
+.next/
+.turbo/
+.parcel-cache/
 
 # Git
 .git/
 .gitignore
 
 # IDE
+.cursor/
 .vscode/
 .idea/
 *.swp
@@ -40,3 +60,20 @@ LICENSE
 *.log
 .env
 .env.local
+
+# Coverage and test artifacts
+coverage/
+coverage.xml
+.coverage
+.coverage.*
+*.cover
+.nyc_output/
+htmlcov/
+**/htmlcov/
+test-results/
+playwright-report/
+playwright/.cache/
+frontend/coverage/
+backend/htmlcov/
+tests/playwright-report/
+tests/test-results/
