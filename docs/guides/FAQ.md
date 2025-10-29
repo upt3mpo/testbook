@@ -33,7 +33,7 @@
 
 ### Q: Do I need Python 3.13?
 
-**A:** Python 3.8+ works, but 3.13 is recommended for the best experience. The app uses modern Python features and type hints.
+**A:** Python 3.8+ works, but 3.13 is recommended and matches CI. The app uses modern Python features and type hints.
 
 ### Q: Should I use uv or pip?
 

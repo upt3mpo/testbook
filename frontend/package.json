@@ -27,13 +27,12 @@
     "react-router-dom": "^6.26.2"
   },
   "devDependencies": {
-    "@lhci/cli": "^0.15.1",
     "@testing-library/jest-dom": "^6.1.5",
     "@testing-library/react": "^14.1.2",
     "@testing-library/user-event": "^14.5.1",
-    "@vitejs/plugin-react": "^5.0.0",
-    "@vitest/coverage-v8": "^2.1.8",
-    "@vitest/ui": "^2.1.8",
+    "@vitejs/plugin-react": "^5.0.4",
+    "@vitest/coverage-v8": "^4.0.0",
+    "@vitest/ui": "^4.0.0",
     "axe-core": "^4.8.3",
     "axe-playwright": "^2.0.1",
     "eslint": "^8.57.1",
@@ -46,8 +45,12 @@
     "msw": "^2.11.6",
     "prettier": "^3.1.1",
     "vite": "^6.0.7",
-    "vitest": "^2.1.8",
+    "vitest": "^4.0.0",
     "vitest-axe": "^0.1.0"
+  },
+  "overrides": {
+    "rimraf": "^4.4.1",
+    "uuid": "^9.0.1"
   },
   "engines": {
     "node": ">=20 <21"

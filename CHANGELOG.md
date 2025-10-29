@@ -18,7 +18,7 @@ _Future updates will be documented here._
 ### Added
 
 - `.editorconfig` and `.gitattributes` for consistent formatting and line endings
-- `.python-version` (3.13), `.nvmrc` (20), and Node `engines` in `frontend/` and `tests/`
+- `.python-version` (3.12), `.nvmrc` (20), and Node `engines` in `frontend/` and `tests/`
 - Dependabot config for Actions, npm (frontend/tests), and pip (backend)
 - Full Checks workflow (manual) to run pre-commit + backend + frontend in one place
 
@@ -26,9 +26,10 @@ _Future updates will be documented here._
 
 - Organized `.gitignore`; ensured editor and test artifacts are ignored
 - Updated PR and Issue templates to current flows; added repo hygiene checks
-- CI now runs Python 3.13 across backend/e2e/api; Node 20 across frontend/tests
+- CI now runs Python 3.12 across backend/e2e/api; Node 20 across frontend/tests
 - Reduced CI artifact retention (coverage 7d; E2E report 7d; videos 3d)
 - Enabled manual triggers on key workflows; added pre-commit workflow
+- Frontend: Upgraded Vitest stack to address esbuild advisory — `vitest` 4.x, `@vitest/coverage-v8` 4.x, `@vitest/ui` 4.x; kept Vite 6.x and updated `@vitejs/plugin-react` to latest compatible. Test config remains `jsdom` with existing setup files. `npm audit` shows 0 vulnerabilities.
 
 ### Removed
 
@@ -38,7 +39,7 @@ _Future updates will be documented here._
 
 ### Documentation
 
-- README clarified versions (Python 3.13, Node 20) and pointed to `.python-version`/`.nvmrc`
+- README clarified versions (Python 3.12, Node 20) and pointed to `.python-version`/`.nvmrc`
 - Backend tests docs updated to generate fresh coverage vs static snapshot
 
 ---

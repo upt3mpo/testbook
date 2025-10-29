@@ -74,7 +74,7 @@ jobs:
         env:
           TESTING: true
           SECRET_KEY: test-secret-key-for-ci
-          DATABASE_URL: postgresql://testbook:testbook@localhost:5432/testbook_test
+          DATABASE_URL: postgresql+psycopg://testbook:testbook@localhost:5432/testbook_test
         run: |
           python seed.py
           uvicorn main:app --host 0.0.0.0 --port 8000 &
@@ -181,7 +181,7 @@ jobs:
         env:
           TESTING: true
           SECRET_KEY: test-secret-key-for-ci
-          DATABASE_URL: postgresql://testbook:testbook@localhost:5432/testbook_test
+          DATABASE_URL: postgresql+psycopg://testbook:testbook@localhost:5432/testbook_test
         run: |
           python seed.py
           uvicorn main:app --host 0.0.0.0 --port 8000 &
