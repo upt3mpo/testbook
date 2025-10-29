@@ -19,7 +19,7 @@ pytest-asyncio==0.24.0
 pytest-cov==5.0.0
 pytest-xdist==3.8.0
 httpx==0.28.1
-faker==30.8.2
+faker==37.12.0
 requests==2.32.5
 schemathesis==3.27.1
 
