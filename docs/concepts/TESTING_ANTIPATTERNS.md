@@ -612,7 +612,7 @@ def test_another_user(clean_db):
 
 ```python
 # Using production database URL
-DATABASE_URL = "postgresql://prod:password@prod-server/prod_db"
+DATABASE_URL = "postgresql+psycopg://prod:password@prod-server/prod_db"
 
 def test_delete_user():
     """Test deleting user."""

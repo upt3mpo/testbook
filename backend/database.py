@@ -8,6 +8,12 @@ from sqlalchemy.orm import declarative_base, sessionmaker
 DATABASE_PATH = os.path.abspath("testbook.db")
 SQLALCHEMY_DATABASE_URL = os.getenv("DATABASE_URL", f"sqlite:///{DATABASE_PATH}")
 
+# Normalize Postgres driver to psycopg (v3) if not explicitly set
+if SQLALCHEMY_DATABASE_URL.startswith("postgresql://"):
+    SQLALCHEMY_DATABASE_URL = SQLALCHEMY_DATABASE_URL.replace(
+        "postgresql://", "postgresql+psycopg://", 1
+    )
+
 # SQLite-specific connection args (only needed for SQLite)
 connect_args = {}
 if SQLALCHEMY_DATABASE_URL.startswith("sqlite"):

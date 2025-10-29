@@ -1117,11 +1117,11 @@ pg_config is required to build psycopg2 from source.
 Failed to build `psycopg2-binary==2.9.9`
 ```
 
-**Why:** This was a bug in the requirements.txt file (now fixed). Testbook uses SQLite, not PostgreSQL.
+**Why:** Older setups tried to build `psycopg2`. Testbook now uses psycopg v3 (`psycopg`). For PostgreSQL URLs, prefer the driver-explicit form `postgresql+psycopg://...`.
 
 **Solutions:**
 
-1. **Update your repository:** Pull the latest changes to get the fixed requirements.txt
+1. **Update your repository:** Pull the latest changes to get the fixed requirements.txt and driver settings
 2. **Clean install:**
 
    ```powershell
