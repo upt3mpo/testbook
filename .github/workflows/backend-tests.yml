@@ -101,7 +101,7 @@ jobs:
           pytest --cov=. --cov-report=xml --cov-report=html --cov-report=term
 
       - name: Upload coverage to artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: coverage-report-py${{ matrix.python-version }}
           path: backend/htmlcov/

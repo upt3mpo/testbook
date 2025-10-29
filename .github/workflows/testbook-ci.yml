@@ -110,7 +110,7 @@ jobs:
           fail_ci_if_error: false
 
       - name: Upload backend coverage HTML
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: backend-coverage-report
           path: backend/htmlcov/
@@ -169,7 +169,7 @@ jobs:
           fail_ci_if_error: false
 
       - name: Upload frontend coverage HTML
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: frontend-coverage-report
           path: frontend/coverage/
@@ -281,7 +281,7 @@ jobs:
           npx playwright test --project=chromium
 
       - name: Upload Playwright report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         if: always()
         with:
           name: playwright-report-js
@@ -383,7 +383,7 @@ jobs:
           pytest -v
 
       - name: Upload Python E2E artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         if: always()
         with:
           name: e2e-python-artifacts

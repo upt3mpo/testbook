@@ -66,7 +66,7 @@ jobs:
         run: npm run test:coverage -- --run
 
       - name: Upload coverage to artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: frontend-coverage-node${{ matrix.node-version }}
           path: frontend/coverage/
@@ -77,7 +77,7 @@ jobs:
         run: npm run build
 
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: frontend-dist-node${{ matrix.node-version }}
           path: frontend/dist/
