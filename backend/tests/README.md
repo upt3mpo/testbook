@@ -264,7 +264,12 @@ def test_database_operation(db_session, test_user):
 
 ### Current Coverage: 84%
 
-See [COVERAGE_ANALYSIS.md](COVERAGE_ANALYSIS.md) for detailed breakdown and improvement opportunities.
+Generate a fresh coverage report instead of reading a static snapshot:
+
+```bash
+pytest --cov . --cov-report=html
+# Open HTML: htmlcov/index.html
+```
 
 **Quick Coverage Check:**
 

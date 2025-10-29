@@ -13,6 +13,36 @@ _Future updates will be documented here._
 
 ---
 
+## [1.3.1] - 2025-10-29 - "Repo Hygiene, Versions, Faster CI"
+
+### Added
+
+- `.editorconfig` and `.gitattributes` for consistent formatting and line endings
+- `.python-version` (3.13), `.nvmrc` (20), and Node `engines` in `frontend/` and `tests/`
+- Dependabot config for Actions, npm (frontend/tests), and pip (backend)
+- Full Checks workflow (manual) to run pre-commit + backend + frontend in one place
+
+### Changed
+
+- Organized `.gitignore`; ensured editor and test artifacts are ignored
+- Updated PR and Issue templates to current flows; added repo hygiene checks
+- CI now runs Python 3.13 across backend/e2e/api; Node 20 across frontend/tests
+- Reduced CI artifact retention (coverage 7d; E2E report 7d; videos 3d)
+- Enabled manual triggers on key workflows; added pre-commit workflow
+
+### Removed
+
+- Tracked artifacts removed
+- Markdown link-check job (kept markdownlint) to cut CI noise
+- Codecov upload step (coverage artifacts remain available)
+
+### Documentation
+
+- README clarified versions (Python 3.13, Node 20) and pointed to `.python-version`/`.nvmrc`
+- Backend tests docs updated to generate fresh coverage vs static snapshot
+
+---
+
 ## [1.3.0] - 2025-10-24 - "Complete Lab Alignment & Course Structure Overhaul"
 
 **Focus:** Comprehensive lab alignment across all 4 stages, standardized documentation structure, and enhanced bidirectional documentation between labs and actual codebase files.

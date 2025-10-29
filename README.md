@@ -54,6 +54,8 @@ start-dev.bat   # Windows
 
 **📖 Need detailed setup?** → [Complete Quick Start Guide](docs/guides/QUICK_START.md)
 
+> Versions used in this repo: Python 3.13, Node 20. Use `.python-version` and `.nvmrc` to match local environments.
+
 ---
 
 <h2 id="learning-path">🎓 Learning Path</h2>

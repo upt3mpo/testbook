@@ -5,6 +5,10 @@ title: '[DOCS] '
 labels: documentation
 assignees: ''
 ---
+<!--
+Template Version: 2.0
+Last Updated: October 2025
+-->
 
 ## 📄 Documentation Location
 
@@ -41,6 +45,8 @@ Quote the current text or describe it
 Your suggested correction or improvement
 ```
 
+If changing code blocks, include a minimal diff or snippet.
+
 ## 🎓 Context
 
 **Why is this important?**
@@ -49,7 +55,7 @@ Your suggested correction or improvement
 
 ## 📝 Additional Context
 
-Any other relevant information.
+Any other relevant information (screenshots, links). Please avoid pasting secrets or tokens.
 
 ## ✅ Contribution
 

@@ -5,6 +5,10 @@ title: '[FEATURE] '
 labels: enhancement
 assignees: ''
 ---
+<!--
+Template Version: 2.0
+Last Updated: October 2025
+-->
 
 ## 💡 Feature Description
 
@@ -20,6 +24,13 @@ What problem does this solve? What use case does it address?
 ## 🔧 Proposed Solution
 
 Describe how you'd like to see this implemented.
+
+## ✅ Acceptance Criteria
+
+- [ ] Clear, testable criteria for done
+- [ ] Backward compatible (or migration noted)
+- [ ] Docs updated if needed
+- [ ] No generated artifacts committed
 
 ## 🔄 Alternative Solutions
 

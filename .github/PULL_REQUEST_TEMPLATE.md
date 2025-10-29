@@ -30,18 +30,24 @@ Relates to #(issue number)
 
 <!-- Check all that were tested -->
 
-### Backend Tests
+### Backend Tests (Python)
 
-- [ ] All existing backend tests pass (`pytest -v`)
-- [ ] New tests added for new features
-- [ ] Coverage maintained or improved (`pytest --cov`)
+- [ ] All existing backend tests pass (`cd backend && pytest -v`)
+- [ ] New tests added for new features/bug fixes
+- [ ] Coverage maintained or improved (`pytest --cov --cov-report=term-missing`)
 - [ ] No test warnings or errors
 
-### E2E Tests
+### Frontend Unit Tests (Node)
 
-- [ ] E2E tests pass (`npx playwright test`)
+- [ ] Frontend unit tests pass (`cd frontend && npm test`)
+- [ ] New unit tests added for UI changes (Vitest)
+- [ ] Lint passes (`npm run lint`) and format applied (`npm run format`)
+
+### E2E Tests (Playwright)
+
+- [ ] E2E tests pass (`cd tests && npx playwright test`)
 - [ ] New E2E tests for new UI features
-- [ ] Tests pass in headed mode
+- [ ] Tests pass in headed mode when applicable
 - [ ] No flaky tests introduced
 
 ### Manual Testing
@@ -57,13 +63,12 @@ Relates to #(issue number)
 
 <!-- Include if relevant -->
 
-**Before:** X%
-**After:** Y%
-**Change:** +/- Z%
+Include short summary or CI artifact links (no static snapshots committed):
 
-```
-# Paste relevant coverage output here
-```
+- Backend: `pytest --cov --cov-report=term-missing` summary
+- Frontend (if measured): `npm run test -- --coverage`
+
+Optionally note before/after if meaningful; attach CI coverage artifact links.
 
 ---
 
@@ -77,6 +82,13 @@ Relates to #(issue number)
 - [ ] Docstrings added/updated
 - [ ] Comments added for complex logic
 - [ ] CHANGELOG.md updated
+
+## 🧹 Repo Hygiene
+
+- [ ] No generated artifacts committed (e.g., `node_modules/`, `dist/`, `build/`, `htmlcov/`, `coverage.xml`)
+- [ ] No local editor/OS files committed (e.g., `.vscode/`, `.DS_Store`)
+- [ ] Environment files not committed (e.g., `.env`, only `*.example` as needed)
+- [ ] If dependencies changed, lockfiles are updated and included (`package-lock.json`, `uv.lock`, etc.)
 
 ---
 
@@ -169,11 +181,11 @@ Relates to #(issue number)
 
 ---
 
-## 🙏 Thank You!
+## 🙏 Thank You
 
 Thank you for contributing to Testbook Testing Platform! Your improvements help students worldwide learn professional testing skills.
 
 <!--
 Template Version: 2.0
-Last Updated: October 2024
+Last Updated: October 2025
 -->
