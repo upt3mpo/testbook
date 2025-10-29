@@ -6,7 +6,7 @@ echo "🚀 Setting up Testbook development environment..."
 # Backend setup
 echo "📦 Installing Python dependencies..."
 cd /workspace/backend
-if [ ! -d "venv" ]; then
+if [ ! -d ".venv" ]; then
     python -m venv .venv
 fi
 source .venv/bin/activate

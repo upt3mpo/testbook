@@ -1,4 +1,62 @@
+########################################
+# OS
+########################################
+.DS_Store
+Thumbs.db
+
+########################################
+# Editors / IDEs
+########################################
+.vscode/
+.idea/
+.cursor/
+.history/
+*.swp
+*.swo
+*~
+
+########################################
+# Environment / Secrets
+########################################
+.env
+.env.local
+.env.*.local
+
+########################################
+# Logs & Coverage
+########################################
+logs/
+*.log
+coverage/
+coverage.xml
+.coverage
+.coverage.*
+*.cover
+.nyc_output/
+
+########################################
+# Node.js
+########################################
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+dist/
+dist-ssr/
+build/
+.next/
+out/
+.turbo/
+.parcel-cache/
+.cache/
+.eslintcache
+*.local
+
+########################################
 # Python
+########################################
 __pycache__/
 *.py[cod]
 *$py.class
@@ -25,56 +83,24 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
-
-# Testing & Coverage
-htmlcov/
-**/htmlcov/
-.coverage
-.coverage.*
-coverage/
-coverage.xml
-*.cover
 .pytest_cache/
 .tox/
 .hypothesis/
+.mypy_cache/
+.ruff_cache/
 
-# Playwright
-test-results/
-playwright-report/
-playwright/.cache/
-
-# Database
+########################################
+# Databases (local dev)
+########################################
 *.db
 *.sqlite
 *.sqlite3
 
-# Environment
-.env
-.env.local
-
-# Node
-node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
-dist/
-dist-ssr/
-*.local
-
-# IDE
-.vscode/
-.idea/
-.cursor/
-*.swp
-*.swo
-*~
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Logs
-logs/
-*.log
+########################################
+# Testing Reports / Tools
+########################################
+htmlcov/
+**/htmlcov/
+test-results/
+playwright-report/
+playwright/.cache/

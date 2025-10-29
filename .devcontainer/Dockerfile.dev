@@ -1,5 +1,5 @@
 # Development Dockerfile for local VS Code DevContainer
-FROM python:3.11-slim-bookworm
+FROM python:3.13-slim-bookworm
 
 # Set environment variables
 ENV PYTHONUNBUFFERED=1 \

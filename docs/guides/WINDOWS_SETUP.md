@@ -920,7 +920,7 @@ Write-Host "ExecutionPolicy: $pol" -ForegroundColor DarkCyan
 | `'npm'/'node' is not recognized`       | Node not installed / PATH              | Install Node 20+                           | [Issue 2](#issue-2-npm-is-not-recognized-or-node-is-not-recognized)                                   |
 | `Port 8000/3000 already in use`        | Another app is using the port          | Kill process on that port                  | [Issue 5](#issue-5-port-already-in-use)                                                               |
 | `Permission denied / Access is denied` | Needs elevated rights or blocked by AV | Run as Admin, check AV                     | [Issue 7](#issue-7-permission-denied-errors)                                                          |
-| Script won’t run due to policy         | Execution policy too strict            | Set policy for CurrentUser                 | [Issue 8](#issue-8-script-execution-policy-errors)                                                    |
+| Script won't run due to policy         | Execution policy too strict            | Set policy for CurrentUser                 | [Issue 8](#issue-8-script-execution-policy-errors)                                                    |
 | Chocolatey install fails               | No admin rights                        | Use winget or run as Admin                 | [Issue 9](#issue-9-chocolatey-installation-failed-or-access-denied)                                   |
 | `playwright not found` / tests fail    | Playwright/browsers not installed      | `npm i && npx playwright install chromium` | [Issue 11](#issue-11-playwright-not-found-or-e2e-tests-fail)                                          |
 | Rust / pydantic-core errors            | Needs Rust toolchain                   | `winget install Rustlang.Rust.MSVC`        | [Issue 2.6](#issue-26-cargo-the-rust-package-manager-is-not-installed-or-pydantic-core-build-failure) |
@@ -1117,11 +1117,11 @@ pg_config is required to build psycopg2 from source.
 Failed to build `psycopg2-binary==2.9.9`
 ```
 
-**Why:** This was a bug in the requirements.txt file (now fixed). Testbook uses SQLite, not PostgreSQL.
+**Why:** Older setups tried to build `psycopg2`. Testbook now uses psycopg v3 (`psycopg`). For PostgreSQL URLs, prefer the driver-explicit form `postgresql+psycopg://...`.
 
 **Solutions:**
 
-1. **Update your repository:** Pull the latest changes to get the fixed requirements.txt
+1. **Update your repository:** Pull the latest changes to get the fixed requirements.txt and driver settings
 2. **Clean install:**
 
    ```powershell

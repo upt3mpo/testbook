@@ -1,4 +1,12 @@
 name: Frontend Tests
+# Last Updated: October 2025
+
+permissions:
+  contents: read
+
+concurrency:
+  group: frontend-tests-${{ github.ref }}
+  cancel-in-progress: true
 
 on:
   push:
@@ -7,6 +15,7 @@ on:
       - "frontend/**"
       - ".github/workflows/frontend-tests.yml"
   pull_request:
+  workflow_dispatch:
     branches: [main, develop]
     paths:
       - "frontend/**"
@@ -17,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [20, 22]
+        node-version: [20]
 
     steps:
       - uses: actions/checkout@v4
@@ -61,7 +70,7 @@ jobs:
         with:
           name: frontend-coverage-node${{ matrix.node-version }}
           path: frontend/coverage/
-          retention-days: 30
+          retention-days: 7
 
       - name: Build frontend
         working-directory: ./frontend

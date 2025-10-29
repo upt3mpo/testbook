@@ -5,6 +5,10 @@ title: '[QUESTION] '
 labels: question
 assignees: ''
 ---
+<!--
+Template Version: 2.0
+Last Updated: October 2025
+-->
 
 ## ❓ Your Question
 
@@ -13,8 +17,9 @@ Ask your question clearly and concisely.
 ## 🔍 What You've Tried
 
 Before asking, please check:
-- [ ] I've checked the [FAQ](../../FAQ.md)
-- [ ] I've checked [COMMON_MISTAKES.md](../../docs/course/COMMON_MISTAKES.md)
+- [ ] I've checked the [FAQ](../../docs/guides/FAQ.md)
+- [ ] I've read [RUNNING_TESTS.md](../../docs/guides/RUNNING_TESTS.md)
+- [ ] I've read [DEBUGGING_GUIDE.md](../../docs/reference/DEBUGGING_GUIDE.md)
 - [ ] I've searched existing issues
 - [ ] I've checked the relevant documentation
 
@@ -30,7 +35,7 @@ Before asking, please check:
 [Specific problem]
 
 **Which lab/section?**
-[e.g. LAB_01, backend tests, setting up environment]
+[e.g. LAB_01, backend tests, frontend unit tests, E2E, environment setup]
 
 ## 💻 Environment (if relevant)
 

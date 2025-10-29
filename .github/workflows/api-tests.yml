@@ -1,14 +1,22 @@
 name: API Tests
+# Last Updated: October 2025
+
+permissions:
+  contents: read
+
+concurrency:
+  group: api-tests-${{ github.ref }}
+  cancel-in-progress: true
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [main, develop]
     paths:
-      - 'backend/**'
-      - 'tests/api/**'
-      - '.github/workflows/api-tests.yml'
+      - "backend/**"
+      - "tests/api/**"
+      - ".github/workflows/api-tests.yml"
   pull_request:
-    branches: [ main, develop ]
+    branches: [main, develop]
   workflow_dispatch:
 
 jobs:
@@ -38,13 +46,13 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: "20"
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
-          cache: 'pip'
+          python-version: "3.13"
+          cache: "pip"
 
       - name: Install Python dependencies
         run: |
@@ -59,7 +67,7 @@ jobs:
         env:
           TESTING: true
           SECRET_KEY: test-secret-key-for-ci
-          DATABASE_URL: postgresql://testbook:testbook@localhost:5432/testbook_test
+          DATABASE_URL: postgresql+psycopg://testbook:testbook@localhost:5432/testbook_test
         run: |
           python seed.py
           uvicorn main:app --host 0.0.0.0 --port 8000 > server.log 2>&1 &
@@ -111,8 +119,8 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
-          cache: 'pip'
+          python-version: "3.13"
+          cache: "pip"
 
       - name: Install dependencies
         run: |
@@ -125,7 +133,7 @@ jobs:
         env:
           TESTING: true
           SECRET_KEY: test-secret-key-for-ci
-          DATABASE_URL: postgresql://testbook:testbook@localhost:5432/testbook_test
+          DATABASE_URL: postgresql+psycopg://testbook:testbook@localhost:5432/testbook_test
         run: |
           python seed.py
           uvicorn main:app --host 0.0.0.0 --port 8000 > server.log 2>&1 &

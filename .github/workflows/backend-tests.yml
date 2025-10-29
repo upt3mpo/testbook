@@ -1,23 +1,32 @@
 name: Backend Tests
+# Last Updated: October 2025
+
+permissions:
+  contents: read
+
+concurrency:
+  group: backend-tests-${{ github.ref }}
+  cancel-in-progress: true
 
 on:
   push:
     branches: [main, develop]
     paths:
-      - 'backend/**'
-      - '.github/workflows/backend-tests.yml'
+      - "backend/**"
+      - ".github/workflows/backend-tests.yml"
   pull_request:
+  workflow_dispatch:
     branches: [main, develop]
     paths:
-      - 'backend/**'
-      - '.github/workflows/backend-tests.yml'
+      - "backend/**"
+      - ".github/workflows/backend-tests.yml"
 
 jobs:
   test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ['3.10', '3.11', '3.12']
+        python-version: ["3.13"]
 
     services:
       postgres:
@@ -41,7 +50,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-          cache: 'pip'
+          cache: "pip"
 
       - name: Install dependencies
         working-directory: ./backend
@@ -60,7 +69,7 @@ jobs:
         env:
           TESTING: true
           SECRET_KEY: test-secret-key-for-ci
-          DATABASE_URL: postgresql://testbook:testbook@localhost:5432/testbook_test
+          DATABASE_URL: postgresql+psycopg://testbook:testbook@localhost:5432/testbook_test
         run: |
           pytest tests/unit/ -v --tb=short
 
@@ -69,7 +78,7 @@ jobs:
         env:
           TESTING: true
           SECRET_KEY: test-secret-key-for-ci
-          DATABASE_URL: postgresql://testbook:testbook@localhost:5432/testbook_test
+          DATABASE_URL: postgresql+psycopg://testbook:testbook@localhost:5432/testbook_test
         run: |
           pytest tests/integration/ -v --tb=short
 
@@ -96,12 +105,6 @@ jobs:
         with:
           name: coverage-report-py${{ matrix.python-version }}
           path: backend/htmlcov/
-          retention-days: 30
+          retention-days: 7
 
-      - name: Upload coverage to Codecov (optional)
-        if: matrix.python-version == '3.11'
-        uses: codecov/codecov-action@v3
-        with:
-          files: ./backend/coverage.xml
-          flags: backend
-          name: backend-coverage
+      # Codecov upload removed for minimal CI trim

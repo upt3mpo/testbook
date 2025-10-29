@@ -6,6 +6,11 @@ labels: bug
 assignees: ''
 ---
 
+<!--
+Template Version: 2.0
+Last Updated: October 2025
+-->
+
 ## 🐛 Bug Description
 
 A clear and concise description of what the bug is.
@@ -47,16 +52,32 @@ If applicable, add screenshots to help explain your problem.
 Add any other context about the problem here.
 
 **Which lab/section were you working on?**
-[e.g. LAB_01, Section 3 of course, running backend tests]
+[e.g. LAB_01, backend tests, frontend unit tests, E2E]
 
-**Error messages or logs:**
+**Error messages or logs (redact secrets):**
 ```
-Paste any relevant error messages or logs here
+Paste relevant snippets only (no secrets, tokens, or .env values)
 ```
 
 ## 🔍 Have you checked?
 
 - [ ] I've searched existing issues for this problem
-- [ ] I've checked the [FAQ](../../FAQ.md)
-- [ ] I've checked [COMMON_MISTAKES.md](../../docs/course/COMMON_MISTAKES.md)
+- [ ] I've checked the [FAQ](../../docs/guides/FAQ.md)
+- [ ] I've checked [RUNNING_TESTS.md](../../docs/guides/RUNNING_TESTS.md)
 - [ ] I've checked [DEBUGGING_GUIDE.md](../../docs/reference/DEBUGGING_GUIDE.md)
+- [ ] I've checked [TROUBLESHOOTING.md](../../docs/reference/TROUBLESHOOTING.md)
+
+## 🧪 Minimal Reproduction (if applicable)
+
+Commands used (copy/paste):
+
+```
+# Backend
+cd backend && pytest -v
+
+# Frontend
+cd frontend && npm test
+
+# E2E
+cd tests && npx playwright test
+```
