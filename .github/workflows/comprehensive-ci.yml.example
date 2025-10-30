@@ -21,7 +21,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
 
       - name: Install markdownlint and link checker
         run: |
@@ -125,9 +125,9 @@ jobs:
           python-version: '3.11'
 
       - name: Set up Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
 
       - name: Install backend dependencies
         run: |
@@ -191,9 +191,9 @@ jobs:
           python-version: '3.11'
 
       - name: Set up Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
 
       - name: Install Newman
         run: npm install -g newman newman-reporter-htmlextra
@@ -251,9 +251,9 @@ jobs:
           flake8 backend/ --max-line-length=100 --extend-ignore=E203
 
       - name: Set up Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
 
       - name: Install frontend dependencies
         run: |

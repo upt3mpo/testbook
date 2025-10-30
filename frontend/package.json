@@ -22,9 +22,9 @@
   },
   "dependencies": {
     "axios": "^1.13.1",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-router-dom": "^6.26.2"
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-router-dom": "^7.9.5"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.6.3",
@@ -35,16 +35,18 @@
     "@vitest/ui": "^4.0.0",
     "axe-core": "^4.8.3",
     "axe-playwright": "^2.0.1",
-    "eslint": "^8.57.1",
+    "eslint": "^9.38.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-jsx-a11y": "^6.8.0",
     "eslint-plugin-react": "^7.33.2",
-    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-vitest-globals": "^1.5.0",
+    "@eslint/js": "^9.18.0",
+    "globals": "^15.14.0",
     "jsdom": "^27.0.1",
     "msw": "^2.11.6",
     "prettier": "^3.1.1",
-    "vite": "^6.0.7",
+    "vite": "^7.1.12",
     "vitest": "^4.0.0",
     "vitest-axe": "^0.1.0"
   },
@@ -53,6 +55,6 @@
     "uuid": "^9.0.1"
   },
   "engines": {
-    "node": ">=20 <21"
+    "node": ">=24 <25"
   }
 }

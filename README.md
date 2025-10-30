@@ -5,7 +5,7 @@
 ![Frontend Coverage](https://img.shields.io/badge/frontend_coverage-95%25-brightgreen)
 ![Total Tests](https://img.shields.io/badge/tests-220%2B-blue)
 ![Python](https://img.shields.io/badge/python-3.13-blue)
-![Node](https://img.shields.io/badge/node-20-green)
+![Node](https://img.shields.io/badge/node-24-green)
 
 A production-grade social media application built for learning and practicing
 automation testing. Features 180+ backend tests, 40+ frontend tests,
@@ -54,7 +54,7 @@ start-dev.bat   # Windows
 
 **📖 Need detailed setup?** → [Complete Quick Start Guide](docs/guides/QUICK_START.md)
 
-> Versions used in this repo: Python 3.13, Node 20. Use `.python-version` and `.nvmrc` to match local environments.
+> Versions used in this repo: Python 3.13, Node 24. Use `.python-version` and `.nvmrc` to match local environments.
 
 ---
 
