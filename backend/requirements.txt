@@ -27,4 +27,4 @@ schemathesis==4.0.0
 black==25.1.0
 flake8==7.1.1
 isort==7.0.0
-pre-commit==4.3.0
+pre-commit==4.4.0
