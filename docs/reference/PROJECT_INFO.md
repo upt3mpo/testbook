@@ -35,7 +35,7 @@ Testbook is a fully functional fake social media application built specifically 
 
 ### Frontend
 
-- **React 18** - UI library
+- **React 19** - UI library
 - **Vite** - Build tool (fast!)
 - **React Router** - Client-side routing
 - **Axios** - HTTP client
