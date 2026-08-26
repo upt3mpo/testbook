@@ -345,7 +345,10 @@ choco install just     # Windows
 
 ## CI/CD Integration
 
-Use the same commands in GitHub Actions:
+Testbook's own GitHub Actions workflows (`.github/workflows/`) call `pip`,
+`pytest`, and `npm` directly rather than going through `make`/`just` — they
+predate the task runners. If you want CI to use the same commands you run
+locally, you could wire a step like this into a workflow:
 
 ```yaml
 - name: Setup project
