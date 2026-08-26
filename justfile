@@ -52,7 +52,7 @@ install-backend:
     #!/usr/bin/env bash
     echo "📦 Installing backend dependencies..."
     cd backend
-    python -m .venv .venv
+    python3 -m venv .venv
     source .venv/bin/activate
     pip install --upgrade pip
     pip install -r requirements.txt
@@ -99,7 +99,7 @@ start-backend:
 # Start frontend only
 start-frontend:
     #!/usr/bin/env bash
-    echo "🚀 Starting frontend on http://localhost:5173"
+    echo "🚀 Starting frontend on http://localhost:3000"
     cd frontend && npm run dev
 
 # Run all tests
@@ -174,7 +174,7 @@ test-contract:
     echo "📋 Running contract tests..."
     cd backend
     source .venv/bin/activate
-    TESTING=true pytest tests/test_api_contract.py -v
+    TESTING=true pytest tests/integration/test_api_contract.py -v
 
 # Run comprehensive test suite
 test-all:
