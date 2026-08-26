@@ -229,6 +229,7 @@ def test_sql_injection_prevention():
 
 - **[Learning Path](learn/README.md)** - Complete 5-stage curriculum
 - **[Stage 1: Unit Tests](learn/stage_1_unit/)** - Start here!
+- **[Portfolio Guide](docs/guides/PORTFOLIO.md)** - Turn your work here into job-ready portfolio content
 - **[All Documentation](docs/INDEX.md)** - Complete documentation index
 
 ---
