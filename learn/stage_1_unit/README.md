@@ -570,7 +570,7 @@ def test_password_is_hashed(self):
    pytest backend/tests/unit/test_auth.py -v
 
    # Run with coverage
-   pytest backend/tests/unit/test_auth.py --cov=backend.auth --cov-report=html
+   pytest backend/tests/unit/test_auth.py --cov=auth --cov-report=html
    ```
 
 2. **Make it fail intentionally to understand error messages:**

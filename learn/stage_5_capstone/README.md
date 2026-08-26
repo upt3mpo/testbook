@@ -681,6 +681,9 @@ Think of portfolio artifacts like a museum exhibit. You need:
 **Artifact 1: Test Coverage Report**
 
 ```bash
+# Run these from the backend/ directory
+cd backend
+
 # Generate HTML coverage report
 pytest --cov --cov-report=html
 
@@ -688,7 +691,7 @@ pytest --cov --cov-report=html
 pytest --cov --cov-report=html --cov-report=term-missing
 
 # Generate coverage report for specific modules
-pytest --cov=backend.auth --cov=backend.models --cov-report=html
+pytest --cov=auth --cov=models --cov-report=html
 
 # Screenshot the coverage report
 # Open htmlcov/index.html and capture screenshot
@@ -714,10 +717,10 @@ pytest --cov=backend.auth --cov=backend.models --cov-report=html
 VIDEO_ON_FAILURE=true HEADLESS=false pytest tests/test_e2e_feature.py
 
 # Run with slow motion for better video
-VIDEO_ON_FAILURE=true HEADLESS=false pytest tests/test_e2e_feature.py --slow-mo=1000
+VIDEO_ON_FAILURE=true HEADLESS=false pytest tests/test_e2e_feature.py --slowmo=1000
 
 # Run specific test with video
-VIDEO_ON_FAILURE=true HEADLESS=false pytest tests/e2e-python/test_auth.py::test_register_new_user_successfully -v
+VIDEO_ON_FAILURE=true HEADLESS=false pytest tests/e2e-python/test_auth.py::TestAuthentication::test_register_new_user_successfully -v
 
 # Result: video of test running
 ```
@@ -795,7 +798,7 @@ Use these templates (fill in your specifics):
 
 **For Testbook:**
 
-- Built comprehensive test automation suite with pytest and Playwright, achieving 84% code coverage across 100+ tests
+- Built comprehensive test automation suite with pytest and Playwright, achieving 86% backend code coverage across 362 automated tests
 - Implemented E2E testing framework using Page Object Model pattern, reducing test maintenance time by 40%
 - Developed security test suite covering OWASP Top 10 vulnerabilities, identifying and documenting 3 critical issues
 - Created performance testing strategy using k6, establishing baseline metrics for 500 concurrent users
@@ -945,15 +948,15 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v7
       - name: Install dependencies
         run: pip install -r requirements.txt
       - name: Run tests
         run: pytest --cov --cov-report=xml
       - name: Upload coverage
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v7
 ```
 
 ### Test Data Management

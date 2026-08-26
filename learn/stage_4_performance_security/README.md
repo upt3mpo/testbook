@@ -585,46 +585,27 @@ export const options = {
 
 ### 🔒 Security Testing with pytest
 
-**Open `tests/security/test_security.py` and find `test_sql_injection_prevention`:**
+**Open `tests/security/test_security.py` and find `test_sql_injection_in_login` (in `TestInputValidation`):**
 
 <details open>
 <summary><strong>🐍 Python</strong></summary>
 
 ```python
-@pytest.mark.security
-def test_sql_injection_prevention(api_client):
-    """
-    Verify SQL injection attempts are blocked.
+def test_sql_injection_in_login(self, api_client):
+    """Test that SQL injection attempts are blocked."""
+    sql_injections = [
+        "' OR '1'='1",
+        "admin'--",
+        "' OR '1'='1' --",
+    ]
 
-    This test demonstrates OWASP Top 10 #1 vulnerability testing.
-    SQL injection occurs when malicious SQL code is inserted into
-    application inputs, potentially allowing attackers to:
-    - Access unauthorized data
-    - Modify or delete data
-    - Execute administrative operations
-
-    This test verifies that the application properly validates
-    and sanitizes user inputs to prevent SQL injection attacks.
-    """
-    # Arrange: Prepare malicious SQL injection payload
-    # This payload would delete the users table if the application is vulnerable
-    malicious_input = "'; DROP TABLE users; --"
-
-    # Act: Send registration request with malicious input
-    response = api_client.post(f"{BASE_URL}/auth/register", json={
-        "username": malicious_input,  # Malicious SQL injection attempt
-        "email": "test@test.com",     # Valid email
-        "password": "password123"     # Valid password
-    })
-
-    # Assert: Verify the application properly handles the malicious input
-    # Should be rejected (400) or sanitized (201 but safe)
-    # If this returns 200/201, the application is vulnerable to SQL injection
-    assert response.status_code in [400, 422], f"Expected rejection, got {response.status_code}"
-
-    # Additional verification: ensure the users table still exists
-    # (This would be caught by other tests, but shows the severity)
-    # In a real test suite, we might verify the database state here
+    for injection in sql_injections:
+        response = api_client.post(
+            f"{BASE_URL}/auth/login",
+            json={"email": injection, "password": "password"},
+        )
+        # Should either be validation error or unauthorized
+        assert response.status_code in [401, 422]
 ```
 
 </details>
@@ -669,9 +650,9 @@ test("SQL injection prevention", async () => {
 
 **Guided Walkthrough:**
 
-1. **Malicious Input**: We try to inject SQL code that would delete the users table
-2. **Request**: We send this malicious input to the registration endpoint
-3. **Assertion**: We verify the system rejects or sanitizes the input
+1. **Malicious Input**: We try several classic SQL injection payloads (`' OR '1'='1`, `admin'--`, etc.)
+2. **Request**: We send each payload as the email field to the login endpoint
+3. **Assertion**: We verify the system rejects every attempt (401 or 422), never authenticates the attacker
 
 **Try This:**
 
@@ -679,7 +660,7 @@ test("SQL injection prevention", async () => {
 
    ```bash
    # Run specific security test
-   pytest tests/security/test_security.py::test_sql_injection_prevention -v
+   pytest tests/security/test_security.py::TestInputValidation::test_sql_injection_in_login -v
 
    # Run all security tests
    pytest tests/security/ -v
@@ -724,8 +705,8 @@ test("SQL injection prevention", async () => {
 
 **More Examples:**
 
-- `test_xss_prevention` - Test for XSS attacks
-- `test_rate_limiting` - Test rate limit enforcement
+- `test_xss_in_post_content` - Test for XSS attacks
+- `test_excessive_login_attempts` - Test rate limit enforcement
 - Full file: [test_security.py](../../tests/security/test_security.py)
 
 ### 🔄 Hybrid Track
@@ -780,7 +761,7 @@ cd tests/security
 pytest -v
 
 # Run specific test
-pytest test_security.py::test_sql_injection_prevention -v
+pytest test_security.py::TestInputValidation::test_sql_injection_in_login -v
 ```
 
 **Try making a test fail:**

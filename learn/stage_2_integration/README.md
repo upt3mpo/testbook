@@ -561,7 +561,7 @@ def test_register_new_user_success(self, client):
 **More Examples:**
 
 - `test_login_success` - See authentication flow
-- `test_create_post_unauthorized` - Learn about authorization
+- `test_cannot_access_protected_route_without_auth` - Learn about authorization
 - Full file: [test_api_auth.py](../../backend/tests/integration/test_api_auth.py)
 
 </details>
@@ -825,7 +825,8 @@ class UserFactory:
     """
 
     @classmethod
-    def create(cls, db_session, email=None, username=None, **kwargs):
+    def create(cls, db_session, email=None, username=None, display_name=None,
+               password="TestPassword123!", bio=None, **kwargs):
         """
         Create a user with sensible defaults.
 
@@ -833,10 +834,13 @@ class UserFactory:
         required fields, handles password hashing, and saves to the database.
         Each call generates unique values to avoid conflicts.
         """
+        cls._counter += 1
         if email is None:
             email = f"user{cls._counter}@test.com"
         if username is None:
             username = f"user{cls._counter}"
+        if display_name is None:
+            display_name = f"Test User {cls._counter}"
 
         user = User(
             email=email,
@@ -974,7 +978,7 @@ export const handlers = [
 ```javascript
 // From frontend/src/tests/unit/examples/README.md
 import { setupServer } from "msw/node";
-import { handlers } from "../../../test/mocks/handlers";
+import { handlers } from "../mocks/handlers";
 
 const server = setupServer(...handlers);
 
@@ -1100,8 +1104,8 @@ FastAPI 0.115+ uses OpenAPI 3.1.0, but Schemathesis only has experimental suppor
 **Should I learn this?**
 
 - 📚 **Yes!** Read [Contract Testing Guide](../../docs/guides/CONTRACT_TESTING.md) to understand the concept
-- 🎯 **For now:** Focus on the 180 integration tests that ARE running
-- 🔄 **Alternative:** Frontend contract testing works today! See [Lab 6C](../../learn/stage_2_integration/exercises/LAB_08_Contract_Testing_Foundations_Python.md)
+- 🎯 **For now:** Focus on the 127 integration tests that ARE running
+- 🔄 **Alternative:** Frontend contract testing works today! See [Lab 8: Contract Testing Foundations (JavaScript)](exercises/LAB_08_Contract_Testing_Foundations_JavaScript.md)
 - 💼 **Career value:** Understanding contract testing is a professional differentiator
 
 ---

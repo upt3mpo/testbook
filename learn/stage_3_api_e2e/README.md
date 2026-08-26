@@ -481,6 +481,8 @@ class FeedPage:
 
 Now let's see these concepts in real code! Choose your track:
 
+> **⚠️ Before you run anything below:** E2E tests need the app running, and the backend specifically needs `TESTING=true` (plain `./start-dev.sh` with no `backend/.env` leaves it unset, which disables the `/api/dev/reset` endpoint and rate-limit allowances these tests depend on). See [Playwright Quick Start](../../docs/guides/PLAYWRIGHT_QUICKSTART.md) for the full setup.
+
 ### 🐍 Python Track: E2E Testing with Playwright
 
 **Open `tests/e2e-python/test_auth.py` and find `test_register_new_user_successfully`:**
@@ -545,13 +547,13 @@ def test_register_new_user_successfully(
 
    ```bash
    # Run specific test
-   pytest tests/e2e-python/test_auth.py::test_register_new_user_successfully -v
+   pytest tests/e2e-python/test_auth.py::TestAuthentication::test_register_new_user_successfully -v
 
    # Run in headed mode (see browser)
-   HEADLESS=false pytest tests/e2e-python/test_auth.py::test_register_new_user_successfully -v
+   HEADLESS=false pytest tests/e2e-python/test_auth.py::TestAuthentication::test_register_new_user_successfully -v
 
    # Run with screenshots on failure
-   pytest tests/e2e-python/test_auth.py::test_register_new_user_successfully -v --screenshot=only-on-failure
+   pytest tests/e2e-python/test_auth.py::TestAuthentication::test_register_new_user_successfully -v --screenshot=only-on-failure
    ```
 
 2. **Debug E2E test failures:**
@@ -564,7 +566,7 @@ def test_register_new_user_successfully(
    pytest tests/e2e-python/test_auth.py -v --tracing=on
 
    # Run with slow motion to see what's happening
-   pytest tests/e2e-python/test_auth.py -v --slow-mo=1000
+   pytest tests/e2e-python/test_auth.py -v --slowmo=1000
    ```
 
 3. **Make it fail intentionally to see debugging tools:**
@@ -587,8 +589,8 @@ def test_register_new_user_successfully(
 
 **More Examples:**
 
-- `test_user_can_register` - See registration flow
-- `test_user_can_logout` - Learn about session management
+- `test_login_success` - See authentication flow
+- `test_logout_success` - Learn about session management
 - Full file: [test_auth.py](../../tests/e2e-python/test_auth.py)
 
 ### ☕ JavaScript Track: E2E Testing with Playwright
@@ -641,30 +643,30 @@ test("should register new user successfully", async ({ page }) => {
 
 **Try This:**
 
-1. **Run the test from command line:**
+1. **Run the test from command line (from the `tests/` directory):**
 
    ```bash
+   cd tests
+
    # Run specific test
-   npx playwright test tests/e2e/auth.spec.js -g "should register new user successfully"
+   npx playwright test auth.spec.js -g "should register new user successfully"
 
    # Run in headed mode (see browser)
-   npx playwright test tests/e2e/auth.spec.js --headed
-
-   # Run with screenshots on failure
-   npx playwright test tests/e2e/auth.spec.js --screenshot=only-on-failure
+   npx playwright test auth.spec.js --headed
    ```
+
+   Screenshots and videos aren't CLI flags for this version of Playwright Test - they're
+   already configured in `tests/playwright.config.js` (`screenshot: "only-on-failure"`,
+   `video: "retain-on-failure"`), so a failing test captures both automatically.
 
 2. **Debug E2E test failures:**
 
    ```bash
-   # Run with video recording
-   npx playwright test tests/e2e/auth.spec.js --video=retain-on-failure
+   # Force tracing on for this run
+   npx playwright test auth.spec.js --trace=on
 
-   # Run with trace for debugging
-   npx playwright test tests/e2e/auth.spec.js --trace=on
-
-   # Run with slow motion to see what's happening
-   npx playwright test tests/e2e/auth.spec.js --slow-mo=1000
+   # Then open the trace viewer for a failed test
+   npx playwright show-trace test-results/**/trace.zip
    ```
 
 3. **Make it fail intentionally to see debugging tools:**
@@ -674,7 +676,7 @@ test("should register new user successfully", async ({ page }) => {
    await expect(page).toHaveURL("/"); // Change to: await expect(page).toHaveURL('/wrong')
    ```
 
-   Then run with `--screenshot=only-on-failure` to see the screenshot!
+   Then check `test-results/` for the automatically captured screenshot and video!
 
 4. **Fix it back and run again to see it pass**
 
@@ -770,24 +772,38 @@ def test_api_matches_openapi_schema(client):
 
 <h2 id="part-6-hands-on-practice">Part 6: Hands-On Practice 🏃</h2>
 
+### Step 0: Start the App in Testing Mode
+
+E2E tests drive a real browser against a running app, and they need the backend started with `TESTING=true` (this enables the dev-only `/api/dev/reset` endpoint and higher rate limits the suite relies on between tests):
+
+```bash
+# Terminal 1: backend, in testing mode
+cd backend
+source .venv/bin/activate      # Windows: .venv\Scripts\activate
+TESTING=true uvicorn main:app --reload --port 8000
+
+# Terminal 2: frontend
+cd frontend
+npm run dev
+```
+
+Leave both running. See [Playwright Quick Start](../../docs/guides/PLAYWRIGHT_QUICKSTART.md) if anything here is unclear.
+
 ### Step 1: Run E2E Tests
 
 **Python Track:**
 
 ```bash
+# Terminal 3
 cd tests/e2e-python
-# Linux/Mac
-source .venv/bin/activate
-pytest -v
-
-# Windows (PowerShell)
-.venv\Scripts\activate
+pip install -r requirements.txt   # first time only
 pytest -v
 ```
 
 **JavaScript Track:**
 
 ```bash
+# Terminal 3
 cd tests
 npx playwright test
 ```
@@ -826,7 +842,7 @@ Open `tests/e2e/fixtures/test-helpers.js`
 
 Trace a full user journey:
 
-1. Find `test_user_can_login_and_create_post`
+1. Find `test_complete_workflow_with_pom` in [`tests/e2e-python/examples/test_page_objects_example.py`](../../tests/e2e-python/examples/test_page_objects_example.py) (login → create post → view profile)
 2. List every step the test performs
 3. Run it in headed mode
 4. Identify what could fail at each step

@@ -83,7 +83,7 @@ flowchart TD
     A["🎯 START HERE<br/>Choose Your Path"]
     A --> B["🔄 Manual QA → Automation<br/>15-20 hours<br/><br/>→ Phase 1: Programming basics + Stages 1-2<br/>→ Phase 2: Stage 3 (E2E) + exercises<br/>→ Phase 3: Advanced patterns<br/><br/>✅ ACHIEVEMENT: Automation skills added!"]
     A --> C["💻 Developer → QA Engineer<br/>8-12 hours<br/><br/>→ Phase 1: Quick run through Stages 1-3<br/>→ Phase 2: Deep dive into testing philosophy<br/>→ Phase 3: Advanced techniques<br/><br/>✅ ACHIEVEMENT: Testing mindset mastered!"]
-    A --> D["🌱 Complete Beginner → Tester<br/>20-30 hours<br/><br/>→ Phase 1: Learn programming basics<br/>→ Phase 2: Complete all 5 stages<br/>→ Phase 3: Build portfolio with capstone<br/><br/>✅ ACHIEVEMENT: Full testing foundation!"]
+    A --> D["🌱 Complete Beginner → Tester<br/>24-34 hours<br/><br/>→ Phase 1: Learn programming basics<br/>→ Phase 2: Complete all 5 stages<br/>→ Phase 3: Build portfolio with capstone<br/><br/>✅ ACHIEVEMENT: Full testing foundation!"]
 
     B --> E["🧪 STAGE 1: Unit Tests<br/>4-6 hours<br/><br/>→ Learn: Arrange-Act-Assert pattern<br/>→ Practice: Test individual functions<br/>→ Master: pytest basics, fixtures<br/><br/>✅ ACHIEVEMENT: First tests written!"]
     C --> E
@@ -154,7 +154,7 @@ flowchart TD
 - **Phase 2:** Complete all 5 stages at your own pace
 - **Phase 3:** Build portfolio with Stage 5 capstone
 
-**Time:** 20-30 hours (including programming basics)
+**Time:** 24-34 hours (including programming basics)
 
 **Key Resources:**
 
@@ -370,7 +370,7 @@ As you complete stages, mark your achievements:
 4. **Week 4:** Complete Stage 4 (Performance & Security)
 5. **Week 5:** Complete Stage 5 (Portfolio Capstone)
 
-**Total time:** 20-30 hours over 5 weeks
+**Total time:** 24-34 hours over 5 weeks
 
 ### 📊 Skill Progression
 
@@ -402,7 +402,7 @@ graph LR
 #### Stage 2: Integration Testing (5-7 hours)
 
 - **Lab 5:** API Endpoint Testing (Python/JavaScript)
-- **Lab 6:** Component Testing (JavaScript only)
+- **Lab 6:** Component Testing (JavaScript) / Advanced API Testing (Python)
 - **Lab 7:** Test Data Management (Python/JavaScript)
 - **Lab 8:** Contract Testing Foundations (Python/JavaScript)
 
@@ -421,8 +421,10 @@ graph LR
 
 #### Stage 5: Portfolio Capstone (4-6 hours)
 
-- **Lab 16:** Complete Test Suite Design
-- **Lab 17:** Portfolio Documentation
+- Design a test plan and build a complete test suite for a feature (Python and/or JavaScript track)
+- Produce portfolio artifacts: coverage reports, E2E recordings, and testing documentation
+
+Stage 5 is project-based rather than lab-based - see [Stage 5](stage_5_capstone/README.md) for the full walkthrough.
 
 ---
 
