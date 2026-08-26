@@ -295,7 +295,7 @@ Using `force_schema_version="30"` makes Schemathesis work with OpenAPI 3.1.0! Ho
 
 1. Frontend contract testing with OpenAPI (Lab 6C) ✅
 2. Manual schema validation with Postman ✅
-3. Traditional API integration tests (180+ tests!) ✅
+3. Traditional API integration tests (127 tests!) ✅
 
 ---
 
@@ -412,7 +412,7 @@ const validation = validateAgainstSchema(response, schema);
 
 ## 🆚 Contract Testing vs Integration Testing
 
-### Integration Tests (What We Have - 140+ tests)
+### Integration Tests (What We Have - 127 tests)
 
 ```python
 def test_create_post_with_valid_data():
@@ -600,7 +600,7 @@ For each endpoint, Schemathesis validates:
 While contract test is skipped, we have comprehensive API coverage:
 
 ```bash
-# Run integration tests (140+ tests)
+# Run integration tests (127 tests)
 cd backend
 pytest tests/integration/ -v
 

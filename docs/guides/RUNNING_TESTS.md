@@ -2,7 +2,7 @@
 
 Comprehensive cross-platform guide for running all Testbook tests.
 
-**✅ 166 Backend Tests | 60+ E2E Tests | All Verified Working**
+**✅ 180 Backend Tests | 119 E2E Tests (59 JS + 60 Python) | All Verified Working**
 
 ---
 
@@ -26,7 +26,7 @@ cd backend
 pytest -v
 ```
 
-**Expected:** 166 tests pass in ~51 seconds ✅
+**Expected:** 180 tests pass in ~51 seconds ✅
 
 ---
 
@@ -34,14 +34,14 @@ pytest -v
 
 ### Backend Tests (Python/pytest)
 
-- **166 tests** (unit, integration, database)
-- **84% coverage**
+- **180 tests** (unit, integration, database)
+- **86% coverage**
 - **Platform:** All (Python is cross-platform)
 - **Language:** Python
 
 ### E2E Tests (Playwright)
 
-- **60+ tests** (browser automation)
+- **119 tests** (59 JavaScript + 60 Python, browser automation)
 - **Cross-browser** (Chrome, Firefox, Safari)
 - **Platform:** All
 - **Language:** JavaScript or Python (your choice!)

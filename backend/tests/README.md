@@ -99,7 +99,7 @@ start htmlcov/index.html # Windows
 - When you need clean, focused output
 
 **Performance Impact:**
-Coverage collection adds ~20-30% overhead to test execution time. For 166 tests, this means ~15-20 seconds additional time.
+Coverage collection adds ~20-30% overhead to test execution time. For 180 tests, this means ~15-20 seconds additional time.
 
 ### Parallel Execution
 
@@ -262,7 +262,7 @@ def test_database_operation(db_session, test_user):
 - **Database Tests**: All models and relationships covered
 - **Edge Cases**: Error handling, validation, authorization
 
-### Current Coverage: 84%
+### Current Coverage: 86%
 
 Generate a fresh coverage report instead of reading a static snapshot:
 

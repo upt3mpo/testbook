@@ -90,6 +90,7 @@ The standalone `docs/course/` curriculum was folded into the [Self-Guided Learni
 | **🆕 [DEPLOYMENT_MODES.md](guides/DEPLOYMENT_MODES.md)** ⭐                      | 10 min | 🟢 Beginner     | Development vs Production mode explained              |
 | **🆕 [FAQ.md](guides/FAQ.md)** ⭐                                                | 20 min | 🟢 All          | Frequently asked questions and answers                |
 | **[RUNNING_TESTS.md](guides/RUNNING_TESTS.md)**                                  | 15 min | 🟢 Beginner     | How to run all test types                             |
+| **🆕 [PLAYWRIGHT_QUICKSTART.md](guides/PLAYWRIGHT_QUICKSTART.md)** ⭐            | 10 min | 🟢 Beginner     | First browser test running in under 10 minutes        |
 | **[TESTING_GUIDE.md](guides/TESTING_GUIDE.md)**                                  | 45 min | 🟡 Intermediate | Comprehensive examples                                |
 | **🆕 [TESTING_COMPARISON_PYTHON_JS.md](guides/TESTING_COMPARISON_PYTHON_JS.md)** | 45 min | 🟡 Intermediate | Side-by-side Python vs JavaScript testing             |
 | **[FLAKY_TESTS_GUIDE.md](guides/FLAKY_TESTS_GUIDE.md)** ✨                       | 30 min | 🟡 Intermediate | Understanding & fixing flaky tests                    |
@@ -108,7 +109,7 @@ The standalone `docs/course/` curriculum was folded into the [Self-Guided Learni
 
 **RUNNING_TESTS.md:**
 
-- Backend tests (pytest) - 166 tests
+- Backend tests (pytest) - 180 tests
 - E2E tests (Playwright - JS & Python)
 - API tests (Postman/Newman)
 - Performance tests (K6)
@@ -358,7 +359,7 @@ Includes environment config, fixtures, test helpers, and patterns.
 **[backend/tests/README.md](../backend/tests/README.md)**
 Backend testing guide
 
-- 166 tests
+- 180 tests
 - pytest usage
 - Fixtures
 - Coverage
@@ -476,7 +477,7 @@ source .venv/bin/activate  # Activate Python (macOS/Linux)
 
 - Labs 1-3 (Python/pytest)
 
-- Backend tests (166 tests)
+- Backend tests (180 tests)
 - API examples (Python requests)
 - Security tests (Python)
 
@@ -491,7 +492,7 @@ source .venv/bin/activate  # Activate Python (macOS/Linux)
 **Resources:**
 
 - Lab 4 (JavaScript/Playwright)
-- E2E tests (60+ tests)
+- E2E tests (59 tests)
 - Performance tests (K6)
 
 **Tools:**

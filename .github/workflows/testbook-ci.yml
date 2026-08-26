@@ -469,8 +469,8 @@ jobs:
         run: |
           echo "All tests and quality checks passed! ✅" >> $GITHUB_STEP_SUMMARY
           echo "- **Linting:** Black, isort, Flake8 (Python) | ESLint, Prettier (JS)" >> $GITHUB_STEP_SUMMARY
-          echo "- **Backend:** 180+ tests | 86% coverage (enforced minimum: 80%)" >> $GITHUB_STEP_SUMMARY
-          echo "- **Frontend:** 30 tests | 95% coverage" >> $GITHUB_STEP_SUMMARY
+          echo "- **Backend:** 180 tests | 86% coverage (enforced minimum: 80%)" >> $GITHUB_STEP_SUMMARY
+          echo "- **Frontend:** 40 tests | 41% coverage" >> $GITHUB_STEP_SUMMARY
           echo "- **E2E (JS):** Full suite" >> $GITHUB_STEP_SUMMARY
           echo "- **E2E (Python):** Full suite" >> $GITHUB_STEP_SUMMARY
           echo "- **Security:** OWASP checks" >> $GITHUB_STEP_SUMMARY

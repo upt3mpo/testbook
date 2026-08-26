@@ -620,7 +620,7 @@ backend/
 - Test specific scenarios you design
 - Validate business logic
 - Check exact expected behavior
-- **In Testbook:** 140+ tests in `backend/tests/integration/`
+- **In Testbook:** 127 tests in `backend/tests/integration/`
 
 **Contract Tests** (Automated from schema):
 

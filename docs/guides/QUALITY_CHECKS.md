@@ -13,7 +13,7 @@ Testbook uses automated quality checks to maintain code standards:
 | **Formatting**       | Black            | Prettier              |
 | **Import Sorting**   | isort            | ESLint import rules   |
 | **Linting**          | Flake8           | ESLint + plugins      |
-| **Coverage Gate**    | 80% minimum      | No gate (95%+ actual) |
+| **Coverage Gate**    | 80% minimum      | No gate (41%+ actual) |
 | **Pre-commit Hooks** | ✅ Enabled       | ✅ Enabled            |
 
 ---
@@ -281,7 +281,7 @@ lint-frontend → frontend-tests ↗
 | Metric                   | Value | Target | Status         |
 | ------------------------ | ----- | ------ | -------------- |
 | Backend Coverage         | 86%   | 80%    | ✅ +6%         |
-| Frontend Coverage        | 95%   | N/A    | ✅ Excellent   |
+| Frontend Coverage        | 41%   | N/A    | ⚠️ Below typical bar |
 | Linting Violations       | 0     | 0      | ✅ Clean       |
 | Accessibility Violations | 0     | 0      | ✅ WCAG 2.1 AA |
 

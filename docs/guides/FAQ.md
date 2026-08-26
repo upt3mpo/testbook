@@ -73,10 +73,10 @@ pytest -v
 
 **A:**
 
-- **Backend:** 180 tests (87% coverage)
+- **Backend:** 180 tests (86% coverage)
 - **Frontend:** 40 tests (unit + integration)
-- **E2E:** 15 tests (Playwright)
-- **Total:** 235+ tests
+- **E2E:** 119 tests (59 JavaScript + 60 Python, Playwright)
+- **Total:** 339 tests
 
 ### Q: Which testing framework should I learn?
 
@@ -207,7 +207,7 @@ start-dev.bat
 - **Good:** 80-90%
 - **Excellent:** 90%+
 
-Testbook currently has 87% coverage as an example.
+Testbook currently has 86% coverage as an example.
 
 ### Q: Should I test everything?
 
