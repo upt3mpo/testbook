@@ -205,9 +205,9 @@ npx eslint tests/
 ```javascript
 test("user can login with valid credentials", async ({ page }) => {
   await page.goto("http://localhost:3000");
-  await page.fill('[data-testid="login-email"]', "test@test.com");
-  await page.fill('[data-testid="login-password"]', "password");
-  await page.click('[data-testid="login-button"]');
+  await page.fill('[data-testid="login-email-input"]', "test@test.com");
+  await page.fill('[data-testid="login-password-input"]', "password");
+  await page.click('[data-testid="login-submit-button"]');
 
   await expect(page.locator('[data-testid="navbar"]')).toBeVisible();
 });
@@ -245,7 +245,7 @@ This validates:
 **Auto-fix common issues:**
 
 ```bash
-markdownlint --fix '**/*.md' --ignore node_modules --ignore venv
+markdownlint --fix '**/*.md' --ignore node_modules --ignore .venv
 ```
 
 **CI/CD:** Markdown validation runs automatically on all pull requests
@@ -254,13 +254,12 @@ markdownlint --fix '**/*.md' --ignore node_modules --ignore venv
 
 ```text
 docs/
-├── course/          # Course materials
-│   ├── *.md         # Course content
-│   └── README.md    # Course overview
 ├── guides/          # How-to guides
-│   └── *.md         # Step-by-step guides
-└── reference/       # Reference materials
-    └── *.md         # Quick lookups
+├── reference/       # Reference materials
+├── concepts/        # Testing philosophy & patterns
+├── industry/        # Career & industry context
+├── advanced/        # Advanced topics
+└── INDEX.md         # Documentation index
 
 learn/
 ├── stage_*/exercises/LAB_*.md  # Lab files
@@ -419,7 +418,7 @@ When creating a PR, include:
 
 - OS: [e.g., macOS 13.0]
 - Python: [e.g., 3.13]
-- Node: [e.g., 20.0]
+- Node: [e.g., 24.0]
 
 **Screenshots:** [If applicable]
 ```
@@ -466,8 +465,8 @@ When creating a PR, include:
 
 These contributions are especially valuable:
 
-1. **Missing lab content** - Labs 6-12 marked "Coming soon"
-2. **Test coverage gaps** - Increase backend coverage
+1. **Frontend test coverage** - Currently 41%, well below the backend's 86%
+2. **Test coverage gaps** - Increase backend coverage further
 3. **E2E test stability** - Reduce flaky tests
 4. **Documentation improvements** - Make guides clearer
 5. **Cross-platform fixes** - Windows compatibility
