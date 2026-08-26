@@ -99,7 +99,8 @@ Before each test suite, reset the database:
 # Easy way (recommended)
 ./reset-database.sh
 
-# Or use API
+# Or use API (requires the backend to be started with TESTING=true, or this
+# returns 403 — see docs/guides/PLAYWRIGHT_QUICKSTART.md)
 curl -X POST http://localhost:8000/api/dev/reset
 ```
 
@@ -290,7 +291,7 @@ def test_login_invalid_credentials():
     )
 
     assert response.status_code == 401
-    assert "Invalid credentials" in response.json()["detail"]
+    assert "Incorrect email or password" in response.json()["detail"]
 
 def test_get_current_user_authenticated():
     """Test getting current user with valid token"""
@@ -560,10 +561,10 @@ pytest
 pytest -v
 
 # Run specific test file
-pytest test_auth.py
+pytest tests/integration/test_api_auth.py
 
 # Run specific test function
-pytest test_auth.py::test_login_success
+pytest tests/integration/test_api_auth.py::TestLoginEndpoint::test_login_success
 
 # Run with coverage
 pytest --cov=. --cov-report=html
@@ -574,7 +575,7 @@ pytest -n auto
 
 ### Test Configuration
 
-Create a `pytest.ini` file in the backend directory:
+Testbook already ships a `backend/pytest.ini` (with more markers and coverage options than shown here). A minimal version looks like this:
 
 ```ini
 [pytest]
@@ -599,16 +600,18 @@ backend/
 ├── tests/
 │   ├── __init__.py
 │   ├── conftest.py          # Shared fixtures
-│   ├── test_models.py       # Unit tests for models
-│   ├── test_auth.py         # Integration tests for auth
+│   ├── factories.py         # Test data factories
 │   ├── unit/
-│   │   ├── test_auth.py     # Unit tests for auth
+│   │   ├── test_auth.py     # Unit tests for auth helpers
 │   │   └── test_models.py   # Unit tests for models
 │   ├── integration/
-│   │   ├── test_api_auth.py # Integration tests for auth
-│   │   ├── test_api_posts.py # Integration tests for posts
-│   │   ├── test_api_users.py # Integration tests for users
-│   │   └── test_database.py # Database tests
+│   │   ├── test_api_auth.py     # Integration tests for auth
+│   │   ├── test_api_posts.py    # Integration tests for posts
+│   │   ├── test_api_users.py    # Integration tests for users
+│   │   ├── test_api_feed.py     # Integration tests for the feed
+│   │   ├── test_api_dev.py      # Integration tests for dev endpoints
+│   │   ├── test_api_contract.py # Contract tests (currently skipped)
+│   │   └── test_database.py     # Database tests
 ```
 
 ## API Testing
@@ -627,7 +630,7 @@ backend/
 - Automatically generate test cases from OpenAPI schema
 - Validate API matches documentation
 - Find edge cases and security vulnerabilities
-- **In Testbook:** See [Contract Testing Guide](CONTRACT_TESTING.md) for explanation (currently using experimental features)
+- **In Testbook:** See [Contract Testing Guide](CONTRACT_TESTING.md) for the full explanation (currently skipped pending a Schemathesis/OpenAPI 3.1.0 compatibility fix — see the guide for details)
 
 ### Authentication Flow
 
@@ -684,7 +687,7 @@ def test_user_registration():
         "password": "Test123!",
         "bio": "Testing account"
     })
-    assert response.status_code == 200
+    assert response.status_code == 201
     assert response.json()["email"] == "test@testbook.com"
 ```
 
@@ -701,7 +704,7 @@ def test_create_post():
         json={"content": "Test post content"},
         headers={"Authorization": f"Bearer {token}"}
     )
-    assert response.status_code == 200
+    assert response.status_code == 201
     assert "id" in response.json()
 ```
 
@@ -744,7 +747,7 @@ def test_upload_media():
         json={"content": "Check out my photo!", "image_url": image_url},
         headers={"Authorization": f"Bearer {token}"}
     )
-    assert post_response.status_code == 200
+    assert post_response.status_code == 201
 ```
 
 #### 5. Edit Post
@@ -783,7 +786,7 @@ def test_toggle_repost():
         json={"original_post_id": 1, "content": ""},
         headers={"Authorization": f"Bearer {token}"}
     )
-    assert repost_response.status_code == 200
+    assert repost_response.status_code == 201
 
     # Remove repost
     unrepost_response = requests.delete(
@@ -826,7 +829,7 @@ def test_get_followers_following():
 const { test, expect } = require("@playwright/test");
 
 test("user can login", async ({ page }) => {
-  await page.goto("http://localhost:8000");
+  await page.goto("http://localhost:3000");
 
   await page.fill(
     '[data-testid="login-email-input"]',
@@ -1025,7 +1028,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 def test_login():
     driver = webdriver.Chrome()
-    driver.get("http://localhost:8000")
+    driver.get("http://localhost:3000")
 
     # Login
     email_input = driver.find_element(By.CSS_SELECTOR, '[data-testid="login-email-input"]')
@@ -1248,7 +1251,9 @@ def setup_test_scenario():
     sarah = next(u for u in users if u["username"] == "sarahjohnson")
 
     # Create specific test posts
-    requests.post(f"{BASE_URL}/dev/create-post", json={
+    # Note: /dev/create-post takes query params, not a JSON body
+    # (the route has no Pydantic request model)
+    requests.post(f"{BASE_URL}/dev/create-post", params={
         "user_id": sarah["id"],
         "content": "Specific test post for scenario",
         "image_url": "/static/images/test-image.jpg"
