@@ -75,6 +75,8 @@ npm run test:watch
 
 ## 🌐 E2E Testing Commands
 
+> E2E tests require the backend running with `TESTING=true` (enables the dev-only reset endpoint and higher rate limits). See [PLAYWRIGHT_QUICKSTART.md](../guides/PLAYWRIGHT_QUICKSTART.md) for the full setup.
+
 ### Playwright (JavaScript)
 
 ```bash

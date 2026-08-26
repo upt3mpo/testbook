@@ -2,6 +2,8 @@
 
 **One-page reference for Playwright E2E testing**
 
+> Running these tests requires the backend started with `TESTING=true` (enables the dev-only `/api/dev/reset` endpoint and higher rate limits). See [PLAYWRIGHT_QUICKSTART.md](../guides/PLAYWRIGHT_QUICKSTART.md) for full setup.
+
 ---
 
 ## 🚀 Essential Commands
@@ -437,12 +439,13 @@ async function getFirstPost(page) {
 
 // Usage
 const post = await getFirstPost(page);
-await post.locator('[data-testid$="-like-button"]').click();
+await post.locator('[data-testid$="-react-button"]').click();
 ```
 
 ### Reset Database
 
 ```javascript
+// Requires the backend running with TESTING=true, which enables this dev-only endpoint
 async function resetDatabase(page) {
   await page.request.post("http://localhost:8000/api/dev/reset");
 }
@@ -498,17 +501,21 @@ console.log(await page.locator('h1').textContent())
 
 ---
 
-## 📋 Configuration (playwright.config.js)
+## 📋 Configuration (tests/playwright.config.js)
+
+Testbook's actual config (Chrome only by default; other browsers are present but
+commented out, and `webServer` is intentionally disabled — start the backend
+and frontend yourself, per [PLAYWRIGHT_QUICKSTART.md](../guides/PLAYWRIGHT_QUICKSTART.md)):
 
 ```javascript
-module.exports = {
-  testDir: "./tests/e2e",
-  timeout: 30000,
-  retries: 2,
+export default defineConfig({
+  testDir: "./e2e",
+  timeout: 30 * 1000,
+  retries: process.env.CI ? 2 : 0,
+  workers: 1,
 
   use: {
-    baseURL: "http://localhost:3000",
-    headless: true,
+    baseURL: process.env.BASE_URL || "http://localhost:3000",
     screenshot: "only-on-failure",
     video: "retain-on-failure",
     trace: "on-first-retry",
@@ -516,16 +523,12 @@ module.exports = {
 
   projects: [
     { name: "chromium", use: { ...devices["Desktop Chrome"] } },
-    { name: "firefox", use: { ...devices["Desktop Firefox"] } },
-    { name: "webkit", use: { ...devices["Desktop Safari"] } },
+    // firefox and webkit are defined but commented out by default
   ],
 
-  webServer: {
-    command: "npm run dev",
-    port: 3000,
-    reuseExistingServer: true,
-  },
-};
+  // Disabled - start the backend (TESTING=true) and frontend manually
+  webServer: undefined,
+});
 ```
 
 ---
