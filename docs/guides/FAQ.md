@@ -33,7 +33,7 @@
 
 ### Q: Do I need Python 3.13?
 
-**A:** Python 3.8+ works, but 3.13 is recommended and matches CI. The app uses modern Python features and type hints.
+**A:** Python 3.13 is the version CI is built and tested against (a couple of workflows also test 3.11), so it's what we recommend. Older versions aren't tested and may hit issues with dependencies like Pydantic v2 and SQLAlchemy 2.0, so stick with 3.13 for the smoothest experience.
 
 ### Q: Should I use uv or pip?
 
@@ -74,9 +74,10 @@ pytest -v
 **A:**
 
 - **Backend:** 180 tests (86% coverage)
-- **Frontend:** 40 tests (unit + integration)
+- **Frontend:** 40 tests (unit + integration + accessibility)
 - **E2E:** 119 tests (59 JavaScript + 60 Python, Playwright)
-- **Total:** 339 tests
+- **Security:** 23 tests (18 pass + 5 skip in a typical clean run)
+- **Total:** 362 tests across every suite
 
 ### Q: Which testing framework should I learn?
 
@@ -94,9 +95,9 @@ pytest -v
 
 **A:**
 
-- **Python:** `pytest tests/unit/test_auth.py -v`
-- **JavaScript:** `npm test -- --grep "login"`
-- **E2E:** `npx playwright test tests/e2e/login.spec.js`
+- **Python:** `pytest tests/unit/test_auth.py -v` (from `backend/`)
+- **JavaScript:** `npm test -- -t "login"` (Vitest uses `-t`/`--testNamePattern`, not `--grep`)
+- **E2E:** `npx playwright test tests/e2e/auth.spec.js` (from `tests/`)
 
 ### Q: What's the difference between unit, integration, and E2E tests?
 
