@@ -41,7 +41,7 @@ npm test -- examples
 ```javascript
 import { render, screen, waitFor } from '@testing-library/react';
 import { setupServer } from 'msw/node';
-import { handlers } from '../../../test/mocks/handlers';
+import { handlers } from '../../mocks/handlers';
 
 const server = setupServer(...handlers);
 
