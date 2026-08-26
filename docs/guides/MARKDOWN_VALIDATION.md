@@ -103,20 +103,23 @@ markdown-link-check --version
 
 ```json
 {
-  "default": true,
-  "MD013": { "line_length": 200 },
-  "MD024": { "siblings_only": true },
+  "MD001": false,
+  "MD013": false,
+  "MD024": false,
   "MD033": false,
-  "MD034": false
+  "MD036": false
 }
 ```
 
 **Key settings:**
 
-- `MD013`: Line length set to 200 (more lenient for code examples)
-- `MD024`: Allow duplicate headings in different sections
+- `MD001`: Heading levels don't have to increment by exactly one
+- `MD013`: No line-length limit (needed for long code examples and URLs)
+- `MD024`: Allow duplicate headings, even in the same section
 - `MD033`: Allow inline HTML (needed for some formatting)
-- `MD034`: Allow bare URLs in angle brackets
+- `MD036`: Allow emphasis used in place of a heading
+
+Everything else uses markdownlint's defaults (enabled).
 
 ### Link Check Config (`.markdown-link-check.json`)
 
@@ -147,12 +150,15 @@ markdown-link-check --version
 
 **Checks:**
 
-- ✅ Heading levels increment by one
 - ✅ Consistent list markers (-, not \*)
 - ✅ Proper spacing around headings
 - ✅ Code blocks have language specified
 - ✅ No trailing spaces
 - ✅ Files end with newline
+
+(Heading-level increments are intentionally NOT enforced — `MD001` is
+disabled in `.markdownlint.json` — since some docs in this repo jump
+straight from an `<h2>` to a `###` for layout reasons.)
 
 **Example Issues:**
 
