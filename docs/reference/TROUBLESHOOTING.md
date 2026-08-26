@@ -350,6 +350,8 @@ open htmlcov/index.html  # macOS
 
 <h2 id="playwright-issues">🎭 Playwright Issues</h2>
 
+> If every test times out or 403s regardless of selector, check first whether the backend is running with `TESTING=true` — see [PLAYWRIGHT_QUICKSTART.md](../guides/PLAYWRIGHT_QUICKSTART.md#prerequisites).
+
 ### Error: `Browser not found`
 
 **Full Error:**
@@ -543,7 +545,7 @@ npx playwright test
 
 ```bash
 # Takes 5 minutes when you want quick feedback
-pytest  # Runs all 180+ tests
+pytest  # Runs all 180 tests
 ```
 
 **Fix:**
@@ -553,7 +555,7 @@ pytest  # Runs all 180+ tests
 pytest tests/unit/test_auth.py
 
 # Run specific test
-pytest tests/unit/test_auth.py::test_login_success
+pytest tests/unit/test_auth.py::TestPasswordHashing::test_password_is_hashed
 
 # Run tests matching pattern
 pytest -k "login"
@@ -584,7 +586,7 @@ pytest -vv tests/integration/test_posts.py
 
 ```bash
 # Tests fail but you keep coding
-FAILED tests/unit/test_auth.py::test_password_hash
+FAILED tests/unit/test_auth.py::TestPasswordHashing::test_password_is_hashed
 ```
 
 **Fix:**
@@ -826,7 +828,7 @@ def test_create_post():
 ```bash
 # Committing when tests are failing
 $ pytest
-FAILED tests/unit/test_auth.py::test_login
+FAILED tests/unit/test_auth.py::TestPasswordHashing::test_password_is_hashed
 $ git add .
 $ git commit -m "Add new feature"
 ```
@@ -836,7 +838,7 @@ $ git commit -m "Add new feature"
 ```bash
 # Fix tests first
 $ pytest
-FAILED tests/unit/test_auth.py::test_login
+FAILED tests/unit/test_auth.py::TestPasswordHashing::test_password_is_hashed
 # Fix the test
 $ pytest
 PASSED
