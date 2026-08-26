@@ -939,4 +939,4 @@ Before committing your tests, check:
 
 **Remember:** These anti-patterns are common. Even experienced developers make these mistakes. The key is to recognize them and fix them!
 
-**Real-world impact:** Following these patterns helped us achieve **100% test pass rate (234/234 tests)** in Testbook!
+**Real-world impact:** Following these patterns helped us achieve **100% test pass rate** in Testbook!
