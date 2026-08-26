@@ -88,7 +88,7 @@ Optionally note before/after if meaningful; attach CI coverage artifact links.
 - [ ] No generated artifacts committed (e.g., `node_modules/`, `dist/`, `build/`, `htmlcov/`, `coverage.xml`)
 - [ ] No local editor/OS files committed (e.g., `.vscode/`, `.DS_Store`)
 - [ ] Environment files not committed (e.g., `.env`, only `*.example` as needed)
-- [ ] If dependencies changed, lockfiles are updated and included (`package-lock.json`, `uv.lock`, etc.)
+- [ ] If dependencies changed, lockfiles are updated and included (`package-lock.json`, `backend/requirements.lock`, etc.)
 
 ---
 
