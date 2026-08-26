@@ -38,6 +38,8 @@ Security testing systematically identifies vulnerabilities and ensures proper se
 
 ## 📋 Step-by-Step Instructions
 
+> **Before you start:** These exercises hit a running Testbook backend, so start it in test mode first: `TESTING=true uvicorn main:app --reload --port 8000` (see `../../../docs/guides/PLAYWRIGHT_QUICKSTART.md` for why — it unlocks the `/api/dev/reset` endpoint and relaxes rate limits to 1000/min so your new tests aren't cut off by the real 20/min production login limit). Testbook already ships a working security suite you can run as-is at `tests/security/test_security.py` and `tests/security/test_rate_limiting.py` (fixtures in `tests/security/conftest.py`) — it's plain `pytest` + the `requests` library hitting `http://localhost:8000/api` over HTTP, **not** `fastapi.testclient.TestClient` with a `db_session` fixture as shown below. The code in this lab uses the in-process `TestClient`/`db_session` pattern as an alternative teaching style (it assumes fixtures — `client`, `db_session`, `test_user` — that aren't defined here or anywhere in this repo; treat it as illustrative pseudocode to adapt, not copy-paste-ready code). If you want tests that actually run against Testbook as it exists today, mirror `tests/security/conftest.py` instead: a `requests.Session()` against the live server.
+
 ### Part 1: OWASP Top 10 Testing (40 minutes)
 
 #### Step 1: Install Security Testing Tools
@@ -87,16 +89,30 @@ class TestSQLInjection:
                 "password": "password123"
             })
 
-            # Should return 401 (unauthorized), not 500 (server error)
-            assert response.status_code == 401, f"SQL injection payload '{payload}' should return 401, got {response.status_code}"
+            # NOTE: Testbook's login schema types `email` as pydantic `EmailStr`
+            # (see backend/schemas.py), so a malformed string like the payloads
+            # above usually fails format validation before it ever reaches a
+            # query — that's a 422, not a 401. Neither is a 500, which is the
+            # actual thing we're testing for. Real tests/security/test_security.py
+            # asserts `status_code in [401, 422]` for exactly this reason.
+            assert response.status_code in [401, 422], f"SQL injection payload '{payload}' should return 401 or 422, got {response.status_code}"
 
-            # Should not expose database errors
+            # Should not expose database errors. NOTE: on a 422, `detail` is a
+            # list of validation-error objects, not a string — normalize first.
             response_data = response.json()
-            assert "sql" not in response_data.get("detail", "").lower()
-            assert "database" not in response_data.get("detail", "").lower()
+            detail = response_data.get("detail", "")
+            detail_text = str(detail).lower()
+            assert "sql" not in detail_text
+            assert "database" not in detail_text
 
     def test_user_search_sql_injection(self, client: TestClient, db_session: Session):
-        """Test user search endpoint for SQL injection."""
+        """Test user search endpoint for SQL injection.
+
+        NOTE: Testbook doesn't currently expose a `/api/users/search` endpoint
+        (see `backend/routers/users.py` — it has `/{username}`, `/{username}/followers`,
+        `/{username}/following`, but no query-based search). Adapt this pattern to
+        whatever endpoint accepts free-text/user-controlled input in your app.
+        """
         # Create test users
         users = [
             User(email="user1@example.com", username="user1", display_name="User 1", hashed_password=get_password_hash("password")),
@@ -125,7 +141,14 @@ class TestSQLInjection:
                 assert len(data.get("users", [])) == 0, f"SQL injection payload '{payload}' should return empty results"
 
     def test_post_content_sql_injection(self, client: TestClient, db_session: Session, test_user):
-        """Test post creation for SQL injection in content."""
+        """Test post creation for SQL injection in content.
+
+        NOTE: Testbook's `PostCreate` schema (backend/schemas.py) only has
+        `content`, `image_url`, `video_url` — no `title`. Pydantic silently
+        drops unknown fields by default, so passing `"title"` below won't error,
+        it's just dead weight; feel free to drop it. Same applies to every
+        other `/api/posts` call in this lab that includes a `title`.
+        """
         # Login first
         login_response = client.post("/api/auth/login", json={
             "email": test_user.email,
@@ -170,7 +193,19 @@ class TestXSS:
     """Test for Cross-Site Scripting (XSS) vulnerabilities."""
 
     def test_post_content_xss(self, client: TestClient, test_user):
-        """Test post content for XSS vulnerabilities."""
+        """Test post content for XSS vulnerabilities.
+
+        NOTE: Testbook's backend intentionally does NOT sanitize or
+        HTML-escape post content — it stores whatever you send as-is, on the
+        premise that escaping-on-render is the frontend's job (see
+        tests/security/test_security.py::TestInputValidation::test_xss_in_post_content,
+        which asserts a 201 and that the raw payload round-trips unchanged).
+        Asserting the payload is stripped/escaped at the API layer, as this
+        test originally did, would fail against the real app. What actually
+        matters for XSS defense here is that the *React frontend* escapes on
+        render (JSX does this by default) rather than using
+        `dangerouslySetInnerHTML` on untrusted content.
+        """
         # Login first
         login_response = client.post("/api/auth/login", json={
             "email": test_user.email,
@@ -201,14 +236,10 @@ class TestXSS:
             post_id = response.json()["id"]
             get_response = client.get(f"/api/posts/{post_id}", headers=headers)
 
-            # Content should be properly escaped
+            # Backend stores content as-is (no server-side sanitization) — the
+            # raw payload round-trips unchanged. That's expected here, not a bug.
             content = get_response.json()["content"]
-            assert "<script>" not in content, f"XSS payload '{payload}' should be escaped"
-            assert "javascript:" not in content, f"XSS payload '{payload}' should be escaped"
-            assert "onerror=" not in content, f"XSS payload '{payload}' should be escaped"
-
-            # Content should be HTML-encoded
-            assert escape(payload) in content or payload in content, f"XSS payload '{payload}' should be properly handled"
+            assert content == payload, f"Backend should store '{payload}' as-is for the frontend to escape on render"
 
     def test_user_profile_xss(self, client: TestClient, test_user):
         """Test user profile fields for XSS vulnerabilities."""
@@ -231,16 +262,23 @@ class TestXSS:
         # Should return 200 (updated)
         assert response.status_code == 200, f"XSS payload in display_name should return 200, got {response.status_code}"
 
+        # NOTE: the "get my profile" route is GET /api/auth/me (see
+        # backend/routers/auth.py) — there's no GET /api/users/me in this app
+        # (only PUT and DELETE live under /api/users/me).
         # Get updated profile
-        profile_response = client.get("/api/users/me", headers=headers)
+        profile_response = client.get("/api/auth/me", headers=headers)
         display_name = profile_response.json()["display_name"]
 
-        # Display name should be properly escaped
-        assert "<script>" not in display_name, "XSS payload in display_name should be escaped"
-        assert escape(xss_payload) in display_name or xss_payload in display_name, "XSS payload should be properly handled"
+        # Same as post content: Testbook doesn't sanitize server-side, so the
+        # raw payload round-trips unchanged (frontend's job to escape on render).
+        assert display_name == xss_payload, "Backend should store display_name as-is for the frontend to escape on render"
 
     def test_search_xss(self, client: TestClient):
-        """Test search functionality for XSS vulnerabilities."""
+        """Test search functionality for XSS vulnerabilities.
+
+        NOTE: same caveat as `test_user_search_sql_injection` above — there's no
+        real `/api/users/search` endpoint in Testbook today.
+        """
         # Test XSS in search parameter
         xss_payloads = [
             "<script>alert('XSS')</script>",
@@ -262,6 +300,8 @@ class TestXSS:
 ```
 
 #### Step 4: Test for Cross-Site Request Forgery (CSRF) (A01:2021 - Broken Access Control)
+
+> **Reality check:** Testbook's API is a stateless, bearer-token JSON API — there's no cookie-based session and no `/api/csrf-token` endpoint, so classic CSRF (where a browser auto-attaches a session cookie to a forged cross-site request) doesn't really apply here the way it would to a cookie-session app. `tests/security/test_security.py` does not contain a CSRF test class. The code below is a hypothetical example of how you'd test CSRF token validation *if* the app used cookie sessions — it will 404 against the real Testbook API. Treat it as a conceptual exercise, not a runnable test.
 
 Create `tests/security/test_csrf.py`:
 
@@ -351,7 +391,14 @@ from fastapi.testclient import TestClient
 import re
 
 class TestPasswordSecurity:
-    """Test password security policies."""
+    """Test password security policies.
+
+    NOTE: Testbook's real `/api/auth/register` (backend/routers/auth.py) does
+    not enforce password strength today — any non-empty string is accepted, so
+    it would return 201, not 400, for every password below. This class is a
+    spec for a policy you could add and test-drive, not a description of the
+    app's current behavior.
+    """
 
     def test_weak_password_rejection(self, client: TestClient):
         """Test that weak passwords are rejected."""
@@ -431,6 +478,12 @@ class TestPasswordSecurity:
         db_session.add(user)
         db_session.commit()
 
+        # NOTE: Testbook's real login limit is 20/min in production (see
+        # backend/routers/auth.py) — 10 attempts below won't trip it. Increase
+        # the range past 20 if you want to actually observe a 429 in production
+        # mode; account lockout itself isn't implemented (see
+        # tests/security/test_rate_limiting.py::TestBruteForceProtection, which
+        # documents this with skipped stub tests).
         # Attempt multiple failed logins
         for i in range(10):
             response = client.post("/api/auth/login", json={
@@ -438,12 +491,7 @@ class TestPasswordSecurity:
                 "password": "WrongPassword"
             })
 
-            if i < 5:
-                # First few attempts should return 401
-                assert response.status_code == 401, f"Failed login attempt {i+1} should return 401"
-            else:
-                # After 5 attempts, should be rate limited
-                assert response.status_code == 429, f"Failed login attempt {i+1} should be rate limited (429)"
+            assert response.status_code in [401, 429], f"Failed login attempt {i+1} got unexpected {response.status_code}"
 
     def test_session_security(self, client: TestClient, test_user):
         """Test session security."""
@@ -456,18 +504,20 @@ class TestPasswordSecurity:
         assert login_response.status_code == 200
         token = login_response.json()["access_token"]
 
+        # NOTE: the current-user route is GET /api/auth/me, not /api/users/me
+        # (see backend/routers/auth.py).
         # Test that token is required for protected endpoints
-        response = client.get("/api/users/me")
+        response = client.get("/api/auth/me")
         assert response.status_code == 401, "Protected endpoint should require authentication"
 
         # Test with valid token
         headers = {"Authorization": f"Bearer {token}"}
-        response = client.get("/api/users/me", headers=headers)
+        response = client.get("/api/auth/me", headers=headers)
         assert response.status_code == 200, "Valid token should allow access"
 
         # Test with invalid token
         invalid_headers = {"Authorization": "Bearer invalid_token"}
-        response = client.get("/api/users/me", headers=invalid_headers)
+        response = client.get("/api/auth/me", headers=invalid_headers)
         assert response.status_code == 401, "Invalid token should be rejected"
 
         # Test with expired token (if implemented)
@@ -515,7 +565,12 @@ class TestAuthorization:
         headers1 = {"Authorization": f"Bearer {token1}"}
 
         # Try to access user2's profile
-        response = client.get(f"/api/users/{user2.id}", headers=headers1)
+        # NOTE: Testbook's real profile route is GET /api/users/{username} (a
+        # public profile lookup by username, not numeric ID — see
+        # backend/routers/users.py), so it returns 200 for any existing user
+        # rather than 403/404. Public profiles being viewable isn't a bug; use
+        # this pattern against a route that's actually meant to be private.
+        response = client.get(f"/api/users/{user2.username}", headers=headers1)
 
         # Should return 403 (forbidden) or 404 (not found)
         assert response.status_code in [403, 404], "User should not access other user's profile"
@@ -565,7 +620,13 @@ class TestAuthorization:
         assert response.status_code in [403, 404], "User should not modify other user's post"
 
     def test_privilege_escalation(self, client: TestClient, db_session: Session):
-        """Test for privilege escalation vulnerabilities."""
+        """Test for privilege escalation vulnerabilities.
+
+        NOTE: Testbook has no `is_admin` field and no `/api/admin/*` routes today
+        (checked `backend/models.py` and `backend/routers/`) — there's no admin
+        role to escalate to. This is a template for a *future* admin feature, not
+        a test you can run against the app as it exists now.
+        """
         # Create a regular user
         user = User(
             email="user@example.com",
@@ -671,26 +732,30 @@ class TestInformationDisclosure:
         assert "exception" not in error_detail.lower()
 
     def test_database_error_disclosure(self, client: TestClient):
-        """Test that database errors don't disclose sensitive information."""
+        """Test that database errors don't disclose sensitive information.
+
+        NOTE: `/api/posts/` (see backend/routers/posts.py) requires
+        authentication via `Depends(get_current_user)` — with no
+        `Authorization` header, an unauthenticated request there returns 401
+        (or 403), not 400/422. The two cases below need different expected
+        codes; they aren't interchangeable.
+        """
         # Test with malformed data that might cause database errors
-        malformed_requests = [
-            ("POST", "/api/auth/register", {"email": "invalid", "password": "test"}),
-            ("POST", "/api/posts", {"title": "Test", "content": "Test"}),
-        ]
+        response = client.post("/api/auth/register", json={"email": "invalid", "password": "test"})
+        assert response.status_code == 422, f"Malformed register payload should return 422, got {response.status_code}"
 
-        for method, endpoint, data in malformed_requests:
-            response = client.request(method, endpoint, json=data)
+        response = client.post("/api/posts/", json={"content": "Test"})
+        assert response.status_code in [401, 403], f"Unauthenticated post creation should return 401/403, got {response.status_code}"
 
-            # Should return 400 or 422, not 500
-            assert response.status_code in [400, 422], f"{method} {endpoint} should return 400/422, got {response.status_code}"
+        # Error message should not contain database details. NOTE: on a 422 the
+        # FastAPI `detail` is a list of validation-error dicts, not a string —
+        # normalize before checking substrings.
+        response_data = response.json()
+        error_detail = str(response_data.get("detail", "")).lower()
 
-            # Error message should not contain database details
-            response_data = response.json()
-            error_detail = response_data.get("detail", "")
-
-            # Should not contain database-specific information
-            assert "sql" not in error_detail.lower()
-            assert "database" not in error_detail.lower()
+        # Should not contain database-specific information
+        assert "sql" not in error_detail
+        assert "database" not in error_detail
             assert "table" not in error_detail.lower()
             assert "column" not in error_detail.lower()
 
@@ -704,8 +769,8 @@ class TestInformationDisclosure:
         token = login_response.json()["access_token"]
         headers = {"Authorization": f"Bearer {token}"}
 
-        # Get user profile
-        response = client.get("/api/users/me", headers=headers)
+        # Get user profile (GET /api/auth/me, not /api/users/me)
+        response = client.get("/api/auth/me", headers=headers)
         assert response.status_code == 200
 
         user_data = response.json()
@@ -753,7 +818,9 @@ class TestInformationDisclosure:
 
 #### Step 2: Test for Rate Limiting
 
-Create `tests/security/test_rate_limiting.py`:
+> **Filename note:** don't call this file `tests/security/test_rate_limiting.py` — Testbook already has a real one at that path (with different fixtures/content), and creating a new file there would overwrite it. Use a distinct name, e.g. `tests/security/test_rate_limiting_extra.py`.
+
+Create `tests/security/test_rate_limiting_extra.py`:
 
 ```python
 import pytest
@@ -761,7 +828,15 @@ from fastapi.testclient import TestClient
 import time
 
 class TestRateLimiting:
-    """Test rate limiting functionality."""
+    """Test rate limiting functionality.
+
+    NOTE: Testbook's real login limit is 20/min in production (1000/min when
+    TESTING=true) and register is 15/min prod (500/min TESTING) — see
+    `backend/routers/auth.py`. The small counts below (5, 10) are just
+    illustrative of the *pattern*; against the real app you'd need roughly
+    20+ requests within a minute (in production mode) before you'd actually
+    see a 429.
+    """
 
     def test_login_rate_limiting(self, client: TestClient, db_session):
         """Test rate limiting on login endpoint."""
@@ -779,17 +854,17 @@ class TestRateLimiting:
         db_session.commit()
 
         # Make multiple login attempts
-        for i in range(10):
+        for i in range(25):
             response = client.post("/api/auth/login", json={
                 "email": "ratelimit@example.com",
                 "password": "wrongpassword"
             })
 
-            if i < 5:
-                # First few attempts should return 401
+            if i < 20:
+                # First 20 attempts should return 401 (production limit is 20/min)
                 assert response.status_code == 401, f"Login attempt {i+1} should return 401"
             else:
-                # After 5 attempts, should be rate limited
+                # After 20 attempts, should be rate limited
                 assert response.status_code == 429, f"Login attempt {i+1} should be rate limited"
 
     def test_api_endpoint_rate_limiting(self, client: TestClient, test_user):
@@ -802,16 +877,15 @@ class TestRateLimiting:
         token = login_response.json()["access_token"]
         headers = {"Authorization": f"Bearer {token}"}
 
+        # NOTE: /api/feed/all has no route-specific limit in Testbook, so it
+        # falls under the global default in backend/main.py — 100/min in
+        # production, 1000/min when TESTING=true. 20 requests won't trip
+        # either; this loop illustrates the pattern, not a limit you'll
+        # actually observe at this request count.
         # Make multiple requests to a rate-limited endpoint
         for i in range(20):
-            response = client.get("/api/feed", headers=headers)
-
-            if i < 10:
-                # First 10 requests should succeed
-                assert response.status_code == 200, f"Request {i+1} should succeed"
-            else:
-                # After 10 requests, should be rate limited
-                assert response.status_code == 429, f"Request {i+1} should be rate limited"
+            response = client.get("/api/feed/all", headers=headers)
+            assert response.status_code in [200, 429], f"Request {i+1} got unexpected {response.status_code}"
 
     def test_rate_limit_headers(self, client: TestClient, test_user):
         """Test that rate limit headers are present."""
@@ -824,7 +898,7 @@ class TestRateLimiting:
         headers = {"Authorization": f"Bearer {token}"}
 
         # Make a request
-        response = client.get("/api/feed", headers=headers)
+        response = client.get("/api/feed/all", headers=headers)
 
         # Should include rate limit headers
         rate_limit_headers = [
@@ -846,15 +920,18 @@ class TestRateLimiting:
         token = login_response.json()["access_token"]
         headers = {"Authorization": f"Bearer {token}"}
 
+        # NOTE: as above, /api/feed/all uses the 100/min (prod) or 1000/min
+        # (TESTING) global default — 15 requests won't exhaust it. Bump this
+        # well past whichever limit is active if you want to actually see a 429.
         # Exhaust rate limit
         for i in range(15):
-            response = client.get("/api/feed", headers=headers)
+            response = client.get("/api/feed/all", headers=headers)
             if response.status_code == 429:
                 break
 
         # Wait for rate limit to reset (this would need to be implemented)
         # For now, just test that rate limiting is working
-        assert response.status_code == 429, "Rate limiting should be active"
+        assert response.status_code in [200, 429], "Unexpected status while probing rate limit"
 ```
 
 ---
@@ -1083,13 +1160,21 @@ REQUIRED_SECURITY_HEADERS = [
 ]
 
 # Rate limiting configuration
+# NOTE: these are generic placeholder values for the exercise, not Testbook's
+# actual limits. Testbook's real login limit is 20/min in production (1000/min
+# when TESTING=true) and register is 15/min prod (500/min TESTING) — see
+# backend/routers/auth.py. There's no password-reset flow in this app.
 RATE_LIMITS = {
-    "login_attempts": 5,
-    "api_requests_per_minute": 100,
-    "password_reset_attempts": 3,
+    "login_attempts_per_minute": 20,
+    "register_attempts_per_minute": 15,
+    "api_requests_per_minute_default": 100,
 }
 
 # Password complexity requirements
+# NOTE: Testbook's /api/auth/register does NOT currently enforce any of this —
+# it accepts any non-empty password string (see backend/schemas.py / auth.py).
+# This table is a template for a policy you could add, not a description of
+# existing behavior.
 PASSWORD_REQUIREMENTS = {
     "min_length": 8,
     "require_uppercase": True,
@@ -1111,15 +1196,20 @@ def get_security_headers() -> Dict[str, str]:
     }
 
 def get_test_endpoints() -> List[str]:
-    """Get list of endpoints to test for security vulnerabilities."""
+    """Get list of endpoints to test for security vulnerabilities.
+
+    NOTE: adjusted to match Testbook's actual routes (see backend/main.py /
+    backend/routers/) — there is no /api/auth/logout (JWTs are stateless;
+    "logout" just means the client discards the token) and no
+    /api/users/search.
+    """
     return [
         "/api/auth/login",
         "/api/auth/register",
-        "/api/auth/logout",
         "/api/users/me",
-        "/api/users/search",
-        "/api/posts",
-        "/api/feed",
+        "/api/users/{username}/followers",
+        "/api/posts/",
+        "/api/feed/all",
         "/api/health",
     ]
 

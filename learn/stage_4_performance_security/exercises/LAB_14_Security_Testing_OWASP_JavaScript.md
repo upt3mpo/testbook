@@ -7,7 +7,7 @@
 
 **💡 Need Python instead?** Try [Lab 14: Security Testing & OWASP (Python)](LAB_14_Security_Testing_OWASP_Python.md)!
 
-**What This Adds:** Master security testing with Vitest to identify vulnerabilities and ensure your application is protected against common attacks like SQL injection, XSS, and CSRF. This is essential for production applications.
+**What This Adds:** Master security testing with Playwright to identify vulnerabilities and ensure your application is protected against common attacks like SQL injection, XSS, and CSRF. This is essential for production applications.
 
 ---
 
@@ -38,14 +38,17 @@ Security testing systematically identifies vulnerabilities and ensures proper se
 
 ## 📋 Step-by-Step Instructions
 
+> **Before you start:** Testbook's actual security test suite (`tests/security/test_security.py`, `tests/security/test_rate_limiting.py`) is Python/pytest-only, hitting the API directly with the `requests` library — there is no equivalent JS file anywhere in `tests/security/`. This lab translates the same OWASP ideas into Playwright so you can practice them from the JS side; treat the code below as a teaching device to adapt, not as code that already exists in this repo. Two things to know before you adapt it: (1) the real frontend identifies elements with `data-testid` attributes, not plain CSS `#id` selectors — e.g. the login form is `[data-testid="login-email-input"]`, `[data-testid="login-password-input"]`, `[data-testid="login-submit-button"]`, and errors render into `[data-testid="login-error"]` (see `frontend/src/pages/Login.jsx` and the real specs in `tests/e2e/auth.spec.js`, which use exactly this pattern) — every `#email`/`#login-button`/`.error-message`-style selector below needs updating to match. (2) Several routes referenced below (`/create-post`, `/posts`, `/users/2`, `/posts/2/edit`, `/search`) don't exist in `frontend/src/App.jsx`'s router — the real routes are `/`, `/login`, `/register`, `/post/:postId`, `/profile/:username`, `/profile/:username/followers`, `/profile/:username/following`, `/settings`. You'll also need the backend running with `TESTING=true` (`cd backend && TESTING=true uvicorn main:app --reload --port 8000`; see `../../../docs/guides/PLAYWRIGHT_QUICKSTART.md`) so rate limits don't get in the way and `/api/dev/reset` is available between runs.
+
 ### Part 1: OWASP Top 10 Testing (40 minutes)
 
 #### Step 1: Install Security Testing Tools
 
 ```bash
-npm install --save-dev @playwright/test helmet express-rate-limit
-npm install --save-dev jest supertest
+npm install --save-dev @playwright/test
 ```
+
+(`helmet` and `express-rate-limit` are Express.js server middleware — Testbook's backend is FastAPI, so those don't apply here; rate limiting is already implemented with `slowapi`, see `backend/main.py` / `backend/routers/auth.py`. Likewise skip `jest`/`supertest` — the tests below use Playwright's own `test`/`expect`, not Jest.)
 
 #### Step 2: Create Security Test Configuration
 
@@ -103,6 +106,9 @@ test.describe("SQL Injection Tests", () => {
   });
 
   test("should prevent SQL injection in search", async ({ page }) => {
+    // NOTE: Testbook has no /search page or /api/users/search endpoint today
+    // (see frontend/src/App.jsx's routes and backend/routers/users.py). Point
+    // this at whatever user-input-driven query endpoint your app actually has.
     await page.goto("/search");
 
     const sqlInjectionPayloads = [
@@ -172,10 +178,17 @@ test.describe("XSS Tests", () => {
         .first()
         .textContent();
 
-      // Content should be properly escaped
-      expect(postContent).not.toContain("<script>");
-      expect(postContent).not.toContain("javascript:");
-      expect(postContent).not.toContain("onerror=");
+      // NOTE: Testbook's backend stores post content as-is, unsanitized (see
+      // tests/security/test_security.py::TestInputValidation::test_xss_in_post_content) —
+      // and React escapes on render by putting it in a text node rather than
+      // interpreting it as markup. That means `.textContent()` here will
+      // still literally contain the substring "<script>..." as plain text;
+      // that's fine and expected. What actually matters for XSS safety is
+      // that it isn't parsed as an HTML element — assert the DOM has no
+      // corresponding <script>/<img>/<svg> element, not that the text is
+      // stripped:
+      const scriptElementCount = await page.locator(".post-content script").count();
+      expect(scriptElementCount).toBe(0);
     }
   });
 });
@@ -258,6 +271,13 @@ test.describe("Password Security Tests", () => {
   });
 
   test("should prevent brute force attacks", async ({ page }) => {
+    // NOTE: Testbook does not implement account lockout — see
+    // tests/security/test_rate_limiting.py::TestBruteForceProtection, where
+    // both lockout and IP-ban tests are explicit `pytest.skip(...)` stubs
+    // documenting this as not-yet-built. What IS implemented is a 20/min
+    // (production) / 1000/min (TESTING=true) rate limit on login, so don't
+    // expect a "locked" message — expect the error to eventually reflect a
+    // rate limit instead, and only after ~20 attempts in production mode.
     await page.goto("/login");
 
     // Attempt multiple failed logins
@@ -267,13 +287,9 @@ test.describe("Password Security Tests", () => {
       await page.click("#login-button");
       await page.waitForTimeout(1000);
 
-      if (i < 5) {
-        // First few attempts should return 401
-        await expect(page.locator(".error-message")).toBeVisible();
-      } else {
-        // After 5 attempts, should be rate limited
-        await expect(page.locator(".error-message")).toContainText("locked");
-      }
+      // Every attempt should show an error — invalid credentials, or (once
+      // the real 20/min limit is hit) a rate-limit message.
+      await expect(page.locator(".error-message")).toBeVisible();
     }
   });
 });
@@ -358,10 +374,11 @@ test.describe("Information Disclosure Tests", () => {
     await page.fill("#password", "password123");
     await page.click("#login-button");
 
-    // Get user profile
-    await page.goto("/api/users/me");
+    // Get user profile (real route is GET /api/auth/me, not /api/users/me —
+    // see backend/routers/auth.py)
+    await page.goto("/api/auth/me");
     const response = await page.waitForResponse((response) =>
-      response.url().includes("/api/users/me")
+      response.url().includes("/api/auth/me")
     );
 
     const userData = await response.json();
@@ -389,6 +406,9 @@ const { test, expect } = require("@playwright/test");
 
 test.describe("Rate Limiting Tests", () => {
   test("should implement rate limiting on login endpoint", async ({ page }) => {
+    // NOTE: the real login limit is 20/min in production (1000/min when the
+    // backend runs with TESTING=true) — see backend/routers/auth.py. 10
+    // attempts illustrates the pattern but won't reliably trip the limit.
     await page.goto("/login");
 
     // Make multiple login attempts
@@ -398,28 +418,25 @@ test.describe("Rate Limiting Tests", () => {
       await page.click("#login-button");
       await page.waitForTimeout(1000);
 
-      if (i < 5) {
-        // First few attempts should return 401
-        await expect(page.locator(".error-message")).toBeVisible();
-      } else {
-        // After 5 attempts, should be rate limited
-        await expect(page.locator(".error-message")).toContainText(
-          "rate limit"
-        );
-      }
+      // Every attempt should show an error, whether "invalid credentials" or
+      // (once the real limit is hit) a rate-limit message.
+      await expect(page.locator(".error-message")).toBeVisible();
     }
   });
 
   test("should include rate limit headers", async ({ page }) => {
+    // NOTE: tests/security/test_rate_limiting.py::test_api_requests_have_rate_limit_headers
+    // skips rather than fails when these headers are absent — don't assume
+    // slowapi is configured to emit them; check first before asserting.
     await page.goto("/login");
     await page.fill("#email", "test@example.com");
     await page.fill("#password", "password123");
     await page.click("#login-button");
 
-    // Make a request to a rate-limited endpoint
-    await page.goto("/api/feed");
+    // Make a request to a rate-limited endpoint (real feed route is /api/feed/all)
+    await page.goto("/api/feed/all");
     const response = await page.waitForResponse((response) =>
-      response.url().includes("/api/feed")
+      response.url().includes("/api/feed/all")
     );
 
     // Should include rate limit headers

@@ -66,11 +66,15 @@ ERROR: KeyError: 'access_token'
 Open `backend/routers/auth.py` and look for:
 
 ```python
-@limiter.limit("20/minute")
+TESTING_MODE = os.getenv("TESTING", "false").lower() == "true"
+LOGIN_RATE = "1000/minute" if TESTING_MODE else "20/minute"
+
+@router.post("/login", response_model=schemas.Token)
+@limiter.limit(LOGIN_RATE)
 def login(...):
 ```
 
-This means: **20 login requests per minute, per IP address.**
+This means: **20 login requests per minute, per IP address in production** — or **1000/minute** when the backend runs with `TESTING=true`.
 
 ### Step 2: Count Your Test's Login Calls
 
@@ -128,16 +132,17 @@ def auth_token():
     return response.json()["access_token"]
 ```
 
-**You might think:** "`scope='session'` means this runs ONCE, right?"
+**You might think:** "`scope='session'` means this only makes ONE login call, so we're safe, right?"
 
-**Reality:** Pytest calls it once per **test class** or **test module**, not truly once per session.
+**Reality:** The fixture itself is correctly cached — but it's only one call among many. Testbook's real `tests/security/` suite has 23 tests, and plenty of them (wrong-password checks, duplicate-registration checks, token-reuse checks, the dedicated rate-limiting tests) call `/auth/login` or `/auth/register` directly, outside the cached fixture.
 
 **Result:**
 
-- You have 5 test classes
-- Fixture runs 5 times
-- Plus your actual login tests make 15+ more calls
-- **Total: 20+ login calls in 60 seconds** → Rate limited!
+- 23 tests, several making their own direct login/register calls on top of the shared fixture
+- All requests come from the same IP (localhost)
+- **Total easily exceeds 20 login calls in 60 seconds** → rate limited!
+
+This matches what `tests/security/README.md` documents as the real cause: it isn't fixture re-execution, it's that the whole suite shares one IP-scoped rate-limit budget.
 
 ---
 
@@ -172,8 +177,8 @@ Open `backend/routers/auth.py`:
 import os
 
 TESTING_MODE = os.getenv("TESTING", "false").lower() == "true"
-LOGIN_RATE = "100/minute" if TESTING_MODE else "20/minute"
-REGISTER_RATE = "100/minute" if TESTING_MODE else "15/minute"
+LOGIN_RATE = "1000/minute" if TESTING_MODE else "20/minute"
+REGISTER_RATE = "500/minute" if TESTING_MODE else "15/minute"
 
 @router.post("/login")
 @limiter.limit(LOGIN_RATE)  # Dynamic rate based on environment
@@ -741,8 +746,8 @@ $env:TESTING='false'; pytest  # Real rate limits (will fail!)
 
 ```python
 # Production: 20 requests/minute
-# Testing: 100 requests/minute
-LOGIN_RATE = "100/minute" if TESTING_MODE else "20/minute"
+# Testing: 1000 requests/minute
+LOGIN_RATE = "1000/minute" if TESTING_MODE else "20/minute"
 ```
 
 **Tip 3:** Test your rate limiting separately

@@ -72,6 +72,8 @@ sudo dnf install k6
 k6 version
 ```
 
+> **⚠️ Backend prerequisite:** The scripts below hit a live Testbook backend on `localhost:8000`. Start it with `TESTING=true uvicorn main:app --reload --port 8000` (from `backend/`) rather than a plain `./start-dev.sh`. Without `TESTING=true`, `/api/auth/login` is rate-limited to 20 requests/minute per IP and `/api/auth/register` to 15/minute (see `backend/routers/auth.py`), so any scenario here that ramps past a handful of virtual users will get rejected with `429`s instead of measuring real performance. See [`../../../docs/guides/PLAYWRIGHT_QUICKSTART.md`](../../../docs/guides/PLAYWRIGHT_QUICKSTART.md) for the full explanation of `TESTING=true`.
+
 #### Step 2: Create Your First Load Test
 
 Create `tests/performance/load-test-basic.js`:
@@ -208,7 +210,7 @@ export default function () {
     if (loginSuccess) {
       // Test authenticated endpoint
       let token = JSON.parse(loginResponse.body).access_token;
-      let profileResponse = http.get("http://localhost:8000/api/users/me", {
+      let profileResponse = http.get("http://localhost:8000/api/auth/me", {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -316,14 +318,14 @@ export default function () {
     postCreationDuration.add(endTime - startTime);
 
     // Test fetching posts
-    let postsResponse = http.get("http://localhost:8000/api/feed", { headers });
+    let postsResponse = http.get("http://localhost:8000/api/feed/all", { headers });
     check(postsResponse, {
       "posts fetch status is 200": (r) => r.status === 200,
       "posts fetch response time < 1000ms": (r) => r.timings.duration < 1000,
     });
 
     // Test fetching user profile
-    let profileResponse = http.get("http://localhost:8000/api/users/me", {
+    let profileResponse = http.get("http://localhost:8000/api/auth/me", {
       headers,
     });
     check(profileResponse, {
@@ -452,14 +454,14 @@ export default function () {
     }
 
     // Test 5: Fetch posts
-    let postsResponse = http.get(`${baseUrl}/feed`, { headers: authHeaders });
+    let postsResponse = http.get(`${baseUrl}/feed/all`, { headers: authHeaders });
     check(postsResponse, {
       "posts fetch status is 200": (r) => r.status === 200,
       "posts fetch response time < 1500ms": (r) => r.timings.duration < 1500,
     });
 
     // Test 6: Fetch user profile
-    let profileResponse = http.get(`${baseUrl}/users/me`, {
+    let profileResponse = http.get(`${baseUrl}/auth/me`, {
       headers: authHeaders,
     });
     check(profileResponse, {
@@ -594,7 +596,7 @@ export default function () {
     });
 
     // Fetch posts
-    let postsResponse = http.get(`${baseUrl}/feed`, { headers: authHeaders });
+    let postsResponse = http.get(`${baseUrl}/feed/all`, { headers: authHeaders });
     check(postsResponse, {
       "posts fetch status is 200": (r) => r.status === 200,
     });
@@ -648,6 +650,8 @@ jobs:
           sudo apt-get install k6
 
       - name: Start backend server
+        env:
+          TESTING: "true" # Required: /auth/register and /auth/login are rate-limited to 15/min and 20/min without this
         run: |
           cd backend
           python -m uvicorn main:app --host 0.0.0.0 --port 8000 &
