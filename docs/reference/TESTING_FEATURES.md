@@ -427,7 +427,7 @@ await expect(page.locator('[data-testid="create-post-preview"]')).toBeVisible();
 - **TESTING_CHEATSHEET.md** - Quick reference card
 - **README.md** - Complete feature list and setup
 - **TESTING_GUIDE.md** - Detailed test examples
-- **README.md#quick-start-5-minutes** - Get started in 5 minutes
+- **README.md#quick-start** - Get started in 5 minutes
 - **PROJECT_INFO.md** - Technical architecture
 - **API Docs** - Interactive docs at `/docs` endpoint
 
@@ -450,7 +450,7 @@ await expect(page.locator('[data-testid="create-post-preview"]')).toBeVisible();
 - **[TESTING_GUIDE.md](../guides/TESTING_GUIDE.md)** - Complete testing examples
 - **[TESTING_PATTERNS.md](../concepts/TESTING_PATTERNS.md)** - Testing dynamic content patterns
 - **[TESTING_CHEATSHEET.md](TESTING_CHEATSHEET.md)** - Quick reference guide
-- **[README.md](../../README.md#quick-start-5-minutes)** - Get started in 5 minutes
+- **[README.md](../../README.md#quick-start)** - Get started in 5 minutes
 
 ---
 

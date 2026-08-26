@@ -12,7 +12,7 @@ Quick reference for testers and automation engineers.
 - **[Postman](https://www.postman.com/)** - API testing (visual interface)
 - **[PyTest](https://pytest.org/)** - Python testing framework
 
-**More options**: See [README.md](../../README.md#-testing-frameworks-you-can-use) for a complete list
+**More options**: See [README.md](../../README.md#tech-stack) for the full tech stack
 
 <h2 id="quick-start">🚀 Quick Start</h2>
 

@@ -111,7 +111,7 @@ $env:HEADLESS="false"; pytest examples/test_api_ui_combined_example.py -v
 
 - [Lab 4B: Advanced E2E Python](../../../learn/stage_3_api_e2e/exercises/LAB_10_Advanced_E2E_Patterns_Python.md) -
   Full tutorial
-- [Section 8: Advanced E2E Patterns](../../../learn/stage_3_api_e2e/README.md#advanced-e2e-patterns) -
+- [Section 8: Advanced E2E Patterns](../../../learn/stage_3_api_e2e/README.md#part-7-additional-patterns) -
   Comprehensive guide
 - [Testing Comparison](../../../docs/guides/TESTING_COMPARISON_PYTHON_JS.md) -
   Python vs JavaScript

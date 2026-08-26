@@ -242,7 +242,7 @@ By completing all 5 stages, you will be able to:
 
 Before starting Stage 1:
 
-- ✅ Testbook installed and running ([Quick Start Guide](../README.md#quick-start-5-minutes))
+- ✅ Testbook installed and running ([Quick Start Guide](../README.md#quick-start))
 - ✅ Basic Python knowledge (functions, classes, imports)
 - ✅ Basic JavaScript knowledge (optional for E2E)
 - ✅ Terminal/command line familiarity
@@ -344,7 +344,7 @@ As you complete stages, mark your achievements:
 4. **Explore related labs** - More hands-on practice
 5. **Check documentation:**
    - [Troubleshooting Guide](../docs/reference/TROUBLESHOOTING.md) - Technical errors with exact fixes
-   - [FAQ](../README.md#frequently-asked-questions) - Learning questions and quick setup guidance
+   - [FAQ](../docs/guides/FAQ.md) - Learning questions and quick setup guidance
    - [Testing Guide](../docs/guides/TESTING_GUIDE.md)
    - [Running Tests](../docs/guides/RUNNING_TESTS.md)
 

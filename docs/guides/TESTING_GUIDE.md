@@ -1336,7 +1336,7 @@ class TestbookAPI:
 - **[TESTING_PATTERNS.md](../concepts/TESTING_PATTERNS.md)** - Testing dynamic content patterns
 - **[TESTING_CHEATSHEET.md](../reference/TESTING_CHEATSHEET.md)** - Quick reference guide
 - **[TESTING_FEATURES.md](../reference/TESTING_FEATURES.md)** - All testable features
-- **[README.md](../../README.md#quick-start-5-minutes)** - Get started quickly
+- **[README.md](../../README.md#quick-start)** - Get started quickly
 
 ---
 

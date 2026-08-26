@@ -244,7 +244,7 @@ pytest -v
 
 - JavaScript E2E tests: `tests/e2e/`
 - [Testing Comparison Guide](../../docs/guides/TESTING_COMPARISON_PYTHON_JS.md)
-- [Section 8: Advanced E2E Patterns](../../learn/stage_3_api_e2e/README.md#advanced-e2e-patterns)
+- [Section 8: Advanced E2E Patterns](../../learn/stage_3_api_e2e/README.md#part-7-additional-patterns)
 
 **Key difference:** Python uses synchronous syntax while JavaScript uses async/await. The Playwright API is otherwise identical!
 
@@ -297,7 +297,7 @@ pytest -v
 
 **CI/CD:**
 
-- [CI/CD for E2E Testing](../../learn/stage_5_capstone/README.md#cicd-automation) - Automate these tests
+- [CI/CD for E2E Testing](../../learn/stage_5_capstone/README.md#cicd-integration) - Automate these tests
 
 ---
 

@@ -118,7 +118,7 @@ Testbook/
 ├── start-dev.sh             # Dev mode script
 │
 ├── README.md                # Main documentation
-├── README.md#quick-start-5-minutes  # Quick setup guide
+├── README.md#quick-start  # Quick setup guide
 ├── TESTING_GUIDE.md         # Testing examples
 └── PROJECT_INFO.md          # This file
 ```
@@ -389,7 +389,7 @@ For questions or issues:
 ## 📚 More Resources
 
 - **[README.md](../../README.md)** - Main documentation and project overview
-- **[README.md](../../README.md#quick-start-5-minutes)** - Get started in 5 minutes
+- **[README.md](../../README.md#quick-start)** - Get started in 5 minutes
 - **[TESTING_GUIDE.md](../guides/TESTING_GUIDE.md)** - Complete testing examples
 - **[TESTING_PATTERNS.md](../concepts/TESTING_PATTERNS.md)** - Testing dynamic content patterns
 - **[TESTING_CHEATSHEET.md](TESTING_CHEATSHEET.md)** - Quick reference guide

@@ -1061,7 +1061,7 @@ Or use prebuilt wheels: see [Issue 2.6](#issue-26-cargo-the-rust-package-manager
 5. **"Chocolatey access denied"** → [Issue 9](#issue-9-chocolatey-installation-failed-or-access-denied) - Run PowerShell as Administrator
 6. **"Playwright not found"** → [Issue 11](#issue-11-playwright-not-found-or-e2e-tests-fail) - Install Playwright and browsers
 
-**📖 Need more help?** Check [TROUBLESHOOTING.md](../reference/TROUBLESHOOTING.md) for technical errors with exact fixes | [README.md](../../README.md#frequently-asked-questions) for learning questions.
+**📖 Need more help?** Check [TROUBLESHOOTING.md](../reference/TROUBLESHOOTING.md) for technical errors with exact fixes | [FAQ.md](FAQ.md) for learning questions.
 
 ---
 
@@ -1926,7 +1926,7 @@ pytest -v
 
 ## Common Issues (All Platforms)
 
-**💡 For detailed troubleshooting:** See [TROUBLESHOOTING.md](../reference/TROUBLESHOOTING.md) for technical errors with exact fixes | [README.md](../../README.md#frequently-asked-questions) for learning questions.
+**💡 For detailed troubleshooting:** See [TROUBLESHOOTING.md](../reference/TROUBLESHOOTING.md) for technical errors with exact fixes | [FAQ.md](FAQ.md) for learning questions.
 
 ### Port Conflicts
 
@@ -1943,7 +1943,7 @@ taskkill /PID <PID> /F
 lsof -ti:8000 | xargs kill
 ```
 
-**📖 Detailed solutions:** [Port Conflicts in TROUBLESHOOTING.md](../reference/TROUBLESHOOTING.md#-port-conflicts)
+**📖 Detailed solutions:** [Port Conflicts in TROUBLESHOOTING.md](../reference/TROUBLESHOOTING.md#error-address-already-in-use)
 
 ### Virtual Environment Issues
 
@@ -1962,7 +1962,7 @@ cd backend
 source .venv/bin/activate
 ```
 
-**📖 Detailed solutions:** [Python Virtual Environment Errors in TROUBLESHOOTING.md](../reference/TROUBLESHOOTING.md#-python-virtual-environment-errors)
+**📖 Detailed solutions:** [Python Virtual Environment Errors in TROUBLESHOOTING.md](../reference/TROUBLESHOOTING.md#error-virtual-environment-not-found)
 
 ### Node Modules Issues
 
@@ -1979,7 +1979,7 @@ rm -rf node_modules                       # WSL/Linux
 npm install
 ```
 
-**📖 Detailed solutions:** [Node.js & npm Errors in TROUBLESHOOTING.md](../reference/TROUBLESHOOTING.md#-nodejs--npm-errors)
+**📖 Detailed solutions:** [Node.js & npm Errors in TROUBLESHOOTING.md](../reference/TROUBLESHOOTING.md#error-npm-command-not-found)
 
 ---
 
@@ -2021,12 +2021,12 @@ Works great with native Windows or WSL. Configure interpreters:
 1. Check you're in the project root directory
 2. Verify Python and Node are installed: `python --version` and `node --version`
 3. Look at the error messages - the scripts now provide detailed feedback
-4. See [README.md](../../README.md#frequently-asked-questions) for learning questions and quick setup guidance
+4. See [FAQ.md](FAQ.md) for learning questions and quick setup guidance
 
 **Still stuck?**
 
 - Check [RUNNING_TESTS.md](./RUNNING_TESTS.md)
-- Review [README.md](../../README.md#choose-your-learning-path)
+- Review [README.md](../../README.md#learning-path)
 - Ask in the course discussion forum
 
 ---
@@ -2241,7 +2241,7 @@ After setup, verify everything works:
 Once your environment is running:
 
 1. **Verify setup:** Complete the checklist above
-2. **Start learning:** Follow [README.md](../../README.md#choose-your-learning-path)
+2. **Start learning:** Follow [README.md](../../README.md#learning-path)
 3. **Run your first test:** Complete [Stage 1 Exercises](../../learn/stage_1_unit/exercises/)
 4. **Explore the codebase:** Check out [docs/INDEX.md](../../docs/INDEX.md)
 
@@ -2257,7 +2257,7 @@ Once your environment is running:
 **Still stuck?**
 
 - Check [TROUBLESHOOTING.md](../reference/TROUBLESHOOTING.md) for technical errors with exact fixes
-- Check [README.md](../../README.md#frequently-asked-questions) for learning questions and quick setup guidance
+- Check [FAQ.md](FAQ.md) for learning questions and quick setup guidance
 - Review [RUNNING_TESTS.md](./RUNNING_TESTS.md)
 - Try WSL if Native Windows has issues
 - Ask in the course discussion forum

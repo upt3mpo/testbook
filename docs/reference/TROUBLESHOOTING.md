@@ -982,7 +982,7 @@ def create_user(email, password):
 - [Testing Guide](../guides/TESTING_GUIDE.md) - Comprehensive testing examples
 - [Testing Patterns](../concepts/TESTING_PATTERNS.md) - Advanced testing techniques
 - [Debugging Guide](DEBUGGING_GUIDE.md) - Debugging strategies
-- [README.md](../../README.md#frequently-asked-questions) - Learning-related questions
+- [FAQ.md](../guides/FAQ.md) - Learning-related questions
 
 ---
 

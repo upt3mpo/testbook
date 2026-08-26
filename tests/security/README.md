@@ -379,7 +379,7 @@ pytest tests/security/test_rate_limiting.py::TestRateLimiting::test_login_attemp
 
 - This README (you're reading it!)
 - [LAB_06](../../learn/stage_4_performance_security/exercises/LAB_15_Rate_Limiting_Production_Python.md)
-- [README.md](../../README.md#frequently-asked-questions) - Learning questions and quick setup guidance
+- [FAQ](../../docs/guides/FAQ.md) - Learning questions and quick setup guidance
 - [RUNNING_TESTS.md](../../docs/guides/RUNNING_TESTS.md)
 
 **Or:** Create an issue with:

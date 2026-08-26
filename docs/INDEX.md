@@ -10,7 +10,7 @@
 
 **New to Testbook?** → [../README.md#learning-path](../README.md#learning-path)
 
-**Want to run the app?** → [../README.md#quick-start-5-minutes](../README.md#quick-start-5-minutes)
+**Want to run the app?** → [../README.md#quick-start](../README.md#quick-start)
 
 **Want main overview?** → [../README.md](../README.md)
 
@@ -405,9 +405,9 @@ Security testing guide
 
 ### "I want to..."
 
-**...learn testing** → [../README.md#choose-your-learning-path](../README.md#choose-your-learning-path)
+**...learn testing** → [../README.md#learning-path](../README.md#learning-path)
 
-**...run the app** → [../README.md#quick-start-5-minutes](../README.md#quick-start-5-minutes)
+**...run the app** → [../README.md#quick-start](../README.md#quick-start)
 
 **...run tests** → [guides/RUNNING_TESTS.md](guides/RUNNING_TESTS.md)
 
@@ -510,7 +510,7 @@ source .venv/bin/activate  # Activate Python (macOS/Linux)
 - Unit tests: `backend/tests/unit/test_auth.py`
 - API tests: `backend/tests/integration/test_api_auth.py`
 - E2E tests: `tests/e2e/auth.spec.js`, `tests/e2e-python/test_auth.py`
-- Guide: [guides/TESTING_GUIDE.md](guides/TESTING_GUIDE.md#authentication)
+- Guide: [guides/TESTING_GUIDE.md](guides/TESTING_GUIDE.md#authentication-flow)
 
 ### API Testing
 
@@ -593,9 +593,9 @@ source .venv/bin/activate  # Activate Python (macOS/Linux)
 
 ### Day 1
 
-1. [../README.md#choose-your-learning-path](../README.md#choose-your-learning-path) - Choose path (2 min)
+1. [../README.md#learning-path](../README.md#learning-path) - Choose path (2 min)
 2. [../README.md](../README.md) - Project overview (10 min)
-3. [../README.md#quick-start-5-minutes](../README.md#quick-start-5-minutes) - Get running (5 min)
+3. [../README.md#quick-start](../README.md#quick-start) - Get running (5 min)
 
 ### Day 2-7
 
@@ -616,7 +616,7 @@ source .venv/bin/activate  # Activate Python (macOS/Linux)
 **Can't find something?**
 
 - Check this index first
-- Try [../README.md#choose-your-learning-path](../README.md#choose-your-learning-path)
+- Try [../README.md#learning-path](../README.md#learning-path)
 - See [guides/RUNNING_TESTS.md](guides/RUNNING_TESTS.md) for troubleshooting
 
 **Platform issues?**
