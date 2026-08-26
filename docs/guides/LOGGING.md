@@ -387,6 +387,10 @@ async def health_check():
 
 ## Debugging with Logs
 
+> **Note:** Testbook logs to stdout by default; it does not write `logs/app.log`
+> out of the box. The examples below assume you've redirected stdout to a file
+> (see [Configuration](#configuration) above) or added a file handler.
+
 ### Finding Issues
 
 ```bash
@@ -492,11 +496,15 @@ export LOG_FORMAT=json          # json or human
 $env:LOG_FORMAT='json'          # json or human
 
 # Log output
+# Note: LOG_FILE is NOT currently read by backend/logger.py — the app only
+# logs to stdout by default. To persist logs to a file, redirect stdout
+# (see below) or add a FileHandler/RotatingFileHandler yourself (see
+# "Rotating Logs" below).
 # Linux/Mac
-export LOG_FILE=logs/app.log    # File path (optional)
+uvicorn main:app --reload --port 8000 >> logs/app.log 2>&1
 
 # Windows (PowerShell)
-$env:LOG_FILE='logs/app.log'    # File path (optional)
+uvicorn main:app --reload --port 8000 *>> logs/app.log
 ```
 
 ### Rotating Logs
