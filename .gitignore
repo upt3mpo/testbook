@@ -93,6 +93,7 @@ wheels/
 # Databases (local dev)
 ########################################
 *.db
+*.db.backup.*
 *.sqlite
 *.sqlite3
 

@@ -48,8 +48,8 @@ if ($backendRunning) {
 
     # Run seed script
     Push-Location backend
-    if (Test-Path "venv\Scripts\Activate.ps1") {
-        & .\venv\Scripts\Activate.ps1
+    if (Test-Path ".venv\Scripts\Activate.ps1") {
+        & .\.venv\Scripts\Activate.ps1
     }
     python seed.py
     Pop-Location

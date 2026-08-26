@@ -47,8 +47,8 @@ if not errorlevel 1 (
 
     REM Run seed script
     cd backend
-    if exist "venv\Scripts\activate.bat" (
-        call venv\Scripts\activate.bat
+    if exist ".venv\Scripts\activate.bat" (
+        call .venv\Scripts\activate.bat
     )
     python seed.py
     cd ..
