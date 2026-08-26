@@ -19,3 +19,13 @@ updates:
     directory: "/backend"
     schedule:
       interval: "weekly"
+
+  - package-ecosystem: "pip"
+    directory: "/tests/e2e-python"
+    schedule:
+      interval: "weekly"
+
+  - package-ecosystem: "pip"
+    directory: "/tests/security"
+    schedule:
+      interval: "weekly"
