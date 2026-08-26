@@ -1,19 +1,19 @@
 # 📱 Testbook - Automation Testing Platform
 
 ![CI Status](https://github.com/upt3mpo/testbook/actions/workflows/testbook-ci.yml/badge.svg)
-![Backend Coverage](https://img.shields.io/badge/backend_coverage-87%25-brightgreen)
-![Frontend Coverage](https://img.shields.io/badge/frontend_coverage-95%25-brightgreen)
-![Total Tests](https://img.shields.io/badge/tests-220%2B-blue)
+![Backend Coverage](https://img.shields.io/badge/backend_coverage-86%25-brightgreen)
+![Frontend Coverage](https://img.shields.io/badge/frontend_coverage-41%25-orange)
+![Total Tests](https://img.shields.io/badge/tests-362-blue)
 ![Python](https://img.shields.io/badge/python-3.13-blue)
 ![Node](https://img.shields.io/badge/node-24-green)
 
 A production-grade social media application built for learning and practicing
-automation testing. Features 180+ backend tests, 40+ frontend tests,
-comprehensive E2E coverage, and structured hands-on labs.
+automation testing. Features 180 backend tests, 40 frontend tests, 119 E2E
+tests (JavaScript + Python), 23 security tests, and structured hands-on labs.
 
 Perfect for individual learners, junior developers exploring testing, or manual QA professionals transitioning to automation.
 
-**✅ 220+ Tests | Complete Testing Pyramid | 87% Backend Coverage | Production-Ready**
+**✅ 362 Tests | Complete Testing Pyramid | 86% Backend Coverage | Production-Ready**
 
 <h2 id="table-of-contents">📋 Table of Contents</h2>
 
@@ -78,7 +78,7 @@ start-dev.bat   # Windows
 4. **Stage 4:** Performance & Security (6-8 hours) - Load testing & OWASP
 5. **Stage 5:** Portfolio Capstone (4-6 hours) - Build job-ready artifacts
 
-**Total: 20-30 hours** | **Result: Job-ready testing skills**
+**Total: 24-34 hours** | **Result: Job-ready testing skills**
 
 ---
 
@@ -237,9 +237,9 @@ def test_sql_injection_prevention():
 
 ### 🧪 Testing Features
 
-- **180+ Backend Tests** - pytest with 87% coverage
-- **40+ Frontend Tests** - Vitest + React Testing Library
-- **15+ E2E Tests** - Playwright (Python & JavaScript)
+- **180 Backend Tests** - pytest with 86% coverage
+- **40 Frontend Tests** - Vitest + React Testing Library (41% coverage)
+- **119 E2E Tests** - Playwright (59 JavaScript + 60 Python)
 - **Performance Tests** - k6 load testing
 - **Security Tests** - OWASP Top 10 coverage
 - **API Tests** - Postman collection + Python examples
@@ -256,7 +256,6 @@ def test_sql_injection_prevention():
 
 - **User Authentication** - JWT-based auth with bcrypt
 - **Social Media Posts** - Create, view, like posts
-- **Real-time Updates** - WebSocket integration
 - **File Uploads** - Image and video support
 - **Rate Limiting** - Production-ready API protection
 - **Database** - SQLite with SQLAlchemy ORM
@@ -294,7 +293,8 @@ pytest -v
 cd frontend
 npm test
 
-# E2E tests (Playwright)
+# E2E tests (Playwright) — backend must be running with TESTING=true, see
+# docs/guides/PLAYWRIGHT_QUICKSTART.md
 cd tests
 npm install
 npx playwright test
@@ -343,7 +343,7 @@ uvicorn main:app --reload --port 8000
 reset-database.bat    # Windows
 
 # Install dependencies
-cd backend && uv sync
+cd backend && uv pip install -r requirements.txt
 cd frontend && npm install
 ```
 
@@ -374,7 +374,7 @@ Use these accounts to test the application:
 
 ### Frontend
 
-- **React 18** - Modern React with hooks
+- **React 19** - Modern React with hooks
 - **Vite** - Fast build tool
 - **Vitest** - Testing framework
 - **React Testing Library** - Component testing
