@@ -394,8 +394,8 @@ npm test test_data_builders.test.js
 **Create:** `frontend/src/tests/unit/PostList.test.jsx`
 
 ```javascript
-import { render, screen } from "@testing-library/react";
-import { describe, it, expect } from "vitest";
+import { fireEvent, render, screen } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
 
 // PostList component for testing
 function PostList({ posts, onPostClick }) {

@@ -78,7 +78,7 @@ def test_user_posts():
 
 **Create:** `backend/tests/test_data_builders.py`
 
-````python
+```python
 """
 Test Data Builders and Factories
 
@@ -91,10 +91,10 @@ import pytest
 from models import User, Post, Comment
 from auth import get_password_hash
 
+
 class UserBuilder:
-```python
-"""
-Builder pattern for creating test users with custom data.
+    """
+    Builder pattern for creating test users with custom data.
 
     This class allows you to create user objects with specific attributes
     using a fluent interface. This makes test data creation more readable
@@ -148,7 +148,7 @@ Builder pattern for creating test users with custom data.
         db_session.refresh(user)
         return user
 
-```python
+
 @pytest.mark.unit
 class TestUserBuilder:
     """Test the UserBuilder."""
@@ -186,8 +186,7 @@ class TestUserBuilder:
 
         assert user1.id != user2.id
         assert user1.email != user2.email
-
-````
+```
 
 **Run it:**
 
