@@ -46,7 +46,7 @@ pytest -v
 - **Platform:** All
 - **Language:** JavaScript or Python (your choice!)
 
-> **Before you run E2E tests:** start the development servers with `./start-dev.sh` (macOS/Linux) or `start-dev.bat` (Windows). The UI will be available at `http://localhost:3000` and the API at `http://localhost:8000`.
+> **Before you run E2E tests:** start the backend with `TESTING=true` (see [E2E Tests → Setup](#e2e-tests) below) and the frontend with `npm run dev`, or use `./start-dev.sh` / `start-dev.bat` and export `TESTING=true` first. The UI will be available at `http://localhost:3000` and the API at `http://localhost:8000`.
 
 ### API Tests
 
@@ -231,7 +231,22 @@ start htmlcov/index.html # Windows
 
 ### Setup
 
+Start the backend with `TESTING=true` before running E2E tests — several
+tests rely on the dev-only `/api/dev/reset` endpoint and higher rate limits
+that are only enabled in that mode (this is what CI does). Starting the
+backend with plain `./start-dev.sh` and no `.env` file leaves `TESTING`
+unset, which causes dev-reset calls to fail with 403 and a handful of
+tests to fail or skip.
+
 ```bash
+# Terminal 1: backend in testing mode
+cd backend && source .venv/bin/activate
+TESTING=true uvicorn main:app --reload --port 8000
+
+# Terminal 2: frontend
+cd frontend && npm run dev
+
+# Terminal 3: E2E dependencies
 cd tests
 
 # Install dependencies
