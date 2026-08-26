@@ -532,13 +532,18 @@ tests/
 ```text
 frontend/
   src/
-    components/
-      __tests__/
-        Button.test.jsx  # Component tests
-    test/
-      setup.js           # Test setup
+    tests/
+      unit/
+        CreatePost.test.jsx  # Component tests
+        Navbar.test.jsx
+        Register.test.jsx
+      integration/
+        contract.test.js
+      accessibility/
+        accessibility.test.jsx
       mocks/
         handlers.js      # MSW handlers
+      setup.js           # Test setup
 tests/
   e2e/
     fixtures/
@@ -578,7 +583,7 @@ export default defineConfig({
   test: {
     globals: true,
     environment: "jsdom",
-    setupFiles: "./src/test/setup.js",
+    setupFiles: "./src/tests/setup.js",
     coverage: {
       provider: "v8",
       reporter: ["text", "html"],
@@ -641,7 +646,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: "18"
+          node-version: "24"
       - run: npm ci
       - run: npm test -- --coverage
       - uses: codecov/codecov-action@v3
@@ -713,7 +718,7 @@ jobs:
 ### Both
 
 - [Testbook repository](../..) - See working examples in both languages!
-- [Compare Lab 4 Python vs JavaScript](../../learn/stage_3_api_e2e/exercises/) - See same lab in both stacks
+- [Compare LAB_09 Python vs JavaScript](../../learn/stage_3_api_e2e/exercises/) - See same lab (`LAB_09_Basic_E2E_Testing_Python.md` / `_JavaScript.md`) in both stacks
 
 ---
 
