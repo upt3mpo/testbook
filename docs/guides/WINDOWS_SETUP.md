@@ -692,7 +692,7 @@ curl --version
    ```powershell
    npx playwright --version
    # Should show: Playwright version 1.x.x
-   # ✅ Success: Playwright 1.40.0
+   # ✅ Success: Playwright 1.56.1
    # ❌ Error: 'playwright' is not recognized
    ```
 
@@ -788,14 +788,16 @@ flowchart TB
    .\start-dev.bat
    ```
 
-2. **Optional: Configure Environment Variables**
+2. **Recommended: Configure Environment Variables (do this BEFORE running E2E or security tests)**
 
-   **Skip this if you use `start-dev.bat`** - it handles everything automatically!
-
-   For manual testing or running individual commands:
+   **`start-dev.bat` does NOT set `TESTING=true` on its own** — it just starts the
+   backend and frontend with whatever environment is already in place. If
+   `backend\.env` doesn't exist, `TESTING` stays unset, dev endpoints like
+   `/api/dev/reset` return 403, and a chunk of E2E tests will fail or skip. See
+   [PLAYWRIGHT_QUICKSTART.md](PLAYWRIGHT_QUICKSTART.md) for the full explanation.
 
    ```powershell
-   # Copy the environment template
+   # Copy the environment template (defaults already set TESTING=true)
    Copy-Item backend\env.example backend\.env
 
    # View/edit the file (optional - defaults are good!)
@@ -804,11 +806,12 @@ flowchart TB
 
    **What this does:**
 
-   - ✅ Sets `TESTING=true` automatically (no more `$env:TESTING='true'` needed!)
+   - ✅ `python-dotenv` (loaded in `backend/main.py`) reads `backend\.env`, which sets `TESTING=true`
    - ✅ Enables dev endpoints for testing
    - ✅ Increases rate limits to prevent test failures
 
-   **Now you can run:**
+   Do this once, then either `.\start-dev.bat` or a manual `uvicorn` invocation
+   will pick up `TESTING=true` from `backend\.env`:
 
    ```powershell
    cd backend
@@ -816,7 +819,7 @@ flowchart TB
    uvicorn main:app --reload --port 8000
    ```
 
-   Instead of:
+   Without `backend\.env`, you'd instead need to set it for the session manually:
 
    ```powershell
    cd backend
@@ -974,7 +977,7 @@ See [Issue 5](#issue-5-port-already-in-use) for a one-liner that kills all PIDs 
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 ```
 
-Then run `.\u0000start-dev.bat` again. Full context: [Issue 8](#issue-8-script-execution-policy-errors).
+Then run `.\start-dev.bat` again. Full context: [Issue 8](#issue-8-script-execution-policy-errors).
 
 </details>
 
@@ -1659,6 +1662,8 @@ chmod +x start-dev.sh
 ./start-dev.sh
 ```
 
+**Note:** `start-dev.sh` does not set `TESTING=true` by itself. If you plan to run E2E or security tests, copy `backend/env.example` to `backend/.env` first (its defaults already set `TESTING=true`) — see [PLAYWRIGHT_QUICKSTART.md](PLAYWRIGHT_QUICKSTART.md) for why this matters.
+
 ### Accessing from Windows
 
 - Frontend: <http://localhost:3000>
@@ -1791,25 +1796,15 @@ free -h
 
 ### 📝 About npm Deprecation Warnings
 
-When running `.\start-dev.bat`, you may see deprecation warnings like:
+When running `.\start-dev.bat` or `npm install`, you may occasionally see `npm warn deprecated ...` lines for one transitive dependency or another.
 
-```text
-npm warn deprecated eslint@8.57.1: This version is no longer supported
-npm warn deprecated @humanwhocodes/config-array@0.13.0: Use @eslint/config-array instead
-```
+**These warnings are almost always safe to ignore** - they don't affect functionality. They just mean some (usually indirect) dependency has published a newer major version, but the version currently pinned still works fine.
 
-**These warnings are safe to ignore** - they don't affect functionality. They indicate that some packages use older versions of dependencies, but the application will work perfectly.
-
-**Why these warnings appear:**
-
-- ESLint 8.x is deprecated (ESLint 9.x is available but has breaking changes)
-- Some ESLint plugins use older internal dependencies
-- The warnings don't impact the learning experience or app functionality
+**Note:** Testbook's frontend already uses ESLint 9.x (flat config, `frontend/eslint.config.js`), so you should not see ESLint-8-era warnings like `eslint@8.57.1` or `@humanwhocodes/config-array` here. If you do see those, run `npm install` again inside `frontend/` to make sure you have the versions pinned in `frontend/package.json`.
 
 **If you want to eliminate warnings:**
 
-- The warnings are cosmetic and don't affect the tutorial
-- Updating to ESLint 9.x requires configuration changes beyond the scope of this learning project
+- Most are cosmetic and don't affect the tutorial
 - Focus on learning the testing concepts rather than package maintenance
 
 [↑ Back to Top](#windows-setup-guide) | [📋 Table of Contents](#table-of-contents)
