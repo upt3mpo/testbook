@@ -70,47 +70,15 @@ Testbook/
 
 ---
 
-## 👨‍🎓 Course Materials (`docs/course/`)
+## 👨‍🎓 Course Materials
 
-| Resource                                                                        | Time Estimate | Experience Level          | Description                                   |
-| ------------------------------------------------------------------------------- | ------------- | ------------------------- | --------------------------------------------- |
-| **[COURSE_AUTOMATION_TESTING_101.md](course/COURSE_AUTOMATION_TESTING_101.md)** | 30-40 hours   | 🟢 Beginner → 🔴 Advanced | Self-paced curriculum with 12 sections        |
-| **[Learning Paths](../learn/README.md#choose-your-track)**                      | 15 min        | 🟢 All levels             | Choose path based on your background          |
-| **🆕 [SECTION_08_ADVANCED_E2E_PATTERNS.md](advanced/ADVANCED_E2E_PATTERNS.md)** | 8-10 hours    | 🔴 Advanced               | Advanced E2E patterns for Python & JavaScript |
-| **🆕 [CI_CD_E2E_TESTING.md](course/CI_CD_E2E_TESTING.md)**                      | 3-4 hours     | 🔴 Advanced               | CI/CD automation for both stacks              |
-| **[TROUBLESHOOTING.md](reference/TROUBLESHOOTING.md)**                          | 30 min        | 🟢 Beginner               | 24+ common errors and solutions               |
-| **[Learning Roadmap](../learn/README.md#visual-learning-journey)**              | 10 min        | 🟢 All levels             | Visual skill progression guide                |
+The standalone `docs/course/` curriculum was folded into the [Self-Guided Learning Path](../learn/) above — it's no longer a separate set of files.
 
-### Learning Path Details
-
-**COURSE_AUTOMATION_TESTING_101.md:**
-
-- 12 progressive sections (self-paced)
-- Theory + hands-on practice
-- Practice projects with solutions
-- Self-assessment checkpoints
-- Covers unit, integration, E2E, API, performance, security, CI/CD
-
-**LEARNING_PATHS.md:**
-
-- Complete beginner path
-- Manual QA → Automation path
-- Developer → Testing path
-- Language-specific tracks (Python/JavaScript)
-
-**TROUBLESHOOTING.md:**
-
-- Setup & environment issues
-- pytest common errors
-- Playwright troubleshooting
-
-- Quick reference for debugging
-
-**LEARNING_ROADMAP.md:**
-
-- Visual flowcharts
-- Milestone tracking
-- Skill matrix by experience level
+| Resource                                                          | Time Estimate | Experience Level | Description                          |
+| ------------------------------------------------------------------ | ------------- | ----------------- | ------------------------------------- |
+| **[Learning Paths](../learn/README.md#choose-your-track)**         | 15 min        | 🟢 All levels     | Choose path based on your background  |
+| **[Learning Roadmap](../learn/README.md#visual-learning-journey)** | 10 min        | 🟢 All levels     | Visual skill progression guide        |
+| **[TROUBLESHOOTING.md](reference/TROUBLESHOOTING.md)**             | 30 min        | 🟢 Beginner       | 24+ common errors and solutions       |
 
 ---
 
@@ -131,7 +99,6 @@ Testbook/
 | **🆕 [ACCESSIBILITY_TESTING.md](guides/ACCESSIBILITY_TESTING.md)** ⭐            | 30 min | 🟡 Intermediate | WCAG 2.1, axe-core, Lighthouse                        |
 | **🆕 [CONTRACT_TESTING.md](guides/CONTRACT_TESTING.md)** ⭐                      | 30 min | 🟡 Intermediate | Property-based API contract testing with Schemathesis |
 | **[WINDOWS_SETUP.md](guides/WINDOWS_SETUP.md)**                                  | 30 min | 🟢 Beginner     | Windows-specific setup                                |
-| **[ROADMAP.md](ROADMAP.md)**                                                     | 10 min | 🟡 Intermediate | Future improvements & maintenance                     |
 | **[TASK_RUNNER.md](guides/TASK_RUNNER.md)** ✨                                   | 20 min | 🟢 Beginner     | Simplified commands (Make/just)                       |
 | **[LOGGING.md](guides/LOGGING.md)** ✨                                           | 30 min | 🟡 Intermediate | Structured logging & observability                    |
 | **[RATE_LIMITING.md](guides/RATE_LIMITING.md)** ✨                               | 25 min | 🟡 Intermediate | Rate limit tuning & config                            |
@@ -340,7 +307,6 @@ Includes environment config, fixtures, test helpers, and patterns.
 | Resource                                                                      | Time   | Level       | Purpose                          |
 | ----------------------------------------------------------------------------- | ------ | ----------- | -------------------------------- |
 | **[ADVANCED_TOPICS.md](advanced/ADVANCED_TOPICS.md)**                         | 40 min | 🔴 Advanced | Mutation testing, property-based |
-| **[ADVANCED_E2E_PATTERNS.md](advanced/ADVANCED_E2E_PATTERNS.md)**             | 35 min | 🔴 Advanced | Advanced E2E patterns            |
 | **[ADVANCED_TESTING_STRATEGIES.md](advanced/ADVANCED_TESTING_STRATEGIES.md)** | 30 min | 🔴 Advanced | Enterprise testing strategies    |
 
 ### Content Highlights
@@ -351,13 +317,6 @@ Includes environment config, fixtures, test helpers, and patterns.
 - Property-based testing
 - Test-driven development (TDD)
 - Behavior-driven development (BDD)
-
-**Advanced E2E Patterns:**
-
-- Visual regression testing
-- Cross-browser strategies
-- Mobile testing patterns
-- Performance testing integration
 
 ---
 
@@ -646,7 +605,7 @@ source .venv/bin/activate  # Activate Python (macOS/Linux)
 
 ### Week 2+
 
-1. [course/COURSE_AUTOMATION_TESTING_101.md](course/COURSE_AUTOMATION_TESTING_101.md) - Self-paced curriculum
+1. [../learn/stage_2_integration/](../learn/stage_2_integration/) through [../learn/stage_5_capstone/](../learn/stage_5_capstone/) - Continue the self-paced curriculum
 2. [guides/RUNNING_TESTS.md](guides/RUNNING_TESTS.md) - Reference
 3. [reference/TESTING_CHEATSHEET.md](reference/TESTING_CHEATSHEET.md) - Quick lookups
 

@@ -28,7 +28,7 @@ playwright install chromium
 ```bash
 # Run all tests
 pytest -v
-# See [Quick Commands](docs/reference/QUICK_COMMANDS.md) for all pytest options
+# See [Quick Commands](../../docs/reference/QUICK_COMMANDS.md) for all pytest options
 
 # Run specific test file
 pytest test_auth.py -v

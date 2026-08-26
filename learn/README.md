@@ -114,14 +114,14 @@ flowchart TD
 
 - **Phase 1:** Programming basics (Python recommended) + Stage 1-2
 - **Phase 2:** Stage 3 (E2E testing) + exercises
-- **Phase 3:** Advanced patterns from [docs/advanced/](docs/advanced/)
+- **Phase 3:** Advanced patterns from [docs/advanced/](../docs/advanced/)
 
 **Time:** 15-20 hours (plus programming basics if needed)
 
 **Key Resources:**
 
-- [Testing Philosophy](docs/concepts/TESTING_PHILOSOPHY.md) - Why testing matters
-- [Testing Anti-Patterns](docs/concepts/TESTING_ANTIPATTERNS.md) - Common mistakes to avoid
+- [Testing Philosophy](../docs/concepts/TESTING_PHILOSOPHY.md) - Why testing matters
+- [Testing Anti-Patterns](../docs/concepts/TESTING_ANTIPATTERNS.md) - Common mistakes to avoid
 
 ---
 
@@ -132,15 +132,15 @@ flowchart TD
 **Your Journey:**
 
 - **Phase 1:** Quick run through Stages 1-3 (focus on testing mindset)
-- **Phase 2:** Deep dive into [docs/concepts/](docs/concepts/) for testing philosophy
-- **Phase 3:** Advanced techniques from [docs/advanced/](docs/advanced/)
+- **Phase 2:** Deep dive into [docs/concepts/](../docs/concepts/) for testing philosophy
+- **Phase 3:** Advanced techniques from [docs/advanced/](../docs/advanced/)
 
 **Time:** 8-12 hours
 
 **Key Resources:**
 
-- [Industry Practices](docs/industry/INDUSTRY_PRACTICES.md) - How companies test
-- [Tool Comparison](docs/industry/TOOL_COMPARISON.md) - When to use what
+- [Industry Practices](../docs/industry/INDUSTRY_PRACTICES.md) - How companies test
+- [Tool Comparison](../docs/industry/TOOL_COMPARISON.md) - When to use what
 
 ---
 
@@ -158,8 +158,8 @@ flowchart TD
 
 **Key Resources:**
 
-- [Career Guide](docs/industry/CAREER_GUIDE.md) - QA career paths and salaries
-- [Case Studies](docs/industry/CASE_STUDIES.md) - Real-world testing stories
+- [Career Guide](../docs/industry/CAREER_GUIDE.md) - QA career paths and salaries
+- [Case Studies](../docs/industry/CASE_STUDIES.md) - Real-world testing stories
 
 ---
 

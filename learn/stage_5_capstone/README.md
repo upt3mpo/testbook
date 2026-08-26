@@ -1062,19 +1062,16 @@ You're ready for QA engineering roles when you can:
 ### Portfolio Development
 
 - [Portfolio Guide](../../docs/guides/PORTFOLIO.md)
-- [Interview Prep](../../docs/guides/INTERVIEW_PREP.md)
+- [Interview Preparation](../../docs/industry/CAREER_GUIDE.md#interview-preparation)
 
 ### Technical Resources
 
 - [Testing Best Practices](../../docs/guides/TESTING_GUIDE.md)
-- [CI/CD Setup](../../docs/guides/CI_CD_SETUP.md)
-- [Coverage Reports](../../docs/guides/COVERAGE_REPORTS.md)
+- [Running Tests & Coverage Reports](../../docs/guides/RUNNING_TESTS.md)
 
 ### Career Resources
 
-- [QA Job Market Guide](../../docs/guides/QA_JOB_MARKET.md)
-- [Salary Negotiation](../../docs/guides/SALARY_NEGOTIATION.md)
-- [Networking Tips](../../docs/guides/NETWORKING.md)
+- [QA Career Guide (paths, salary, interview prep)](../../docs/industry/CAREER_GUIDE.md)
 
 ---
 
@@ -1116,7 +1113,7 @@ Before considering yourself job-ready, can you answer these questions?
    - C) Technical skills, communication, and problem-solving
    - D) Only problem-solving skills
 
-**Answers:** [Check your answers here](solutions/stage_5_quiz_answers.md)
+**Answers:** [Check your answers here](../solutions/stage_5_quiz_answers.md)
 
 ---
 

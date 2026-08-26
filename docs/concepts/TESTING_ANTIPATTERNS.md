@@ -930,8 +930,8 @@ Before committing your tests, check:
 
 - **[TESTING_PATTERNS.md](TESTING_PATTERNS.md)** - What TO do (now includes dialog handling & force clicks!)
 - **[FLAKY_TESTS_GUIDE.md](../guides/FLAKY_TESTS_GUIDE.md)** ⭐ - Real fixes from this project
-- **[TESTING_CHEATSHEET.md](TESTING_CHEATSHEET.md)** - Quick reference (updated with critical patterns)
-- **[Troubleshooting](TROUBLESHOOTING.md)** - Student errors
+- **[TESTING_CHEATSHEET.md](../reference/TESTING_CHEATSHEET.md)** - Quick reference (updated with critical patterns)
+- **[Troubleshooting](../reference/TROUBLESHOOTING.md)** - Student errors
 - **[Test Examples](../../backend/tests/examples/)** - Good vs bad tests
 - **[Flaky Tests Guide](../guides/FLAKY_TESTS_GUIDE.md)** - How to fix unreliable tests
 

@@ -86,7 +86,7 @@ pytest -v
 cd backend
 
 # Activate virtual environment
-# See [Quick Commands](docs/reference/QUICK_COMMANDS.md#virtual-environment) for all platforms
+# See [Quick Commands](../reference/QUICK_COMMANDS.md#virtual-environment) for all platforms
 
 # Install dependencies (if not already installed)
 pip install -r requirements.txt
@@ -100,7 +100,7 @@ pytest
 
 # Run with verbose output
 pytest -v
-# See [Quick Commands](docs/reference/QUICK_COMMANDS.md) for all pytest options
+# See [Quick Commands](../reference/QUICK_COMMANDS.md) for all pytest options
 
 # Run specific test directory
 pytest tests/unit/
@@ -201,7 +201,7 @@ pytest --cov
 
 # Generate HTML coverage report
 pytest --cov --cov-report=html
-# See [Quick Commands](docs/reference/QUICK_COMMANDS.md) for all coverage options
+# See [Quick Commands](../reference/QUICK_COMMANDS.md) for all coverage options
 
 # View HTML report
 open htmlcov/index.html  # macOS
