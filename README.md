@@ -172,6 +172,8 @@ test("user can create and view posts", async ({ page }) => {
 });
 ```
 
+**New to Playwright?** → [Playwright Quick Start](docs/guides/PLAYWRIGHT_QUICKSTART.md) — first browser test running in under 10 minutes.
+
 ### 🚀 Performance & Security (Stage 4)
 
 **Load Testing:** k6

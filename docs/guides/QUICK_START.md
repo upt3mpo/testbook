@@ -293,6 +293,12 @@ pytest -v
 <details>
 <summary><b>All Platforms</b></summary>
 
+**⚠️ Before running:** stop `start-dev.sh` if it's running without a
+`backend/.env` file, and restart the backend with `TESTING=true` set — a
+handful of E2E tests use the dev-only `/api/dev/reset` endpoint, which is
+disabled unless `TESTING=true`. See [Playwright Quick Start](PLAYWRIGHT_QUICKSTART.md)
+for the full setup.
+
 ```bash
 cd tests
 npm install
@@ -300,7 +306,7 @@ npx playwright install chromium
 npm test
 ```
 
-**Expected:** E2E tests run in browser ✅
+**Expected:** 59 E2E tests pass ✅
 
 </details>
 
