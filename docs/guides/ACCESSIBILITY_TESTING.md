@@ -66,9 +66,11 @@ npm test -- accessibility.test.jsx
 import { axe } from "vitest-axe";
 
 it("Login page should have no accessibility violations", async () => {
-  const { container } = render(<LoginPage />);
-  const results = await axe(container);
-  expect(results).toHaveNoViolations();
+  const { container } = renderWithRouter(<LoginPage />);
+  const results = await axe(container, {
+    rules: { "color-contrast": { enabled: false } }, // needs canvas, unavailable in jsdom
+  });
+  expect(results.violations).toEqual([]);
 });
 ```
 
@@ -128,8 +130,8 @@ test("Home page should not have accessibility violations", async ({ page }) => {
 cd frontend && npm run dev
 
 # In another terminal
-cd /path/to/testbook
-npx lhci autorun
+cd tests
+npm run lighthouse    # runs `lhci autorun` (@lhci/cli is a devDependency here)
 ```
 
 **Reports saved to:** `reports/lighthouse/`
@@ -178,7 +180,7 @@ npx lhci autorun
 **Coverage:** ~40% of WCAG issues
 **Used in:** Component tests, E2E tests
 
-**Install:**
+**Install:** (already a devDependency in this repo — `@axe-core/playwright` in `tests/package.json`, `vitest-axe` in `frontend/package.json`)
 
 ```bash
 npm install --save-dev @axe-core/playwright vitest-axe
@@ -190,7 +192,7 @@ npm install --save-dev @axe-core/playwright vitest-axe
 **Coverage:** Performance + Accessibility + Best Practices + SEO
 **Used in:** Performance baseline testing
 
-**Install:**
+**Install:** (already a devDependency in `tests/package.json`)
 
 ```bash
 npm install --save-dev @lhci/cli
@@ -202,7 +204,7 @@ npm install --save-dev @lhci/cli
 **Coverage:** JSX-specific accessibility issues
 **Used in:** ESLint checks during development
 
-**Install:**
+**Install:** (already a devDependency in `frontend/package.json`)
 
 ```bash
 npm install --save-dev eslint-plugin-jsx-a11y
@@ -224,7 +226,8 @@ cd tests
 npm run test:a11y
 
 # Lighthouse audit
-npx lhci autorun
+cd tests
+npm run lighthouse
 ```
 
 ### In CI/CD
