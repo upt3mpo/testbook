@@ -491,7 +491,7 @@ class TestYourChallenge:
                 # Missing required fields!
             }
         )
-        assert response.status_code == 200
+        assert response.status_code == 201
 
     def test_challenge_2(self, test_post):
         """Challenge: Fix this attribute test."""
@@ -531,7 +531,8 @@ class TestYourChallenge:
                 "password": "Pass123!"
             }
         )
-        assert response.status_code == 200
+        # Register returns 201 Created on success, not 200
+        assert response.status_code == 201
 
     def test_challenge_2(self, test_post):
         """Challenge: Fix this attribute test."""

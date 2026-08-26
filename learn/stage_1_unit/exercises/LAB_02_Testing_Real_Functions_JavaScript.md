@@ -95,8 +95,8 @@ npm test CreatePost.test.jsx
 **You should see:**
 
 ```text
-✓ CreatePost.test.jsx (7)
-  ✓ CreatePost Component (7)
+✓ CreatePost.test.jsx (8)
+  ✓ CreatePost Component (8)
     ✓ calls onPostCreated when post is submitted successfully
 ```
 
@@ -126,9 +126,31 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import axios from "axios";
 import { authAPI } from "../../api";
 
-// Mock the axios module so we can control its behavior in tests
-vi.mock("axios");
-const mockedAxios = vi.mocked(axios);
+// Mock the axios module so we can control its behavior in tests.
+// `api.js` calls axios.create() once, at module load time, so the
+// factory below must return a working instance (including
+// `interceptors`, which api.js configures immediately) *before*
+// api.js's top-level code runs.
+vi.mock("axios", () => {
+  const mockAxiosInstance = {
+    post: vi.fn(),
+    get: vi.fn(),
+    put: vi.fn(),
+    delete: vi.fn(),
+    interceptors: {
+      request: { use: vi.fn() },
+      response: { use: vi.fn() },
+    },
+  };
+  return {
+    default: {
+      create: vi.fn(() => mockAxiosInstance),
+    },
+  };
+});
+
+// Grab the same mocked instance that api.js received from axios.create()
+const mockAxiosInstance = axios.create();
 
 describe("API Functions", () => {
   // Clear all mocks before each test to ensure clean state
@@ -144,11 +166,9 @@ describe("API Functions", () => {
      * our function correctly throws that error to the caller.
      */
 
-    // Arrange: Mock axios to simulate a failed API call
+    // Arrange: Mock the axios instance to simulate a failed API call
     const errorMessage = "Invalid credentials";
-    mockedAxios.create.mockReturnValue({
-      post: vi.fn().mockRejectedValue(new Error(errorMessage)),
-    });
+    mockAxiosInstance.post.mockRejectedValue(new Error(errorMessage));
 
     // Act & Assert: Verify that the error is properly thrown
     await expect(
@@ -164,11 +184,9 @@ describe("API Functions", () => {
      * our function returns the expected data structure.
      */
 
-    // Arrange: Mock axios to simulate a successful API response
+    // Arrange: Mock the axios instance to simulate a successful API response
     const mockResponse = { data: { access_token: "fake-token" } };
-    mockedAxios.create.mockReturnValue({
-      post: vi.fn().mockResolvedValue(mockResponse),
-    });
+    mockAxiosInstance.post.mockResolvedValue(mockResponse);
 
     // Act: Call the login function with test credentials
     const result = await authAPI.login("test@test.com", "password");
@@ -238,12 +256,16 @@ describe("Utility Functions", () => {
       expect(result).toMatch(/Jan 15, 2024/);
     });
 
-    it("should handle invalid date", () => {
+    it("should handle invalid date gracefully", () => {
       // Arrange
       const invalidDate = "not-a-date";
 
-      // Act & Assert
-      expect(() => formatDate(invalidDate)).toThrow();
+      // Act
+      const result = formatDate(invalidDate);
+
+      // Assert: Date.toLocaleDateString() does not throw for an invalid
+      // date - it returns the literal string "Invalid Date"
+      expect(result).toBe("Invalid Date");
     });
   });
 
