@@ -114,8 +114,8 @@ npm test CreatePost.test.jsx
 **Should see:**
 
 ```text
-✓ CreatePost.test.jsx (7)
-  ✓ CreatePost Component (7)
+✓ CreatePost.test.jsx (8)
+  ✓ CreatePost Component (8)
     ✓ calls onPostCreated when post is submitted successfully
 ```
 
@@ -132,9 +132,31 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import axios from "axios";
 import { authAPI } from "../../api";
 
-// Mock axios
-vi.mock("axios");
-const mockedAxios = vi.mocked(axios);
+// Mock the axios module so we can control its behavior in tests.
+// `api.js` calls axios.create() once, at module load time, so the
+// factory below must return a working instance (including
+// `interceptors`, which api.js configures immediately) *before*
+// api.js's top-level code runs.
+vi.mock("axios", () => {
+  const mockAxiosInstance = {
+    post: vi.fn(),
+    get: vi.fn(),
+    put: vi.fn(),
+    delete: vi.fn(),
+    interceptors: {
+      request: { use: vi.fn() },
+      response: { use: vi.fn() },
+    },
+  };
+  return {
+    default: {
+      create: vi.fn(() => mockAxiosInstance),
+    },
+  };
+});
+
+// Grab the same mocked instance that api.js received from axios.create()
+const mockAxiosInstance = axios.create();
 
 describe("Auth API Tests", () => {
   beforeEach(() => {
@@ -150,9 +172,7 @@ describe("Auth API Tests", () => {
       },
     };
 
-    mockedAxios.create.mockReturnValue({
-      post: vi.fn().mockResolvedValue(mockResponse),
-    });
+    mockAxiosInstance.post.mockResolvedValue(mockResponse);
 
     // Act
     const result = await authAPI.login("test@test.com", "password123");
@@ -165,9 +185,7 @@ describe("Auth API Tests", () => {
   it("should handle login errors", async () => {
     // Arrange - Mock error response
     const errorMessage = "Invalid credentials";
-    mockedAxios.create.mockReturnValue({
-      post: vi.fn().mockRejectedValue(new Error(errorMessage)),
-    });
+    mockAxiosInstance.post.mockRejectedValue(new Error(errorMessage));
 
     // Act & Assert
     await expect(
@@ -177,16 +195,15 @@ describe("Auth API Tests", () => {
 
   it("should call login with correct data", async () => {
     // Arrange
-    const mockPost = vi
-      .fn()
-      .mockResolvedValue({ data: { access_token: "token" } });
-    mockedAxios.create.mockReturnValue({ post: mockPost });
+    mockAxiosInstance.post.mockResolvedValue({
+      data: { access_token: "token" },
+    });
 
     // Act
     await authAPI.login("user@test.com", "password123");
 
     // Assert
-    expect(mockPost).toHaveBeenCalledWith("/auth/login", {
+    expect(mockAxiosInstance.post).toHaveBeenCalledWith("/auth/login", {
       email: "user@test.com",
       password: "password123",
     });
@@ -208,86 +225,61 @@ npm test api_auth.test.js
 
 **Open:** `frontend/src/tests/mocks/handlers.js`
 
-**Find these handlers:**
+**Find these handlers:** (Testbook uses MSW v2's `http`/`HttpResponse` API, not the older `rest` API)
 
 ```javascript
-// Mock posts endpoint
-rest.get(`${API_BASE}/feed`, (req, res, ctx) => {
-  return res(
-    ctx.status(200),
-    ctx.json([
+import { http, HttpResponse } from "msw";
+
+const API_BASE = "http://localhost:8000/api";
+
+export const handlers = [
+  // Mock feed endpoint
+  http.get(`${API_BASE}/feed`, () => {
+    return HttpResponse.json([
       {
         id: 1,
         content: "Mocked post from MSW",
         author: { id: 1, username: "testuser", display_name: "Test User" },
         created_at: new Date().toISOString(),
         reaction_counts: { "👍": 5, "❤️": 2 },
+        is_own_post: false,
       },
-    ])
-  );
-}),
+    ]);
+  }),
+];
 ```
+
+**Note:** Testbook's test setup (`frontend/src/tests/setup.js`) already starts a shared MSW server (imported from `frontend/src/tests/mocks/server.js`) before every test file runs, and closes it afterward. Because that server is already running, your own tests should reuse it with `server.use(...)` to add or override handlers for a single test, rather than creating and starting a second `setupServer()` instance (doing so registers two competing interceptors and produces confusing "unhandled request" warnings).
 
 **Create:** `frontend/src/tests/unit/api_msw.test.js`
 
 ```javascript
-import { describe, it, expect, beforeEach } from "vitest";
-import { rest } from "msw";
-import { setupServer } from "msw/node";
+import { describe, it, expect } from "vitest";
+import { http, HttpResponse } from "msw";
+import { server } from "../mocks/server";
 import { authAPI } from "../../api";
 
-// Create MSW server
-const server = setupServer(
-  rest.post("/api/auth/login", (req, res, ctx) => {
-    const { email, password } = req.body;
-
-    if (email === "test@test.com" && password === "password123") {
-      return res(
-        ctx.status(200),
-        ctx.json({
-          access_token: "fake-token-from-msw",
-          token_type: "bearer",
-        })
-      );
-    } else {
-      return res(
-        ctx.status(401),
-        ctx.json({
-          detail: "Invalid credentials",
-        })
-      );
-    }
-  }),
-
-  rest.get("/api/feed", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json([
-        {
-          id: 1,
-          content: "Test post from MSW",
-          author: { id: 1, username: "testuser" },
-          created_at: new Date().toISOString(),
-        },
-      ])
-    );
-  })
-);
-
 describe("API Tests with MSW", () => {
-  beforeEach(() => {
-    server.listen({ onUnhandledRequest: "warn" });
-  });
-
-  afterEach(() => {
-    server.resetHandlers();
-  });
-
-  afterAll(() => {
-    server.close();
-  });
-
   it("should login successfully with MSW", async () => {
+    // Arrange - Override the login handler just for this test
+    server.use(
+      http.post("/api/auth/login", async ({ request }) => {
+        const { email, password } = await request.json();
+
+        if (email === "test@test.com" && password === "password123") {
+          return HttpResponse.json({
+            access_token: "fake-token-from-msw",
+            token_type: "bearer",
+          });
+        }
+
+        return HttpResponse.json(
+          { detail: "Invalid credentials" },
+          { status: 401 }
+        );
+      })
+    );
+
     // Act
     const result = await authAPI.login("test@test.com", "password123");
 
@@ -297,6 +289,16 @@ describe("API Tests with MSW", () => {
   });
 
   it("should handle login failure with MSW", async () => {
+    // Arrange - Override with a failure response
+    server.use(
+      http.post("/api/auth/login", async () => {
+        return HttpResponse.json(
+          { detail: "Invalid credentials" },
+          { status: 401 }
+        );
+      })
+    );
+
     // Act & Assert
     await expect(
       authAPI.login("wrong@test.com", "wrongpassword")
@@ -304,6 +306,20 @@ describe("API Tests with MSW", () => {
   });
 
   it("should fetch feed data with MSW", async () => {
+    // Arrange - Override the feed handler with test-specific data
+    server.use(
+      http.get("/api/feed", () => {
+        return HttpResponse.json([
+          {
+            id: 1,
+            content: "Test post from MSW",
+            author: { id: 1, username: "testuser" },
+            created_at: new Date().toISOString(),
+          },
+        ]);
+      })
+    );
+
     // Act
     const response = await fetch("/api/feed");
     const data = await response.json();

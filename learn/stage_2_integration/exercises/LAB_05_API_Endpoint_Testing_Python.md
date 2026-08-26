@@ -157,7 +157,7 @@ def test_create_my_post(self, client, auth_headers):
     )
 
     # Assert
-    assert response.status_code == 200
+    assert response.status_code == 201  # Post creation returns 201 Created
     data = response.json()
     assert data["content"] == "This is my test post!"
     assert data["id"] is not None  # Post got an ID

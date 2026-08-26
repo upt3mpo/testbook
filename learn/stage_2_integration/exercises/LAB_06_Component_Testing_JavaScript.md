@@ -139,8 +139,8 @@ npm test CreatePost.test.jsx
 **You should see:**
 
 ```text
-✓ CreatePost.test.jsx (7)
-  ✓ CreatePost Component (7)
+✓ CreatePost.test.jsx (8)
+  ✓ CreatePost Component (8)
     ✓ renders the textarea input
     ✓ renders the Post button
     ✓ allows user to type in the textarea
@@ -148,6 +148,7 @@ npm test CreatePost.test.jsx
     ✓ enables Post button when textarea has content
     ✓ calls onPostCreated when post is submitted successfully
     ✓ clears textarea after successful post submission
+    ✓ handles API errors gracefully
 ```
 
 ✅ **Checkpoint:** All component tests pass!
