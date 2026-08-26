@@ -28,10 +28,10 @@ jobs:
           - 5432:5432
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: '3.11'
           cache: 'pip'
@@ -71,7 +71,7 @@ jobs:
           bandit -r . -f json -o bandit-report.json || true
 
       - name: Upload Bandit report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: bandit-security-report
           path: backend/bandit-report.json
@@ -84,7 +84,7 @@ jobs:
           safety check --json --output safety-report.json || true
 
       - name: Upload Safety report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: safety-dependency-report
           path: backend/safety-report.json
@@ -96,11 +96,11 @@ jobs:
     if: github.event_name == 'pull_request'
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Dependency Review
         # Continue even if this fails (requires GitHub Advanced Security on private repos)
         continue-on-error: true
-        uses: actions/dependency-review-action@v4
+        uses: actions/dependency-review-action@v5
         with:
           fail-on-severity: moderate
