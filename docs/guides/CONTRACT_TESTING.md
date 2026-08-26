@@ -232,7 +232,7 @@ Schemathesis would generate:
 **The situation:**
 
 - **FastAPI 0.115+** generates **OpenAPI 3.1.0** schemas (latest standard)
-- **Schemathesis 3.27.1** only has **experimental 3.1.0 support** (still maturing)
+- **Schemathesis** (pinned to `4.0.0` in `backend/requirements.txt`) needed `force_schema_version="30"` to work around 3.1.0 gaps at the time this test was written; the pin has since moved past the version that motivated the skip, so this may be worth re-checking
 
 **What happens if we run it:**
 
@@ -258,7 +258,7 @@ OpenAPI 3.1.0 introduced **complete JSON Schema compatibility** (Draft 2020-12),
 
 - 📚 Learn the **concept** (this guide)
 - 🔬 Study the **test file** (see how it's structured)
-- 🧪 Use **frontend contract testing** (Lab 6C - works today!)
+- 🧪 Use **frontend contract testing** (LAB_08 - works today!)
 - 🎯 Focus on the **180 tests that DO run**
 
 ### Discovered Workaround
@@ -273,7 +273,7 @@ Using `force_schema_version="30"` makes Schemathesis work with OpenAPI 3.1.0! Ho
 
 **Reference:** <https://github.com/schemathesis/schemathesis/issues/494>
 
-**Decision:** Enable in a future update after proper configuration. See `testbook-notes/v1.2-contract-testing-plan.md` for full enablement plan.
+**Decision:** Enable in a future update after proper configuration (schema documentation gaps and Schemathesis auth need to be resolved first; see `backend/tests/integration/test_api_contract.py` for the current state and inline notes).
 
 ### Timeline
 
@@ -289,11 +289,10 @@ Using `force_schema_version="30"` makes Schemathesis work with OpenAPI 3.1.0! Ho
 - Fix schema documentation gaps
 - Configure authentication for Schemathesis
 - Enable all 500+ automated contract tests
-- See internal plan: `testbook-notes/v1.2-contract-testing-plan.md`
 
 **Alternatives Available Now:**
 
-1. Frontend contract testing with OpenAPI (Lab 6C) ✅
+1. Frontend contract testing with OpenAPI (LAB_08) ✅
 2. Manual schema validation with Postman ✅
 3. Traditional API integration tests (127 tests!) ✅
 
@@ -314,9 +313,11 @@ pip install --upgrade schemathesis
 **Step 2:** Remove the skip in `test_api_contract.py`
 
 ```python
-# DELETE these lines (14-15):
-# pytest.skip("Schemathesis doesn't fully support OpenAPI 3.1.0 yet",
-#             allow_module_level=True)
+# DELETE this block (around line 74):
+# pytest.skip(
+#     "Contract testing planned for future update - requires schema/auth configuration",
+#     allow_module_level=True,
+# )
 ```
 
 **Step 3:** Run the test
@@ -361,7 +362,7 @@ schema = schemathesis.from_asgi(
 
 **You CAN do contract testing today!**
 
-[Lab 6C: Frontend Integration Testing](../../learn/stage_2_integration/exercises/LAB_08_Contract_Testing_Foundations_JavaScript.md) teaches contract testing from the **frontend perspective**:
+[LAB_08: Contract Testing Foundations](../../learn/stage_2_integration/exercises/LAB_08_Contract_Testing_Foundations_JavaScript.md) teaches contract testing from the **frontend perspective**:
 
 ```javascript
 // Frontend validates backend responses match OpenAPI schema
@@ -507,10 +508,10 @@ For each endpoint, Schemathesis validates:
 
 | Tool                   | Status in Testbook        |
 | ---------------------- | ------------------------- |
-| **OpenAPI validation** | ✅ Available - See Lab 6C |
-| **MSW with schema**    | ✅ Available - See Lab 6B |
+| **OpenAPI validation** | ✅ Available - See LAB_08 |
+| **MSW with schema**    | ✅ Available - See LAB_05 (`LAB_05_API_Endpoint_Testing_JavaScript.md`) |
 
-**Learn frontend contract testing:** [Lab 6C: Frontend Integration Testing](../../learn/stage_2_integration/exercises/LAB_08_Contract_Testing_Foundations_JavaScript.md)
+**Learn frontend contract testing:** [LAB_08: Contract Testing Foundations](../../learn/stage_2_integration/exercises/LAB_08_Contract_Testing_Foundations_JavaScript.md)
 
 ---
 
@@ -530,7 +531,7 @@ For each endpoint, Schemathesis validates:
 
 ### Stage 3: Learn Frontend Contracts
 
-- 🧪 Complete [Lab 6C](../../learn/stage_2_integration/exercises/LAB_08_Contract_Testing_Foundations_JavaScript.md)
+- 🧪 Complete [LAB_08](../../learn/stage_2_integration/exercises/LAB_08_Contract_Testing_Foundations_JavaScript.md)
 - ✅ This teaches contract validation that WORKS today
 - 🔄 Same concept, different angle (frontend → backend vs backend self-test)
 
@@ -620,8 +621,8 @@ pytest tests/integration/ -v
 
 ### Hands-On Labs
 
-- [Lab 3: Testing API Endpoints](../../learn/stage_2_integration/exercises/LAB_05_API_Endpoint_Testing_Python.md) - Traditional API testing
-- [Lab 6C: Frontend Integration Testing](../../learn/stage_2_integration/exercises/LAB_08_Contract_Testing_Foundations_JavaScript.md) - Contract validation (works today!)
+- [LAB_05: API Endpoint Testing](../../learn/stage_2_integration/exercises/LAB_05_API_Endpoint_Testing_Python.md) - Traditional API testing
+- [LAB_08: Contract Testing Foundations](../../learn/stage_2_integration/exercises/LAB_08_Contract_Testing_Foundations_JavaScript.md) - Contract validation (works today!)
 
 ### Learning Stages
 
@@ -673,16 +674,16 @@ pytest tests/integration/ -v
 **A:** Absolutely!
 
 1. Study the test file pattern (even though skipped)
-2. Do Lab 6C for frontend contract testing (works today)
+2. Do LAB_08 for frontend contract testing (works today)
 3. Understand the concept from this guide
 4. Mention in interviews: "I understand contract testing patterns"
 
-### Q: What's the difference between this and Lab 6C?
+### Q: What's the difference between this and LAB_08?
 
 **A:**
 
 - **Backend (Schemathesis):** Tests server generates correct responses
-- **Frontend (Lab 6C):** Tests client receives expected responses
+- **Frontend (LAB_08):** Tests client receives expected responses
 - **Same concept, different perspective!**
 
 Both validate the contract between API provider and consumer.
@@ -707,7 +708,7 @@ It shows you know advanced testing concepts even if the specific tool wasn't ful
 2. **Property-based testing generates tests automatically** - finds edge cases
 3. **Schemathesis is powerful** - 1 test = 500+ generated cases
 4. **Currently incompatible with OpenAPI 3.1.0** - but concept still valuable
-5. **You can do frontend contract testing today** - see Lab 6C
+5. **You can do frontend contract testing today** - see LAB_08
 6. **Real-world teams use this** - especially for microservices
 
 ---
@@ -716,7 +717,7 @@ It shows you know advanced testing concepts even if the specific tool wasn't ful
 
 1. ✅ **Understand the concept** (you just did!)
 2. 📖 **Study the test file:** `backend/tests/integration/test_api_contract.py`
-3. 🧪 **Do Lab 6C:** Frontend contract testing (works today!)
+3. 🧪 **Do LAB_08:** Frontend contract testing (works today!)
 4. 💼 **Add to portfolio:** Mention contract testing knowledge
 5. 🎯 **Use in interviews:** Discuss property-based testing
 6. 🔮 **Watch for updates:** Enable when Schemathesis is ready
