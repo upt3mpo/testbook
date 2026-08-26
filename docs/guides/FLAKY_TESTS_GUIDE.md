@@ -230,6 +230,15 @@ async function addReaction(post, reactionType) {
 
 This fixed 4 additional tests that were failing due to hover dropdown timing issues.
 
+> **Note:** The code samples above illustrate the *techniques* used to fix flaky
+> reaction tests. The live `addReaction` helper in
+> `tests/e2e/fixtures/test-helpers.js` has since been simplified further — it
+> now opens the reaction menu with a forced click (not hover) and uses fixed
+> waits rather than `networkidle`/retry logic. The underlying lessons below
+> (verify visibility, wait for real state changes, avoid arbitrary hover
+> timing) still hold; treat the exact code above as illustrative rather than
+> a byte-for-byte copy of the current helper.
+
 ## Best Practices to Avoid Flaky Tests
 
 ### ✅ DO
@@ -257,7 +266,7 @@ After fixing flaky tests, run them multiple times to verify stability:
 ```bash
 # Run the same test 10 times
 for i in {1..10}; do
-  npx playwright test --project=chromium tests/e2e/posts.spec.js:141
+  npx playwright test --project=chromium tests/e2e/posts.spec.js -g "should add reaction to post"
 done
 ```
 
