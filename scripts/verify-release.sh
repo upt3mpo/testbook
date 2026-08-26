@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Release Verification Script for Testbook v1.1
-# Runs comprehensive checks before tagging release
+# Release Verification Script for Testbook
+# Runs comprehensive checks before tagging a release
 # Run with: ./scripts/verify-release.sh
 
 set -e
@@ -9,7 +9,7 @@ set -o pipefail
 
 echo "╔═══════════════════════════════════════════════════════════════════╗"
 echo "║                                                                   ║"
-echo "║  🔍 Testbook v1.1 Release Verification                            ║"
+echo "║  🔍 Testbook Release Verification                                  ║"
 echo "║                                                                   ║"
 echo "║  Running comprehensive checks before release...                   ║"
 echo "║                                                                   ║"
@@ -129,7 +129,7 @@ echo ""
 
 run_check "CI badge exists" "grep -q 'CI Status' README.md"
 run_check "Coverage badges exist" "grep -q 'Backend Coverage' README.md && grep -q 'Frontend Coverage' README.md"
-run_check "Test count badge" "grep -q '210' README.md"
+run_check "Test count badge" "grep -q '362' README.md"
 
 # Summary
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
@@ -140,15 +140,14 @@ echo ""
 if [ $FAILED -eq 0 ]; then
   echo "✅ ALL CHECKS PASSED!"
   echo ""
-  echo "🎉 Testbook v1.1 is ready for release!"
+  echo "🎉 Testbook is ready for release!"
   echo ""
   echo "Next steps:"
-  echo "  1. Review CHANGELOG.md"
-  echo "  2. git add ."
-  echo "  3. git commit -m 'Release v1.1: Full Journey Release'"
-  echo "  4. git tag v1.1"
-  echo "  5. git push origin dev"
-  echo "  6. git push origin v1.1"
+  echo "  1. Review CHANGELOG.md and move [Unreleased] entries under the new version"
+  echo "  2. git add -A && git commit -m 'Release vX.Y.Z'"
+  echo "  3. git tag vX.Y.Z"
+  echo "  4. git push origin main"
+  echo "  5. git push origin vX.Y.Z"
   echo ""
   exit 0
 else
