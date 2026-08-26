@@ -77,9 +77,9 @@ test('handles error state', async () => {
 
 ## 🎓 Learn More
 
-- [Lab 6B: Advanced Component Testing](../../../learn/stage_4_performance_security/exercises/LAB_06B_Advanced_Component_Testing.md) - Complete MSW tutorial
+- [Lab 6B: Advanced Component Testing](../../../../learn/stage_2_integration/exercises/LAB_06_Component_Testing_JavaScript.md) - Complete MSW tutorial
 - [MSW Documentation](https://mswjs.io/docs/) - Official MSW docs
-- [Testing Comparison Guide](../../../docs/guides/TESTING_COMPARISON_PYTHON_JS.md) - Compare with Python mocking
+- [Testing Comparison Guide](../../../../docs/guides/TESTING_COMPARISON_PYTHON_JS.md) - Compare with Python mocking
 
 ---
 

@@ -348,4 +348,4 @@ page.pause()  # Add this line anywhere in your test
 
 **🎉 You're now writing E2E tests! This is professional-level testing!**
 
-**Next Lab:** [Lab 5: Test Data Management (Python)](LAB_05_Test_Data_Management_Python.md)
+**Next Lab:** [Lab 5: Test Data Management (Python)](../../stage_2_integration/exercises/LAB_07_Test_Data_Management_Python.md)

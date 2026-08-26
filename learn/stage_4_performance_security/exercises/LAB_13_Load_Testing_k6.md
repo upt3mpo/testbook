@@ -874,7 +874,7 @@ export default function () {
 
 - **[Lab 14: Security Testing & OWASP (Python)](LAB_14_Security_Testing_OWASP_Python.md)** - Security testing
 - **[Lab 15: Rate Limiting & Production Monitoring (Python)](LAB_15_Rate_Limiting_Production_Python.md)** - Production readiness
-- **[Lab 16: Complete Test Suite Design (Python)](LAB_16_Complete_Test_Suite_Design_Python.md)** - Test strategy
+- **[Lab 16: Complete Test Suite Design (Python)](LAB_14_Security_Testing_OWASP_Python.md)** - Test strategy
 
 ---
 

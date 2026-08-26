@@ -1069,11 +1069,11 @@ The concepts transfer directly between languages!
 
 **🐍 Python's Unique Advantage:** Unlike JavaScript, Python lets you use the same language for backend API manipulation AND frontend UI testing. This enables incredibly fast test setup by seeding data via API instead of clicking through UI!
 
-**Next Lab:** [Lab 7: Playwright Deep Dive (Python)](LAB_07_Playwright_Deep_Dive_Python.md)
+**Next Lab:** [Lab 7: Playwright Deep Dive (Python)](LAB_11_Cross_Browser_Testing_Python.md)
 
 **Next Steps:**
 
 - Apply these patterns to the full test suite
-- Explore [Section 8: Advanced E2E Patterns](../learn/stage_3_api_e2e/README.md#advanced-e2e-patterns) for more examples
-- Compare with [JavaScript advanced patterns](../docs/guides/TESTING_COMPARISON_PYTHON_JS.md)
-- Set up [CI/CD automation](../learn/stage_5_capstone/README.md#cicd-automation)
+- Explore [Section 8: Advanced E2E Patterns](../README.md#part-7-additional-patterns) for more examples
+- Compare with [JavaScript advanced patterns](../../../docs/guides/TESTING_COMPARISON_PYTHON_JS.md)
+- Set up [CI/CD automation](../../stage_5_capstone/README.md#cicd-integration)

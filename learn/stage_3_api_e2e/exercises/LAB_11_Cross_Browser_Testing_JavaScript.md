@@ -680,4 +680,4 @@ export default defineConfig({
 
 **🎉 Congratulations!** You've mastered Playwright's advanced features and are ready for production E2E testing!
 
-**Next Lab:** [Lab 6: Testing with Rate Limits (JavaScript)](LAB_06_Testing_With_Rate_Limits_JavaScript.md)
+**Next Lab:** [Lab 6: Testing with Rate Limits (JavaScript)](../../stage_4_performance_security/exercises/LAB_15_Rate_Limiting_Production_JavaScript.md)

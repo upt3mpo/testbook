@@ -361,7 +361,7 @@ schema = schemathesis.from_asgi(
 
 **You CAN do contract testing today!**
 
-[Lab 6C: Frontend Integration Testing](../../learn/stage_4_performance_security/exercises/LAB_06C_Frontend_Integration_Testing.md) teaches contract testing from the **frontend perspective**:
+[Lab 6C: Frontend Integration Testing](../../learn/stage_2_integration/exercises/LAB_08_Contract_Testing_Foundations_JavaScript.md) teaches contract testing from the **frontend perspective**:
 
 ```javascript
 // Frontend validates backend responses match OpenAPI schema
@@ -510,7 +510,7 @@ For each endpoint, Schemathesis validates:
 | **OpenAPI validation** | ✅ Available - See Lab 6C |
 | **MSW with schema**    | ✅ Available - See Lab 6B |
 
-**Learn frontend contract testing:** [Lab 6C: Frontend Integration Testing](../../learn/stage_4_performance_security/exercises/LAB_06C_Frontend_Integration_Testing.md)
+**Learn frontend contract testing:** [Lab 6C: Frontend Integration Testing](../../learn/stage_2_integration/exercises/LAB_08_Contract_Testing_Foundations_JavaScript.md)
 
 ---
 
@@ -530,7 +530,7 @@ For each endpoint, Schemathesis validates:
 
 ### Stage 3: Learn Frontend Contracts
 
-- 🧪 Complete [Lab 6C](../../learn/stage_4_performance_security/exercises/LAB_06C_Frontend_Integration_Testing.md)
+- 🧪 Complete [Lab 6C](../../learn/stage_2_integration/exercises/LAB_08_Contract_Testing_Foundations_JavaScript.md)
 - ✅ This teaches contract validation that WORKS today
 - 🔄 Same concept, different angle (frontend → backend vs backend self-test)
 
@@ -620,8 +620,8 @@ pytest tests/integration/ -v
 
 ### Hands-On Labs
 
-- [Lab 3: Testing API Endpoints](../../learn/stage_2_integration/exercises/LAB_03_Testing_API_Endpoints.md) - Traditional API testing
-- [Lab 6C: Frontend Integration Testing](../../learn/stage_4_performance_security/exercises/LAB_06C_Frontend_Integration_Testing.md) - Contract validation (works today!)
+- [Lab 3: Testing API Endpoints](../../learn/stage_2_integration/exercises/LAB_05_API_Endpoint_Testing_Python.md) - Traditional API testing
+- [Lab 6C: Frontend Integration Testing](../../learn/stage_2_integration/exercises/LAB_08_Contract_Testing_Foundations_JavaScript.md) - Contract validation (works today!)
 
 ### Learning Stages
 

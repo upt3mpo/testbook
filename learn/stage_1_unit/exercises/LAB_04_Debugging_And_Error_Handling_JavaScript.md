@@ -591,12 +591,12 @@ When you encounter a failing test:
 
 **Continue building your skills:**
 
-- **[Lab 5: API Endpoint Testing (JavaScript)](LAB_05_API_Endpoint_Testing_JavaScript.md)** - Write more complex tests
-- **[Lab 9: Basic E2E Testing (JavaScript)](LAB_09_Basic_E2E_Testing_JavaScript.md)** - Debug browser tests
-- **[DEBUGGING_GUIDE.md](../docs/reference/DEBUGGING_GUIDE.md)** - Advanced debugging
+- **[Lab 5: API Endpoint Testing (JavaScript)](../../stage_2_integration/exercises/LAB_05_API_Endpoint_Testing_JavaScript.md)** - Write more complex tests
+- **[Lab 9: Basic E2E Testing (JavaScript)](../../stage_3_api_e2e/exercises/LAB_09_Basic_E2E_Testing_JavaScript.md)** - Debug browser tests
+- **[DEBUGGING_GUIDE.md](../../../docs/reference/DEBUGGING_GUIDE.md)** - Advanced debugging
 
 ---
 
 **🎉 Congratulations!** You're now a debugging expert. These skills will serve you throughout your entire testing career!
 
-**Next Lab:** [Lab 5: API Endpoint Testing (JavaScript)](LAB_05_API_Endpoint_Testing_JavaScript.md)
+**Next Lab:** [Lab 5: API Endpoint Testing (JavaScript)](../../stage_2_integration/exercises/LAB_05_API_Endpoint_Testing_JavaScript.md)

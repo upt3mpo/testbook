@@ -1101,7 +1101,7 @@ FastAPI 0.115+ uses OpenAPI 3.1.0, but Schemathesis only has experimental suppor
 
 - 📚 **Yes!** Read [Contract Testing Guide](../../docs/guides/CONTRACT_TESTING.md) to understand the concept
 - 🎯 **For now:** Focus on the 180 integration tests that ARE running
-- 🔄 **Alternative:** Frontend contract testing works today! See [Lab 6C](../../learn/stage_3_api_e2e/exercises/LAB_06C_Frontend_Integration_Testing_Python.md)
+- 🔄 **Alternative:** Frontend contract testing works today! See [Lab 6C](../../learn/stage_2_integration/exercises/LAB_08_Contract_Testing_Foundations_Python.md)
 - 💼 **Career value:** Understanding contract testing is a professional differentiator
 
 ---

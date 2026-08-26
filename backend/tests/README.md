@@ -155,7 +155,7 @@ Even though skipped, studying this test teaches you about:
 
 **Learn more:** [Contract Testing Guide](../../docs/guides/CONTRACT_TESTING.md) - Complete explanation with examples
 
-**Alternative:** Frontend contract testing works today! See [Lab 6C: Frontend Integration Testing](../../learn/stage_4_performance_security/exercises/LAB_06C_Frontend_Integration_Testing.md)
+**Alternative:** Frontend contract testing works today! See [Lab 6C: Frontend Integration Testing](../../learn/stage_2_integration/exercises/LAB_08_Contract_Testing_Foundations_Python.md)
 
 ## Test Markers
 
@@ -334,7 +334,7 @@ user = UserFactory.create(
 user, posts = create_user_with_posts(db_session, num_posts=5)
 ```
 
-See [LAB_05_Test_Data_Management.md](../../learn/stage_2_integration/exercises/LAB_05_Test_Data_Management.md) to learn more.
+See [LAB_05_Test_Data_Management.md](../../learn/stage_2_integration/exercises/LAB_07_Test_Data_Management_Python.md) to learn more.
 
 ## Contributing
 

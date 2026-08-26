@@ -638,7 +638,7 @@ def test_get_user():
 - Use builders in your actual tests
 - Create builders for Reaction model
 - Build complex test scenarios
-- Read: [Test Data Scenarios Guide](../docs/guides/TEST_DATA_SCENARIOS.md) for more patterns
+- Read: [Test Data Scenarios Guide](../../../docs/guides/TEST_DATA_SCENARIOS.md) for more patterns
 
 ---
 

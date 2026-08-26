@@ -939,13 +939,13 @@ You're ready for Stage 5 when you can:
 
 - [Lab 13: Load Testing with k6 (Python)](exercises/LAB_13_Load_Testing_k6.md)
 - [Lab 14: Security Testing with OWASP (Python)](exercises/LAB_14_Security_Testing_OWASP_Python.md)
-- [Lab 15: Rate Limiting Testing (Python)](exercises/LAB_15_Rate_Limiting_Testing_Python.md)
+- [Lab 15: Rate Limiting Testing (Python)](exercises/LAB_15_Rate_Limiting_Production_Python.md)
 
 **🟨 JavaScript Track:**
 
 - [Lab 13: Load Testing with k6 (JavaScript)](exercises/LAB_13_Load_Testing_k6.md)
 - [Lab 14: Security Testing with OWASP (JavaScript)](exercises/LAB_14_Security_Testing_OWASP_JavaScript.md)
-- [Lab 15: Rate Limiting Testing (JavaScript)](exercises/LAB_15_Rate_Limiting_Testing_JavaScript.md)
+- [Lab 15: Rate Limiting Testing (JavaScript)](exercises/LAB_15_Rate_Limiting_Production_JavaScript.md)
 
 ### Documentation
 

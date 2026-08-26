@@ -58,8 +58,8 @@
 
 - Re-read the [Stage 4 README](../stage_4_performance_security/README.md)
 - Complete the [Stage 4 exercises](../stage_4_performance_security/exercises/)
-- Try the [Performance Testing Guide](../../docs/guides/PERFORMANCE_TESTING.md)
-- Practice with [Security Testing Guide](../../docs/guides/SECURITY_TESTING.md)
+- Try the [Performance Testing Guide](../../tests/performance/README.md)
+- Practice with [Security Testing Guide](../../tests/security/README.md)
 
 ## Ready for Stage 5?
 

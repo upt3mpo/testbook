@@ -640,12 +640,12 @@ def test_registration_contract_cases(self, client, test_case):
 
 **Continue building your skills:**
 
-- **[Lab 9: Basic E2E Testing (Python)](LAB_09_Basic_E2E_Testing_Python.md)** - End-to-end testing
-- **[Lab 10: Advanced E2E Patterns (Python)](LAB_10_Advanced_E2E_Patterns_Python.md)** - Advanced E2E testing
-- **[Lab 11: Cross-Browser Testing (Python)](LAB_11_Cross_Browser_Testing_Python.md)** - Multi-browser testing
+- **[Lab 9: Basic E2E Testing (Python)](../../stage_3_api_e2e/exercises/LAB_09_Basic_E2E_Testing_Python.md)** - End-to-end testing
+- **[Lab 10: Advanced E2E Patterns (Python)](../../stage_3_api_e2e/exercises/LAB_10_Advanced_E2E_Patterns_Python.md)** - Advanced E2E testing
+- **[Lab 11: Cross-Browser Testing (Python)](../../stage_3_api_e2e/exercises/LAB_11_Cross_Browser_Testing_Python.md)** - Multi-browser testing
 
 ---
 
 **🎉 Congratulations!** You now understand contract testing and can ensure API compatibility between frontend and backend!
 
-**Next Lab:** [Lab 9: Basic E2E Testing (Python)](LAB_09_Basic_E2E_Testing_Python.md)
+**Next Lab:** [Lab 9: Basic E2E Testing (Python)](../../stage_3_api_e2e/exercises/LAB_09_Basic_E2E_Testing_Python.md)

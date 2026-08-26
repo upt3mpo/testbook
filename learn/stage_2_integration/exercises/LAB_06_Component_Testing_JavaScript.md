@@ -786,7 +786,7 @@ const renderWithProviders = (ui, options = {}) => {
 
 **Ready for more?**
 
-- **[LAB_05_Test_Data_Management_JavaScript.md](LAB_05_Test_Data_Management_JavaScript.md)** - Learn test data patterns
+- **[LAB_05_Test_Data_Management_JavaScript.md](LAB_07_Test_Data_Management_JavaScript.md)** - Learn test data patterns
 - **[React Testing Library Docs](https://testing-library.com/docs/react-testing-library/intro/)** - Official documentation
 - **[Vitest Component Testing](https://vitest.dev/guide/testing.html#component-testing)** - Vitest component testing guide
 
@@ -794,4 +794,4 @@ const renderWithProviders = (ui, options = {}) => {
 
 **🎉 Congratulations!** You're now testing React components like a pro!
 
-**Next Lab:** [Lab 5: Test Data Management (JavaScript)](LAB_05_Test_Data_Management_JavaScript.md)
+**Next Lab:** [Lab 5: Test Data Management (JavaScript)](LAB_07_Test_Data_Management_JavaScript.md)

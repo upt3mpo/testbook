@@ -488,9 +488,8 @@ test("verify post created via API", async ({ page, request }) => {
 
 - [Playwright Test Docs](https://playwright.dev/docs/intro)
 - [Main Testing Guide](../../docs/guides/RUNNING_TESTS.md)
-- [Lab 4: E2E Testing (JavaScript)](../../learn/stage_3_api_e2e/exercises/LAB_04_E2E_Testing_JavaScript.md)
+- [Lab 4: E2E Testing (JavaScript)](../../learn/stage_3_api_e2e/exercises/LAB_09_Basic_E2E_Testing_JavaScript.md)
 - [Python E2E Tests](../e2e-python/README.md) (alternative approach)
-- [Test Alignment Guide](./E2E_TEST_ALIGNMENT.md) (JS vs Python differences)
 
 ---
 

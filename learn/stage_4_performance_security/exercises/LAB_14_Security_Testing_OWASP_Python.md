@@ -1225,8 +1225,8 @@ class SecurityMonitoring:
 **Continue building your skills:**
 
 - **[Lab 15: Rate Limiting & Production Monitoring (Python)](LAB_15_Rate_Limiting_Production_Python.md)** - Production readiness
-- **[Lab 16: Complete Test Suite Design (Python)](LAB_16_Complete_Test_Suite_Design_Python.md)** - Test strategy
-- **[Lab 17: Portfolio Project & Presentation (Python)](LAB_17_Portfolio_Project_Presentation_Python.md)** - Final project
+- **[Lab 16: Complete Test Suite Design (Python)](LAB_15_Rate_Limiting_Production_Python.md)** - Test strategy
+- **[Lab 17: Portfolio Project & Presentation (Python)](../../stage_5_capstone/README.md)** - Final project
 
 ---
 

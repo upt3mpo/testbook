@@ -844,12 +844,12 @@ describe.each([
 
 **Continue building your skills:**
 
-- **[Lab 9: Basic E2E Testing (JavaScript)](LAB_09_Basic_E2E_Testing_JavaScript.md)** - End-to-end testing
-- **[Lab 10: Advanced E2E Patterns (JavaScript)](LAB_10_Advanced_E2E_Patterns_JavaScript.md)** - Advanced E2E testing
-- **[Lab 11: Cross-Browser Testing (JavaScript)](LAB_11_Cross_Browser_Testing_JavaScript.md)** - Multi-browser testing
+- **[Lab 9: Basic E2E Testing (JavaScript)](../../stage_3_api_e2e/exercises/LAB_09_Basic_E2E_Testing_JavaScript.md)** - End-to-end testing
+- **[Lab 10: Advanced E2E Patterns (JavaScript)](../../stage_3_api_e2e/exercises/LAB_10_Advanced_E2E_Patterns_JavaScript.md)** - Advanced E2E testing
+- **[Lab 11: Cross-Browser Testing (JavaScript)](../../stage_3_api_e2e/exercises/LAB_11_Cross_Browser_Testing_JavaScript.md)** - Multi-browser testing
 
 ---
 
 **🎉 Congratulations!** You now understand contract testing and can ensure API compatibility between frontend and backend!
 
-**Next Lab:** [Lab 9: Basic E2E Testing (JavaScript)](LAB_09_Basic_E2E_Testing_JavaScript.md)
+**Next Lab:** [Lab 9: Basic E2E Testing (JavaScript)](../../stage_3_api_e2e/exercises/LAB_09_Basic_E2E_Testing_JavaScript.md)

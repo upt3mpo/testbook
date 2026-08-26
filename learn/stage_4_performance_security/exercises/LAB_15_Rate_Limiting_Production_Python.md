@@ -718,7 +718,7 @@ print(f"TESTING_MODE: {TESTING_MODE}")
 - [slowapi Documentation](https://slowapi.readthedocs.io/)
 - [HTTP Status Codes](https://httpstatuses.com/)
 - [pytest Fixture Scopes](https://docs.pytest.org/en/latest/reference/fixtures.html#scope)
-- [Lab 5: Test Data Management (Python)](LAB_05_Test_Data_Management_Python.md)
+- [Lab 5: Test Data Management (Python)](../../stage_2_integration/exercises/LAB_07_Test_Data_Management_Python.md)
 - [TESTING_ANTIPATTERNS.md](../../../docs/concepts/TESTING_ANTIPATTERNS.md)
 
 ---

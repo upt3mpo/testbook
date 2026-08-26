@@ -254,4 +254,4 @@ Answer these to solidify your learning:
 
 **🎉 Great job! You're testing real security code!**
 
-**Next Lab:** [Lab 3: Testing API Endpoints (Python)](LAB_03_Testing_API_Endpoints_Python.md)
+**Next Lab:** [Lab 3: Testing API Endpoints (Python)](LAB_03_Fixtures_And_Test_Data_Python.md)

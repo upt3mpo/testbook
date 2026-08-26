@@ -832,4 +832,4 @@ The concepts transfer directly between languages!
 
 **🎉 You've mastered advanced E2E testing patterns in JavaScript! These are professional-level skills used in production!**
 
-**Next Lab:** [Lab 7: Playwright Deep Dive (JavaScript)](LAB_07_Playwright_Deep_Dive_JavaScript.md)
+**Next Lab:** [Lab 7: Playwright Deep Dive (JavaScript)](LAB_11_Cross_Browser_Testing_JavaScript.md)

@@ -368,4 +368,4 @@ Answer these to solidify your learning:
 
 **🎉 Great job! You're testing real frontend code!**
 
-**Next Lab:** [Lab 2.5: Understanding Fixtures (JavaScript)](LAB_02.5_Understanding_Fixtures_JavaScript.md)
+**Next Lab:** [Lab 2.5: Understanding Fixtures (JavaScript)](LAB_03_Fixtures_And_Test_Data_JavaScript.md)

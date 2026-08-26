@@ -583,8 +583,8 @@ test.describe("Custom Security Tests", () => {
 **Continue building your skills:**
 
 - **[Lab 15: Rate Limiting & Production Monitoring (JavaScript)](LAB_15_Rate_Limiting_Production_JavaScript.md)** - Production readiness
-- **[Lab 16: Complete Test Suite Design (JavaScript)](LAB_16_Complete_Test_Suite_Design_JavaScript.md)** - Test strategy
-- **[Lab 17: Portfolio Project & Presentation (JavaScript)](LAB_17_Portfolio_Project_Presentation_JavaScript.md)** - Final project
+- **[Lab 16: Complete Test Suite Design (JavaScript)](LAB_15_Rate_Limiting_Production_JavaScript.md)** - Test strategy
+- **[Lab 17: Portfolio Project & Presentation (JavaScript)](../../stage_5_capstone/README.md)** - Final project
 
 ---
 

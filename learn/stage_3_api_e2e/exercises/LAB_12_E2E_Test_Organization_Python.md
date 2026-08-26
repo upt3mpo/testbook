@@ -798,12 +798,12 @@ class TestDataFactory:
 
 **Continue building your skills:**
 
-- **[Lab 13: Load Testing with k6 (JavaScript)](LAB_13_Load_Testing_k6.md)** - Performance testing
-- **[Lab 14: Security Testing & OWASP (Python)](LAB_14_Security_Testing_OWASP_Python.md)** - Security testing
-- **[Lab 15: Rate Limiting & Production Monitoring (Python)](LAB_15_Rate_Limiting_Production_Python.md)** - Production readiness
+- **[Lab 13: Load Testing with k6 (JavaScript)](../../stage_4_performance_security/exercises/LAB_13_Load_Testing_k6.md)** - Performance testing
+- **[Lab 14: Security Testing & OWASP (Python)](../../stage_4_performance_security/exercises/LAB_14_Security_Testing_OWASP_Python.md)** - Security testing
+- **[Lab 15: Rate Limiting & Production Monitoring (Python)](../../stage_4_performance_security/exercises/LAB_15_Rate_Limiting_Production_Python.md)** - Production readiness
 
 ---
 
 **🎉 Congratulations!** You now understand how to organize E2E tests for maintainability and team collaboration!
 
-**Next Lab:** [Lab 13: Load Testing with k6 (JavaScript)](LAB_13_Load_Testing_k6.md)
+**Next Lab:** [Lab 13: Load Testing with k6 (JavaScript)](../../stage_4_performance_security/exercises/LAB_13_Load_Testing_k6.md)

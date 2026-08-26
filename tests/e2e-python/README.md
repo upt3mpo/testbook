@@ -157,7 +157,7 @@ def test_api_setup_ui_verify(page, login_as, api_url):
     assert feed.post_count() == 10
 ```
 
-**Learn these patterns:** [Lab 4B: Advanced E2E Python](../../learn/stage_3_api_e2e/exercises/LAB_04B_Advanced_E2E_Python.md)
+**Learn these patterns:** [Lab 4B: Advanced E2E Python](../../learn/stage_3_api_e2e/exercises/LAB_10_Advanced_E2E_Patterns_Python.md)
 
 ---
 
@@ -289,8 +289,7 @@ pytest -v
 
 **Getting Started:**
 
-- [Lab 4: E2E Testing Python](../../learn/stage_3_api_e2e/exercises/LAB_04_E2E_Testing_Python.md) - Beginner lab
-- [Test Alignment Guide](../E2E_TEST_ALIGNMENT.md) - JS vs Python differences
+- [Lab 4: E2E Testing Python](../../learn/stage_3_api_e2e/exercises/LAB_09_Basic_E2E_Testing_Python.md) - Beginner lab
 
 **Documentation:**
 

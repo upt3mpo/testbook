@@ -296,7 +296,7 @@ tests/security/
 4. **HTTP status codes matter** → 401 vs 403 understanding
 5. **Tests prove features work** → Rate limits work SO well they affect tests!
 
-**See [LAB_06: Testing with Rate Limiting](../../learn/stage_4_performance_security/exercises/LAB_06_Testing_With_Rate_Limits.md)** for a complete lesson on these concepts!
+**See [LAB_06: Testing with Rate Limiting](../../learn/stage_4_performance_security/exercises/LAB_15_Rate_Limiting_Production_Python.md)** for a complete lesson on these concepts!
 
 ---
 
@@ -349,7 +349,7 @@ pytest tests/security/test_rate_limiting.py::TestRateLimiting::test_login_attemp
 
 ## 🔗 Related Documentation
 
-- [LAB_06: Testing with Rate Limiting](../../learn/stage_4_performance_security/exercises/LAB_06_Testing_With_Rate_Limits.md) - Complete lesson on this topic
+- [LAB_06: Testing with Rate Limiting](../../learn/stage_4_performance_security/exercises/LAB_15_Rate_Limiting_Production_Python.md) - Complete lesson on this topic
 - [backend/main.py](../../backend/main.py) - Rate limiting implementation
 - [backend/routers/auth.py](../../backend/routers/auth.py) - Login/register rate limits
 - [slowapi Documentation](https://slowapi.readthedocs.io/) - Rate limiting library
@@ -378,7 +378,7 @@ pytest tests/security/test_rate_limiting.py::TestRateLimiting::test_login_attemp
 **See:**
 
 - This README (you're reading it!)
-- [LAB_06](../../learn/stage_4_performance_security/exercises/LAB_06_Testing_With_Rate_Limits.md)
+- [LAB_06](../../learn/stage_4_performance_security/exercises/LAB_15_Rate_Limiting_Production_Python.md)
 - [README.md](../../README.md#frequently-asked-questions) - Learning questions and quick setup guidance
 - [RUNNING_TESTS.md](../../docs/guides/RUNNING_TESTS.md)
 

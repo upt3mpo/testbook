@@ -487,7 +487,7 @@ it("should handle login failure", async () => {
 
 **🎉 You're now testing real APIs like a pro!**
 
-**Next Lab:** [Lab 4: Component Testing (Vitest)](LAB_04_Component_Testing_Vitest.md)
+**Next Lab:** [Lab 4: Component Testing (Vitest)](LAB_06_Component_Testing_JavaScript.md)
 
 ---
 

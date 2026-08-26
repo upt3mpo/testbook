@@ -598,7 +598,7 @@ def test_external_api_call(self, client):
 
 - **[Lab 7: Test Data Management (Python)](LAB_07_Test_Data_Management_Python.md)** - Advanced test data patterns
 - **[Lab 8: Contract Testing Foundations (Python)](LAB_08_Contract_Testing_Foundations_Python.md)** - API contract testing
-- **[Lab 9: Basic E2E Testing (Python)](LAB_09_Basic_E2E_Testing_Python.md)** - End-to-end testing
+- **[Lab 9: Basic E2E Testing (Python)](../../stage_3_api_e2e/exercises/LAB_09_Basic_E2E_Testing_Python.md)** - End-to-end testing
 
 ---
 
