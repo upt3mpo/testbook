@@ -41,7 +41,7 @@ def rate_limit_spacing():
     """
     Add delay between tests to avoid hitting rate limits.
 
-    Even with TESTING mode (100 requests/minute), running 23 tests
+    Even with TESTING mode (1000 requests/minute on login), running 23 tests
     that each make multiple API calls can exceed limits.
 
     This fixture runs automatically before each test.
