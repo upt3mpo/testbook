@@ -54,8 +54,8 @@ k6 run load-test.js
 
 **Configuration:**
 
-- Ramps from 0 → 10 → 20 users
-- 15+ minute total duration
+- Ramps from 0 → 10 → 15 users locally (0 → 5 → 10 in CI)
+- ~4.5 minute total duration locally (~2 minutes in CI)
 - Simulates realistic user behavior
 - Creates posts, views feed, checks profiles
 
@@ -69,8 +69,8 @@ k6 run stress-test.js
 
 **Configuration:**
 
-- Ramps up to 100 users
-- 20+ minute duration
+- Ramps up to 50 users locally (25 users in CI)
+- ~5 minute duration locally (~2.5 minutes in CI)
 - More aggressive request patterns
 - Identifies breaking point
 
@@ -160,11 +160,10 @@ k6 cloud load-test.js
 
 ## CI/CD Integration
 
-Performance tests run automatically:
+Performance tests run automatically via `.github/workflows/performance-tests.yml`:
 
-- Weekly (Monday 2 AM)
-- On demand via workflow_dispatch
-- On changes to performance test files
+- On every push and pull request to `main`/`develop`
+- Weekly on a schedule (Sundays at 4 AM UTC)
 
 View results in GitHub Actions artifacts.
 

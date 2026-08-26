@@ -23,6 +23,8 @@ npx playwright install chromium
 ./start-dev.sh
 ```
 
+**Important:** The backend must be started with `TESTING=true` (e.g. `TESTING=true uvicorn main:app --reload --port 8000`) for most of these tests to pass. This enables the `/api/dev/reset` endpoint and higher rate limits that tests rely on between runs — plain `./start-dev.sh` with no `backend/.env` leaves `TESTING` unset and tests will fail/skip with 403s. See [Playwright Quickstart](../../docs/guides/PLAYWRIGHT_QUICKSTART.md) for the full explanation.
+
 ### 3. Run Tests
 
 ```bash
@@ -41,6 +43,8 @@ npm run test:headed
 # Run in debug mode (step through tests)
 npm run test:debug
 ```
+
+**Note:** `test:all-browsers` runs `playwright test` with no `--project` filter. Since only the `chromium` project is currently enabled in `playwright.config.js`, this behaves the same as `npm test` until you uncomment additional projects (firefox, webkit, Mobile Chrome) in the config.
 
 ---
 
@@ -87,7 +91,7 @@ All test helpers are in `fixtures/test-helpers.js`:
 **`resetDatabase(page)`** - Reset database to clean state
 
 ```javascript
-const { resetDatabase } = require("./fixtures/test-helpers");
+import { resetDatabase } from "./fixtures/test-helpers";
 
 test("my test", async ({ page }) => {
   await resetDatabase(page);
@@ -106,7 +110,7 @@ await seedDatabase(page, "users_with_posts");
 **`loginUser(page, email, password)`** - Login a user
 
 ```javascript
-const { loginUser, TEST_USERS } = require("./fixtures/test-helpers");
+import { loginUser, TEST_USERS } from "./fixtures/test-helpers";
 
 test("my test", async ({ page }) => {
   await loginUser(page, TEST_USERS.sarah.email, TEST_USERS.sarah.password);
@@ -130,7 +134,7 @@ await registerUser(page, {
 **`createPost(page, content)`** - Create a post
 
 ```javascript
-const { createPost } = require("./fixtures/test-helpers");
+import { createPost } from "./fixtures/test-helpers";
 
 await createPost(page, "This is my test post!");
 ```
@@ -169,7 +173,7 @@ await addComment(post, "Great post!");
 Pre-configured test users available in `TEST_USERS`:
 
 ```javascript
-const { TEST_USERS } = require("./fixtures/test-helpers");
+import { TEST_USERS } from "./fixtures/test-helpers";
 
 TEST_USERS.sarah; // Sarah Johnson
 TEST_USERS.mike; // Mike Chen
@@ -184,11 +188,12 @@ TEST_USERS.newuser; // For registration tests
 ```text
 tests/e2e/
 ├── fixtures/
-│   └── test-helpers.js      # Reusable helper functions
-├── auth.spec.js             # Authentication tests
-├── posts.spec.js            # Post creation/interaction tests
-├── users.spec.js            # User profile tests
-└── README.md                # This file
+│   └── test-helpers.js       # Reusable helper functions
+├── accessibility-axe.spec.js # Accessibility (WCAG/axe-core) tests
+├── auth.spec.js              # Authentication tests
+├── posts.spec.js             # Post creation/interaction tests
+├── users.spec.js             # User profile tests
+└── README.md                 # This file
 ```
 
 ---
@@ -198,8 +203,8 @@ tests/e2e/
 ### Basic Test Example
 
 ```javascript
-const { test, expect } = require("@playwright/test");
-const { loginUser, TEST_USERS } = require("./fixtures/test-helpers");
+import { expect, test } from "@playwright/test";
+import { loginUser, TEST_USERS } from "./fixtures/test-helpers";
 
 test("user can create post", async ({ page }) => {
   // Login
@@ -217,14 +222,14 @@ test("user can create post", async ({ page }) => {
 ### Using Test Helpers
 
 ```javascript
-const { test, expect } = require("@playwright/test");
-const {
+import { expect, test } from "@playwright/test";
+import {
   resetDatabase,
   loginUser,
   createPost,
   getFirstPost,
   TEST_USERS,
-} = require("./fixtures/test-helpers");
+} from "./fixtures/test-helpers";
 
 test("complete post flow", async ({ page }) => {
   // Reset database first
@@ -334,12 +339,11 @@ npx playwright test auth.spec.js:10  # Line number
 ### By Browser
 
 ```bash
-# Test only in Chromium
+# Test only in Chromium (the only project enabled by default)
 npx playwright test --project=chromium
-
-# Test only in Firefox
-npx playwright test --project=firefox
 ```
+
+**Note:** `playwright.config.js` only registers the `chromium` project by default — the `firefox`, `webkit`, and `Mobile Chrome` projects are present but commented out. Uncomment the project you want in `playwright.config.js` before running `npx playwright test --project=firefox`, or use `npm run test:all-browsers` once more projects are enabled.
 
 ---
 
@@ -449,7 +453,7 @@ test("complete user journey", async ({ page }) => {
     getFirstPost,
     addReaction,
     TEST_USERS,
-  } = require("./fixtures/test-helpers");
+  } = await import("./fixtures/test-helpers");
 
   // Login
   await loginUser(page, TEST_USERS.sarah.email, TEST_USERS.sarah.password);

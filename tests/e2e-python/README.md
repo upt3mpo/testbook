@@ -23,6 +23,8 @@ playwright install chromium
 ./start-dev.sh
 ```
 
+**Important:** The backend must be started with `TESTING=true` (e.g. `TESTING=true uvicorn main:app --reload --port 8000`) for most of these tests to pass. This enables the `/api/dev/reset` endpoint and higher rate limits that tests rely on between runs — plain `./start-dev.sh` with no `backend/.env` leaves `TESTING` unset and tests will fail/skip with 403s. See [Playwright Quickstart](../../docs/guides/PLAYWRIGHT_QUICKSTART.md) for the full explanation.
+
 ### 3. Run Tests
 
 ```bash

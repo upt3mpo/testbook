@@ -10,6 +10,7 @@ These files provide MSW configuration for testing React components without a run
 
 - `handlers.js` - API endpoint mock handlers
 - `server.js` - MSW server setup for Node.js tests
+- `examples.js` - Example mock patterns
 
 ---
 
@@ -17,9 +18,7 @@ These files provide MSW configuration for testing React components without a run
 
 ### Basic Setup
 
-The MSW server is configured in `setup.js` but commented out by default.
-
-To enable MSW for all component tests, uncomment in `setup.js`:
+The MSW server is configured and enabled by default in `../setup.js`:
 
 ```javascript
 import { server } from './mocks/server';
@@ -28,6 +27,8 @@ beforeAll(() => server.listen({ onUnhandledRequest: 'warn' }));
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 ```
+
+This runs automatically for every test — you don't need to enable anything to use the default handlers.
 
 ### Use in Individual Tests
 

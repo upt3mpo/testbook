@@ -87,6 +87,42 @@ markdownlint --fix README.md
 
 ---
 
+## ✅ Quality & Release Scripts
+
+### quality-check.sh
+
+**Purpose:** Runs the full local quality gate — backend formatting/linting/tests with an 80% coverage floor, then frontend linting/formatting/tests.
+
+```bash
+./scripts/quality-check.sh
+```
+
+Runs, in order: `black --check`, `isort --check-only`, `flake8` and `pytest --cov --cov-fail-under=80` in `backend/`, then `npm run lint`, `npm run format:check` and `npm test -- --run` in `frontend/`. Exits non-zero on the first failing step (`set -e`).
+
+### verify-release.sh
+
+**Purpose:** Pre-release checklist — verifies critical files exist, documentation cross-links, backend/frontend tests and coverage, config files, screenshots, and README badges are all in place.
+
+```bash
+./scripts/verify-release.sh
+```
+
+Unlike `quality-check.sh`, this script keeps going after a failed check and prints a final pass/fail summary, so it's meant for a full pre-tag review rather than a fast local gate.
+
+### run-tests-no-warnings.sh / run-tests-no-warnings.bat
+
+**Purpose:** Wraps any test command with `FORCE_COLOR=0` to silence color-related warnings in some terminals/CI logs.
+
+```bash
+# macOS/Linux
+./scripts/run-tests-no-warnings.sh pytest -v
+
+# Windows
+scripts\run-tests-no-warnings.bat pytest -v
+```
+
+---
+
 ## 🔧 Configuration
 
 ### Markdown Linting Rules

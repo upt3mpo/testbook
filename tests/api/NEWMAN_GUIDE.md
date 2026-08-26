@@ -44,9 +44,9 @@ newman run Testbook.postman_collection.json
 | Metric       | Executed | Failed |
 |--------------|----------|--------|
 | iterations   | 1        | 0      |
-| requests     | 15       | 0      |
-| test-scripts | 30       | 0      |
-| assertions   | 45       | 0      |
+| requests     | 12       | 0      |
+| test-scripts | 12       | 0      |
+| assertions   | 22       | 0      |
 ```
 
 ---
@@ -138,7 +138,7 @@ jobs:
   api-tests:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Start Testbook
         run: |
@@ -159,7 +159,7 @@ jobs:
             --reporter-json-export api-results.json
 
       - name: Upload Results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v7
         with:
           name: api-test-results
           path: api-results.json

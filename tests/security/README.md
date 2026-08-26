@@ -49,7 +49,7 @@ pytest tests/security/ -v
 **What TESTING mode does:**
 
 - Production: 20 login requests/minute
-- Testing: 100 login requests/minute (allows all tests to pass)
+- Testing: 1000 login requests/minute (allows all tests to pass)
 
 ---
 
@@ -93,26 +93,27 @@ pytest tests/security/ -v
 ### With TESTING=true (Correct Setup)
 
 ```text
-=================== 17-19 passed, 3 skipped, 1-3 failed ===================
+=================== 17-18 passed, 5 skipped, 0-1 failed ===================
 ```
 
-**Passing (17-19 tests):**
+**Passing (17-18 tests):**
 
 - ✅ All authentication tests
 - ✅ All authorization tests
 - ✅ Input validation (SQL injection, XSS)
 - ✅ Data exposure prevention
 - ✅ Session management
-- ✅ Registration rate limiting
 - ✅ Request size limits
 
-**Skipped (3 tests):**
+**Skipped (5 tests):**
 
 - ⏭️ Account lockout (feature not implemented - future enhancement)
 - ⏭️ IP banning (feature not implemented - future enhancement)
-- ⏭️ Rate limit headers (optional feature)
+- ⏭️ Rate limit headers (optional feature, not implemented)
+- ⏭️ Login rate-limit test (auto-skips when `TESTING=true` raises the limit to 1000/min, too high to trigger in-test)
+- ⏭️ Registration rate-limit test (auto-skips when `TESTING=true` raises the limit to 500/min, too high to trigger in-test)
 
-**Failing (1-3 tests):**
+**Failing (0-1 tests):**
 
 - ⚠️ Test execution order issues (test infrastructure, not code bugs)
 - ⚠️ Timing issues with concurrent tests
@@ -264,8 +265,8 @@ tests/security/
 
 4. **Rate Limiting**
 
-   - Login endpoints rate limited (20/min prod, 100/min test)
-   - Registration rate limited (15/min prod, 100/min test)
+   - Login endpoints rate limited (20/min prod, 1000/min test)
+   - Registration rate limited (15/min prod, 500/min test)
    - Excessive attempts blocked
 
 5. **Data Exposure Prevention**

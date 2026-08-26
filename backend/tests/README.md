@@ -21,6 +21,7 @@ This test suite demonstrates professional testing practices and serves as a lear
   - `test_database.py` - Database constraints and transactions
 - **`conftest.py`** - Shared fixtures and test configuration
 - **`factories.py`** - Test data factories
+- **`examples/`** - Educational good/bad test pattern examples (`good_tests.py`, `bad_tests.py`), referenced from [Stage 1 learning materials](../../learn/stage_1_unit/README.md)
 
 ## Running Tests
 

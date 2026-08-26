@@ -23,6 +23,8 @@ These tests showcase the patterns taught in [Lab 4B: Advanced E2E Python](../../
 ./start-dev.sh
 ```
 
+**Important:** Start the backend with `TESTING=true` (e.g. `TESTING=true uvicorn main:app --reload --port 8000`) — otherwise the database-reset endpoint these tests rely on between runs will 403. See [Playwright Quickstart](../../../docs/guides/PLAYWRIGHT_QUICKSTART.md) for details.
+
 1. Install Python dependencies:
 
 ```bash
