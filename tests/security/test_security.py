@@ -31,7 +31,7 @@ SOLUTION: Run backend in TESTING mode:
 Then run tests:
     pytest tests/security/ -v
 
-LEARN MORE: See tests/security/README.md or learn/stage_4_performance_security/exercises/LAB_06_Testing_With_Rate_Limits.md
+LEARN MORE: See tests/security/README.md or learn/stage_4_performance_security/exercises/LAB_15_Rate_Limiting_Production_Python.md
 ────────────────────────────────────────────────────────────────────
 """
 
