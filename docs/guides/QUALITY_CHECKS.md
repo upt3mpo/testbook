@@ -13,8 +13,8 @@ Testbook uses automated quality checks to maintain code standards:
 | **Formatting**       | Black            | Prettier              |
 | **Import Sorting**   | isort            | ESLint import rules   |
 | **Linting**          | Flake8           | ESLint + plugins      |
-| **Coverage Gate**    | 80% minimum      | No gate (41%+ actual) |
-| **Pre-commit Hooks** | ✅ Enabled       | ✅ Enabled            |
+| **Coverage Gate**    | 80% minimum      | No gate (~41% actual) |
+| **Pre-commit Hooks** | ⚠️ Partial (Black only; isort/Flake8 not yet enabled) | ❌ Not enabled (ESLint/Prettier still commented out in `.pre-commit-config.yaml`) |
 
 ---
 
@@ -59,7 +59,7 @@ black .
 
 ```toml
 [tool.black]
-line-length = 100
+line-length = 88
 target-version = ['py311']
 ```
 
@@ -85,7 +85,7 @@ isort .
 ```toml
 [tool.isort]
 profile = "black"
-line_length = 100
+line_length = 88
 ```
 
 ---
@@ -147,7 +147,7 @@ npm run lint
 npm run lint:fix
 ```
 
-**Configuration:** `frontend/.eslintrc.json`
+**Configuration:** `frontend/eslint.config.js` (flat config, ESLint 9 — the older `frontend/.eslintrc.json` is no longer read)
 
 **Plugins enabled:**
 
@@ -204,18 +204,21 @@ pre-commit install
 
 ### What Gets Checked
 
-**On every commit:**
+**On every commit (currently active hooks):**
 
 1. Trailing whitespace removal
 2. End-of-file fixer
 3. YAML validation
-4. Large file check (max 1MB)
+4. JSON validation
 5. Merge conflict markers
-6. **Black** (Python formatting)
-7. **isort** (Python imports)
-8. **Flake8** (Python linting)
-9. **Prettier** (JavaScript formatting)
-10. **ESLint** (JavaScript linting)
+6. Large file check (max 1MB)
+7. Case-conflict check
+8. Debug statement check (Python)
+9. Private key detection
+10. **Markdownlint** (Markdown files)
+11. **Black** (Python formatting, `--line-length=88`)
+
+**Not currently enabled in pre-commit** (present in `.pre-commit-config.yaml` but commented out): isort, Flake8, ESLint, and `detect-secrets`. These are still enforced separately by `./scripts/quality-check.sh` and the `lint-backend`/`lint-frontend` CI jobs — they just don't run as a local pre-commit hook yet.
 
 **Configuration:** `.pre-commit-config.yaml`
 
