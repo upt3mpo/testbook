@@ -154,9 +154,9 @@ Optionally note before/after if meaningful; attach CI coverage artifact links.
 - [ ] Checkpoints included
 - [ ] Troubleshooting section included
 - [ ] Completion checklist included
-- [ ] Sample solution created (in `labs/solutions/`)
+- [ ] Sample solution created (in `learn/solutions/`)
 - [ ] Integrated into course curriculum
-- [ ] Linked from `labs/README.md`
+- [ ] Linked from `learn/README.md`
 
 ---
 
