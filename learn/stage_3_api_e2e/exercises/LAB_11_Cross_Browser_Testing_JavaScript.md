@@ -3,7 +3,7 @@
 **Estimated Time:** 90 minutes<br>
 **Difficulty:** Advanced<br>
 **Language:** 🟨 JavaScript<br>
-**Prerequisites:** Lab 4B completed
+**Prerequisites:** Lab 10 completed
 
 **💡 Need Python instead?** Try [Lab 11: Cross Browser Testing (Python)](LAB_11_Cross_Browser_Testing_Python.md)!
 
@@ -148,7 +148,7 @@ test("test", async ({ page }) => {
   await page.getByRole("link", { name: "Login" }).click();
   await page.getByPlaceholder("Email").fill("test@test.com");
   await page.getByPlaceholder("Password").fill("password");
-  await page.getByRole("button", { name: "Login" }).click();
+  await page.getByRole("button", { name: "Log In" }).click();
   await page.getByPlaceholder("What's on your mind?").fill("My first post!");
   await page.getByRole("button", { name: "Post" }).click();
   await page.getByRole("link", { name: "Profile" }).click();
@@ -170,7 +170,7 @@ test("should login and create post", async ({ page }) => {
   // Login
   await page.getByPlaceholder("Email").fill("sarah.johnson@testbook.com");
   await page.getByPlaceholder("Password").fill("Sarah2024!");
-  await page.getByRole("button", { name: "Login" }).click();
+  await page.getByRole("button", { name: "Log In" }).click();
 
   // Wait for navigation
   await page.waitForURL("http://localhost:3000/");
@@ -377,6 +377,14 @@ npx playwright show-trace test-results/network.har
 
 **Speed up test runs** with parallel execution and optimization.
 
+**⚠️ Note:** Testbook's own `tests/playwright.config.js` intentionally sets
+`workers: 1` and `fullyParallel: false`, because the E2E suite resets the
+shared database between tests - running it with `workers: 4` /
+`fullyParallel: true` as shown below would make tests interfere with each
+other and fail intermittently. The settings below are a general pattern for
+suites whose tests are independent, not a change you should make to
+Testbook's actual config.
+
 #### Step 1: Configure Parallel Execution
 
 **Update `playwright.config.js`:**
@@ -477,16 +485,19 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 18
+          # Testbook targets Node 24 (see .nvmrc / other workflows in .github/workflows/)
+          node-version: 24
 
-      - name: Install dependencies
+      - name: Install frontend dependencies
         run: |
           cd frontend
           npm ci
 
-      - name: Install Playwright Browsers
+      - name: Install E2E test dependencies
         run: |
-          cd frontend
+          # Playwright config and specs live under tests/, not frontend/
+          cd tests
+          npm ci
           npx playwright install --with-deps
 
       - name: Start Testbook
@@ -494,15 +505,11 @@ jobs:
           # Start backend
           cd backend
           python -m venv .venv
-          # Linux/Mac
           source .venv/bin/activate
           pip install -r requirements.txt
-          uvicorn main:app --host 0.0.0.0 --port 8000 &
-
-          # Windows (PowerShell)
-          .venv\Scripts\activate
-          pip install -r requirements.txt
-          Start-Process -NoNewWindow pwsh -ArgumentList "-Command", "uvicorn main:app --host 0.0.0.0 --port 8000"
+          # TESTING=true is required: it enables the /api/dev/reset endpoint
+          # and the relaxed rate limits that the E2E suite depends on.
+          TESTING=true uvicorn main:app --host 0.0.0.0 --port 8000 &
 
           # Start frontend
           cd ../frontend
@@ -514,15 +521,15 @@ jobs:
 
       - name: Run Playwright tests
         run: |
-          cd frontend
-          npx playwright test
+          cd tests
+          npx playwright test --project=chromium
 
       - name: Upload test results
         uses: actions/upload-artifact@v4
         if: always()
         with:
           name: playwright-report
-          path: frontend/playwright-report/
+          path: tests/playwright-report/
           retention-days: 30
 ```
 

@@ -41,13 +41,13 @@ npx playwright install chromium
 
 ```bash
 # macOS / Linux
-./start-dev.sh
+TESTING=true ./start-dev.sh
 
 # Windows
-start-dev.bat
+set TESTING=true && start-dev.bat
 ```
 
-This launches the backend on `http://localhost:8000` and the frontend UI on `http://localhost:3000`.
+This launches the backend on `http://localhost:8000` and the frontend UI on `http://localhost:3000`. `TESTING=true` enables the dev-only `/api/dev/reset` endpoint and higher rate limits that E2E tests rely on — see [`../../../docs/guides/PLAYWRIGHT_QUICKSTART.md`](../../../docs/guides/PLAYWRIGHT_QUICKSTART.md) for details.
 
 **Verify:** Open <http://localhost:3000> in your browser – you should see Testbook!
 
@@ -141,7 +141,7 @@ await page.fill('[data-testid="create-post-textarea"]', "My post");
 **Create:** `tests/e2e/my_first_e2e.spec.js`
 
 ```javascript
-const { test, expect } = require("@playwright/test");
+import { test, expect } from "@playwright/test";
 
 test("My first E2E test - Login and create post", async ({ page }) => {
   // Step 1: Go to Testbook

@@ -176,12 +176,14 @@ def test_user(db_session):
 @pytest.fixture
 def test_posts(db_session, test_user):
     """Create test posts for E2E tests."""
+    # Note: Testbook's Post model has no "title" field (posts are plain
+    # status updates, like the real app's feed) - only pass fields that
+    # actually exist on models.Post.
     posts = []
     for i in range(3):
         post = Post(
             author_id=test_user.id,
-            content=f"E2E test post {i+1}",
-            title=f"Test Post {i+1}"
+            content=f"E2E test post {i+1}"
         )
         posts.append(post)
         db_session.add(post)
@@ -279,8 +281,11 @@ class LoginPage(BasePage):
         self.email_input = "input[data-testid='login-email-input']"
         self.password_input = "input[data-testid='login-password-input']"
         self.login_button = "button[data-testid='login-submit-button']"
-        self.error_message = "[data-testid='login-error-message']"
-        self.success_message = "[data-testid='login-success-message']"
+        self.error_message = "[data-testid='login-error']"
+        # Testbook has no login-success banner - a successful login just
+        # navigates away from /login (to the feed at "/"), so we check for
+        # that instead of a "success message" element.
+        self.navbar = "[data-testid='navbar']"
 
     def login(self, email: str, password: str) -> None:
         """Perform login action."""
@@ -289,8 +294,8 @@ class LoginPage(BasePage):
         self.click_element(self.login_button)
 
     def is_login_successful(self) -> bool:
-        """Check if login was successful."""
-        return self.is_visible(self.success_message)
+        """Check if login was successful (navbar appears once we're logged in)."""
+        return self.is_visible(self.navbar)
 
     def get_error_message(self) -> str:
         """Get login error message."""
@@ -299,8 +304,8 @@ class LoginPage(BasePage):
         return ""
 
     def wait_for_login_success(self) -> None:
-        """Wait for login success."""
-        self.wait_for_url("**/dashboard")
+        """Wait for login success (redirect to the feed at "/")."""
+        self.wait_for_url(f"{self.base_url}/")
 ```
 
 ---
@@ -347,28 +352,22 @@ Create `tests/e2e/data/users.json`:
 
 Create `tests/e2e/data/posts.json`:
 
+Note: Testbook's `Post` model only has `content` (plus optional
+`image_url`/`video_url`) - there's no `title` or `tags` field on real posts,
+so this sample data sticks to fields the app actually stores.
+
 ```json
 {
   "valid_posts": [
     {
-      "title": "Test Post 1",
-      "content": "This is a test post for E2E testing.",
-      "tags": ["test", "e2e"]
+      "content": "This is a test post for E2E testing."
     },
     {
-      "title": "Test Post 2",
-      "content": "Another test post with different content.",
-      "tags": ["test", "automation"]
+      "content": "Another test post with different content."
     }
   ],
   "invalid_posts": [
     {
-      "title": "",
-      "content": "Post without title",
-      "expected_errors": ["Title is required"]
-    },
-    {
-      "title": "Valid Title",
       "content": "",
       "expected_errors": ["Content is required"]
     }
@@ -471,11 +470,12 @@ class TestCriticalFlows:
         login_page.goto("/login")
         login_page.login(test_user.email, "password123")
         dashboard_page.click_create_post()
-        post_page.create_post("Test Post", "This is a test post content")
+        # Testbook posts have no title - just content
+        post_page.create_post("This is a test post content")
 
         # Assert
         assert post_page.is_post_created()
-        assert post_page.get_post_title() == "Test Post"
+        assert post_page.get_post_content() == "This is a test post content"
 
     def test_user_can_logout(self, browser_page, test_user):
         """Test that user can logout successfully."""
@@ -599,7 +599,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.11"
+          python-version: "3.13"
 
       - name: Install dependencies
         run: |
@@ -613,9 +613,12 @@ jobs:
           playwright install-deps
 
       - name: Start backend server
+        # TESTING=true unlocks the /api/dev/reset dev endpoint that
+        # reset_database/fresh_database depend on, and raises rate limits -
+        # see docs/guides/PLAYWRIGHT_QUICKSTART.md.
         run: |
           cd backend
-          python -m uvicorn main:app --host 0.0.0.0 --port 8000 &
+          TESTING=true python -m uvicorn main:app --host 0.0.0.0 --port 8000 &
           sleep 10
 
       - name: Start frontend server
@@ -623,13 +626,16 @@ jobs:
           cd frontend
           npm install
           npm run build
-          npm start &
+          npm run preview -- --host 0.0.0.0 --port 3000 &
           sleep 10
 
       - name: Run E2E tests
+        # This conftest's browser fixture reads the E2E_BROWSER env var
+        # (not a --browser CLI flag) to pick the engine - see TEST_CONFIG
+        # and the playwright_context fixture above.
         run: |
           cd backend
-          pytest tests/e2e/ -v --browser=${{ matrix.browser }} --html=reports/e2e-report-${{ matrix.browser }}.html
+          E2E_BROWSER=${{ matrix.browser }} pytest tests/e2e/ -v --html=reports/e2e-report-${{ matrix.browser }}.html
 
       - name: Upload test results
         uses: actions/upload-artifact@v3
@@ -645,27 +651,22 @@ jobs:
 
 Create `tests/e2e/pytest.ini`:
 
+Note: this suite's `conftest.py` (Part 1) manages its own `sync_playwright()`
+session and reads browser/headless/timeout settings from the `E2E_*`
+environment variables in `TEST_CONFIG`, rather than from `pytest-playwright`'s
+built-in `--browser`/`--headed`/`--video`/`--screenshot` CLI options - so
+`addopts` here should only use real pytest (and pytest-html) flags:
+
 ```ini
-[tool:pytest]
+[pytest]
 testpaths = tests/e2e/tests
 python_files = test_*.py
 python_classes = Test*
 python_functions = test_*
 addopts =
     --strict-markers
-    --strict-config
     --html=reports/e2e-report.html
     --self-contained-html
-    --screenshot=on
-    --video=on
-    --video-encoding=vp8
-    --video-size=1280x720
-    --video-mode=retain-on-failure
-    --screenshot-mode=retain-on-failure
-    --browser=chromium
-    --headed
-    --slow-mo=1000
-    --timeout=30000
     --maxfail=5
     --tb=short
     --durations=10
@@ -678,6 +679,13 @@ markers =
     skip_ci: Tests to skip in CI environment
 ```
 
+Configure the browser/headless/video behavior via environment variables
+instead (matching `TEST_CONFIG` from Part 1):
+
+```bash
+E2E_BROWSER=firefox E2E_HEADLESS=false E2E_SLOW_MO=500 pytest
+```
+
 ---
 
 ## 💪 Challenge Exercises
@@ -686,6 +694,7 @@ markers =
 
 ```python
 # Create tests/e2e/run_tests.py
+import os
 import subprocess
 import sys
 import argparse
@@ -695,7 +704,6 @@ def run_test_suite(suite: str, browser: str = "chromium", parallel: bool = False
     cmd = [
         "pytest",
         f"tests/e2e/tests/{suite}/",
-        f"--browser={browser}",
         "--html=reports/e2e-report.html",
         "--self-contained-html"
     ]
@@ -703,7 +711,10 @@ def run_test_suite(suite: str, browser: str = "chromium", parallel: bool = False
     if parallel:
         cmd.extend(["-n", "auto"])
 
-    result = subprocess.run(cmd, capture_output=True, text=True)
+    # This suite's conftest.py reads the browser from the E2E_BROWSER env
+    # var (not a --browser CLI flag), so pass it through the environment
+    env = {**os.environ, "E2E_BROWSER": browser}
+    result = subprocess.run(cmd, capture_output=True, text=True, env=env)
     print(result.stdout)
     if result.stderr:
         print(result.stderr)
@@ -751,11 +762,9 @@ class TestDataFactory:
 
     @staticmethod
     def generate_post(overrides: Dict = None) -> Dict[str, str]:
-        """Generate a random post."""
+        """Generate a random post. Testbook posts only have content (no title/tags)."""
         post = {
-            "title": f"Test Post {random.randint(1000, 9999)}",
-            "content": f"This is test content {random.randint(1000, 9999)}",
-            "tags": random.sample(["test", "automation", "e2e", "playwright"], 2)
+            "content": f"This is test content {random.randint(1000, 9999)}"
         }
 
         if overrides:
