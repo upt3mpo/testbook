@@ -46,7 +46,7 @@
   },
   "forwardPorts": [
     8000,
-    5173,
+    3000,
     5432
   ],
   "portsAttributes": {
@@ -54,7 +54,7 @@
       "label": "Backend API",
       "onAutoForward": "notify"
     },
-    "5173": {
+    "3000": {
       "label": "Frontend Dev Server",
       "onAutoForward": "notify"
     },
