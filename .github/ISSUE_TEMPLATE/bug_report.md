@@ -43,8 +43,8 @@ If applicable, add screenshots to help explain your problem.
 
 **Details:**
 - OS Version: [e.g. macOS 14, Windows 11, Ubuntu 22.04]
-- Python Version: [e.g. 3.11.5]
-- Node Version: [e.g. 20.10.0]
+- Python Version: [e.g. 3.13.0]
+- Node Version: [e.g. 24.0.0]
 - Browser (if E2E test related): [e.g. Chrome 120]
 
 ## 📝 Additional Context

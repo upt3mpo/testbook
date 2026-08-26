@@ -56,6 +56,6 @@ If applicable, add screenshots.
 ---
 
 **Note:** For general learning questions, consider checking:
-- [START_HERE.md](../../START_HERE.md) - Learning paths
+- [learn/README.md](../../learn/README.md) - Learning paths
 - [RUNNING_TESTS.md](../../docs/guides/RUNNING_TESTS.md) - How to run tests
 - [DEBUGGING_GUIDE.md](../../docs/reference/DEBUGGING_GUIDE.md) - Debug strategies
