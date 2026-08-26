@@ -48,7 +48,7 @@ fi
 echo "1️⃣  Running Markdown Linting..."
 echo ""
 
-if markdownlint '**/*.md' --ignore node_modules --ignore venv --ignore backend/venv --ignore frontend/node_modules --ignore backend/htmlcov 2>&1; then
+if markdownlint '**/*.md' --ignore node_modules --ignore .venv --ignore backend/.venv --ignore frontend/node_modules --ignore backend/htmlcov 2>&1; then
     echo -e "${GREEN}✅ Markdown linting passed!${NC}"
     LINT_STATUS=0
 else
@@ -90,7 +90,7 @@ echo ""
 echo -e "${YELLOW}Checking other markdown files (non-blocking)...${NC}"
 
 # Non-critical files (informational only)
-find docs labs tests -name "*.md" -not -path "*/node_modules/*" -not -path "*/venv/*" 2>/dev/null | while read -r file; do
+find docs learn tests -name "*.md" -not -path "*/node_modules/*" -not -path "*/.venv/*" 2>/dev/null | while read -r file; do
     echo "Checking: $file"
     markdown-link-check "$file" --config .markdown-link-check.json --quiet || echo "  ⚠️  Some links may be broken (non-blocking)"
 done
