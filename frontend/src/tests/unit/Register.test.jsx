@@ -19,7 +19,8 @@
  * as an example of professional React component testing.
  */
 
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { BrowserRouter } from 'react-router-dom';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { AuthContext } from '../../AuthContext';
@@ -106,7 +107,7 @@ describe('Register Component', () => {
     expect(screen.getByTestId('register-submit-button')).toBeInTheDocument();
   });
 
-  it('allows user to type in form fields', () => {
+  it('allows user to type in form fields', async () => {
     /**
      * Test user interaction with form inputs.
      *
@@ -121,6 +122,7 @@ describe('Register Component', () => {
      * - Act: Simulate user typing in form fields
      * - Assert: Verify the form state reflects user input
      */
+    const user = userEvent.setup();
 
     // Arrange - Render the component and get form elements
     renderRegister();
@@ -128,8 +130,8 @@ describe('Register Component', () => {
     const usernameInput = screen.getByTestId('register-username-input');
 
     // Act - Simulate user typing in the form fields
-    fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
-    fireEvent.change(usernameInput, { target: { value: 'testuser' } });
+    await user.type(emailInput, 'test@example.com');
+    await user.type(usernameInput, 'testuser');
 
     // Assert - Verify the form state reflects user input
     expect(emailInput.value).toBe('test@example.com');
@@ -137,6 +139,7 @@ describe('Register Component', () => {
   });
 
   it('shows loading state during submission', async () => {
+    const user = userEvent.setup();
     // Mock a slow register function
     const mockRegister = vi
       .fn()
@@ -159,11 +162,11 @@ describe('Register Component', () => {
     const submitButton = screen.getByTestId('register-submit-button');
 
     // Fill all required form fields
-    fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
-    fireEvent.change(usernameInput, { target: { value: 'testuser' } });
-    fireEvent.change(displayNameInput, { target: { value: 'Test User' } });
-    fireEvent.change(passwordInput, { target: { value: 'password123' } });
-    fireEvent.click(submitButton);
+    await user.type(emailInput, 'test@example.com');
+    await user.type(usernameInput, 'testuser');
+    await user.type(displayNameInput, 'Test User');
+    await user.type(passwordInput, 'password123');
+    await user.click(submitButton);
 
     // Should show loading state
     expect(screen.getByText('Creating Account...')).toBeInTheDocument();
@@ -171,6 +174,7 @@ describe('Register Component', () => {
   });
 
   it('calls register API with correct data on form submission', async () => {
+    const user = userEvent.setup();
     const mockRegister = vi.fn().mockResolvedValue({ data: { id: 1 } });
     const mockAuth = {
       user: null,
@@ -189,13 +193,13 @@ describe('Register Component', () => {
     const submitButton = screen.getByTestId('register-submit-button');
 
     // Fill out the form
-    fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
-    fireEvent.change(usernameInput, { target: { value: 'testuser' } });
-    fireEvent.change(displayNameInput, { target: { value: 'Test User' } });
-    fireEvent.change(passwordInput, { target: { value: 'SecurePass123!' } });
-    fireEvent.change(bioInput, { target: { value: 'Test bio' } });
+    await user.type(emailInput, 'test@example.com');
+    await user.type(usernameInput, 'testuser');
+    await user.type(displayNameInput, 'Test User');
+    await user.type(passwordInput, 'SecurePass123!');
+    await user.type(bioInput, 'Test bio');
 
-    fireEvent.click(submitButton);
+    await user.click(submitButton);
 
     await waitFor(() => {
       expect(mockRegister).toHaveBeenCalledWith({
@@ -209,6 +213,7 @@ describe('Register Component', () => {
   });
 
   it('navigates to home page after successful registration', async () => {
+    const user = userEvent.setup();
     const mockRegister = vi.fn().mockResolvedValue({ data: { id: 1 } });
     const mockAuth = {
       user: null,
@@ -226,11 +231,11 @@ describe('Register Component', () => {
     const submitButton = screen.getByTestId('register-submit-button');
 
     // Fill all required form fields
-    fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
-    fireEvent.change(usernameInput, { target: { value: 'testuser' } });
-    fireEvent.change(displayNameInput, { target: { value: 'Test User' } });
-    fireEvent.change(passwordInput, { target: { value: 'password123' } });
-    fireEvent.click(submitButton);
+    await user.type(emailInput, 'test@example.com');
+    await user.type(usernameInput, 'testuser');
+    await user.type(displayNameInput, 'Test User');
+    await user.type(passwordInput, 'password123');
+    await user.click(submitButton);
 
     await waitFor(() => {
       expect(mockNavigate).toHaveBeenCalledWith('/');
@@ -238,6 +243,7 @@ describe('Register Component', () => {
   });
 
   it('handles registration API errors gracefully', async () => {
+    const user = userEvent.setup();
     // Suppress expected error output in test logs
     const originalError = console.error;
     console.error = () => {};
@@ -266,11 +272,11 @@ describe('Register Component', () => {
     const submitButton = screen.getByTestId('register-submit-button');
 
     // Act - User fills form and submits but API fails
-    fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
-    fireEvent.change(usernameInput, { target: { value: 'testuser' } });
-    fireEvent.change(displayNameInput, { target: { value: 'Test User' } });
-    fireEvent.change(passwordInput, { target: { value: 'password123' } });
-    fireEvent.click(submitButton);
+    await user.type(emailInput, 'test@example.com');
+    await user.type(usernameInput, 'testuser');
+    await user.type(displayNameInput, 'Test User');
+    await user.type(passwordInput, 'password123');
+    await user.click(submitButton);
 
     // Assert - Error message displayed to user
     await waitFor(() => {
@@ -282,6 +288,7 @@ describe('Register Component', () => {
   });
 
   it('handles validation errors from API', async () => {
+    const user = userEvent.setup();
     const mockRegister = vi.fn().mockRejectedValue({
       response: {
         data: {
@@ -305,11 +312,11 @@ describe('Register Component', () => {
     const submitButton = screen.getByTestId('register-submit-button');
 
     // Fill all required form fields
-    fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
-    fireEvent.change(usernameInput, { target: { value: 'testuser' } });
-    fireEvent.change(displayNameInput, { target: { value: 'Test User' } });
-    fireEvent.change(passwordInput, { target: { value: 'password123' } });
-    fireEvent.click(submitButton);
+    await user.type(emailInput, 'test@example.com');
+    await user.type(usernameInput, 'testuser');
+    await user.type(displayNameInput, 'Test User');
+    await user.type(passwordInput, 'password123');
+    await user.click(submitButton);
 
     await waitFor(() => {
       expect(screen.getByTestId('register-error')).toHaveTextContent(
@@ -319,6 +326,7 @@ describe('Register Component', () => {
   });
 
   it('shows generic error message for unknown errors', async () => {
+    const user = userEvent.setup();
     const mockRegister = vi.fn().mockRejectedValue(new Error('Network error'));
     const mockAuth = {
       user: null,
@@ -336,11 +344,11 @@ describe('Register Component', () => {
     const submitButton = screen.getByTestId('register-submit-button');
 
     // Fill all required form fields
-    fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
-    fireEvent.change(usernameInput, { target: { value: 'testuser' } });
-    fireEvent.change(displayNameInput, { target: { value: 'Test User' } });
-    fireEvent.change(passwordInput, { target: { value: 'password123' } });
-    fireEvent.click(submitButton);
+    await user.type(emailInput, 'test@example.com');
+    await user.type(usernameInput, 'testuser');
+    await user.type(displayNameInput, 'Test User');
+    await user.type(passwordInput, 'password123');
+    await user.click(submitButton);
 
     await waitFor(() => {
       expect(screen.getByTestId('register-error')).toHaveTextContent(
@@ -350,6 +358,7 @@ describe('Register Component', () => {
   });
 
   it('clears error message when user starts typing again', async () => {
+    const user = userEvent.setup();
     const mockRegister = vi.fn().mockRejectedValue({
       response: {
         data: {
@@ -373,18 +382,18 @@ describe('Register Component', () => {
     const submitButton = screen.getByTestId('register-submit-button');
 
     // First submission fails - fill all required fields
-    fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
-    fireEvent.change(usernameInput, { target: { value: 'testuser' } });
-    fireEvent.change(displayNameInput, { target: { value: 'Test User' } });
-    fireEvent.change(passwordInput, { target: { value: 'password123' } });
-    fireEvent.click(submitButton);
+    await user.type(emailInput, 'test@example.com');
+    await user.type(usernameInput, 'testuser');
+    await user.type(displayNameInput, 'Test User');
+    await user.type(passwordInput, 'password123');
+    await user.click(submitButton);
 
     await waitFor(() => {
       expect(screen.getByTestId('register-error')).toHaveTextContent('Email already exists');
     });
 
     // Start typing again - error should clear
-    fireEvent.change(emailInput, { target: { value: 'new@example.com' } });
+    await user.type(emailInput, 'new@example.com');
 
     expect(screen.queryByTestId('register-error')).not.toBeInTheDocument();
   });

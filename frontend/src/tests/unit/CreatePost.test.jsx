@@ -16,7 +16,8 @@
  * of professional component testing practices.
  */
 
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { BrowserRouter } from 'react-router-dom';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import * as api from '../../api';
@@ -105,18 +106,19 @@ describe('CreatePost Component', () => {
     expect(screen.getByRole('button', { name: /post/i })).toBeInTheDocument();
   });
 
-  it('allows user to type in the textarea', () => {
+  it('allows user to type in the textarea', async () => {
     /**
      * Test that users can type content into the textarea.
      *
      * This verifies the basic user interaction functionality
      * and ensures the input field accepts user input correctly.
      */
+    const user = userEvent.setup();
     renderCreatePost();
     const textarea = screen.getByPlaceholderText("What's on your mind?");
 
     // Simulate user typing in the textarea
-    fireEvent.change(textarea, { target: { value: 'Test post content' } });
+    await user.type(textarea, 'Test post content');
 
     // Verify the textarea contains the typed content
     expect(textarea.value).toBe('Test post content');
@@ -136,19 +138,20 @@ describe('CreatePost Component', () => {
     expect(postButton).toBeDisabled();
   });
 
-  it('enables Post button when textarea has content', () => {
+  it('enables Post button when textarea has content', async () => {
     /**
      * Test that the Post button is enabled when there's content.
      *
      * This ensures users can submit posts when they have content
      * and provides proper form validation feedback.
      */
+    const user = userEvent.setup();
     renderCreatePost();
     const textarea = screen.getByPlaceholderText("What's on your mind?");
     const postButton = screen.getByRole('button', { name: /post/i });
 
     // Simulate user typing content
-    fireEvent.change(textarea, { target: { value: 'Test post' } });
+    await user.type(textarea, 'Test post');
 
     // Verify the button is enabled when there's content
     expect(postButton).not.toBeDisabled();
@@ -169,6 +172,7 @@ describe('CreatePost Component', () => {
      */
 
     // Arrange - Set up mocks and test data
+    const user = userEvent.setup();
     const mockOnPostCreated = vi.fn(); // Mock function to track callback calls
     const mockPost = {
       id: 1,
@@ -188,10 +192,10 @@ describe('CreatePost Component', () => {
 
     // Act - Simulate user interaction
     // User types content in the textarea
-    fireEvent.change(textarea, { target: { value: 'Test post' } });
+    await user.type(textarea, 'Test post');
 
     // User clicks the submit button
-    fireEvent.click(postButton);
+    await user.click(postButton);
 
     // Assert - Verify API was called correctly and callback was triggered
     await waitFor(() => {
@@ -208,14 +212,15 @@ describe('CreatePost Component', () => {
   });
 
   it('clears textarea after successful post submission', async () => {
+    const user = userEvent.setup();
     api.postsAPI.createPost.mockResolvedValueOnce({ data: { id: 1, content: 'Test' } });
 
     renderCreatePost();
 
     const textarea = screen.getByPlaceholderText("What's on your mind?");
 
-    fireEvent.change(textarea, { target: { value: 'Test post' } });
-    fireEvent.click(screen.getByRole('button', { name: /post/i }));
+    await user.type(textarea, 'Test post');
+    await user.click(screen.getByRole('button', { name: /post/i }));
 
     await waitFor(() => {
       expect(textarea.value).toBe('');
@@ -223,6 +228,7 @@ describe('CreatePost Component', () => {
   });
 
   it('handles API errors gracefully', async () => {
+    const user = userEvent.setup();
     // Suppress expected error output in test logs
     const originalError = console.error;
     console.error = () => {};
@@ -234,8 +240,8 @@ describe('CreatePost Component', () => {
     const textarea = screen.getByPlaceholderText("What's on your mind?");
 
     // Act - User submits post but API fails
-    fireEvent.change(textarea, { target: { value: 'Test post' } });
-    fireEvent.click(screen.getByRole('button', { name: /post/i }));
+    await user.type(textarea, 'Test post');
+    await user.click(screen.getByRole('button', { name: /post/i }));
 
     // Assert - Error message displayed to user
     await waitFor(() => {
