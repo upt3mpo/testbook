@@ -505,8 +505,9 @@ pytest tests/security/test_rate_limiting.py -v
 **If you see failures:**
 
 1. Check if backend is in TESTING mode
-2. See `tests/security/README.md` for troubleshooting
-3. Read `learn/stage_4_performance_security/exercises/LAB_15_Rate_Limiting_Production_Python.md` (or the `_JavaScript.md` version) for complete explanation
+2. Reset the dev database first if you just ran the E2E suites (`curl -X POST http://localhost:8000/api/dev/reset`) — E2E tests mutate persistent seed-account state (passwords, follows, deleted accounts), and running security tests right after without a reset causes real login/authorization failures that aren't security bugs, just stale state from the prior suite
+3. See `tests/security/README.md` for troubleshooting
+4. Read `learn/stage_4_performance_security/exercises/LAB_15_Rate_Limiting_Production_Python.md` (or the `_JavaScript.md` version) for complete explanation
 
 **The "failures" often prove security is working!**
 
