@@ -523,7 +523,7 @@ Every contribution makes Testbook better for learners worldwide. Whether you:
 
 - **General questions:** Create a GitHub Discussion
 - **Bug reports:** Create a GitHub Issue
-- **Security issues:** Email (provide email here)
+- **Security issues:** Use GitHub's private [security advisory reporting](https://github.com/upt3mpo/testbook/security/advisories/new) rather than a public issue
 
 ---
 
