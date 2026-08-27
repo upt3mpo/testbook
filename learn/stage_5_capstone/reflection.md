@@ -232,6 +232,23 @@ Final reflection on your complete testing journey.
 
 ---
 
+## Real-World Connection
+
+The 2024 CrowdStrike outage — one of the largest IT outages in history — wasn't a scale problem or a subtle logic bug; it was a testing/rollout-process gap (no staged canary release before a global push, see [Case Studies](../../docs/industry/CASE_STUDIES.md)). Across all five stages of this curriculum, the pattern repeats: the most expensive real failures are rarely caught by "more tests" in the abstract — they're caught by testing at the *right layer* for that specific failure mode. As you finish this capstone, which layer of your own test suite are you least confident actually covers what it claims to?
+
+---
+
+## Interview Prep
+
+Beyond questions about specific tools, expect these at the capstone/portfolio-review level:
+
+1. **"Walk me through your test suite design for the feature you built."** Be ready to explain not just what you tested, but why — what layer of the pyramid each test belongs to and why, and what you deliberately chose not to test and why that was a reasonable call.
+2. **"What was the hardest bug or flaky test you ran into, and how did you actually fix it?"** Have a real, specific story ready — "I fixed a flaky test" is forgettable, "the test was racing a toast notification that auto-dismissed after 3 seconds, and I replaced a hardcoded wait with an assertion on the notification actually appearing" is not.
+3. **"How would this test suite need to change if this app had 100x the users?"** A reasonable answer touches on what your current performance thresholds don't yet account for, and what your CI would need (parallelization, faster feedback) to stay useful at that scale.
+4. **"Why should I trust that your tests actually catch regressions, instead of just padding a coverage number?"** Point to something concrete: a test you wrote that would have caught a real bug you found, or a case where you deliberately chose one meaningful assertion over five superficial ones.
+
+---
+
 ## 🚀 Next Steps
 
 - [ ] Update resume
@@ -242,4 +259,4 @@ Final reflection on your complete testing journey.
 - [ ] Continue learning
 - [ ] Give back to the community
 
-**You've got this! 💪**
+**You've got this!**
