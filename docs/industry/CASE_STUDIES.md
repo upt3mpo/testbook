@@ -4,6 +4,12 @@
 
 These case studies show the real-world impact of testing (or lack thereof) in major companies. Each story demonstrates key testing principles and their consequences in production systems.
 
+### A Note on Sourcing
+
+Most companies don't publish their internal test suites, tooling, or uptime numbers, so treat any claim about a specific company's "testing culture" with the same skepticism you'd apply to an unsourced statistic — including some of what circulates in blog posts and interview-prep material. Two companies below are backed by things they actually published themselves: **Google** has written publicly, at length, about its testing culture, most substantially in the book [*Software Engineering at Google*](https://abseil.io/resources/swe-book) (free to read online) and the [Google Testing Blog](https://testing.googleblog.com/) — the recurring theme isn't a specific coverage percentage, it's that code review is the enforcement mechanism, not a separate compliance step. **Netflix** open-sourced [Chaos Monkey](https://github.com/Netflix/chaosmonkey) and has written extensively about Chaos Engineering — deliberately injecting failures into production-like environments to verify the system degrades gracefully instead of cascading into an outage.
+
+Beyond those two, certain patterns do show up repeatedly across public engineering talks and blog posts from large tech companies, without being attributable to exact tooling or numbers at any single one of them: contract testing between services in a microservices architecture, canary/staged rollouts instead of all-at-once deployment, feature flags to decouple deploying code from releasing it to users, and treating a flaky test as a bug to fix immediately rather than a nuisance to retry past. Those patterns — not company-specific trivia — are the actual takeaway worth carrying into your own testing practice, and they're exactly what this repo's CI setup and testing stages are modeling.
+
 ## Unit Testing Case Studies
 
 ### Case Study 1: Knight Capital Group - The $440 Million Deployment
@@ -232,6 +238,5 @@ It's worth resisting a tempting but wrong takeaway here: Knight Capital and Equi
 ## Further Reading
 
 - [Testing Philosophy](../concepts/TESTING_PHILOSOPHY.md) - The mindset behind testing
-- [Industry Practices](INDUSTRY_PRACTICES.md) - How companies approach testing
 - [Tool Comparison](TOOL_COMPARISON.md) - Tools for different testing scenarios
 - [Career Guide](CAREER_GUIDE.md) - How testing skills impact your career

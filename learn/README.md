@@ -162,7 +162,7 @@ flowchart TD
 
 **Key Resources:**
 
-- [Industry Practices](../docs/industry/INDUSTRY_PRACTICES.md) - How companies test
+- [Case Studies](../docs/industry/CASE_STUDIES.md) - Real incidents and what's genuinely documented about industry practice
 - [Tool Comparison](../docs/industry/TOOL_COMPARISON.md) - When to use what
 
 ---

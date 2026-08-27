@@ -563,7 +563,7 @@ Remember: your career is a journey, not a destination. Stay curious, keep learni
 
 ## Further Reading
 
-- [Industry Practices](INDUSTRY_PRACTICES.md) - How companies approach QA
+- [Case Studies](CASE_STUDIES.md) - Real incidents and what's genuinely documented about industry practice
 - [Case Studies](CASE_STUDIES.md) - Real-world QA success stories
 - [Tool Comparison](TOOL_COMPARISON.md) - Choosing the right tools
 - [Testing Philosophy](../concepts/TESTING_PHILOSOPHY.md) - The mindset behind QA

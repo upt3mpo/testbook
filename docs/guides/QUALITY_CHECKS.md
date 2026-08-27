@@ -130,6 +130,26 @@ pytest --cov --cov-fail-under=80
 
 ---
 
+<h2 id="markdown-validation">📝 Markdown Validation</h2>
+
+Documentation gets the same automated gate as code: markdownlint checks formatting/style, and `markdown-link-check` verifies every internal link, anchor, and external URL actually resolves.
+
+**Run locally before committing docs:**
+
+```bash
+make check-markdown    # or: just check-markdown — full validation
+make lint-markdown     # lint only
+make fix-markdown      # auto-fix what can be auto-fixed
+```
+
+**Config:** `.markdownlint.json` disables a handful of rules that don't fit this repo (`MD001` heading-increment, since some docs intentionally jump from `<h2>` to `###` for layout; `MD013` line length, needed for long URLs and code; `MD033` inline HTML; `MD024` duplicate headings; `MD036` emphasis-as-heading). `.markdown-link-check.json` ignores `localhost` URLs (unreachable in CI), retries on 429, and accepts 403 as alive (some sites block bot user-agents but are genuinely fine).
+
+**CI:** `.github/workflows/markdown-validation.yml` runs both checks on every push/PR that touches a `.md` file.
+
+Two habits worth keeping in mind while writing docs: use descriptive link text (`[the installation guide](link.md)`, not `[here](link.md)`), and never hardcode a personal machine path in an example (`~/docs/guide.md` or a relative path, not something like `/Users/yourname/docs/guide.md`).
+
+---
+
 <h2 id="frontend-javascript">☕ Frontend (JavaScript)</h2>
 
 ### Linting with ESLint

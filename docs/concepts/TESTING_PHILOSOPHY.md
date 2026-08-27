@@ -223,4 +223,4 @@ _"The goal of testing is not to find bugs, but to build confidence that the syst
 - [Test Design Principles](TEST_DESIGN_PRINCIPLES.md) - How to design effective tests
 - [Testing Patterns](TESTING_PATTERNS.md) - Common patterns and when to use them
 - [Testing Anti-Patterns](TESTING_ANTIPATTERNS.md) - What to avoid
-- [Industry Practices](../industry/INDUSTRY_PRACTICES.md) - How companies approach testing
+- [Case Studies](../industry/CASE_STUDIES.md) - Real incidents and what's genuinely documented about industry practice

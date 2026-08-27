@@ -91,7 +91,6 @@ Testbook/
 | **[LOGGING.md](guides/LOGGING.md)** ✨                                           | 30 min | 🟡 Intermediate | Structured logging & observability                    |
 | **[RATE_LIMITING.md](guides/RATE_LIMITING.md)** ✨                               | 25 min | 🟡 Intermediate | Rate limit tuning & config                            |
 | **[MANUAL_QA_TO_AUTOMATION.md](guides/MANUAL_QA_TO_AUTOMATION.md)** ✨           | 60 min | 🟢 Beginner     | QA transition roadmap                                 |
-| **[MARKDOWN_VALIDATION.md](guides/MARKDOWN_VALIDATION.md)**                      | 15 min | 🟢 Beginner     | Linting and link-checking docs before you commit      |
 | **[TEST_DATA_SCENARIOS.md](guides/TEST_DATA_SCENARIOS.md)**                      | 20 min | 🟡 Intermediate | Pre-seeded test data scenarios for E2E/integration     |
 
 ### Guide Details
@@ -268,7 +267,6 @@ Includes environment config, fixtures, test helpers, and patterns.
 | Resource                                                    | Time   | Level           | Purpose                            |
 | ----------------------------------------------------------- | ------ | --------------- | ---------------------------------- |
 | **[CASE_STUDIES.md](industry/CASE_STUDIES.md)**             | 45 min | 🟡 Intermediate | Real testing disasters & successes |
-| **[INDUSTRY_PRACTICES.md](industry/INDUSTRY_PRACTICES.md)** | 30 min | 🟡 Intermediate | How top companies test             |
 | **[TOOL_COMPARISON.md](industry/TOOL_COMPARISON.md)**       | 25 min | 🟡 Intermediate | When to use what testing tool      |
 | **[CAREER_GUIDE.md](industry/CAREER_GUIDE.md)**             | 20 min | 🟢 All levels   | QA career paths & salary data      |
 
@@ -276,17 +274,9 @@ Includes environment config, fixtures, test helpers, and patterns.
 
 **Case Studies:**
 
-- Knight Capital $440M loss
-- E-commerce platform outages
-- Airline booking system bugs
-- Video conferencing failures
-
-**Industry Practices:**
-
-- Google's testing culture
-- Netflix's chaos engineering
-- Amazon's testing strategies
-- Microsoft's quality gates
+- Knight Capital's $440M deployment failure, Equifax's breach — real incidents, with their actual (often surprising) root causes
+- The 2024 CrowdStrike outage — a real, recent example of what skipping staged rollout testing costs
+- What's genuinely publicly documented about Google's and Netflix's testing practices, vs. what isn't verifiable about other companies
 
 ---
 

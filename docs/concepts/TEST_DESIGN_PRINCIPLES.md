@@ -420,4 +420,4 @@ Remember: Tests are not just code—they're documentation, they're specification
 - [Testing Philosophy](TESTING_PHILOSOPHY.md) - The mindset behind testing
 - [Testing Patterns](TESTING_PATTERNS.md) - Common patterns and when to use them
 - [Testing Anti-Patterns](TESTING_ANTIPATTERNS.md) - What to avoid
-- [Industry Practices](../industry/INDUSTRY_PRACTICES.md) - How companies design tests
+- [Case Studies](../industry/CASE_STUDIES.md) - Real incidents and what's genuinely documented about industry practice
