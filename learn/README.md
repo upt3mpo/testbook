@@ -23,18 +23,41 @@ Welcome! This learning path transforms the Testbook project into your personal t
 
 ---
 
-<h2 id="choose-your-track">🎯 Choose Your Track</h2>
+<h2 id="choose-your-track">Choose Your Track</h2>
 
-Pick the track that matches your background and goals:
+| Path                    | Language Focus      | Tools You'll Master                    | Time        | Start Here                                                                                         |
+| ----------------------- | -------------------- | --------------------------------------- | ----------- | --------------------------------------------------------------------------------------------------- |
+| **Python Track**        | Python              | pytest, Playwright Python, k6          | 24-34 hours | [Stage 1](stage_1_unit/)                                                                           |
+| **JavaScript Track**    | JavaScript          | Vitest, Playwright JS, MSW             | 26-36 hours | [Lab 1](stage_1_unit/exercises/LAB_01_Your_First_Test_JavaScript.md) then [Stage 1](stage_1_unit/) |
+| **Hybrid Track**        | Python + JavaScript | All tools from both stacks             | 28-38 hours | [Stage 1](stage_1_unit/)                                                                           |
+| **Manual QA Transition**| Python-first        | pytest, Playwright, automation mindset | 32-42 hours | [Manual QA Guide](../docs/guides/MANUAL_QA_TO_AUTOMATION.md)                                       |
 
-| Path                        | Language Focus      | Tools You'll Master                    | Time        | Best For                         | Start Here                                                                                         |
-| --------------------------- | ------------------- | -------------------------------------- | ----------- | -------------------------------- | -------------------------------------------------------------------------------------------------- |
-| **🐍 Python Track**         | Python              | pytest, Playwright Python, k6          | 24-34 hours | Backend developers, API testing  | [Stage 1](stage_1_unit/)                                                                           |
-| **🟨 JavaScript Track**     | JavaScript          | Vitest, Playwright JS, MSW             | 26-36 hours | Frontend developers, React teams | [Lab 1](stage_1_unit/exercises/LAB_01_Your_First_Test_JavaScript.md) then [Stage 1](stage_1_unit/) |
-| **🔄 Hybrid Track**         | Python + JavaScript | All tools from both stacks             | 28-38 hours | Full-stack QA, most realistic    | [Stage 1](stage_1_unit/)                                                                           |
-| **⚡ Manual QA Transition** | Python-first        | pytest, Playwright, automation mindset | 32-42 hours | Manual testers going automation  | [Manual QA Guide](../docs/guides/MANUAL_QA_TO_AUTOMATION.md)                                       |
+That table tells you what you'll build. It doesn't tell you which one to pick if you have no strong opinion yet, so here's the actual reasoning.
 
-**Not sure?** Try the [Hybrid Track](stage_1_unit/) - it's what most real QA roles need!
+### What each language is for in test automation specifically
+
+Python's role in testing didn't come from Python being a good general-purpose language — it came from pytest becoming the default way to test anything with a Python backend, and from Python being the path of least resistance for people who aren't primarily software engineers (manual QA, data analysts, SDETs embedded on a backend team). If the system under test exposes an API, Python testing usually means: call the API, assert on the response, maybe drive a browser with Playwright for the parts a human still needs to see. It's rarely used to test frontend component internals, because there's no Python frontend to test against.
+
+JavaScript's role is different because it's not optional the way Python is: if the frontend is React, Vue, or Angular, someone has to write tests in JavaScript or TypeScript to exercise components in isolation (Vitest, Jest, Testing Library), because there is no equivalent way to unit-test a React component from Python. Playwright and Cypress have also made JavaScript the more common choice for browser-based E2E testing specifically, even on teams whose backend is Python — the E2E test runner ends up living next to the frontend code either way.
+
+Testbook's E2E suite exists in both languages side by side (`tests/e2e/` and `tests/e2e-python/`) precisely so you can see that neither is doing something the other structurally can't — it's the same Playwright API with different syntax on top. What Python can't do is test a React component's rendered output; what JavaScript testing here doesn't cover is anything below the HTTP boundary on the backend, where pytest exercises the database and business logic directly.
+
+### The job market, honestly
+
+QA/SDET job postings that name a language skew Python more often than not, largely because Python is the common denominator across backend-testing, data-adjacent, and manual-QA-to-automation roles, and because Selenium/pytest/Robot Framework have a long institutional head start. JavaScript-first testing roles cluster more tightly around frontend-heavy product companies, where the test authors are often the same engineers who wrote the component being tested, rather than a dedicated QA function. Neither of those patterns is universal, and plenty of job postings ask for "test automation experience" without naming a language at all — in practice, most mid-size and large engineering orgs will teach you their specific stack once you're hired, so the language on your resume matters less than being able to demonstrate you can design and debug a test suite in general. Don't over-optimize your track choice around a specific job posting you saw once; optimize it around the stack you're most likely to be productive in quickly.
+
+### Learning curve from zero
+
+If you've never programmed at all, Python is the gentler on-ramp: synchronous by default, fewer ways to shoot yourself in the foot with callbacks or promises, and `assert x == y` reads exactly like what it does. JavaScript testing requires you to understand `async`/`await` and promises almost immediately, because Playwright and Testing Library are asynchronous APIs — that's a real concept to learn, not just different syntax, and it trips up beginners more than anything Python-side does. If you already know JavaScript from frontend work, that cost is already paid and the JavaScript track will feel faster than switching to Python. If you already know Python, the reverse is true.
+
+### Deciding based on your actual goal
+
+- **You want the fastest path to any QA automation job:** start with Python. It's the safer default across the widest range of postings and the lower cognitive load lets you focus on testing concepts instead of language mechanics.
+- **You're already a frontend developer, or the job you want is at a product company where engineers own their own tests:** start with JavaScript — you'll be testing the kind of code you already write, and skipping it means learning async testing patterns later under time pressure instead of now.
+- **You want to be the person who can test anything handed to you, backend or frontend:** do the Hybrid track. It costs more hours up front but it's the most accurate simulation of what a full-stack QA role actually asks of you.
+- **You're transitioning from manual QA and have never written code:** use the Manual QA Transition track. It's Python-first for the reasons above, and it paces the "learning to code" and "learning to test" problems separately instead of forcing you to solve both at once.
+
+If none of that resolves it for you, default to the Hybrid track — it's strictly a superset of the other two, just longer.
 
 ---
 
