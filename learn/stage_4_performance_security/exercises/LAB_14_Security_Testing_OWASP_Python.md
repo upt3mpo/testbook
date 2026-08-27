@@ -49,7 +49,7 @@ cd backend
 pip install bandit safety semgrep
 ```
 
-#### Step 2: Test for SQL Injection (A01:2021 - Broken Access Control)
+#### Step 2: Test for SQL Injection (A03:2021 - Injection)
 
 Create `tests/security/test_sql_injection.py`:
 
@@ -299,7 +299,9 @@ class TestXSS:
                 assert "javascript:" not in response_text, f"XSS payload '{payload}' should be escaped in response"
 ```
 
-#### Step 4: Test for Cross-Site Request Forgery (CSRF) (A01:2021 - Broken Access Control)
+#### Step 4: Test for Cross-Site Request Forgery (CSRF)
+
+**Note:** CSRF isn't its own category in the OWASP Top 10 2021 list (it was folded into the broader access-control discussion after frameworks made it less common) - it's covered here because it's still a real vulnerability class worth testing for, not because it maps to a specific 2021 entry.
 
 > **Reality check:** Testbook's API is a stateless, bearer-token JSON API — there's no cookie-based session and no `/api/csrf-token` endpoint, so classic CSRF (where a browser auto-attaches a session cookie to a forged cross-site request) doesn't really apply here the way it would to a cookie-session app. `tests/security/test_security.py` does not contain a CSRF test class. The code below is a hypothetical example of how you'd test CSRF token validation *if* the app used cookie sessions — it will 404 against the real Testbook API. Treat it as a conceptual exercise, not a runnable test.
 
@@ -1315,8 +1317,7 @@ class SecurityMonitoring:
 **Continue building your skills:**
 
 - **[Lab 15: Rate Limiting & Production Monitoring (Python)](LAB_15_Rate_Limiting_Production_Python.md)** - Production readiness
-- **[Lab 16: Complete Test Suite Design (Python)](LAB_15_Rate_Limiting_Production_Python.md)** - Test strategy
-- **[Lab 17: Portfolio Project & Presentation (Python)](../../stage_5_capstone/README.md)** - Final project
+- **[Stage 5: Capstone](../../stage_5_capstone/README.md)** - Portfolio project and presentation
 
 ---
 

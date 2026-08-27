@@ -1,4 +1,4 @@
-# 🚀 Stage 4: Performance & Security
+# Stage 4: Performance & Security
 
 **Non-Functional Testing That Matters**
 
@@ -64,42 +64,28 @@ By the end of Stage 4, you will:
 - **Lab 14**: Security Testing with OWASP - Security testing with OWASP guidelines
 - **Lab 15**: Rate Limiting Testing - Advanced rate limiting and security patterns
 
-<h2 id="table-of-contents">📋 Table of Contents</h2>
+<h2 id="table-of-contents">Table of Contents</h2>
 
 - [Why Performance & Security Testing Matters: The Foundation of Production Readiness](#why-performance--security-testing-matters-the-foundation-of-production-readiness)
 - [Lab Structure](#lab-structure)
-- [Part 1: What Are Performance Tests? 📚](#part-1-what-are-performance-tests)
-- [Part 2: Load Testing with k6 🚀](#part-2-load-testing-with-k6)
-- [Part 3: Security Testing 🔒](#part-3-security-testing)
-- [Part 4: Implementation Guide 🛠️](#part-4-implementation-guide)
-- [Part 5: Hands-On Practice 🏃](#part-5-hands-on-practice)
-- [Part 6: Additional Patterns 🚀](#part-6-additional-patterns)
-- [✅ Success Criteria](#success-criteria)
-- [🧠 Why This Matters](#why-this-matters)
-- [🔗 Related Resources](#related-resources)
-- [🧠 Self-Check Quiz (Optional)](#self-check-quiz-optional)
-- [🤔 Reflection](#reflection)
-- [🎉 Stage Complete](#stage-complete)
+- [Part 1: What Are Performance Tests?](#part-1-what-are-performance-tests)
+- [Part 2: Load Testing with k6](#part-2-load-testing-with-k6)
+- [Part 3: Security Testing](#part-3-security-testing)
+- [Part 4: Implementation Guide](#part-4-implementation-guide)
+- [Part 5: Hands-On Practice](#part-5-hands-on-practice)
+- [Part 6: Additional Patterns](#part-6-additional-patterns)
+- [Success Criteria](#success-criteria)
+- [Why This Matters](#why-this-matters)
+- [Related Resources](#related-resources)
+- [Self-Check Quiz (Optional)](#self-check-quiz-optional)
+- [Reflection](#reflection)
+- [Stage Complete](#stage-complete)
 
 ---
 
 ## Why Performance & Security Testing Matters: The Foundation of Production Readiness
 
-### The Real-World Impact
-
-**The Problem Without Performance Testing:**
-In 2020, a major video conferencing platform experienced a 3-hour outage during peak usage. The platform was designed to handle 10 million concurrent users, but when usage spiked to 15 million due to a global event, the system couldn't handle the load. The outage cost the company $50M in lost revenue and damaged their reputation.
-
-**The Problem Without Security Testing:**
-In 2017, Equifax experienced a massive data breach that exposed 147 million people's personal information. The breach was caused by a vulnerability in a web application that could have been prevented with proper security testing. The company paid $700M in settlements and lost significant customer trust.
-
-**What Performance & Security Tests Prevent:**
-
-1. **System Failures**: Applications that crash under load
-2. **Data Breaches**: Security vulnerabilities that expose user data
-3. **Performance Degradation**: Slow response times that frustrate users
-4. **Compliance Violations**: Security issues that violate regulations
-5. **Business Losses**: Downtime and breaches that cost money and reputation
+Functional tests answer "does this feature work?" - performance and security tests answer two harder questions: "does it keep working when 10x the usual traffic shows up?" and "does it stay safe when someone actively tries to break it?" A system can pass every functional test and still fall over the first time real load hits it, or leak user data through a vulnerability nobody thought to check for. The 2017 Equifax breach is the textbook case for the latter: a known, unpatched web application vulnerability exposed 147 million people's personal data and cost the company roughly $700M in settlements - the kind of outcome systematic security testing exists to catch before an attacker finds it instead.
 
 ### The Testing Pyramid Applied
 
@@ -120,131 +106,11 @@ In 2017, Equifax experienced a massive data breach that exposed 147 million peop
    /_________________________\
 ```
 
-**Performance & Security Tests (Critical for Production):**
-
-- Performance tests: Run in minutes to hours
-- Security tests: Run in minutes to hours
-- Test non-functional requirements
-- Ensure production readiness
-
-**Why These Tests Are Critical:**
-
-- Functional tests ensure features work
-- Performance tests ensure features work under load
-- Security tests ensure features work safely
-- All three are needed for production readiness
-
-### The Business Case
-
-**Real Example - Performance:**
-An e-commerce application processes:
-
-- 1,000 orders per minute during normal hours
-- 10,000 orders per minute during peak hours
-- 100,000 orders per minute during Black Friday
-
-Without performance testing:
-
-- System works with 1,000 orders ✅
-- System crashes with 10,000 orders 💥
-- Black Friday is a disaster
-- Customers can't complete purchases
-- Revenue is lost
-
-With performance testing:
-
-- Test system under expected load
-- Identify bottlenecks before production
-- Scale infrastructure appropriately
-- Maintain customer satisfaction
-
-**Real Example - Security:**
-A banking application handles:
-
-- User authentication
-- Financial transactions
-- Personal data storage
-- Regulatory compliance
-
-Without security testing:
-
-- Application works functionally ✅
-- But has SQL injection vulnerabilities 💥
-- Hackers steal customer data
-- Regulatory fines are imposed
-- Customer trust is lost
-
-With security testing:
-
-- Test for common vulnerabilities
-- Ensure data protection
-- Maintain regulatory compliance
-- Protect customer trust
-
-### The Developer Experience
-
-**Without Performance & Security Testing:**
-
-- "It works on my machine"
-- "I don't know why it's slow in production"
-- "I don't know why it's not secure"
-- "Let me check the logs... there are performance issues"
-
-**With Performance & Security Testing:**
-
-- "I know the system can handle the load"
-- "I know the system is secure"
-- "I can identify bottlenecks and vulnerabilities"
-- "I have confidence in production readiness"
-
-### The Quality Mindset
-
-**Performance & Security Testing Teaches You:**
-
-1. **Think About Scale**: How does the system behave under load?
-2. **Think About Security**: What are the attack vectors?
-3. **Design for Performance**: Make the system fast and efficient
-4. **Design for Security**: Make the system secure by design
-5. **Monitor Production**: How do you know if the system is healthy?
-
-### Industry Standards
-
-**Companies That Require Performance & Security Testing:**
-
-- Google: Performance testing for all services
-- Microsoft: Security testing for all applications
-- Amazon: Performance and security testing for all systems
-- Netflix: Performance and security testing for all platforms
-
-**Why They Do This:**
-
-- Prevents system failures
-- Protects user data
-- Maintains regulatory compliance
-- Ensures customer satisfaction
-- Builds team confidence
-
-### The Performance & Security Testing Mindset
-
-**Key Questions to Ask:**
-
-1. **What is the expected load?** Normal, peak, and extreme usage
-2. **What are the performance requirements?** Response time, throughput, availability
-3. **What are the security threats?** OWASP Top 10, industry-specific risks
-4. **How do we handle failures?** Graceful degradation, error handling
-5. **How do we monitor health?** Performance metrics, security alerts
-
-**Common Performance & Security Patterns:**
-
-- **Load Testing**: Test under expected load
-- **Stress Testing**: Test beyond normal capacity
-- **Security Scanning**: Test for vulnerabilities
-- **Penetration Testing**: Test for attack vectors
-- **Compliance Testing**: Test for regulatory requirements
+Performance and security tests both test non-functional requirements - not "what does it do" but "how well, and how safely, does it keep doing it." That puts them above the pyramid rather than inside it: they run against the same application the pyramid already tests, asking different questions of it. A few concrete questions this stage will teach you to ask and answer: What's the expected load, and what happens past it? What's an acceptable p95 response time, and why that number? Which OWASP Top 10 categories apply to an app like this one, and how would you actually test for each? Load testing, stress testing, security scanning, and penetration testing are the tools; the mindset underneath all of them is treating "it works under normal conditions" as necessary but not sufficient.
 
 ---
 
-<h2 id="part-1-what-are-performance-tests">Part 1: What Are Performance Tests? 📚</h2>
+<h2 id="part-1-what-are-performance-tests">Part 1: What Are Performance Tests?</h2>
 
 ### The Traffic Jam Analogy
 
@@ -306,7 +172,7 @@ Imagine you're testing a highway. Functional tests would be like checking that c
 
 ---
 
-<h2 id="part-2-load-testing-with-k6">Part 2: Load Testing with k6 🚀</h2>
+<h2 id="part-2-load-testing-with-k6">Part 2: Load Testing with k6</h2>
 
 ### The k6 Tool Explained
 
@@ -410,7 +276,7 @@ http_reqs..............................: 1200
 
 ---
 
-<h2 id="part-3-security-testing">Part 3: Security Testing 🔒</h2>
+<h2 id="part-3-security-testing">Part 3: Security Testing</h2>
 
 ### The Security Guard Analogy
 
@@ -467,11 +333,11 @@ Think of security testing like being a security guard at a building. You need to
 
 ---
 
-<h2 id="part-4-implementation-guide">Part 4: Implementation Guide 🛠️</h2>
+<h2 id="part-4-implementation-guide">Part 4: Implementation Guide</h2>
 
 Now let's see these concepts in real code! Choose your track:
 
-### 🚀 Performance Testing with k6
+### Performance Testing with k6
 
 **Open `tests/performance/load-test.js` and find the main test:**
 
@@ -583,7 +449,7 @@ export const options = {
 - `stress-test.js` - Find breaking point
 - Full file: [load-test.js](../../tests/performance/load-test.js)
 
-### 🔒 Security Testing with pytest
+### Security Testing with pytest
 
 **Open `tests/security/test_security.py` and find `test_sql_injection_in_login` (in `TestInputValidation`):**
 
@@ -709,7 +575,7 @@ test("SQL injection prevention", async () => {
 - `test_excessive_login_attempts` - Test rate limit enforcement
 - Full file: [test_security.py](../../tests/security/test_security.py)
 
-### 🔄 Hybrid Track
+### Hybrid Track
 
 **Test both performance and security!** This is what senior QA engineers do.
 
@@ -720,7 +586,7 @@ test("SQL injection prevention", async () => {
 
 ---
 
-<h2 id="part-5-hands-on-practice">Part 5: Hands-On Practice 🏃</h2>
+<h2 id="part-5-hands-on-practice">Part 5: Hands-On Practice</h2>
 
 ### Step 1: Run Performance Tests
 
@@ -807,7 +673,7 @@ Try to break the application:
 
 ---
 
-<h2 id="part-6-additional-patterns">Part 6: Additional Patterns 🚀</h2>
+<h2 id="part-6-additional-patterns">Part 6: Additional Patterns</h2>
 
 **📝 Note:** The patterns below are **additional enhancements** to your performance and security testing skills. All the **core concepts** needed to meet the Stage 4 success criteria are covered in Parts 1-5 above.
 
@@ -855,44 +721,44 @@ The most critical web application security risks:
 
 ---
 
-<h2 id="success-criteria">✅ Success Criteria</h2>
+<h2 id="success-criteria">Success Criteria</h2>
 
 You're ready for Stage 5 when you can:
 
 **Core concepts (all tracks):**
 
-- [ ] Explain the difference between load, stress, and spike testing
-- [ ] Write a basic k6 load test
-- [ ] Interpret performance metrics (p95, throughput, error rate)
-- [ ] Identify common security vulnerabilities
-- [ ] Test for SQL injection and XSS
-- [ ] Verify rate limiting works correctly
-- [ ] Think critically about edge cases and attack vectors
-- [ ] Prioritize security issues by severity
+- [] Explain the difference between load, stress, and spike testing
+- [] Write a basic k6 load test
+- [] Interpret performance metrics (p95, throughput, error rate)
+- [] Identify common security vulnerabilities
+- [] Test for SQL injection and XSS
+- [] Verify rate limiting works correctly
+- [] Think critically about edge cases and attack vectors
+- [] Prioritize security issues by severity
 
 **Performance Track:**
 
-- [ ] Use k6 to create load tests
-- [ ] Interpret performance metrics and graphs
-- [ ] Identify performance bottlenecks
-- [ ] Test different load patterns (ramp-up, spike, soak)
+- [] Use k6 to create load tests
+- [] Interpret performance metrics and graphs
+- [] Identify performance bottlenecks
+- [] Test different load patterns (ramp-up, spike, soak)
 
 **Security Track:**
 
-- [ ] Use pytest to create security tests
-- [ ] Test for OWASP Top 10 vulnerabilities
-- [ ] Understand security testing mindset
-- [ ] Write tests for input validation and rate limiting
+- [] Use pytest to create security tests
+- [] Test for OWASP Top 10 vulnerabilities
+- [] Understand security testing mindset
+- [] Write tests for input validation and rate limiting
 
 **Hybrid Track:**
 
-- [ ] Can explain how performance and security testing complement each other
-- [ ] Understand when to use each testing approach
-- [ ] Can write both performance and security tests
+- [] Can explain how performance and security testing complement each other
+- [] Understand when to use each testing approach
+- [] Can write both performance and security tests
 
 ---
 
-<h2 id="why-this-matters">🧠 Why This Matters</h2>
+<h2 id="why-this-matters">Why This Matters</h2>
 
 ### In Real QA Teams
 
@@ -912,7 +778,7 @@ You're ready for Stage 5 when you can:
 
 ---
 
-<h2 id="related-resources">🔗 Related Resources</h2>
+<h2 id="related-resources">Related Resources</h2>
 
 ### Hands-On Practice
 
@@ -942,7 +808,7 @@ You're ready for Stage 5 when you can:
 
 ---
 
-<h2 id="self-check-quiz-optional">🧠 Self-Check Quiz (Optional)</h2>
+<h2 id="self-check-quiz-optional">Self-Check Quiz (Optional)</h2>
 
 Before moving to Stage 5, can you answer these questions?
 
@@ -984,7 +850,7 @@ Before moving to Stage 5, can you answer these questions?
 
 ---
 
-<h2 id="reflection">🤔 Reflection</h2>
+<h2 id="reflection">Reflection</h2>
 
 Before moving to Stage 5, answer these:
 
@@ -1002,11 +868,11 @@ Before moving to Stage 5, answer these:
 
 ---
 
-<h2 id="stage-complete">🎉 Stage Complete</h2>
+<h2 id="stage-complete">Stage Complete</h2>
 
 You now understand non-functional testing that protects users and business!
 
-### 👉 [Continue to Stage 5: Job-Ready Capstone](../stage_5_capstone/README.md)
+### [Continue to Stage 5: Job-Ready Capstone](../stage_5_capstone/README.md)
 
 ---
 

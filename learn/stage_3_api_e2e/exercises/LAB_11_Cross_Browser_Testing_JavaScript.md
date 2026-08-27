@@ -1,4 +1,4 @@
-# 🧪 Lab 7: Playwright Deep Dive (JavaScript)
+# 🧪 Lab 11: Cross-Browser Testing (JavaScript)
 
 **Estimated Time:** 90 minutes<br>
 **Difficulty:** Advanced<br>
@@ -17,6 +17,7 @@
 - **Codegen** - Generate tests by recording user actions
 - **Screenshot/Video** - Visual verification and debugging
 - **Network HAR files** - Analyze network requests
+- **Cross-browser projects** - Run the same spec against Chromium, Firefox, and WebKit
 - **Parallel execution** - Speed up test runs
 - **CI/CD integration** - Run tests in GitHub Actions
 - **Visual comparisons** - Detect UI changes
@@ -373,7 +374,88 @@ npx playwright show-trace test-results/network.har
 
 ---
 
-### Part 5: Parallel Execution & Performance (10 minutes)
+### Part 5: Cross-Browser & Mobile Viewport Testing (15 minutes)
+
+**This is the part that gives the lab its name.** Everything above (trace, codegen, screenshots, network) works the same regardless of browser engine - cross-browser testing is about actually running your suite against more than one engine.
+
+`tests/playwright.config.js` already defines a `projects` array, but only the `chromium` project is active - the `firefox`, `webkit`, and `Mobile Chrome` entries are commented out on purpose (the lab keeps things fast and simple by default):
+
+```javascript
+// tests/playwright.config.js (excerpt - already in the repo)
+projects: [
+  {
+    name: "chromium",
+    use: { ...devices["Desktop Chrome"] },
+  },
+
+  // Additional browsers available but not run by default
+  // Uncomment to enable cross-browser testing:
+  // {
+  //   name: 'firefox',
+  //   use: { ...devices['Desktop Firefox'] },
+  // },
+  // {
+  //   name: 'webkit',
+  //   use: { ...devices['Desktop Safari'] },
+  // },
+  // {
+  //   name: 'Mobile Chrome',
+  //   use: { ...devices['Pixel 5'] },
+  // },
+],
+```
+
+#### Step 1: Run the Same Test Against All Three Engines
+
+Uncomment the `firefox` and `webkit` blocks above, install the extra engines, then target each project from the CLI:
+
+```bash
+cd tests
+npx playwright install firefox webkit
+
+# Run against a single engine
+npx playwright test auth.spec.js --project=firefox
+npx playwright test auth.spec.js --project=webkit
+
+# Run against all active projects at once
+npx playwright test auth.spec.js --project=chromium --project=firefox --project=webkit
+```
+
+Each engine renders and handles events slightly differently - a selector or timing assumption that passes on Chromium can still fail on WebKit, which is exactly what cross-browser testing is meant to catch.
+
+#### Step 2: Mobile Viewport Testing
+
+Uncomment the `Mobile Chrome` project (it uses Playwright's built-in `devices['Pixel 5']` preset, which sets viewport size, user agent, and touch support together) and run against it directly:
+
+```bash
+npx playwright test auth.spec.js --project="Mobile Chrome"
+```
+
+You can also configure a mobile-sized context by hand in a single test, without touching the shared config:
+
+```javascript
+import { test, expect } from "@playwright/test";
+
+test("navbar renders correctly on a mobile viewport", async ({ browser }) => {
+  const context = await browser.newContext({
+    viewport: { width: 375, height: 812 }, // iPhone-ish size
+    isMobile: true,
+    hasTouch: true,
+  });
+  const page = await context.newPage();
+  await page.goto("http://localhost:3000");
+
+  await expect(page.locator('[data-testid="navbar"]')).toBeVisible();
+
+  await context.close();
+});
+```
+
+✅ **Checkpoint:** You can run the same spec against Chromium, Firefox, and WebKit, and against a mobile viewport
+
+---
+
+### Part 6: Parallel Execution & Performance (10 minutes)
 
 **Speed up test runs** with parallel execution and optimization.
 
@@ -458,7 +540,7 @@ npx playwright test --reporter=html
 
 ---
 
-### Part 6: CI/CD Integration (15 minutes)
+### Part 7: CI/CD Integration (15 minutes)
 
 **Run Playwright tests in GitHub Actions** for continuous integration.
 
@@ -579,6 +661,7 @@ docker run --rm -it -v $(pwd):/workspace -w /workspace mcr.microsoft.com/playwri
 - ✅ **Codegen** - Generate tests by recording user actions
 - ✅ **Screenshots/Videos** - Visual debugging and verification
 - ✅ **Network Analysis** - Understand API interactions
+- ✅ **Cross-Browser & Mobile Testing** - Run the same spec against Chromium, Firefox, WebKit, and a mobile viewport
 - ✅ **Parallel Execution** - Speed up test runs
 - ✅ **CI/CD Integration** - Run tests in GitHub Actions
 - ✅ **Performance Optimization** - Make tests run faster
@@ -660,6 +743,8 @@ export default defineConfig({
 - [ ] Generated tests using codegen
 - [ ] Captured screenshots and videos
 - [ ] Analyzed network requests
+- [ ] Ran the same test against Chromium, Firefox, and WebKit
+- [ ] Tested a mobile viewport
 - [ ] Configured parallel execution
 - [ ] Set up CI/CD integration
 - [ ] Optimized test performance
@@ -687,4 +772,4 @@ export default defineConfig({
 
 **🎉 Congratulations!** You've mastered Playwright's advanced features and are ready for production E2E testing!
 
-**Next Lab:** [Lab 6: Testing with Rate Limits (JavaScript)](../../stage_4_performance_security/exercises/LAB_15_Rate_Limiting_Production_JavaScript.md)
+**Next Lab:** [Lab 12: E2E Test Organization (JavaScript)](LAB_12_E2E_Test_Organization_JavaScript.md)

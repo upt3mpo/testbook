@@ -1107,7 +1107,7 @@ The concepts transfer directly between languages!
 
 **🐍 Python's Unique Advantage:** Unlike JavaScript, Python lets you use the same language for backend API manipulation AND frontend UI testing. This enables incredibly fast test setup by seeding data via API instead of clicking through UI!
 
-**Next Lab:** [Lab 7: Playwright Deep Dive (Python)](LAB_11_Cross_Browser_Testing_Python.md)
+**Next Lab:** [Lab 11: Cross-Browser Testing (Python)](LAB_11_Cross_Browser_Testing_Python.md)
 
 **Next Steps:**
 

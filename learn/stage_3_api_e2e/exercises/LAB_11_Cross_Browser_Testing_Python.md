@@ -749,4 +749,4 @@ pytest tests/e2e-python/ -v --html=report.html
 
 **🎉 Congratulations!** You've mastered Playwright's advanced features and are ready for production E2E testing!
 
-**Next Lab:** [Lab 6: Testing with Rate Limits (Python)](../../stage_4_performance_security/exercises/LAB_15_Rate_Limiting_Production_Python.md)
+**Next Lab:** [Lab 12: E2E Test Organization (Python)](LAB_12_E2E_Test_Organization_Python.md)

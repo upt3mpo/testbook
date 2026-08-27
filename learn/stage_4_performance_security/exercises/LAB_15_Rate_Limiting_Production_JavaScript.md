@@ -106,7 +106,7 @@ Test 21+:  ❌ Get 429 "Rate limit exceeded"
 
 ```bash
 cd tests
-npm test auth.spec.js
+npx playwright test auth.spec.js
 ```
 
 **You should see some tests failing with 429 errors.**

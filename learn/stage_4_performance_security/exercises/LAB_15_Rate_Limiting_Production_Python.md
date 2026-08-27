@@ -97,7 +97,7 @@ Test 21+:  ❌ Get 429 "Rate limit exceeded"
 ### Step 3: Reproduce the Failure
 
 ```bash
-cd /Users/danmanez/Projects/Testbook
+# From the project root:
 
 # Start backend normally (with rate limiting)
 cd backend
@@ -340,7 +340,7 @@ Some tests fail because they expect `401` but get `403`.
 
 ```python
 # No token provided → 401
-GET /api/users/me
+GET /api/auth/me
 # Response: 401 "Authentication required"
 
 # Valid token, but not the owner → 403
@@ -348,7 +348,7 @@ DELETE /api/posts/123  # Trying to delete someone else's post
 # Response: 403 "Not authorized to delete this post"
 
 # Invalid/expired token → 401 OR 403 (both acceptable!)
-GET /api/users/me
+GET /api/auth/me
 Authorization: Bearer invalid_token_here
 # Response: Could be either 401 or 403
 ```

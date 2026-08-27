@@ -1,4 +1,4 @@
-# 🌐 Stage 3: E2E Testing
+# Stage 3: E2E Testing
 
 **Testing Complete User Journeys**
 
@@ -16,39 +16,28 @@
 
 **Estimated time remaining:** 5-7 hours (core content) + 3-5 hours (optional exercises)
 
-<h2 id="table-of-contents">📋 Table of Contents</h2>
+<h2 id="table-of-contents">Table of Contents</h2>
 
 - [Why E2E Testing Matters: Testing Like a Real User](#why-e2e-testing-matters-testing-like-a-real-user)
-- [Part 1: What Are E2E Tests? 📚](#part-1-what-are-e2e-tests)
-- [Part 2: Browser Automation with Playwright 🎭](#part-2-browser-automation-with-playwright)
-- [Part 3: Page Object Model (POM) 🏗️](#part-3-page-object-model-pom)
-- [Part 4: Implementation Guide 🛠️](#part-4-implementation-guide)
-- [Part 5: API Contract Testing 📋](#part-5-api-contract-testing)
-- [Part 6: Hands-On Practice 🏃](#part-6-hands-on-practice)
-- [Part 7: Additional Patterns 🚀](#part-7-additional-patterns)
-- [✅ Success Criteria](#success-criteria)
-- [🧠 Why This Matters](#why-this-matters)
-- [🔗 Related Resources](#related-resources)
-- [🧠 Self-Check Quiz (Optional)](#self-check-quiz-optional)
-- [🤔 Reflection](#reflection)
-- [🎉 Stage Complete](#stage-complete)
+- [Part 1: What Are E2E Tests?](#part-1-what-are-e2e-tests)
+- [Part 2: Browser Automation with Playwright](#part-2-browser-automation-with-playwright)
+- [Part 3: Page Object Model (POM)](#part-3-page-object-model-pom)
+- [Part 4: Implementation Guide](#part-4-implementation-guide)
+- [Part 5: API Contract Testing](#part-5-api-contract-testing)
+- [Part 6: Hands-On Practice](#part-6-hands-on-practice)
+- [Part 7: Additional Patterns](#part-7-additional-patterns)
+- [Success Criteria](#success-criteria)
+- [Why This Matters](#why-this-matters)
+- [Related Resources](#related-resources)
+- [Self-Check Quiz (Optional)](#self-check-quiz-optional)
+- [Reflection](#reflection)
+- [Stage Complete](#stage-complete)
 
 ---
 
 ## Why E2E Testing Matters: Testing Like a Real User
 
-### The Real-World Impact
-
-**The Problem Without E2E Tests:**
-In 2019, a major airline's booking system had a critical bug that prevented customers from completing purchases. All unit tests passed, all integration tests passed, but when a real user tried to book a flight, the payment form had a JavaScript error that prevented submission. The bug cost the airline $2M in lost bookings before it was discovered.
-
-**What E2E Tests Prevent:**
-
-1. **User Experience Bugs**: Features that work in isolation but fail in real usage
-2. **Browser Compatibility Issues**: Code that works in one browser but fails in another
-3. **JavaScript Errors**: Frontend bugs that break user interactions
-4. **API Contract Violations**: Backend changes that break frontend functionality
-5. **Performance Issues**: Slow loading or unresponsive user interfaces
+A backend team can have every unit test and every integration test passing and still ship a broken product: the API returns the right JSON, the database writes correctly, and none of that matters if a JavaScript error on the submit button means a real user can never complete the action. That gap - between "the pieces work" and "the assembled product works for a user clicking through a browser" - is exactly what E2E tests close. They catch cross-browser quirks, frontend/backend contract mismatches, and slow or broken UI flows that no lower-level test is positioned to see, because none of those tests open a real browser.
 
 ### The Testing Pyramid Applied
 
@@ -69,112 +58,13 @@ In 2019, a major airline's booking system had a critical bug that prevented cust
    /_________________________\
 ```
 
-**E2E Tests (5% of your test suite):**
+E2E tests are the smallest slice of the pyramid on purpose: they're slower and more prone to timing-related flakiness than the layers below them, so the pyramid puts most of the coverage burden on unit and integration tests and reserves E2E for the workflows where only a real browser can tell you the truth - a full purchase flow, a login-to-post journey, anything where the frontend and backend have to agree in practice, not just on paper.
 
-- Slow: Run in minutes
-- Less reliable: Can be flaky due to timing issues
-- Test complete user workflows
-- Catch bugs that unit and integration tests miss
-
-**Why 5%?**
-
-- Unit tests catch most bugs (80%)
-- Integration tests catch integration bugs (15%)
-- E2E tests catch user experience bugs (5%)
-- Balance between coverage and reliability
-
-### The Business Case
-
-**Real Example:**
-An e-commerce application has:
-
-- Product catalog (backend API)
-- Shopping cart (frontend)
-- Checkout process (frontend + backend)
-- Payment processing (third-party service)
-
-Without E2E tests:
-
-- Product API works ✅
-- Shopping cart works ✅
-- Checkout API works ✅
-- Payment service works ✅
-- But when a customer tries to buy something... 💥
-- The checkout button doesn't work
-- Customers can't complete purchases
-- Revenue is lost
-
-With E2E tests:
-
-- Test the complete purchase flow
-- Verify the user experience works
-- Catch frontend-backend integration issues
-- Maintain customer satisfaction
-
-### The Developer Experience
-
-**Without E2E Tests:**
-
-- "It works when I test it manually"
-- "The API tests pass, so it should work"
-- "I don't know why users are complaining"
-- "Let me check the browser console... there are errors"
-
-**With E2E Tests:**
-
-- "I know the user experience works"
-- "I can see exactly where the user flow breaks"
-- "I can test real user scenarios"
-- "I have confidence in the complete system"
-
-### The Quality Mindset
-
-**E2E Testing Teaches You:**
-
-1. **Think Like a User**: What do users actually do with your app?
-2. **Test Complete Workflows**: Don't just test individual features
-3. **Handle Real-World Scenarios**: Network issues, slow connections, different devices
-4. **Design for Usability**: If it's hard to test, it's probably hard to use
-5. **Monitor User Experience**: How do you know if users are having problems?
-
-### Industry Standards
-
-**Companies That Require E2E Tests:**
-
-- Google: E2E tests for all user-facing features
-- Facebook: E2E tests for all critical user flows
-- Amazon: E2E tests for all purchase flows
-- Netflix: E2E tests for all streaming features
-
-**Why They Do This:**
-
-- Prevents user experience bugs
-- Ensures cross-browser compatibility
-- Validates complete user workflows
-- Maintains customer satisfaction
-- Builds team confidence
-
-### The E2E Testing Mindset
-
-**Key Questions to Ask:**
-
-1. **What do users actually do?** Login, browse, purchase, logout
-2. **What can go wrong?** Network failures, slow loading, JavaScript errors
-3. **How do we handle failures?** Retries, fallbacks, error messages
-4. **How do we monitor health?** User analytics, error tracking, performance metrics
-5. **How do we test across devices?** Desktop, mobile, tablet, different browsers
-
-**Common E2E Patterns:**
-
-- **User Journey Testing**: Test complete user workflows
-- **Cross-Browser Testing**: Test on different browsers
-- **Mobile Testing**: Test on different devices
-- **Performance Testing**: Test loading times and responsiveness
-- **Accessibility Testing**: Test for users with disabilities
+Writing E2E tests also changes how you think about the app you're testing: you start asking what a user actually does (not just what a function returns), what happens when the network is slow or a request fails partway through, and whether a flow that's awkward to automate is a sign it's awkward to use. That's the mindset this stage is building, more than any specific tool.
 
 ---
 
-<h2 id="part-1-what-are-e2e-tests">Part 1: What Are E2E Tests? 📚</h2>
+<h2 id="part-1-what-are-e2e-tests">Part 1: What Are E2E Tests?</h2>
 
 ### The Restaurant Customer Analogy
 
@@ -258,7 +148,7 @@ test("user creates post", async ({ page }) => {
 
 ---
 
-<h2 id="part-2-browser-automation-with-playwright">Part 2: Browser Automation with Playwright 🎭</h2>
+<h2 id="part-2-browser-automation-with-playwright">Part 2: Browser Automation with Playwright</h2>
 
 ### The Puppet Master Analogy
 
@@ -412,7 +302,7 @@ await page.waitForResponse("**/api/posts", async () => {
 
 ---
 
-<h2 id="part-3-page-object-model-pom">Part 3: Page Object Model (POM) 🏗️</h2>
+<h2 id="part-3-page-object-model-pom">Part 3: Page Object Model (POM)</h2>
 
 ### The Blueprint Analogy
 
@@ -477,13 +367,13 @@ class FeedPage:
 
 ---
 
-<h2 id="part-4-implementation-guide">Part 4: Implementation Guide 🛠️</h2>
+<h2 id="part-4-implementation-guide">Part 4: Implementation Guide</h2>
 
 Now let's see these concepts in real code! Choose your track:
 
 > **⚠️ Before you run anything below:** E2E tests need the app running, and the backend specifically needs `TESTING=true` (plain `./start-dev.sh` with no `backend/.env` leaves it unset, which disables the `/api/dev/reset` endpoint and rate-limit allowances these tests depend on). See [Playwright Quick Start](../../docs/guides/PLAYWRIGHT_QUICKSTART.md) for the full setup.
 
-### 🐍 Python Track: E2E Testing with Playwright
+### Python Track: E2E Testing with Playwright
 
 **Open `tests/e2e-python/test_auth.py` and find `test_register_new_user_successfully`:**
 
@@ -593,7 +483,7 @@ def test_register_new_user_successfully(
 - `test_logout_success` - Learn about session management
 - Full file: [test_auth.py](../../tests/e2e-python/test_auth.py)
 
-### ☕ JavaScript Track: E2E Testing with Playwright
+### JavaScript Track: E2E Testing with Playwright
 
 **Open `tests/e2e/auth.spec.js` and find the registration test:**
 
@@ -693,7 +583,7 @@ test("should register new user successfully", async ({ page }) => {
 - `users.spec.js` - Learn about user interactions
 - Full file: [auth.spec.js](../../tests/e2e/auth.spec.js)
 
-### 🔄 Hybrid Track
+### Hybrid Track
 
 **Test the full stack!** This is what most QA roles require.
 
@@ -704,7 +594,7 @@ test("should register new user successfully", async ({ page }) => {
 
 ---
 
-<h2 id="part-5-api-contract-testing">Part 5: API Contract Testing 📋</h2>
+<h2 id="part-5-api-contract-testing">Part 5: API Contract Testing</h2>
 
 ### The Contract Analogy
 
@@ -770,7 +660,7 @@ def test_api_matches_openapi_schema(client):
 
 ---
 
-<h2 id="part-6-hands-on-practice">Part 6: Hands-On Practice 🏃</h2>
+<h2 id="part-6-hands-on-practice">Part 6: Hands-On Practice</h2>
 
 ### Step 0: Start the App in Testing Mode
 
@@ -897,7 +787,7 @@ test("user can view profile", async ({ page }) => {
 
 ---
 
-<h2 id="part-7-additional-patterns">Part 7: Additional Patterns 🚀</h2>
+<h2 id="part-7-additional-patterns">Part 7: Additional Patterns</h2>
 
 **📝 Note:** The patterns below are **additional enhancements** to your E2E testing skills. All the **core concepts** needed to meet the Stage 3 success criteria are covered in Parts 1-6 above.
 
@@ -956,44 +846,44 @@ async def test_flaky_operation(page):
 
 ---
 
-<h2 id="success-criteria">✅ Success Criteria</h2>
+<h2 id="success-criteria">Success Criteria</h2>
 
 You're ready for Stage 4 when you can:
 
 **Core concepts (all tracks):**
 
-- [ ] Explain when to use E2E vs integration tests
-- [ ] Write a basic Playwright test
-- [ ] Use Page Object Model effectively
-- [ ] Handle waits and async operations
-- [ ] Debug E2E test failures using screenshots
-- [ ] Understand API contract testing
-- [ ] Test complete multi-step user workflows
-- [ ] Choose appropriate test granularity (unit vs integration vs E2E)
+- [] Explain when to use E2E vs integration tests
+- [] Write a basic Playwright test
+- [] Use Page Object Model effectively
+- [] Handle waits and async operations
+- [] Debug E2E test failures using screenshots
+- [] Understand API contract testing
+- [] Test complete multi-step user workflows
+- [] Choose appropriate test granularity (unit vs integration vs E2E)
 
 **Python Track:**
 
-- [ ] Use Playwright Python for browser automation
-- [ ] Create page objects for maintainable tests
-- [ ] Handle async operations with pytest-asyncio
-- [ ] Debug tests with screenshots and videos
+- [] Use Playwright Python for browser automation
+- [] Create page objects for maintainable tests
+- [] Handle async operations with pytest-asyncio
+- [] Debug tests with screenshots and videos
 
 **JavaScript Track:**
 
-- [ ] Use Playwright JavaScript for browser automation
-- [ ] Create test fixtures for reusable setup
-- [ ] Handle async operations with async/await
-- [ ] Debug tests with screenshots and videos
+- [] Use Playwright JavaScript for browser automation
+- [] Create test fixtures for reusable setup
+- [] Handle async operations with async/await
+- [] Debug tests with screenshots and videos
 
 **Hybrid Track:**
 
-- [ ] Can explain how E2E tests complement integration tests
-- [ ] Understand when to use each testing approach
-- [ ] Can write E2E tests in both Python and JavaScript
+- [] Can explain how E2E tests complement integration tests
+- [] Understand when to use each testing approach
+- [] Can write E2E tests in both Python and JavaScript
 
 ---
 
-<h2 id="why-this-matters">🧠 Why This Matters</h2>
+<h2 id="why-this-matters">Why This Matters</h2>
 
 ### In Real QA Teams
 
@@ -1013,7 +903,7 @@ You're ready for Stage 4 when you can:
 
 ---
 
-<h2 id="related-resources">🔗 Related Resources</h2>
+<h2 id="related-resources">Related Resources</h2>
 
 ### Hands-On Practice
 
@@ -1045,7 +935,7 @@ You're ready for Stage 4 when you can:
 
 ---
 
-<h2 id="self-check-quiz-optional">🧠 Self-Check Quiz (Optional)</h2>
+<h2 id="self-check-quiz-optional">Self-Check Quiz (Optional)</h2>
 
 Before moving to Stage 4, can you answer these questions?
 
@@ -1087,7 +977,7 @@ Before moving to Stage 4, can you answer these questions?
 
 ---
 
-<h2 id="reflection">🤔 Reflection</h2>
+<h2 id="reflection">Reflection</h2>
 
 Before moving to Stage 4, answer these:
 
@@ -1105,11 +995,11 @@ Before moving to Stage 4, answer these:
 
 ---
 
-<h2 id="stage-complete">🎉 Stage Complete</h2>
+<h2 id="stage-complete">Stage Complete</h2>
 
 You now understand how to test complete user journeys!
 
-### 👉 [Continue to Stage 4: Performance & Security](../stage_4_performance_security/README.md)
+### [Continue to Stage 4: Performance & Security](../stage_4_performance_security/README.md)
 
 ---
 

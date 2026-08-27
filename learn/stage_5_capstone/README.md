@@ -1,4 +1,4 @@
-# 🎓 Stage 5: Job-Ready Capstone
+# Stage 5: Job-Ready Capstone
 
 **Build Your Testing Portfolio**
 
@@ -16,116 +16,46 @@
 
 **Estimated time remaining:** 4-6 hours (core content) + 2-4 hours (optional exercises)
 
-<h2 id="table-of-contents">📋 Table of Contents</h2>
+<h2 id="entry-criteria">Entry Criteria: What You Should Know Before Starting</h2>
 
+Stage 5 doesn't teach new testing techniques - it asks you to combine everything from Stages 1-4 on a feature of your own choosing. Before starting, you should be able to:
+
+- Write a unit test with the Arrange-Act-Assert pattern and explain what it isolates (Stage 1)
+- Write an integration test that hits a real API endpoint with `TestClient` or an equivalent, including auth and database state (Stage 2)
+- Write a Playwright E2E test that drives a full user workflow through the UI, using Page Object Model for at least one page (Stage 3)
+- Explain what a k6 load test threshold measures and write at least one security test for input validation or authorization (Stage 4)
+
+If any of those feel shaky, revisit that stage's exercises before starting the capstone - the project below assumes you can do all four without step-by-step guidance.
+
+<h2 id="table-of-contents">Table of Contents</h2>
+
+- [Entry Criteria](#entry-criteria)
 - [Why a Testing Portfolio Matters: Your Gateway to Career Success](#why-a-testing-portfolio-matters-your-gateway-to-career-success)
-- [Part 1: What Is a Testing Portfolio? 📚](#part-1-what-is-a-testing-portfolio)
-- [Part 2: Building Your Test Suite 🏗️](#part-2-building-your-test-suite)
-- [Part 3: Implementation Guide 🛠️](#part-3-implementation-guide)
-- [Part 4: Creating Portfolio Artifacts 📸](#part-4-creating-portfolio-artifacts)
-- [Part 5: Professional Presentation 🎤](#part-5-professional-presentation)
-- [Part 6: Interview Preparation 🎯](#part-6-interview-preparation)
-- [Part 7: Additional Patterns 🚀](#part-7-additional-patterns)
-- [✅ Success Criteria](#success-criteria)
-- [🧠 Why This Matters](#why-this-matters)
-- [🔗 Related Resources](#related-resources)
-- [🧠 Self-Check Quiz (Optional)](#self-check-quiz-optional)
-- [🤔 Reflection](#reflection)
-- [🎉 Stage Complete](#stage-complete)
+- [Part 1: What Is a Testing Portfolio?](#part-1-what-is-a-testing-portfolio)
+- [Part 2: Building Your Test Suite](#part-2-building-your-test-suite)
+- [Part 3: Implementation Guide](#part-3-implementation-guide)
+- [Part 4: Creating Portfolio Artifacts](#part-4-creating-portfolio-artifacts)
+- [Part 5: Professional Presentation](#part-5-professional-presentation)
+- [Part 6: Interview Preparation](#part-6-interview-preparation)
+- [Part 7: Additional Patterns](#part-7-additional-patterns)
+- [Success Criteria](#success-criteria)
+- [Why This Matters](#why-this-matters)
+- [Related Resources](#related-resources)
+- [Self-Check Quiz (Optional)](#self-check-quiz-optional)
+- [Reflection](#reflection)
+- [Stage Complete](#stage-complete)
 
 ---
 
 ## Why a Testing Portfolio Matters: Your Gateway to Career Success
 
-### The Real-World Impact
+A resume can claim "experienced in test automation." A portfolio proves it: real test code an interviewer can open, a coverage report they can inspect, a video of an E2E suite actually running. That difference matters most exactly when it's hardest to show any other way - in an interview, when someone asks "can you show me something you've built?" and the honest answer needs to be yes.
 
-**The Problem Without a Portfolio:**
-Sarah applied for 50 QA engineer positions but only got 3 interviews. She had a computer science degree and knew how to write tests, but employers couldn't see her actual work. When she finally got an interview, the hiring manager asked: "Can you show me some test code you've written?" Sarah had nothing to show, and she didn't get the job.
-
-**The Solution With a Portfolio:**
-After building a comprehensive testing portfolio, Sarah applied for the same types of positions. This time, she got 15 interviews from 20 applications. When asked to show her work, she could demonstrate real test code, explain her testing strategy, and discuss the challenges she solved. She received 5 job offers and chose the best one.
-
-**What a Portfolio Demonstrates:**
-
-1. **Practical Skills**: You can actually write and maintain tests
-2. **Problem-Solving**: You can identify and solve testing challenges
-3. **Industry Knowledge**: You understand testing best practices
-4. **Communication**: You can explain technical concepts clearly
-5. **Professionalism**: You can deliver quality work on time
-
-### The Career Impact
-
-**Portfolio Benefits:**
-
-- **Stand Out**: Most candidates don't have portfolios
-- **Demonstrate Skills**: Show rather than tell
-- **Build Confidence**: Know you can do the work
-- **Network**: Share your work with the community
-- **Learn**: Building a portfolio teaches you new skills
-
-**Real Example:**
-John built a testing portfolio featuring:
-
-- A complete test suite for a web application
-- Performance tests using k6
-- Security tests using OWASP ZAP
-- Documentation explaining his testing strategy
-
-Result:
-
-- 10 job interviews from 15 applications
-- 4 job offers
-- 30% higher salary than expected
-- Chose a position at a top tech company
-
-### The Learning Impact
-
-**Building a Portfolio Teaches You:**
-
-1. **Complete Testing Strategy**: How to test a real application
-2. **Tool Mastery**: Deep understanding of testing tools
-3. **Documentation Skills**: How to explain technical concepts
-4. **Project Management**: How to plan and execute testing projects
-5. **Industry Practices**: How testing works in real companies
-
-### The Industry Standards
-
-**What Employers Look For:**
-
-- **Code Quality**: Clean, maintainable test code
-- **Testing Strategy**: Thoughtful approach to testing
-- **Tool Knowledge**: Proficiency with industry-standard tools
-- **Documentation**: Clear explanations of your work
-- **Problem-Solving**: How you approach testing challenges
-
-**Companies That Value Portfolios:**
-
-- Google: "Show us your code"
-- Microsoft: "Demonstrate your skills"
-- Amazon: "Prove you can do the work"
-- Netflix: "Show us your testing approach"
-
-### The Portfolio Mindset
-
-**Key Questions to Ask:**
-
-1. **What skills do I want to demonstrate?** Unit testing, E2E testing, performance testing
-2. **What tools should I use?** Industry-standard tools that employers recognize
-3. **How do I explain my work?** Clear documentation and code comments
-4. **What challenges can I solve?** Real problems that show your problem-solving skills
-5. **How do I make it professional?** Clean code, good documentation, proper structure
-
-**Common Portfolio Patterns:**
-
-- **Complete Test Suite**: Test all aspects of an application
-- **Tool Demonstrations**: Show proficiency with different tools
-- **Problem-Solving**: Solve real testing challenges
-- **Documentation**: Explain your testing strategy
-- **Code Quality**: Write clean, maintainable code
+What actually goes in one: working code that runs (not snippets), a couple of screenshots or a short video as visual proof, and documentation that explains your testing strategy in your own words - not just "here are 50 tests" but "here's why I tested it this way." The rest of this stage builds exactly that, using the feature you choose in Part 2.
 
 ---
 
-<h2 id="part-1-what-is-a-testing-portfolio">Part 1: What Is a Testing Portfolio? 📚</h2>
+<h2 id="part-1-what-is-a-testing-portfolio">Part 1: What Is a Testing Portfolio?</h2>
 
 ### The Job Interview Analogy
 
@@ -168,7 +98,7 @@ A **testing portfolio** is a collection of your best testing work that demonstra
 
 ---
 
-<h2 id="part-2-building-your-test-suite">Part 2: Building Your Test Suite 🏗️</h2>
+<h2 id="part-2-building-your-test-suite">Part 2: Building Your Test Suite</h2>
 
 ### The Construction Analogy
 
@@ -242,6 +172,10 @@ Create a test plan document:
 
 - [ ] Test 1: Input validation
 - [ ] Test 2: Authorization
+
+### Performance Test (k6)
+
+- [ ] Test 1: Load test the feature's main endpoint and record p95 response time
 ```
 
 ### Test Implementation Pattern
@@ -256,11 +190,11 @@ Create a test plan document:
 
 ---
 
-<h2 id="part-3-implementation-guide">Part 3: Implementation Guide 🛠️</h2>
+<h2 id="part-3-implementation-guide">Part 3: Implementation Guide</h2>
 
 Now let's build your test suite! Choose your track:
 
-### 🐍 Python Track: Complete Test Suite
+### Python Track: Complete Test Suite
 
 **Step 1: Unit Tests**
 
@@ -577,7 +511,31 @@ test("feature security", async () => {
 });
 ```
 
-### ☕ JavaScript Track: Complete Test Suite
+**Step 5: Performance Test (k6)**
+
+Tie back to Stage 4: load-test your feature's main endpoint the same way `tests/performance/load-test.js` does for the existing API, and set a threshold you can defend.
+
+```javascript
+import http from "k6/http";
+import { check } from "k6";
+
+export const options = {
+  vus: 10,
+  duration: "30s",
+  thresholds: {
+    http_req_duration: ["p(95)<500"], // pick a number you can justify for this endpoint
+  },
+};
+
+export default function () {
+  const response = http.get("http://localhost:8000/api/feature");
+  check(response, {
+    "status is 200": (r) => r.status === 200,
+  });
+}
+```
+
+### JavaScript Track: Complete Test Suite
 
 **Step 1: Unit Tests**
 
@@ -654,7 +612,7 @@ test("user can use feature", async ({ page }) => {
 });
 ```
 
-### 🔄 Hybrid Track
+### Hybrid Track
 
 **Build both!** This shows you can work with multiple technologies:
 
@@ -665,7 +623,7 @@ test("user can use feature", async ({ page }) => {
 
 ---
 
-<h2 id="part-4-creating-portfolio-artifacts">Part 4: Creating Portfolio Artifacts 📸</h2>
+<h2 id="part-4-creating-portfolio-artifacts">Part 4: Creating Portfolio Artifacts</h2>
 
 ### The Showcase Analogy
 
@@ -704,12 +662,6 @@ pytest --cov=auth --cov=models --cov-report=html
 - Highlight: "Achieved 85% test coverage across 15 test files"
 - Screenshot of the HTML coverage report
 
-**What to include:**
-
-- Overall coverage percentage
-- File-by-file coverage breakdown
-- Highlight: "Achieved 85% test coverage"
-
 **Artifact 2: Test Execution Video**
 
 ```bash
@@ -731,12 +683,6 @@ VIDEO_ON_FAILURE=true HEADLESS=false pytest tests/e2e-python/test_auth.py::TestA
 - Clear view of browser automation
 - Highlight: "E2E test demonstrating complete user registration workflow"
 - Optional: Voiceover explaining what's being tested
-
-**What to include:**
-
-- 30-60 second clip
-- Shows test in action
-- Voiceover explaining what's being tested (optional)
 
 **Artifact 3: Test Report**
 
@@ -779,7 +725,7 @@ Create `TESTING.md` for your feature:
 
 ---
 
-<h2 id="part-5-professional-presentation">Part 5: Professional Presentation 🎤</h2>
+<h2 id="part-5-professional-presentation">Part 5: Professional Presentation</h2>
 
 ### The Job Interview Analogy
 
@@ -874,7 +820,7 @@ I completed Testbook's 5-stage learning path and built a comprehensive test suit
 
 ---
 
-<h2 id="part-6-interview-preparation">Part 6: Interview Preparation 🎯</h2>
+<h2 id="part-6-interview-preparation">Part 6: Interview Preparation</h2>
 
 ### The Performance Analogy
 
@@ -931,7 +877,7 @@ _Risk-based testing, smoke tests, critical paths._
 
 ---
 
-<h2 id="part-7-additional-patterns">Part 7: Additional Patterns 🚀</h2>
+<h2 id="part-7-additional-patterns">Part 7: Additional Patterns</h2>
 
 **📝 Note:** The patterns below are **additional enhancements** to your professional testing capabilities. All the **core concepts** needed to meet the Stage 5 success criteria are covered in Parts 1-6 above.
 
@@ -1010,37 +956,38 @@ export default function () {
 
 ---
 
-<h2 id="success-criteria">✅ Success Criteria</h2>
+<h2 id="success-criteria">Success Criteria</h2>
 
 You're ready for QA engineering roles when you can:
 
 **Portfolio Requirements:**
 
-- [ ] Complete test suite with 80%+ coverage
-- [ ] Professional documentation
-- [ ] Visual artifacts (screenshots, videos)
-- [ ] Clean, public GitHub repository
-- [ ] Resume-ready project descriptions
+- [] Complete test suite with 80%+ coverage
+- [] Professional documentation
+- [] Visual artifacts (screenshots, videos)
+- [] Clean, public GitHub repository
+- [] Resume-ready project descriptions
 
 **Technical Skills:**
 
-- [ ] Write unit, integration, and E2E tests
-- [ ] Use test fixtures and page objects
-- [ ] Implement security testing
-- [ ] Generate coverage reports
-- [ ] Debug failing tests
+- [] Write unit, integration, and E2E tests
+- [] Use test fixtures and page objects
+- [] Implement security testing
+- [] Write at least one k6 performance test for your feature's key endpoint
+- [] Generate coverage reports
+- [] Debug failing tests
 
 **Professional Skills:**
 
-- [ ] Document your work clearly
-- [ ] Present your portfolio confidently
-- [ ] Answer technical questions
-- [ ] Explain your testing approach
-- [ ] Show continuous learning
+- [] Document your work clearly
+- [] Present your portfolio confidently
+- [] Answer technical questions
+- [] Explain your testing approach
+- [] Show continuous learning
 
 ---
 
-<h2 id="why-this-matters">🧠 Why This Matters</h2>
+<h2 id="why-this-matters">Why This Matters</h2>
 
 ### For Your Career
 
@@ -1060,7 +1007,7 @@ You're ready for QA engineering roles when you can:
 
 ---
 
-<h2 id="related-resources">🔗 Related Resources</h2>
+<h2 id="related-resources">Related Resources</h2>
 
 ### Portfolio Development
 
@@ -1078,7 +1025,7 @@ You're ready for QA engineering roles when you can:
 
 ---
 
-<h2 id="self-check-quiz-optional">🧠 Self-Check Quiz (Optional)</h2>
+<h2 id="self-check-quiz-optional">Self-Check Quiz (Optional)</h2>
 
 Before considering yourself job-ready, can you answer these questions?
 
@@ -1120,7 +1067,7 @@ Before considering yourself job-ready, can you answer these questions?
 
 ---
 
-<h2 id="reflection">🤔 Reflection</h2>
+<h2 id="reflection">Reflection</h2>
 
 Before considering yourself job-ready, answer these:
 
@@ -1138,12 +1085,14 @@ Before considering yourself job-ready, answer these:
 
 ---
 
-<h2 id="stage-complete">🎉 Stage Complete</h2>
+<h2 id="stage-complete">Stage Complete</h2>
 
 You now have a complete testing portfolio and are ready for QA engineering roles!
 
-### 👉 [View Your Portfolio](../../docs/guides/PORTFOLIO.md)
+### [View Your Portfolio](../../docs/guides/PORTFOLIO.md)
+
+Once you've finished the reflection above, read [COMPLETION.md](../COMPLETION.md) - it closes out the full 5-stage path and points you toward what to learn next.
 
 ---
 
-_Pro tip: Your portfolio is never "done" - keep updating it as you learn new skills and complete new projects! 🚀_
+_Your portfolio is never "done" - keep updating it as you learn new skills and complete new projects._

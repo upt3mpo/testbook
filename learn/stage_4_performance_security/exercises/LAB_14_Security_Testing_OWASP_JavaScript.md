@@ -71,7 +71,7 @@ module.exports = {
 };
 ```
 
-#### Step 3: Test for SQL Injection (A01:2021 - Broken Access Control)
+#### Step 3: Test for SQL Injection (A03:2021 - Injection)
 
 Create `tests/security/test_sql_injection.js`:
 
@@ -600,8 +600,7 @@ test.describe("Custom Security Tests", () => {
 **Continue building your skills:**
 
 - **[Lab 15: Rate Limiting & Production Monitoring (JavaScript)](LAB_15_Rate_Limiting_Production_JavaScript.md)** - Production readiness
-- **[Lab 16: Complete Test Suite Design (JavaScript)](LAB_15_Rate_Limiting_Production_JavaScript.md)** - Test strategy
-- **[Lab 17: Portfolio Project & Presentation (JavaScript)](../../stage_5_capstone/README.md)** - Final project
+- **[Stage 5: Capstone](../../stage_5_capstone/README.md)** - Portfolio project and presentation
 
 ---
 

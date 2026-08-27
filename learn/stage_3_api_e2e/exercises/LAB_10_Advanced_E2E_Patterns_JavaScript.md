@@ -830,11 +830,9 @@ The concepts transfer directly between languages!
 
 ## 📚 Resources
 
-**Working Examples (Run These!):**
+**Files You Create in This Lab:**
 
-- **`tests/e2e/pages/`** - Page objects (feed, profile)
-- **`tests/e2e/fixtures/`** - Advanced fixtures
-- **`tests/e2e/builders.js`** - Data builders
+Unlike the Python track (which ships pre-built examples in `tests/e2e-python/examples/`), the JavaScript track has no pre-built page objects or builders in the repo - the `tests/e2e/pages/feed-page.js`, `tests/e2e/pages/profile-page.js`, and `tests/e2e/builders.js` files above are ones you create yourself by following Parts 1-5. `tests/e2e/fixtures/` does already exist in the repo (see `test-helpers.js`), so add `advanced-fixtures.js` alongside it.
 
 **Study Existing Tests:**
 
@@ -851,4 +849,4 @@ The concepts transfer directly between languages!
 
 **🎉 You've mastered advanced E2E testing patterns in JavaScript! These are professional-level skills used in production!**
 
-**Next Lab:** [Lab 7: Playwright Deep Dive (JavaScript)](LAB_11_Cross_Browser_Testing_JavaScript.md)
+**Next Lab:** [Lab 11: Cross-Browser Testing (JavaScript)](LAB_11_Cross_Browser_Testing_JavaScript.md)

@@ -292,15 +292,15 @@ export default function () {
       "Content-Type": "application/json",
     };
 
-    // Test creating a post
+    // Test creating a post (Testbook's PostCreate schema only has content,
+    // image_url, video_url - there's no title field)
     let postPayload = JSON.stringify({
-      title: `Load Test Post ${__VU}-${__ITER}`,
-      content: `This is a load test post created by virtual user ${__VU} at iteration ${__ITER}`,
+      content: `Load Test Post ${__VU}-${__ITER}: This is a load test post created by virtual user ${__VU} at iteration ${__ITER}`,
     });
 
     let startTime = Date.now();
     let postResponse = http.post(
-      "http://localhost:8000/api/posts",
+      "http://localhost:8000/api/posts/",
       postPayload,
       { headers }
     );
@@ -432,13 +432,12 @@ export default function () {
       Authorization: `Bearer ${token}`,
     };
 
-    // Test 4: Create post
+    // Test 4: Create post (only content is a real field on PostCreate)
     let postPayload = JSON.stringify({
-      title: `Load Test Post ${__VU}-${__ITER}`,
-      content: `This is a comprehensive load test post created by VU ${__VU} at iteration ${__ITER}. The content is designed to test the system under various load conditions.`,
+      content: `Load Test Post ${__VU}-${__ITER}: This is a comprehensive load test post created by VU ${__VU} at iteration ${__ITER}. The content is designed to test the system under various load conditions.`,
     });
 
-    let postResponse = http.post(`${baseUrl}/posts`, postPayload, {
+    let postResponse = http.post(`${baseUrl}/posts/`, postPayload, {
       headers: authHeaders,
     });
     let postSuccess = check(postResponse, {
@@ -580,15 +579,14 @@ export default function () {
       Authorization: `Bearer ${token}`,
     };
 
-    // Create post
+    // Create post (only content is a real field on PostCreate)
     let postPayload = JSON.stringify({
-      title: `Scenario Test Post ${__VU}-${__ITER}`,
-      content: `This is a scenario test post for ${
+      content: `Scenario Test Post ${__VU}-${__ITER}: This is a scenario test post for ${
         __ENV.TEST_TYPE || "unknown"
       } scenario.`,
     });
 
-    let postResponse = http.post(`${baseUrl}/posts`, postPayload, {
+    let postResponse = http.post(`${baseUrl}/posts/`, postPayload, {
       headers: authHeaders,
     });
     check(postResponse, {
@@ -635,7 +633,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.11"
+          python-version: "3.13"
 
       - name: Install Python dependencies
         run: |
@@ -876,9 +874,9 @@ export default function () {
 
 **Continue building your skills:**
 
-- **[Lab 14: Security Testing & OWASP (Python)](LAB_14_Security_Testing_OWASP_Python.md)** - Security testing
-- **[Lab 15: Rate Limiting & Production Monitoring (Python)](LAB_15_Rate_Limiting_Production_Python.md)** - Production readiness
-- **[Lab 16: Complete Test Suite Design (Python)](LAB_14_Security_Testing_OWASP_Python.md)** - Test strategy
+- **[Lab 14: Security Testing & OWASP (Python)](LAB_14_Security_Testing_OWASP_Python.md)** / **[(JavaScript)](LAB_14_Security_Testing_OWASP_JavaScript.md)** - Security testing
+- **[Lab 15: Rate Limiting & Production Monitoring (Python)](LAB_15_Rate_Limiting_Production_Python.md)** / **[(JavaScript)](LAB_15_Rate_Limiting_Production_JavaScript.md)** - Production readiness
+- **[Stage 5: Capstone](../../stage_5_capstone/README.md)** - Apply everything in a project of your own
 
 ---
 

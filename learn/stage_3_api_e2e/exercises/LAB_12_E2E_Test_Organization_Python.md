@@ -41,12 +41,20 @@ Organize tests with clear structure, proper data management, and CI/CD integrati
 
 ### Part 1: Test Structure Organization (30 minutes)
 
+**Note:** `tests/e2e-python/` already has real files from Labs 9-11 (`conftest.py`,
+`pytest.ini`, `pages/feed_page.py`, `pages/profile_page.py`, `test_auth.py`, etc.).
+The structure below is a larger, "how would this scale to 100+ tests" reorganization
+- it reuses some of the same filenames (`conftest.py`, `pytest.ini`, `pages/`) with
+different contents. Don't paste these over your working Lab 9-11 files; either
+build this in a separate scratch directory to see the pattern, or read through it
+comparing to what's already there rather than overwriting it.
+
 #### Step 1: Create Test Directory Structure
 
 Create the following directory structure:
 
 ```text
-tests/e2e/
+tests/e2e-python/
 ├── conftest.py                 # Shared fixtures and configuration
 ├── pytest.ini                 # E2E-specific pytest configuration
 ├── requirements.txt            # E2E test dependencies
@@ -87,7 +95,7 @@ tests/e2e/
 
 #### Step 2: Create Base Configuration
 
-Create `tests/e2e/conftest.py`:
+Create `tests/e2e-python/conftest.py`:
 
 ```python
 import pytest
@@ -115,7 +123,7 @@ def browser_context_args():
     return {
         "viewport": {"width": 1280, "height": 720},
         "ignore_https_errors": True,
-        "record_video_dir": "tests/e2e/reports/videos/",
+        "record_video_dir": "tests/e2e-python/reports/videos/",
         "record_video_size": {"width": 1280, "height": 720}
     }
 
@@ -212,7 +220,7 @@ def setup_test_environment(browser_page, test_user, test_posts):
 
 #### Step 3: Create Page Object Model
 
-Create `tests/e2e/pages/base_page.py`:
+Create `tests/e2e-python/pages/base_page.py`:
 
 ```python
 from playwright.sync_api import Page, Locator
@@ -260,14 +268,14 @@ class BasePage:
 
     def take_screenshot(self, name: str) -> None:
         """Take a screenshot."""
-        self.page.screenshot(path=f"tests/e2e/reports/screenshots/{name}.png")
+        self.page.screenshot(path=f"tests/e2e-python/reports/screenshots/{name}.png")
 
     def wait_for_url(self, url_pattern: str, timeout: int = 30000) -> None:
         """Wait for URL to match pattern."""
         self.page.wait_for_url(url_pattern, timeout=timeout)
 ```
 
-Create `tests/e2e/pages/login_page.py`:
+Create `tests/e2e-python/pages/login_page.py`:
 
 ```python
 from .base_page import BasePage
@@ -314,7 +322,7 @@ class LoginPage(BasePage):
 
 #### Step 1: Create Test Data Files
 
-Create `tests/e2e/data/users.json`:
+Create `tests/e2e-python/data/users.json`:
 
 ```json
 {
@@ -350,7 +358,7 @@ Create `tests/e2e/data/users.json`:
 }
 ```
 
-Create `tests/e2e/data/posts.json`:
+Create `tests/e2e-python/data/posts.json`:
 
 Note: Testbook's `Post` model only has `content` (plus optional
 `image_url`/`video_url`) - there's no `title` or `tags` field on real posts,
@@ -377,7 +385,7 @@ so this sample data sticks to fields the app actually stores.
 
 #### Step 2: Create Data Helper Functions
 
-Create `tests/e2e/utils/data_helpers.py`:
+Create `tests/e2e-python/utils/data_helpers.py`:
 
 ```python
 import json
@@ -433,7 +441,7 @@ class DataHelper:
 
 #### Step 1: Create Smoke Tests
 
-Create `tests/e2e/tests/smoke/test_critical_flows.py`:
+Create `tests/e2e-python/tests/smoke/test_critical_flows.py`:
 
 ```python
 import pytest
@@ -495,7 +503,7 @@ class TestCriticalFlows:
 
 #### Step 2: Create Regression Tests
 
-Create `tests/e2e/tests/regression/test_user_management.py`:
+Create `tests/e2e-python/tests/regression/test_user_management.py`:
 
 ```python
 import pytest
@@ -603,9 +611,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd backend
-          pip install -r requirements.txt
-          pip install -r tests/e2e/requirements.txt
+          pip install -r backend/requirements.txt
+          pip install -r tests/e2e-python/requirements.txt
 
       - name: Install Playwright browsers
         run: |
@@ -634,8 +641,7 @@ jobs:
         # (not a --browser CLI flag) to pick the engine - see TEST_CONFIG
         # and the playwright_context fixture above.
         run: |
-          cd backend
-          E2E_BROWSER=${{ matrix.browser }} pytest tests/e2e/ -v --html=reports/e2e-report-${{ matrix.browser }}.html
+          E2E_BROWSER=${{ matrix.browser }} pytest tests/e2e-python/ -v --html=reports/e2e-report-${{ matrix.browser }}.html
 
       - name: Upload test results
         uses: actions/upload-artifact@v3
@@ -643,13 +649,13 @@ jobs:
         with:
           name: e2e-test-results-${{ matrix.browser }}
           path: |
-            backend/tests/e2e/reports/
+            tests/e2e-python/reports/
             backend/reports/
 ```
 
 #### Step 2: Create Pytest Configuration
 
-Create `tests/e2e/pytest.ini`:
+Create `tests/e2e-python/pytest.ini`:
 
 Note: this suite's `conftest.py` (Part 1) manages its own `sync_playwright()`
 session and reads browser/headless/timeout settings from the `E2E_*`
@@ -659,7 +665,7 @@ built-in `--browser`/`--headed`/`--video`/`--screenshot` CLI options - so
 
 ```ini
 [pytest]
-testpaths = tests/e2e/tests
+testpaths = tests/e2e-python/tests
 python_files = test_*.py
 python_classes = Test*
 python_functions = test_*
@@ -693,7 +699,7 @@ E2E_BROWSER=firefox E2E_HEADLESS=false E2E_SLOW_MO=500 pytest
 ### Challenge 1: Create Test Suite Runner
 
 ```python
-# Create tests/e2e/run_tests.py
+# Create tests/e2e-python/run_tests.py
 import os
 import subprocess
 import sys
@@ -703,7 +709,7 @@ def run_test_suite(suite: str, browser: str = "chromium", parallel: bool = False
     """Run specific test suite."""
     cmd = [
         "pytest",
-        f"tests/e2e/tests/{suite}/",
+        f"tests/e2e-python/tests/{suite}/",
         "--html=reports/e2e-report.html",
         "--self-contained-html"
     ]
@@ -736,7 +742,7 @@ if __name__ == "__main__":
 ### Challenge 2: Create Test Data Factory
 
 ```python
-# Create tests/e2e/utils/test_data_factory.py
+# Create tests/e2e-python/utils/test_data_factory.py
 import random
 import string
 from typing import Dict, List
