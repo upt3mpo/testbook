@@ -627,7 +627,7 @@ After implementing the GitHub Actions pipeline:
 
 ## 📚 Additional Resources
 
-- [How to Write a QA Resume](https://www.ministryoftesting.com/articles/how-to-write-a-qa-resume)
+- [QA Career Resources](https://www.ministryoftesting.com/topics/career)
 - [QA Interview Questions](https://www.softwaretestinghelp.com/qa-interview-questions/)
 - [Testing Career Roadmap](https://roadmap.sh/qa)
 
