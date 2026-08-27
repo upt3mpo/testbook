@@ -197,80 +197,9 @@ def test_user_cannot_withdraw_more_than_account_balance():
 
 ## The Testing Journey
 
-### Beginner Mindset
+Your relationship to testing changes as you get better at it. Early on, the instinct is to test everything and treat more tests as automatically better — that's a reasonable starting point, but it doesn't scale, and it treats tests as an obligation rather than a tool. As you gain experience, the instinct shifts toward testing what's important rather than testing exhaustively, and toward treating tests as documentation of intent rather than just verification code. With more experience still, the focus moves to what actually matters to users and to using tests as a design tool — writing a test before the code often reveals a better shape for the code itself. At the far end of that progression, testing stops being about catching bugs after the fact and becomes part of how you prevent them in the first place, woven into the system's architecture rather than bolted on.
 
-- "I need to test everything"
-- "More tests = better quality"
-- "Tests are just code"
-
-### Intermediate Mindset
-
-- "I need to test the important things"
-- "Good tests are better than many tests"
-- "Tests are documentation"
-
-### Advanced Mindset
-
-- "I need to test what matters to users"
-- "The right tests provide the right feedback"
-- "Tests are a design tool"
-
-### Expert Mindset
-
-- "I need to prevent problems, not just find them"
-- "Testing is about building confidence"
-- "Tests are part of the system architecture"
-
-## Building Your Testing Philosophy
-
-### Questions to Ask Yourself
-
-1. **Why do I test?**
-
-   - To find bugs?
-   - To prevent bugs?
-   - To document behavior?
-   - To enable change?
-
-2. **What do I test?**
-
-   - Everything?
-   - Critical paths?
-   - Edge cases?
-   - User scenarios?
-
-3. **How do I test?**
-
-   - Manually?
-   - Automatically?
-   - Both?
-   - Continuously?
-
-4. **When do I test?**
-   - After coding?
-   - While coding?
-   - Before coding?
-   - All the time?
-
-### Developing Your Approach
-
-**Start with:**
-
-- Understanding your users
-- Identifying critical scenarios
-- Learning from failures
-
-**Grow by:**
-
-- Experimenting with different approaches
-- Learning from other testers
-- Reflecting on what works
-
-**Master through:**
-
-- Teaching others
-- Contributing to the community
-- Continuously improving
+Where you are on that spectrum matters less than moving along it. Ask yourself honestly why you test (finding bugs, preventing them, documenting behavior, enabling safe change — usually some mix), and let your answer guide how much and where you invest testing effort, rather than testing everything uniformly out of habit.
 
 ## The Big Picture
 
