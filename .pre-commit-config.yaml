@@ -44,34 +44,19 @@ repos:
             \.pytest_cache/.*
           )$
 
-  # - repo: https://github.com/pycqa/isort
-  #   rev: 5.13.2
-  #   hooks:
-  #     - id: isort
-  #       args: [--profile=black, --line-length=88]
-  #       exclude: |
-  #         (?x)^(
-  #           \.venv/.*|
-  #           venv/.*|
-  #           backend/venv/.*|
-  #           __pycache__/.*|
-  #           \.pytest_cache/.*
-  #         )$
-
-  # - repo: https://github.com/pycqa/flake8
-  #   rev: 7.1.1
-  #   hooks:
-  #     - id: flake8
-  #       args: [--max-line-length=88, --extend-ignore=E203,W503,E501,E402,E722,F821,F841]
-  #       exclude: |
-  #         (?x)^(
-  #           \.venv/.*|
-  #           venv/.*|
-  #           backend/venv/.*|
-  #           __pycache__/.*|
-  #           \.pytest_cache/.*|
-  #           backend/tests/examples/.*
-  #         )$
+  # Ruff replaces isort + flake8 here: its `I` ruleset covers import
+  # sorting and its `E`/`F` rules cover what flake8 was configured for.
+  # Config lives in backend/pyproject.toml ([tool.ruff]) — deliberately
+  # scoped to E/F/I only (not ruff's stricter opt-in categories) so it
+  # doesn't overwhelm a teaching codebase with unrelated lint noise.
+  # Verified this passes clean on the current codebase before enabling.
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.16.4
+    hooks:
+      - id: ruff
+        args: [--fix]
+        files: ^backend/
+        exclude: ^backend/tests/examples/
 
   # JavaScript/Node.js quality (optional - can be enabled later)
   # - repo: https://github.com/pre-commit/mirrors-eslint
@@ -86,7 +71,14 @@ repos:
   #         - eslint-plugin-jsx-a11y@^6.8.0
   #       args: [--fix]
 
-  # Security checks (optional - can be enabled later)
+  # Security checks - NOT enabled yet. .secrets.baseline exists but is
+  # stale (generated once, never re-scanned): running `detect-secrets
+  # scan --baseline .secrets.baseline` against the current repo turns up
+  # ~1200 new candidate matches (mostly CI env-var fixtures and seed
+  # test passwords, not real secrets, but that needs a human to actually
+  # review and allowlist each one before this can be turned on without
+  # blocking every future commit). Regenerating and triaging the
+  # baseline is real work, not a config toggle — do that first.
   # - repo: https://github.com/Yelp/detect-secrets
   #   rev: v1.4.0
   #   hooks:
