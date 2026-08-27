@@ -72,18 +72,16 @@ class TestAuthentication:
         }
 
         # Act - Fill registration form and submit
-        page.fill('[data-testid="register-email-input"]', new_user["email"])
-        page.fill('[data-testid="register-username-input"]', new_user["username"])
-        page.fill('[data-testid="register-displayname-input"]', new_user["displayName"])
-        page.fill('[data-testid="register-password-input"]', new_user["password"])
-        page.click('[data-testid="register-submit-button"]')
+        page.get_by_test_id("register-email-input").fill(new_user["email"])
+        page.get_by_test_id("register-username-input").fill(new_user["username"])
+        page.get_by_test_id("register-displayname-input").fill(new_user["displayName"])
+        page.get_by_test_id("register-password-input").fill(new_user["password"])
+        page.get_by_test_id("register-submit-button").click()
 
         # Assert - Verify auto-login and redirect to feed
         page.wait_for_url(f"{base_url}/", timeout=10000)  # Redirected to feed
-        expect(page.locator('[data-testid="navbar"]')).to_be_visible(
-            timeout=10000
-        )  # Logged in
-        expect(page.locator('[data-testid="navbar-username"]')).to_contain_text(
+        expect(page.get_by_test_id("navbar")).to_be_visible(timeout=10000)  # Logged in
+        expect(page.get_by_test_id("navbar-username")).to_contain_text(
             new_user["displayName"]  # Correct user displayed
         )
 
@@ -94,11 +92,11 @@ class TestAuthentication:
         page.goto(f"{base_url}/register")
 
         # Try to register with existing email
-        page.fill('[data-testid="register-email-input"]', test_users["sarah"]["email"])
-        page.fill('[data-testid="register-username-input"]', "differentuser")
-        page.fill('[data-testid="register-displayname-input"]', "Different User")
-        page.fill('[data-testid="register-password-input"]', "Password123!")
-        page.click('[data-testid="register-submit-button"]')
+        page.get_by_test_id("register-email-input").fill(test_users["sarah"]["email"])
+        page.get_by_test_id("register-username-input").fill("differentuser")
+        page.get_by_test_id("register-displayname-input").fill("Different User")
+        page.get_by_test_id("register-password-input").fill("Password123!")
+        page.get_by_test_id("register-submit-button").click()
 
         # Should show error
         expect(page.locator("text=/email.*already/i")).to_be_visible(timeout=5000)
@@ -110,13 +108,13 @@ class TestAuthentication:
         page.goto(f"{base_url}/register")
 
         # Try to register with existing username
-        page.fill('[data-testid="register-email-input"]', "newemail@example.com")
-        page.fill(
-            '[data-testid="register-username-input"]', test_users["sarah"]["username"]
+        page.get_by_test_id("register-email-input").fill("newemail@example.com")
+        page.get_by_test_id("register-username-input").fill(
+            test_users["sarah"]["username"]
         )
-        page.fill('[data-testid="register-displayname-input"]', "Different User")
-        page.fill('[data-testid="register-password-input"]', "Password123!")
-        page.click('[data-testid="register-submit-button"]')
+        page.get_by_test_id("register-displayname-input").fill("Different User")
+        page.get_by_test_id("register-password-input").fill("Password123!")
+        page.get_by_test_id("register-submit-button").click()
 
         # Should show error
         expect(page.locator("text=/username.*already/i")).to_be_visible(timeout=5000)
@@ -125,13 +123,13 @@ class TestAuthentication:
         """Test registration validates email format"""
         page.goto(f"{base_url}/register")
 
-        page.fill('[data-testid="register-email-input"]', "notanemail")
-        page.fill('[data-testid="register-username-input"]', "testuser")
-        page.fill('[data-testid="register-displayname-input"]', "Test User")
-        page.fill('[data-testid="register-password-input"]', "Password123!")
+        page.get_by_test_id("register-email-input").fill("notanemail")
+        page.get_by_test_id("register-username-input").fill("testuser")
+        page.get_by_test_id("register-displayname-input").fill("Test User")
+        page.get_by_test_id("register-password-input").fill("Password123!")
 
         # Should show HTML5 validation or custom error
-        email_input = page.locator('[data-testid="register-email-input"]')
+        email_input = page.get_by_test_id("register-email-input")
         is_invalid = email_input.evaluate("el => !el.validity.valid")
         assert is_invalid
 
@@ -144,18 +142,16 @@ class TestAuthentication:
 
         # Fill login form
         user = test_users["sarah"]
-        page.fill('[data-testid="login-email-input"]', user["email"])
-        page.fill('[data-testid="login-password-input"]', user["password"])
+        page.get_by_test_id("login-email-input").fill(user["email"])
+        page.get_by_test_id("login-password-input").fill(user["password"])
 
         # Submit
-        page.click('[data-testid="login-submit-button"]')
+        page.get_by_test_id("login-submit-button").click()
 
         # Should be on feed page
         page.wait_for_url(f"{base_url}/", timeout=10000)
-        expect(page.locator('[data-testid="navbar"]')).to_be_visible(timeout=10000)
-        expect(page.locator('[data-testid="navbar-username"]')).to_contain_text(
-            user["name"]
-        )
+        expect(page.get_by_test_id("navbar")).to_be_visible(timeout=10000)
+        expect(page.get_by_test_id("navbar-username")).to_contain_text(user["name"])
 
     def test_login_wrong_password_error(
         self, page: Page, base_url: str, test_users: dict, fresh_database
@@ -163,13 +159,13 @@ class TestAuthentication:
         """Test login shows error for wrong password"""
         page.goto(base_url)
 
-        page.fill('[data-testid="login-email-input"]', test_users["sarah"]["email"])
-        page.fill('[data-testid="login-password-input"]', "WrongPassword123!")
-        page.click('[data-testid="login-submit-button"]')
+        page.get_by_test_id("login-email-input").fill(test_users["sarah"]["email"])
+        page.get_by_test_id("login-password-input").fill("WrongPassword123!")
+        page.get_by_test_id("login-submit-button").click()
 
         # Should show error
-        expect(page.locator('[data-testid="login-error"]')).to_be_visible(timeout=5000)
-        expect(page.locator('[data-testid="login-error"]')).to_contain_text(
+        expect(page.get_by_test_id("login-error")).to_be_visible(timeout=5000)
+        expect(page.get_by_test_id("login-error")).to_contain_text(
             re.compile("incorrect|invalid", re.IGNORECASE)
         )
 
@@ -179,13 +175,13 @@ class TestAuthentication:
         """Test login shows error for non-existent user"""
         page.goto(base_url)
 
-        page.fill('[data-testid="login-email-input"]', "nonexistent@example.com")
-        page.fill('[data-testid="login-password-input"]', "Password123!")
-        page.click('[data-testid="login-submit-button"]')
+        page.get_by_test_id("login-email-input").fill("nonexistent@example.com")
+        page.get_by_test_id("login-password-input").fill("Password123!")
+        page.get_by_test_id("login-submit-button").click()
 
         # Should show error
-        expect(page.locator('[data-testid="login-error"]')).to_be_visible(timeout=5000)
-        expect(page.locator('[data-testid="login-error"]')).to_contain_text(
+        expect(page.get_by_test_id("login-error")).to_be_visible(timeout=5000)
+        expect(page.get_by_test_id("login-error")).to_contain_text(
             re.compile("incorrect|invalid", re.IGNORECASE)
         )
 
@@ -196,9 +192,9 @@ class TestAuthentication:
         page.goto(base_url)
 
         user = test_users["sarah"]
-        page.fill('[data-testid="login-email-input"]', user["email"])
-        page.fill('[data-testid="login-password-input"]', user["password"])
-        page.click('[data-testid="login-submit-button"]')
+        page.get_by_test_id("login-email-input").fill(user["email"])
+        page.get_by_test_id("login-password-input").fill(user["password"])
+        page.get_by_test_id("login-submit-button").click()
 
         page.wait_for_url(f"{base_url}/", timeout=10000)
 
@@ -206,10 +202,8 @@ class TestAuthentication:
         page.reload()
 
         # Should still be logged in
-        expect(page.locator('[data-testid="navbar"]')).to_be_visible(timeout=10000)
-        expect(page.locator('[data-testid="navbar-username"]')).to_contain_text(
-            user["name"]
-        )
+        expect(page.get_by_test_id("navbar")).to_be_visible(timeout=10000)
+        expect(page.get_by_test_id("navbar-username")).to_contain_text(user["name"])
 
     # Logout Tests
     def test_logout_success(self, page: Page, base_url: str, login_as):
@@ -218,13 +212,11 @@ class TestAuthentication:
         login_as("sarah")
 
         # Click logout
-        page.click('[data-testid="navbar-logout-button"]')
+        page.get_by_test_id("navbar-logout-button").click()
 
         # Should be redirected to login page
-        expect(page.locator('[data-testid="login-email-input"]')).to_be_visible(
-            timeout=5000
-        )
-        expect(page.locator('[data-testid="navbar"]')).not_to_be_visible()
+        expect(page.get_by_test_id("login-email-input")).to_be_visible(timeout=5000)
+        expect(page.get_by_test_id("navbar")).not_to_be_visible()
 
     def test_logout_cannot_access_protected_routes(
         self, page: Page, base_url: str, login_as
@@ -234,15 +226,13 @@ class TestAuthentication:
         login_as("sarah")
 
         # Logout
-        page.click('[data-testid="navbar-logout-button"]')
+        page.get_by_test_id("navbar-logout-button").click()
 
         # Try to access protected route
         page.goto(f"{base_url}/settings")
 
         # Should be redirected to login
-        expect(page.locator('[data-testid="login-email-input"]')).to_be_visible(
-            timeout=5000
-        )
+        expect(page.get_by_test_id("login-email-input")).to_be_visible(timeout=5000)
 
     # Protected Routes Tests
     def test_protected_route_feed_redirects(self, page: Page, base_url: str):
@@ -250,14 +240,14 @@ class TestAuthentication:
         page.goto(base_url)
 
         # Should show login page
-        expect(page.locator('[data-testid="login-email-input"]')).to_be_visible()
+        expect(page.get_by_test_id("login-email-input")).to_be_visible()
 
     def test_protected_route_settings_redirects(self, page: Page, base_url: str):
         """Test settings redirects to login when not authenticated"""
         page.goto(f"{base_url}/settings")
 
         # Should show login page
-        expect(page.locator('[data-testid="login-email-input"]')).to_be_visible()
+        expect(page.get_by_test_id("login-email-input")).to_be_visible()
 
     def test_protected_route_profile_redirects(
         self, page: Page, base_url: str, test_users: dict
@@ -266,7 +256,7 @@ class TestAuthentication:
         page.goto(f"{base_url}/profile/{test_users['sarah']['username']}")
 
         # Should show login page
-        expect(page.locator('[data-testid="login-email-input"]')).to_be_visible()
+        expect(page.get_by_test_id("login-email-input")).to_be_visible()
 
     # Auto-login after Registration
     def test_auto_login_after_registration(
@@ -283,19 +273,19 @@ class TestAuthentication:
             "password": "AutoPass123!",
         }
 
-        page.fill('[data-testid="register-email-input"]', new_user["email"])
-        page.fill('[data-testid="register-username-input"]', new_user["username"])
-        page.fill('[data-testid="register-displayname-input"]', new_user["displayName"])
-        page.fill('[data-testid="register-password-input"]', new_user["password"])
-        page.click('[data-testid="register-submit-button"]')
+        page.get_by_test_id("register-email-input").fill(new_user["email"])
+        page.get_by_test_id("register-username-input").fill(new_user["username"])
+        page.get_by_test_id("register-displayname-input").fill(new_user["displayName"])
+        page.get_by_test_id("register-password-input").fill(new_user["password"])
+        page.get_by_test_id("register-submit-button").click()
 
         # Should be logged in without manual login
         page.wait_for_url(f"{base_url}/", timeout=10000)
-        expect(page.locator('[data-testid="navbar"]')).to_be_visible(timeout=10000)
+        expect(page.get_by_test_id("navbar")).to_be_visible(timeout=10000)
 
         # Should be able to access protected routes
-        page.click('[data-testid="navbar-settings-link"]')
-        expect(page.locator('[data-testid="settings-email"]')).to_contain_text(
+        page.get_by_test_id("navbar-settings-link").click()
+        expect(page.get_by_test_id("settings-email")).to_contain_text(
             new_user["email"], timeout=10000
         )
 

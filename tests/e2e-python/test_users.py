@@ -18,18 +18,18 @@ class TestUserProfile:
         login_as("sarah")
 
         # Click profile link
-        page.click('[data-testid="navbar-profile-link"]')
+        page.get_by_test_id("navbar-profile-link").click()
 
         # Should show profile information
-        expect(page.locator('[data-testid="profile-display-name"]')).to_contain_text(
+        expect(page.get_by_test_id("profile-display-name")).to_contain_text(
             test_users["sarah"]["name"]
         )
-        expect(page.locator('[data-testid="profile-username"]')).to_contain_text(
+        expect(page.get_by_test_id("profile-username")).to_contain_text(
             f"@{test_users['sarah']['username']}"
         )
 
         # Should show edit button for own profile
-        expect(page.locator('[data-testid="profile-edit-button"]')).to_be_visible()
+        expect(page.get_by_test_id("profile-edit-button")).to_be_visible()
 
     def test_view_other_user_profile(
         self, page: Page, base_url: str, login_as, test_users: dict, fresh_database
@@ -40,19 +40,19 @@ class TestUserProfile:
         page.goto(f"{base_url}/profile/{test_users['mike']['username']}")
 
         # Should show user information
-        expect(page.locator('[data-testid="profile-display-name"]')).to_contain_text(
+        expect(page.get_by_test_id("profile-display-name")).to_contain_text(
             test_users["mike"]["name"]
         )
-        expect(page.locator('[data-testid="profile-username"]')).to_contain_text(
+        expect(page.get_by_test_id("profile-username")).to_contain_text(
             f"@{test_users['mike']['username']}"
         )
 
         # Should NOT show edit button for other user
-        expect(page.locator('[data-testid="profile-edit-button"]')).not_to_be_visible()
+        expect(page.get_by_test_id("profile-edit-button")).not_to_be_visible()
 
         # Should show follow/block buttons
-        expect(page.locator('[data-testid="profile-follow-button"]')).to_be_visible()
-        expect(page.locator('[data-testid="profile-block-button"]')).to_be_visible()
+        expect(page.get_by_test_id("profile-follow-button")).to_be_visible()
+        expect(page.get_by_test_id("profile-block-button")).to_be_visible()
 
     def test_show_follower_following_counts(
         self, page: Page, base_url: str, login_as, test_users: dict, fresh_database
@@ -63,15 +63,13 @@ class TestUserProfile:
         page.goto(f"{base_url}/profile/{test_users['sarah']['username']}")
 
         # Wait for profile data to load
-        expect(page.locator('[data-testid="profile-display-name"]')).to_be_visible(
-            timeout=10000
-        )
+        expect(page.get_by_test_id("profile-display-name")).to_be_visible(timeout=10000)
 
         # Then wait for count links to appear
-        expect(page.locator('[data-testid="profile-followers-link"]')).to_be_visible(
+        expect(page.get_by_test_id("profile-followers-link")).to_be_visible(
             timeout=10000
         )
-        expect(page.locator('[data-testid="profile-following-link"]')).to_be_visible(
+        expect(page.get_by_test_id("profile-following-link")).to_be_visible(
             timeout=10000
         )
 
@@ -83,7 +81,7 @@ class TestUserProfile:
 
         page.goto(f"{base_url}/profile/{test_users['sarah']['username']}")
 
-        expect(page.locator('[data-testid="profile-posts-count"]')).to_be_visible()
+        expect(page.get_by_test_id("profile-posts-count")).to_be_visible()
 
 
 class TestFollowing:
@@ -97,7 +95,7 @@ class TestFollowing:
 
         page.goto(f"{base_url}/profile/{test_users['mike']['username']}")
 
-        follow_button = page.locator('[data-testid="profile-follow-button"]')
+        follow_button = page.get_by_test_id("profile-follow-button")
         expect(follow_button).to_be_visible(timeout=5000)
 
         # Click follow and wait for button text to change
@@ -112,12 +110,10 @@ class TestFollowing:
         page.goto(f"{base_url}/profile/{test_users['sarah']['username']}")
 
         # Wait for profile to load
-        expect(page.locator('[data-testid="profile-display-name"]')).to_be_visible(
-            timeout=10000
-        )
+        expect(page.get_by_test_id("profile-display-name")).to_be_visible(timeout=10000)
 
         # Check the following link contains a number greater than 0
-        following_link = page.locator('[data-testid="profile-following-link"]')
+        following_link = page.get_by_test_id("profile-following-link")
         expect(following_link).to_contain_text(re.compile("[1-9]"), timeout=10000)
 
     def test_unfollow_user(
@@ -128,7 +124,7 @@ class TestFollowing:
 
         page.goto(f"{base_url}/profile/{test_users['mike']['username']}")
 
-        follow_button = page.locator('[data-testid="profile-follow-button"]')
+        follow_button = page.get_by_test_id("profile-follow-button")
 
         # Follow first
         follow_button.click()
@@ -150,14 +146,14 @@ class TestFollowing:
 
         # Follow Mike
         page.goto(f"{base_url}/profile/{test_users['mike']['username']}")
-        page.locator('[data-testid="profile-follow-button"]').click()
-        expect(page.locator('[data-testid="profile-follow-button"]')).to_contain_text(
+        page.get_by_test_id("profile-follow-button").click()
+        expect(page.get_by_test_id("profile-follow-button")).to_contain_text(
             re.compile("unfollow", re.IGNORECASE), timeout=10000
         )
 
         # Go to Following feed
         page.goto(base_url)
-        page.click('[data-testid="feed-tab-following"]')
+        page.get_by_test_id("feed-tab-following").click()
 
         # Should show Mike's posts (if he has any)
         mike_posts = page.locator(
@@ -178,7 +174,7 @@ class TestBlocking:
 
         page.goto(f"{base_url}/profile/{test_users['mike']['username']}")
 
-        block_button = page.locator('[data-testid="profile-block-button"]')
+        block_button = page.get_by_test_id("profile-block-button")
         expect(block_button).to_be_visible(timeout=5000)
 
         # Click block and wait for button text to change
@@ -204,7 +200,7 @@ class TestBlocking:
         page.goto(f"{base_url}/profile/{test_users['mike']['username']}")
 
         # Block first and wait for state change
-        block_button = page.locator('[data-testid="profile-block-button"]')
+        block_button = page.get_by_test_id("profile-block-button")
         expect(block_button).to_be_visible(timeout=5000)
         block_button.click()
 
@@ -216,7 +212,7 @@ class TestBlocking:
             pass
 
         # Re-query button after state change
-        block_button = page.locator('[data-testid="profile-block-button"]')
+        block_button = page.get_by_test_id("profile-block-button")
         expect(block_button).to_contain_text(
             re.compile("unblock", re.IGNORECASE), timeout=10000
         )
@@ -230,7 +226,7 @@ class TestBlocking:
             pass
 
         # Re-query button after state change
-        block_button = page.locator('[data-testid="profile-block-button"]')
+        block_button = page.get_by_test_id("profile-block-button")
         expect(block_button).to_contain_text(
             re.compile("^block$", re.IGNORECASE), timeout=10000
         )
@@ -243,7 +239,7 @@ class TestBlocking:
 
         # Block Mike
         page.goto(f"{base_url}/profile/{test_users['mike']['username']}")
-        block_button = page.locator('[data-testid="profile-block-button"]')
+        block_button = page.get_by_test_id("profile-block-button")
         block_button.click()
 
         # Wait for API call to complete
@@ -268,7 +264,7 @@ class TestBlocking:
         page.wait_for_load_state("networkidle", timeout=5000)
         page.wait_for_timeout(500)
 
-        page.click('[data-testid="feed-tab-all"]')
+        page.get_by_test_id("feed-tab-all").click()
         page.wait_for_timeout(500)
 
         # Should not see Mike's posts
@@ -290,10 +286,10 @@ class TestFollowersFollowingLists:
         page.goto(f"{base_url}/profile/{test_users['sarah']['username']}")
 
         # Click followers count
-        page.click('[data-testid="profile-followers-link"]')
+        page.get_by_test_id("profile-followers-link").click()
 
         # Should be on followers page
-        expect(page.locator('[data-testid="followers-page"]')).to_be_visible()
+        expect(page.get_by_test_id("followers-page")).to_be_visible()
 
     def test_view_following_list(
         self, page: Page, base_url: str, login_as, test_users: dict, fresh_database
@@ -304,10 +300,10 @@ class TestFollowersFollowingLists:
         page.goto(f"{base_url}/profile/{test_users['sarah']['username']}")
 
         # Click following count
-        page.click('[data-testid="profile-following-link"]')
+        page.get_by_test_id("profile-following-link").click()
 
         # Should be on following page
-        expect(page.locator('[data-testid="following-page"]')).to_be_visible()
+        expect(page.get_by_test_id("following-page")).to_be_visible()
 
     def test_unfollow_from_following_page(
         self, page: Page, base_url: str, login_as, test_users: dict, fresh_database
@@ -317,14 +313,14 @@ class TestFollowersFollowingLists:
 
         # Follow Mike first
         page.goto(f"{base_url}/profile/{test_users['mike']['username']}")
-        page.locator('[data-testid="profile-follow-button"]').click()
-        expect(page.locator('[data-testid="profile-follow-button"]')).to_contain_text(
+        page.get_by_test_id("profile-follow-button").click()
+        expect(page.get_by_test_id("profile-follow-button")).to_contain_text(
             re.compile("unfollow", re.IGNORECASE), timeout=10000
         )
 
         # Go to following page
         page.goto(f"{base_url}/profile/{test_users['sarah']['username']}")
-        page.click('[data-testid="profile-following-link"]')
+        page.get_by_test_id("profile-following-link").click()
 
         # Unfollow Mike
         mike_in_list = page.locator(
@@ -349,7 +345,7 @@ class TestFollowersFollowingLists:
 
         page.goto(f"{base_url}/profile/{test_users['sarah']['username']}")
 
-        followers_link = page.locator('[data-testid="profile-followers-link"]')
+        followers_link = page.get_by_test_id("profile-followers-link")
         expect(followers_link).to_be_visible(timeout=5000)
         followers_link.click()
 
@@ -385,17 +381,17 @@ class TestSettings:
 
         page.goto(f"{base_url}/settings")
 
-        display_name_input = page.locator('[data-testid="settings-display-name-input"]')
+        display_name_input = page.get_by_test_id("settings-display-name-input")
         display_name_input.fill("Updated Name")
 
-        page.click('[data-testid="settings-save-button"]')
+        page.get_by_test_id("settings-save-button").click()
 
         # Should show success message
         expect(page.locator("text=success")).to_be_visible(timeout=5000)
 
         # Verify on profile
         page.goto(f"{base_url}/profile/{test_users['sarah']['username']}")
-        expect(page.locator('[data-testid="profile-display-name"]')).to_contain_text(
+        expect(page.get_by_test_id("profile-display-name")).to_contain_text(
             "Updated Name"
         )
 
@@ -407,10 +403,10 @@ class TestSettings:
 
         page.goto(f"{base_url}/settings")
 
-        bio_input = page.locator('[data-testid="settings-bio-input"]')
+        bio_input = page.get_by_test_id("settings-bio-input")
         bio_input.fill("My updated bio")
 
-        page.click('[data-testid="settings-save-button"]')
+        page.get_by_test_id("settings-save-button").click()
 
         # Should show success message
         expect(page.locator("text=success")).to_be_visible(timeout=5000)
@@ -421,10 +417,10 @@ class TestSettings:
 
         page.goto(f"{base_url}/settings")
 
-        theme_select = page.locator('[data-testid="settings-theme-select"]')
+        theme_select = page.get_by_test_id("settings-theme-select")
         theme_select.select_option("dark")
 
-        page.click('[data-testid="settings-save-button"]')
+        page.get_by_test_id("settings-save-button").click()
 
         # Page should have dark theme
         html = page.locator("html")
@@ -438,10 +434,10 @@ class TestSettings:
 
         page.goto(f"{base_url}/settings")
 
-        density_select = page.locator('[data-testid="settings-text-density-select"]')
+        density_select = page.get_by_test_id("settings-text-density-select")
         density_select.select_option("compact")
 
-        page.click('[data-testid="settings-save-button"]')
+        page.get_by_test_id("settings-save-button").click()
 
         # Should show success
         expect(page.locator("text=success")).to_be_visible(timeout=5000)
@@ -454,8 +450,8 @@ class TestSettings:
 
         # Set dark theme
         page.goto(f"{base_url}/settings")
-        page.locator('[data-testid="settings-theme-select"]').select_option("dark")
-        page.click('[data-testid="settings-save-button"]')
+        page.get_by_test_id("settings-theme-select").select_option("dark")
+        page.get_by_test_id("settings-save-button").click()
 
         # Reload page
         page.reload()
@@ -477,7 +473,7 @@ class TestProfilePicture:
         page.goto(f"{base_url}/settings")
 
         # Check if file input exists
-        file_input = page.locator('[data-testid="settings-avatar-input"]')
+        file_input = page.get_by_test_id("settings-avatar-input")
         expect(file_input).to_be_attached()
 
     def test_clear_profile_picture(
@@ -488,7 +484,7 @@ class TestProfilePicture:
 
         page.goto(f"{base_url}/settings")
 
-        clear_button = page.locator('[data-testid="settings-clear-avatar-button"]')
+        clear_button = page.get_by_test_id("settings-clear-avatar-button")
 
         if clear_button.is_visible(timeout=5000):
             clear_button.click()
@@ -506,7 +502,7 @@ class TestAccountDeletion:
 
         page.goto(f"{base_url}/settings")
 
-        delete_button = page.locator('[data-testid="settings-delete-account-button"]')
+        delete_button = page.get_by_test_id("settings-delete-account-button")
         expect(delete_button).to_be_visible(timeout=5000)
 
         # Click delete button
@@ -522,6 +518,4 @@ class TestAccountDeletion:
             page.wait_for_url(re.compile(r".*/(login|$)"), timeout=15000)
         except:
             # Fallback: check for login input if URL didn't change
-            expect(page.locator('[data-testid="login-email-input"]')).to_be_visible(
-                timeout=5000
-            )
+            expect(page.get_by_test_id("login-email-input")).to_be_visible(timeout=5000)

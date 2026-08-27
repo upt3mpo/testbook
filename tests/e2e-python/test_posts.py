@@ -20,8 +20,8 @@ def get_first_own_post(page: Page):
 
 def create_post(page: Page, content: str):
     """Helper to create a post"""
-    page.fill('[data-testid="create-post-textarea"]', content)
-    page.click('[data-testid="create-post-submit-button"]')
+    page.get_by_test_id("create-post-textarea").fill(content)
+    page.get_by_test_id("create-post-submit-button").click()
     expect(page.locator(f'text="{content}"').first).to_be_visible(timeout=10000)
     try:
         page.wait_for_load_state("networkidle", timeout=5000)
@@ -69,13 +69,13 @@ class TestPosts:
         """Test submit button is disabled for empty post"""
         login_as("sarah")
 
-        submit_button = page.locator('[data-testid="create-post-submit-button"]')
+        submit_button = page.get_by_test_id("create-post-submit-button")
 
         # Should be disabled when empty
         expect(submit_button).to_be_disabled()
 
         # Should enable when text is entered
-        page.fill('[data-testid="create-post-textarea"]', "Some content")
+        page.get_by_test_id("create-post-textarea").fill("Some content")
         expect(submit_button).to_be_enabled()
 
     def test_create_post_clear_textarea(
@@ -87,7 +87,7 @@ class TestPosts:
         create_post(page, "Test post")
 
         # Textarea should be clear
-        textarea = page.locator('[data-testid="create-post-textarea"]')
+        textarea = page.get_by_test_id("create-post-textarea")
         expect(textarea).to_have_value("")
 
     def test_create_post_reverse_chronological(
@@ -441,8 +441,8 @@ class TestPosts:
         """Test switching between All and Following tabs"""
         login_as("sarah")
 
-        all_tab = page.locator('[data-testid="feed-tab-all"]')
-        following_tab = page.locator('[data-testid="feed-tab-following"]')
+        all_tab = page.get_by_test_id("feed-tab-all")
+        following_tab = page.get_by_test_id("feed-tab-following")
 
         # Should start on All tab
         expect(all_tab).to_have_class(re.compile("active|selected", re.IGNORECASE))
@@ -464,11 +464,11 @@ class TestPosts:
         login_as("sarah")
 
         # Get count of All posts
-        page.click('[data-testid="feed-tab-all"]')
+        page.get_by_test_id("feed-tab-all").click()
         all_posts = page.locator('[data-testid-generic="post-item"]').count()
 
         # Get count of Following posts
-        page.click('[data-testid="feed-tab-following"]')
+        page.get_by_test_id("feed-tab-following").click()
         following_posts = page.locator('[data-testid-generic="post-item"]').count()
 
         # Counts may differ
