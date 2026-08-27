@@ -23,6 +23,26 @@ Welcome! This learning path transforms the Testbook project into your personal t
 
 ---
 
+<h2 id="before-you-start">Before You Start: Where Are You Actually Starting From?</h2>
+
+Answer these honestly before picking a track. There's no wrong answer here — the point is routing yourself to the right starting point instead of discovering you're in over your head partway through Stage 2.
+
+1. **Have you written and run a function in Python or JavaScript before** — not copied one, actually written and run it yourself?
+2. **Do you know what a terminal/command line is and can you `cd` into a directory and run a command?**
+3. **Do you understand what an HTTP request is** — that a browser or app sends a request to a server and gets a response back with a status code?
+4. **Have you used Git before** — at least `clone`, `commit`, and `push`?
+5. **Have you ever manually tested software** — clicked through an app checking that things work, even without calling it "QA"?
+6. **Do you know what a bug report or test case looks like**, even if you've never written one yourself?
+7. **Have you ever written an automated test of any kind before** — in any language, any framework?
+
+**Mostly no (1-2 yeses):** Start with the [Manual QA Transition track](#choose-your-track) below, and budget time to learn basic Python before Stage 1 — [learnpython.org](https://www.learnpython.org/) is a reasonable starting point. Trying to learn Python syntax and testing concepts at the same time is harder than either alone.
+
+**Mostly yes but "no" on #7:** You're in the right place. Stage 1 assumes exactly this — comfortable with basic programming, new to testing. Don't skip ahead to Stage 2 no matter how easy Stage 1 looks; the fixture and mocking concepts in later labs build on Stage 1's foundation.
+
+**Yes to everything, including #7:** You can move faster than the hour estimates suggest. Skim each stage's README for the concepts you don't already know, jump straight to the labs, and use the reflection questions as a checkpoint rather than reading every explanation in full.
+
+---
+
 <h2 id="choose-your-track">Choose Your Track</h2>
 
 | Path                    | Language Focus      | Tools You'll Master                    | Time        | Start Here                                                                                         |
@@ -368,6 +388,7 @@ As you complete stages, mark your achievements:
 5. **Check documentation:**
    - [Troubleshooting Guide](../docs/reference/TROUBLESHOOTING.md) - Technical errors with exact fixes
    - [FAQ](../docs/guides/FAQ.md) - Learning questions and quick setup guidance
+   - [Glossary](../docs/reference/GLOSSARY.md) - Unfamiliar term? Check here first
    - [Testing Guide](../docs/guides/TESTING_GUIDE.md)
    - [Running Tests](../docs/guides/RUNNING_TESTS.md)
 

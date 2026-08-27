@@ -184,6 +184,7 @@ Includes environment config, fixtures, test helpers, and patterns.
 | **[QUICK_REFERENCE_PYTEST.md](reference/QUICK_REFERENCE_PYTEST.md)**         | One-page   | pytest commands & patterns           |
 | **[QUICK_REFERENCE_PLAYWRIGHT.md](reference/QUICK_REFERENCE_PLAYWRIGHT.md)** | One-page   | Playwright commands & locators       |
 | **[TESTING_CHEATSHEET.md](reference/TESTING_CHEATSHEET.md)**                 | Cheatsheet | Common commands, test IDs, endpoints |
+| **[GLOSSARY.md](reference/GLOSSARY.md)**                                     | Reference  | Plain-language definitions for recurring terms |
 
 ### In-Depth References (📖 15-45 min each)
 
