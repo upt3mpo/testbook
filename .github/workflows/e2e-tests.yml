@@ -65,9 +65,24 @@ jobs:
 
       - name: Install E2E test dependencies
         working-directory: ./tests
-        run: |
-          npm ci
-          npx playwright install --with-deps
+        run: npm ci
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v6
+        id: playwright-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-browsers-${{ runner.os }}-${{ hashFiles('tests/package-lock.json') }}
+
+      - name: Install Playwright browsers
+        working-directory: ./tests
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps
+
+      - name: Install Playwright OS dependencies only
+        working-directory: ./tests
+        if: steps.playwright-cache.outputs.cache-hit == 'true'
+        run: npx playwright install-deps
 
       - name: Start backend server
         working-directory: ./backend
@@ -170,11 +185,26 @@ jobs:
         working-directory: ./frontend
         run: npm ci
 
-      - name: Install Selenium dependencies
+      - name: Install Python E2E dependencies
         working-directory: ./tests/e2e-python
-        run: |
-          pip install -r requirements.txt
-          playwright install --with-deps chromium
+        run: pip install -r requirements.txt
+
+      - name: Cache Playwright browsers (Python)
+        uses: actions/cache@v6
+        id: playwright-cache-python
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-browsers-chromium-${{ runner.os }}-${{ hashFiles('tests/e2e-python/requirements.txt') }}
+
+      - name: Install Playwright chromium
+        working-directory: ./tests/e2e-python
+        if: steps.playwright-cache-python.outputs.cache-hit != 'true'
+        run: playwright install --with-deps chromium
+
+      - name: Install Playwright OS dependencies only
+        working-directory: ./tests/e2e-python
+        if: steps.playwright-cache-python.outputs.cache-hit == 'true'
+        run: playwright install-deps chromium
 
       - name: Start backend server
         working-directory: ./backend

@@ -275,6 +275,18 @@ lint-frontend → frontend-tests ↗
 7. `security-tests` - OWASP checks
 8. `badge-update` - Update status
 
+### Recommended Branch Protection Rules
+
+This repo doesn't currently document what branch protection to enable on `main`, so a maintainer setting this up has to guess. If you're configuring GitHub's branch protection for `main` (Settings → Branches → Add rule), these settings match what the CI above is already built to support:
+
+- **Require a pull request before merging** - at least 1 approval, since this is a teaching repo where a second pair of eyes on curriculum changes matters as much as on code
+- **Require status checks to pass before merging** - select `lint-backend`, `lint-frontend`, `backend-tests`, `frontend-tests` at minimum (these are fast and should gate every merge); `e2e-tests-js`/`e2e-tests-python`/`security-tests` are worth requiring too once they're stable enough not to block contributors on flakiness
+- **Require branches to be up to date before merging** - avoids merging a PR whose CI ran against a stale base
+- **Do not allow bypassing the above settings** - including for administrators, so the rule actually holds
+- Force pushes and branch deletion should stay disabled for `main`
+
+None of this is enforced by anything in this repository — it has to be configured in the GitHub repo's own settings, which aren't tracked in version control.
+
 ---
 
 <h2 id="quality-metrics">📊 Quality Metrics</h2>

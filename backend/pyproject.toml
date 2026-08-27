@@ -1,6 +1,6 @@
 [tool.black]
 line-length = 88
-target-version = ['py311']
+target-version = ['py313']
 include = '\.pyi?$'
 extend-exclude = '''
 /(
@@ -26,3 +26,21 @@ line_length = 88
 skip_gitignore = true
 known_first_party = ["models", "schemas", "auth", "database", "logger"]
 known_third_party = ["fastapi", "sqlalchemy", "pydantic", "slowapi", "jose", "passlib"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py313"
+# tests/examples/ contains deliberately-illustrative code (including an
+# intentionally-flawed bad_tests.py used to teach anti-patterns) - it's
+# not part of the real test suite and isn't meant to lint clean.
+extend-exclude = ["tests/examples"]
+
+[tool.ruff.lint]
+# A deliberately small, beginner-appropriate ruleset for a teaching
+# codebase: pyflakes (undefined names, unused imports) and pycodestyle
+# errors, plus import-sort ordering. Not enabling ruff's stricter opt-in
+# categories (bandit-style security checks, comprehension rewrites,
+# blind-except warnings, etc.) - those produce a lot of noise on code
+# this size without teaching a beginner anything they're ready for yet.
+select = ["E", "F", "I"]
+ignore = ["E501"]  # line length is black's job, not ruff's

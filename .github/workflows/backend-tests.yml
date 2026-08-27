@@ -62,7 +62,7 @@ jobs:
         working-directory: ./backend
         run: |
           pip install ruff
-          ruff check . || true
+          ruff check .
 
       - name: Run unit tests
         working-directory: ./backend

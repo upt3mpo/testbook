@@ -44,8 +44,7 @@ jobs:
 
       - name: Run linting
         working-directory: ./frontend
-        run: |
-          npm run lint || true
+        run: npm run lint
 
       - name: Run unit tests
         working-directory: ./frontend
