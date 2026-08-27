@@ -1,0 +1,160 @@
+# Testbook Full Audit — Report
+
+**Date:** 2026-08-27
+**Scope:** University curriculum audit (Part 1) + Principal QA engineering audit (Part 2) + consolidation (Part 3) + additions (Part 4), per the maintainer's audit brief.
+**Audience:** the repo maintainer. This document is a record of the pass, not student-facing material.
+
+This pass produced 28 commits on `develop`, none pushed (per the maintainer's instruction — local review first). All test-suite numbers below are from real runs against the live app during this session, not estimates.
+
+---
+
+## 1. Headline findings
+
+The single most significant discovery was **not** a documentation-quality problem — it was a **fabrication problem**. `docs/industry/CASE_STUDIES.md` and `docs/industry/INDUSTRY_PRACTICES.md` presented invented company quotes, an incorrect root cause for a real incident (Knight Capital's $440M loss was attributed to a fabricated "missing else statement"; the real cause was a deployment failure reactivating dormant code), a wrong vulnerability type for another real incident (Equifax attributed to SQL injection; the real cause was an unpatched Apache Struts RCE), and three anonymous "major company" incidents with fabricated dollar figures presented as real, dated events. This was corrected — see §2.
+
+The second most significant finding was that **test-count and coverage claims scattered across ~15 files had drifted from reality**, in both directions — some too high, some (my own early "fix," corrected later — see §7) too low. Every number in this report was verified by actually running the suite, not by editing prose.
+
+## 2. Part 1 — Curriculum audit
+
+### Orientation and accuracy (1A, 1F)
+- Fixed a three-way contradiction in course-duration estimates: README.md, learn/README.md, and docs/INDEX.md each stated a different total (24-34h / 24-34h+14-20h / 12-18h) with different per-stage breakdowns. Standardized on 24-34h core + 14-23h optional (the figure the math actually supports), since README.md and learn/README.md already agreed with each other and docs/INDEX.md was the outlier.
+- Removed a stale `docs/course/` reference and a "Recently Organized" changelog section from docs/INDEX.md — process artifacts with no teaching value, left over from a prior reorganization, contradicting other text on the same page.
+- Removed a "Hands-On Exercises" section in docs/INDEX.md referencing fabricated lab names ("Lab 4B", "Lab 6B/6C") and a stale "planned Labs 7+" roadmap claiming topics (performance, security, CI/CD) weren't covered when they already are, in Stage 4/5.
+- Full external-link audit: checked every URL in `docs/` and `learn/` (101 unique URLs) against real HTTP responses. Found and fixed 10 dead links (Ministry of Testing, Appium docs, Vitest guide ×2, Playwright JS docs, k6 Cloud — found later in a second sweep of `tests/`).
+- A dedicated `markdown-link-check` run (using the repo's own `.markdown-link-check.json`) across all 91 markdown files in `docs/`, `learn/`, `tests/*/README.md`, and the top-level READMEs confirmed every internal link and anchor resolves after all edits.
+- A leaked personal absolute path (the repo owner's actual home directory, in a Stage 4 lab and in the old MARKDOWN_VALIDATION.md) was found and removed.
+
+### Language-choice guidance (1D)
+Was missing entirely — the closest thing was a feature-comparison table with no actual decision guidance. Added real content to `learn/README.md`'s "Choose Your Track" section: what each language is actually used for in test automation specifically, an honest (non-fabricated, non-statistic-citing) take on job-market patterns, the real learning-curve difference (async/await is a genuine JS-specific hurdle, not just syntax), and a decision framework keyed to the student's stated goal.
+
+### Python/JS path walkthrough and mirroring (1B, 1C, 1E)
+Two parallel deep reviews (one per stage-pair, verified against the real backend/frontend source, not just read for style) found and fixed real defects, not just prose issues:
+
+- **A lab that had Python-track students building files inside the JavaScript test directory** (`tests/e2e/` instead of `tests/e2e-python/`) throughout Stage 3's Lab 12 — every path reference was wrong.
+- **A lab titled "Cross-Browser Testing" that never actually covered running against more than one browser** — added real content (the commented-out Firefox/WebKit projects in `tests/playwright.config.js` already existed; the lab just never told students to use them).
+- Wrong API status codes and response shapes in two lab solution files (`learn/solutions/LAB_02_solution.py`, `LAB_03_solution.py`): asserted 200 where the API returns 201, 401 where FastAPI's `HTTPBearer` returns 403, a nonexistent `reaction_type` field instead of the real `user_reaction`/`reactions_count`, a test for a comment-deletion endpoint that doesn't exist in the API at all, and a hardcoded 30-minute token-expiry assumption where the real default is 1440 minutes. Verified all tests in both files now pass against the real backend.
+- Quiz answer keys for Stage 3 and Stage 5 no longer matched their own stage's quiz questions (the quizzes had been edited since the keys were last updated) — rewritten to match.
+- A fabricated k6 load-test payload field (`title`, which doesn't exist on the real `PostCreate` schema) and a missing trailing slash on the real `/api/posts/` route.
+- Roughly a dozen broken/mislabeled "Next Lab" cross-references across Stage 2-4 labs.
+- Three genuine Python/JS curriculum divergences (fixture dependency-injection has no Vitest equivalent; Stage 2 Lab 6 teaches entirely different material per track; a "Python advantage" framing for combined API+UI testing was actually just a JS-labs coverage gap, not a language limitation) were acknowledged explicitly in the affected files rather than left as silent asymmetry, per the audit's own "fill or explicitly acknowledge" rule.
+
+### Voice / AI-tell pass (1G)
+Applied to: both entry-point docs, all 5 stage READMEs, `docs/concepts/` (4 files), `docs/industry/` (4 files → now 3, see §4). Removed decorative header emoji, invented company quotes, fabricated case-study statistics, and repetitive bullet-list scaffolding that restated the same idea 3-4 times per section (most dramatically in `docs/concepts/TESTING_PHILOSOPHY.md`, condensed by ~150 lines without losing content).
+
+**Not done exhaustively:** a full line-by-line voice rewrite of every file in `docs/guides/` and `docs/reference/` — several of these are very large (`WINDOWS_SETUP.md` is 2,264 lines, `TESTING_GUIDE.md` 1,348). Factual issues (stale counts, dead links, wrong API contracts) were fixed across all of them; a full prose-quality pass was not attempted given the size, and is the single largest remaining Part 1 item if this continues.
+
+### Completeness (1H)
+- Added explicit entry criteria to Stage 5's README (four concrete, checkable skills from Stages 1-4) — none existed before.
+- Added a performance-test line item to the capstone's test-plan checklist — the capstone previously never required touching Stage 4's performance-testing side, only security.
+
+---
+
+## 3. Part 2 — Engineering audit
+
+### Real numbers (verified by running the suites, not reading badges)
+
+| Suite | Count | Notes |
+|---|---|---|
+| Backend (pytest) | **183 passed, 1 skipped** (184 collected) | Was 180 before this pass added 3 tests via splitting; see §7 for a self-correction along the way |
+| Backend coverage | **85.98% statement**, 81.23% branch | Badge claim of 86% was already accurate (statement coverage) |
+| Frontend (Vitest) | **40 passed** | Matches prior badge exactly |
+| Frontend coverage | **41.19% lines** | Badge claim of 41% already accurate |
+| E2E (JS, Playwright) | **59 passed** | |
+| E2E (Python, Playwright) | **54 passed** (+ 6 in `examples/`, not counted in the headline figure, for consistency with how `backend/tests/examples/` is already excluded) | |
+| Security | **18 passed, 5 skipped** (skips are rate-limit tests that don't trigger under test-mode limits) | Matches the documented "17-19/23" range exactly, once the suite is run against a freshly-reset database (see finding below) |
+| Performance (k6) | Smoke and load tests run live: **0% error rate, all thresholds green** (p95 227ms smoke, 231ms load) | Full stress test not run (multi-minute, deliberately pushes past capacity) |
+| **Total** | **359** (183 + 40 + 59 + 54 + 23) | |
+
+### Real finding: E2E suites pollute security-test state
+Running the JS and Python E2E suites and then the security suite back-to-back, without a reset in between, produces 2 failures and 3 errors that look like real security bugs (login returning 401 for a seed account) but are actually stale state — E2E tests mutate shared seed-account data (passwords, account deletions) and nothing warns a human running the full suite manually about this. Documented in `docs/guides/RUNNING_TESTS.md` as a troubleshooting step rather than left as a silent trap.
+
+### Backend test quality (2A)
+Found all 16 backend test functions with >3 assertions via AST parsing (not a naive grep, which would have missed several due to parametrization). Applied actual judgment rather than mechanically splitting everything — most were checking multiple fields of one freshly-created object, a genuinely single concern. Split the ones that mixed unrelated concerns: three tests bundled "does the functional response look right" with "is the password hash ever exposed," a security invariant that deserves its own always-checked test regardless of what else in the response shape changes.
+
+**Real bug found in the process:** `test_register_sets_default_values` didn't actually assert on any default values — it duplicated the adjacent success test's assertions. Fixed to actually verify the claim in its own name (bio/theme/text_density defaults), which required fetching `/api/auth/me` after registering since the registration endpoint's own response schema doesn't include those fields.
+
+**Not done:** the remaining parametrize-consolidation opportunity (only 4 `@pytest.mark.parametrize` uses exist across 183 tests) and a systematic assertion-message pass across the full suite. Time-boxed in favor of the higher-value items above; a reasonable next pass if this continues.
+
+### Frontend test quality (2B)
+`CreatePost.test.jsx` and `Register.test.jsx` used `fireEvent` exclusively despite `@testing-library/user-event` already being a declared dependency — a real Testing Library anti-pattern, not just a style preference. Converted every `fireEvent.change/click` call to `userEvent.type/click`. This wasn't cosmetic: the `fireEvent` version had a real unhandled-promise-rejection error in `Register.test.jsx` (a state update firing after the synchronous `fireEvent` dispatch had already let the test move on) that the `userEvent` version — which properly awaits interactions — resolved. Verified all 40 tests still pass.
+
+### E2E test quality (2C)
+- **Semantic locators**: converted 56 `.locator('[data-testid="X"]')` calls and 38 page-level shorthand calls (`page.click`/`page.fill` with the same raw CSS string) to `page.getByTestId('X')` across the full JS suite, and the equivalent 61+55 conversions across the Python suite, using Playwright's real semantic-locator API instead of reimplementing it via CSS attribute selectors. Deliberately left `data-testid-generic` and other custom-attribute selectors untouched — Playwright's `getByTestId` only matches the standard `data-testid` attribute by default, so those remain correct as CSS selectors, not an oversight. Verified with full suite runs after: 59/59 JS, 54/54 Python (+ 6/6 examples), no regressions.
+- **Page Object Model consistency and hard-wait removal — attempted, failed safely, reverted.** Two background agents were dispatched to (a) build a matching POM structure for the JS suite (Python already has one, unused by the real tests) and retrofit both suites to use it, and (b) remove all 43 `waitForTimeout`/`wait_for_timeout` hard waits in favor of proper auto-waiting assertions. Both agents were cut off mid-work by a session usage-limit error. The JS suite was left in a broken state (3 failing tests, using a fabricated/misapplied locator combination) and the Python suite had only a small, incomplete change to one page-object file. **Both were reverted to the last known-good commit** rather than leaving broken test code in the repo, and verified back to fully passing before continuing.
+
+  **This is the single largest piece of unfinished Part 2 work.** The recommendation stands as originally scoped: adopt POM consistently (Python's `pages/` classes should actually be used by `test_auth.py`/`test_posts.py`/`test_users.py`, not just the example files; JS needs an equivalent `BasePage`/`FeedPage`/`ProfilePage` structure), and replace all 43 hard waits with condition-specific assertions. Given the demonstrated risk of doing this via an unsupervised long-running agent, it should be done as a smaller, incrementally-verified pass — one spec file at a time, running the real suite after each file, not as one large batch.
+
+### Performance tests (2D)
+All three k6 scripts already had real, sensible thresholds and correctly staged ramp profiles (smoke intentionally flat, load/stress properly ramped). Added an explanation of *why* the specific numbers (500ms/1000ms/2000ms/3000ms, 1%/5%/10% error rates) were chosen — grounded in standard web-performance UX reference points, with an explicit note that they're a teaching default, not a number to defend in a real incident review.
+
+### Security tests (2E)
+Mapped real coverage against the OWASP Top 10 (2021) explicitly in `tests/security/README.md`. Confirmed gaps, documented rather than papered over: **A06 (Vulnerable/Outdated Components)**, **A08 (Software/Data Integrity Failures)**, and **A09 (Security Logging & Monitoring Failures)** have no coverage in this suite. Dependabot catches A06 at the PR level but nothing verifies it at test time.
+
+### CI/CD (2F)
+- Verified the existing action-version pins (`checkout@v7`, `setup-python@v7`, `setup-node@v7`, `upload-artifact@v7`) against GitHub's actual release API — **all genuinely current**, not fabricated or stale as initially suspected given how high the majors looked.
+- Added Playwright browser caching (`actions/cache@v6`, keyed on the relevant lockfile) to both workflows that install browsers — every CI run was doing a full fresh download before this.
+- Removed `.github/workflows/comprehensive-ci.yml.example` — zero references anywhere in the repo, duplicated coverage the active workflows already provide, and its unpinned tool versions confirmed nobody had touched it in a long time.
+- Made both previously-`|| true`'d lint steps (backend ruff, frontend eslint) actually blocking — but only after verifying each one passes clean first (see next item), so this doesn't break CI on unrelated pre-existing issues.
+- Added a real `[tool.ruff]` config to `backend/pyproject.toml` (E/F/I rules — pyflakes + import order; deliberately not ruff's stricter opt-in categories like bandit-style security checks, which produced 163 hits on a teaching codebase mostly unrelated to real bugs). Scoped and excluded `tests/examples/` (deliberately-illustrative, including an intentionally-bad file used to teach anti-patterns).
+- Added a "Recommended Branch Protection Rules" section to `docs/guides/QUALITY_CHECKS.md` — none existed anywhere in the repo.
+
+### Code quality infrastructure (2G)
+- Replaced commented-out isort+flake8 pre-commit hooks with a single enabled `ruff` hook (using the new config above), verified to pass clean before enabling.
+- Left `detect-secrets` commented out, but documented why rather than as unexplained dead config: `.secrets.baseline` is stale, and a fresh scan turns up ~1,200 new candidate matches (mostly CI env-var fixtures and seed test passwords, not real secrets) that need human triage before this can be enabled without blocking every future commit.
+- Backend type-hint coverage (~22% of functions have explicit return-type annotations) was surveyed but not systematically improved — a large, low-urgency task, not attempted given everything else in scope.
+
+---
+
+## 4. Part 3 — Consolidation (executed, per approved decision log)
+
+Presented the full inventory and decision log to the maintainer before any deletion, per the audit brief's own requirement. Approved actions, executed:
+
+- **`docs/guides/MARKDOWN_VALIDATION.md`** (448 lines, fully orphaned from navigation) → absorbed into `docs/guides/QUALITY_CHECKS.md` as a new section, condensed to ~15 lines (kept: what's checked, how to run locally, config locations; cut: a fake "validation report example" and four redundant checklists).
+- **`docs/industry/INDUSTRY_PRACTICES.md`** (32 lines after the fabrication rewrite in §2 — too thin to earn a 4th standalone file in `docs/industry/`) → absorbed into `CASE_STUDIES.md`'s introduction as a "Sourcing" note.
+- Every inbound link to both removed files was repointed (`docs/INDEX.md`, `learn/README.md`, `docs/advanced/*`, `docs/concepts/*`, `docs/industry/*`), and `docs/INDEX.md`'s stale "Case Studies" content-highlights bullets (still referencing the fabricated incidents already corrected) were rewritten.
+
+**Kept, with reasoning** (not just "left alone" — actually evaluated):
+- `docs/reference/QUICK_REFERENCE_PYTEST.md` / `QUICK_REFERENCE_PLAYWRIGHT.md`: too large (467/657 lines) to be an appendix, each independently linked 4×.
+- `docs/concepts/` (4 files): read in full — genuinely distinct altitudes (mindset / design principles / patterns / anti-patterns), not variations on one topic. Trimmed real redundancy between `TEST_DESIGN_PRINCIPLES.md` and `TESTING_ANTIPATTERNS.md` (see §2) rather than merging the files.
+- `docs/advanced/` (2 files, not 3 — `ADVANCED_E2E_PATTERNS.md` doesn't exist, correcting an assumption in the original audit brief): different organizing principle (technique catalog vs. architecture-domain catalog), not redundant — though real overlap exists in their contract-testing/chaos-engineering sub-sections and with `docs/guides/CONTRACT_TESTING.md` (a third treatment). **Not trimmed** — flagged as a smaller follow-up, not executed this pass.
+- `tests/*/README.md`, `backend/tests/README.md`: substantial, GitHub-navigation-relevant, well-linked.
+- `docs/guides/RUNNING_TESTS.md`'s embedded troubleshooting section: verified (not assumed) to be complementary to `TROUBLESHOOTING.md`, not a duplicate — quick recovery commands vs. per-error-message reference. Kept both, added a cross-link.
+
+Ran the repo's own `markdown-link-check` config against all 91 files after every consolidation and content change — zero broken internal links or anchors.
+
+---
+
+## 5. Part 4 — Additions
+
+**Done:**
+- A 7-question honest self-assessment ("Before You Start") in `learn/README.md`, with routing guidance based on the pattern of answers.
+- `docs/reference/GLOSSARY.md` — plain-language definitions for every recurring term across the curriculum (fixture, mock/stub, flaky test, POM, contract testing, chaos engineering, canary rollout, coverage, CI/CD, etc.), cross-referenced from the docs it's most relevant to, linked from `docs/INDEX.md` and `learn/README.md`.
+- Interview-prep sections (3-4 questions each, with what a strong answer touches on, not just the question) added to all 5 stage `reflection.md` files.
+- Real-world-mapping prompts added to Stages 1, 2, 3, and 5's `reflection.md` (Stage 4 already had one from before this audit), each pointing at the actual corrected incident in `CASE_STUDIES.md` rather than a generic "companies care about this" statement.
+- `CONTRIBUTING.md` was reviewed against the brief's checklist (how to submit an exercise, correct an error, run docs linting locally, what the standards are) — already substantively covers all of it. Only fix needed: a literal unfilled `(provide email here)` placeholder for security-issue reporting, replaced with GitHub's private security-advisory reporting.
+- `docs/guides/PLAYWRIGHT_QUICKSTART.md` already existed and was already linked from README.md and docs/INDEX.md — verified content quality (accurate, no fixes needed), not created new.
+
+**Evaluated, decided not to implement:**
+- **Mutation testing** (mutmut for Python): attempted a real run against `backend/auth.py` to produce an actual example instead of a hypothetical one. Hit a pytest/mutmut integration incompatibility in this environment (a `BadTestExecutionCommandsException` from mutmut's own pytest-args wrapper) that would need real debugging time to resolve. Given the existing conceptual coverage in `docs/advanced/ADVANCED_TOPICS.md` is already reasonably solid (a worked hypothetical example, correct tool list for Python/JS/Java), and the environment friction encountered, decided not to force a hands-on addition this pass. Cleaned up the experiment (removed `setup.cfg`, uninstalled mutmut) — no residue left in the repo.
+- **Visual regression testing** (Playwright's built-in `toHaveScreenshot()`): evaluated as lower-friction than mutation testing (no extra dependency needed), but declined to add given the audit's own emphasis this pass on *reducing* CI flakiness — screenshot tests are notoriously fragile across OS/font-rendering differences, and this repo has no existing baseline-management infrastructure for that. Adding one now, without that infrastructure, risks introducing exactly the kind of flaky-test problem this audit spent significant effort removing elsewhere (see §3, E2E hard-wait findings). A reasonable candidate for a future pass that specifically budgets time for CI baseline setup.
+
+---
+
+## 6. A note on Part 1 vs. Part 2 tension
+
+None encountered that required an explicit tradeoff call. The closest case: splitting the three security-invariant assertions out of larger tests (§3) made those specific tests marginally less "tell a complete story in one read" (Part 1's readability lens) in exchange for a clearer, more isolated failure signal (Part 2's engineering lens) — resolved in favor of the engineering concern, since a security-invariant test failing for an unrelated reason (a display-name assertion breaking) is a worse outcome for a learner than a slightly longer test file.
+
+## 7. A self-correction, documented transparently
+
+Early in this pass, the backend test count was "corrected" from the original 180 down to 166, based on `grep -c "def test_"` across `tests/unit` and `tests/integration`. That grep undercounts: several tests are parametrized (`test_various_password_formats`, `test_create_reaction`, etc.), so one function definition expands into multiple collected test cases at run time — something only running the actual suite reveals. When the real suite was run (§3), the true number was 180 (181 collected, 1 skipped) — the original figure had been correct. Every file the incorrect 166 had been propagated to was found and fixed back to 180, and later to 183 after the legitimate test-splitting work in §3 added 3 net-new tests. The lesson applied going forward: run the real tool before "correcting" a number, don't trust a grep as a substitute for the thing that actually executes.
+
+## 8. What was not touched, and why
+
+- Full prose-voice rewrite of `docs/guides/*` and `docs/reference/*` beyond factual fixes (§2 — size).
+- Backend parametrize consolidation and a systematic assertion-message pass (§3 — time-boxed in favor of higher-value splits).
+- E2E Page Object Model adoption and `waitForTimeout`/`wait_for_timeout` removal (§3 — attempted, failed safely due to an agent session-limit interruption, reverted; documented as the top recommendation for a follow-up pass).
+- `docs/advanced/ADVANCED_TOPICS.md` vs `ADVANCED_TESTING_STRATEGIES.md` vs `docs/guides/CONTRACT_TESTING.md` — a real, smaller three-way content-overlap trim on contract testing and chaos engineering specifically, identified but not executed.
+- Mutation testing and visual regression testing hands-on additions (§5 — evaluated, declined for stated reasons, not silently skipped).
+- Backend type-hint coverage improvement (§2G — surveyed, not systematically improved).
+
+None of these were skipped silently — each is named here with a reason, per the audit brief's own instruction not to let "not done" be indistinguishable from "not found."
