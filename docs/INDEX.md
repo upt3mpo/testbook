@@ -98,7 +98,7 @@ Testbook/
 
 **RUNNING_TESTS.md:**
 
-- Backend tests (pytest) - 166 tests
+- Backend tests (pytest) - 180 tests
 - E2E tests (Playwright - JS & Python)
 - API tests (Postman/Newman)
 - Performance tests (K6)
@@ -323,7 +323,7 @@ Every lab exercise lives inside its stage folder — `learn/stage_1_unit/exercis
 **[backend/tests/README.md](../backend/tests/README.md)**
 Backend testing guide
 
-- 166 tests
+- 180 tests
 - pytest usage
 - Fixtures
 - Coverage
@@ -441,7 +441,7 @@ source .venv/bin/activate  # Activate Python (macOS/Linux)
 
 - Labs 1-3 (Python/pytest)
 
-- Backend tests (166 tests)
+- Backend tests (180 tests)
 - API examples (Python requests)
 - Security tests (Python)
 

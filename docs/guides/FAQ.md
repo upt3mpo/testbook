@@ -73,11 +73,11 @@ pytest -v
 
 **A:**
 
-- **Backend:** 166 tests (86% coverage)
+- **Backend:** 180 tests (86% coverage)
 - **Frontend:** 40 tests (unit + integration + accessibility)
 - **E2E:** 113 tests (59 JavaScript + 54 Python, Playwright)
 - **Security:** 23 tests (18 pass + 5 skip in a typical clean run)
-- **Total:** 342 tests across every suite
+- **Total:** 356 tests across every suite
 
 ### Q: Which testing framework should I learn?
 
