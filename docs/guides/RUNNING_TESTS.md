@@ -506,7 +506,7 @@ pytest tests/security/test_rate_limiting.py -v
 
 1. Check if backend is in TESTING mode
 2. See `tests/security/README.md` for troubleshooting
-3. Read `learn/stage_4_performance_security/exercises/LAB_06_Testing_With_Rate_Limits.md` for complete explanation
+3. Read `learn/stage_4_performance_security/exercises/LAB_15_Rate_Limiting_Production_Python.md` (or the `_JavaScript.md` version) for complete explanation
 
 **The "failures" often prove security is working!**
 
@@ -704,6 +704,8 @@ k6 run tests/performance/smoke-test.js
 cd backend
 uvicorn main:app --reload --log-level debug
 ```
+
+If one of these quick recovery steps doesn't resolve it, [TROUBLESHOOTING.md](../reference/TROUBLESHOOTING.md) covers specific error messages in more depth.
 
 ---
 
