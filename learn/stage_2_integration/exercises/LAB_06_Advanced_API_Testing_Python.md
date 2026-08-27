@@ -9,6 +9,8 @@
 
 **What This Adds:** Advanced API testing patterns including database transactions, complex authentication flows, error handling, and performance testing.
 
+**Why this diverges from the JS track here:** this lab previews lightweight response-time assertions early because they're a natural extension of the API tests you're already writing. The JavaScript track's Lab 6 instead covers React component testing, which has no Python equivalent (there's no Python frontend to component-test) — so the two tracks intentionally teach different material at this lab number. Both tracks get full performance testing with k6 in Stage 4, so nothing here is skipped for JS learners, just introduced later.
+
 ---
 
 ## 🎯 What You'll Learn

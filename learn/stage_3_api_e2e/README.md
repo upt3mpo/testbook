@@ -930,7 +930,7 @@ You're ready for Stage 4 when you can:
 ### Reference
 
 - [Playwright Python API](https://playwright.dev/python/)
-- [Playwright JavaScript API](https://playwright.dev/javascript/)
+- [Playwright JavaScript Docs](https://playwright.dev/docs/intro)
 - [Postman Collections](../../tests/api/README.md)
 
 ---

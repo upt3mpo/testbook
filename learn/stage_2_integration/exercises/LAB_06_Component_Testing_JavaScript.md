@@ -9,6 +9,8 @@
 
 **What This Adds:** Master React component testing with Vitest and React Testing Library - learn to test user interactions, component state, and API integration. This bridges unit tests and E2E tests.
 
+**Why this diverges from the Python track here:** the Python track's Lab 6 previews performance-testing concepts (response-time assertions) at this point instead, since there's no equivalent to component testing on the Python side (no Python frontend to test). You'll get full performance testing with k6 in Stage 4 either way — this lab number is where the two tracks' content genuinely diverges rather than mirroring each other.
+
 ---
 
 ## 🎯 What You'll Learn
@@ -789,7 +791,7 @@ const renderWithProviders = (ui, options = {}) => {
 
 - **[Lab 7: Test Data Management (JavaScript)](LAB_07_Test_Data_Management_JavaScript.md)** - Learn test data patterns
 - **[React Testing Library Docs](https://testing-library.com/docs/react-testing-library/intro/)** - Official documentation
-- **[Vitest Component Testing](https://vitest.dev/guide/testing.html#component-testing)** - Vitest component testing guide
+- **[Vitest Guide](https://vitest.dev/guide/)** - Vitest usage and configuration guide
 
 ---
 

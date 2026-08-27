@@ -681,7 +681,7 @@ def test_with_post_builder(page: Page, login_as, fresh_database):
 
 ### Part 6: Combined API + UI Validation (25 minutes)
 
-One powerful Python advantage: Use the same language for backend API setup AND frontend UI verification!
+Use the same language for backend API setup AND frontend UI verification! Note that this isn't actually a Python-only capability — Playwright's JavaScript API supports the same pattern via its `request` fixture — it's just not covered in this repo's JavaScript labs. If you're on the JS track and want the equivalent, look at [Playwright's API testing docs](https://playwright.dev/docs/api-testing) for the `request` fixture.
 
 #### Pattern 1: Seed Data via API, Verify via UI
 

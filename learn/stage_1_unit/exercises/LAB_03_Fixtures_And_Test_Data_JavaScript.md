@@ -25,6 +25,8 @@ By the end of this lab, you will:
 
 ## 💡 What Are Setup Patterns?
 
+**A note if you're doing both tracks:** the Python version of this lab teaches pytest fixtures, which do more than `beforeEach`/`afterEach` do here — fixtures can depend on other fixtures (dependency injection) and declare a `scope` (function, class, module, session) that controls how often expensive setup reruns. Vitest doesn't have a direct equivalent to fixture dependency chains or scoping; `beforeEach`/`afterEach` (and manual helper functions, which you'll use here for anything reusable across files) are the idiomatic JS/Vitest way to solve the same repeated-setup problem. That's a real difference between the ecosystems, not a gap in this lab.
+
 **Problem:** You need to set up test data repeatedly.
 
 ```javascript
@@ -624,7 +626,7 @@ Test your understanding:
 
 - **[Lab 4: Debugging and Error Handling (JavaScript)](LAB_04_Debugging_And_Error_Handling_JavaScript.md)** - Learn to debug test failures
 - **[frontend/src/tests/setup.js](../../../frontend/src/tests/setup.js)** - Study professional setup patterns
-- **[Vitest Setup Documentation](https://vitest.dev/guide/setup.html)** - Deep dive
+- **[Vitest Getting Started Guide](https://vitest.dev/guide/)** - Deep dive
 
 ---
 
