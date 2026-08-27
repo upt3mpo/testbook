@@ -132,6 +132,12 @@ Tests will fail if thresholds are not met:
 - 99% of requests < 3000ms
 - Error rate < 10%
 
+### Why These Numbers
+
+These aren't Testbook-specific research — they're standard reference points from web-performance/UX literature (Jakob Nielsen's classic response-time thresholds: under ~0.1s feels instant, under ~1s feels responsive with the user's flow of thought uninterrupted, beyond that the user notices they're waiting). The smoke test's 500ms threshold targets "feels responsive" for a single request under light load — it's meant to catch a regression on every run, so it stays strict. The load test's looser 1000ms/2000ms thresholds and higher error tolerance (5%) reflect that under realistic concurrent traffic, some tail latency is expected and acceptable — the goal is "still usable under load," not "as fast as an idle server." The stress test's 3000ms/10% thresholds mark the point past which the system is considered to be failing under load rather than just slower — stress testing intentionally pushes past normal capacity to find that breaking point, so its thresholds are a "this is too degraded" line, not a target.
+
+If you're adapting these for a real production system, the right numbers depend on your actual users and SLA commitments, not on copying these — treat them as a reasonable teaching default, not a benchmark to defend in a real incident review.
+
 ## Custom Configuration
 
 ### Change Base URL

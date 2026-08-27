@@ -283,6 +283,23 @@ tests/security/
    - Request size limits (10MB max)
    - Concurrent requests handled
 
+### Coverage Against the OWASP Top 10 (2021)
+
+| # | Category | Covered here? |
+|---|---|---|
+| A01 | Broken Access Control | Yes — cross-user post edit/delete, profile-update ownership checks |
+| A02 | Cryptographic Failures | Partially — passwords never appear in API responses; actual hashing strength is unit-tested separately in `backend/tests/unit/test_auth.py`, not here |
+| A03 | Injection | Yes — SQL injection and XSS payloads in post content |
+| A04 | Insecure Design | Partially — rate limiting and account lockout touch on this, but there's no dedicated design-level review here |
+| A05 | Security Misconfiguration | Partially — error-message leakage is tested; no test verifies HTTP security headers, CORS policy, or debug-mode settings in production |
+| A06 | Vulnerable and Outdated Components | **Not covered.** No automated check that dependencies are free of known CVEs. Dependabot (`.github/dependabot.yml`) catches this at the PR level for new versions, but nothing in this test suite verifies it at test time — see `pip-audit`/`npm audit` if you want to add this |
+| A07 | Identification and Authentication Failures | Yes — invalid/malformed tokens, wrong passwords, brute-force lockout |
+| A08 | Software and Data Integrity Failures | **Not covered.** No test around dependency-supply-chain integrity or unsigned/untrusted deserialization |
+| A09 | Security Logging and Monitoring Failures | **Not covered.** No test verifies that security-relevant events (failed logins, lockouts) are actually logged — see `docs/guides/LOGGING.md` for what logging exists, but it isn't asserted on here |
+| A10 | Server-Side Request Forgery (SSRF) | **Not covered** — and not obviously applicable, since this app doesn't take user-supplied URLs and fetch them server-side. Worth revisiting only if that changes |
+
+The three genuine gaps (A06, A08, A09) are left undone rather than papered over with a token test — a real check for any of them (dependency scanning, log assertions) is a reasonable place to extend this suite, not something to fake for the sake of a checkmark.
+
 ---
 
 ## 🎓 Educational Value
@@ -297,7 +314,7 @@ tests/security/
 4. **HTTP status codes matter** → 401 vs 403 understanding
 5. **Tests prove features work** → Rate limits work SO well they affect tests!
 
-**See [LAB_06: Testing with Rate Limiting](../../learn/stage_4_performance_security/exercises/LAB_15_Rate_Limiting_Production_Python.md)** for a complete lesson on these concepts!
+**See [LAB 15: Rate Limiting & Production Monitoring](../../learn/stage_4_performance_security/exercises/LAB_15_Rate_Limiting_Production_Python.md)** for a complete lesson on these concepts!
 
 ---
 
