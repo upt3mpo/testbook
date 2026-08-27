@@ -8,7 +8,7 @@
 
 Testing experience is **highly valued** in the software industry, but it's often hard to demonstrate without professional work history. Testbook gives you:
 
-✅ **362 real tests** you can discuss in interviews
+✅ **342 real tests** you can discuss in interviews
 ✅ **Multiple testing types** (unit, integration, E2E, performance, security)
 ✅ **Production-quality code** that demonstrates professional practices
 ✅ **Measurable results** (coverage %, test counts, CI/CD)
@@ -62,7 +62,7 @@ I completed the Testbook automation testing curriculum to build professional QA 
 - ✅ CI/CD with GitHub Actions
 
 **Coverage achieved:** 86% backend | 41% frontend
-**Total tests:** 362
+**Total tests:** 342
 **Time invested:** [X hours]
 
 ---
@@ -215,7 +215,7 @@ pytest -v
 Take a screenshot showing:
 
 - ✅ All tests passing
-- Test count (180)
+- Test count (166)
 - Coverage percentage
 
 **Save as:** `docs/portfolio/backend-tests-passing.png`
@@ -272,7 +272,7 @@ Once you push to GitHub, your CI will run. Screenshot the Actions tab showing:
 QA ENGINEER | AUTOMATION TESTING PROJECT
 September 2024 - Present
 
-• Developed and maintained 362 automated tests across full-stack social media application
+• Developed and maintained 342 automated tests across full-stack social media application
   using pytest (Python) and Vitest (JavaScript), achieving 86% backend coverage
 • Implemented E2E test automation with Playwright for both Python and JavaScript stacks,
   validating complete user workflows and cross-browser compatibility
@@ -311,7 +311,7 @@ September 2024 - Present
 • Completed 18-hour structured automation testing curriculum covering unit, integration,
   E2E, performance, and security testing methodologies
 • Demonstrated proficiency in Python (pytest) and JavaScript (Vitest/Playwright) testing
-  frameworks through hands-on practice with 362 real-world test scenarios
+  frameworks through hands-on practice with 342 real-world test scenarios
 • Independently built test suite for [capstone feature], improving coverage from X% to Y%
   and identifying [Z] critical bugs
 • Prepared for QA engineering roles by learning industry-standard tools, practices, and
@@ -365,7 +365,7 @@ Completed comprehensive automation testing curriculum using Testbook, a producti
 social media application designed for QA learning.
 
 🎯 Achievements:
-• Wrote and maintained 362 automated tests (Python + JavaScript)
+• Wrote and maintained 342 automated tests (Python + JavaScript)
 • Achieved 86% backend coverage, 41% frontend coverage
 • Implemented E2E testing with Playwright (dual-stack)
 • Performed OWASP Top 10 security testing
