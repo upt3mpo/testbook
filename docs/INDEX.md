@@ -91,6 +91,8 @@ Testbook/
 | **[LOGGING.md](guides/LOGGING.md)** ✨                                           | 30 min | 🟡 Intermediate | Structured logging & observability                    |
 | **[RATE_LIMITING.md](guides/RATE_LIMITING.md)** ✨                               | 25 min | 🟡 Intermediate | Rate limit tuning & config                            |
 | **[MANUAL_QA_TO_AUTOMATION.md](guides/MANUAL_QA_TO_AUTOMATION.md)** ✨           | 60 min | 🟢 Beginner     | QA transition roadmap                                 |
+| **[MARKDOWN_VALIDATION.md](guides/MARKDOWN_VALIDATION.md)**                      | 15 min | 🟢 Beginner     | Linting and link-checking docs before you commit      |
+| **[TEST_DATA_SCENARIOS.md](guides/TEST_DATA_SCENARIOS.md)**                      | 20 min | 🟡 Intermediate | Pre-seeded test data scenarios for E2E/integration     |
 
 ### Guide Details
 
