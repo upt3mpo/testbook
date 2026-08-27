@@ -38,13 +38,13 @@ test.describe('Posts', () => {
     });
 
     test('should disable submit button for empty post', async ({ page }) => {
-      const submitButton = page.locator('[data-testid="create-post-submit-button"]');
+      const submitButton = page.getByTestId('create-post-submit-button');
 
       // Should be disabled when empty
       await expect(submitButton).toBeDisabled();
 
       // Should enable when text is entered
-      await page.fill('[data-testid="create-post-textarea"]', 'Some content');
+      await page.getByTestId('create-post-textarea').fill('Some content');
       await expect(submitButton).toBeEnabled();
     });
 
@@ -52,7 +52,7 @@ test.describe('Posts', () => {
       await createPost(page, 'Test post');
 
       // Textarea should be clear
-      const textarea = page.locator('[data-testid="create-post-textarea"]');
+      const textarea = page.getByTestId('create-post-textarea');
       await expect(textarea).toHaveValue('');
     });
 
@@ -330,8 +330,8 @@ test.describe('Posts', () => {
 
   test.describe('Feed Tabs', () => {
     test('should switch between All and Following tabs', async ({ page }) => {
-      const allTab = page.locator('[data-testid="feed-tab-all"]');
-      const followingTab = page.locator('[data-testid="feed-tab-following"]');
+      const allTab = page.getByTestId('feed-tab-all');
+      const followingTab = page.getByTestId('feed-tab-following');
 
       // Should start on All tab
       await expect(allTab).toHaveClass(/active|selected/i);
@@ -347,11 +347,11 @@ test.describe('Posts', () => {
 
     test('should show different posts in Following vs All feed', async ({ page }) => {
       // Get count of All posts
-      await page.click('[data-testid="feed-tab-all"]');
+      await page.getByTestId('feed-tab-all').click();
       const allPosts = await page.locator('[data-testid-generic="post-item"]').count();
 
       // Get count of Following posts
-      await page.click('[data-testid="feed-tab-following"]');
+      await page.getByTestId('feed-tab-following').click();
       const followingPosts = await page.locator('[data-testid-generic="post-item"]').count();
 
       // Counts may differ (depending on who user follows)

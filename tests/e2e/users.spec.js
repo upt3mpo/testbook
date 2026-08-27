@@ -24,19 +24,19 @@ test.describe("Users", () => {
 
   test.describe("User Profile", () => {
     test("should view own profile", async ({ page }) => {
-      await page.click('[data-testid="navbar-profile-link"]');
+      await page.getByTestId('navbar-profile-link').click();
 
       // Should show profile information
       await expect(
-        page.locator('[data-testid="profile-display-name"]')
+        page.getByTestId('profile-display-name')
       ).toContainText(TEST_USERS.sarah.displayName);
       await expect(
-        page.locator('[data-testid="profile-username"]')
+        page.getByTestId('profile-username')
       ).toContainText(`@${TEST_USERS.sarah.username}`);
 
       // Should show edit button for own profile
       await expect(
-        page.locator('[data-testid="profile-edit-button"]')
+        page.getByTestId('profile-edit-button')
       ).toBeVisible();
     });
 
@@ -45,23 +45,23 @@ test.describe("Users", () => {
 
       // Should show user information
       await expect(
-        page.locator('[data-testid="profile-display-name"]')
+        page.getByTestId('profile-display-name')
       ).toContainText(TEST_USERS.mike.displayName);
       await expect(
-        page.locator('[data-testid="profile-username"]')
+        page.getByTestId('profile-username')
       ).toContainText(`@${TEST_USERS.mike.username}`);
 
       // Should NOT show edit button for other user
       await expect(
-        page.locator('[data-testid="profile-edit-button"]')
+        page.getByTestId('profile-edit-button')
       ).not.toBeVisible();
 
       // Should show follow/block buttons
       await expect(
-        page.locator('[data-testid="profile-follow-button"]')
+        page.getByTestId('profile-follow-button')
       ).toBeVisible();
       await expect(
-        page.locator('[data-testid="profile-block-button"]')
+        page.getByTestId('profile-block-button')
       ).toBeVisible();
     });
 
@@ -70,15 +70,15 @@ test.describe("Users", () => {
 
       // Wait for profile data to load - look for profile name first
       await expect(
-        page.locator('[data-testid="profile-display-name"]')
+        page.getByTestId('profile-display-name')
       ).toBeVisible({ timeout: 10000 });
 
       // Then wait for count links to appear (the counts are inside the links)
       await expect(
-        page.locator('[data-testid="profile-followers-link"]')
+        page.getByTestId('profile-followers-link')
       ).toBeVisible({ timeout: 10000 });
       await expect(
-        page.locator('[data-testid="profile-following-link"]')
+        page.getByTestId('profile-following-link')
       ).toBeVisible({ timeout: 10000 });
     });
 
@@ -86,7 +86,7 @@ test.describe("Users", () => {
       await page.goto(`/profile/${TEST_USERS.sarah.username}`);
 
       await expect(
-        page.locator('[data-testid="profile-posts-count"]')
+        page.getByTestId('profile-posts-count')
       ).toBeVisible();
     });
   });
@@ -95,9 +95,7 @@ test.describe("Users", () => {
     test("should follow a user", async ({ page }) => {
       await page.goto(`/profile/${TEST_USERS.mike.username}`);
 
-      const followButton = page.locator(
-        '[data-testid="profile-follow-button"]'
-      );
+      const followButton = page.getByTestId('profile-follow-button');
       await expect(followButton).toBeVisible({ timeout: 5000 });
 
       // Click follow and wait for the button text to change
@@ -111,22 +109,18 @@ test.describe("Users", () => {
 
       // Wait for profile to load
       await expect(
-        page.locator('[data-testid="profile-display-name"]')
+        page.getByTestId('profile-display-name')
       ).toBeVisible({ timeout: 10000 });
 
       // Check the following link contains a number greater than 0
-      const followingLink = page.locator(
-        '[data-testid="profile-following-link"]'
-      );
+      const followingLink = page.getByTestId('profile-following-link');
       await expect(followingLink).toContainText(/[1-9]/, { timeout: 10000 }); // At least 1
     });
 
     test("should unfollow a user", async ({ page }) => {
       await page.goto(`/profile/${TEST_USERS.mike.username}`);
 
-      const followButton = page.locator(
-        '[data-testid="profile-follow-button"]'
-      );
+      const followButton = page.getByTestId('profile-follow-button');
 
       // Follow first
       await followButton.click();
@@ -142,11 +136,11 @@ test.describe("Users", () => {
     }) => {
       // Follow Mike
       await page.goto(`/profile/${TEST_USERS.mike.username}`);
-      await page.locator('[data-testid="profile-follow-button"]').click();
+      await page.getByTestId('profile-follow-button').click();
 
       // Go to Following feed
       await page.goto("/");
-      await page.click('[data-testid="feed-tab-following"]');
+      await page.getByTestId('feed-tab-following').click();
 
       // Should show Mike's posts (if he has any)
       const mikePosts = page.locator(
@@ -161,7 +155,7 @@ test.describe("Users", () => {
     test("should block a user", async ({ page }) => {
       await page.goto(`/profile/${TEST_USERS.mike.username}`);
 
-      const blockButton = page.locator('[data-testid="profile-block-button"]');
+      const blockButton = page.getByTestId('profile-block-button');
       await expect(blockButton).toBeVisible({ timeout: 5000 });
 
       // Click block and wait for button text to change
@@ -174,7 +168,7 @@ test.describe("Users", () => {
     test("should unblock a user", async ({ page }) => {
       await page.goto(`/profile/${TEST_USERS.mike.username}`);
 
-      const blockButton = page.locator('[data-testid="profile-block-button"]');
+      const blockButton = page.getByTestId('profile-block-button');
       await expect(blockButton).toBeVisible({ timeout: 5000 });
 
       // Block first and wait for state change
@@ -189,7 +183,7 @@ test.describe("Users", () => {
     test("should not see blocked users posts in feed", async ({ page }) => {
       // Block Mike
       await page.goto(`/profile/${TEST_USERS.mike.username}`);
-      await page.locator('[data-testid="profile-block-button"]').click();
+      await page.getByTestId('profile-block-button').click();
 
       // Go to All feed
       await page.goto("/");
@@ -203,7 +197,7 @@ test.describe("Users", () => {
       await page.waitForLoadState("networkidle", { timeout: 5000 });
       await page.waitForTimeout(500);
 
-      await page.click('[data-testid="feed-tab-all"]');
+      await page.getByTestId('feed-tab-all').click();
       await page.waitForTimeout(500);
 
       // Should not see Mike's posts
@@ -219,11 +213,11 @@ test.describe("Users", () => {
       await page.goto(`/profile/${TEST_USERS.sarah.username}`);
 
       // Click followers count
-      await page.click('[data-testid="profile-followers-link"]');
+      await page.getByTestId('profile-followers-link').click();
 
       // Should be on followers page
       await expect(
-        page.locator('[data-testid="followers-page"]')
+        page.getByTestId('followers-page')
       ).toBeVisible();
     });
 
@@ -231,22 +225,22 @@ test.describe("Users", () => {
       await page.goto(`/profile/${TEST_USERS.sarah.username}`);
 
       // Click following count
-      await page.click('[data-testid="profile-following-link"]');
+      await page.getByTestId('profile-following-link').click();
 
       // Should be on following page
       await expect(
-        page.locator('[data-testid="following-page"]')
+        page.getByTestId('following-page')
       ).toBeVisible();
     });
 
     test("should unfollow from following page", async ({ page }) => {
       // Follow Mike first
       await page.goto(`/profile/${TEST_USERS.mike.username}`);
-      await page.locator('[data-testid="profile-follow-button"]').click();
+      await page.getByTestId('profile-follow-button').click();
 
       // Go to following page
       await page.goto(`/profile/${TEST_USERS.sarah.username}`);
-      await page.click('[data-testid="profile-following-link"]');
+      await page.getByTestId('profile-following-link').click();
 
       // Unfollow Mike
       const mikeInList = page.locator(
@@ -263,9 +257,7 @@ test.describe("Users", () => {
     test("should block from followers page", async ({ page }) => {
       await page.goto(`/profile/${TEST_USERS.sarah.username}`);
 
-      const followersLink = page.locator(
-        '[data-testid="profile-followers-link"]'
-      );
+      const followersLink = page.getByTestId('profile-followers-link');
       await expect(followersLink).toBeVisible({ timeout: 5000 });
       await followersLink.click();
 
@@ -301,12 +293,10 @@ test.describe("Users", () => {
     test("should update display name", async ({ page }) => {
       await page.goto("/settings");
 
-      const displayNameInput = page.locator(
-        '[data-testid="settings-display-name-input"]'
-      );
+      const displayNameInput = page.getByTestId('settings-display-name-input');
       await displayNameInput.fill("Updated Name");
 
-      await page.click('[data-testid="settings-save-button"]');
+      await page.getByTestId('settings-save-button').click();
 
       // Should show success message
       await expect(page.locator("text=/success/i")).toBeVisible({
@@ -316,17 +306,17 @@ test.describe("Users", () => {
       // Verify on profile
       await page.goto(`/profile/${TEST_USERS.sarah.username}`);
       await expect(
-        page.locator('[data-testid="profile-display-name"]')
+        page.getByTestId('profile-display-name')
       ).toContainText("Updated Name");
     });
 
     test("should update bio", async ({ page }) => {
       await page.goto("/settings");
 
-      const bioInput = page.locator('[data-testid="settings-bio-input"]');
+      const bioInput = page.getByTestId('settings-bio-input');
       await bioInput.fill("My updated bio");
 
-      await page.click('[data-testid="settings-save-button"]');
+      await page.getByTestId('settings-save-button').click();
 
       // Should show success message
       await expect(page.locator("text=/success/i")).toBeVisible({
@@ -337,10 +327,10 @@ test.describe("Users", () => {
     test("should change theme", async ({ page }) => {
       await page.goto("/settings");
 
-      const themeSelect = page.locator('[data-testid="settings-theme-select"]');
+      const themeSelect = page.getByTestId('settings-theme-select');
       await themeSelect.selectOption("dark");
 
-      await page.click('[data-testid="settings-save-button"]');
+      await page.getByTestId('settings-save-button').click();
 
       // Page should have dark theme
       const html = page.locator("html");
@@ -350,12 +340,10 @@ test.describe("Users", () => {
     test("should change text density", async ({ page }) => {
       await page.goto("/settings");
 
-      const densitySelect = page.locator(
-        '[data-testid="settings-text-density-select"]'
-      );
+      const densitySelect = page.getByTestId('settings-text-density-select');
       await densitySelect.selectOption("compact");
 
-      await page.click('[data-testid="settings-save-button"]');
+      await page.getByTestId('settings-save-button').click();
 
       // Should show success
       await expect(page.locator("text=/success/i")).toBeVisible({
@@ -369,7 +357,7 @@ test.describe("Users", () => {
       await page
         .locator('[data-testid="settings-theme-select"]')
         .selectOption("dark");
-      await page.click('[data-testid="settings-save-button"]');
+      await page.getByTestId('settings-save-button').click();
 
       // Wait for success message to ensure the API call completed
       await expect(page.locator("text=/success/i")).toBeVisible({
@@ -391,7 +379,7 @@ test.describe("Users", () => {
 
       // Upload file (requires actual file)
       // This is a placeholder - actual implementation needs a test image
-      const fileInput = page.locator('[data-testid="settings-avatar-input"]');
+      const fileInput = page.getByTestId('settings-avatar-input');
 
       // Check if file input exists
       await expect(fileInput).toBeAttached();
@@ -400,9 +388,7 @@ test.describe("Users", () => {
     test("should clear profile picture", async ({ page }) => {
       await page.goto("/settings");
 
-      const clearButton = page.locator(
-        '[data-testid="settings-clear-avatar-button"]'
-      );
+      const clearButton = page.getByTestId('settings-clear-avatar-button');
 
       if (await clearButton.isVisible()) {
         await clearButton.click();
@@ -419,9 +405,7 @@ test.describe("Users", () => {
     test("should delete account", async ({ page }) => {
       await page.goto("/settings");
 
-      const deleteButton = page.locator(
-        '[data-testid="settings-delete-account-button"]'
-      );
+      const deleteButton = page.getByTestId('settings-delete-account-button');
       await expect(deleteButton).toBeVisible({ timeout: 5000 });
 
       // Click delete button
@@ -438,7 +422,7 @@ test.describe("Users", () => {
         .catch(async () => {
           // Fallback: check for login input if URL didn't change
           await expect(
-            page.locator('[data-testid="login-email-input"]')
+            page.getByTestId('login-email-input')
           ).toBeVisible({ timeout: 5000 });
         });
     });

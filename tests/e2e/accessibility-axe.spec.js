@@ -73,7 +73,7 @@ test.describe('Accessibility (axe-core)', () => {
     await loginUser(page, TEST_USERS.sarah.email, TEST_USERS.sarah.password);
 
     // Go to profile
-    await page.click('[data-testid="navbar-profile-link"]');
+    await page.getByTestId('navbar-profile-link').click();
     await page.waitForLoadState('networkidle', { timeout: 5000 }).catch(() => {});
 
     const accessibilityScanResults = await new AxeBuilder({ page })

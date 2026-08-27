@@ -77,9 +77,9 @@ test.describe("Authentication", () => {
 
       // Assert - Verify successful registration and auto-login
       await expect(page).toHaveURL("/"); // Redirected to feed
-      await expect(page.locator('[data-testid="navbar"]')).toBeVisible(); // Logged in
+      await expect(page.getByTestId('navbar')).toBeVisible(); // Logged in
       await expect(
-        page.locator('[data-testid="navbar-username"]')
+        page.getByTestId('navbar-username')
       ).toContainText(newUser.displayName); // Correct user
     });
 
@@ -87,23 +87,11 @@ test.describe("Authentication", () => {
       await page.goto("/register");
 
       // Try to register with existing email
-      await page.fill(
-        '[data-testid="register-email-input"]',
-        TEST_USERS.sarah.email
-      );
-      await page.fill(
-        '[data-testid="register-username-input"]',
-        "differentuser"
-      );
-      await page.fill(
-        '[data-testid="register-displayname-input"]',
-        "Different User"
-      );
-      await page.fill(
-        '[data-testid="register-password-input"]',
-        "Password123!"
-      );
-      await page.click('[data-testid="register-submit-button"]');
+      await page.getByTestId('register-email-input').fill(TEST_USERS.sarah.email);
+      await page.getByTestId('register-username-input').fill("differentuser");
+      await page.getByTestId('register-displayname-input').fill("Different User");
+      await page.getByTestId('register-password-input').fill("Password123!");
+      await page.getByTestId('register-submit-button').click();
 
       // Should show error
       await expect(page.locator("text=/email.*already/i")).toBeVisible({
@@ -115,23 +103,11 @@ test.describe("Authentication", () => {
       await page.goto("/register");
 
       // Try to register with existing username
-      await page.fill(
-        '[data-testid="register-email-input"]',
-        "newemail@example.com"
-      );
-      await page.fill(
-        '[data-testid="register-username-input"]',
-        TEST_USERS.sarah.username
-      );
-      await page.fill(
-        '[data-testid="register-displayname-input"]',
-        "Different User"
-      );
-      await page.fill(
-        '[data-testid="register-password-input"]',
-        "Password123!"
-      );
-      await page.click('[data-testid="register-submit-button"]');
+      await page.getByTestId('register-email-input').fill("newemail@example.com");
+      await page.getByTestId('register-username-input').fill(TEST_USERS.sarah.username);
+      await page.getByTestId('register-displayname-input').fill("Different User");
+      await page.getByTestId('register-password-input').fill("Password123!");
+      await page.getByTestId('register-submit-button').click();
 
       // Should show error
       await expect(page.locator("text=/username.*already/i")).toBeVisible({
@@ -142,19 +118,13 @@ test.describe("Authentication", () => {
     test("should validate email format", async ({ page }) => {
       await page.goto("/register");
 
-      await page.fill('[data-testid="register-email-input"]', "notanemail");
-      await page.fill('[data-testid="register-username-input"]', "testuser");
-      await page.fill(
-        '[data-testid="register-displayname-input"]',
-        "Test User"
-      );
-      await page.fill(
-        '[data-testid="register-password-input"]',
-        "Password123!"
-      );
+      await page.getByTestId('register-email-input').fill("notanemail");
+      await page.getByTestId('register-username-input').fill("testuser");
+      await page.getByTestId('register-displayname-input').fill("Test User");
+      await page.getByTestId('register-password-input').fill("Password123!");
 
       // Should show HTML5 validation or custom error
-      const emailInput = page.locator('[data-testid="register-email-input"]');
+      const emailInput = page.getByTestId('register-email-input');
       const isInvalid = await emailInput.evaluate((el) => !el.validity.valid);
       expect(isInvalid).toBeTruthy();
     });
@@ -166,30 +136,24 @@ test.describe("Authentication", () => {
 
       // Should be on feed page
       await expect(page).toHaveURL("/");
-      await expect(page.locator('[data-testid="navbar"]')).toBeVisible();
+      await expect(page.getByTestId('navbar')).toBeVisible();
       await expect(
-        page.locator('[data-testid="navbar-username"]')
+        page.getByTestId('navbar-username')
       ).toContainText(TEST_USERS.sarah.displayName);
     });
 
     test("should show error for wrong password", async ({ page }) => {
       await page.goto("/");
 
-      await page.fill(
-        '[data-testid="login-email-input"]',
-        TEST_USERS.sarah.email
-      );
-      await page.fill(
-        '[data-testid="login-password-input"]',
-        "WrongPassword123!"
-      );
-      await page.click('[data-testid="login-submit-button"]');
+      await page.getByTestId('login-email-input').fill(TEST_USERS.sarah.email);
+      await page.getByTestId('login-password-input').fill("WrongPassword123!");
+      await page.getByTestId('login-submit-button').click();
 
       // Should show error (backend returns "Incorrect email or password")
-      await expect(page.locator('[data-testid="login-error"]')).toBeVisible({
+      await expect(page.getByTestId('login-error')).toBeVisible({
         timeout: 5000,
       });
-      await expect(page.locator('[data-testid="login-error"]')).toContainText(
+      await expect(page.getByTestId('login-error')).toContainText(
         /incorrect|invalid/i
       );
     });
@@ -197,18 +161,15 @@ test.describe("Authentication", () => {
     test("should show error for non-existent user", async ({ page }) => {
       await page.goto("/");
 
-      await page.fill(
-        '[data-testid="login-email-input"]',
-        "nonexistent@example.com"
-      );
-      await page.fill('[data-testid="login-password-input"]', "Password123!");
-      await page.click('[data-testid="login-submit-button"]');
+      await page.getByTestId('login-email-input').fill("nonexistent@example.com");
+      await page.getByTestId('login-password-input').fill("Password123!");
+      await page.getByTestId('login-submit-button').click();
 
       // Should show error (backend returns "Incorrect email or password")
-      await expect(page.locator('[data-testid="login-error"]')).toBeVisible({
+      await expect(page.getByTestId('login-error')).toBeVisible({
         timeout: 5000,
       });
-      await expect(page.locator('[data-testid="login-error"]')).toContainText(
+      await expect(page.getByTestId('login-error')).toContainText(
         /incorrect|invalid/i
       );
     });
@@ -220,9 +181,9 @@ test.describe("Authentication", () => {
       await page.reload();
 
       // Should still be logged in
-      await expect(page.locator('[data-testid="navbar"]')).toBeVisible();
+      await expect(page.getByTestId('navbar')).toBeVisible();
       await expect(
-        page.locator('[data-testid="navbar-username"]')
+        page.getByTestId('navbar-username')
       ).toContainText(TEST_USERS.sarah.displayName);
     });
   });
@@ -232,13 +193,13 @@ test.describe("Authentication", () => {
       await loginUser(page, TEST_USERS.sarah.email, TEST_USERS.sarah.password);
 
       // Click logout
-      await page.click('[data-testid="navbar-logout-button"]');
+      await page.getByTestId('navbar-logout-button').click();
 
       // Should be redirected to login page
       await expect(
-        page.locator('[data-testid="login-email-input"]')
+        page.getByTestId('login-email-input')
       ).toBeVisible();
-      await expect(page.locator('[data-testid="navbar"]')).not.toBeVisible();
+      await expect(page.getByTestId('navbar')).not.toBeVisible();
     });
 
     test("should not access protected routes after logout", async ({
@@ -248,14 +209,14 @@ test.describe("Authentication", () => {
       await loginUser(page, TEST_USERS.sarah.email, TEST_USERS.sarah.password);
 
       // Logout
-      await page.click('[data-testid="navbar-logout-button"]');
+      await page.getByTestId('navbar-logout-button').click();
 
       // Try to access protected route
       await page.goto("/settings");
 
       // Should be redirected to login
       await expect(
-        page.locator('[data-testid="login-email-input"]')
+        page.getByTestId('login-email-input')
       ).toBeVisible();
     });
   });
@@ -268,7 +229,7 @@ test.describe("Authentication", () => {
 
       // Should show login page
       await expect(
-        page.locator('[data-testid="login-email-input"]')
+        page.getByTestId('login-email-input')
       ).toBeVisible();
     });
 
@@ -279,7 +240,7 @@ test.describe("Authentication", () => {
 
       // Should show login page
       await expect(
-        page.locator('[data-testid="login-email-input"]')
+        page.getByTestId('login-email-input')
       ).toBeVisible();
     });
 
@@ -290,7 +251,7 @@ test.describe("Authentication", () => {
 
       // Should show login page
       await expect(
-        page.locator('[data-testid="login-email-input"]')
+        page.getByTestId('login-email-input')
       ).toBeVisible();
     });
   });
@@ -309,12 +270,12 @@ test.describe("Authentication", () => {
       await registerUser(page, newUser);
 
       // Should be logged in without manual login
-      await expect(page.locator('[data-testid="navbar"]')).toBeVisible();
+      await expect(page.getByTestId('navbar')).toBeVisible();
 
       // Should be able to access protected routes
-      await page.click('[data-testid="navbar-settings-link"]');
+      await page.getByTestId('navbar-settings-link').click();
       await expect(
-        page.locator('[data-testid="settings-email"]')
+        page.getByTestId('settings-email')
       ).toContainText(newUser.email);
     });
   });
