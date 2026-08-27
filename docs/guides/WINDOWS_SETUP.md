@@ -2216,7 +2216,7 @@ After setup, verify everything works:
 ### ✅ Backend Testing
 
 - [ ] Backend tests run: `cd backend && pytest -v`
-- [ ] See 180 tests pass
+- [ ] See 183 tests pass
 - [ ] No database errors
 
 ### ✅ Frontend Testing

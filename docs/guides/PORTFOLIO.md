@@ -8,7 +8,7 @@
 
 Testing experience is **highly valued** in the software industry, but it's often hard to demonstrate without professional work history. Testbook gives you:
 
-✅ **356 real tests** you can discuss in interviews
+✅ **359 real tests** you can discuss in interviews
 ✅ **Multiple testing types** (unit, integration, E2E, performance, security)
 ✅ **Production-quality code** that demonstrates professional practices
 ✅ **Measurable results** (coverage %, test counts, CI/CD)
@@ -53,7 +53,7 @@ Add a section at the top of YOUR README.md:
 
 I completed the Testbook automation testing curriculum to build professional QA engineering skills. This fork demonstrates my proficiency in:
 
-- ✅ Python testing with pytest (180 backend tests)
+- ✅ Python testing with pytest (183 backend tests)
 - ✅ JavaScript/React testing with Vitest (40 frontend tests)
 - ✅ E2E testing with Playwright (59 JavaScript + 54 Python tests)
 - ✅ API contract testing (OpenAPI validation)
@@ -62,7 +62,7 @@ I completed the Testbook automation testing curriculum to build professional QA 
 - ✅ CI/CD with GitHub Actions
 
 **Coverage achieved:** 86% backend | 41% frontend
-**Total tests:** 356
+**Total tests:** 359
 **Time invested:** [X hours]
 
 ---
@@ -215,7 +215,7 @@ pytest -v
 Take a screenshot showing:
 
 - ✅ All tests passing
-- Test count (180)
+- Test count (183)
 - Coverage percentage
 
 **Save as:** `docs/portfolio/backend-tests-passing.png`
@@ -272,7 +272,7 @@ Once you push to GitHub, your CI will run. Screenshot the Actions tab showing:
 QA ENGINEER | AUTOMATION TESTING PROJECT
 September 2024 - Present
 
-• Developed and maintained 356 automated tests across full-stack social media application
+• Developed and maintained 359 automated tests across full-stack social media application
   using pytest (Python) and Vitest (JavaScript), achieving 86% backend coverage
 • Implemented E2E test automation with Playwright for both Python and JavaScript stacks,
   validating complete user workflows and cross-browser compatibility
@@ -292,7 +292,7 @@ September 2024 - Present
 FULL-STACK TESTING PROJECT | TESTBOOK
 September 2024 - Present
 
-• Built comprehensive test suite for production-grade social media application with 180
+• Built comprehensive test suite for production-grade social media application with 183
   backend tests (FastAPI/Python) and 40 frontend tests (React/JavaScript)
 • Utilized pytest fixtures, factories, and mocking to create maintainable test infrastructure
   following AAA (Arrange-Act-Assert) pattern
@@ -311,7 +311,7 @@ September 2024 - Present
 • Completed 18-hour structured automation testing curriculum covering unit, integration,
   E2E, performance, and security testing methodologies
 • Demonstrated proficiency in Python (pytest) and JavaScript (Vitest/Playwright) testing
-  frameworks through hands-on practice with 356 real-world test scenarios
+  frameworks through hands-on practice with 359 real-world test scenarios
 • Independently built test suite for [capstone feature], improving coverage from X% to Y%
   and identifying [Z] critical bugs
 • Prepared for QA engineering roles by learning industry-standard tools, practices, and
@@ -365,7 +365,7 @@ Completed comprehensive automation testing curriculum using Testbook, a producti
 social media application designed for QA learning.
 
 🎯 Achievements:
-• Wrote and maintained 356 automated tests (Python + JavaScript)
+• Wrote and maintained 359 automated tests (Python + JavaScript)
 • Achieved 86% backend coverage, 41% frontend coverage
 • Implemented E2E testing with Playwright (dual-stack)
 • Performed OWASP Top 10 security testing
@@ -397,7 +397,7 @@ Skills: Test Automation • Python • JavaScript • pytest • Playwright • 
 
 **"Tell me about your experience with unit testing."**
 
-> "In my Testbook project, I wrote 180 backend unit tests using pytest. For example, I tested password hashing functions to ensure bcrypt was generating unique salts — this is critical because reusing salts would make passwords vulnerable to rainbow table attacks. I used the AAA pattern (Arrange-Act-Assert) and pytest fixtures to keep tests clean and maintainable. One specific test I'm proud of validates that the same password generates different hashes each time, which caught a bug where we were accidentally using a static salt."
+> "In my Testbook project, I wrote 183 backend unit tests using pytest. For example, I tested password hashing functions to ensure bcrypt was generating unique salts — this is critical because reusing salts would make passwords vulnerable to rainbow table attacks. I used the AAA pattern (Arrange-Act-Assert) and pytest fixtures to keep tests clean and maintainable. One specific test I'm proud of validates that the same password generates different hashes each time, which caught a bug where we were accidentally using a static salt."
 
 #### Integration Testing
 
@@ -455,7 +455,7 @@ Skills: Test Automation • Python • JavaScript • pytest • Playwright • 
 ### Write a Great Repository Description
 
 ```text
-🧪 Automation testing portfolio - 356 tests | Python (pytest) + JavaScript (Vitest/Playwright) | 86% coverage | CI/CD | Full testing pyramid
+🧪 Automation testing portfolio - 359 tests | Python (pytest) + JavaScript (Vitest/Playwright) | 86% coverage | CI/CD | Full testing pyramid
 ```
 
 ### Add Topics/Tags
@@ -487,13 +487,13 @@ In your repo settings, add topics:
 
 ### 30-Second Elevator Pitch
 
-> "I recently completed a comprehensive automation testing project where I worked with 356 tests across a full-stack application. I have experience with Python pytest for backend testing, JavaScript Vitest and Playwright for frontend and E2E testing, plus performance and security testing. I've set up CI/CD pipelines and achieved 86% code coverage. I'm excited to bring these skills to a QA engineering role and continue growing."
+> "I recently completed a comprehensive automation testing project where I worked with 359 tests across a full-stack application. I have experience with Python pytest for backend testing, JavaScript Vitest and Playwright for frontend and E2E testing, plus performance and security testing. I've set up CI/CD pipelines and achieved 86% code coverage. I'm excited to bring these skills to a QA engineering role and continue growing."
 
 ### 2-Minute Detailed Version
 
 > "I'm transitioning into QA engineering and built my skills through Testbook, an open-source testing learning platform. Over [X weeks/months], I worked through a structured curriculum covering the entire testing pyramid.
 >
-> For unit testing, I wrote 180 backend tests in Python using pytest, testing everything from password hashing to database models. I learned to use fixtures, parameterized tests, and mocking effectively.
+> For unit testing, I wrote 183 backend tests in Python using pytest, testing everything from password hashing to database models. I learned to use fixtures, parameterized tests, and mocking effectively.
 >
 > For integration testing, I tested FastAPI endpoints, validated HTTP responses, and implemented contract testing with OpenAPI schemas to prevent integration bugs between frontend and backend.
 >

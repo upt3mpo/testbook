@@ -3,17 +3,17 @@
 ![CI Status](https://github.com/upt3mpo/testbook/actions/workflows/testbook-ci.yml/badge.svg)
 ![Backend Coverage](https://img.shields.io/badge/backend_coverage-86%25-brightgreen)
 ![Frontend Coverage](https://img.shields.io/badge/frontend_coverage-41%25-orange)
-![Total Tests](https://img.shields.io/badge/tests-356-blue)
+![Total Tests](https://img.shields.io/badge/tests-359-blue)
 ![Python](https://img.shields.io/badge/python-3.13-blue)
 ![Node](https://img.shields.io/badge/node-24-green)
 
 A production-grade social media application built for learning and practicing
-automation testing. Features 180 backend tests, 40 frontend tests, 113 E2E
+automation testing. Features 183 backend tests, 40 frontend tests, 113 E2E
 tests (JavaScript + Python), 23 security tests, and structured hands-on labs.
 
 Perfect for individual learners, junior developers exploring testing, or manual QA professionals transitioning to automation.
 
-**356 Tests | Complete Testing Pyramid | 86% Backend Coverage**
+**359 Tests | Complete Testing Pyramid | 86% Backend Coverage**
 
 <h2 id="table-of-contents">📋 Table of Contents</h2>
 
@@ -107,7 +107,7 @@ Testbook demonstrates the complete testing pyramid with real, production-quality
 
 ### 🧪 Unit Tests (Stage 1)
 
-**Backend:** 180 tests with pytest
+**Backend:** 183 tests with pytest
 
 ```python
 def test_user_creation():
@@ -238,7 +238,7 @@ def test_sql_injection_prevention():
 
 ### 🧪 Testing Features
 
-- **180 Backend Tests** - pytest with 86% coverage
+- **183 Backend Tests** - pytest with 86% coverage
 - **40 Frontend Tests** - Vitest + React Testing Library (41% coverage)
 - **113 E2E Tests** - Playwright (59 JavaScript + 54 Python)
 - **Performance Tests** - k6 load testing

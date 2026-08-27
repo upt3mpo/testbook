@@ -545,7 +545,7 @@ npx playwright test
 
 ```bash
 # Takes 5 minutes when you want quick feedback
-pytest  # Runs all 180 tests
+pytest  # Runs all 183 tests
 ```
 
 **Fix:**

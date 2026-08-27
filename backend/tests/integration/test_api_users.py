@@ -21,7 +21,12 @@ class TestGetUserProfile:
         data = response.json()
         assert data["username"] == test_user.username
         assert data["display_name"] == test_user.display_name
-        assert "hashed_password" not in data
+
+    def test_get_user_profile_never_exposes_password_hash(self, client, test_user, auth_headers):
+        """Security invariant: a user profile response must never include the hashed password."""
+        response = client.get(f"/api/users/{test_user.username}", headers=auth_headers)
+
+        assert "hashed_password" not in response.json()
 
     def test_get_nonexistent_user(self, client, auth_headers):
         """Test getting non-existent user."""

@@ -38,22 +38,8 @@ class TestRegisterEndpoint:
     - Verifying database state changes
     """
 
-    def test_register_new_user_success(self, client):
-        """
-        Test successful user registration.
-
-        This test verifies the complete user registration workflow:
-        1. User submits registration data
-        2. System validates the data
-        3. Password is hashed and stored securely
-        4. User record is created in database
-        5. JWT token is generated for auto-login
-        6. User data is returned (without sensitive information)
-
-        This is a critical integration test that ensures the entire
-        registration flow works end-to-end.
-        """
-        # Arrange - Prepare new user data
+    def test_register_new_user_returns_auto_login_token(self, client):
+        """Registration returns 201 and an auto-login bearer token with the submitted user data echoed back."""
         new_user = {
             "email": "newuser@example.com",
             "username": "newuser",
@@ -62,18 +48,29 @@ class TestRegisterEndpoint:
             "bio": "This is my bio",
         }
 
-        # Act - Send POST request to registration endpoint
         response = client.post("/api/auth/register", json=new_user)
 
-        # Assert - Verify successful registration and auto-login
-        assert response.status_code == 201  # API returns 201 Created
+        assert response.status_code == 201, f"expected 201 Created, got {response.status_code}: {response.text}"
         data = response.json()
-        assert "access_token" in data  # Returns token for auto-login
-        assert data["token_type"] == "bearer"  # JWT bearer token format
-        assert data["email"] == "newuser@example.com"  # Returns user data
-        assert data["username"] == "newuser"
-        assert data["display_name"] == "New User"
-        assert "hashed_password" not in data  # Security: password never exposed
+        assert "access_token" in data, "registration should auto-login by returning a token"
+        assert data["token_type"] == "bearer"
+        assert data["email"] == new_user["email"]
+        assert data["username"] == new_user["username"]
+        assert data["display_name"] == new_user["display_name"]
+
+    def test_register_response_never_exposes_password_hash(self, client):
+        """Security invariant: the registration response must never include the hashed password, regardless of what else changes in the response shape."""
+        response = client.post(
+            "/api/auth/register",
+            json={
+                "email": "another-new-user@example.com",
+                "username": "anothernewuser",
+                "display_name": "Another New User",
+                "password": "SecurePass123!",
+            },
+        )
+
+        assert "hashed_password" not in response.json()
 
     def test_register_duplicate_email(self, client, test_user):
         """Test registration with duplicate email fails."""
@@ -132,25 +129,32 @@ class TestRegisterEndpoint:
         assert response.status_code == 422
 
     def test_register_sets_default_values(self, client):
-        """Test that registration sets default values for optional fields."""
-        response = client.post(
+        """Registering without optional fields (bio, theme, text_density) gets the model's actual defaults, not null/missing values.
+
+        The registration response itself (schemas.RegisterResponse) doesn't
+        include these fields, so we fetch the freshly-created user via
+        /api/auth/me (schemas.UserResponse) to actually see them.
+        """
+        register_response = client.post(
             "/api/auth/register",
             json={
                 "email": "defaults@example.com",
                 "username": "defaultuser",
                 "display_name": "Default User",
                 "password": "SecurePass123!",
+                # bio/theme/text_density deliberately omitted
             },
         )
+        assert register_response.status_code == 201
+        token = register_response.json()["access_token"]
 
-        assert response.status_code == 201
-        data = response.json()
-        # Register returns token and user data
-        assert "access_token" in data
-        assert data["token_type"] == "bearer"
-        assert data["email"] == "defaults@example.com"
-        assert data["username"] == "defaultuser"
-        assert data["display_name"] == "Default User"
+        me_response = client.get(
+            "/api/auth/me", headers={"Authorization": f"Bearer {token}"}
+        )
+        data = me_response.json()
+        assert data["bio"] == "", f"expected default empty bio, got {data.get('bio')!r}"
+        assert data["theme"] == "light", f"expected default theme 'light', got {data.get('theme')!r}"
+        assert data["text_density"] == "normal", f"expected default text_density 'normal', got {data.get('text_density')!r}"
 
 
 @pytest.mark.integration
@@ -259,7 +263,12 @@ class TestGetCurrentUserEndpoint:
         assert data["email"] == test_user.email
         assert data["username"] == test_user.username
         assert data["display_name"] == test_user.display_name
-        assert "hashed_password" not in data
+
+    def test_get_current_user_never_exposes_password_hash(self, client, auth_headers):
+        """Security invariant: /api/auth/me must never include the hashed password."""
+        response = client.get("/api/auth/me", headers=auth_headers)
+
+        assert "hashed_password" not in response.json()
 
     def test_get_current_user_no_token(self, client):
         """Test getting current user without token fails."""
