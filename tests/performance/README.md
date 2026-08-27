@@ -282,4 +282,4 @@ const res = http.post('http://localhost:8000/api/posts/', payload, {
 
 - [K6 Documentation](https://k6.io/docs/)
 - [Performance Testing Guide](https://k6.io/docs/testing-guides/api-load-testing/)
-- [K6 Cloud](https://k6.io/cloud/)
+- [K6 Cloud](https://k6.io/docs/cloud/)
