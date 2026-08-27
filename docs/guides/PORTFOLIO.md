@@ -53,9 +53,9 @@ Add a section at the top of YOUR README.md:
 
 I completed the Testbook automation testing curriculum to build professional QA engineering skills. This fork demonstrates my proficiency in:
 
-- ✅ Python testing with pytest (180 backend tests)
+- ✅ Python testing with pytest (166 backend tests)
 - ✅ JavaScript/React testing with Vitest (40 frontend tests)
-- ✅ E2E testing with Playwright (59 JavaScript + 60 Python tests)
+- ✅ E2E testing with Playwright (59 JavaScript + 54 Python tests)
 - ✅ API contract testing (OpenAPI validation)
 - ✅ Performance testing (k6 load tests)
 - ✅ Security testing (OWASP Top 10, 23 tests)
@@ -397,7 +397,7 @@ Skills: Test Automation • Python • JavaScript • pytest • Playwright • 
 
 **"Tell me about your experience with unit testing."**
 
-> "In my Testbook project, I wrote 180 backend unit tests using pytest. For example, I tested password hashing functions to ensure bcrypt was generating unique salts — this is critical because reusing salts would make passwords vulnerable to rainbow table attacks. I used the AAA pattern (Arrange-Act-Assert) and pytest fixtures to keep tests clean and maintainable. One specific test I'm proud of validates that the same password generates different hashes each time, which caught a bug where we were accidentally using a static salt."
+> "In my Testbook project, I wrote 166 backend unit tests using pytest. For example, I tested password hashing functions to ensure bcrypt was generating unique salts — this is critical because reusing salts would make passwords vulnerable to rainbow table attacks. I used the AAA pattern (Arrange-Act-Assert) and pytest fixtures to keep tests clean and maintainable. One specific test I'm proud of validates that the same password generates different hashes each time, which caught a bug where we were accidentally using a static salt."
 
 #### Integration Testing
 
@@ -455,7 +455,7 @@ Skills: Test Automation • Python • JavaScript • pytest • Playwright • 
 ### Write a Great Repository Description
 
 ```text
-🧪 Automation testing portfolio - 362 tests | Python (pytest) + JavaScript (Vitest/Playwright) | 86% coverage | CI/CD | Full testing pyramid
+🧪 Automation testing portfolio - 342 tests | Python (pytest) + JavaScript (Vitest/Playwright) | 86% coverage | CI/CD | Full testing pyramid
 ```
 
 ### Add Topics/Tags
@@ -487,13 +487,13 @@ In your repo settings, add topics:
 
 ### 30-Second Elevator Pitch
 
-> "I recently completed a comprehensive automation testing project where I worked with 362 tests across a full-stack application. I have experience with Python pytest for backend testing, JavaScript Vitest and Playwright for frontend and E2E testing, plus performance and security testing. I've set up CI/CD pipelines and achieved 86% code coverage. I'm excited to bring these skills to a QA engineering role and continue growing."
+> "I recently completed a comprehensive automation testing project where I worked with 342 tests across a full-stack application. I have experience with Python pytest for backend testing, JavaScript Vitest and Playwright for frontend and E2E testing, plus performance and security testing. I've set up CI/CD pipelines and achieved 86% code coverage. I'm excited to bring these skills to a QA engineering role and continue growing."
 
 ### 2-Minute Detailed Version
 
 > "I'm transitioning into QA engineering and built my skills through Testbook, an open-source testing learning platform. Over [X weeks/months], I worked through a structured curriculum covering the entire testing pyramid.
 >
-> For unit testing, I wrote 180 backend tests in Python using pytest, testing everything from password hashing to database models. I learned to use fixtures, parameterized tests, and mocking effectively.
+> For unit testing, I wrote 166 backend tests in Python using pytest, testing everything from password hashing to database models. I learned to use fixtures, parameterized tests, and mocking effectively.
 >
 > For integration testing, I tested FastAPI endpoints, validated HTTP responses, and implemented contract testing with OpenAPI schemas to prevent integration bugs between frontend and backend.
 >

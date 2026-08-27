@@ -100,7 +100,7 @@ start htmlcov/index.html # Windows
 - When you need clean, focused output
 
 **Performance Impact:**
-Coverage collection adds ~20-30% overhead to test execution time. For 180 tests, this means ~15-20 seconds additional time.
+Coverage collection adds ~20-30% overhead to test execution time. For 166 tests, this means ~15-20 seconds additional time.
 
 ### Parallel Execution
 

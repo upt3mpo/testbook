@@ -19,7 +19,7 @@ Welcome! This learning path transforms the Testbook project into your personal t
 - Provides reflection questions to deepen understanding
 - Builds toward portfolio-ready artifacts
 
-**Duration:** 24-34 hours (core content) + 14-20 hours (optional exercises)
+**Duration:** 24-34 hours (core content) + 14-23 hours (optional exercises)
 
 ---
 

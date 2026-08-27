@@ -30,7 +30,6 @@ Testbook/
 │   └── solutions/              📝 Lab solutions
 │
 ├── docs/
-│   ├── course/                 👨‍🎓 Course materials
 │   ├── guides/                 📖 How-to guides
 │   ├── reference/              📚 Reference documentation
 │   ├── concepts/               🧠 Deep conceptual understanding
@@ -50,13 +49,13 @@ Testbook/
 
 | Stage                                                                         | Focus             | Time      | Description                                        |
 | ----------------------------------------------------------------------------- | ----------------- | --------- | -------------------------------------------------- |
-| **[Stage 1: Unit Tests](../learn/stage_1_unit/)**                             | 🧪 Foundations    | 2-3 hours | Test individual functions, fixtures, AAA pattern   |
-| **[Stage 2: Integration Tests](../learn/stage_2_integration/)**               | 🧱 Components     | 3-4 hours | API endpoints, database operations, test factories |
-| **[Stage 3: API & E2E](../learn/stage_3_api_e2e/)**                           | 🌐 Full Stack     | 4-5 hours | Playwright, contracts, user workflows              |
-| **[Stage 4: Performance & Security](../learn/stage_4_performance_security/)** | 🚀 Non-Functional | 2-3 hours | k6 load testing, OWASP security, rate limiting     |
-| **[Stage 5: Capstone](../learn/stage_5_capstone/)**                           | 🎯 Portfolio      | 2-3 hours | Build test suite, documentation, job artifacts     |
+| **[Stage 1: Unit Tests](../learn/stage_1_unit/)**                             | Foundations    | 4-6 hours | Test individual functions, fixtures, AAA pattern   |
+| **[Stage 2: Integration Tests](../learn/stage_2_integration/)**               | Components     | 5-7 hours | API endpoints, database operations, test factories |
+| **[Stage 3: API & E2E](../learn/stage_3_api_e2e/)**                           | Full Stack     | 5-7 hours | Playwright, contracts, user workflows              |
+| **[Stage 4: Performance & Security](../learn/stage_4_performance_security/)** | Non-Functional | 6-8 hours | k6 load testing, OWASP security, rate limiting     |
+| **[Stage 5: Capstone](../learn/stage_5_capstone/)**                           | Portfolio      | 4-6 hours | Build test suite, documentation, job artifacts     |
 
-**Total: 12-18 hours self-paced**
+**Total: 24-34 hours of core content**, matching the estimates in [README.md](../README.md#learning-path) and [learn/README.md](../learn/README.md#the-5-stages). Add 14-23 hours if you also work through the optional exercises in each stage.
 
 **What makes this path special:**
 
@@ -67,18 +66,6 @@ Testbook/
 - ✅ Job interview preparation
 
 **[Start Stage 1 →](../learn/stage_1_unit/)**
-
----
-
-## 👨‍🎓 Course Materials
-
-The standalone `docs/course/` curriculum was folded into the [Self-Guided Learning Path](../learn/) above — it's no longer a separate set of files.
-
-| Resource                                                          | Time Estimate | Experience Level | Description                          |
-| ------------------------------------------------------------------ | ------------- | ----------------- | ------------------------------------- |
-| **[Learning Paths](../learn/README.md#choose-your-track)**         | 15 min        | 🟢 All levels     | Choose path based on your background  |
-| **[Learning Roadmap](../learn/README.md#visual-learning-journey)** | 10 min        | 🟢 All levels     | Visual skill progression guide        |
-| **[TROUBLESHOOTING.md](reference/TROUBLESHOOTING.md)**             | 30 min        | 🟢 Beginner       | 24+ common errors and solutions       |
 
 ---
 
@@ -109,7 +96,7 @@ The standalone `docs/course/` curriculum was folded into the [Self-Guided Learni
 
 **RUNNING_TESTS.md:**
 
-- Backend tests (pytest) - 180 tests
+- Backend tests (pytest) - 166 tests
 - E2E tests (Playwright - JS & Python)
 - API tests (Postman/Newman)
 - Performance tests (K6)
@@ -323,32 +310,7 @@ Includes environment config, fixtures, test helpers, and patterns.
 
 <h2 id="hands-on-exercises">🧪 Hands-On Exercises (`../learn/`)</h2>
 
-**All lab exercises have been moved into the structured learning stages!**
-
-**New Structure:**
-
-- **Stage 1:** Unit test exercises in `learn/stage_1_unit/exercises/`
-- **Stage 2:** Integration test exercises in `learn/stage_2_integration/exercises/`
-- **Stage 3:** E2E test exercises in `learn/stage_3_api_e2e/exercises/`
-- **Stage 4:** Performance & security exercises in `learn/stage_4_performance_security/exercises/`
-- **Solutions:** All lab solutions in `learn/solutions/`
-
-**Total time:** ~12-18 hours (same content, better organization)
-
-**Recommended:** Start with the [Self-Guided Learning Path](../learn/) for the best experience!
-
-**Choose your path:**
-
-- 🐍 **Python-only:** Lab 4B
-- ☕ **JavaScript-only:** Lab 6B → Lab 6C
-- 🎯 **Hybrid (Python + JS):** Lab 4B + Lab 6B + Lab 6C
-- 🌟 **Full-stack:** All three
-
-### Future Labs - Roadmap
-
-> **Status:** Additional advanced labs planned. Current focus: dual-stack coverage complete!
-
-**Planned (Labs 7+):** Database Testing Deep Dive, Performance Testing, Security Testing Comprehensive, Full CI/CD Pipeline Setup
+Every lab exercise lives inside its stage folder — `learn/stage_1_unit/exercises/`, `learn/stage_2_integration/exercises/`, and so on through Stage 4, with solutions in `learn/solutions/`. See the [stage-by-stage breakdown](../learn/README.md#detailed-curriculum-breakdown) in learn/README.md for the full lab list per stage.
 
 ---
 
@@ -359,7 +321,7 @@ Includes environment config, fixtures, test helpers, and patterns.
 **[backend/tests/README.md](../backend/tests/README.md)**
 Backend testing guide
 
-- 180 tests
+- 166 tests
 - pytest usage
 - Fixtures
 - Coverage
@@ -477,7 +439,7 @@ source .venv/bin/activate  # Activate Python (macOS/Linux)
 
 - Labs 1-3 (Python/pytest)
 
-- Backend tests (180 tests)
+- Backend tests (166 tests)
 - API examples (Python requests)
 - Security tests (Python)
 
@@ -537,56 +499,6 @@ source .venv/bin/activate  # Activate Python (macOS/Linux)
 
 - Tests: [../tests/security/](../tests/security/)
 - Guide: [../tests/security/README.md](../tests/security/README.md)
-
----
-
-## 🔄 Recently Organized
-
-**Moved to `docs/course/`:**
-
-- COURSE_AUTOMATION_TESTING_101.md
-- LEARNING_PATHS.md
-- LEARNING_ROADMAP.md
-- TROUBLESHOOTING.md
-
-**Moved to `docs/guides/`:**
-
-- RUNNING_TESTS.md
-- TESTING_GUIDE.md
-
-**Moved to `docs/reference/`:**
-
-- TESTING_CHEATSHEET.md
-- TESTING_PATTERNS.md
-- TESTING_FEATURES.md
-- PROJECT_INFO.md
-
-**Removed (redundant summaries):**
-
-- IMPLEMENTATION_COMPLETE.md
-- TEST_VERIFICATION_REPORT.md
-
-- TESTING_IMPLEMENTATION_SUMMARY.md
-- TRANSFORMATION_SUMMARY.md
-- FINAL_SUMMARY_FOR_USER.md
-- QUICK_START_TESTING.md
-
-**Removed (classroom-specific materials):**
-
-- EDUCATOR_GUIDE.md
-- GRADING_RUBRICS.md
-
-- ASSESSMENT_CHECKPOINTS.md
-- CLASSROOM_SETUP_CHECKLIST.md
-- COURSE_PRESENTATION_GUIDE.md
-- INSTRUCTOR_QUICK_START.md
-- STUDENT_FEEDBACK_FORM.md
-
-- STUDENT_PROGRESS_TRACKER.md
-
-**Result:** Clean, organized, individual learner-focused documentation!
-
----
 
 ---
 
