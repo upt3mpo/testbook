@@ -750,4 +750,4 @@ it("should test user", () => {
 
 **🎉 Congratulations!** You can now manage test data like a professional!
 
-**Next Lab:** [Lab 4B: Advanced E2E Testing (JavaScript)](LAB_08_Contract_Testing_Foundations_JavaScript.md)
+**Next Lab:** [Lab 8: Contract Testing Foundations (JavaScript)](LAB_08_Contract_Testing_Foundations_JavaScript.md)

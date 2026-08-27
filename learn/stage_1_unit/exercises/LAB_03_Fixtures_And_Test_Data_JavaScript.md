@@ -622,7 +622,7 @@ Test your understanding:
 
 **Ready for more?**
 
-- **[LAB_DEBUG_01_Reading_Errors_JavaScript.md](LAB_04_Debugging_And_Error_Handling_JavaScript.md)** - Learn to debug test failures
+- **[Lab 4: Debugging and Error Handling (JavaScript)](LAB_04_Debugging_And_Error_Handling_JavaScript.md)** - Learn to debug test failures
 - **[frontend/src/tests/setup.js](../../../frontend/src/tests/setup.js)** - Study professional setup patterns
 - **[Vitest Setup Documentation](https://vitest.dev/guide/setup.html)** - Deep dive
 

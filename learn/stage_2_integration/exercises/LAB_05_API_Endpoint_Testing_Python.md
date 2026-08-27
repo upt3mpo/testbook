@@ -279,7 +279,7 @@ assert "content" in data
 
 **🎉 You're now testing real APIs like a pro!**
 
-**Next Lab:** [Lab 5: Test Data Management (Python)](LAB_07_Test_Data_Management_Python.md)
+**Next Lab:** [Lab 6: Advanced API Testing (Python)](LAB_06_Advanced_API_Testing_Python.md)
 
 ---
 

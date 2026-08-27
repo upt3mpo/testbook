@@ -14,6 +14,8 @@ This directory contains a small set of reference implementations that demonstrat
 
 > Advanced labs (fixtures, E2E testing, debugging, rate limiting, etc.) encourage learners to compare their work against the production codebase and test suite. We intentionally avoid including end-to-end solutions to preserve the exploratory experience.
 
+**Running these files:** they rely on fixtures (`client`, `test_user`, `auth_headers`, etc.) defined in `backend/tests/conftest.py`, so pytest needs that conftest in scope — copy the file into `backend/tests/integration/` temporarily, or run pytest with `backend/` as the working directory and target the file by its copied path. Running a solution file directly from `learn/solutions/` will fail with `fixture 'client' not found`.
+
 ---
 
 ## Maintaining This Folder

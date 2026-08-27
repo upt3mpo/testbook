@@ -596,7 +596,7 @@ Test your understanding:
 
 **Ready for more?**
 
-- **[LAB_03_Testing_API_Endpoints_Python.md](LAB_04_Debugging_And_Error_Handling_Python.md)** - Use fixtures with API tests
+- **[Lab 4: Debugging and Error Handling (Python)](LAB_04_Debugging_And_Error_Handling_Python.md)** - Use fixtures with API tests
 - **[backend/tests/conftest.py](../../../backend/tests/conftest.py)** - Study professional fixtures
 - **[Pytest Fixtures Documentation](https://docs.pytest.org/en/latest/fixture.html)** - Deep dive
 

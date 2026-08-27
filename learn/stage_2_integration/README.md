@@ -1,4 +1,4 @@
-# 🧱 Stage 2: Integration Tests
+# Stage 2: Integration Tests
 
 **Testing Components Working Together**
 
@@ -16,40 +16,29 @@
 
 **Estimated time remaining:** 5-7 hours (core content) + 3-5 hours (optional exercises)
 
-<h2 id="table-of-contents">📋 Table of Contents</h2>
+<h2 id="table-of-contents">Table of Contents</h2>
 
 - [Why Integration Testing Matters: The Glue That Holds Systems Together](#why-integration-testing-matters-the-glue-that-holds-systems-together)
-- [Part 1: What Are Integration Tests? 📚](#part-1-what-are-integration-tests)
-- [Part 2: HTTP API Testing 🌐](#part-2-http-api-testing)
-- [Part 3: Database Integration 🗄️](#part-3-database-integration)
-- [Part 4: Implementation Guide 🛠️](#part-4-implementation-guide)
-- [Part 5: Hands-On Practice 🏃](#part-5-hands-on-practice)
-- [Part 6: Additional Patterns 🚀](#part-6-additional-patterns)
-- [✅ Success Criteria](#success-criteria)
-- [🧠 Why This Matters](#why-this-matters)
-- [🔗 Related Resources](#related-resources)
-- [🧠 Self-Check Quiz (Optional)](#self-check-quiz-optional)
-- [🤔 Reflection](#reflection)
-- [🎉 Stage Complete](#stage-complete)
+- [Part 1: What Are Integration Tests?](#part-1-what-are-integration-tests)
+- [Part 2: HTTP API Testing](#part-2-http-api-testing)
+- [Part 3: Database Integration](#part-3-database-integration)
+- [Part 4: Implementation Guide](#part-4-implementation-guide)
+- [Part 5: Hands-On Practice](#part-5-hands-on-practice)
+- [Part 6: Additional Patterns](#part-6-additional-patterns)
+- [Success Criteria](#success-criteria)
+- [Why This Matters](#why-this-matters)
+- [Related Resources](#related-resources)
+- [Self-Check Quiz (Optional)](#self-check-quiz-optional)
+- [Reflection](#reflection)
+- [Stage Complete](#stage-complete)
 
 ---
 
-## Why Integration Testing Matters: The Glue That Holds Systems Together
+## Why Integration Testing Matters
 
-### The Real-World Impact
+Unit tests from Stage 1 verify that individual functions work in isolation - but a codebase full of correct functions can still fail the moment those functions have to work together. A password validator can pass every unit test and a database layer can pass every unit test, and the login flow that connects them can still be broken, because the bug only shows up at the seam: a connection pool that isn't initialized when the API starts, a field name that doesn't match between the request schema and the query, an auth header that gets dropped somewhere in the middle. Integration tests exist to catch exactly that class of bug - the kind that only appears once components stop being tested alone.
 
-**The Problem Without Integration Tests:**
-In 2018, a major e-commerce platform experienced a 2-hour outage during Black Friday, losing $100M in sales. The issue? Their unit tests all passed, but they missed that a database connection pool wasn't being properly initialized when the API server started. The integration between the API and database was broken, but no integration test caught it.
-
-**What Integration Tests Prevent:**
-
-1. **API Contract Violations**: Services that can't communicate properly
-2. **Database Inconsistencies**: Data that gets corrupted between systems
-3. **Configuration Mismatches**: Settings that work in isolation but fail together
-4. **Performance Bottlenecks**: Systems that work alone but slow down together
-5. **Security Vulnerabilities**: Authentication that works in tests but fails in production
-
-### The Testing Pyramid Applied
+That's also why integration tests sit in the middle of the testing pyramid, at roughly 15% of a healthy suite: fewer than unit tests, because they're slower and touch real dependencies like a database, but essential for the failures unit tests structurally can't see.
 
 ```text
                 ▲
@@ -68,110 +57,11 @@ In 2018, a major e-commerce platform experienced a 2-hour outage during Black Fr
    /_________________________\
 ```
 
-**Integration Tests (15% of your test suite):**
-
-- Medium speed: Run in seconds to minutes
-- More reliable than E2E tests
-- Test real interactions between components
-- Catch bugs that unit tests miss
-
-**Why 15%?**
-
-- Unit tests catch most bugs (80%)
-- Integration tests catch the bugs unit tests miss (15%)
-- E2E tests catch the remaining bugs (5%)
-- Balance between coverage and speed
-
-### The Business Case
-
-**Real Example:**
-A banking application has:
-
-- User service (handles authentication)
-- Account service (manages accounts)
-- Transaction service (processes payments)
-
-Without integration tests:
-
-- User service works alone ✅
-- Account service works alone ✅
-- Transaction service works alone ✅
-- But when a user tries to transfer money... 💥
-- The services can't communicate properly
-- Money disappears or gets duplicated
-- Customer loses trust, bank loses money
-
-With integration tests:
-
-- Test the complete transfer flow
-- Verify all services work together
-- Catch integration bugs before production
-- Maintain customer trust
-
-### The Developer Experience
-
-**Without Integration Tests:**
-
-- "It works on my machine"
-- "The unit tests pass, so it should work"
-- "I don't know why it's failing in production"
-- "Let me check the logs... there are 10,000 lines"
-
-**With Integration Tests:**
-
-- "I know the components work together"
-- "I can see exactly where the integration fails"
-- "I can test real scenarios"
-- "I have confidence in the system"
-
-### The Quality Mindset
-
-**Integration Testing Teaches You:**
-
-1. **Think About System Boundaries**: How do components interact?
-2. **Design for Integration**: Make components easy to integrate
-3. **Test Real Scenarios**: Test what users actually do
-4. **Handle Failures Gracefully**: What happens when a component fails?
-5. **Monitor System Health**: How do you know if integration is working?
-
-### Industry Standards
-
-**Companies That Require Integration Tests:**
-
-- Netflix: Integration tests for all microservices
-- Uber: Integration tests for all API endpoints
-- Airbnb: Integration tests for all service interactions
-- Spotify: Integration tests for all data flows
-
-**Why They Do This:**
-
-- Prevents integration failures
-- Enables faster deployment
-- Reduces production bugs
-- Improves system reliability
-- Builds team confidence
-
-### The Integration Testing Mindset
-
-**Key Questions to Ask:**
-
-1. **What can go wrong?** Network failures, timeouts, data corruption
-2. **How do components communicate?** APIs, databases, message queues
-3. **What are the dependencies?** External services, databases, file systems
-4. **How do we handle failures?** Retries, fallbacks, error handling
-5. **How do we monitor health?** Logs, metrics, alerts
-
-**Common Integration Patterns:**
-
-- **API Integration**: Test HTTP endpoints with real data
-- **Database Integration**: Test database operations with real data
-- **Message Queue Integration**: Test async communication
-- **File System Integration**: Test file operations
-- **External Service Integration**: Test third-party APIs
+Writing integration tests also changes what questions you ask about a system: not just "does this function return the right value" but "what happens when the database is empty," "what happens when two requests race," "what happens when a dependent service is slow or down." Testing those seams deliberately - authentication, database state, service boundaries - is what separates a demo that works from a system you can trust in production.
 
 ---
 
-<h2 id="part-1-what-are-integration-tests">Part 1: What Are Integration Tests? 📚</h2>
+<h2 id="part-1-what-are-integration-tests">Part 1: What Are Integration Tests?</h2>
 
 ### The Restaurant Kitchen Analogy
 
@@ -250,7 +140,7 @@ test("user login workflow", async () => {
 
 ---
 
-<h2 id="part-2-http-api-testing">Part 2: HTTP API Testing 🌐</h2>
+<h2 id="part-2-http-api-testing">Part 2: HTTP API Testing</h2>
 
 ### The Restaurant Order Analogy
 
@@ -342,7 +232,7 @@ def test_api_endpoint_scenarios():
 
 ---
 
-<h2 id="part-3-database-integration">Part 3: Database Integration 🗄️</h2>
+<h2 id="part-3-database-integration">Part 3: Database Integration</h2>
 
 ### The Library System Analogy
 
@@ -458,7 +348,7 @@ test("user posts", async () => {
 
 ---
 
-<h2 id="part-4-implementation-guide">Part 4: Implementation Guide 🛠️</h2>
+<h2 id="part-4-implementation-guide">Part 4: Implementation Guide</h2>
 
 Now let's see these concepts in real code! Choose your track:
 
@@ -694,7 +584,7 @@ it("handles registration API errors gracefully", async () => {
 
 ---
 
-<h2 id="part-5-hands-on-practice">Part 5: Hands-On Practice 🏃</h2>
+<h2 id="part-5-hands-on-practice">Part 5: Hands-On Practice</h2>
 
 ### Step 1: Run Integration Tests
 
@@ -794,7 +684,7 @@ test("GET /api/users/:id contract validation", async () => {
 
 ---
 
-<h2 id="part-6-additional-patterns">Part 6: Additional Patterns 🚀</h2>
+<h2 id="part-6-additional-patterns">Part 6: Additional Patterns</h2>
 
 **📝 Note:** The patterns below are **additional enhancements** to your integration testing skills. All the **core concepts** needed to meet the Stage 2 success criteria are covered in Parts 1-5 above.
 
@@ -1110,7 +1000,7 @@ FastAPI 0.115+ uses OpenAPI 3.1.0, but Schemathesis only has experimental suppor
 
 ---
 
-<h2 id="success-criteria">✅ Success Criteria</h2>
+<h2 id="success-criteria">Success Criteria</h2>
 
 You're ready for Stage 3 when you can:
 
@@ -1143,7 +1033,7 @@ You're ready for Stage 3 when you can:
 
 ---
 
-<h2 id="why-this-matters">🧠 Why This Matters</h2>
+<h2 id="why-this-matters">Why This Matters</h2>
 
 ### In Real QA Teams
 
@@ -1161,7 +1051,7 @@ You're ready for Stage 3 when you can:
 
 ---
 
-<h2 id="related-resources">🔗 Related Resources</h2>
+<h2 id="related-resources">Related Resources</h2>
 
 ### Hands-On Practice
 
@@ -1192,7 +1082,7 @@ You're ready for Stage 3 when you can:
 
 ---
 
-<h2 id="self-check-quiz-optional">🧠 Self-Check Quiz (Optional)</h2>
+<h2 id="self-check-quiz-optional">Self-Check Quiz (Optional)</h2>
 
 Before moving to Stage 3, can you answer these questions?
 
@@ -1234,7 +1124,7 @@ Before moving to Stage 3, can you answer these questions?
 
 ---
 
-<h2 id="reflection">🤔 Reflection</h2>
+<h2 id="reflection">Reflection</h2>
 
 Before moving to Stage 3, answer these:
 
@@ -1252,7 +1142,7 @@ Before moving to Stage 3, answer these:
 
 ---
 
-<h2 id="stage-complete">🎉 Stage Complete</h2>
+<h2 id="stage-complete">Stage Complete</h2>
 
 You now understand how to test multi-component systems!
 

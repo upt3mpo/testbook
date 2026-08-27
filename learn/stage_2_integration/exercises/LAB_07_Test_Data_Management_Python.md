@@ -643,4 +643,4 @@ def test_get_user():
 
 **🎉 Congratulations!** You can now manage test data like a professional!
 
-**Next Lab:** Move to [Stage 3: API & E2E Testing](../../stage_3_api_e2e/README.md) or explore other labs
+**Next Lab:** [Lab 8: Contract Testing Foundations (Python)](LAB_08_Contract_Testing_Foundations_Python.md)

@@ -453,6 +453,8 @@ Stage 5 is project-based rather than lab-based - see [Stage 5](stage_5_capstone/
 
 ## 📈 What Happens After?
 
+After finishing Stage 5's reflection, read [COMPLETION.md](COMPLETION.md) for a wrap-up of the full path and pointers to what to learn next.
+
 After completing all 5 stages:
 
 1. **Build your portfolio** with artifacts from Stage 5

@@ -1,4 +1,4 @@
-# 🧪 Stage 1: Unit Tests
+# Stage 1: Unit Tests
 
 **Foundation of Test Automation**
 
@@ -16,40 +16,29 @@
 
 **Estimated time remaining:** 4-6 hours (core content) + 2-3 hours (optional exercises)
 
-<h2 id="table-of-contents">📋 Table of Contents</h2>
+<h2 id="table-of-contents">Table of Contents</h2>
 
 - [Why Unit Testing Matters: The Foundation of Quality](#why-unit-testing-matters-the-foundation-of-quality)
-- [Part 1: What Are Unit Tests? 📚](#part-1-what-are-unit-tests)
-- [Part 2: The AAA Pattern 🎯](#part-2-the-aaa-pattern)
-- [Part 3: Test Fixtures & Setup 🛠️](#part-3-test-fixtures--setup)
-- [Part 4: Implementation Guide 🛠️](#part-4-implementation-guide)
-- [Part 5: Hands-On Practice 🏃](#part-5-hands-on-practice)
-- [Part 6: Additional Patterns 🚀](#part-6-additional-patterns)
-- [✅ Success Criteria](#success-criteria)
-- [🧠 Why This Matters](#why-this-matters)
-- [🔗 Related Resources](#related-resources)
-- [🧠 Self-Check Quiz (Optional)](#self-check-quiz-optional)
-- [🤔 Reflection](#reflection)
-- [🎉 Stage Complete](#stage-complete)
+- [Part 1: What Are Unit Tests?](#part-1-what-are-unit-tests)
+- [Part 2: The AAA Pattern](#part-2-the-aaa-pattern)
+- [Part 3: Test Fixtures & Setup](#part-3-test-fixtures--setup)
+- [Part 4: Implementation Guide](#part-4-implementation-guide)
+- [Part 5: Hands-On Practice](#part-5-hands-on-practice)
+- [Part 6: Additional Patterns](#part-6-additional-patterns)
+- [Success Criteria](#success-criteria)
+- [Why This Matters](#why-this-matters)
+- [Related Resources](#related-resources)
+- [Self-Check Quiz (Optional)](#self-check-quiz-optional)
+- [Reflection](#reflection)
+- [Stage Complete](#stage-complete)
 
 ---
 
-## Why Unit Testing Matters: The Foundation of Quality
+## Why Unit Testing Matters
 
-### The Real-World Impact
+Bugs are cheapest to fix at the moment they're introduced, and most expensive once they reach production - by then you're debugging through logs, coordinating a hotfix, and possibly explaining the incident to customers. Unit tests catch bugs at the cheap end, in the seconds after you write the code, because they run in milliseconds and pinpoint the exact function that broke.
 
-**The Problem Without Unit Tests:**
-In 2012, Knight Capital Group deployed code without proper unit testing. A single line of code change caused their trading system to lose $440 million in 45 minutes, nearly bankrupting the company. The bug? A function that should have been called once was called multiple times due to a missing unit test that would have caught this logic error.
-
-**What Unit Tests Prevent:**
-
-1. **Logic Errors**: Functions that work for some inputs but fail for others
-2. **Regression Bugs**: New changes that break existing functionality
-3. **Integration Failures**: Components that work alone but fail together
-4. **Performance Issues**: Code that works but is too slow for production
-5. **Security Vulnerabilities**: Code that works but has security holes
-
-### The Testing Pyramid Applied
+That speed is also why unit tests make up the bulk of a healthy test suite - roughly 80% in the testing pyramid below. Most bugs live in individual functions, not in how components talk to each other, so that's where most of your tests should live too. A suite you can run thousands of times a day, in milliseconds, without touching a database or network, is also a suite you'll actually run - which is the real reason it catches things before they compound into harder problems.
 
 ```text
                 ▲
@@ -68,90 +57,13 @@ In 2012, Knight Capital Group deployed code without proper unit testing. A singl
    /_________________________\
 ```
 
-**Unit Tests (80% of your test suite):**
+There's a well-known cautionary tale here: in 2012, Knight Capital Group pushed a deployment that reactivated old, dormant code on a live trading system, and the resulting bug cost the firm $440 million in 45 minutes. The exact chain of failures involved more than a missing test - it was also a botched deployment process - but the lesson holds: a logic error that a test would have caught, caught late, can be catastrophic instead of a five-minute fix.
 
-- Fast: Run in milliseconds
-- Reliable: Don't depend on external systems
-- Precise: Tell you exactly what broke
-- Cheap: Easy to write and maintain
-
-**Why 80%?**
-
-- Most bugs are in individual functions
-- Unit tests catch bugs early (cheapest to fix)
-- They run fast (you'll run them thousands of times per day)
-- They give you confidence to refactor and improve code
-
-### The Business Case
-
-**Cost of Bugs by Stage:**
-
-- **Unit Testing**: $1 to fix
-- **Integration Testing**: $10 to fix
-- **System Testing**: $100 to fix
-- **Production**: $1,000+ to fix
-
-**Real Example:**
-A banking application processes 1 million transactions per day. A bug in the interest calculation function could affect every transaction. Without unit tests:
-
-- Bug goes to production
-- 1 million incorrect calculations
-- $50,000 in incorrect interest payments
-- Customer trust lost
-- Regulatory fines
-
-With unit tests:
-
-- Bug caught in development
-- Fixed in 5 minutes
-- Cost: $0
-
-### The Developer Experience
-
-**Without Unit Tests:**
-
-- "I'm afraid to change this code"
-- "Let me manually test this 20 times"
-- "I hope I didn't break anything"
-- "Why is this failing? I didn't touch that code!"
-
-**With Unit Tests:**
-
-- "I can refactor confidently"
-- "I know exactly what I broke"
-- "I can add features without fear"
-- "My code documents itself"
-
-### The Quality Mindset
-
-**Unit Testing Teaches You:**
-
-1. **Think About Edge Cases**: What happens with null, empty, or invalid inputs?
-2. **Design Better APIs**: If it's hard to test, it's probably hard to use
-3. **Write Cleaner Code**: Testable code is usually well-structured code
-4. **Document Intent**: Tests show how code should be used
-5. **Catch Mistakes Early**: Fix bugs when they're cheap to fix
-
-### Industry Standards
-
-**Companies That Require Unit Tests:**
-
-- Google: 100% unit test coverage for critical systems
-- Microsoft: Unit tests required for all production code
-- Amazon: "No code without tests" policy
-- Netflix: Unit tests run on every commit
-
-**Why They Do This:**
-
-- Prevents production bugs
-- Enables faster development
-- Reduces maintenance costs
-- Improves code quality
-- Builds team confidence
+Beyond catching bugs, writing unit tests changes how you write code in the first place. Code that's hard to test is usually hard to use - awkward dependencies, hidden side effects, functions that do too much. Writing the test first (or alongside the code) forces you to think about edge cases - null, empty, or invalid inputs - before a user finds them for you.
 
 ---
 
-<h2 id="part-1-what-are-unit-tests">Part 1: What Are Unit Tests? 📚</h2>
+<h2 id="part-1-what-are-unit-tests">Part 1: What Are Unit Tests?</h2>
 
 ### The LEGO Brick Analogy
 
@@ -261,7 +173,7 @@ it("add function works correctly", () => {
 
 ---
 
-<h2 id="part-2-the-aaa-pattern">Part 2: The AAA Pattern 🎯</h2>
+<h2 id="part-2-the-aaa-pattern">Part 2: The AAA Pattern</h2>
 
 Every good unit test follows the **Arrange-Act-Assert** pattern. Think of it like following a recipe:
 
@@ -385,7 +297,7 @@ it("good example", () => {
 
 </details>
 
-<h2 id="part-3-test-fixtures--setup">Part 3: Test Fixtures & Setup 🛠️</h2>
+<h2 id="part-3-test-fixtures--setup">Part 3: Test Fixtures & Setup</h2>
 
 ### The Kitchen Prep Station Analogy
 
@@ -514,7 +426,7 @@ const withDatabase = (testFn) => {
 
 ---
 
-<h2 id="part-4-implementation-guide">Part 4: Implementation Guide 🛠️</h2>
+<h2 id="part-4-implementation-guide">Part 4: Implementation Guide</h2>
 
 Now let's see these concepts in real code!
 
@@ -707,7 +619,7 @@ it("allows user to type in form fields", () => {
 
 ---
 
-<h2 id="part-5-hands-on-practice">Part 5: Hands-On Practice 🏃</h2>
+<h2 id="part-5-hands-on-practice">Part 5: Hands-On Practice</h2>
 
 ### Step 1: Read and Understand
 
@@ -784,7 +696,7 @@ it("multiply function works correctly", () => {
 
 ---
 
-<h2 id="part-6-additional-patterns">Part 6: Additional Patterns 🚀</h2>
+<h2 id="part-6-additional-patterns">Part 6: Additional Patterns</h2>
 
 **📝 Note:** The patterns below are **additional enhancements** to your unit testing skills. All the **core concepts** needed to meet the Stage 1 success criteria are covered in Parts 1-5 above.
 
@@ -1065,7 +977,7 @@ it("should handle async data loading", async () => {
 
 ---
 
-<h2 id="success-criteria">✅ Success Criteria</h2>
+<h2 id="success-criteria">Success Criteria</h2>
 
 You're ready for Stage 2 when you can:
 
@@ -1098,7 +1010,7 @@ You're ready for Stage 2 when you can:
 
 ---
 
-<h2 id="why-this-matters">🧠 Why This Matters</h2>
+<h2 id="why-this-matters">Why This Matters</h2>
 
 ### In Real QA Teams
 
@@ -1116,7 +1028,7 @@ You're ready for Stage 2 when you can:
 
 ---
 
-<h2 id="related-resources">🔗 Related Resources</h2>
+<h2 id="related-resources">Related Resources</h2>
 
 ### Hands-On Practice
 
@@ -1147,7 +1059,7 @@ You're ready for Stage 2 when you can:
 
 ---
 
-<h2 id="self-check-quiz-optional">🧠 Self-Check Quiz (Optional)</h2>
+<h2 id="self-check-quiz-optional">Self-Check Quiz (Optional)</h2>
 
 Before moving to Stage 2, can you answer these questions?
 
@@ -1189,7 +1101,7 @@ Before moving to Stage 2, can you answer these questions?
 
 ---
 
-<h2 id="reflection">🤔 Reflection</h2>
+<h2 id="reflection">Reflection</h2>
 
 Before moving to Stage 2, answer these questions:
 
@@ -1207,11 +1119,11 @@ Before moving to Stage 2, answer these questions:
 
 ---
 
-<h2 id="stage-complete">🎉 Stage Complete</h2>
+<h2 id="stage-complete">Stage Complete</h2>
 
 Once you've met the success criteria and reflected on the questions:
 
-### 👉 [Continue to Stage 2: Integration Tests](../stage_2_integration/README.md)
+### [Continue to Stage 2: Integration Tests](../stage_2_integration/README.md)
 
 ---
 
