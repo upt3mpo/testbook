@@ -187,20 +187,16 @@ test.describe("Users", () => {
 
       // Go to All feed
       await page.goto("/");
-
-      // Wait for feed to load
       await page.waitForLoadState("networkidle", { timeout: 5000 });
-      await page.waitForTimeout(1000);
 
       // Force reload to ensure fresh data
       await page.reload();
       await page.waitForLoadState("networkidle", { timeout: 5000 });
-      await page.waitForTimeout(500);
 
       await page.getByTestId('feed-tab-all').click();
-      await page.waitForTimeout(500);
 
-      // Should not see Mike's posts
+      // Should not see Mike's posts. toHaveCount() retries, so it covers
+      // any remaining render delay after the reload and tab click above.
       const mikePosts = page.locator(
         `[data-post-author="${TEST_USERS.mike.username}"]`
       );
@@ -411,9 +407,6 @@ test.describe("Users", () => {
       // Click delete button
       // Note: Browser confirm dialogs are auto-accepted by the setupDialogHandler
       await deleteButton.click();
-
-      // Wait a moment for the browser confirms to be handled
-      await page.waitForTimeout(1000);
 
       // Wait for redirect to login page - this is the key indicator of successful deletion
       // Use waitForURL which is more reliable than checking for element visibility
