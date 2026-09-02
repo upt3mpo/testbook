@@ -199,17 +199,13 @@ class TestBlocking:
 
         page.goto(f"{base_url}/profile/{test_users['mike']['username']}")
 
-        # Block first and wait for state change
+        # Block first. The confirm() dialog this triggers is auto-accepted
+        # by the page fixture's dialog handler, and the expect() below
+        # already retries until the API call finishes and the button's
+        # label actually updates, so no separate wait is needed.
         block_button = page.get_by_test_id("profile-block-button")
         expect(block_button).to_be_visible(timeout=5000)
         block_button.click()
-
-        # Wait for dialog to be accepted and API to complete
-        page.wait_for_timeout(1000)
-        try:
-            page.wait_for_load_state("networkidle", timeout=5000)
-        except:
-            pass
 
         # Re-query button after state change
         block_button = page.get_by_test_id("profile-block-button")
@@ -219,11 +215,6 @@ class TestBlocking:
 
         # Then unblock and wait for state change
         block_button.click()
-        page.wait_for_timeout(1000)
-        try:
-            page.wait_for_load_state("networkidle", timeout=5000)
-        except:
-            pass
 
         # Re-query button after state change
         block_button = page.get_by_test_id("profile-block-button")
@@ -254,20 +245,16 @@ class TestBlocking:
 
         # Go to All feed
         page.goto(base_url)
-
-        # Wait for feed to load
         page.wait_for_load_state("networkidle", timeout=5000)
-        page.wait_for_timeout(1000)
 
         # Force reload to ensure fresh data
         page.reload()
         page.wait_for_load_state("networkidle", timeout=5000)
-        page.wait_for_timeout(500)
 
         page.get_by_test_id("feed-tab-all").click()
-        page.wait_for_timeout(500)
 
-        # Should not see Mike's posts
+        # Should not see Mike's posts. to_have_count() retries, so it covers
+        # any remaining render delay after the reload and tab click above.
         mike_posts = page.locator(
             f'[data-post-author="{test_users["mike"]["username"]}"]'
         )
@@ -508,9 +495,6 @@ class TestAccountDeletion:
         # Click delete button
         # Note: Browser confirm dialogs are auto-accepted by the conftest.py fixture
         delete_button.click()
-
-        # Wait a moment for the browser confirms to be handled
-        page.wait_for_timeout(1000)
 
         # Wait for redirect to login page - this is the key indicator of successful deletion
         # Use waitForURL which is more reliable than checking for element visibility
