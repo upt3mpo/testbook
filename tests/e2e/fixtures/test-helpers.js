@@ -198,19 +198,20 @@ async function addReaction(post, reactionType) {
   // Ensure button is visible
   await expect(reactButton).toBeVisible({ timeout: 5000 });
 
-  // Click the react button to open the dropdown (force click to avoid pointer intercept)
+  // Click the react button to open the dropdown (force click to avoid pointer
+  // intercept). The expect() below already retries until the dropdown has
+  // rendered, so no separate wait is needed for the open animation.
   await reactButton.click({ force: true });
-  await post.page().waitForTimeout(500);
 
-  // Click the specific reaction
+  // Click the specific reaction. Every caller of addReaction() asserts on
+  // the button's resulting text right after calling this, and that
+  // assertion retries until the API call finishes and React re-renders,
+  // so no wait is needed here either.
   const reactionBtn = post.locator(
     `[data-testid$="-reaction-${reactionType}"]`
   );
   await expect(reactionBtn).toBeVisible({ timeout: 3000 });
   await reactionBtn.click({ force: true });
-
-  // Wait for the API response
-  await post.page().waitForTimeout(1000);
 }
 
 /**

@@ -75,16 +75,13 @@ test.describe('Posts', () => {
 
       const ownPost = getFirstOwnPost(page);
 
-      // Scroll the post into view
+      // scrollIntoViewIfNeeded() already resolves only once the element is
+      // in the viewport, so no extra wait is needed here.
       await ownPost.scrollIntoViewIfNeeded();
-      await page.waitForTimeout(300);
 
       // Click menu button
       const menuButton = ownPost.locator('[data-testid$="-menu-button"]');
       await menuButton.click();
-
-      // Wait for dropdown to appear
-      await page.waitForTimeout(500);
 
       // Click the edit button
       const editButton = ownPost.locator('[data-testid$="-edit-button"]');
@@ -98,11 +95,10 @@ test.describe('Posts', () => {
       // Edit content
       await editTextarea.fill('Edited content');
 
-      // Click save
+      // Click save. The confirm() dialog this triggers is auto-accepted by
+      // setupDialogHandler() as part of resolving this click, so the edit
+      // form disappearing (checked next) already reflects that.
       await ownPost.locator('[data-testid$="-save-button"]').click();
-
-      // Wait for the alert to be dismissed (auto-handled by our dialog handler)
-      await page.waitForTimeout(500);
 
       // Wait for edit form to disappear (indicating save completed)
       await expect(editTextarea).not.toBeVisible({ timeout: 5000 });
@@ -117,15 +113,12 @@ test.describe('Posts', () => {
 
       const ownPost = getFirstOwnPost(page);
 
-      // Scroll the post into view
+      // scrollIntoViewIfNeeded() already resolves only once the element is
+      // in the viewport, so no extra wait is needed here.
       await ownPost.scrollIntoViewIfNeeded();
-      await page.waitForTimeout(300);
 
       // Click menu button
       await ownPost.locator('[data-testid$="-menu-button"]').click();
-
-      // Wait for dropdown to appear
-      await page.waitForTimeout(500);
 
       // Click edit button
       const editButton = ownPost.locator('[data-testid$="-edit-button"]');
@@ -168,76 +161,95 @@ test.describe('Posts', () => {
       const ownPost = getFirstOwnPost(page);
       const postContent = await ownPost.textContent();
 
-      // Scroll the post into view to ensure it's visible
+      // scrollIntoViewIfNeeded() already resolves only once the element is
+      // in the viewport, so no extra wait is needed here.
       await ownPost.scrollIntoViewIfNeeded();
-      await page.waitForTimeout(300);
 
       // Open menu with force click to avoid pointer issues
       const menuButton = ownPost.locator('[data-testid$="-menu-button"]');
       await expect(menuButton).toBeVisible({ timeout: 5000 });
       await menuButton.click({ force: true });
 
-      // Wait for dropdown animation
-      await page.waitForTimeout(500);
-
-      // Click delete button (should be visible now within THIS post's context)
+      // Click delete button. expect().toBeVisible() below already retries
+      // until the dropdown has rendered.
       const deleteButton = ownPost.locator('[data-testid$="-delete-button"]');
       await expect(deleteButton).toBeVisible({ timeout: 5000 });
       await deleteButton.click({ force: true });
 
-      // Wait for browser confirm dialogs to be auto-handled
-      await page.waitForTimeout(1000);
-
-      // Post should be removed
+      // The confirm() dialog this triggers is auto-accepted by
+      // setupDialogHandler() as part of resolving the click above, so the
+      // post disappearing (checked next) already reflects that.
       await expect(page.locator(`text="${postContent}"`)).not.toBeVisible({ timeout: 5000 });
     });
   });
 
   test.describe('Reactions', () => {
     test('should add reaction to post', async ({ page }) => {
-      await createPost(page, 'React to this post');
+      // Scope to the post we just created by its own content rather than
+      // getFirstPost()'s "first item in the feed" positional locator. The
+      // feed sorts by created_at, and one seeded demo post is deliberately
+      // timestamped at "now" (days_ago: 0 in backend/seed.py) - close
+      // enough to a freshly-created post's timestamp that which one sorts
+      // first is a genuine race, not a fixed ordering. This was confirmed
+      // by this exact test failing intermittently once the redundant
+      // waitForTimeout calls above it were removed. Filtering by content
+      // sidesteps the race instead of masking it with a wait.
+      const reactionPostContent = 'React to this post';
+      await createPost(page, reactionPostContent);
 
-      const firstPost = getFirstPost(page);
-      const reactButton = firstPost.locator('[data-testid$="-react-button"]');
+      const myPost = page
+        .locator('[data-testid-generic="post-item"]')
+        .filter({ hasText: reactionPostContent });
+      const reactButton = myPost.locator('[data-testid$="-react-button"]');
 
       // Verify reaction button exists and get initial state
       await expect(reactButton).toBeVisible();
 
       // Add reaction
-      await addReaction(firstPost, 'like');
+      await addReaction(myPost, 'like');
 
       // Wait for button text to change to show the reaction was applied
       await expect(reactButton).toContainText('👍', { timeout: 10000 });
     });
 
     test('should change reaction type', async ({ page }) => {
-      await createPost(page, 'React to this post');
+      const reactionPostContent = 'React to this post';
+      await createPost(page, reactionPostContent);
 
-      const firstPost = getFirstPost(page);
-      const reactButton = firstPost.locator('[data-testid$="-react-button"]');
+      // See the "should add reaction to post" test above for why this is
+      // scoped by content rather than getFirstPost().
+      const myPost = page
+        .locator('[data-testid-generic="post-item"]')
+        .filter({ hasText: reactionPostContent });
+      const reactButton = myPost.locator('[data-testid$="-react-button"]');
 
       // Add like and wait for it to be applied
-      await addReaction(firstPost, 'like');
+      await addReaction(myPost, 'like');
       await expect(reactButton).toContainText('👍', { timeout: 10000 });
 
       // Change to love and wait for the change
-      await addReaction(firstPost, 'love');
+      await addReaction(myPost, 'love');
       await expect(reactButton).toContainText('❤️', { timeout: 10000 });
     });
 
     test('should remove reaction', async ({ page }) => {
-      await createPost(page, 'React to this post');
+      const reactionPostContent = 'React to this post';
+      await createPost(page, reactionPostContent);
 
-      const firstPost = getFirstPost(page);
-      const reactButton = firstPost.locator('[data-testid$="-react-button"]');
+      // See the "should add reaction to post" test above for why this is
+      // scoped by content rather than getFirstPost().
+      const myPost = page
+        .locator('[data-testid-generic="post-item"]')
+        .filter({ hasText: reactionPostContent });
+      const reactButton = myPost.locator('[data-testid$="-react-button"]');
 
       // Add reaction and wait for it to be applied
-      await addReaction(firstPost, 'like');
+      await addReaction(myPost, 'like');
       await expect(reactButton).toContainText('👍', { timeout: 10000 });
 
       // Click same reaction to remove it
       await reactButton.hover();
-      const likeButton = firstPost.locator('[data-testid$="-reaction-like"]');
+      const likeButton = myPost.locator('[data-testid$="-reaction-like"]');
       await expect(likeButton).toBeVisible({ timeout: 5000 });
       await likeButton.click();
 
@@ -249,35 +261,48 @@ test.describe('Posts', () => {
     });
 
     test('should show all reaction types', async ({ page }) => {
-      await createPost(page, 'React to this post');
+      const reactionPostContent = 'React to this post';
+      await createPost(page, reactionPostContent);
 
-      const firstPost = getFirstPost(page);
+      // See the "should add reaction to post" test above for why this is
+      // scoped by content rather than getFirstPost().
+      const myPost = page
+        .locator('[data-testid-generic="post-item"]')
+        .filter({ hasText: reactionPostContent });
 
       // Hover to show reaction menu
-      await firstPost.locator('[data-testid$="-react-button"]').hover();
+      await myPost.locator('[data-testid$="-react-button"]').hover();
 
       // All reactions should be visible
       const reactions = ['like', 'love', 'haha', 'wow', 'sad', 'angry'];
       for (const reaction of reactions) {
-        await expect(firstPost.locator(`[data-testid$="-reaction-${reaction}"]`)).toBeVisible();
+        await expect(myPost.locator(`[data-testid$="-reaction-${reaction}"]`)).toBeVisible();
       }
     });
   });
 
   test.describe('Comments', () => {
     test('should add comment to post', async ({ page }) => {
-      await createPost(page, 'Post to comment on');
+      const postContent = 'Post to comment on';
+      await createPost(page, postContent);
 
-      const firstPost = getFirstPost(page);
+      // Scope to the post we just created by its own content rather than
+      // getFirstPost()'s "first item in the feed" positional locator. The
+      // feed sorts by created_at, and one seeded demo post is deliberately
+      // timestamped at "now" (days_ago: 0 in backend/seed.py) - close
+      // enough to a freshly-created post's timestamp that which one sorts
+      // first is a genuine race, not a fixed ordering. Filtering by content
+      // sidesteps that race instead of masking it with a wait.
+      const myPost = page
+        .locator('[data-testid-generic="post-item"]')
+        .filter({ hasText: postContent });
 
-      // Click to view post details
-      await firstPost.locator('[data-testid$="-comment-button"]').click();
-
-      // Wait for navigation or modal
-      await page.waitForTimeout(500);
-
-      // Should be on post detail page or show comments
-      // (Implementation may vary)
+      // Clicking the comment button toggles an inline comment form open
+      // (see Post.jsx's showCommentInput state) rather than navigating.
+      await myPost.locator('[data-testid$="-comment-button"]').click();
+      await expect(myPost.locator('[data-testid$="-comment-form"]')).toBeVisible({
+        timeout: 5000,
+      });
     });
 
     test('should show comment count', async ({ page }) => {
