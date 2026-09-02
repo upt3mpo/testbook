@@ -36,13 +36,16 @@ def add_reaction(post, reaction_type: str, page: Page):
 
     # Click the react button to open the dropdown (force click to avoid pointer intercept)
     react_button.click(force=True)
-    page.wait_for_timeout(1000)  # Increased wait for dropdown animation
 
-    # Click the specific reaction
+    # Click the specific reaction. expect().to_be_visible() below already
+    # retries until the dropdown has rendered, so no separate wait is needed
+    # for the open animation.
     reaction_btn = post.locator(f'[data-testid$="-reaction-{reaction_type}"]')
     expect(reaction_btn).to_be_visible(timeout=5000)
     reaction_btn.click(force=True)
-    page.wait_for_timeout(1500)  # Wait for API response
+    # Every caller of add_reaction() asserts on the button's resulting text
+    # right after calling this, and that assertion retries until the API
+    # call finishes and React re-renders, so no wait is needed here either.
 
 
 class TestPosts:
@@ -115,17 +118,14 @@ class TestPosts:
 
         own_post = get_first_own_post(page)
 
-        # Scroll the post into view
+        # scroll_into_view_if_needed() already blocks until the element is in
+        # the viewport, so no extra wait is needed here.
         own_post.scroll_into_view_if_needed()
-        page.wait_for_timeout(300)
 
         # Click menu button
         menu_button = own_post.locator('[data-testid$="-menu-button"]')
         expect(menu_button).to_be_visible(timeout=5000)
         menu_button.click(force=True)
-
-        # Wait for dropdown to appear
-        page.wait_for_timeout(500)
 
         # Click the edit button
         edit_button = own_post.locator('[data-testid$="-edit-button"]')
@@ -144,14 +144,10 @@ class TestPosts:
         expect(save_button).to_be_visible(timeout=5000)
         save_button.click()
 
-        # Wait for the alert to be dismissed (auto-handled by our dialog handler)
-        page.wait_for_timeout(500)
-
-        # Wait for edit form to disappear
+        # The browser confirm() dialog triggered by save is auto-accepted by
+        # the page fixture's dialog handler as part of resolving this click,
+        # so the edit form disappearing (checked next) already reflects that.
         expect(edit_textarea).not_to_be_visible(timeout=5000)
-
-        # Wait for React to re-render with updated content
-        page.wait_for_timeout(1000)
 
         # Re-query the post to get fresh locator
         own_post = get_first_own_post(page)
@@ -170,17 +166,14 @@ class TestPosts:
 
         own_post = get_first_own_post(page)
 
-        # Scroll the post into view
+        # scroll_into_view_if_needed() already blocks until the element is in
+        # the viewport, so no extra wait is needed here.
         own_post.scroll_into_view_if_needed()
-        page.wait_for_timeout(300)
 
         # Click menu button
         menu_button = own_post.locator('[data-testid$="-menu-button"]')
         expect(menu_button).to_be_visible(timeout=5000)
         menu_button.click(force=True)
-
-        # Wait for dropdown to appear
-        page.wait_for_timeout(500)
 
         # Click edit button
         edit_button = own_post.locator('[data-testid$="-edit-button"]')
@@ -241,18 +234,15 @@ class TestPosts:
         expect(menu_button).to_be_visible(timeout=5000)
         menu_button.click(force=True)
 
-        # Wait for dropdown animation
-        page.wait_for_timeout(500)
-
-        # Click delete button directly (should be visible now)
+        # Click delete button directly. expect().to_be_visible() below
+        # already retries until the dropdown has rendered.
         delete_button = own_post.locator('[data-testid$="-delete-button"]')
         expect(delete_button).to_be_visible(timeout=5000)
         delete_button.click(force=True)
 
-        # Confirm deletion if there's a dialog
-        page.wait_for_timeout(1000)
-
-        # Post should be removed
+        # The confirm() dialog this triggers is auto-accepted by the page
+        # fixture's dialog handler as part of resolving the click above, so
+        # the post disappearing (checked next) already reflects that.
         expect(page.locator(f'text="{post_content}"')).not_to_be_visible(timeout=5000)
 
     # Reaction Tests
@@ -334,9 +324,10 @@ class TestPosts:
         # Ensure button is visible first
         expect(react_button).to_be_visible(timeout=5000)
 
-        # Force hover and wait for CSS transition (0.15s) + buffer
+        # Force hover to open the reaction dropdown. The dropdown has a CSS
+        # fade-in transition, but each expect() below already retries for up
+        # to 5s, which covers that transition without a separate wait.
         react_button.hover(force=True)
-        page.wait_for_timeout(500)
 
         # All reactions should be visible
         reactions = ["like", "love", "haha", "wow", "sad", "angry"]
@@ -351,15 +342,26 @@ class TestPosts:
         """Test adding comment to post"""
         login_as("sarah")
 
-        create_post(page, "Post to comment on")
+        post_content = "Post to comment on"
+        create_post(page, post_content)
 
-        first_post = get_first_post(page)
+        # Scope to the post we just created by its own content rather than
+        # get_first_post()'s "first item in the feed" positional locator.
+        # The feed sorts by created_at, and one of the seeded demo posts is
+        # deliberately timestamped at "now" (days_ago: 0 in seed.py) - close
+        # enough to a freshly-created post's timestamp that which one sorts
+        # first is a genuine race, not a fixed ordering. Filtering by content
+        # sidesteps that race instead of papering over it with a wait.
+        my_post = page.locator('[data-testid-generic="post-item"]').filter(
+            has_text=post_content
+        )
 
-        # Click to view post details
-        first_post.locator('[data-testid$="-comment-button"]').click()
-
-        # Wait for navigation or modal
-        page.wait_for_timeout(500)
+        # Clicking the comment button toggles an inline comment form open
+        # (see Post.jsx's showCommentInput state) rather than navigating.
+        my_post.locator('[data-testid$="-comment-button"]').click()
+        expect(my_post.locator('[data-testid$="-comment-form"]')).to_be_visible(
+            timeout=5000
+        )
 
     def test_show_comment_count(
         self, page: Page, base_url: str, login_as, fresh_database
@@ -415,20 +417,15 @@ class TestPosts:
         if is_visible:
             repost_button = other_post.locator('[data-testid$="-repost-button"]')
 
-            # Repost
+            # Repost. expect().to_contain_text() below retries until the
+            # button's label actually updates, so no separate wait is needed.
             repost_button.click()
-
-            # Wait for button state to update
-            page.wait_for_timeout(1000)
             expect(repost_button).to_contain_text(
                 re.compile("reposted", re.IGNORECASE), timeout=10000
             )
 
             # Unrepost
             repost_button.click()
-
-            # Wait for button state to update
-            page.wait_for_timeout(1000)
             expect(repost_button).to_contain_text(
                 re.compile("^repost$", re.IGNORECASE), timeout=10000
             )
