@@ -38,7 +38,7 @@ class TestRegisterEndpoint:
     - Verifying database state changes
     """
 
-    def test_register_new_user_returns_auto_login_token(self, client):
+    def test_register_new_user_returns_auto_login_token(self, client) -> None:
         """Registration returns 201 and an auto-login bearer token with the submitted user data echoed back."""
         new_user = {
             "email": "newuser@example.com",
@@ -62,7 +62,7 @@ class TestRegisterEndpoint:
         assert data["username"] == new_user["username"]
         assert data["display_name"] == new_user["display_name"]
 
-    def test_register_response_never_exposes_password_hash(self, client):
+    def test_register_response_never_exposes_password_hash(self, client) -> None:
         """Security invariant: the registration response must never include the hashed password, regardless of what else changes in the response shape."""
         response = client.post(
             "/api/auth/register",
@@ -84,7 +84,7 @@ class TestRegisterEndpoint:
     )
     def test_register_duplicate_field_rejected(
         self, client, test_user, duplicate_field
-    ):
+    ) -> None:
         """Registering with an email or username that's already taken fails with 400, naming the conflicting field.
 
         Both cases hit the same uniqueness-constraint code path with only
@@ -130,7 +130,7 @@ class TestRegisterEndpoint:
             ),
         ],
     )
-    def test_register_rejects_invalid_input(self, client, invalid_payload):
+    def test_register_rejects_invalid_input(self, client, invalid_payload) -> None:
         """Malformed or incomplete registration payloads fail FastAPI/Pydantic request validation (422), before any business logic runs."""
         response = client.post("/api/auth/register", json=invalid_payload)
 
@@ -138,7 +138,7 @@ class TestRegisterEndpoint:
             response.status_code == 422
         ), f"Expected 422 validation error, got {response.status_code}: {response.text}"
 
-    def test_register_sets_default_values(self, client):
+    def test_register_sets_default_values(self, client) -> None:
         """Registering without optional fields (bio, theme, text_density) gets the model's actual defaults, not null/missing values.
 
         The registration response itself (schemas.RegisterResponse) doesn't
@@ -177,7 +177,7 @@ class TestRegisterEndpoint:
 class TestLoginEndpoint:
     """Test user login endpoint."""
 
-    def test_login_success(self, client, test_user):
+    def test_login_success(self, client, test_user) -> None:
         """Test successful login with correct credentials."""
         response = client.post(
             "/api/auth/login",
@@ -207,7 +207,9 @@ class TestLoginEndpoint:
             ),
         ],
     )
-    def test_login_rejects_bad_credentials(self, client, test_user, credentials):
+    def test_login_rejects_bad_credentials(
+        self, client, test_user, credentials
+    ) -> None:
         """A wrong password and a non-existent email both fail login the same way: 401, with a generic incorrect/invalid message.
 
         They're one equivalence class deliberately - the API shouldn't
@@ -237,7 +239,7 @@ class TestLoginEndpoint:
             ),
         ],
     )
-    def test_login_rejects_invalid_input(self, client, invalid_payload):
+    def test_login_rejects_invalid_input(self, client, invalid_payload) -> None:
         """Malformed or incomplete login payloads fail request validation (422) before credentials are even checked."""
         response = client.post("/api/auth/login", json=invalid_payload)
 
@@ -245,7 +247,7 @@ class TestLoginEndpoint:
             response.status_code == 422
         ), f"Expected 422 validation error, got {response.status_code}: {response.text}"
 
-    def test_login_case_sensitive_email(self, client, test_user):
+    def test_login_case_sensitive_email(self, client, test_user) -> None:
         """Test that email is case-insensitive for login."""
         response = client.post(
             "/api/auth/login",
@@ -271,7 +273,9 @@ class TestLoginEndpoint:
 class TestGetCurrentUserEndpoint:
     """Test get current user endpoint."""
 
-    def test_get_current_user_authenticated(self, client, test_user, auth_headers):
+    def test_get_current_user_authenticated(
+        self, client, test_user, auth_headers
+    ) -> None:
         """Test getting current user with valid token."""
         response = client.get("/api/auth/me", headers=auth_headers)
 
@@ -281,7 +285,9 @@ class TestGetCurrentUserEndpoint:
         assert data["username"] == test_user.username
         assert data["display_name"] == test_user.display_name
 
-    def test_get_current_user_never_exposes_password_hash(self, client, auth_headers):
+    def test_get_current_user_never_exposes_password_hash(
+        self, client, auth_headers
+    ) -> None:
         """Security invariant: /api/auth/me must never include the hashed password."""
         response = client.get("/api/auth/me", headers=auth_headers)
 
@@ -292,7 +298,7 @@ class TestGetCurrentUserEndpoint:
             f"through the response model: {response.json()}"
         )
 
-    def test_get_current_user_no_token(self, client):
+    def test_get_current_user_no_token(self, client) -> None:
         """Test getting current user without token fails."""
         response = client.get("/api/auth/me")
 
@@ -302,7 +308,7 @@ class TestGetCurrentUserEndpoint:
         )
         assert "detail" in response.json()
 
-    def test_get_current_user_invalid_token(self, client):
+    def test_get_current_user_invalid_token(self, client) -> None:
         """Test getting current user with invalid token fails."""
         headers = {"Authorization": "Bearer invalid.token.here"}
         response = client.get("/api/auth/me", headers=headers)
@@ -312,7 +318,7 @@ class TestGetCurrentUserEndpoint:
             f"got {response.status_code}: {response.text}"
         )
 
-    def test_get_current_user_malformed_header(self, client):
+    def test_get_current_user_malformed_header(self, client) -> None:
         """Test getting current user with malformed auth header fails."""
         headers = {"Authorization": "InvalidFormat token123"}
         response = client.get("/api/auth/me", headers=headers)
@@ -324,7 +330,7 @@ class TestGetCurrentUserEndpoint:
 
     def test_get_current_user_includes_counts(
         self, client, test_user, test_user_2, auth_headers, db_session
-    ):
+    ) -> None:
         """Test that current user includes follower/following counts."""
         # Make test_user follow test_user_2
         test_user.following.append(test_user_2)
@@ -345,7 +351,7 @@ class TestGetCurrentUserEndpoint:
 class TestAuthenticationFlow:
     """Test complete authentication flows."""
 
-    def test_register_and_auto_login(self, client):
+    def test_register_and_auto_login(self, client) -> None:
         """Test that registration automatically logs in the user."""
         register_response = client.post(
             "/api/auth/register",
@@ -371,7 +377,7 @@ class TestAuthenticationFlow:
         assert me_response.status_code == 200
         assert me_response.json()["email"] == "autouser@example.com"
 
-    def test_full_auth_flow(self, client):
+    def test_full_auth_flow(self, client) -> None:
         """Test complete registration -> login -> authenticate flow."""
         # 1. Register
         register_response = client.post(
@@ -404,7 +410,7 @@ class TestAuthenticationFlow:
         assert me_response.status_code == 200
         assert me_response.json()["username"] == "fullflowuser"
 
-    def test_token_reuse(self, client, test_user):
+    def test_token_reuse(self, client, test_user) -> None:
         """Test that the same token can be reused for multiple requests."""
         # Login once
         login_response = client.post(
@@ -432,13 +438,13 @@ class TestAuthenticationFlow:
 class TestAuthorizationScenarios:
     """Test authorization scenarios."""
 
-    def test_cannot_access_protected_route_without_auth(self, client):
+    def test_cannot_access_protected_route_without_auth(self, client) -> None:
         """Test that protected routes require authentication."""
         # Test /api/auth/me which definitely requires auth
         response = client.get("/api/auth/me")
         assert response.status_code in [401, 403], "/api/auth/me should require auth"
 
-    def test_can_access_public_routes_without_auth(self, client):
+    def test_can_access_public_routes_without_auth(self, client) -> None:
         """Test that public routes don't require authentication."""
         public_endpoints = [
             "/api",

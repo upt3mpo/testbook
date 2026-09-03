@@ -13,7 +13,7 @@ import pytest
 class TestGetUserProfile:
     """Test get user profile endpoint."""
 
-    def test_get_user_by_username(self, client, test_user, auth_headers):
+    def test_get_user_by_username(self, client, test_user, auth_headers) -> None:
         """Test getting user profile by username."""
         response = client.get(f"/api/users/{test_user.username}", headers=auth_headers)
 
@@ -24,7 +24,7 @@ class TestGetUserProfile:
 
     def test_get_user_profile_never_exposes_password_hash(
         self, client, test_user, auth_headers
-    ):
+    ) -> None:
         """Security invariant: a user profile response must never include the hashed password."""
         response = client.get(f"/api/users/{test_user.username}", headers=auth_headers)
 
@@ -32,13 +32,13 @@ class TestGetUserProfile:
             "hashed_password" not in response.json()
         ), f"User profile response leaked the password hash: {response.json()}"
 
-    def test_get_nonexistent_user(self, client, auth_headers):
+    def test_get_nonexistent_user(self, client, auth_headers) -> None:
         """Test getting non-existent user."""
         response = client.get("/api/users/nonexistentuser", headers=auth_headers)
 
         assert response.status_code == 404
 
-    def test_get_user_includes_counts(self, client, test_user, auth_headers):
+    def test_get_user_includes_counts(self, client, test_user, auth_headers) -> None:
         """Test that user profile includes follower/following/posts counts."""
         response = client.get(f"/api/users/{test_user.username}", headers=auth_headers)
 
@@ -54,7 +54,7 @@ class TestGetUserProfile:
 class TestUpdateUserProfile:
     """Test update user profile endpoint."""
 
-    def test_update_own_profile(self, client, auth_headers):
+    def test_update_own_profile(self, client, auth_headers) -> None:
         """Test updating own profile."""
         response = client.put(
             "/api/users/me",
@@ -67,7 +67,7 @@ class TestUpdateUserProfile:
         assert data["display_name"] == "Updated Name"
         assert data["bio"] == "Updated bio"
 
-    def test_update_profile_without_auth(self, client):
+    def test_update_profile_without_auth(self, client) -> None:
         """Test that updating profile requires authentication."""
         response = client.put("/api/users/me", json={"display_name": "New Name"})
 
@@ -80,7 +80,9 @@ class TestUpdateUserProfile:
             pytest.param("text_density", "compact", id="text_density"),
         ],
     )
-    def test_update_display_preference(self, client, auth_headers, field, value):
+    def test_update_display_preference(
+        self, client, auth_headers, field, value
+    ) -> None:
         """PUT /api/users/me updates a single display preference field and echoes the new value back.
 
         theme and text_density are both simple, independent preference
@@ -105,7 +107,7 @@ class TestUpdateUserProfile:
 class TestFollowUnfollow:
     """Test follow/unfollow functionality."""
 
-    def test_follow_user(self, client, test_user_2, auth_headers):
+    def test_follow_user(self, client, test_user_2, auth_headers) -> None:
         """Test following another user."""
         response = client.post(
             f"/api/users/{test_user_2.username}/follow", headers=auth_headers
@@ -116,7 +118,7 @@ class TestFollowUnfollow:
 
     def test_unfollow_user(
         self, client, test_user_2, auth_headers, db_session, test_user
-    ):
+    ) -> None:
         """Test unfollowing a user."""
         # Follow first
         test_user.following.append(test_user_2)
@@ -130,7 +132,7 @@ class TestFollowUnfollow:
         assert response.status_code == 200
         assert "unfollowed" in response.json()["message"].lower()
 
-    def test_follow_nonexistent_user(self, client, auth_headers):
+    def test_follow_nonexistent_user(self, client, auth_headers) -> None:
         """Test following non-existent user."""
         response = client.post(
             "/api/users/nonexistentuser/follow", headers=auth_headers
@@ -138,7 +140,7 @@ class TestFollowUnfollow:
 
         assert response.status_code == 404
 
-    def test_follow_yourself(self, client, auth_headers, test_user):
+    def test_follow_yourself(self, client, auth_headers, test_user) -> None:
         """Test that you cannot follow yourself."""
         response = client.post(
             f"/api/users/{test_user.username}/follow", headers=auth_headers
@@ -147,7 +149,7 @@ class TestFollowUnfollow:
         # Should either fail or be ignored
         assert response.status_code in [200, 400]
 
-    def test_follow_without_auth(self, client, test_user_2):
+    def test_follow_without_auth(self, client, test_user_2) -> None:
         """Test that following requires authentication."""
         response = client.post(f"/api/users/{test_user_2.username}/follow")
 
@@ -155,7 +157,7 @@ class TestFollowUnfollow:
 
     def test_double_follow(
         self, client, test_user_2, auth_headers, db_session, test_user
-    ):
+    ) -> None:
         """Test following the same user twice."""
         # Follow once
         test_user.following.append(test_user_2)
@@ -175,7 +177,7 @@ class TestFollowUnfollow:
 class TestBlockUnblock:
     """Test block/unblock functionality."""
 
-    def test_block_user(self, client, test_user_2, auth_headers):
+    def test_block_user(self, client, test_user_2, auth_headers) -> None:
         """Test blocking another user."""
         response = client.post(
             f"/api/users/{test_user_2.username}/block", headers=auth_headers
@@ -186,7 +188,7 @@ class TestBlockUnblock:
 
     def test_unblock_user(
         self, client, test_user_2, auth_headers, db_session, test_user
-    ):
+    ) -> None:
         """Test unblocking a user."""
         # Block first
         test_user.blocking.append(test_user_2)
@@ -200,7 +202,7 @@ class TestBlockUnblock:
         assert response.status_code == 200
         assert "unblocked" in response.json()["message"].lower()
 
-    def test_block_yourself(self, client, auth_headers, test_user):
+    def test_block_yourself(self, client, auth_headers, test_user) -> None:
         """Test that you cannot block yourself."""
         response = client.post(
             f"/api/users/{test_user.username}/block", headers=auth_headers
@@ -209,7 +211,7 @@ class TestBlockUnblock:
         # Should either fail or be ignored
         assert response.status_code in [200, 400]
 
-    def test_block_without_auth(self, client, test_user_2):
+    def test_block_without_auth(self, client, test_user_2) -> None:
         """Test that blocking requires authentication."""
         response = client.post(f"/api/users/{test_user_2.username}/block")
 
@@ -223,7 +225,7 @@ class TestGetFollowersFollowing:
 
     def test_get_followers_list(
         self, client, test_user, test_user_2, db_session, auth_headers
-    ):
+    ) -> None:
         """Test getting user's followers list."""
         # Make test_user_2 follow test_user
         test_user_2.following.append(test_user)
@@ -240,7 +242,7 @@ class TestGetFollowersFollowing:
 
     def test_get_following_list(
         self, client, test_user, test_user_2, db_session, auth_headers
-    ):
+    ) -> None:
         """Test getting user's following list."""
         # Make test_user follow test_user_2
         test_user.following.append(test_user_2)
@@ -255,7 +257,7 @@ class TestGetFollowersFollowing:
         assert isinstance(data, list)
         assert len(data) >= 1
 
-    def test_get_followers_empty_list(self, client, test_user, auth_headers):
+    def test_get_followers_empty_list(self, client, test_user, auth_headers) -> None:
         """Test getting followers list when user has no followers."""
         response = client.get(
             f"/api/users/{test_user.username}/followers", headers=auth_headers
@@ -265,7 +267,7 @@ class TestGetFollowersFollowing:
         data = response.json()
         assert isinstance(data, list)
 
-    def test_get_followers_requires_auth(self, client, test_user):
+    def test_get_followers_requires_auth(self, client, test_user) -> None:
         """Test that getting followers requires authentication."""
         response = client.get(f"/api/users/{test_user.username}/followers")
 
@@ -278,7 +280,7 @@ class TestGetFollowersFollowing:
 class TestGetUserPosts:
     """Test get user's posts endpoint."""
 
-    def test_get_user_posts(self, client, test_user, test_post, auth_headers):
+    def test_get_user_posts(self, client, test_user, test_post, auth_headers) -> None:
         """Test getting a user's posts."""
         response = client.get(
             f"/api/users/{test_user.username}/posts", headers=auth_headers
@@ -290,7 +292,9 @@ class TestGetUserPosts:
         assert len(data) >= 1
         assert data[0]["author_username"] == test_user.username
 
-    def test_get_posts_for_user_with_no_posts(self, client, test_user_2, auth_headers):
+    def test_get_posts_for_user_with_no_posts(
+        self, client, test_user_2, auth_headers
+    ) -> None:
         """Test getting posts for user with no posts."""
         response = client.get(
             f"/api/users/{test_user_2.username}/posts", headers=auth_headers
@@ -306,7 +310,7 @@ class TestGetUserPosts:
 class TestDeleteAccount:
     """Test delete account functionality."""
 
-    def test_delete_own_account(self, client, auth_headers, test_user):
+    def test_delete_own_account(self, client, auth_headers, test_user) -> None:
         """Test deleting own account."""
         response = client.delete("/api/users/me", headers=auth_headers)
 
@@ -322,7 +326,7 @@ class TestDeleteAccount:
         except Exception:
             pass  # Account deleted successfully
 
-    def test_delete_account_without_auth(self, client):
+    def test_delete_account_without_auth(self, client) -> None:
         """Test that deleting account requires authentication."""
         response = client.delete("/api/users/me")
 
@@ -339,7 +343,7 @@ class TestUserRelationships:
 
     def test_follow_then_block(
         self, client, test_user, test_user_2, auth_headers, db_session
-    ):
+    ) -> None:
         """Test following then blocking a user."""
         # Follow
         test_user.following.append(test_user_2)
@@ -358,7 +362,7 @@ class TestUserRelationships:
 
     def test_mutual_follow(
         self, client, test_user, test_user_2, auth_headers, db_session
-    ):
+    ) -> None:
         """Test mutual following between two users."""
         from auth import create_access_token
 

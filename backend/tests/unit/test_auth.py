@@ -46,7 +46,7 @@ class TestPasswordHashing:
     - We ensure each hash is unique (salt prevents rainbow table attacks)
     """
 
-    def test_password_is_hashed(self):
+    def test_password_is_hashed(self) -> None:
         """
         Test that password hashing produces a different string.
 
@@ -100,7 +100,7 @@ class TestPasswordHashing:
             "$2b$"
         ), f"Expected a bcrypt hash (starts with $2b$), got: {hashed[:10]}..."
 
-    def test_verify_correct_password(self):
+    def test_verify_correct_password(self) -> None:
         """
         Test that correct password verification succeeds.
 
@@ -118,7 +118,7 @@ class TestPasswordHashing:
         # Assert - Verification should succeed
         assert result is True
 
-    def test_verify_incorrect_password(self):
+    def test_verify_incorrect_password(self) -> None:
         """
         Test that incorrect password verification fails.
 
@@ -137,7 +137,7 @@ class TestPasswordHashing:
         # Assert - Verification should fail
         assert result is False
 
-    def test_different_hashes_for_same_password(self):
+    def test_different_hashes_for_same_password(self) -> None:
         """
         Test that same password produces different hashes (salt).
 
@@ -171,7 +171,7 @@ class TestPasswordHashing:
             "a" * 100,  # Long password
         ],
     )
-    def test_various_password_formats(self, password):
+    def test_various_password_formats(self, password) -> None:
         """Test hashing works with various password formats."""
         hashed = get_password_hash(password)
         assert verify_password(password, hashed) is True
@@ -181,7 +181,7 @@ class TestPasswordHashing:
 class TestJWTTokens:
     """Test JWT token creation and validation."""
 
-    def test_create_token_with_email(self):
+    def test_create_token_with_email(self) -> None:
         """Test creating a token with email data."""
         email = "test@example.com"
         token = create_access_token(data={"sub": email})
@@ -190,7 +190,7 @@ class TestJWTTokens:
         assert isinstance(token, str)
         assert len(token) > 0
 
-    def test_token_contains_correct_data(self):
+    def test_token_contains_correct_data(self) -> None:
         """Test that token contains the correct payload data."""
         email = "test@example.com"
         token = create_access_token(data={"sub": email})
@@ -210,7 +210,7 @@ class TestJWTTokens:
     )
     def test_token_expiration_matches_requested_delta(
         self, expires_delta, expected_minutes
-    ):
+    ) -> None:
         """A token's exp claim lands within a minute of now + the requested expires_delta, whether that's a short session or a long one.
 
         Both cases exercise the same code path (create_access_token's
@@ -231,7 +231,7 @@ class TestJWTTokens:
             f"got {time_diff_minutes:.1f}"
         )
 
-    def test_token_is_verifiable(self):
+    def test_token_is_verifiable(self) -> None:
         """Test that created token can be verified."""
         email = "test@example.com"
         token = create_access_token(data={"sub": email})
@@ -240,14 +240,14 @@ class TestJWTTokens:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         assert payload["sub"] == email
 
-    def test_invalid_token_raises_error(self):
+    def test_invalid_token_raises_error(self) -> None:
         """Test that invalid token raises JWTError."""
         invalid_token = "invalid.token.here"
 
         with pytest.raises(JWTError):
             jwt.decode(invalid_token, SECRET_KEY, algorithms=[ALGORITHM])
 
-    def test_token_with_wrong_secret_raises_error(self):
+    def test_token_with_wrong_secret_raises_error(self) -> None:
         """Test that token with wrong secret raises error."""
         email = "test@example.com"
         token = create_access_token(data={"sub": email})
@@ -255,7 +255,7 @@ class TestJWTTokens:
         with pytest.raises(JWTError):
             jwt.decode(token, "wrong-secret-key", algorithms=[ALGORITHM])
 
-    def test_expired_token_can_be_detected(self):
+    def test_expired_token_can_be_detected(self) -> None:
         """Test that expired tokens can be detected."""
         email = "test@example.com"
         # Create token that expires immediately
@@ -281,7 +281,9 @@ class TestPasswordComplexity:
             ("12345678", True),  # Only numbers
         ],
     )
-    def test_password_hashing_accepts_various_inputs(self, password, should_hash):
+    def test_password_hashing_accepts_various_inputs(
+        self, password, should_hash
+    ) -> None:
         """Test that password hashing accepts various inputs."""
         if should_hash:
             hashed = get_password_hash(password)
@@ -292,7 +294,7 @@ class TestPasswordComplexity:
 class TestTokenDataStructure:
     """Test token data structure and additional claims."""
 
-    def test_token_with_additional_claims(self):
+    def test_token_with_additional_claims(self) -> None:
         """Test creating token with additional custom claims."""
         data = {"sub": "test@example.com", "role": "admin", "user_id": 123}
         token = create_access_token(data=data)
@@ -303,7 +305,7 @@ class TestTokenDataStructure:
         assert payload["role"] == "admin"
         assert payload["user_id"] == 123
 
-    def test_token_without_expiration_delta(self):
+    def test_token_without_expiration_delta(self) -> None:
         """Omitting expires_delta falls back to auth.ACCESS_TOKEN_EXPIRE_MINUTES, not some other default."""
         email = "test@example.com"
         token = create_access_token(data={"sub": email})

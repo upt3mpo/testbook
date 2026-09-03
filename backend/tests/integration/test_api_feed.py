@@ -12,7 +12,7 @@ import pytest
 class TestGetAllFeed:
     """Test get all posts feed endpoint."""
 
-    def test_get_all_feed(self, client, test_posts, auth_headers):
+    def test_get_all_feed(self, client, test_posts, auth_headers) -> None:
         """Test getting all posts feed."""
         response = client.get("/api/feed/all", headers=auth_headers)
 
@@ -21,14 +21,14 @@ class TestGetAllFeed:
         assert isinstance(data, list)
         assert len(data) >= len(test_posts)
 
-    def test_all_feed_without_auth(self, client):
+    def test_all_feed_without_auth(self, client) -> None:
         """Test that feed requires authentication."""
         response = client.get("/api/feed/all")
 
         # Some endpoints may be public or return 401/403
         assert response.status_code in [200, 401, 403]
 
-    def test_all_feed_with_empty_database(self, client, auth_headers):
+    def test_all_feed_with_empty_database(self, client, auth_headers) -> None:
         """Test getting feed when there are no posts."""
         response = client.get("/api/feed/all", headers=auth_headers)
 
@@ -36,7 +36,9 @@ class TestGetAllFeed:
         data = response.json()
         assert isinstance(data, list)
 
-    def test_all_feed_includes_all_users_posts(self, client, test_posts, auth_headers):
+    def test_all_feed_includes_all_users_posts(
+        self, client, test_posts, auth_headers
+    ) -> None:
         """Test that all feed includes posts from all users."""
         response = client.get("/api/feed/all", headers=auth_headers)
 
@@ -55,7 +57,7 @@ class TestGetFollowingFeed:
 
     def test_get_following_feed(
         self, client, test_user, test_user_2, test_posts, auth_headers, db_session
-    ):
+    ) -> None:
         """Test getting following feed."""
         # Make test_user follow test_user_2
         test_user.following.append(test_user_2)
@@ -67,7 +69,9 @@ class TestGetFollowingFeed:
         data = response.json()
         assert isinstance(data, list)
 
-    def test_following_feed_empty_when_not_following_anyone(self, client, auth_headers):
+    def test_following_feed_empty_when_not_following_anyone(
+        self, client, auth_headers
+    ) -> None:
         """Test that following feed is empty when not following anyone."""
         response = client.get("/api/feed/following", headers=auth_headers)
 
@@ -78,7 +82,7 @@ class TestGetFollowingFeed:
 
     def test_following_feed_only_shows_followed_users(
         self, client, test_user, test_user_2, test_posts, auth_headers, db_session
-    ):
+    ) -> None:
         """Test that following feed only shows posts from followed users."""
         # Follow test_user_2
         test_user.following.append(test_user_2)
@@ -99,7 +103,7 @@ class TestGetFollowingFeed:
                 f"post {post['id']} by {post['author_username']!r}"
             )
 
-    def test_following_feed_without_auth(self, client):
+    def test_following_feed_without_auth(self, client) -> None:
         """Test that following feed requires authentication."""
         response = client.get("/api/feed/following")
 
@@ -114,7 +118,7 @@ class TestFeedFiltering:
 
     def test_all_feed_excludes_blocked_users(
         self, client, test_user, test_user_2, test_posts, auth_headers, db_session
-    ):
+    ) -> None:
         """Test that all feed excludes blocked users' posts."""
         # Block test_user_2
         test_user.blocking.append(test_user_2)
@@ -133,7 +137,7 @@ class TestFeedFiltering:
 
     def test_following_feed_includes_own_posts(
         self, client, test_user, test_post, auth_headers
-    ):
+    ) -> None:
         """Test that following feed includes own posts."""
         response = client.get("/api/feed/following", headers=auth_headers)
 
@@ -150,7 +154,7 @@ class TestFeedFiltering:
 class TestFeedOrdering:
     """Test feed ordering (most recent first)."""
 
-    def test_feed_is_ordered_by_date(self, client, test_posts, auth_headers):
+    def test_feed_is_ordered_by_date(self, client, test_posts, auth_headers) -> None:
         """Test that feed is ordered with most recent posts first."""
         response = client.get("/api/feed/all", headers=auth_headers)
 
@@ -181,7 +185,7 @@ class TestFeedWithReposts:
 
     def test_feed_includes_reposts(
         self, client, test_post, test_user_2, auth_headers, db_session
-    ):
+    ) -> None:
         """Test that feed includes reposted content."""
         from models import Post
 
@@ -212,7 +216,7 @@ class TestFeedPagination:
 
     def test_feed_returns_reasonable_number_of_posts(
         self, client, test_posts, auth_headers
-    ):
+    ) -> None:
         """Test that feed doesn't return unlimited posts."""
         response = client.get("/api/feed/all", headers=auth_headers)
 
@@ -229,7 +233,9 @@ class TestFeedPerformance:
     """Test feed performance with various data sizes."""
 
     @pytest.mark.slow
-    def test_feed_with_many_posts(self, client, test_user, auth_headers, db_session):
+    def test_feed_with_many_posts(
+        self, client, test_user, auth_headers, db_session
+    ) -> None:
         """Test feed performance with many posts."""
         from models import Post
 

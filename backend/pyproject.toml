@@ -63,3 +63,17 @@ exclude = ["tests/examples/"]
 # argument" even though the attribute was a plain, correctly mapped
 # column. Migrating to Mapped[] removed the need for the plugin
 # entirely, which also removed that failure mode.
+
+[[tool.mypy.overrides]]
+# Test functions get a return type (-> None, since none of them return
+# a value) but not full parameter typing - fixture parameters like
+# client, auth_headers, and test_user are supplied by pytest via
+# fixture-name matching, not by the caller, so typing them here would
+# mean re-declaring every fixture's type at every one of its ~200 call
+# sites for no real safety benefit. conftest.py and tests/factories.py
+# are NOT covered by this override - fixture definitions and shared
+# test helpers are written once and reused everywhere, so they stay
+# held to the same full-typing bar as application code.
+module = ["tests.integration.*", "tests.unit.*"]
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
