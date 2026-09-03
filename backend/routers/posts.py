@@ -21,8 +21,11 @@ UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 async def upload_media(
     file: UploadFile = File(...),
     current_user: models.User = Depends(get_current_user),
-):
+) -> dict[str, Optional[str]]:
     """Upload an image or video file"""
+    if not file.filename:
+        raise HTTPException(status_code=400, detail="Uploaded file has no filename")
+
     # Validate file type
     allowed_extensions = {
         ".jpg",
@@ -66,7 +69,7 @@ def create_post(
     post_data: schemas.PostCreate,
     current_user: models.User = Depends(get_current_user),
     db: Session = Depends(get_db),
-):
+) -> schemas.PostResponse:
     """Create a new post"""
     new_post = models.Post(
         author_id=current_user.id,
@@ -107,7 +110,7 @@ def update_post(
     post_data: schemas.PostCreate,
     current_user: models.User = Depends(get_current_user),
     db: Session = Depends(get_db),
-):
+) -> schemas.PostResponse:
     """Update a post"""
     post = db.query(models.Post).filter(models.Post.id == post_id).first()
     if not post:
@@ -136,7 +139,7 @@ def delete_repost(
     post_id: int,
     current_user: models.User = Depends(get_current_user),
     db: Session = Depends(get_db),
-):
+) -> dict[str, str]:
     """Remove a repost of a post"""
     # Find the user's repost of this post
     repost = (
@@ -165,7 +168,7 @@ def create_repost(
     repost_data: schemas.RepostCreate,
     current_user: models.User = Depends(get_current_user),
     db: Session = Depends(get_db),
-):
+) -> schemas.PostResponse:
     """Create a repost of an existing post"""
     original_post = (
         db.query(models.Post)
@@ -248,7 +251,7 @@ def delete_post(
     post_id: int,
     current_user: models.User = Depends(get_current_user),
     db: Session = Depends(get_db),
-):
+) -> dict[str, str]:
     """Delete a post"""
     post = db.query(models.Post).filter(models.Post.id == post_id).first()
     if not post:
@@ -270,7 +273,7 @@ def get_post(
     post_id: int,
     current_user: Optional[models.User] = Depends(get_optional_user),
     db: Session = Depends(get_db),
-):
+) -> schemas.PostDetailResponse:
     """Get a single post with all details (public endpoint)"""
     post = db.query(models.Post).filter(models.Post.id == post_id).first()
     if not post:
@@ -394,7 +397,7 @@ def create_comment(
     comment_data: schemas.CommentCreate,
     current_user: models.User = Depends(get_current_user),
     db: Session = Depends(get_db),
-):
+) -> schemas.CommentResponse:
     """Add a comment to a post"""
     post = db.query(models.Post).filter(models.Post.id == post_id).first()
     if not post:
@@ -430,7 +433,7 @@ def add_reaction(
     reaction_data: schemas.ReactionCreate,
     current_user: models.User = Depends(get_current_user),
     db: Session = Depends(get_db),
-):
+) -> schemas.PostResponse:
     """Add or update reaction to a post"""
     post = db.query(models.Post).filter(models.Post.id == post_id).first()
     if not post:
@@ -472,7 +475,7 @@ def remove_reaction(
     post_id: int,
     current_user: models.User = Depends(get_current_user),
     db: Session = Depends(get_db),
-):
+) -> schemas.PostResponse:
     """Remove reaction from a post"""
     post = db.query(models.Post).filter(models.Post.id == post_id).first()
     if not post:
