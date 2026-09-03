@@ -2,7 +2,7 @@ import os
 from typing import Generator
 
 from sqlalchemy import create_engine
-from sqlalchemy.orm import Session, declarative_base, sessionmaker
+from sqlalchemy.orm import DeclarativeBase, Session, sessionmaker
 
 # Get database URL from environment or use default
 # Use absolute path for Windows compatibility
@@ -23,14 +23,15 @@ if SQLALCHEMY_DATABASE_URL.startswith("sqlite"):
 engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args=connect_args)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-Base = declarative_base()
-# models.py uses the classic Column()/relationship() declarative style,
-# not SQLAlchemy 2.0's Mapped[] annotated style. Relationship attributes
-# there carry plain type annotations (e.g. `posts: List["Post"] = relationship(...)`)
-# purely so mypy's SQLAlchemy plugin can type them - without this flag,
-# SQLAlchemy's runtime mapper mistakes those for an incomplete attempt at
-# the new Mapped[] style and raises MappedAnnotationError on startup.
-Base.__allow_unmapped__ = True
+
+class Base(DeclarativeBase):
+    """SQLAlchemy 2.0 declarative base.
+
+    Using the class-based DeclarativeBase (instead of the legacy
+    declarative_base() function call) is what lets mypy understand
+    models.py's Mapped[] columns natively - no sqlalchemy mypy plugin
+    needed, and no plugin-vs-mypy-version compatibility risk.
+    """
 
 
 def get_db() -> Generator[Session, None, None]:

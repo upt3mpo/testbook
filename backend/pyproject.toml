@@ -52,11 +52,14 @@ warn_unused_configs = true
 disallow_untyped_defs = true
 ignore_missing_imports = true
 exclude = ["tests/examples/"]
-# models.py uses SQLAlchemy's classic Column() declarative style rather
-# than 2.0's Mapped[]/mapped_column(), so without this plugin mypy sees
-# every instance attribute (e.g. a loaded User's .email) as typed
-# Column[str] instead of str, producing ~90 false-positive arg-type
-# errors anywhere a model attribute is passed into a Pydantic response
-# model. The plugin teaches mypy the difference between the
-# class-level Column descriptor and the instance-level runtime value.
-plugins = ["sqlalchemy.ext.mypy.plugin"]
+# No sqlalchemy mypy plugin needed: models.py uses SQLAlchemy 2.0's
+# native Mapped[]/mapped_column() style with a class-based
+# DeclarativeBase (see database.py), which mypy understands directly.
+# The plugin was tried first (needed for the older Column()-style
+# declarative models this file used before this pass), but on this
+# mypy/SQLAlchemy version pairing it silently failed to synthesize a
+# working __init__ for the mapped classes - every ORM constructor call
+# (e.g. models.User(email=...)) came back "Unexpected keyword
+# argument" even though the attribute was a plain, correctly mapped
+# column. Migrating to Mapped[] removed the need for the plugin
+# entirely, which also removed that failure mode.
