@@ -16,7 +16,7 @@
  * of professional component testing practices.
  */
 
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { BrowserRouter } from 'react-router-dom';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
@@ -250,6 +250,80 @@ describe('CreatePost Component', () => {
 
     // Restore console.error
     console.error = originalError;
+  });
+
+  describe('Media attachments', () => {
+    beforeEach(() => {
+      // jsdom doesn't implement createObjectURL - CreatePost calls it to
+      // build a local preview URL for the selected file.
+      global.URL.createObjectURL = vi.fn(() => 'blob:mock-preview-url');
+    });
+
+    it('shows a preview after selecting a file', async () => {
+      const user = userEvent.setup();
+      renderCreatePost();
+
+      const file = new File(['fake-image-bytes'], 'photo.jpg', { type: 'image/jpeg' });
+      const fileInput = document.querySelector('[data-testid="create-post-file-input"]');
+      await user.upload(fileInput, file);
+
+      expect(screen.getByAltText('Preview')).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /remove/i })).toBeInTheDocument();
+    });
+
+    it('rejects a file type that is neither an accepted image nor video', async () => {
+      renderCreatePost();
+
+      const file = new File(['not-media'], 'notes.txt', { type: 'text/plain' });
+      const fileInput = document.querySelector('[data-testid="create-post-file-input"]');
+      // fireEvent bypasses userEvent's accept-attribute filtering, the
+      // same way a real browser's drag-and-drop would.
+      fireEvent.change(fileInput, { target: { files: [file] } });
+
+      expect(
+        await screen.findByText(
+          'Please select a valid image (JPG, PNG, GIF, WebP) or video (MP4, MOV, AVI) file'
+        )
+      ).toBeInTheDocument();
+      expect(screen.queryByAltText('Preview')).not.toBeInTheDocument();
+    });
+
+    it('removes the selected file when Remove is clicked', async () => {
+      const user = userEvent.setup();
+      renderCreatePost();
+
+      const file = new File(['fake-image-bytes'], 'photo.jpg', { type: 'image/jpeg' });
+      const fileInput = document.querySelector('[data-testid="create-post-file-input"]');
+      await user.upload(fileInput, file);
+      await user.click(screen.getByRole('button', { name: /remove/i }));
+
+      expect(screen.queryByAltText('Preview')).not.toBeInTheDocument();
+    });
+
+    it('uploads the file and includes its URL when submitting a post', async () => {
+      const user = userEvent.setup();
+      const mockPost = { id: 1, content: 'Check this out', image_url: '/static/uploads/x.jpg' };
+      api.postsAPI.uploadMedia.mockResolvedValueOnce({
+        data: { url: '/static/uploads/x.jpg' },
+      });
+      api.postsAPI.createPost.mockResolvedValueOnce({ data: mockPost });
+      renderCreatePost();
+
+      const file = new File(['fake-image-bytes'], 'photo.jpg', { type: 'image/jpeg' });
+      const fileInput = document.querySelector('[data-testid="create-post-file-input"]');
+      await user.upload(fileInput, file);
+      await user.type(screen.getByPlaceholderText("What's on your mind?"), 'Check this out');
+      await user.click(screen.getByRole('button', { name: 'Post' }));
+
+      await waitFor(() => {
+        expect(api.postsAPI.uploadMedia).toHaveBeenCalledWith(file);
+      });
+      expect(api.postsAPI.createPost).toHaveBeenCalledWith({
+        content: 'Check this out',
+        image_url: '/static/uploads/x.jpg',
+        video_url: null,
+      });
+    });
   });
 });
 
