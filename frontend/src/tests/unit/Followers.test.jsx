@@ -135,4 +135,23 @@ describe('Followers Page', () => {
     });
     expect(await screen.findByRole('button', { name: 'Block' })).toBeInTheDocument();
   });
+
+  it('shows an alert if blocking a follower fails', async () => {
+    const user = userEvent.setup();
+    const originalError = console.error;
+    console.error = () => {};
+    window.alert = vi.fn();
+    api.usersAPI.getFollowers.mockResolvedValueOnce({ data: [makeFollower()] });
+    api.usersAPI.blockUser.mockRejectedValueOnce(new Error('Network error'));
+
+    renderFollowers();
+    await screen.findByText('Mike Chen');
+
+    await user.click(screen.getByRole('button', { name: 'Block' }));
+
+    await waitFor(() => {
+      expect(window.alert).toHaveBeenCalledWith('Failed to block user');
+    });
+    console.error = originalError;
+  });
 });
