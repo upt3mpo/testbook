@@ -109,8 +109,10 @@ Or use the dev API in your tests:
 ```javascript
 // JavaScript/Playwright
 await fetch('http://localhost:8000/api/dev/reset', { method: 'POST' });
+```
 
-// Python/Requests
+```python
+# Python/Requests
 import requests
 requests.post('http://localhost:8000/api/dev/reset')
 ```
@@ -163,6 +165,19 @@ pip install pytest pytest-asyncio httpx
 .venv\Scripts\activate
 pip install -r requirements.txt
 pip install pytest pytest-asyncio httpx
+```
+
+Set `TESTING=true` before running the examples below - login and
+registration are rate-limited (20/min and 15/min in production), and
+several of these examples call login more than once. `TESTING=true`
+raises those to 1000/min and 500/min, matching what CI does:
+
+```bash
+# Linux/Mac
+TESTING=true pytest
+
+# Windows (PowerShell)
+$env:TESTING='true'; pytest
 ```
 
 ### Unit Tests - Testing Models
@@ -623,7 +638,7 @@ backend/
 - Test specific scenarios you design
 - Validate business logic
 - Check exact expected behavior
-- **In Testbook:** 127 tests in `backend/tests/integration/`
+- **In Testbook:** 130 tests in `backend/tests/integration/`
 
 **Contract Tests** (Automated from schema):
 
@@ -672,6 +687,19 @@ const me = await axios.get(`${BASE_URL}/auth/me`, {
   headers: { Authorization: `Bearer ${token}` },
 });
 console.log(me.data);
+```
+
+The scenarios below all call a `login()` helper to get a token. It's just
+the login call above wrapped in a function, so each scenario doesn't have
+to repeat it:
+
+```python
+def login(email, password):
+    response = requests.post(f"{BASE_URL}/auth/login", json={
+        "email": email,
+        "password": password
+    })
+    return response.json()["access_token"]
 ```
 
 ### API Test Scenarios
@@ -845,6 +873,20 @@ test("user can login", async ({ page }) => {
 });
 ```
 
+The examples below call a `loginAs()` helper to get past the login
+screen. It's the same fill/click/wait sequence as the Login Test above,
+wrapped in a function so each example doesn't have to repeat it:
+
+```javascript
+async function loginAs(page, email, password) {
+  await page.goto("http://localhost:3000");
+  await page.fill('[data-testid="login-email-input"]', email);
+  await page.fill('[data-testid="login-password-input"]', password);
+  await page.click('[data-testid="login-submit-button"]');
+  await page.waitForSelector('[data-testid="navbar"]');
+}
+```
+
 #### Create Post Test
 
 ```javascript
@@ -893,29 +935,38 @@ test("user can create post with uploaded image", async ({ page }) => {
 });
 ```
 
+Posts are identified by database ID (`post-7-menu-button`, not
+`post-first-menu-button`), and IDs depend on seed order and whatever
+earlier tests already created. Hardcoding an ID like `post-1` only
+works immediately after a fresh reset, and breaks the moment another
+test runs first. Locate the post by content or ownership instead -
+`[data-is-own-post="true"]` marks every post the logged-in user
+authored - then scope the suffix-matched testid selectors to it:
+
 #### Edit Post Test
 
 ```javascript
 test("user can edit their own post", async ({ page }) => {
   await loginAs(page, "sarah.johnson@testbook.com", "Sarah2024!");
+  await page.fill('[data-testid="create-post-textarea"]', "Original content");
+  await page.click('[data-testid="create-post-submit-button"]');
 
-  // Click 3-dot menu on first post
-  await page.click('[data-testid="post-1-menu-button"]');
+  const ownPost = page.locator('[data-is-own-post="true"]').first();
 
-  // Click edit
-  await page.click('[data-testid="post-1-edit-button"]');
+  // Click 3-dot menu, then edit
+  await ownPost.locator('[data-testid$="-menu-button"]').click();
+  await ownPost.locator('[data-testid$="-edit-button"]').click();
 
   // Verify edit form appears
-  await expect(page.locator('[data-testid="post-1-edit-form"]')).toBeVisible();
+  const editTextarea = ownPost.locator('[data-testid$="-edit-textarea"]');
+  await expect(editTextarea).toBeVisible();
 
-  // Edit content
-  await page.fill('[data-testid="post-1-edit-textarea"]', "Updated content");
-  await page.click('[data-testid="post-1-save-button"]');
+  // Edit content and save
+  await editTextarea.fill("Updated content");
+  await ownPost.locator('[data-testid$="-save-button"]').click();
 
-  // Verify updated
-  await expect(page.locator('[data-testid="post-1-content"]')).toContainText(
-    "Updated content"
-  );
+  // Verify updated. toContainText() retries until the save completes.
+  await expect(ownPost).toContainText("Updated content");
 });
 ```
 
@@ -924,26 +975,27 @@ test("user can edit their own post", async ({ page }) => {
 ```javascript
 test("user can toggle reactions", async ({ page }) => {
   await loginAs(page, "sarah.johnson@testbook.com", "Sarah2024!");
+  await page.fill('[data-testid="create-post-textarea"]', "React to this");
+  await page.click('[data-testid="create-post-submit-button"]');
+
+  const post = page
+    .locator('[data-testid-generic="post-item"]')
+    .filter({ hasText: "React to this" });
+  const reactButton = post.locator('[data-testid$="-react-button"]');
 
   // Hover over react button to show dropdown
-  await page.hover('[data-testid="post-1-react-button"]');
-
-  // Click like emoji
-  await page.click('[data-testid="post-1-reaction-like"]');
+  await reactButton.hover();
+  await post.locator('[data-testid$="-reaction-like"]').click();
 
   // Verify reaction is active
-  await expect(
-    page.locator('[data-testid="post-1-react-button"]')
-  ).toContainText("👍");
+  await expect(reactButton).toContainText("👍");
 
   // Click again to remove
-  await page.hover('[data-testid="post-1-react-button"]');
-  await page.click('[data-testid="post-1-reaction-like"]');
+  await reactButton.hover();
+  await post.locator('[data-testid$="-reaction-like"]').click();
 
   // Verify reaction removed
-  await expect(
-    page.locator('[data-testid="post-1-react-button"]')
-  ).toContainText("React");
+  await expect(reactButton).toContainText("React");
 });
 ```
 
@@ -1000,12 +1052,11 @@ test("user can upload profile picture", async ({ page }) => {
     "path/to/avatar.jpg"
   );
 
-  // Wait for upload to complete
-  await page.waitForTimeout(1000);
-
-  // Verify success message
+  // Verify success message. toContainText() retries until the upload
+  // finishes and the message appears, so no separate wait is needed.
   await expect(page.locator('[data-testid="settings-success"]')).toContainText(
-    "updated successfully"
+    "updated successfully",
+    { timeout: 10000 }
   );
 
   // Go to profile
@@ -1054,6 +1105,21 @@ def test_login():
 
 ### Cypress Examples
 
+The second test below calls a `cy.login()` custom command. Custom
+commands are defined once in `cypress/support/commands.js`, not inline
+in the test file:
+
+```javascript
+// cypress/support/commands.js
+Cypress.Commands.add("login", (email, password) => {
+  cy.visit("/");
+  cy.get('[data-testid="login-email-input"]').type(email);
+  cy.get('[data-testid="login-password-input"]').type(password);
+  cy.get('[data-testid="login-submit-button"]').click();
+  cy.get('[data-testid="navbar"]').should("be.visible");
+});
+```
+
 ```javascript
 describe("Testbook Tests", () => {
   beforeEach(() => {
@@ -1092,8 +1158,12 @@ describe("Testbook Tests", () => {
         cy.get('[data-testid$="-reaction-like"]').click();
       });
 
-    // Verify reaction
-    cy.get('[data-testid^="post-"]').first().should("contain", "like");
+    // Verify reaction - the button shows the reaction's emoji, not the
+    // word "like" (see Post.jsx's reactionEmojis map)
+    cy.get('[data-testid^="post-"]')
+      .first()
+      .find('[data-testid$="-react-button"]')
+      .should("contain", "👍");
   });
 });
 ```
