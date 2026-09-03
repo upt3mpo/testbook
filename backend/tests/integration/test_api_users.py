@@ -28,7 +28,9 @@ class TestGetUserProfile:
         """Security invariant: a user profile response must never include the hashed password."""
         response = client.get(f"/api/users/{test_user.username}", headers=auth_headers)
 
-        assert "hashed_password" not in response.json()
+        assert (
+            "hashed_password" not in response.json()
+        ), f"User profile response leaked the password hash: {response.json()}"
 
     def test_get_nonexistent_user(self, client, auth_headers):
         """Test getting non-existent user."""
@@ -324,7 +326,10 @@ class TestDeleteAccount:
         """Test that deleting account requires authentication."""
         response = client.delete("/api/users/me")
 
-        assert response.status_code in [401, 403]
+        assert response.status_code in [
+            401,
+            403,
+        ], f"Deleting an account with no auth header should be rejected, got {response.status_code}"
 
 
 @pytest.mark.integration

@@ -21,6 +21,7 @@ import pytest
 from jose import JWTError, jwt
 
 from auth import (
+    ACCESS_TOKEN_EXPIRE_MINUTES,
     ALGORITHM,
     SECRET_KEY,
     create_access_token,
@@ -89,9 +90,15 @@ class TestPasswordHashing:
         hashed = get_password_hash(password)
 
         # Assert - Verify the results
-        assert hashed != password  # Password is transformed, not stored plainly
-        assert len(hashed) > len(password)  # Hash is longer than original
-        assert hashed.startswith("$2b$")  # bcrypt hash format (industry standard)
+        assert (
+            hashed != password
+        ), "Password was stored unhashed - a critical security failure"
+        assert len(hashed) > len(
+            password
+        ), "bcrypt hashes carry salt and metadata, so they're always longer than the input"
+        assert hashed.startswith(
+            "$2b$"
+        ), f"Expected a bcrypt hash (starts with $2b$), got: {hashed[:10]}..."
 
     def test_verify_correct_password(self):
         """
@@ -147,8 +154,12 @@ class TestPasswordHashing:
         hash2 = get_password_hash(password)
 
         # Assert - Different hashes due to random salt (security feature!)
-        assert hash1 != hash2  # Each hash is unique due to salt
-        assert verify_password(password, hash1) is True  # Both verify correctly
+        assert hash1 != hash2, (
+            "Hashing the same password twice produced identical hashes - "
+            "bcrypt's per-hash salt isn't taking effect, which would make "
+            "the app vulnerable to rainbow-table attacks"
+        )
+        assert verify_password(password, hash1) is True
         assert verify_password(password, hash2) is True
 
     @pytest.mark.parametrize(
@@ -293,20 +304,25 @@ class TestTokenDataStructure:
         assert payload["user_id"] == 123
 
     def test_token_without_expiration_delta(self):
-        """Test creating token with default expiration."""
+        """Omitting expires_delta falls back to auth.ACCESS_TOKEN_EXPIRE_MINUTES, not some other default."""
         email = "test@example.com"
         token = create_access_token(data={"sub": email})
 
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-
-        # Should have default expiration
         assert "exp" in payload
+
         exp_datetime = datetime.fromtimestamp(payload["exp"], tz=timezone.utc)
         now = datetime.now(timezone.utc)
+        time_diff_minutes = (exp_datetime - now).total_seconds() / 60
 
-        # Default is 15 minutes
-        time_diff = exp_datetime - now
-        assert time_diff.total_seconds() > 0  # Should be in future
+        assert (
+            ACCESS_TOKEN_EXPIRE_MINUTES - 1
+            <= time_diff_minutes
+            <= ACCESS_TOKEN_EXPIRE_MINUTES + 1
+        ), (
+            f"Expected the default expiration (~{ACCESS_TOKEN_EXPIRE_MINUTES} "
+            f"minutes), got {time_diff_minutes:.1f}"
+        )
 
 
 # 🧠 Why These Tests Matter:

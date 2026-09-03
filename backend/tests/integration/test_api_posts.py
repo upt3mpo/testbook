@@ -50,7 +50,10 @@ class TestCreatePost:
         response = client.post("/api/posts/", json=post_data)
 
         # Assert - Should be rejected (401 Unauthorized or 403 Forbidden)
-        assert response.status_code in [401, 403]  # Both are valid auth errors
+        assert response.status_code in [
+            401,
+            403,
+        ], f"Creating a post with no auth header should be rejected, got {response.status_code}"
 
     def test_create_empty_post(self, client, auth_headers):
         """Test creating post with empty content."""
@@ -127,7 +130,10 @@ class TestUpdatePost:
             headers=headers,
         )
 
-        assert response.status_code == 403
+        assert response.status_code == 403, (
+            f"A user should not be able to update another user's post "
+            f"(broken ownership check), got {response.status_code}"
+        )
 
     def test_update_nonexistent_post(self, client, auth_headers):
         """Test updating non-existent post."""
@@ -162,7 +168,10 @@ class TestDeletePost:
 
         response = client.delete(f"/api/posts/{test_post.id}", headers=headers)
 
-        assert response.status_code == 403
+        assert response.status_code == 403, (
+            f"A user should not be able to delete another user's post "
+            f"(broken ownership check), got {response.status_code}"
+        )
 
 
 @pytest.mark.integration

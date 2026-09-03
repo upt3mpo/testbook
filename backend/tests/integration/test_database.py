@@ -241,7 +241,10 @@ class TestDatabaseQueries:
 
         assert len(posts) > 0
         for post in posts:
-            assert post.author_id in author_ids
+            assert post.author_id in author_ids, (
+                f"Filter returned post {post.id} by author {post.author_id}, "
+                f"not one of the requested authors {author_ids}"
+            )
 
     def test_count_user_posts(self, db_session, test_user):
         """Test counting user's posts."""
@@ -304,7 +307,10 @@ class TestCascadeOperations:
         # Posts should be deleted
         for post_id in post_ids:
             post = db_session.query(Post).filter(Post.id == post_id).first()
-            assert post is None
+            assert post is None, (
+                f"Post {post_id} survived its author's deletion - "
+                "the cascade delete isn't configured correctly"
+            )
 
     def test_delete_post_cascades_to_comments(self, db_session, test_post, test_user_2):
         """Test that deleting post deletes comments."""
@@ -327,7 +333,10 @@ class TestCascadeOperations:
         # Comments should be deleted
         for comment_id in comment_ids:
             comment = db_session.query(Comment).filter(Comment.id == comment_id).first()
-            assert comment is None
+            assert comment is None, (
+                f"Comment {comment_id} survived its post's deletion - "
+                "the cascade delete isn't configured correctly"
+            )
 
     def test_delete_post_cascades_to_reactions(
         self, db_session, test_post, test_user_2

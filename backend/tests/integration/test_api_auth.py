@@ -74,7 +74,9 @@ class TestRegisterEndpoint:
             },
         )
 
-        assert "hashed_password" not in response.json()
+        assert "hashed_password" not in response.json(), (
+            "The registration response leaked the password hash: " f"{response.json()}"
+        )
 
     @pytest.mark.parametrize(
         "duplicate_field",
@@ -253,9 +255,14 @@ class TestLoginEndpoint:
             },
         )
 
-        # This test documents current behavior
-        # In production, you might want case-insensitive email matching
-        assert response.status_code in [200, 401]
+        assert response.status_code in [200, 401], (
+            "This test documents current behavior rather than asserting a "
+            "requirement: email matching is case-sensitive today, so 401 is "
+            "expected, but 200 is also accepted so this doesn't break if "
+            "case-insensitive matching is added later. A production change "
+            "either way should update this test deliberately, not just "
+            f"happen to satisfy it. Got {response.status_code}."
+        )
 
 
 @pytest.mark.integration
@@ -278,14 +285,21 @@ class TestGetCurrentUserEndpoint:
         """Security invariant: /api/auth/me must never include the hashed password."""
         response = client.get("/api/auth/me", headers=auth_headers)
 
-        assert "hashed_password" not in response.json()
+        assert "hashed_password" not in response.json(), (
+            "The current-user response leaked the password hash. Even a "
+            "bcrypt hash should never reach a client - if this fails, check "
+            "schemas.UserResponse for a field that was added without going "
+            f"through the response model: {response.json()}"
+        )
 
     def test_get_current_user_no_token(self, client):
         """Test getting current user without token fails."""
         response = client.get("/api/auth/me")
 
-        # API may return 401 or 403 for missing auth
-        assert response.status_code in [401, 403]
+        assert response.status_code in [401, 403], (
+            "FastAPI's HTTPBearer dependency can reject a missing token with "
+            f"either code depending on how it's configured; got {response.status_code}"
+        )
         assert "detail" in response.json()
 
     def test_get_current_user_invalid_token(self, client):
@@ -293,15 +307,20 @@ class TestGetCurrentUserEndpoint:
         headers = {"Authorization": "Bearer invalid.token.here"}
         response = client.get("/api/auth/me", headers=headers)
 
-        assert response.status_code == 401
+        assert response.status_code == 401, (
+            f"A syntactically-invalid JWT should fail token decoding (401), "
+            f"got {response.status_code}: {response.text}"
+        )
 
     def test_get_current_user_malformed_header(self, client):
         """Test getting current user with malformed auth header fails."""
         headers = {"Authorization": "InvalidFormat token123"}
         response = client.get("/api/auth/me", headers=headers)
 
-        # May return 401 or 403 depending on implementation
-        assert response.status_code in [401, 403]
+        assert response.status_code in [401, 403], (
+            "An Authorization header without a 'Bearer ' prefix should be "
+            f"rejected either way FastAPI's dependency reports it; got {response.status_code}"
+        )
 
     def test_get_current_user_includes_counts(
         self, client, test_user, test_user_2, auth_headers, db_session
@@ -399,9 +418,12 @@ class TestAuthenticationFlow:
         headers = {"Authorization": f"Bearer {token}"}
 
         # Use token multiple times
-        for _ in range(3):
+        for attempt in range(3):
             response = client.get("/api/auth/me", headers=headers)
-            assert response.status_code == 200
+            assert response.status_code == 200, (
+                f"Token should stay valid across repeated use, failed on "
+                f"request {attempt + 1}/3 with {response.status_code}"
+            )
 
 
 @pytest.mark.integration

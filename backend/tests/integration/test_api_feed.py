@@ -91,7 +91,13 @@ class TestGetFollowingFeed:
 
         # All posts should be from followed users or self
         for post in data:
-            assert post["author_username"] in [test_user.username, test_user_2.username]
+            assert post["author_username"] in [
+                test_user.username,
+                test_user_2.username,
+            ], (
+                f"Following feed leaked a post from an unfollowed user: "
+                f"post {post['id']} by {post['author_username']!r}"
+            )
 
     def test_following_feed_without_auth(self, client):
         """Test that following feed requires authentication."""
@@ -162,7 +168,10 @@ class TestFeedOrdering:
 
             # Each date should be >= the next date (descending order)
             for i in range(len(dates) - 1):
-                assert dates[i] >= dates[i + 1]
+                assert dates[i] >= dates[i + 1], (
+                    f"Feed isn't sorted newest-first: post at index {i} "
+                    f"({dates[i]}) is older than the post after it ({dates[i + 1]})"
+                )
 
 
 @pytest.mark.integration
