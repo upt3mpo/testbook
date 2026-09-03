@@ -71,25 +71,33 @@ repos:
   #         - eslint-plugin-jsx-a11y@^6.8.0
   #       args: [--fix]
 
-  # Security checks - NOT enabled yet. .secrets.baseline exists but is
-  # stale (generated once, never re-scanned): running `detect-secrets
-  # scan --baseline .secrets.baseline` against the current repo turns up
-  # ~1200 new candidate matches (mostly CI env-var fixtures and seed
-  # test passwords, not real secrets, but that needs a human to actually
-  # review and allowlist each one before this can be turned on without
-  # blocking every future commit). Regenerating and triaging the
-  # baseline is real work, not a config toggle — do that first.
-  # - repo: https://github.com/Yelp/detect-secrets
-  #   rev: v1.4.0
-  #   hooks:
-  #     - id: detect-secrets
-  #       args: [--baseline, .secrets.baseline]
-  #       exclude: |
-  #         (?x)^(
-  #           package-lock\.json$|
-  #           yarn\.lock$|
-  #           \.venv/.*|
-  #           venv/.*|
-  #           backend/venv/.*|
-  #           node_modules/.*
-  #         )$
+  # Security checks. A fresh scan turned up 158 candidate matches, all
+  # triaged by hand (see docs/AUDIT_REPORT.md). 148 are excluded below
+  # by path because the file or tree is entirely fixture, demo, or
+  # teaching content: seed account passwords, e2e/security/performance
+  # test credentials, CI-only environment values, or markdown showing
+  # what a credential looks like in an example. The remaining 10, in
+  # backend/auth.py and backend/seed.py, are marked inline with
+  # `# pragma: allowlist secret` instead, since those are real
+  # application files where a future genuine secret should still get
+  # caught.
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.5.0
+    hooks:
+      - id: detect-secrets
+        args: [--baseline, .secrets.baseline]
+        exclude: |
+          (?x)^(
+            package-lock\.json$|
+            yarn\.lock$|
+            \.venv/.*|
+            venv/.*|
+            backend/venv/.*|
+            node_modules/.*|
+            \.github/workflows/.*|
+            backend/tests/.*|
+            frontend/src/tests/.*|
+            tests/.*|
+            learn/solutions/.*|
+            .*\.md$
+          )$

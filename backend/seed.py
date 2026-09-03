@@ -25,7 +25,7 @@ def seed_database():
                 "email": "sarah.johnson@testbook.com",
                 "username": "sarahjohnson",
                 "display_name": "Sarah Johnson",
-                "password": "Sarah2024!",
+                "password": "Sarah2024!",  # pragma: allowlist secret
                 "bio": "Mom of 3 | Coffee enthusiast ☕ | Living my best life!",
                 "profile_picture": "/static/images/avatar-sarah.jpg",
             },
@@ -33,7 +33,7 @@ def seed_database():
                 "email": "mike.chen@testbook.com",
                 "username": "mikechen",
                 "display_name": "Mike Chen",
-                "password": "MikeRocks88",
+                "password": "MikeRocks88",  # pragma: allowlist secret
                 "bio": "Adventure seeker 🏔️ | Photography lover | Always exploring",
                 "profile_picture": "/static/images/avatar-mike.jpg",
             },
@@ -41,7 +41,7 @@ def seed_database():
                 "email": "emma.davis@testbook.com",
                 "username": "emmadavis",
                 "display_name": "Emma Davis",
-                "password": "EmmaLovesPhotos",
+                "password": "EmmaLovesPhotos",  # pragma: allowlist secret
                 "bio": "Professional photographer 📸 | Nature lover | Dog mom 🐕",
                 "profile_picture": "/static/images/avatar-emma.jpg",
             },
@@ -49,7 +49,7 @@ def seed_database():
                 "email": "alex.rodriguez@testbook.com",
                 "username": "alexrodriguez",
                 "display_name": "XxAlexRodriguezxX",
-                "password": "Alex1234",
+                "password": "Alex1234",  # pragma: allowlist secret
                 "bio": "Gamer | Tech enthusiast | Always online 🎮",
                 "profile_picture": "/static/images/avatar-alex.jpg",
             },
@@ -57,7 +57,7 @@ def seed_database():
                 "email": "lisa.williams@testbook.com",
                 "username": "lisawilliams",
                 "display_name": "Lisa Williams",
-                "password": "LisaFitness2024",
+                "password": "LisaFitness2024",  # pragma: allowlist secret
                 "bio": "Fitness coach 💪 | Healthy living advocate | Let's get fit!",
                 "profile_picture": "/static/images/avatar-lisa.jpg",
             },
@@ -65,7 +65,7 @@ def seed_database():
                 "email": "james.taylor@testbook.com",
                 "username": "jamestaylor",
                 "display_name": "James Taylor",
-                "password": "JamesT@ylor99",
+                "password": "JamesT@ylor99",  # pragma: allowlist secret
                 "bio": "Music producer 🎵 | Food critic | NYC",
                 "profile_picture": "/static/images/avatar-james.jpg",
             },
@@ -73,7 +73,7 @@ def seed_database():
                 "email": "olivia.brown@testbook.com",
                 "username": "oliviabrown",
                 "display_name": "Olivia Brown",
-                "password": "OliviaBrown!23",
+                "password": "OliviaBrown!23",  # pragma: allowlist secret
                 "bio": "Travel blogger ✈️ | 50 countries and counting!",
                 "profile_picture": "/static/images/avatar-olivia.jpg",
             },
@@ -81,7 +81,7 @@ def seed_database():
                 "email": "daniel.kim@testbook.com",
                 "username": "danielkim",
                 "display_name": "Danny Kim",
-                "password": "DannyK1m2024",
+                "password": "DannyK1m2024",  # pragma: allowlist secret
                 "bio": "Software engineer | Coffee addict | Building cool stuff 👨‍💻",
                 "profile_picture": "/static/images/avatar-daniel.jpg",
             },
@@ -89,7 +89,7 @@ def seed_database():
                 "email": "newuser@testbook.com",
                 "username": "newuser123",
                 "display_name": "New User",
-                "password": "NewUser123!",
+                "password": "NewUser123!",  # pragma: allowlist secret
                 "bio": "",
                 "profile_picture": "/static/images/default-avatar.jpg",
             },

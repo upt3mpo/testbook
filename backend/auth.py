@@ -18,7 +18,7 @@ if not SECRET_KEY:
     # In development/testing only - generate a warning
     import sys
 
-    SECRET_KEY = "testbook-secret-key-for-testing-only-do-not-use-in-production"
+    SECRET_KEY = "testbook-secret-key-for-testing-only-do-not-use-in-production"  # pragma: allowlist secret
     if "pytest" not in sys.modules:  # Don't warn during tests
         print(
             "WARNING: Using default SECRET_KEY. Set SECRET_KEY environment variable in production!"
