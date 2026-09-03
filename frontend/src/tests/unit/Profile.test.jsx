@@ -52,6 +52,11 @@ const renderProfile = (username = 'mikechen', currentUser = sarah) => {
 };
 
 describe('Profile Page', () => {
+  // Not covered: handlePostUpdated (a post edited via the real Post
+  // component updating in the profile's posts list). Not hard - same
+  // pattern as "removes a post from the list..." below and
+  // PostDetail.test.jsx's edit test, just not included here since it's
+  // the same callback shape already verified in both of those places.
   beforeEach(() => {
     vi.clearAllMocks();
     window.confirm = vi.fn(() => true);

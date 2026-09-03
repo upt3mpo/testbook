@@ -253,6 +253,19 @@ describe('CreatePost Component', () => {
   });
 
   describe('Media attachments', () => {
+    // Not covered here: handleDragOver/handleDragLeave/handleDrop (the
+    // drag-and-drop zone) and the video-file preview branch
+    // (selectedFile.type.startsWith('video/') rendering a <video> tag
+    // instead of an <img>). Both are straightforward, not hard - same
+    // fireEvent/File techniques as the tests below - just not included
+    // in this pass since the file-input path already exercises the
+    // same handleFileSelect() validation and state updates underneath
+    // both drag-and-drop and the video branch. If picked up: drag/drop
+    // needs a DataTransfer-shaped object passed as
+    // `fireEvent.drop(dropZone, { dataTransfer: { files: [file] } })`
+    // (jsdom has no real DataTransfer), and the video branch just needs
+    // a `type: 'video/mp4'` File and a query for the <video> element
+    // instead of getByAltText('Preview').
     beforeEach(() => {
       // jsdom doesn't implement createObjectURL - CreatePost calls it to
       // build a local preview URL for the selected file.

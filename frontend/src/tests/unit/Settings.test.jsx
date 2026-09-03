@@ -50,6 +50,13 @@ const renderSettings = ({ updateUser = vi.fn(), logout = vi.fn(), user = baseUse
 };
 
 describe('Settings Page', () => {
+  // Not covered: cancelling at the *second* delete-account confirm()
+  // (the existing test below only cancels the first), and the visible
+  // "Upload Photo"/drop-zone-style button's onClick, which just proxies
+  // to fileInputRef.current?.click() - no branching logic of its own,
+  // already effectively exercised by driving the hidden file input
+  // directly in the upload test below. Neither is hard, just low
+  // marginal value given what's already covered.
   beforeEach(() => {
     vi.clearAllMocks();
     window.confirm = vi.fn(() => true);
