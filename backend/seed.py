@@ -1,12 +1,13 @@
 import random
 from datetime import datetime, timedelta, timezone
+from typing import Any
 
 import models
 from auth import get_password_hash
 from database import SessionLocal, engine
 
 
-def seed_database():
+def seed_database() -> None:
     """Seed the database with initial users, posts, and relationships"""
     # Create tables first
     models.Base.metadata.create_all(bind=engine)
@@ -144,7 +145,10 @@ def seed_database():
         db.commit()
 
         # Create posts with varying timestamps
-        posts_data = [
+        # dict[str, Any]: each entry mixes str, int, and None values by
+        # design (it's literal seed data) - a precise TypedDict would be
+        # more ceremony than this fixture data warrants.
+        posts_data: list[dict[str, Any]] = [
             # Sarah's posts
             {
                 "author_idx": 0,
@@ -302,7 +306,7 @@ def seed_database():
             db.refresh(post)
 
         # Create some comments
-        comments_data = [
+        comments_data: list[dict[str, Any]] = [
             {
                 "post_idx": 0,
                 "author_idx": 1,
@@ -353,7 +357,7 @@ def seed_database():
         db.commit()
 
         # Create some reactions
-        reactions_data = [
+        reactions_data: list[dict[str, Any]] = [
             {"post_idx": 0, "author_idx": 1, "type": "love"},
             {"post_idx": 0, "author_idx": 2, "type": "love"},
             {"post_idx": 0, "author_idx": 4, "type": "like"},
@@ -383,7 +387,7 @@ def seed_database():
         db.commit()
 
         # Create some reposts
-        reposts_data = [
+        reposts_data: list[dict[str, Any]] = [
             {
                 "original_post_idx": 3,
                 "author_idx": 0,
