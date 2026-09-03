@@ -23,6 +23,7 @@ vi.mock('../../api', () => ({
   postsAPI: {
     getPost: vi.fn(),
     deletePost: vi.fn(),
+    updatePost: vi.fn(),
   },
 }));
 
@@ -151,5 +152,45 @@ describe('PostDetail Page', () => {
     await user.click(screen.getByRole('button', { name: /delete/i }));
 
     await waitFor(() => expect(mockNavigate).toHaveBeenCalledWith('/'));
+  });
+
+  it('reflects edits made via the real Post component, keeping existing comments/reactions', async () => {
+    const user = userEvent.setup();
+    api.postsAPI.getPost.mockResolvedValueOnce({
+      data: {
+        ...basePost,
+        comments: [
+          {
+            id: 1,
+            content: 'Nice!',
+            author_username: 'mikechen',
+            author_display_name: 'Mike Chen',
+            author_profile_picture: '',
+            created_at: '2026-01-15T11:00:00Z',
+          },
+        ],
+      },
+    });
+    // The real PUT /api/posts/{id} response is a schemas.PostResponse,
+    // which (unlike getPost's PostDetailResponse) has no comments/
+    // reactions fields at all - not even empty arrays.
+    const { comments: _comments, reactions: _reactions, ...postResponseFields } = basePost;
+    api.postsAPI.updatePost.mockResolvedValueOnce({
+      data: { ...postResponseFields, content: 'Edited content' },
+    });
+
+    renderPostDetail();
+    await screen.findByText('A detailed post');
+
+    await user.click(screen.getByRole('button', { name: '⋯' }));
+    await user.click(screen.getByRole('button', { name: /edit/i }));
+    await user.clear(screen.getByDisplayValue('A detailed post'));
+    await user.type(screen.getByRole('textbox'), 'Edited content');
+    await user.click(screen.getByRole('button', { name: /save/i }));
+
+    // The update response has no `comments` field - the existing
+    // comment (fetched separately) should be preserved, not dropped.
+    expect(await screen.findByText('Edited content')).toBeInTheDocument();
+    expect(screen.getByText('Nice!')).toBeInTheDocument();
   });
 });
