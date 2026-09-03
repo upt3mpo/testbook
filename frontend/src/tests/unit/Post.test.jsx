@@ -8,7 +8,7 @@
  * component's internal state.
  */
 
-import { render, screen, waitFor, within } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { BrowserRouter } from 'react-router-dom';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
@@ -316,6 +316,45 @@ describe('Post Component', () => {
       await waitFor(() => {
         expect(api.postsAPI.deleteRepost).toHaveBeenCalledWith(7);
       });
+    });
+  });
+
+  describe('Image orientation', () => {
+    // jsdom never actually decodes/lays out images, so naturalWidth and
+    // naturalHeight are always 0 on a real <img> load event in tests.
+    // Overriding them on the element before firing load simulates what
+    // the browser would report once the image has actually loaded.
+    const fireImageLoad = (img, width, height) => {
+      Object.defineProperty(img, 'naturalWidth', { value: width, configurable: true });
+      Object.defineProperty(img, 'naturalHeight', { value: height, configurable: true });
+      fireEvent.load(img);
+    };
+
+    it('classifies a wide image as horizontal', () => {
+      renderPost({ ...basePost, image_url: '/static/uploads/wide.jpg' });
+      const img = screen.getByAltText('Post content');
+
+      fireImageLoad(img, 1600, 900);
+
+      expect(img).toHaveAttribute('data-image-orientation', 'horizontal');
+    });
+
+    it('classifies a tall image as vertical', () => {
+      renderPost({ ...basePost, image_url: '/static/uploads/tall.jpg' });
+      const img = screen.getByAltText('Post content');
+
+      fireImageLoad(img, 900, 1600);
+
+      expect(img).toHaveAttribute('data-image-orientation', 'vertical');
+    });
+
+    it('classifies a roughly even image as square', () => {
+      renderPost({ ...basePost, image_url: '/static/uploads/even.jpg' });
+      const img = screen.getByAltText('Post content');
+
+      fireImageLoad(img, 1000, 1000);
+
+      expect(img).toHaveAttribute('data-image-orientation', 'square');
     });
   });
 });
