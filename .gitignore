@@ -105,4 +105,5 @@ htmlcov/
 **/htmlcov/
 test-results/
 playwright-report/
+playwright-report-visual/
 playwright/.cache/

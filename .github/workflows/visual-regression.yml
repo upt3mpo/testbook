@@ -1,0 +1,162 @@
+name: Visual Regression
+
+# Deliberately NOT wired into push/pull_request (see testbook-ci.yml,
+# full-checks.yml) - visual regression tests compare full-page
+# screenshots, which are the flakiest kind of assertion this repo has:
+# a font hinting difference, a sub-pixel rendering change between two
+# otherwise-identical runner images, or a design change that's actually
+# fine can all produce a failing diff that has nothing to do with
+# whether the code is correct. Gating every PR on that would train
+# everyone to ignore red CI. Running it on a schedule (so regressions
+# still get caught within a week) plus workflow_dispatch (so a baseline
+# update after an intentional design change can be triggered on demand)
+# gets the value without the noise. See docs/guides/VISUAL_REGRESSION.md
+# for the full reasoning and how to update baselines.
+
+permissions:
+  contents: read
+
+on:
+  schedule:
+    - cron: "0 6 * * 1" # Weekly, Monday 6am UTC
+  workflow_dispatch:
+    inputs:
+      update_baselines:
+        description: >-
+          Regenerate baseline screenshots instead of comparing against
+          the existing ones (use after an intentional design change).
+          The new baselines are uploaded as a downloadable artifact,
+          not committed automatically - review them before committing.
+        type: boolean
+        default: false
+
+jobs:
+  visual-regression:
+    runs-on: ubuntu-22.04 # Pinned, not ubuntu-latest - font rendering and
+    # antialiasing must stay byte-for-byte consistent between the run that
+    # produced a baseline screenshot and every run that compares against
+    # it. ubuntu-latest is a moving target (GitHub periodically retargets
+    # it to a newer image), which would invalidate every baseline the
+    # moment the runner image changes, with no code change involved.
+    timeout-minutes: 20
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: testbook
+          POSTGRES_PASSWORD: testbook
+          POSTGRES_DB: testbook_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: "npm"
+          cache-dependency-path: |
+            tests/package-lock.json
+            frontend/package-lock.json
+
+      - name: Setup Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+          cache: "pip"
+
+      - name: Install backend dependencies
+        working-directory: ./backend
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Install frontend dependencies
+        working-directory: ./frontend
+        run: npm ci
+
+      - name: Install E2E test dependencies
+        working-directory: ./tests
+        run: npm ci
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v6
+        id: playwright-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-browsers-${{ runner.os }}-${{ hashFiles('tests/package-lock.json') }}
+
+      - name: Install Playwright browsers
+        working-directory: ./tests
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps chromium
+
+      - name: Install Playwright OS dependencies only
+        working-directory: ./tests
+        if: steps.playwright-cache.outputs.cache-hit == 'true'
+        run: npx playwright install-deps chromium
+
+      - name: Start backend server
+        working-directory: ./backend
+        env:
+          TESTING: true
+          SECRET_KEY: test-secret-key-for-ci
+          DATABASE_URL: postgresql+psycopg://testbook:testbook@localhost:5432/testbook_test
+        run: |
+          python seed.py
+          uvicorn main:app --host 0.0.0.0 --port 8000 &
+          sleep 5
+
+      - name: Wait for backend
+        run: |
+          timeout 30 bash -c 'until curl -f http://localhost:8000/api/health; do sleep 1; done'
+
+      - name: Start frontend server
+        working-directory: ./frontend
+        run: |
+          npm run dev &
+          sleep 15
+
+      - name: Wait for frontend
+        run: |
+          timeout 60 bash -c 'until curl -f http://localhost:3000; do sleep 1; done'
+
+      - name: Run visual regression tests
+        working-directory: ./tests
+        env:
+          API_URL: http://localhost:8000
+          BASE_URL: http://localhost:3000
+          BACKEND_URL: http://localhost:8000
+          FORCE_COLOR: 0
+        run: |
+          if [ "${{ inputs.update_baselines }}" = "true" ]; then
+            npx playwright test --config=playwright.visual.config.js --update-snapshots
+          else
+            npx playwright test --config=playwright.visual.config.js
+          fi
+
+      - name: Upload new baselines
+        if: ${{ inputs.update_baselines == true }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: visual-regression-baselines
+          path: tests/visual-snapshots/
+          retention-days: 14
+
+      - name: Upload snapshot diffs on failure
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: visual-regression-diffs
+          path: |
+            tests/visual-snapshots/
+            tests/test-results/
+          retention-days: 14
