@@ -38,6 +38,7 @@ class AuthPage(BasePage):
         self.navbar_username = page.get_by_test_id("navbar-username")
         self.navbar_logout_button = page.get_by_test_id("navbar-logout-button")
         self.navbar_settings_link = page.get_by_test_id("navbar-settings-link")
+        self.navbar_profile_link = page.get_by_test_id("navbar-profile-link")
 
     def goto_register(self) -> None:
         """Navigate to the registration page."""
