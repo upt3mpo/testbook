@@ -16,8 +16,11 @@ of professional unit testing practices.
 """
 
 from datetime import UTC, datetime, timedelta
+from unittest.mock import MagicMock
 
 import pytest
+from fastapi import HTTPException
+from fastapi.security import HTTPAuthorizationCredentials
 from jose import JWTError, jwt
 
 from auth import (
@@ -25,6 +28,7 @@ from auth import (
     ALGORITHM,
     SECRET_KEY,
     create_access_token,
+    get_current_user,
     get_password_hash,
     verify_password,
 )
@@ -265,6 +269,50 @@ class TestJWTTokens:
 
         with pytest.raises(jwt.ExpiredSignatureError):
             jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+
+
+@pytest.mark.unit
+class TestGetCurrentUser:
+    """Test the get_current_user FastAPI dependency directly.
+
+    Added by a mutation-testing pass (see docs/advanced/ADVANCED_TOPICS.md's
+    Mutation Testing section for how these were found): before this class,
+    get_current_user and get_optional_user had zero unit-level coverage -
+    only integration tests exercised them, through a full FastAPI request.
+    That's real coverage, but it doesn't run as part of this file's fast
+    unit suite, so a mutant confined to tests/unit/test_auth.py (as a
+    mutation testing run typically is, for speed) survived undetected
+    inside this function's own logic, including one that inverted the
+    "user not found" check entirely (`if user is None` -> `if user is not
+    None`) - the kind of bug that would let requests with a valid token
+    for a deleted or nonexistent user through as authenticated, and reject
+    every legitimately authenticated request.
+    """
+
+    def test_returns_the_user_when_one_is_found(self) -> None:
+        email = "test@example.com"
+        token = create_access_token(data={"sub": email})
+        credentials = HTTPAuthorizationCredentials(scheme="Bearer", credentials=token)
+
+        found_user = MagicMock()
+        mock_db = MagicMock()
+        mock_db.query.return_value.filter.return_value.first.return_value = found_user
+
+        result = get_current_user(credentials=credentials, db=mock_db)
+
+        assert result is found_user
+
+    def test_raises_401_when_no_user_matches_the_token(self) -> None:
+        token = create_access_token(data={"sub": "nonexistent@example.com"})
+        credentials = HTTPAuthorizationCredentials(scheme="Bearer", credentials=token)
+
+        mock_db = MagicMock()
+        mock_db.query.return_value.filter.return_value.first.return_value = None
+
+        with pytest.raises(HTTPException) as exc_info:
+            get_current_user(credentials=credentials, db=mock_db)
+
+        assert exc_info.value.status_code == 401
 
 
 @pytest.mark.unit

@@ -88,6 +88,7 @@ wheels/
 .hypothesis/
 .mypy_cache/
 .ruff_cache/
+.mutmut-cache
 
 ########################################
 # Databases (local dev)
