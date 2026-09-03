@@ -82,9 +82,41 @@ BASE_URL=http://localhost:3000 npx playwright test
 
 ---
 
+<h2 id="page-objects">📦 Page Objects</h2>
+
+Logging in, registering, and interacting with posts/profiles/settings all
+go through the page objects in `pages/`, one file per page, mirroring the
+Python suite's `e2e-python/pages/` structure:
+
+| File               | Covers                                 |
+| ------------------ | --------------------------------------- |
+| `BasePage.js`       | Shared `goto`/`waitForLoad`/`screenshot` |
+| `AuthPage.js`       | Register, login, logout                 |
+| `FeedPage.js`       | Creating, editing, reacting to posts    |
+| `ProfilePage.js`    | Viewing profiles, follow/block          |
+| `SettingsPage.js`   | Display name, bio, theme, avatar        |
+
+```javascript
+import { AuthPage } from "./pages/AuthPage.js";
+import { FeedPage } from "./pages/FeedPage.js";
+
+test("my test", async ({ page }) => {
+  const auth = new AuthPage(page);
+  await auth.gotoLogin();
+  await auth.login(TEST_USERS.sarah.email, TEST_USERS.sarah.password);
+  await auth.expectLoggedIn();
+
+  const feed = new FeedPage(page);
+  await feed.createPost("This is my test post!");
+  await expect(feed.firstPost()).toContainText("my post");
+});
+```
+
 <h2 id="test-helpers">🧪 Test Helpers</h2>
 
-All test helpers are in `fixtures/test-helpers.js`:
+What's left in `fixtures/test-helpers.js` is database setup, dialog
+handling, and shared test data - things that aren't tied to a specific
+page, so they don't belong on a page object.
 
 ### Database Management
 
@@ -105,46 +137,7 @@ test("my test", async ({ page }) => {
 await seedDatabase(page, "users_with_posts");
 ```
 
-### User Authentication
-
-**`loginUser(page, email, password)`** - Login a user
-
-```javascript
-import { loginUser, TEST_USERS } from "./fixtures/test-helpers";
-
-test("my test", async ({ page }) => {
-  await loginUser(page, TEST_USERS.sarah.email, TEST_USERS.sarah.password);
-  // Now logged in
-});
-```
-
-**`registerUser(page, userData)`** - Register new user
-
-```javascript
-await registerUser(page, {
-  email: "newuser@example.com",
-  username: "newuser",
-  displayName: "New User",
-  password: "Password123!",
-});
-```
-
-### Post Management
-
-**`createPost(page, content)`** - Create a post
-
-```javascript
-import { createPost } from "./fixtures/test-helpers";
-
-await createPost(page, "This is my test post!");
-```
-
-**`getFirstPost(page)`** - Get first post locator
-
-```javascript
-const post = getFirstPost(page);
-await expect(post).toContainText("my post");
-```
+### Post Lookups
 
 **`getPostsByAuthor(page, username)`** - Get posts by specific author
 
@@ -152,19 +145,10 @@ await expect(post).toContainText("my post");
 const posts = getPostsByAuthor(page, "sarahjohnson");
 ```
 
-### Interactions
-
-**`addReaction(post, reactionType)`** - Add reaction to post
-
-```javascript
-const post = getFirstPost(page);
-await addReaction(post, "like");
-```
-
 **`addComment(post, commentText)`** - Add comment to post
 
 ```javascript
-const post = getFirstPost(page);
+const post = feed.firstPost();
 await addComment(post, "Great post!");
 ```
 
@@ -188,7 +172,13 @@ TEST_USERS.newuser; // For registration tests
 ```text
 tests/e2e/
 ├── fixtures/
-│   └── test-helpers.js       # Reusable helper functions
+│   └── test-helpers.js       # Database setup, dialogs, test users
+├── pages/
+│   ├── BasePage.js           # Shared navigation helpers
+│   ├── AuthPage.js           # Register, login, logout
+│   ├── FeedPage.js           # Posts: create, edit, react, comment, repost
+│   ├── ProfilePage.js        # Profiles: follow, block, followers/following
+│   └── SettingsPage.js       # Display name, bio, theme, avatar
 ├── accessibility-axe.spec.js # Accessibility (WCAG/axe-core) tests
 ├── auth.spec.js              # Authentication tests
 ├── posts.spec.js             # Post creation/interaction tests
@@ -204,46 +194,44 @@ tests/e2e/
 
 ```javascript
 import { expect, test } from "@playwright/test";
-import { loginUser, TEST_USERS } from "./fixtures/test-helpers";
+import { TEST_USERS } from "./fixtures/test-helpers";
+import { AuthPage } from "./pages/AuthPage.js";
+import { FeedPage } from "./pages/FeedPage.js";
 
 test("user can create post", async ({ page }) => {
-  // Login
-  await loginUser(page, TEST_USERS.sarah.email, TEST_USERS.sarah.password);
+  const auth = new AuthPage(page);
+  await auth.gotoLogin();
+  await auth.login(TEST_USERS.sarah.email, TEST_USERS.sarah.password);
+  await auth.expectLoggedIn();
 
-  // Create post
-  await page.fill('[data-testid="create-post-textarea"]', "Test post!");
-  await page.click('[data-testid="create-post-submit-button"]');
+  const feed = new FeedPage(page);
+  await feed.createPost("Test post!");
 
-  // Verify
-  await expect(page.locator('text="Test post!"')).toBeVisible();
+  await expect(feed.firstPost()).toContainText("Test post!");
 });
 ```
 
-### Using Test Helpers
+### Combining a Page Object with a Test Helper
 
 ```javascript
 import { expect, test } from "@playwright/test";
-import {
-  resetDatabase,
-  loginUser,
-  createPost,
-  getFirstPost,
-  TEST_USERS,
-} from "./fixtures/test-helpers";
+import { resetDatabase, TEST_USERS } from "./fixtures/test-helpers";
+import { AuthPage } from "./pages/AuthPage.js";
+import { FeedPage } from "./pages/FeedPage.js";
 
 test("complete post flow", async ({ page }) => {
   // Reset database first
   await resetDatabase(page);
 
-  // Login
-  await loginUser(page, TEST_USERS.sarah.email, TEST_USERS.sarah.password);
+  const auth = new AuthPage(page);
+  await auth.gotoLogin();
+  await auth.login(TEST_USERS.sarah.email, TEST_USERS.sarah.password);
+  await auth.expectLoggedIn();
 
-  // Create post
-  await createPost(page, "My test post");
+  const feed = new FeedPage(page);
+  await feed.createPost("My test post");
 
-  // Verify post appears
-  const post = getFirstPost(page);
-  await expect(post).toContainText("My test post");
+  await expect(feed.firstPost()).toContainText("My test post");
 });
 ```
 
@@ -255,13 +243,16 @@ test.describe("Post Tests", () => {
     // Reset database before each test
     await resetDatabase(page);
 
-    // Login
-    await loginUser(page, TEST_USERS.sarah.email, TEST_USERS.sarah.password);
+    const auth = new AuthPage(page);
+    await auth.gotoLogin();
+    await auth.login(TEST_USERS.sarah.email, TEST_USERS.sarah.password);
+    await auth.expectLoggedIn();
   });
 
   test("create post", async ({ page }) => {
     // Test already logged in due to beforeEach
-    await createPost(page, "Test");
+    const feed = new FeedPage(page);
+    await feed.createPost("Test");
   });
 });
 ```
@@ -428,7 +419,7 @@ npx playwright show-trace trace.zip
 - Use `data-testid` attributes for selectors
 - Use `expect()` with auto-retry
 - Reset database for isolated tests
-- Use test helpers for common operations
+- Use page objects (`pages/`) for page interactions, test helpers for database/dialog setup
 - Write independent tests
 
 ### ❌ Don't
@@ -447,26 +438,22 @@ npx playwright show-trace trace.zip
 
 ```javascript
 test("complete user journey", async ({ page }) => {
-  const {
-    loginUser,
-    createPost,
-    getFirstPost,
-    addReaction,
-    TEST_USERS,
-  } = await import("./fixtures/test-helpers");
+  const { TEST_USERS } = await import("./fixtures/test-helpers");
+  const { AuthPage } = await import("./pages/AuthPage.js");
+  const { FeedPage } = await import("./pages/FeedPage.js");
 
-  // Login
-  await loginUser(page, TEST_USERS.sarah.email, TEST_USERS.sarah.password);
+  const auth = new AuthPage(page);
+  await auth.gotoLogin();
+  await auth.login(TEST_USERS.sarah.email, TEST_USERS.sarah.password);
+  await auth.expectLoggedIn();
 
-  // Create post
-  await createPost(page, "Hello Testbook!");
+  const feed = new FeedPage(page);
+  await feed.createPost("Hello Testbook!");
 
-  // React to post
-  const post = getFirstPost(page);
-  await addReaction(post, "like");
+  const post = feed.findPostByContent("Hello Testbook!");
+  await feed.reactToPost(post, "like");
 
-  // Verify
-  await expect(post).toContainText("Hello Testbook!");
+  await expect(post.locator(feed.postReactButton)).toContainText("👍");
 });
 ```
 
@@ -481,7 +468,10 @@ test("verify post created via API", async ({ page, request }) => {
   });
 
   // Verify via UI
-  await loginUser(page, TEST_USERS.sarah.email, TEST_USERS.sarah.password);
+  const auth = new AuthPage(page);
+  await auth.gotoLogin();
+  await auth.login(TEST_USERS.sarah.email, TEST_USERS.sarah.password);
+  await auth.expectLoggedIn();
   await expect(page.locator('text="Test post"')).toBeVisible();
 });
 ```

@@ -9,7 +9,8 @@
 
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
-import { loginUser, resetDatabase, TEST_USERS } from './fixtures/test-helpers.js';
+import { resetDatabase, TEST_USERS } from './fixtures/test-helpers.js';
+import { AuthPage } from './pages/AuthPage.js';
 
 const BASE_URL = process.env.BASE_URL || 'http://localhost:3000';
 
@@ -55,8 +56,10 @@ test.describe('Accessibility (axe-core)', () => {
   test('Feed page (authenticated) should not have accessibility violations', async ({
     page,
   }) => {
-    // Login using test helper
-    await loginUser(page, TEST_USERS.sarah.email, TEST_USERS.sarah.password);
+    const auth = new AuthPage(page);
+    await auth.gotoLogin();
+    await auth.login(TEST_USERS.sarah.email, TEST_USERS.sarah.password);
+    await auth.expectLoggedIn();
 
     // Wait for feed to fully load
     await page.waitForLoadState('networkidle', { timeout: 5000 }).catch(() => {});
@@ -69,11 +72,13 @@ test.describe('Accessibility (axe-core)', () => {
   });
 
   test('Profile page should not have accessibility violations', async ({ page }) => {
-    // Login using test helper
-    await loginUser(page, TEST_USERS.sarah.email, TEST_USERS.sarah.password);
+    const auth = new AuthPage(page);
+    await auth.gotoLogin();
+    await auth.login(TEST_USERS.sarah.email, TEST_USERS.sarah.password);
+    await auth.expectLoggedIn();
 
     // Go to profile
-    await page.getByTestId('navbar-profile-link').click();
+    await auth.navbarProfileLink.click();
     await page.waitForLoadState('networkidle', { timeout: 5000 }).catch(() => {});
 
     const accessibilityScanResults = await new AxeBuilder({ page })

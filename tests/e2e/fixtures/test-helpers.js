@@ -1,8 +1,10 @@
 /**
  * Test helper functions for Testbook E2E tests.
  *
- * These utilities help with common operations like logging in,
- * creating posts, and resetting test data.
+ * Login, registration, and post/reaction interactions go through the
+ * page objects in pages/ instead. What's left here is database setup
+ * (resetDatabase, seedDatabase), dialog handling, and shared test data
+ * (TEST_USERS) - things that aren't tied to a specific page.
  */
 
 import { expect } from "@playwright/test";
@@ -83,90 +85,6 @@ async function seedDatabase(page, scenario = "default") {
 }
 
 /**
- * Login a user with email and password.
- * @param {import('@playwright/test').Page} page
- * @param {string} email
- * @param {string} password
- */
-async function loginUser(page, email, password) {
-  await page.goto("/");
-
-  // Fill login form
-  await page.fill('[data-testid="login-email-input"]', email);
-  await page.fill('[data-testid="login-password-input"]', password);
-  await page.click('[data-testid="login-submit-button"]');
-
-  // Wait for navigation to complete (with timeout)
-  await page.waitForURL("/", { timeout: 10000 });
-
-  // Verify logged in (navbar should be visible)
-  await expect(page.locator('[data-testid="navbar"]')).toBeVisible({
-    timeout: 10000,
-  });
-
-  // Wait for any pending API calls to complete
-  await page.waitForLoadState("networkidle", { timeout: 5000 }).catch(() => {});
-}
-
-/**
- * Register a new user.
- * @param {import('@playwright/test').Page} page
- * @param {Object} userData
- * @param {string} userData.email
- * @param {string} userData.username
- * @param {string} userData.displayName
- * @param {string} userData.password
- */
-async function registerUser(page, userData) {
-  await page.goto("/register");
-
-  await page.fill('[data-testid="register-email-input"]', userData.email);
-  await page.fill('[data-testid="register-username-input"]', userData.username);
-  await page.fill(
-    '[data-testid="register-displayname-input"]',
-    userData.displayName
-  );
-  await page.fill('[data-testid="register-password-input"]', userData.password);
-  await page.click('[data-testid="register-submit-button"]');
-
-  // Should auto-login and redirect to feed (with generous timeout for API call)
-  await page.waitForURL("/", { timeout: 10000 });
-  await expect(page.locator('[data-testid="navbar"]')).toBeVisible({
-    timeout: 10000,
-  });
-
-  // Wait for page to fully load
-  await page.waitForLoadState("networkidle", { timeout: 5000 }).catch(() => {});
-}
-
-/**
- * Create a post.
- * @param {import('@playwright/test').Page} page
- * @param {string} content
- */
-async function createPost(page, content) {
-  await page.fill('[data-testid="create-post-textarea"]', content);
-  await page.click('[data-testid="create-post-submit-button"]');
-
-  // Wait for post to appear in feed (wait for first post with this content)
-  await expect(page.locator(`text="${content}"`).first()).toBeVisible({
-    timeout: 10000,
-  });
-
-  // Wait for form to clear and API to complete
-  await page.waitForLoadState("networkidle", { timeout: 5000 }).catch(() => {});
-}
-
-/**
- * Get the first (most recent) post on the feed.
- * @param {import('@playwright/test').Page} page
- * @returns {Promise<import('@playwright/test').Locator>}
- */
-function getFirstPost(page) {
-  return page.locator('[data-testid-generic="post-item"]').first();
-}
-
-/**
  * Get all posts by a specific author.
  * @param {import('@playwright/test').Page} page
  * @param {string} username
@@ -176,42 +94,6 @@ function getPostsByAuthor(page, username) {
   return page.locator(
     `[data-testid-generic="post-item"][data-post-author="${username}"]`
   );
-}
-
-/**
- * Get the first post owned by the current user.
- * @param {import('@playwright/test').Page} page
- * @returns {Promise<import('@playwright/test').Locator>}
- */
-function getFirstOwnPost(page) {
-  return page.locator('[data-is-own-post="true"]').first();
-}
-
-/**
- * Add a reaction to a post.
- * @param {import('@playwright/test').Locator} post
- * @param {string} reactionType - 'like', 'love', 'haha', 'wow', 'sad', 'angry'
- */
-async function addReaction(post, reactionType) {
-  const reactButton = post.locator('[data-testid$="-react-button"]');
-
-  // Ensure button is visible
-  await expect(reactButton).toBeVisible({ timeout: 5000 });
-
-  // Click the react button to open the dropdown (force click to avoid pointer
-  // intercept). The expect() below already retries until the dropdown has
-  // rendered, so no separate wait is needed for the open animation.
-  await reactButton.click({ force: true });
-
-  // Click the specific reaction. Every caller of addReaction() asserts on
-  // the button's resulting text right after calling this, and that
-  // assertion retries until the API call finishes and React re-renders,
-  // so no wait is needed here either.
-  const reactionBtn = post.locator(
-    `[data-testid$="-reaction-${reactionType}"]`
-  );
-  await expect(reactionBtn).toBeVisible({ timeout: 3000 });
-  await reactionBtn.click({ force: true });
 }
 
 /**
@@ -276,14 +158,8 @@ function setupDialogHandler(page) {
 
 export {
   addComment,
-  addReaction,
   BACKEND_URL,
-  createPost,
-  getFirstOwnPost,
-  getFirstPost,
   getPostsByAuthor,
-  loginUser,
-  registerUser,
   resetDatabase,
   seedDatabase,
   setupDialogHandler,
