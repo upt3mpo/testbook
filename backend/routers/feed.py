@@ -17,7 +17,7 @@ def get_all_feed(
     limit: int = 50,
     current_user: models.User = Depends(get_current_user),
     db: Session = Depends(get_db),
-):
+) -> List[schemas.PostResponse]:
     """Get all posts from all users (excluding blocked users)"""
     blocked_user_ids = _get_all_blocked_user_ids(current_user)
 
@@ -42,7 +42,7 @@ def get_following_feed(
     limit: int = 50,
     current_user: models.User = Depends(get_current_user),
     db: Session = Depends(get_db),
-):
+) -> List[schemas.PostResponse]:
     """Get posts from users you follow"""
     # Get following user IDs
     following_ids = [user.id for user in current_user.following]
@@ -111,11 +111,14 @@ def _format_posts(
         original_post = None
         if post.is_repost and post.original_post:
             orig = post.original_post
-            if blocked_user_ids and orig.author_id in blocked_user_ids:
-                orig = None
+            orig_is_blocked = bool(
+                blocked_user_ids and orig.author_id in blocked_user_ids
+            )
 
             original_post = (
-                schemas.PostResponse(
+                None
+                if orig_is_blocked
+                else schemas.PostResponse(
                     id=orig.id,
                     content=orig.content,
                     image_url=orig.image_url,
@@ -136,8 +139,6 @@ def _format_posts(
                     user_reaction=None,
                     has_reposted=False,
                 )
-                if orig
-                else None
             )
 
         result.append(
