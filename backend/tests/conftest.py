@@ -7,7 +7,7 @@ that are available to all test files.
 
 import os
 import sys
-from typing import Generator
+from typing import Any, Generator, cast
 
 import pytest
 from fastapi.testclient import TestClient
@@ -27,7 +27,7 @@ from models import Comment, Post, Reaction, User
 # ═══════════════════════════════════════════════════════════════════
 
 
-def pytest_configure(config):
+def pytest_configure(config: pytest.Config) -> None:
     """Display welcome banner when pytest starts."""
     print("=" * 70)
     print("Welcome to Testbook Testing Platform!")
@@ -39,7 +39,7 @@ def pytest_configure(config):
     # print(banner.encode('utf-8', errors='ignore').decode('utf-8'))  # Disabled for Windows encoding issues
 
 
-def pytest_sessionfinish(session, exitstatus):
+def pytest_sessionfinish(session: pytest.Session, exitstatus: int) -> None:
     """Display completion message after all tests run."""
     if exitstatus == 0:
         # Only show completion message for comprehensive test runs (50+ tests)
@@ -168,7 +168,7 @@ def db_session() -> Generator[Session, None, None]:
 
 
 @pytest.fixture(scope="function")
-def client(db_session: Session) -> TestClient:
+def client(db_session: Session) -> Generator[TestClient, None, None]:
     """
     Create a FastAPI TestClient with test database integration.
 
@@ -237,7 +237,7 @@ def client(db_session: Session) -> TestClient:
     """
 
     # Override the database dependency to use our test database
-    def override_get_db():
+    def override_get_db() -> Generator[Session, None, None]:
         try:
             yield db_session  # Use test database instead of production
         finally:
@@ -354,7 +354,7 @@ def auth_token(test_user: User) -> str:
 
 
 @pytest.fixture
-def auth_headers(auth_token: str) -> dict:
+def auth_headers(auth_token: str) -> dict[str, str]:
     """
     Create authorization headers with JWT token.
 
@@ -475,7 +475,7 @@ def test_reaction(db_session: Session, test_post: Post, test_user_2: User) -> Re
 # Helper functions for tests
 
 
-def login_user(client: TestClient, email: str, password: str) -> dict:
+def login_user(client: TestClient, email: str, password: str) -> dict[str, Any]:
     """
     Helper function to login a user and return the token.
 
@@ -491,10 +491,10 @@ def login_user(client: TestClient, email: str, password: str) -> dict:
         "/api/auth/login", json={"email": email, "password": password}
     )
     assert response.status_code == 200
-    return response.json()
+    return cast(dict[str, Any], response.json())
 
 
-def create_authenticated_headers(token: str) -> dict:
+def create_authenticated_headers(token: str) -> dict[str, str]:
     """
     Create headers with authentication token.
 
