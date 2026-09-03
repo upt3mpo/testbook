@@ -86,6 +86,7 @@ Testbook/
 | **🆕 [QUALITY_CHECKS.md](guides/QUALITY_CHECKS.md)** ⭐                          | 20 min | 🟡 Intermediate | Linting, formatting, coverage gates                   |
 | **🆕 [ACCESSIBILITY_TESTING.md](guides/ACCESSIBILITY_TESTING.md)** ⭐            | 30 min | 🟡 Intermediate | WCAG 2.1, axe-core, Lighthouse                        |
 | **🆕 [CONTRACT_TESTING.md](guides/CONTRACT_TESTING.md)** ⭐                      | 30 min | 🟡 Intermediate | Property-based API contract testing with Schemathesis |
+| **🆕 [VISUAL_REGRESSION.md](guides/VISUAL_REGRESSION.md)** ⭐                    | 25 min | 🟡 Intermediate | Screenshot baselines, CI infra, why not every PR      |
 | **[WINDOWS_SETUP.md](guides/WINDOWS_SETUP.md)**                                  | 30 min | 🟢 Beginner     | Windows-specific setup                                |
 | **[TASK_RUNNER.md](guides/TASK_RUNNER.md)** ✨                                   | 20 min | 🟢 Beginner     | Simplified commands (Make/just)                       |
 | **[LOGGING.md](guides/LOGGING.md)** ✨                                           | 30 min | 🟡 Intermediate | Structured logging & observability                    |
