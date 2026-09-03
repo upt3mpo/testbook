@@ -10,7 +10,7 @@ import logging
 import os
 import sys
 from datetime import datetime, timezone
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
 
 class StructuredFormatter(logging.Formatter):
@@ -87,7 +87,9 @@ class DevelopmentFormatter(logging.Formatter):
         return message
 
 
-def setup_logging(level: str = None, use_json: bool = None) -> logging.Logger:
+def setup_logging(
+    level: Optional[str] = None, use_json: Optional[bool] = None
+) -> logging.Logger:
     """
     Configure application logging.
 
@@ -116,6 +118,7 @@ def setup_logging(level: str = None, use_json: bool = None) -> logging.Logger:
     handler.setLevel(level.upper())
 
     # Set formatter based on environment
+    formatter: logging.Formatter
     if use_json:
         formatter = StructuredFormatter()
     else:
@@ -130,7 +133,7 @@ def setup_logging(level: str = None, use_json: bool = None) -> logging.Logger:
     return logger
 
 
-def get_logger(name: str = None) -> logging.Logger:
+def get_logger(name: Optional[str] = None) -> logging.Logger:
     """
     Get a logger instance.
 
