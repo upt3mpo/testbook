@@ -1,4 +1,5 @@
 from datetime import datetime, timezone
+from typing import List, Optional
 
 from sqlalchemy import (
     Boolean,
@@ -45,16 +46,18 @@ class User(Base):
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
 
     # Relationships
-    posts = relationship("Post", back_populates="author", cascade="all, delete-orphan")
-    comments = relationship(
+    posts: List["Post"] = relationship(
+        "Post", back_populates="author", cascade="all, delete-orphan"
+    )
+    comments: List["Comment"] = relationship(
         "Comment", back_populates="author", cascade="all, delete-orphan"
     )
-    reactions = relationship(
+    reactions: List["Reaction"] = relationship(
         "Reaction", back_populates="user", cascade="all, delete-orphan"
     )
 
     # Following relationships
-    following = relationship(
+    following: List["User"] = relationship(
         "User",
         secondary=followers,
         primaryjoin=id == followers.c.follower_id,
@@ -63,7 +66,7 @@ class User(Base):
     )
 
     # Blocking relationships
-    blocking = relationship(
+    blocking: List["User"] = relationship(
         "User",
         secondary=blocks,
         primaryjoin=id == blocks.c.blocker_id,
@@ -85,14 +88,16 @@ class Post(Base):
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
 
     # Relationships
-    author = relationship("User", back_populates="posts")
-    comments = relationship(
+    author: "User" = relationship("User", back_populates="posts")
+    comments: List["Comment"] = relationship(
         "Comment", back_populates="post", cascade="all, delete-orphan"
     )
-    reactions = relationship(
+    reactions: List["Reaction"] = relationship(
         "Reaction", back_populates="post", cascade="all, delete-orphan"
     )
-    original_post = relationship("Post", remote_side=[id], backref="reposts")
+    original_post: Optional["Post"] = relationship(
+        "Post", remote_side=[id], backref="reposts"
+    )
 
 
 class Comment(Base):
@@ -105,8 +110,8 @@ class Comment(Base):
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
 
     # Relationships
-    post = relationship("Post", back_populates="comments")
-    author = relationship("User", back_populates="comments")
+    post: "Post" = relationship("Post", back_populates="comments")
+    author: "User" = relationship("User", back_populates="comments")
 
 
 class Reaction(Base):
@@ -119,5 +124,5 @@ class Reaction(Base):
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
 
     # Relationships
-    post = relationship("Post", back_populates="reactions")
-    user = relationship("User", back_populates="reactions")
+    post: "Post" = relationship("Post", back_populates="reactions")
+    user: "User" = relationship("User", back_populates="reactions")
