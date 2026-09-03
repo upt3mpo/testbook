@@ -686,19 +686,13 @@ Before considering yourself job-ready, can you answer these questions?
 
 <h2 id="reflection">Reflection</h2>
 
-Before considering yourself job-ready, answer these:
+The reflection questions for this stage aren't recall questions - "what
+did you learn about E2E testing" is a Stage 3 question. They're about the
+triage decisions you made working the bundled ticket in Parts 2 and 3: why
+you tackled the requirements in the order you did, where they pulled
+against each other, and what you deliberately chose not to do.
 
-1. **What was the most challenging part of building your test suite?**
-
-2. **How did you decide what to test and what to skip?**
-
-3. **What would you do differently if you started over?**
-
-4. **How confident do you feel explaining your testing approach to others?**
-
-5. **What's one area you want to improve before applying for jobs?**
-
-**Document your answers** in [reflection.md](reflection.md).
+**Answer them** in [reflection.md](reflection.md).
 
 ---
 
