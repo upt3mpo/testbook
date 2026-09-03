@@ -506,10 +506,10 @@ For each endpoint, Schemathesis validates:
 
 ### Frontend Contract Testing
 
-| Tool                   | Status in Testbook        |
-| ---------------------- | ------------------------- |
-| **OpenAPI validation** | ✅ Available - See LAB_08 |
-| **MSW with schema**    | ✅ Available - See LAB_05 (`LAB_05_API_Endpoint_Testing_JavaScript.md`) |
+| Tool                   | Status in Testbook                                                     |
+| ---------------------- | ---------------------------------------------------------------------- |
+| **OpenAPI validation** | ✅ Available - See LAB_08                                              |
+| **MSW with schema**    | ✅ Available - See LAB_05 (`LAB_05_API_Endpoint_Testing_JavaScript.md`)|
 
 **Learn frontend contract testing:** [LAB_08: Contract Testing Foundations](../../learn/stage_2_integration/exercises/LAB_08_Contract_Testing_Foundations_JavaScript.md)
 

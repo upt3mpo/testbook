@@ -385,76 +385,7 @@ def chaos_test_microservice():
 
 ## Contract Testing
 
-### What is Contract Testing?
-
-Contract testing verifies that services can communicate correctly by checking the contracts between them.
-
-**Types of Contracts:**
-
-- **API Contracts:** Request/response formats
-- **Message Contracts:** Event schemas
-- **Database Contracts:** Data formats
-
-### Why Use Contract Testing?
-
-**Benefits:**
-
-- Prevents integration failures
-- Enables independent deployment
-- Reduces coupling between services
-- Faster feedback
-
-**Example: API Contract Testing**
-
-```python
-from pact import Consumer, Provider
-
-def test_user_service_contract():
-    # Define the contract
-    pact = Consumer('UserService').has_pact_with(Provider('UserAPI'))
-
-    # Define expected interaction
-    (pact
-     .given('user exists')
-     .upon_receiving('a request for user')
-     .with_request('GET', '/users/123')
-     .will_respond_with(200, body={
-         'id': 123,
-         'name': 'John Doe',
-         'email': 'john@example.com'
-     }))
-
-    # Test the contract
-    with pact:
-        response = requests.get('http://localhost:8080/users/123')
-        assert response.status_code == 200
-        assert response.json()['id'] == 123
-```
-
-### Tools for Contract Testing
-
-**Popular Tools:**
-
-- `Pact` - Most popular
-- `Spring Cloud Contract` - Java/Spring
-- `Pacto` - Ruby
-- `Pact-JS` - JavaScript
-
-### When to Use Contract Testing
-
-**Good Use Cases:**
-
-- Microservices
-- API-first development
-- Service-oriented architecture
-- Independent deployment
-
-**Not Ideal For:**
-
-- Monolithic applications
-- Tightly coupled services
-- Simple applications
-- Prototype projects
+Contract testing verifies that services can communicate correctly by checking the contracts between them (a consumer's expectations against a provider's actual API), commonly with tools like Pact or, for property-based contract checking against an OpenAPI spec, Schemathesis. See [Contract Testing Guide](../guides/CONTRACT_TESTING.md) for the full explanation, a worked Schemathesis example against this repo's own API, and a comparison against integration testing.
 
 ## Visual Testing
 
