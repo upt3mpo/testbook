@@ -1,5 +1,6 @@
 import os
 from contextlib import asynccontextmanager
+from typing import AsyncIterator
 
 from dotenv import load_dotenv
 from fastapi import FastAPI, Request
@@ -8,8 +9,9 @@ from fastapi.staticfiles import StaticFiles
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from slowapi.util import get_remote_address
-from starlette.middleware.base import BaseHTTPMiddleware
-from starlette.responses import JSONResponse
+from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoint
+from starlette.responses import JSONResponse, Response
+from starlette.types import ASGIApp
 
 from database import init_db
 from logger import setup_logging
@@ -20,7 +22,7 @@ load_dotenv()
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI):
+async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     # Initialize logging on startup
     setup_logging()
 
@@ -49,7 +51,11 @@ app = FastAPI(
 
 # Add rate limiter to app state
 app.state.limiter = limiter
-app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+# slowapi's handler is typed for the specific RateLimitExceeded subclass,
+# not the generic Exception Starlette's stub expects - safe at runtime
+# (FastAPI only calls it for that exact registered exception type), but
+# mypy's parameter contravariance check can't see that.
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)  # type: ignore[arg-type]
 
 # CORS middleware
 app.add_middleware(
@@ -64,11 +70,15 @@ app.add_middleware(
 
 # Request size limiting middleware
 class RequestSizeLimitMiddleware(BaseHTTPMiddleware):
-    def __init__(self, app, max_upload_size: int = 10 * 1024 * 1024):  # 10MB default
+    def __init__(
+        self, app: ASGIApp, max_upload_size: int = 10 * 1024 * 1024
+    ) -> None:  # 10MB default
         super().__init__(app)
         self.max_upload_size = max_upload_size
 
-    async def dispatch(self, request: Request, call_next):
+    async def dispatch(
+        self, request: Request, call_next: RequestResponseEndpoint
+    ) -> Response:
         if request.method in ["POST", "PUT", "PATCH"]:
             content_length = request.headers.get("content-length")
             if content_length and int(content_length) > self.max_upload_size:
@@ -83,13 +93,13 @@ app.add_middleware(RequestSizeLimitMiddleware, max_upload_size=10 * 1024 * 1024)
 
 # Health check endpoints (must be before static mounts)
 @app.get("/api")
-async def root():
+async def root() -> dict[str, str]:
     return {"message": "Welcome to Testbook API"}
 
 
 @app.get("/api/health")
 @limiter.limit("100/minute")
-async def health_check(request: Request):
+async def health_check(request: Request) -> dict[str, str]:
     """Health check endpoint with rate limiting headers"""
     return {"status": "healthy"}
 
