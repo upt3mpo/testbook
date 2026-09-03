@@ -2,18 +2,18 @@
 
 ![CI Status](https://github.com/upt3mpo/testbook/actions/workflows/testbook-ci.yml/badge.svg)
 ![Backend Coverage](https://img.shields.io/badge/backend_coverage-86%25-brightgreen)
-![Frontend Coverage](https://img.shields.io/badge/frontend_coverage-41%25-orange)
-![Total Tests](https://img.shields.io/badge/tests-359-blue)
+![Frontend Coverage](https://img.shields.io/badge/frontend_coverage-83%25-brightgreen)
+![Total Tests](https://img.shields.io/badge/tests-477-blue)
 ![Python](https://img.shields.io/badge/python-3.13-blue)
 ![Node](https://img.shields.io/badge/node-24-green)
 
 A production-grade social media application built for learning and practicing
-automation testing. Features 183 backend tests, 40 frontend tests, 113 E2E
-tests (JavaScript + Python), 23 security tests, and structured hands-on labs.
+automation testing. Features 185 backend tests, 144 frontend tests, 119 E2E
+tests (JavaScript + Python), 29 security tests, and structured hands-on labs.
 
 Perfect for individual learners, junior developers exploring testing, or manual QA professionals transitioning to automation.
 
-**359 Tests | Complete Testing Pyramid | 86% Backend Coverage**
+**477 Tests | Complete Testing Pyramid | 86% Backend Coverage**
 
 <h2 id="table-of-contents">📋 Table of Contents</h2>
 
@@ -107,7 +107,7 @@ Testbook demonstrates the complete testing pyramid with real, production-quality
 
 ### 🧪 Unit Tests (Stage 1)
 
-**Backend:** 183 tests with pytest
+**Backend:** 185 tests with pytest
 
 ```python
 def test_user_creation():
@@ -116,7 +116,7 @@ def test_user_creation():
     assert user.is_active is True
 ```
 
-**Frontend:** 40 tests with Vitest
+**Frontend:** 144 tests with Vitest
 
 ```javascript
 test("should render login form", () => {
@@ -238,11 +238,11 @@ def test_sql_injection_prevention():
 
 ### 🧪 Testing Features
 
-- **183 Backend Tests** - pytest with 86% coverage
-- **40 Frontend Tests** - Vitest + React Testing Library (41% coverage)
-- **113 E2E Tests** - Playwright (59 JavaScript + 54 Python)
+- **185 Backend Tests** - pytest with 86% coverage
+- **144 Frontend Tests** - Vitest + React Testing Library (83% coverage)
+- **119 E2E Tests** - Playwright (59 JavaScript + 60 Python)
 - **Performance Tests** - k6 load testing
-- **Security Tests** - OWASP Top 10 coverage
+- **29 Security Tests** - OWASP Top 10 coverage
 - **API Tests** - Postman collection + Python examples
 
 ### 🎓 Learning Features

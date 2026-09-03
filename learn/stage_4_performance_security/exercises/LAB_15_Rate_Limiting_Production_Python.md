@@ -649,12 +649,12 @@ limiter = Limiter(
 
 **We implemented rate limiting in Testbook.** Great for security!
 
-**Then ran the test suite.** 23 security tests.
+**Then ran the test suite.** 29 security tests.
 
 **Result:**
 
-- Tests 1-15: ✅ PASS
-- Tests 16-23: ❌ ERROR (rate limited!)
+- Most of the real tests: ✅ PASS
+- Several of them: ❌ ERROR (rate limited!)
 
 **First reaction:** "The tests are broken!"
 
