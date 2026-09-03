@@ -1,4 +1,3 @@
-import random
 from datetime import UTC, datetime, timedelta
 from typing import Any
 
@@ -390,16 +389,25 @@ def seed_database() -> None:  # noqa: PLR0915
         db.commit()
 
         # Create some reposts
+        # hours_ago is a fixed value, not random: a random created_at meant
+        # the feed's sort order for these two reposts (relative to each
+        # other and to the regular posts around them) changed on every
+        # single database reset, which made the feed page's rendered
+        # order non-deterministic between test runs - real flakiness
+        # found by adding visual regression tests against this data (see
+        # docs/guides/VISUAL_REGRESSION.md).
         reposts_data: list[dict[str, Any]] = [
             {
                 "original_post_idx": 3,
                 "author_idx": 0,
                 "content": "This is so inspiring! 🏔️",
+                "hours_ago": 3,
             },
             {
                 "original_post_idx": 11,
                 "author_idx": 5,
                 "content": "Motivation right here!",
+                "hours_ago": 12,
             },
         ]
 
@@ -409,7 +417,8 @@ def seed_database() -> None:  # noqa: PLR0915
                 content=repost_data["content"],
                 is_repost=True,
                 original_post_id=posts[repost_data["original_post_idx"]].id,
-                created_at=datetime.now(UTC) - timedelta(hours=random.randint(1, 24)),
+                created_at=datetime.now(UTC)
+                - timedelta(hours=repost_data["hours_ago"]),
             )
             db.add(repost)
 
