@@ -166,7 +166,7 @@ None of these were skipped silently — each is named here with a reason, per th
 **Scope:** a 12-item follow-up addressing specific gaps named in the audit above (mainly §8's "what was not touched" list, plus items from §2's engineering findings that were surveyed but not executed: Ruff config triage, backend type hints, the ADVANCED_TOPICS/ADVANCED_TESTING_STRATEGIES/CONTRACT_TESTING overlap, mutation and visual regression testing).
 **Audience:** the repo maintainer.
 
-This pass produced 25 commits on `develop`, none pushed. Items were worked strictly in order, one at a time, each verified against the real test suite before moving on. All numbers below are from real runs at the end of this pass, not estimates or numbers carried over from earlier in the session.
+This pass produced 66 commits on `develop`, none pushed. Items were worked strictly in order, one at a time, each verified against the real test suite before moving on. All numbers below are from real runs at the end of this pass, not estimates or numbers carried over from earlier in the session.
 
 ### What this pass completed
 
