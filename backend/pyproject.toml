@@ -44,3 +44,19 @@ extend-exclude = ["tests/examples"]
 # this size without teaching a beginner anything they're ready for yet.
 select = ["E", "F", "I"]
 ignore = ["E501"]  # line length is black's job, not ruff's
+
+[tool.mypy]
+python_version = "3.13"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+ignore_missing_imports = true
+exclude = ["tests/examples/"]
+# models.py uses SQLAlchemy's classic Column() declarative style rather
+# than 2.0's Mapped[]/mapped_column(), so without this plugin mypy sees
+# every instance attribute (e.g. a loaded User's .email) as typed
+# Column[str] instead of str, producing ~90 false-positive arg-type
+# errors anywhere a model attribute is passed into a Pydantic response
+# model. The plugin teaches mypy the difference between the
+# class-level Column descriptor and the instance-level runtime value.
+plugins = ["sqlalchemy.ext.mypy.plugin"]
