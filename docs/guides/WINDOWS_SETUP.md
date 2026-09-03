@@ -63,10 +63,6 @@ flowchart TD
 ### 🚀 Quick Start
 
 - [PowerShell vs Command Prompt](#powershell-vs-command-prompt)
-  - [Installing PowerShell on Linux](#installing-powershell-on-linux)
-  - [Installing PowerShell on macOS](#installing-powershell-on-macos)
-  - [Why Choose PowerShell Over Native Terminal?](#why-choose-powershell-over-native-terminal)
-  - [Cross-Platform Development Benefits](#cross-platform-development-benefits)
 - [Option 1: Native Windows (Recommended for Beginners)](#option-1-native-windows-recommended-for-beginners)
 - [Option 2: WSL (Windows Subsystem for Linux) ⭐ Recommended for Developers](#option-2-wsl-windows-subsystem-for-linux--recommended-for-developers)
 - [Option 3: Docker (Cross-Platform)](#option-3-docker-cross-platform)
@@ -98,6 +94,7 @@ flowchart TD
 
 - [Issue 1: Python not found](#issue-1-python-not-found-or-python-is-not-recognized)
 - [Issue 2: npm/node not found](#issue-2-npm-is-not-recognized-or-node-is-not-recognized)
+- [Issue 2.1: Wrong Node.js version installed](#issue-21-wrong-nodejs-version-installed)
 - [Issue 2.5: psycopg2 build failure](#issue-25-error-pg_config-executable-not-found-or-psycopg2-build-failure)
 - [Issue 2.6: Rust/Cargo not found](#issue-26-cargo-the-rust-package-manager-is-not-installed-or-pydantic-core-build-failure)
 - [Issue 2.7: Python 3.14 compatibility](#issue-27-failed-building-wheel-for-pillow-or-python-314-not-supported)
@@ -106,10 +103,11 @@ flowchart TD
 - [Issue 5: Port conflicts](#issue-5-port-already-in-use)
 - [Issue 6: Database connection errors](#issue-6-database-connection-errors)
 - [Issue 7: Permission denied errors](#issue-7-permission-denied-errors)
-- [Issue 8: Script execution policy errors](#issue-8-script-execution-policy-errors)
+- [Issue 8: venv won't activate / script execution policy errors](#issue-8-venv-wont-activate--script-execution-policy-errors)
 - [Issue 10: PowerShell profile helper (Optional Enhancement)](#issue-10-powershell-profile-helper-optional-enhancement)
 - [Issue 9: Chocolatey installation failed](#issue-9-chocolatey-installation-failed-or-access-denied)
 - [Issue 11: Playwright not found](#issue-11-playwright-not-found-or-e2e-tests-fail)
+- [Issue 12: Playwright browser download blocked on a restricted network](#issue-12-playwright-browser-download-blocked-on-a-restricted-network)
 
 ### 🛠️ Advanced Topics
 
@@ -156,154 +154,9 @@ Throughout this guide, we provide commands for both shells (the program that run
 - ✅ **Simple tasks** - Easier for basic file operations
 - ⚠️ **More verbose** - Environment variables: `set VAR=value`
 
-### 🌐 PowerShell: Cross-Platform Shell
-
-**PowerShell isn't just for Windows!** It's available on Linux and macOS too:
-
-- ✅ **Same experience everywhere** - Identical commands across all platforms
-- ✅ **Object-oriented** - Works with structured data (JSON, CSV) instead of just text
-- ✅ **Advanced features** - IntelliSense, error handling, remote management
-- ✅ **Consistent scripting** - Same language on Windows, Linux, macOS
-
-<h4 id="installing-powershell-on-linux">🐧 Installing PowerShell on Linux</h4>
-
-**Ubuntu/Debian:**
-
-```bash
-# Install PowerShell
-wget -q "https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/packages-microsoft-prod.deb"
-sudo dpkg -i packages-microsoft-prod.deb
-sudo apt-get update
-sudo apt-get install -y powershell
-
-# Start PowerShell
-pwsh
-```
-
-**CentOS/RHEL/Fedora:**
-
-```bash
-# Install PowerShell
-sudo dnf install -y powershell
-
-# Start PowerShell
-pwsh
-```
-
-**Arch Linux:**
-
-```bash
-# Install PowerShell
-yay -S powershell-bin
-
-# Start PowerShell
-pwsh
-```
-
-<h4 id="installing-powershell-on-macos">🍎 Installing PowerShell on macOS</h4>
-
-**Using Homebrew (Recommended):**
-
-```bash
-# Install PowerShell
-brew install --cask powershell
-
-# Start PowerShell
-pwsh
-```
-
-**Using Direct Download:**
-
-```bash
-# Download and install from GitHub releases
-curl -L -o /tmp/powershell.pkg https://github.com/PowerShell/PowerShell/releases/latest/download/powershell-7.4.0-osx-x64.pkg
-sudo installer -pkg /tmp/powershell.pkg -target /
-```
-
-<h4 id="why-choose-powershell-over-native-terminal">🚀 Why Choose PowerShell Over Native Terminal?</h4>
-
-**PowerShell Advantages:**
-
-- **Structured data handling:**
-
-  ```powershell
-  # PowerShell - works with objects
-  Get-Content data.json | ConvertFrom-Json | Where-Object { $_.age -gt 18 }
-
-  # vs Bash - text processing
-  cat data.json | jq '.[] | select(.age > 18)'
-  ```
-
-- **Object pipelines:**
-
-  ```powershell
-  # PowerShell - object-based filtering
-  Get-Process | Where-Object { $_.CPU -gt 100 } | Stop-Process
-
-  # vs Bash - text-based filtering
-  ps aux | awk '$3 > 100 {print $2}' | xargs kill
-  ```
-
-- **Built-in modules (no external dependencies):**
-
-  ```powershell
-  # PowerShell - built-in web requests
-  Invoke-RestMethod -Uri "https://api.github.com/users/octocat"
-
-  # vs Bash - requires curl/jq
-  curl -s "https://api.github.com/users/octocat" | jq
-  ```
-
-- **Consistent error handling:**
-
-  ```powershell
-  # PowerShell - structured error objects
-  try { Get-Content "nonexistent.txt" } catch { $_.Exception.Message }
-
-  # vs Bash - exit codes and stderr
-  if ! cat nonexistent.txt 2>/dev/null; then echo "File not found"; fi
-  ```
-
-**When to use native terminal:**
-
-- Simple file operations (`ls`, `cd`, `cp`)
-- Existing shell scripts (bash/zsh scripts)
-- Platform-specific tools (system utilities)
-- Minimal resource usage (embedded systems)
-- Team conventions (if your team uses bash)
-
-💡 **Note:** Most developers use their platform's native terminal (Terminal on macOS, Terminal/Gnome Terminal on Linux). Some prefer terminal replacements like iTerm2 (macOS) for extra customization and features, but PowerShell offers a different approach - cross-platform consistency rather than platform-specific enhancements.
-
-<h4 id="cross-platform-development-benefits">🎯 Cross-Platform Development Benefits</h4>
-
-**Same commands everywhere:**
-
-```powershell
-# Works identically on Windows, Linux, and macOS
-python --version
-node --version
-git status
-npm install
-```
-
-**Consistent scripting:**
-
-```powershell
-# This script works on all platforms
-$env:PYTHONPATH = "backend"
-python -m pytest tests/
-```
-
-**Unified package management:**
-
-```powershell
-# Same package manager commands across platforms
-winget install Python.Python.3.13    # Windows
-brew install python@3.13             # macOS
-sudo apt install python3.13          # Linux (via PowerShell)
-```
-
-💡 **Recommendation:** Use PowerShell unless you have a specific reason not to. It's already installed on Windows and provides a consistent development experience across all platforms.
+**This guide's commands are PowerShell.** Anywhere you see `$env:VAR="value"`,
+the Command Prompt equivalent is `set VAR=value` - swap that in if you're
+using cmd.exe instead.
 
 ---
 
@@ -315,47 +168,47 @@ sudo apt install python3.13          # Linux (via PowerShell)
 
 Before starting, you need to install these tools:
 
-<h2 id="what-each-tool-does">🛠️ What Each Tool Does</h2>
+<h3 id="what-each-tool-does">🛠️ What Each Tool Does</h3>
 
 **Don't know what these tools are?** Here's what each one does in simple terms:
 
-### 🐍 Python 3.13
+#### 🐍 Python 3.13
 
 - **What it does:** Runs the backend API server (the "brain" of the application)
 - **Why you need it:** Testbook's backend is written in Python, so you need Python to run it
 - **Think of it as:** The engine that powers the server
 
-### 🟢 Node.js 24+
+#### 🟢 Node.js 24+
 
 - **What it does:** Runs the frontend development server and build tools
 - **Why you need it:** Testbook's frontend is built with modern web tools that need Node.js
 - **Think of it as:** The tool that builds and serves the website
 
-### 📦 Git
+#### 📦 Git
 
 - **What it does:** Downloads and manages project code (version control)
 - **Why you need it:** To download the Testbook project from GitHub
 - **Think of it as:** A smart file downloader that tracks changes
 
-### 🌐 curl (Optional)
+#### 🌐 curl (Optional)
 
 - **What it does:** Tests API endpoints from the command line
 - **Why you need it:** For testing the backend API and health checks
 - **Think of it as:** A command-line tool for making web requests
 
-### 🦀 Rust (Auto-installed if needed)
+#### 🦀 Rust (Auto-installed if needed)
 
 - **What it does:** Compiles some Python packages that need it
 - **Why you need it:** Some Python packages (like pydantic-core) are written in Rust
 - **Think of it as:** A compiler that some Python packages need to work
 
-### 🖼️ Python Pillow (Auto-installed)
+#### 🖼️ Python Pillow (Auto-installed)
 
 - **What it does:** Generates placeholder images for the application
 - **Why you need it:** The setup script creates default avatars and images automatically
 - **Think of it as:** An image processing library that creates visual content
 
-### 🎭 Playwright (Required - for E2E Testing)
+#### 🎭 Playwright (Required - for E2E Testing)
 
 - **What it does:** Runs automated browser tests (end-to-end testing)
 - **Why you need it:** Essential for learning comprehensive testing - tests the full application workflow from a user's perspective
@@ -733,7 +586,7 @@ npx playwright --version
 # Should show: Playwright version 1.x.x
 ```
 
-<h2 id="installation-workflow">📊 Installation Workflow</h2>
+<h3 id="installation-workflow">📊 Installation Workflow</h3>
 
 **Here's what the setup process looks like:**
 
@@ -777,18 +630,18 @@ flowchart TB
 
 1. **Clone the repository (project folder with version control):**
 
-```powershell
+   ```powershell
    git clone https://github.com/upt3mpo/testbook.git
    cd testbook
-```
+   ```
 
-1. **Run the start script:**
+2. **Run the start script:**
 
    ```powershell
    .\start-dev.bat
    ```
 
-2. **Recommended: Configure Environment Variables (do this BEFORE running E2E or security tests)**
+3. **Recommended: Configure Environment Variables (do this BEFORE running E2E or security tests)**
 
    **`start-dev.bat` does NOT set `TESTING=true` on its own** — it just starts the
    backend and frontend with whatever environment is already in place. If
@@ -873,11 +726,11 @@ Test accounts:
 Ready to start? → learn\README.md
 ```
 
-<h2 id="troubleshooting-fast-triage">🔧 Troubleshooting (Fast Triage)</h2>
+<h3 id="troubleshooting-fast-triage">🔧 Troubleshooting (Fast Triage)</h3>
 
 **Having issues?** Start here. Pick your symptom, run the quick check, then jump straight to the fix.
 
-### ✅ One-Command Health Check (PowerShell)
+#### ✅ One-Command Health Check (PowerShell)
 
 ```powershell
 # Run in project root (Windows PowerShell)
@@ -915,23 +768,25 @@ Write-Host "ExecutionPolicy: $pol" -ForegroundColor DarkCyan
 
 ---
 
-### 🧭 Quick Triage Table
+#### 🧭 Quick Triage Table
 
-| Symptom you see                        | Likely cause                           | Quick action                               | Full fix                                                                                              |
-| -------------------------------------- | -------------------------------------- | ------------------------------------------ | ----------------------------------------------------------------------------------------------------- |
-| `'python' is not recognized`           | Python not installed or not on PATH    | Install 3.13 or add PATH                   | [Issue 1](#issue-1-python-not-found-or-python-is-not-recognized)                                      |
-| `'npm'/'node' is not recognized`       | Node not installed / PATH              | Install Node 24+                           | [Issue 2](#issue-2-npm-is-not-recognized-or-node-is-not-recognized)                                   |
-| `Port 8000/3000 already in use`        | Another app is using the port          | Kill process on that port                  | [Issue 5](#issue-5-port-already-in-use)                                                               |
-| `Permission denied / Access is denied` | Needs elevated rights or blocked by AV | Run as Admin, check AV                     | [Issue 7](#issue-7-permission-denied-errors)                                                          |
-| Script won't run due to policy         | Execution policy too strict            | Set policy for CurrentUser                 | [Issue 8](#issue-8-script-execution-policy-errors)                                                    |
-| Chocolatey install fails               | No admin rights                        | Use winget or run as Admin                 | [Issue 9](#issue-9-chocolatey-installation-failed-or-access-denied)                                   |
-| `playwright not found` / tests fail    | Playwright/browsers not installed      | `npm i && npx playwright install chromium` | [Issue 11](#issue-11-playwright-not-found-or-e2e-tests-fail)                                          |
-| Rust / pydantic-core errors            | Needs Rust toolchain                   | `winget install Rustlang.Rust.MSVC`        | [Issue 2.6](#issue-26-cargo-the-rust-package-manager-is-not-installed-or-pydantic-core-build-failure) |
-| Pillow / Python 3.14 errors            | 3.14 too new                           | Use Python 3.13                            | [Issue 2.7](#issue-27-failed-building-wheel-for-pillow-or-python-314-not-supported)                   |
+| Symptom you see                                                     | Likely cause                                           | Quick action                                          | Full fix                                                                                              |
+| ------------------------------------------------------------------- | ------------------------------------------------------ | ----------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `'python' is not recognized`                                        | Python not installed or not on PATH                    | Install 3.13 or add PATH                              | [Issue 1](#issue-1-python-not-found-or-python-is-not-recognized)                                      |
+| `'npm'/'node' is not recognized`                                    | Node not installed / PATH                              | Install Node 24+                                      | [Issue 2](#issue-2-npm-is-not-recognized-or-node-is-not-recognized)                                   |
+| `npm install` succeeds but app misbehaves, or `npm warn EBADENGINE` | Wrong Node version installed (need >=24 <25)           | Check `node --version`, install Node 24               | [Issue 2.1](#issue-21-wrong-nodejs-version-installed)                                                 |
+| `Port 8000/3000 already in use`                                     | Another app is using the port                          | Kill process on that port                             | [Issue 5](#issue-5-port-already-in-use)                                                               |
+| `Permission denied / Access is denied`                              | Needs elevated rights or blocked by AV                 | Run as Admin, check AV                                | [Issue 7](#issue-7-permission-denied-errors)                                                          |
+| `Activate.ps1 cannot be loaded` / script won't run due to policy    | Execution policy too strict                            | Set policy for CurrentUser                            | [Issue 8](#issue-8-venv-wont-activate--script-execution-policy-errors)                                |
+| Chocolatey install fails                                            | No admin rights                                        | Use winget or run as Admin                            | [Issue 9](#issue-9-chocolatey-installation-failed-or-access-denied)                                   |
+| `playwright not found` / tests fail                                 | Playwright/browsers not installed                      | `npm i && npx playwright install chromium`            | [Issue 11](#issue-11-playwright-not-found-or-e2e-tests-fail)                                          |
+| `npx playwright install` hangs or times out on a work laptop        | Corporate firewall/proxy blocking the browser download | Ask IT to allowlist the download host, or set a proxy | [Issue 12](#issue-12-playwright-browser-download-blocked-on-a-restricted-network)                     |
+| Rust / pydantic-core errors                                         | Needs Rust toolchain                                   | `winget install Rustlang.Rust.MSVC`                   | [Issue 2.6](#issue-26-cargo-the-rust-package-manager-is-not-installed-or-pydantic-core-build-failure) |
+| Pillow / Python 3.14 errors                                         | 3.14 too new                                           | Use Python 3.13                                       | [Issue 2.7](#issue-27-failed-building-wheel-for-pillow-or-python-314-not-supported)                   |
 
 ---
 
-### 🚀 One-Click Fixes (Copy/Paste)
+#### 🚀 One-Click Fixes (Copy/Paste)
 
 <details>
 <summary><strong>Fix Python fast</strong> – install 3.13 and verify</summary>
@@ -977,7 +832,7 @@ See [Issue 5](#issue-5-port-already-in-use) for a one-liner that kills all PIDs 
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 ```
 
-Then run `.\start-dev.bat` again. Full context: [Issue 8](#issue-8-script-execution-policy-errors).
+Then run `.\start-dev.bat` again. Full context: [Issue 8](#issue-8-venv-wont-activate--script-execution-policy-errors).
 
 </details>
 
@@ -1009,7 +864,7 @@ Or use prebuilt wheels: see [Issue 2.6](#issue-26-cargo-the-rust-package-manager
 
 ---
 
-### 🧱 Category Overview
+#### 🧱 Category Overview
 
 <details>
 <summary>🐍 Python issues</summary>
@@ -1024,6 +879,7 @@ Or use prebuilt wheels: see [Issue 2.6](#issue-26-cargo-the-rust-package-manager
 <summary>🟩 Node / npm issues</summary>
 
 - Not recognized → [Issue 2](#issue-2-npm-is-not-recognized-or-node-is-not-recognized)
+- Wrong version installed → [Issue 2.1](#issue-21-wrong-nodejs-version-installed)
 - Module not found → see [Node Modules Issues](#node-modules-issues) later in the doc
 
 </details>
@@ -1041,7 +897,7 @@ Or use prebuilt wheels: see [Issue 2.6](#issue-26-cargo-the-rust-package-manager
 
 - Ports in use → [Issue 5](#issue-5-port-already-in-use)
 - Permission denied → [Issue 7](#issue-7-permission-denied-errors)
-- Execution policy → [Issue 8](#issue-8-script-execution-policy-errors)
+- venv won't activate / execution policy → [Issue 8](#issue-8-venv-wont-activate--script-execution-policy-errors)
 - Chocolatey access denied → [Issue 9](#issue-9-chocolatey-installation-failed-or-access-denied)
 
 </details>
@@ -1050,19 +906,23 @@ Or use prebuilt wheels: see [Issue 2.6](#issue-26-cargo-the-rust-package-manager
 <summary>🎭 Testing / Playwright</summary>
 
 - Playwright not found / browsers missing → [Issue 11](#issue-11-playwright-not-found-or-e2e-tests-fail)
+- Browser download blocked on a work machine → [Issue 12](#issue-12-playwright-browser-download-blocked-on-a-restricted-network)
 
 </details>
 
-### 🚨 Most Common Issues
+#### 🚨 Most Common Issues
 
 **Quick fixes for the most frequent problems:**
 
 1. **"Python not found"** → [Issue 1](#issue-1-python-not-found-or-python-is-not-recognized) - Reinstall Python with PATH
 2. **"npm not found"** → [Issue 2](#issue-2-npm-is-not-recognized-or-node-is-not-recognized) - Install Node.js
-3. **"Port already in use"** → [Issue 5](#issue-5-port-already-in-use) - Kill process using the port
-4. **"Permission denied"** → [Issue 7](#issue-7-permission-denied-errors) - Run as Administrator
-5. **"Chocolatey access denied"** → [Issue 9](#issue-9-chocolatey-installation-failed-or-access-denied) - Run PowerShell as Administrator
-6. **"Playwright not found"** → [Issue 11](#issue-11-playwright-not-found-or-e2e-tests-fail) - Install Playwright and browsers
+3. **Wrong Node.js version** → [Issue 2.1](#issue-21-wrong-nodejs-version-installed) - Install Node 24
+4. **venv won't activate in PowerShell** → [Issue 8](#issue-8-venv-wont-activate--script-execution-policy-errors) - Fix the execution policy
+5. **"Port already in use"** → [Issue 5](#issue-5-port-already-in-use) - Kill process using the port
+6. **"Permission denied"** → [Issue 7](#issue-7-permission-denied-errors) - Run as Administrator
+7. **"Chocolatey access denied"** → [Issue 9](#issue-9-chocolatey-installation-failed-or-access-denied) - Run PowerShell as Administrator
+8. **"Playwright not found"** → [Issue 11](#issue-11-playwright-not-found-or-e2e-tests-fail) - Install Playwright and browsers
+9. **Playwright install hangs on a work laptop** → [Issue 12](#issue-12-playwright-browser-download-blocked-on-a-restricted-network) - Work around the corporate firewall
 
 **📖 Need more help?** Check [TROUBLESHOOTING.md](../reference/TROUBLESHOOTING.md) for technical errors with exact fixes | [FAQ.md](FAQ.md) for learning questions.
 
@@ -1109,6 +969,56 @@ Or use prebuilt wheels: see [Issue 2.6](#issue-26-cargo-the-rust-package-manager
 2. **Check installation:** `node --version` and `npm --version`
 3. **Reinstall if needed:** Node.js includes npm automatically
 4. **Check PATH:** `C:\Program Files\nodejs\`
+
+#### Issue 2.1: Wrong Node.js version installed
+
+**Symptoms:**
+
+```text
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'testbook-frontend@1.3.1',
+npm warn EBADENGINE   required: { node: '>=24 <25' },
+npm warn EBADENGINE   current: { node: 'v20.11.0', npm: '10.2.4' }
+npm warn EBADENGINE }
+```
+
+or the app installs and starts, but you see confusing errors later in the
+frontend dev server or in `tests/` that don't match anything in this guide.
+
+**Why:** `frontend/package.json` and `tests/package.json` both pin
+`"node": ">=24 <25"`. npm treats that as advisory by default - it prints
+the `EBADENGINE` warning above but still installs, so a version mismatch
+doesn't stop you at `npm install`. It can instead surface later as an
+unrelated-looking failure, since Vite and some native dependencies assume
+a Node 24.x runtime.
+
+**Solutions:**
+
+1. **Check your version:**
+
+   ```powershell
+   node --version
+   # Needs to start with v24, e.g. v24.4.0
+   ```
+
+2. **If it doesn't, install Node 24 and let it replace the old one:**
+
+   ```powershell
+   winget install OpenJS.NodeJS --version 24.4.0
+   ```
+
+3. **If you need multiple Node versions on the same machine, use nvm-windows**
+   instead of installing Node directly, so you can switch per project:
+
+   ```powershell
+   winget install CoreyButler.NVMforWindows
+   # Restart your terminal, then:
+   nvm install 24
+   nvm use 24
+   ```
+
+4. **Verify again:** `node --version` should now start with `v24`, then
+   re-run `npm install` in both `frontend/` and `tests/`.
 
 #### Issue 2.5: "Error: pg_config executable not found" or psycopg2 build failure
 
@@ -1342,13 +1252,26 @@ Access is denied
 3. **Add project folder to antivirus exclusions**
 4. **Use WSL** as alternative (see Option 2 below)
 
-#### Issue 8: Script execution policy errors
+#### Issue 8: venv won't activate / script execution policy errors
 
 **Symptoms:**
 
 ```text
-execution of scripts is disabled on this system
+.venv\Scripts\Activate.ps1 cannot be loaded because running scripts is
+disabled on this system. For more information, see about_Execution_Policies
+at https:/go.microsoft.com/fwlink/?LinkID=135170.
 ```
+
+This is the error you get running `.venv\Scripts\Activate.ps1` directly
+in PowerShell (as opposed to `start-dev.bat`, which activates the venv
+internally and isn't affected). It shows up whenever you try to activate
+the backend virtual environment by hand - for example before running
+`pytest` or `uvicorn` manually.
+
+**Why:** PowerShell's default execution policy on Windows blocks running
+any `.ps1` script, including the one that activates a Python virtual
+environment. This isn't specific to Testbook - it affects every Python
+project's venv on a fresh Windows machine.
 
 **Solutions:**
 
@@ -1356,14 +1279,23 @@ execution of scripts is disabled on this system
 # Check current policy
 Get-ExecutionPolicy
 
-# Set policy for current user (temporary)
+# Allow local scripts for your user account (doesn't need Administrator)
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 
-# Or run batch file directly
+# Then activation works:
+cd backend
+.venv\Scripts\Activate.ps1
+```
+
+If you'd rather not change the execution policy, `start-dev.bat` and
+`.venv\Scripts\activate.bat` (Command Prompt, not PowerShell) both work
+without it:
+
+```powershell
 .\start-dev.bat
 ```
 
-### Issue 9: "Chocolatey installation failed" or "Access denied"
+#### Issue 9: "Chocolatey installation failed" or "Access denied"
 
 **Symptoms:**
 
@@ -1493,6 +1425,62 @@ Error: Cannot find module 'playwright'
 - Check the `tests/package.json` file exists
 
 **Note:** E2E tests are required for the complete testing tutorial. They teach essential end-to-end testing concepts that complement unit and integration testing.
+
+#### Issue 12: Playwright browser download blocked on a restricted network
+
+**Symptoms:**
+
+```text
+npx playwright install chromium
+```
+
+hangs for a long time, then fails with something like:
+
+```text
+Error: Failed to download Chromium
+browserType.launch: Executable doesn't exist at ...
+Download failure, code=1
+```
+
+This is common on a corporate laptop, VPN, or locked-down network: `npm install`
+succeeds (npm packages come from the npm registry, usually allowed), but
+`npx playwright install` separately downloads the actual browser binary from
+Microsoft's CDN, which a corporate firewall or proxy often blocks.
+
+**Solutions:**
+
+1. **Check whether it's actually a network block:**
+
+   ```powershell
+   curl -I https://cdn.playwright.dev
+   ```
+
+   A timeout or connection error here confirms the download host is blocked,
+   rather than something wrong with your Playwright install.
+
+2. **If your organization uses an HTTP proxy, point Playwright at it:**
+
+   ```powershell
+   $env:HTTPS_PROXY = "http://your-proxy.company.com:8080"
+   npx playwright install chromium
+   ```
+
+3. **Ask IT to allowlist the download host** (`cdn.playwright.dev`) - this
+   is the fastest fix if you're on a managed corporate machine and don't
+   control the firewall yourself.
+
+4. **If you already have Chrome installed system-wide**, you can point
+   Playwright at it instead of downloading its own bundled Chromium:
+
+   ```powershell
+   npx playwright install --with-deps chromium --channel=chrome
+   ```
+
+   or set `channel: 'chrome'` in `tests/playwright.config.js`'s `use` block.
+
+5. **As a last resort**, run the E2E suite from a machine or network that
+   isn't restricted (a personal machine, a cloud dev environment) and treat
+   the corporate laptop as backend/frontend-only for this course.
 
 ### Advanced Troubleshooting
 
@@ -2020,8 +2008,10 @@ Works great with native Windows or WSL. Configure interpreters:
 
 **Still stuck?**
 
+- Check [TROUBLESHOOTING.md](../reference/TROUBLESHOOTING.md) for technical errors with exact fixes
 - Check [RUNNING_TESTS.md](./RUNNING_TESTS.md)
 - Review [README.md](../../README.md#learning-path)
+- Try WSL if Native Windows setup keeps hitting issues - see [Option 2](#option-2-wsl-windows-subsystem-for-linux--recommended-for-developers)
 - Ask in the course discussion forum
 
 ---
@@ -2102,105 +2092,19 @@ Works great with native Windows or WSL. Configure interpreters:
 
 ## Recommendations by User Type
 
-### 🎯 New to Programming/Testing
+Already covered in more depth above ([Ultra-Quick Start](#ultra-quick-start),
+[Option 2: WSL](#option-2-wsl-windows-subsystem-for-linux--recommended-for-developers)'s
+"Perfect for you if" section) - here's the short version:
 
-**Choose:** Native Windows
+| If you are...                 | Choose         | Because                                                        |
+| ----------------------------- | -------------- | -------------------------------------------------------------- |
+| New to programming or testing | Native Windows | Fewest moving parts, installers instead of command-line setup  |
+| An experienced developer      | WSL            | Real Linux tools and commands, matches production environments |
+| Focused on DevOps/containers  | Docker         | Production-like isolation, practice with Docker Compose        |
 
-**Why this is perfect for you:**
-
-- **Easiest setup** - Just download and run installers, no command-line complexity
-- **Familiar environment** - Uses Windows you already know, no learning curve
-- **Visual feedback** - See exactly what's being installed through GUI installers
-- **Minimal troubleshooting** - Fewer moving parts means fewer things can go wrong
-
-**What to expect:**
-
-- **Setup time:** 5-10 minutes
-- **Learning curve:** Very low - just follow the steps
-- **Troubleshooting:** Mostly Windows-specific issues (PATH, permissions)
-- **Future flexibility:** Easy to switch to WSL later if you want
-
-**Pain points this solves:**
-
-- Overwhelmed by too many technical options
-- Want to focus on learning testing, not system administration
-- Prefer clicking through installers over typing commands
-
-### 💻 Experienced Developer
-
-**Choose:** WSL
-
-**Why this is perfect for you:**
-
-- **Better development experience** - Same tools and commands used in professional development
-- **Cross-platform compatibility** - Write code that works everywhere
-- **Access to Linux tools** - 60,000+ packages, powerful command-line tools
-- **VS Code Remote - WSL integration** - Seamless development environment
-- **Avoid Windows quirks** - No more PowerShell execution policy issues
-
-**What to expect:**
-
-- **Setup time:** 10-15 minutes (one-time WSL setup)
-- **Learning curve:** Low if you know Linux, medium if you don't
-- **Troubleshooting:** Linux-style debugging, better error messages
-- **Future flexibility:** Easy to deploy to Linux servers
-
-**Pain points this solves:**
-
-- "This works on my Mac but not Windows" syndrome
-- Want to learn industry-standard development practices
-- Tired of Windows-specific development issues
-- Need access to Linux-specific tools and packages
-
-### 🎓 Learning-Focused Environment
-
-**Choose:** Native Windows or WSL
-
-**Perfect for learning because:**
-
-- **No special permissions needed** - All tools are freely available
-- **Complete control** - You can install and configure everything yourself
-- **Real-world skills** - Learn the same tools used in professional development
-- **Portable knowledge** - Skills transfer to any development environment
-
-**What to expect:**
-
-- **Setup time:** 5-15 minutes (depending on chosen path)
-- **Learning curve:** Low to medium (with clear guidance)
-- **Troubleshooting:** Comprehensive help available in this guide
-- **Future flexibility:** Easy to adapt to different projects
-
-**Pain points this solves:**
-
-- Getting started with modern development tools
-- Understanding how web applications work
-- Learning industry-standard practices
-- Building confidence with command-line tools
-
-### 🐳 DevOps/Container Focused
-
-**Choose:** Docker
-
-**Why this is perfect for you:**
-
-- **Production-like environment** - Same container as production servers
-- **Container orchestration learning** - Practice with Docker Compose
-- **CI/CD pipeline practice** - Learn containerized deployment
-- **Isolation** - No conflicts with other projects on your machine
-
-**What to expect:**
-
-- **Setup time:** 5-10 minutes (if Docker is already installed)
-- **Learning curve:** Medium - need to understand containers
-- **Troubleshooting:** Container logs and Docker-specific issues
-- **Future flexibility:** Easy to scale to Kubernetes, cloud deployment
-
-**Pain points this solves:**
-
-- Want to learn modern deployment practices
-- Need to avoid dependency conflicts between projects
-- Planning to work with microservices or cloud deployment
-- Want to understand how production systems work
+If none of those describe you, Native Windows is the safest default -
+you can always switch to WSL later without losing any work, since both
+run the same codebase.
 
 ## Verification Checklist
 
@@ -2240,22 +2144,7 @@ Once your environment is running:
 3. **Run your first test:** Complete [Stage 1 Exercises](../../learn/stage_1_unit/exercises/)
 4. **Explore the codebase:** Check out [docs/INDEX.md](../../docs/INDEX.md)
 
-## Troubleshooting
-
-**Script not working?**
-
-1. Check you're in the project root directory
-2. Verify all prerequisites are installed (see verification commands above)
-3. Look at the error messages - the scripts provide detailed feedback
-4. Try the troubleshooting sections above
-
-**Still stuck?**
-
-- Check [TROUBLESHOOTING.md](../reference/TROUBLESHOOTING.md) for technical errors with exact fixes
-- Check [FAQ.md](FAQ.md) for learning questions and quick setup guidance
-- Review [RUNNING_TESTS.md](./RUNNING_TESTS.md)
-- Try WSL if Native Windows has issues
-- Ask in the course discussion forum
+Still stuck on setup? See [Getting Help](#getting-help) above.
 
 **Happy testing!** 🚀
 
