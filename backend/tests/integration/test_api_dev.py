@@ -70,9 +70,8 @@ class TestDevEndpointsWithTestMode:
         """Restore original TESTING env var"""
         if self.original_testing:
             os.environ["TESTING"] = self.original_testing
-        else:
-            if "TESTING" in os.environ:
-                del os.environ["TESTING"]
+        elif "TESTING" in os.environ:
+            del os.environ["TESTING"]
 
     def test_users_endpoint_with_test_mode(self) -> None:
         """GET /api/dev/users should return users with passwords in test mode"""

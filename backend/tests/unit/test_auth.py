@@ -15,7 +15,7 @@ This file is referenced in Stage 1 learning materials as an example
 of professional unit testing practices.
 """
 
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 import pytest
 from jose import JWTError, jwt
@@ -202,7 +202,7 @@ class TestJWTTokens:
         assert "exp" in payload
 
     @pytest.mark.parametrize(
-        "expires_delta,expected_minutes",
+        ("expires_delta", "expected_minutes"),
         [
             pytest.param(timedelta(minutes=30), 30, id="30_minutes"),
             pytest.param(timedelta(hours=2), 120, id="2_hours"),
@@ -222,8 +222,8 @@ class TestJWTTokens:
         token = create_access_token(data={"sub": email}, expires_delta=expires_delta)
 
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        exp_datetime = datetime.fromtimestamp(payload["exp"], tz=timezone.utc)
-        now = datetime.now(timezone.utc)
+        exp_datetime = datetime.fromtimestamp(payload["exp"], tz=UTC)
+        now = datetime.now(UTC)
 
         time_diff_minutes = (exp_datetime - now).total_seconds() / 60
         assert expected_minutes - 1 <= time_diff_minutes <= expected_minutes + 1, (
@@ -272,7 +272,7 @@ class TestPasswordComplexity:
     """Test password complexity requirements."""
 
     @pytest.mark.parametrize(
-        "password,should_hash",
+        ("password", "should_hash"),
         [
             ("Short1!", True),  # Short but valid
             ("a" * 1000, True),  # Very long
@@ -313,8 +313,8 @@ class TestTokenDataStructure:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         assert "exp" in payload
 
-        exp_datetime = datetime.fromtimestamp(payload["exp"], tz=timezone.utc)
-        now = datetime.now(timezone.utc)
+        exp_datetime = datetime.fromtimestamp(payload["exp"], tz=UTC)
+        now = datetime.now(UTC)
         time_diff_minutes = (exp_datetime - now).total_seconds() / 60
 
         assert (

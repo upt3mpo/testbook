@@ -1,6 +1,5 @@
 import uuid
 from pathlib import Path
-from typing import Optional
 
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
 from sqlalchemy.orm import Session
@@ -20,9 +19,13 @@ UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 @router.post("/upload")
 async def upload_media(
     file: UploadFile = File(...),
-    current_user: models.User = Depends(get_current_user),
-) -> dict[str, Optional[str]]:
-    """Upload an image or video file"""
+    current_user: models.User = Depends(get_current_user),  # noqa: ARG001
+) -> dict[str, str | None]:
+    """Upload an image or video file.
+
+    current_user is unused in the body - it's here to require
+    authentication, not because the handler needs the user's data.
+    """
     if not file.filename:
         raise HTTPException(status_code=400, detail="Uploaded file has no filename")
 
@@ -52,10 +55,12 @@ async def upload_media(
     # Save file
     try:
         contents = await file.read()
-        with open(file_path, "wb") as f:
+        with file_path.open("wb") as f:
             f.write(contents)
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to upload file: {str(e)}")
+    except OSError as e:
+        raise HTTPException(
+            status_code=500, detail=f"Failed to upload file: {e!s}"
+        ) from e
 
     # Return the URL
     file_url = f"/static/uploads/{unique_filename}"
@@ -271,7 +276,7 @@ def delete_post(
 @router.get("/{post_id}", response_model=schemas.PostDetailResponse)
 def get_post(
     post_id: int,
-    current_user: Optional[models.User] = Depends(get_optional_user),
+    current_user: models.User | None = Depends(get_optional_user),
     db: Session = Depends(get_db),
 ) -> schemas.PostDetailResponse:
     """Get a single post with all details (public endpoint)"""
@@ -307,34 +312,32 @@ def get_post(
         )
 
     # Prepare comments
-    comments = []
-    for comment in post.comments:
-        comments.append(
-            schemas.CommentResponse(
-                id=comment.id,
-                content=comment.content,
-                post_id=comment.post_id,
-                author_id=comment.author_id,
-                author_username=comment.author.username,
-                author_display_name=comment.author.display_name,
-                author_profile_picture=comment.author.profile_picture,
-                created_at=comment.created_at,
-            )
+    comments = [
+        schemas.CommentResponse(
+            id=comment.id,
+            content=comment.content,
+            post_id=comment.post_id,
+            author_id=comment.author_id,
+            author_username=comment.author.username,
+            author_display_name=comment.author.display_name,
+            author_profile_picture=comment.author.profile_picture,
+            created_at=comment.created_at,
         )
+        for comment in post.comments
+    ]
 
     # Prepare reactions
-    reactions = []
-    for reaction in post.reactions:
-        reactions.append(
-            schemas.ReactionResponse(
-                id=reaction.id,
-                reaction_type=reaction.reaction_type,
-                user_id=reaction.user_id,
-                username=reaction.user.username,
-                display_name=reaction.user.display_name,
-                created_at=reaction.created_at,
-            )
+    reactions = [
+        schemas.ReactionResponse(
+            id=reaction.id,
+            reaction_type=reaction.reaction_type,
+            user_id=reaction.user_id,
+            username=reaction.user.username,
+            display_name=reaction.user.display_name,
+            created_at=reaction.created_at,
         )
+        for reaction in post.reactions
+    ]
 
     # Handle original post for reposts
     original_post = None

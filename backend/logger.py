@@ -9,8 +9,8 @@ import json
 import logging
 import os
 import sys
-from datetime import datetime, timezone
-from typing import Any, Dict, Optional
+from datetime import UTC, datetime
+from typing import Any, ClassVar
 
 
 class StructuredFormatter(logging.Formatter):
@@ -21,8 +21,8 @@ class StructuredFormatter(logging.Formatter):
 
     def format(self, record: logging.LogRecord) -> str:
         """Format log record as JSON"""
-        log_data: Dict[str, Any] = {
-            "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+        log_data: dict[str, Any] = {
+            "timestamp": datetime.now(UTC).isoformat().replace("+00:00", "Z"),
             "level": record.levelname,
             "logger": record.name,
             "message": record.getMessage(),
@@ -57,7 +57,7 @@ class DevelopmentFormatter(logging.Formatter):
     """
 
     # ANSI color codes
-    COLORS = {
+    COLORS: ClassVar[dict[str, str]] = {
         "DEBUG": "\033[36m",  # Cyan
         "INFO": "\033[32m",  # Green
         "WARNING": "\033[33m",  # Yellow
@@ -88,7 +88,7 @@ class DevelopmentFormatter(logging.Formatter):
 
 
 def setup_logging(
-    level: Optional[str] = None, use_json: Optional[bool] = None
+    level: str | None = None, use_json: bool | None = None
 ) -> logging.Logger:
     """
     Configure application logging.
@@ -118,11 +118,9 @@ def setup_logging(
     handler.setLevel(level.upper())
 
     # Set formatter based on environment
-    formatter: logging.Formatter
-    if use_json:
-        formatter = StructuredFormatter()
-    else:
-        formatter = DevelopmentFormatter()
+    formatter: logging.Formatter = (
+        StructuredFormatter() if use_json else DevelopmentFormatter()
+    )
 
     handler.setFormatter(formatter)
     logger.addHandler(handler)
@@ -133,7 +131,7 @@ def setup_logging(
     return logger
 
 
-def get_logger(name: Optional[str] = None) -> logging.Logger:
+def get_logger(name: str | None = None) -> logging.Logger:
     """
     Get a logger instance.
 

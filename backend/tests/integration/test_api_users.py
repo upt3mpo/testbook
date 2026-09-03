@@ -74,7 +74,7 @@ class TestUpdateUserProfile:
         assert response.status_code in [401, 403, 422]
 
     @pytest.mark.parametrize(
-        "field,value",
+        ("field", "value"),
         [
             pytest.param("theme", "dark", id="theme"),
             pytest.param("text_density", "compact", id="text_density"),
@@ -316,15 +316,18 @@ class TestDeleteAccount:
 
         assert response.status_code == 200
 
-        # Verify user is deleted - create new auth headers to try accessing
-        try:
-            get_response = client.get(
-                f"/api/users/{test_user.username}", headers=auth_headers
-            )
-            # Should either be 404 or 401 (if token is invalidated)
-            assert get_response.status_code in [401, 404]
-        except Exception:
-            pass  # Account deleted successfully
+        # Verify the user is actually gone, not just that the delete call
+        # returned 200. A bare TestClient.get() doesn't raise on HTTP
+        # errors, so there's no exception here to catch - the earlier
+        # try/except around this assert was silently swallowing real
+        # assertion failures (AssertionError is an Exception too).
+        get_response = client.get(
+            f"/api/users/{test_user.username}", headers=auth_headers
+        )
+        assert get_response.status_code in [401, 404], (
+            "Deleted user's profile should be gone (404) or the token should "
+            f"be invalidated (401), got {get_response.status_code}"
+        )
 
     def test_delete_account_without_auth(self, client) -> None:
         """Test that deleting account requires authentication."""

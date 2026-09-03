@@ -1,5 +1,5 @@
 import os
-from typing import Any, Optional
+from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
@@ -104,8 +104,8 @@ def get_all_users_with_passwords(
 def create_test_post(
     user_id: int,
     content: str,
-    image_url: Optional[str] = None,
-    video_url: Optional[str] = None,
+    image_url: str | None = None,
+    video_url: str | None = None,
     db: Session = Depends(get_db),
     _: bool = Depends(require_test_mode),
 ) -> dict[str, Any]:

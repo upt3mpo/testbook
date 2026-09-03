@@ -46,7 +46,7 @@ class TestGetAllFeed:
         data = response.json()
 
         # Should have posts from multiple users
-        authors = set(post["author_username"] for post in data)
+        authors = {post["author_username"] for post in data}
         assert len(authors) > 1
 
 
@@ -165,10 +165,7 @@ class TestFeedOrdering:
             # Check that posts are ordered by created_at descending
             from datetime import datetime
 
-            dates = [
-                datetime.fromisoformat(post["created_at"].replace("Z", "+00:00"))
-                for post in data
-            ]
+            dates = [datetime.fromisoformat(post["created_at"]) for post in data]
 
             # Each date should be >= the next date (descending order)
             for i in range(len(dates) - 1):

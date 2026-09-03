@@ -1,6 +1,6 @@
 import os
-from datetime import datetime, timedelta, timezone
-from typing import Any, Optional
+from datetime import UTC, datetime, timedelta
+from typing import Any
 
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
@@ -31,6 +31,7 @@ ACCESS_TOKEN_EXPIRE_MINUTES = int(
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 security = HTTPBearer()
+optional_security = HTTPBearer(auto_error=False)
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
@@ -42,15 +43,13 @@ def get_password_hash(password: str) -> str:
 
 
 def create_access_token(
-    data: dict[str, Any], expires_delta: Optional[timedelta] = None
+    data: dict[str, Any], expires_delta: timedelta | None = None
 ) -> str:
     to_encode = data.copy()
     if expires_delta:
-        expire = datetime.now(timezone.utc) + expires_delta
+        expire = datetime.now(UTC) + expires_delta
     else:
-        expire = datetime.now(timezone.utc) + timedelta(
-            minutes=ACCESS_TOKEN_EXPIRE_MINUTES
-        )
+        expire = datetime.now(UTC) + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     to_encode.update({"exp": expire})
     return str(jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM))
 
@@ -71,8 +70,8 @@ def get_current_user(
         email: str = payload.get("sub")
         if email is None:
             raise credentials_exception
-    except JWTError:
-        raise credentials_exception
+    except JWTError as e:
+        raise credentials_exception from e
 
     user = db.query(models.User).filter(models.User.email == email).first()
     if user is None:
@@ -82,11 +81,9 @@ def get_current_user(
 
 
 def get_optional_user(
-    credentials: Optional[HTTPAuthorizationCredentials] = Depends(
-        HTTPBearer(auto_error=False)
-    ),
+    credentials: HTTPAuthorizationCredentials | None = Depends(optional_security),
     db: Session = Depends(get_db),
-) -> Optional[models.User]:
+) -> models.User | None:
     """Get current user if authenticated, otherwise return None"""
     if not credentials:
         return None
@@ -98,7 +95,6 @@ def get_optional_user(
         if email is None:
             return None
 
-        user = db.query(models.User).filter(models.User.email == email).first()
-        return user
+        return db.query(models.User).filter(models.User.email == email).first()
     except JWTError:
         return None

@@ -1,5 +1,5 @@
-from datetime import datetime, timezone
-from typing import List, Optional
+from datetime import UTC, datetime
+from typing import Optional
 
 from sqlalchemy import (
     Boolean,
@@ -55,31 +55,31 @@ class User(Base):
     theme: Mapped[str] = mapped_column(String, nullable=False, default="light")
     text_density: Mapped[str] = mapped_column(String, nullable=False, default="normal")
     created_at: Mapped[datetime] = mapped_column(
-        DateTime, nullable=False, default=lambda: datetime.now(timezone.utc)
+        DateTime, nullable=False, default=lambda: datetime.now(UTC)
     )
 
     # Relationships
-    posts: Mapped[List["Post"]] = relationship(
+    posts: Mapped[list["Post"]] = relationship(
         "Post", back_populates="author", cascade="all, delete-orphan"
     )
-    comments: Mapped[List["Comment"]] = relationship(
+    comments: Mapped[list["Comment"]] = relationship(
         "Comment", back_populates="author", cascade="all, delete-orphan"
     )
-    reactions: Mapped[List["Reaction"]] = relationship(
+    reactions: Mapped[list["Reaction"]] = relationship(
         "Reaction", back_populates="user", cascade="all, delete-orphan"
     )
 
     # Following relationships. back_populates (rather than backref) on
     # both sides so the reverse attributes (followers/blocked_by) are
     # visible to mypy instead of only existing at runtime.
-    following: Mapped[List["User"]] = relationship(
+    following: Mapped[list["User"]] = relationship(
         "User",
         secondary=followers,
         primaryjoin=id == followers.c.follower_id,
         secondaryjoin=id == followers.c.followed_id,
         back_populates="followers",
     )
-    followers: Mapped[List["User"]] = relationship(
+    followers: Mapped[list["User"]] = relationship(
         "User",
         secondary=followers,
         primaryjoin=id == followers.c.followed_id,
@@ -88,14 +88,14 @@ class User(Base):
     )
 
     # Blocking relationships
-    blocking: Mapped[List["User"]] = relationship(
+    blocking: Mapped[list["User"]] = relationship(
         "User",
         secondary=blocks,
         primaryjoin=id == blocks.c.blocker_id,
         secondaryjoin=id == blocks.c.blocked_id,
         back_populates="blocked_by",
     )
-    blocked_by: Mapped[List["User"]] = relationship(
+    blocked_by: Mapped[list["User"]] = relationship(
         "User",
         secondary=blocks,
         primaryjoin=id == blocks.c.blocked_id,
@@ -112,24 +112,24 @@ class Post(Base):
         Integer, ForeignKey("users.id"), nullable=False
     )
     content: Mapped[str] = mapped_column(Text, nullable=False)
-    image_url: Mapped[Optional[str]] = mapped_column(String, nullable=True)
-    video_url: Mapped[Optional[str]] = mapped_column(String, nullable=True)
+    image_url: Mapped[str | None] = mapped_column(String, nullable=True)
+    video_url: Mapped[str | None] = mapped_column(String, nullable=True)
     # is_repost is nullable=False (tightened, see the User fields above for
     # why) - every post goes through this default, repost or not.
     is_repost: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
-    original_post_id: Mapped[Optional[int]] = mapped_column(
+    original_post_id: Mapped[int | None] = mapped_column(
         Integer, ForeignKey("posts.id"), nullable=True
     )
     created_at: Mapped[datetime] = mapped_column(
-        DateTime, nullable=False, default=lambda: datetime.now(timezone.utc)
+        DateTime, nullable=False, default=lambda: datetime.now(UTC)
     )
 
     # Relationships
     author: Mapped["User"] = relationship("User", back_populates="posts")
-    comments: Mapped[List["Comment"]] = relationship(
+    comments: Mapped[list["Comment"]] = relationship(
         "Comment", back_populates="post", cascade="all, delete-orphan"
     )
-    reactions: Mapped[List["Reaction"]] = relationship(
+    reactions: Mapped[list["Reaction"]] = relationship(
         "Reaction", back_populates="post", cascade="all, delete-orphan"
     )
     original_post: Mapped[Optional["Post"]] = relationship(
@@ -149,7 +149,7 @@ class Comment(Base):
     )
     content: Mapped[str] = mapped_column(Text, nullable=False)
     created_at: Mapped[datetime] = mapped_column(
-        DateTime, nullable=False, default=lambda: datetime.now(timezone.utc)
+        DateTime, nullable=False, default=lambda: datetime.now(UTC)
     )
 
     # Relationships
@@ -171,7 +171,7 @@ class Reaction(Base):
         String, nullable=False
     )  # like, love, haha, wow, sad, angry
     created_at: Mapped[datetime] = mapped_column(
-        DateTime, nullable=False, default=lambda: datetime.now(timezone.utc)
+        DateTime, nullable=False, default=lambda: datetime.now(UTC)
     )
 
     # Relationships

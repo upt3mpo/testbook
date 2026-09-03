@@ -5,7 +5,7 @@ These factories make it easy to create test data with sensible defaults
 while allowing customization when needed.
 """
 
-from typing import Any, Optional
+from typing import Any
 
 from sqlalchemy.orm import Session
 
@@ -45,14 +45,14 @@ class UserFactory:
     _counter = 0
 
     @classmethod
-    def create(
+    def create(  # noqa: PLR0913, PLR0917 - a factory's whole job is offering optional overrides for every field
         cls,
         db_session: Session,
-        email: Optional[str] = None,
-        username: Optional[str] = None,
-        display_name: Optional[str] = None,
+        email: str | None = None,
+        username: str | None = None,
+        display_name: str | None = None,
         password: str = "TestPassword123!",
-        bio: Optional[str] = None,
+        bio: str | None = None,
         **kwargs: Any,
     ) -> User:
         """
@@ -123,9 +123,9 @@ class PostFactory:
         cls,
         db_session: Session,
         author: User,
-        content: Optional[str] = None,
-        image_url: Optional[str] = None,
-        video_url: Optional[str] = None,
+        content: str | None = None,
+        image_url: str | None = None,
+        video_url: str | None = None,
         **kwargs: Any,
     ) -> Post:
         """Create a post with defaults.
@@ -185,7 +185,7 @@ class CommentFactory:
         db_session: Session,
         post: Post,
         author: User,
-        content: Optional[str] = None,
+        content: str | None = None,
         **kwargs: Any,
     ) -> Comment:
         """Create a comment with defaults.
@@ -273,7 +273,7 @@ class ReactionFactory:
 def create_user_with_posts(
     db_session: Session,
     num_posts: int = 3,
-    username: Optional[str] = None,
+    username: str | None = None,
     **user_kwargs: Any,
 ) -> tuple[User, list[Post]]:
     """Create a user with multiple posts.
@@ -294,7 +294,7 @@ def create_user_with_posts(
 
 def create_post_with_comments(
     db_session: Session,
-    author: Optional[User] = None,
+    author: User | None = None,
     num_comments: int = 3,
     **post_kwargs: Any,
 ) -> tuple[Post, list[Comment]]:

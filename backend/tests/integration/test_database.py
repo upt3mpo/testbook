@@ -5,6 +5,8 @@ These tests verify database operations, transactions,
 and edge cases that might not be covered in other tests.
 """
 
+import contextlib
+
 import pytest
 from sqlalchemy.exc import IntegrityError
 
@@ -68,14 +70,13 @@ class TestDatabaseConstraints:
         )
         db_session.add(post)
 
-        # SQLite may or may not enforce foreign keys depending on configuration
-        try:
+        # SQLite may or may not enforce foreign keys depending on
+        # configuration. Either outcome is fine here: a raised
+        # IntegrityError means foreign keys are enforced (good); a clean
+        # commit means they're not, which is expected without
+        # PRAGMA foreign_keys=ON.
+        with contextlib.suppress(IntegrityError):
             db_session.commit()
-            # If it succeeds, SQLite foreign keys are not enforced
-            # This is expected behavior for SQLite without PRAGMA foreign_keys=ON
-        except IntegrityError:
-            # If it fails, foreign keys are enforced (good!)
-            pass
 
 
 @pytest.mark.database

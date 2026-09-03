@@ -1,6 +1,5 @@
 import uuid
 from pathlib import Path
-from typing import List, Optional
 
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
 from sqlalchemy.orm import Session
@@ -17,60 +16,58 @@ UPLOAD_DIR = Path(__file__).parent.parent / "static" / "uploads" / "avatars"
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
 
-@router.get("/{username}/followers", response_model=List[schemas.UserListItem])
+@router.get("/{username}/followers", response_model=list[schemas.UserListItem])
 def get_followers(
     username: str,
     db: Session = Depends(get_db),
     current_user: models.User = Depends(get_current_user),
-) -> List[schemas.UserListItem]:
+) -> list[schemas.UserListItem]:
     """Get list of users who follow this user"""
     user = db.query(models.User).filter(models.User.username == username).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
 
-    followers = []
-    for follower in user.followers:
-        followers.append(
-            schemas.UserListItem(
-                id=follower.id,
-                username=follower.username,
-                display_name=follower.display_name,
-                bio=follower.bio,
-                profile_picture=follower.profile_picture,
-                is_following=follower in current_user.following,
-                is_blocked=follower in current_user.blocking
-                or current_user in follower.blocking,
-            )
+    followers = [
+        schemas.UserListItem(
+            id=follower.id,
+            username=follower.username,
+            display_name=follower.display_name,
+            bio=follower.bio,
+            profile_picture=follower.profile_picture,
+            is_following=follower in current_user.following,
+            is_blocked=follower in current_user.blocking
+            or current_user in follower.blocking,
         )
+        for follower in user.followers
+    ]
 
     return followers
 
 
-@router.get("/{username}/following", response_model=List[schemas.UserListItem])
+@router.get("/{username}/following", response_model=list[schemas.UserListItem])
 def get_following(
     username: str,
     db: Session = Depends(get_db),
     current_user: models.User = Depends(get_current_user),
-) -> List[schemas.UserListItem]:
+) -> list[schemas.UserListItem]:
     """Get list of users this user is following"""
     user = db.query(models.User).filter(models.User.username == username).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
 
-    following = []
-    for followed_user in user.following:
-        following.append(
-            schemas.UserListItem(
-                id=followed_user.id,
-                username=followed_user.username,
-                display_name=followed_user.display_name,
-                bio=followed_user.bio,
-                profile_picture=followed_user.profile_picture,
-                is_following=followed_user in current_user.following,
-                is_blocked=followed_user in current_user.blocking
-                or current_user in followed_user.blocking,
-            )
+    following = [
+        schemas.UserListItem(
+            id=followed_user.id,
+            username=followed_user.username,
+            display_name=followed_user.display_name,
+            bio=followed_user.bio,
+            profile_picture=followed_user.profile_picture,
+            is_following=followed_user in current_user.following,
+            is_blocked=followed_user in current_user.blocking
+            or current_user in followed_user.blocking,
         )
+        for followed_user in user.following
+    ]
 
     return following
 
@@ -114,7 +111,7 @@ async def upload_avatar(
     file: UploadFile = File(...),
     current_user: models.User = Depends(get_current_user),
     db: Session = Depends(get_db),
-) -> dict[str, Optional[str]]:
+) -> dict[str, str | None]:
     """Upload a profile picture"""
     if not file.filename:
         raise HTTPException(status_code=400, detail="Uploaded file has no filename")
@@ -136,10 +133,12 @@ async def upload_avatar(
     # Save file
     try:
         contents = await file.read()
-        with open(file_path, "wb") as f:
+        with file_path.open("wb") as f:
             f.write(contents)
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to upload file: {str(e)}")
+    except OSError as e:
+        raise HTTPException(
+            status_code=500, detail=f"Failed to upload file: {e!s}"
+        ) from e
 
     # Update user's profile picture
     old_picture = current_user.profile_picture
@@ -313,14 +312,14 @@ def unblock_user(
     return {"message": f"Unblocked {username}"}
 
 
-@router.get("/{username}/posts", response_model=List[schemas.PostResponse])
+@router.get("/{username}/posts", response_model=list[schemas.PostResponse])
 def get_user_posts(
     username: str,
     skip: int = 0,
     limit: int = 50,
     db: Session = Depends(get_db),
     current_user: models.User = Depends(get_current_user),
-) -> List[schemas.PostResponse]:
+) -> list[schemas.PostResponse]:
     """Get posts by a specific user"""
     user = db.query(models.User).filter(models.User.username == username).first()
     if not user:

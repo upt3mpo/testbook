@@ -1,12 +1,13 @@
 import os
-from typing import Generator
+from collections.abc import Generator
+from pathlib import Path
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import DeclarativeBase, Session, sessionmaker
 
 # Get database URL from environment or use default
 # Use absolute path for Windows compatibility
-DATABASE_PATH = os.path.abspath("testbook.db")
+DATABASE_PATH = Path("testbook.db").resolve()
 SQLALCHEMY_DATABASE_URL = os.getenv("DATABASE_URL", f"sqlite:///{DATABASE_PATH}")
 
 # Normalize Postgres driver to psycopg (v3) if not explicitly set
@@ -34,7 +35,7 @@ class Base(DeclarativeBase):
     """
 
 
-def get_db() -> Generator[Session, None, None]:
+def get_db() -> Generator[Session]:
     db = SessionLocal()
     try:
         yield db

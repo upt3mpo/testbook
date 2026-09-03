@@ -1,5 +1,5 @@
 import random
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from typing import Any
 
 import models
@@ -7,8 +7,13 @@ from auth import get_password_hash
 from database import SessionLocal, engine
 
 
-def seed_database() -> None:
-    """Seed the database with initial users, posts, and relationships"""
+def seed_database() -> None:  # noqa: PLR0915
+    """Seed the database with initial users, posts, and relationships.
+
+    One long, linear function on purpose: this is a script meant to be
+    read top to bottom (users, then posts, then comments, then
+    reactions, then reposts), not a reusable API split into helpers.
+    """
     # Create tables first
     models.Base.metadata.create_all(bind=engine)
 
@@ -287,9 +292,7 @@ def seed_database() -> None:
 
         posts = []
         for post_data in posts_data:
-            created_time = datetime.now(timezone.utc) - timedelta(
-                days=post_data["days_ago"]
-            )
+            created_time = datetime.now(UTC) - timedelta(days=post_data["days_ago"])
             post = models.Post(
                 author_id=users[post_data["author_idx"]].id,
                 content=post_data["content"],
@@ -406,8 +409,7 @@ def seed_database() -> None:
                 content=repost_data["content"],
                 is_repost=True,
                 original_post_id=posts[repost_data["original_post_idx"]].id,
-                created_at=datetime.now(timezone.utc)
-                - timedelta(hours=random.randint(1, 24)),
+                created_at=datetime.now(UTC) - timedelta(hours=random.randint(1, 24)),
             )
             db.add(repost)
 
@@ -418,7 +420,10 @@ def seed_database() -> None:
         print(f"Created {len(posts)} posts")
         print("Created relationships and interactions")
 
-    except Exception as e:
+    # Top-level script boundary: any failure during seeding (DB error, bad
+    # seed data, etc.) should roll back and report, not crash with a
+    # half-seeded database.
+    except Exception as e:  # noqa: BLE001
         print(f"Error seeding database: {e}")
         db.rollback()
     finally:

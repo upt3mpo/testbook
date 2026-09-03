@@ -1,6 +1,7 @@
 import os
+from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
-from typing import AsyncIterator
+from pathlib import Path
 
 from dotenv import load_dotenv
 from fastapi import FastAPI, Request
@@ -22,7 +23,9 @@ load_dotenv()
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI) -> AsyncIterator[None]:
+async def lifespan(app: FastAPI) -> AsyncIterator[None]:  # noqa: ARG001
+    # FastAPI's lifespan protocol requires this parameter even though
+    # this function doesn't need it.
     # Initialize logging on startup
     setup_logging()
 
@@ -99,8 +102,12 @@ async def root() -> dict[str, str]:
 
 @app.get("/api/health")
 @limiter.limit("100/minute")
-async def health_check(request: Request) -> dict[str, str]:
-    """Health check endpoint with rate limiting headers"""
+async def health_check(request: Request) -> dict[str, str]:  # noqa: ARG001
+    """Health check endpoint with rate limiting headers.
+
+    request is unused in the body but required: slowapi's @limiter.limit
+    reads the client's address off it to enforce the rate limit.
+    """
     return {"status": "healthy"}
 
 
@@ -112,11 +119,11 @@ app.include_router(feed.router, prefix="/api/feed", tags=["Feed"])
 app.include_router(dev.router, prefix="/api/dev", tags=["Development"])
 
 # Mount static files for images/videos
-os.makedirs("static/images", exist_ok=True)
-os.makedirs("static/videos", exist_ok=True)
+Path("static/images").mkdir(parents=True, exist_ok=True)
+Path("static/videos").mkdir(parents=True, exist_ok=True)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # Serve frontend in production (when frontend-dist exists)
 # This must be LAST to not interfere with API routes
-if os.path.exists("frontend-dist"):
+if Path("frontend-dist").exists():
     app.mount("/", StaticFiles(directory="frontend-dist", html=True), name="frontend")
