@@ -190,34 +190,35 @@ class TestJWTTokens:
         assert payload["sub"] == email
         assert "exp" in payload
 
-    def test_token_expiration_is_set(self):
-        """Test that token has expiration time."""
+    @pytest.mark.parametrize(
+        "expires_delta,expected_minutes",
+        [
+            pytest.param(timedelta(minutes=30), 30, id="30_minutes"),
+            pytest.param(timedelta(hours=2), 120, id="2_hours"),
+        ],
+    )
+    def test_token_expiration_matches_requested_delta(
+        self, expires_delta, expected_minutes
+    ):
+        """A token's exp claim lands within a minute of now + the requested expires_delta, whether that's a short session or a long one.
+
+        Both cases exercise the same code path (create_access_token's
+        expires_delta handling) with only the duration changed, so a
+        second, third case beyond "short" and "long" wouldn't add
+        coverage a reader can't already infer from these two.
+        """
         email = "test@example.com"
-        expires_delta = timedelta(minutes=30)
         token = create_access_token(data={"sub": email}, expires_delta=expires_delta)
 
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        exp_timestamp = payload["exp"]
-        exp_datetime = datetime.fromtimestamp(exp_timestamp, tz=timezone.utc)
+        exp_datetime = datetime.fromtimestamp(payload["exp"], tz=timezone.utc)
         now = datetime.now(timezone.utc)
 
-        # Token should expire approximately 30 minutes from now
-        time_diff = exp_datetime - now
-        assert 29 <= time_diff.total_seconds() / 60 <= 31
-
-    def test_token_with_custom_expiration(self):
-        """Test creating token with custom expiration time."""
-        email = "test@example.com"
-        custom_expiry = timedelta(hours=2)
-        token = create_access_token(data={"sub": email}, expires_delta=custom_expiry)
-
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        exp_timestamp = payload["exp"]
-        exp_datetime = datetime.fromtimestamp(exp_timestamp, tz=timezone.utc)
-        now = datetime.now(timezone.utc)
-
-        time_diff = exp_datetime - now
-        assert 119 <= time_diff.total_seconds() / 60 <= 121
+        time_diff_minutes = (exp_datetime - now).total_seconds() / 60
+        assert expected_minutes - 1 <= time_diff_minutes <= expected_minutes + 1, (
+            f"Expected token to expire in ~{expected_minutes} minutes, "
+            f"got {time_diff_minutes:.1f}"
+        )
 
     def test_token_is_verifiable(self):
         """Test that created token can be verified."""

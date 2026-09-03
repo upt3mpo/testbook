@@ -22,7 +22,9 @@ class TestGetUserProfile:
         assert data["username"] == test_user.username
         assert data["display_name"] == test_user.display_name
 
-    def test_get_user_profile_never_exposes_password_hash(self, client, test_user, auth_headers):
+    def test_get_user_profile_never_exposes_password_hash(
+        self, client, test_user, auth_headers
+    ):
         """Security invariant: a user profile response must never include the hashed password."""
         response = client.get(f"/api/users/{test_user.username}", headers=auth_headers)
 
@@ -69,25 +71,31 @@ class TestUpdateUserProfile:
 
         assert response.status_code in [401, 403, 422]
 
-    def test_update_theme(self, client, auth_headers):
-        """Test updating user theme preference."""
+    @pytest.mark.parametrize(
+        "field,value",
+        [
+            pytest.param("theme", "dark", id="theme"),
+            pytest.param("text_density", "compact", id="text_density"),
+        ],
+    )
+    def test_update_display_preference(self, client, auth_headers, field, value):
+        """PUT /api/users/me updates a single display preference field and echoes the new value back.
+
+        theme and text_density are both simple, independent preference
+        fields updated through the same endpoint the same way - there's
+        no interaction between them worth a separate test each.
+        """
         response = client.put(
-            "/api/users/me", json={"theme": "dark"}, headers=auth_headers
+            "/api/users/me", json={field: value}, headers=auth_headers
         )
 
-        assert response.status_code == 200
+        assert (
+            response.status_code == 200
+        ), f"Expected 200 updating {field}, got {response.status_code}: {response.text}"
         data = response.json()
-        assert data["theme"] == "dark"
-
-    def test_update_text_density(self, client, auth_headers):
-        """Test updating text density preference."""
-        response = client.put(
-            "/api/users/me", json={"text_density": "compact"}, headers=auth_headers
-        )
-
-        assert response.status_code == 200
-        data = response.json()
-        assert data["text_density"] == "compact"
+        assert (
+            data[field] == value
+        ), f"Expected {field}={value!r}, got {data.get(field)!r}"
 
 
 @pytest.mark.integration
