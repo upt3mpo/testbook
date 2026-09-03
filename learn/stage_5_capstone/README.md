@@ -32,8 +32,8 @@ If any of those feel shaky, revisit that stage's exercises before starting the c
 - [Entry Criteria](#entry-criteria)
 - [Why a Testing Portfolio Matters: Your Gateway to Career Success](#why-a-testing-portfolio-matters-your-gateway-to-career-success)
 - [Part 1: What Is a Testing Portfolio?](#part-1-what-is-a-testing-portfolio)
-- [Part 2: Building Your Test Suite](#part-2-building-your-test-suite)
-- [Part 3: Implementation Guide](#part-3-implementation-guide)
+- [Part 2: The Capstone Ticket](#part-2-the-capstone-ticket)
+- [Part 3: Working the Ticket](#part-3-working-the-ticket)
 - [Part 4: Creating Portfolio Artifacts](#part-4-creating-portfolio-artifacts)
 - [Part 5: Professional Presentation](#part-5-professional-presentation)
 - [Part 6: Interview Preparation](#part-6-interview-preparation)
@@ -98,528 +98,140 @@ A **testing portfolio** is a collection of your best testing work that demonstra
 
 ---
 
-<h2 id="part-2-building-your-test-suite">Part 2: Building Your Test Suite</h2>
+<h2 id="part-2-the-capstone-ticket">Part 2: The Capstone Ticket</h2>
 
-### The Construction Analogy
+### Why This Isn't Four Separate Assignments
 
-Think of building a test suite like constructing a house. You need:
+In Stages 1 through 4, you practiced one layer of the pyramid at a time - unit tests in isolation in Stage 1, then integration, then E2E, then performance and security. That's the right way to *learn* each layer. It's not how a real ticket arrives.
 
-- **Foundation** (unit tests) - The base that everything else builds on
-- **Framework** (integration tests) - The structure that holds everything together
-- **Finishing touches** (E2E tests) - The final verification that everything works
-- **Safety systems** (security tests) - Protection against threats
+A real ticket shows up as one bundle: a product requirement, a test someone already wrote against it, a performance budget it has to meet, and a security bar it can't ship without. Nobody hands them to you one at a time, waiting for you to finish the last one before showing you the next. You read all four before you decide what to do first - and that decision is the actual skill this stage is testing. Getting the code working is Stages 1-4. Deciding how to get there, in what order, and being able to explain why, is the capstone.
 
-### Test Suite Planning Process
+### The Ticket
 
-**Step 1: Choose Your Feature**
-Pick one of these capstone projects:
+You're picking up a real ticket for Testbook: **add post bookmarks.**
 
-**Option A: Messaging Feature**
+**Product requirement:**
 
-- Sending messages
-- Receiving messages
-- Message history
-- Read receipts
-- Message notifications
+> Users can bookmark any post they can see. A "Saved Posts" view (reachable from Settings) lists everything they've bookmarked, most recently bookmarked first. Users can un-bookmark. Bookmark state is private - Sarah can't see what Mike has bookmarked, and Mike can't see Sarah's list either.
 
-**Option B: Bookmarks Feature**
+**A test a teammate already wrote**, before the endpoint existed, so it currently fails with a 404 on every case. Drop it into `backend/tests/integration/test_api_bookmarks.py` and treat it as the contract your implementation has to satisfy, not a suggestion:
 
-- Adding bookmarks
-- Viewing bookmarks
-- Removing bookmarks
-- Bookmark count updates
-- Bookmark permissions
+```python
+"""Integration tests for post bookmarks - written against the spec,
+before the endpoint exists. This file should fail until you build it."""
 
-**Option C: Search Feature**
+from auth import create_access_token
 
-- Searching posts
-- Searching users
-- Search filters
-- Empty results
-- Search performance
 
-**Step 2: Plan Your Test Strategy**
+class TestBookmarks:
+    def test_bookmark_a_post(self, client, auth_headers, test_post):
+        response = client.post(f"/api/posts/{test_post.id}/bookmark", headers=auth_headers)
+        assert response.status_code == 201
 
-Create a test plan document:
+    def test_bookmarked_post_appears_in_saved_posts(self, client, auth_headers, test_post):
+        client.post(f"/api/posts/{test_post.id}/bookmark", headers=auth_headers)
 
-```markdown
-# Test Plan: [Feature Name]
+        response = client.get("/api/users/me/bookmarks", headers=auth_headers)
 
-## Feature Overview
+        assert response.status_code == 200
+        post_ids = [p["id"] for p in response.json()]
+        assert test_post.id in post_ids
 
-[Describe what the feature does]
+    def test_unbookmark_removes_it_from_saved_posts(self, client, auth_headers, test_post):
+        client.post(f"/api/posts/{test_post.id}/bookmark", headers=auth_headers)
+        client.delete(f"/api/posts/{test_post.id}/bookmark", headers=auth_headers)
 
-## Test Strategy
+        response = client.get("/api/users/me/bookmarks", headers=auth_headers)
 
-### Unit Tests (Fast, isolated)
+        post_ids = [p["id"] for p in response.json()]
+        assert test_post.id not in post_ids
 
-- [ ] Test 1: Business logic validation
-- [ ] Test 2: Edge case handling
+    def test_bookmarking_requires_authentication(self, client, test_post):
+        response = client.post(f"/api/posts/{test_post.id}/bookmark")
+        assert response.status_code == 401
 
-### Integration Tests (API endpoints)
+    def test_cannot_see_another_users_bookmarks(self, client, auth_headers, test_user_2, test_post):
+        """Sarah bookmarks a post. Mike's own /me/bookmarks must not include it."""
+        client.post(f"/api/posts/{test_post.id}/bookmark", headers=auth_headers)
 
-- [ ] Test 1: Create resource
-- [ ] Test 2: Read resource
-- [ ] Test 3: Update resource
-- [ ] Test 4: Delete resource
+        mike_token = create_access_token(data={"sub": test_user_2.email})
+        mike_headers = {"Authorization": f"Bearer {mike_token}"}
 
-### E2E Tests (User workflows)
+        response = client.get("/api/users/me/bookmarks", headers=mike_headers)
 
-- [ ] Test 1: Complete user journey
-- [ ] Test 2: Error handling
-
-### Security Tests
-
-- [ ] Test 1: Input validation
-- [ ] Test 2: Authorization
-
-### Performance Test (k6)
-
-- [ ] Test 1: Load test the feature's main endpoint and record p95 response time
+        post_ids = [p["id"] for p in response.json()]
+        assert test_post.id not in post_ids
 ```
 
-### Test Implementation Pattern
+**Performance requirement**, from the same ticket:
 
-**The Recipe for Success:**
+> Saved Posts has to stay usable for a power user with hundreds of bookmarks. Load-test `GET /api/users/me/bookmarks` with k6 for a user who has 500 bookmarked posts, and hold p95 under 300ms at 20 concurrent users. Use `tests/performance/load-test.js` as your starting structure and pick a threshold you can defend in the decision log below.
 
-1. **Start with unit tests** - Test individual functions
-2. **Add integration tests** - Test API endpoints
-3. **Create E2E tests** - Test complete workflows
-4. **Include security tests** - Test for vulnerabilities
-5. **Document everything** - Write clear explanations
+**Security requirement**, from the same ticket:
+
+> This ships with security sign-off attached, not bolted on after. At minimum: bookmarking must require authentication (the test file above already pins this), a user must not be able to read or modify another user's bookmark list under any input (the IDOR case above checks the direct route - now find at least one more way a typical implementation gets this wrong, and write a test for it), and the bookmark endpoints follow the same rate-limiting convention already used in `routers/auth.py` (`slowapi`, permissive under `TESTING=true`, conservative in production) rather than being left unlimited.
+
+### Your Job
+
+Build the feature until the test file above passes, meet the performance threshold, satisfy the security requirement, and add one Playwright E2E test (Python or JS, your choice, Page Object Model) that drives the real user workflow: log in, bookmark a post from the feed, navigate to Saved Posts, see it there, un-bookmark it, confirm it's gone.
+
+Then write the [decision log](#part-3-working-the-ticket) - not a test plan you wrote in advance, a record of the order you actually worked in and why.
+
+**Prefer a different feature?** The same four-artifact structure applies to anything with real state and real access control - "pin one post to your profile," or "mute a user without blocking them," work the same way. Write your own failing test first (that's the Stage 2 skill), and don't skip the performance or security artifact just because you changed the feature. Dropping either one is exactly the shortcut this stage exists to close off.
 
 ---
 
-<h2 id="part-3-implementation-guide">Part 3: Implementation Guide</h2>
+<h2 id="part-3-working-the-ticket">Part 3: Working the Ticket</h2>
 
-Now let's build your test suite! Choose your track:
+### There Is No One Correct Order
 
-### Python Track: Complete Test Suite
+Different reasonable engineers triage this ticket differently, and that's fine - what matters is that your order is a decision, not a default. A few real considerations that should shape it:
 
-**Step 1: Unit Tests**
+- The failing test file is your fastest feedback loop. Making it pass first tells you whether your data model and endpoints are shaped right, before you spend time on performance or the UI.
+- The security requirement isn't a separate pass at the end. The IDOR check in the test file constrains your query design from the start - you can't query bookmarks by post alone without also filtering by the requesting user. Build it the naive way first and you'll be rewriting the query later, not patching it.
+- The performance and security requirements pull in a related direction here: satisfying "don't leak other users' bookmarks" cheaply usually means an indexed, user-scoped query - which is also most of what "fast at 500 bookmarks" needs. Notice when a requirement from one stage does double duty for another; that's a real signal, not a coincidence to write off.
+- The E2E test is your slowest feedback loop, and it depends on the backend being done. Writing it first would mean testing against a feature that doesn't exist yet.
 
-<details open>
-<summary><strong>🐍 Python - Create `test_unit_<feature>.py`</strong></summary>
+None of that is a prescribed order. It's the kind of reasoning your decision log should contain.
 
-```python
-"""
-Unit tests for [Feature Name] functionality.
+### The Decision Log
 
-This file demonstrates comprehensive unit testing practices for a
-complete feature implementation. These tests verify individual
-functions and components in isolation.
+Not a test plan - a short, honest account of what you actually did, written after the fact. Keep it to what a reviewer would actually want to know:
 
-Key Testing Concepts Demonstrated:
-- Unit testing isolated functions and components
-- AAA Pattern (Arrange-Act-Assert) for clear test structure
-- Edge case testing and error handling
-- Test organization and clear naming
-- Comprehensive coverage of business logic
+```markdown
+# Decision Log: Post Bookmarks
 
-This file serves as a portfolio example of professional
-unit testing practices.
-"""
+## Order I worked in, and why
 
-import pytest
-from your_feature import some_function
+[What did you do first? Why - not "because Stage 2 comes before Stage 4,"
+but because of something specific about *this* ticket. What did you learn
+from that step that changed your plan for the next one?]
 
-@pytest.mark.unit
-class TestFeatureLogic:
-    """
-    Unit tests for [feature] business logic.
+## Where the requirements pulled against each other
 
-    This class demonstrates unit testing of core business logic
-    functions. Each test focuses on a single function or method,
-    testing it in isolation from external dependencies.
+[Performance and security often trade off - stricter checks cost time,
+looser ones cost risk. Did bookmarks actually force a tradeoff, or did
+one requirement end up serving both (see the query-design note above)?
+Be specific about what you'd do differently under a tighter deadline.]
 
-    Key Learning Points:
-    - Testing business logic in isolation
-    - Clear test naming and organization
-    - Comprehensive edge case coverage
-    - Professional test documentation
-    """
+## What I deliberately did not do, and why that's a reasonable call
 
-    def test_basic_functionality(self):
-        """
-        Verify basic function works correctly.
+[Every real ticket ships with some scope deliberately left out. Name
+something you chose not to build or not to test, and defend the call -
+not "I ran out of time," but "here's the actual risk of skipping this,
+and here's why I judged it acceptable."]
 
-        This test verifies the core functionality of the feature
-        works as expected with normal input. This is the foundation
-        test that ensures the feature works in the happy path scenario.
-        """
-        # Arrange - Set up test data
-        input_data = "test"
+## Where each stage's knowledge was actually load-bearing
 
-        # Act - Execute the function being tested
-        result = some_function(input_data)
-
-        # Assert - Verify the results
-        assert result is not None
-        assert result == "expected_output"
-
-    def test_edge_case(self):
-        """
-        Verify handling of edge cases.
-
-        This test verifies the feature handles edge cases gracefully,
-        including empty inputs, null values, and boundary conditions.
-        Robust error handling is crucial for production applications.
-        """
-        # Test with empty input
-        result = some_function("")
-        assert result == "default_value"
-
-        # Test with None
-        result = some_function(None)
-        assert result == "default_value"
-
-        # Test with very long input
-        long_input = "x" * 1000
-        result = some_function(long_input)
-        assert len(result) <= 100  # Should be truncated or handled appropriately
+[Not "I used pytest for backend tests and Playwright for E2E" - that's
+just naming tools. Point to one specific decision in this feature you
+could only have made correctly because you understood a specific prior
+stage - a fixture-scope choice from Stage 1, an authorization pattern
+from Stage 2, a locator strategy from Stage 3, a threshold number you
+can defend from Stage 4.]
 ```
 
-</details>
-
-<details open>
-<summary><strong>☕ JavaScript - Create `test_unit_<feature>.test.js`</strong></summary>
-
-```javascript
-/**
- * Unit tests for [Feature Name] functionality.
- *
- * This file demonstrates comprehensive unit testing practices for a
- * complete feature implementation. These tests verify individual
- * functions and components in isolation.
- *
- * Key Testing Concepts Demonstrated:
- * - Unit testing isolated functions and components
- * - AAA Pattern (Arrange-Act-Assert) for clear test structure
- * - Edge case testing and error handling
- * - Test organization and clear naming
- * - Comprehensive coverage of business logic
- *
- * This file serves as a portfolio example of professional
- * unit testing practices.
- */
-
-import { describe, it, expect } from "vitest";
-import { someFunction } from "../your-feature";
-
-describe("Feature Logic", () => {
-  /**
-   * Unit tests for [feature] business logic.
-   *
-   * This describe block demonstrates unit testing of core business logic
-   * functions. Each test focuses on a single function or method,
-   * testing it in isolation from external dependencies.
-   *
-   * Key Learning Points:
-   * - Testing business logic in isolation
-   * - Clear test naming and organization
-   * - Comprehensive edge case coverage
-   * - Professional test documentation
-   */
-
-  it("basic functionality", () => {
-    /**
-     * Verify basic function works correctly.
-     *
-     * This test verifies the core functionality of the feature
-     * works as expected with normal input. This is the foundation
-     * test that ensures the feature works in the happy path scenario.
-     */
-    // Arrange - Set up test data
-    const inputData = "test";
-
-    // Act - Execute the function being tested
-    const result = someFunction(inputData);
-
-    // Assert - Verify the results
-    expect(result).toBeTruthy();
-    expect(result).toBe("expected_output");
-  });
-
-  it("handles edge cases gracefully", () => {
-    /**
-     * Verify handling of edge cases.
-     *
-     * This test verifies the feature handles edge cases gracefully,
-     * including empty inputs, null values, and boundary conditions.
-     * Robust error handling is crucial for production applications.
-     */
-    // Test with empty input
-    const emptyResult = someFunction("");
-    expect(emptyResult).toBe("default_value");
-
-    // Test with null
-    const nullResult = someFunction(null);
-    expect(nullResult).toBe("default_value");
-
-    // Test with very long input
-    const longInput = "x".repeat(1000);
-    const longResult = someFunction(longInput);
-    expect(longResult.length).toBeLessThanOrEqual(100); // Should be truncated
-  });
-});
-```
-
-</details>
-
-**Step 2: Integration Tests**
-
-**Python - Create `test_api_<feature>.py`:**
-
-```python
-import pytest
-
-@pytest.mark.integration
-@pytest.mark.api
-class TestFeatureAPI:
-    """Integration tests for [feature] API endpoints."""
-
-    def test_create_resource(self, client, auth_headers):
-        """Test creating a new resource."""
-        # Arrange
-        payload = {"data": "test"}
-
-        # Act
-        response = client.post("/feature", json=payload, headers=auth_headers)
-
-        # Assert
-        assert response.status_code == 201
-        assert "id" in response.json()
-
-    def test_unauthorized_access(self, client):
-        """Verify authentication is required."""
-        response = client.post("/feature", json={})
-        assert response.status_code == 401
-```
-
-**JavaScript - Create `test_api_<feature>.test.js`:**
-
-```javascript
-import { describe, it, expect } from "vitest";
-
-describe("Feature API", () => {
-  // Integration tests for [feature] API endpoints
-
-  it("create resource", async () => {
-    // Arrange
-    const payload = { data: "test" };
-    const authHeaders = { Authorization: "Bearer token123" };
-
-    // Act
-    const response = await fetch("/feature", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", ...authHeaders },
-      body: JSON.stringify(payload),
-    });
-
-    // Assert
-    expect(response.status).toBe(201);
-    const data = await response.json();
-    expect(data.id).toBeDefined();
-  });
-
-  it("unauthorized access", async () => {
-    // Verify authentication is required
-    const response = await fetch("/feature", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({}),
-    });
-    expect(response.status).toBe(401);
-  });
-});
-```
-
-**Step 3: E2E Tests**
-
-**Python - Create `test_e2e_<feature>.py`:**
-
-```python
-import pytest
-from playwright.async_api import expect
-
-@pytest.mark.e2e
-async def test_user_can_use_feature(page, login):
-    """End-to-end test of complete user workflow."""
-    # Navigate to feature
-    await page.goto("http://localhost:3000/feature")
-
-    # Interact with UI
-    await page.fill("#input", "test data")
-    await page.click("#submit")
-
-    # Verify result
-    await expect(page.locator(".success-message")).to_be_visible()
-```
-
-**JavaScript - Create `test_e2e_<feature>.spec.js`:**
-
-```javascript
-import { test, expect } from "@playwright/test";
-
-test("user can use feature", async ({ page }) => {
-  // End-to-end test of complete user workflow
-  // Navigate to feature
-  await page.goto("http://localhost:3000/feature");
-
-  // Interact with UI
-  await page.fill("#input", "test data");
-  await page.click("#submit");
-
-  // Verify result
-  await expect(page.locator(".success-message")).toBeVisible();
-});
-```
-
-**Step 4: Security Tests**
-
-**Python:**
-
-```python
-@pytest.mark.security
-def test_feature_security(client, auth_headers):
-    """Verify security measures in feature."""
-    # Test SQL injection
-    malicious_input = "'; DROP TABLE--"
-    response = client.post("/feature",
-        json={"data": malicious_input},
-        headers=auth_headers
-    )
-    assert response.status_code in [400, 422]
-```
-
-**JavaScript:**
-
-```javascript
-test("feature security", async () => {
-  // Verify security measures in feature
-  // Test SQL injection
-  const maliciousInput = "'; DROP TABLE--";
-  const response = await fetch("/feature", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer token123",
-    },
-    body: JSON.stringify({ data: maliciousInput }),
-  });
-  expect([400, 422]).toContain(response.status);
-});
-```
-
-**Step 5: Performance Test (k6)**
-
-Tie back to Stage 4: load-test your feature's main endpoint the same way `tests/performance/load-test.js` does for the existing API, and set a threshold you can defend.
-
-```javascript
-import http from "k6/http";
-import { check } from "k6";
-
-export const options = {
-  vus: 10,
-  duration: "30s",
-  thresholds: {
-    http_req_duration: ["p(95)<500"], // pick a number you can justify for this endpoint
-  },
-};
-
-export default function () {
-  const response = http.get("http://localhost:8000/api/feature");
-  check(response, {
-    "status is 200": (r) => r.status === 200,
-  });
-}
-```
-
-### JavaScript Track: Complete Test Suite
-
-**Step 1: Unit Tests**
-
-Create `test_unit_<feature>.test.js`:
-
-```javascript
-import { describe, test, expect } from "vitest";
-import { someFunction } from "../your-feature";
-
-describe("Feature Logic", () => {
-  test("basic functionality works correctly", () => {
-    // Arrange
-    const inputData = "test";
-
-    // Act
-    const result = someFunction(inputData);
-
-    // Assert
-    expect(result).toBeDefined();
-  });
-
-  test("handles edge cases", () => {
-    // Test with empty input, null, etc.
-  });
-});
-```
-
-**Step 2: Integration Tests**
-
-Create `test_api_<feature>.test.js`:
-
-```javascript
-import { describe, test, expect } from "vitest";
-import { setupServer } from "msw/node";
-import { rest } from "msw";
-
-describe("Feature API", () => {
-  test("creates resource successfully", async () => {
-    // Arrange
-    const payload = { data: "test" };
-
-    // Act
-    const response = await fetch("/api/feature", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-
-    // Assert
-    expect(response.status).toBe(201);
-    const data = await response.json();
-    expect(data).toHaveProperty("id");
-  });
-});
-```
-
-**Step 3: E2E Tests**
-
-Create `test_e2e_<feature>.spec.js`:
-
-```javascript
-import { test, expect } from "@playwright/test";
-
-test("user can use feature", async ({ page }) => {
-  // Navigate to feature
-  await page.goto("http://localhost:3000/feature");
-
-  // Interact with UI
-  await page.fill("#input", "test data");
-  await page.click("#submit");
-
-  // Verify result
-  await expect(page.locator(".success-message")).toBeVisible();
-});
-```
-
-### Hybrid Track
-
-**Build both!** This shows you can work with multiple technologies:
-
-1. **Start with Python backend tests** (unit, integration, security)
-2. **Add JavaScript frontend tests** (unit, E2E)
-3. **Create documentation** that covers both approaches
-4. **Show the connection** between backend and frontend testing
+Save this alongside your tests as `DECISION_LOG.md` - it belongs in your portfolio (see [Part 4](#part-4-creating-portfolio-artifacts)) as much as the tests themselves do.
 
 ---
 
@@ -744,7 +356,7 @@ Use these templates (fill in your specifics):
 
 **For Testbook:**
 
-- Built comprehensive test automation suite with pytest and Playwright, achieving 86% backend code coverage across 362 automated tests
+- Built comprehensive test automation suite with pytest and Playwright, achieving 85%+ backend code coverage across 183 automated tests
 - Implemented E2E testing framework using Page Object Model pattern, reducing test maintenance time by 40%
 - Developed security test suite covering OWASP Top 10 vulnerabilities, identifying and documenting 3 critical issues
 - Created performance testing strategy using k6, establishing baseline metrics for 500 concurrent users
@@ -800,21 +412,25 @@ I completed Testbook's 5-stage learning path and built a comprehensive test suit
 - Implemented Page Object Model
 - Created security test suite
 
-### 2. Capstone: [Feature] Test Suite
+### 2. Capstone: [Feature] - Built From a Bundled Ticket
 
-**Description:** Built complete test automation for [feature] from scratch
+**Description:** Given a product requirement, a failing integration test, a
+performance threshold, and a security requirement simultaneously - built
+[feature] to satisfy all four and documented the triage decisions in a
+decision log.
 
 **Test Coverage:**
 
-- 15 unit tests
-- 12 integration tests
-- 5 E2E tests
-- 3 security tests
+- [N] integration tests (the given contract, extended with an IDOR test)
+- 1 E2E test covering the full user workflow (Page Object Model)
+- 1 k6 load test with a defended threshold
+- [N] security tests (auth, IDOR, rate limiting)
 
 **Results:**
 
-- 87% code coverage
-- All critical paths tested
+- All four requirements satisfied, in an order documented in
+  `DECISION_LOG.md`
+- [p95 response time you actually hit] at [concurrency] concurrent users
 - 0 production bugs in 30 days
 ```
 
@@ -836,30 +452,30 @@ Think of job interviews like performing in a play. You need:
 **Technical Questions:**
 
 **Q: "Explain the difference between unit, integration, and E2E tests."**
-_Use the test pyramid. Give examples from Testbook._
+*Use the test pyramid. Give examples from Testbook.*
 
 **Q: "How do you decide what to test?"**
-_Talk about risk-based testing, critical paths, test strategy._
+*Talk about risk-based testing, critical paths, test strategy.*
 
 **Q: "Walk me through how you'd test [feature]."**
-_Show your test plan from this capstone._
+*Show your test plan from this capstone.*
 
 **Q: "How do you handle flaky tests?"**
-_Discuss waits, retries, isolation, debugging techniques._
+*Discuss waits, retries, isolation, debugging techniques.*
 
 **Q: "What's your approach to security testing?"**
-_Reference OWASP Top 10, your security tests._
+*Reference OWASP Top 10, your security tests.*
 
 **Behavioral Questions:**
 
 **Q: "Tell me about a bug you found."**
-_Prepare story: What was it? How'd you find it? Impact? How'd you document it?_
+*Prepare story: What was it? How'd you find it? Impact? How'd you document it?*
 
 **Q: "Describe a time you had to learn a new testing tool."**
-_Your Testbook journey! Playwright, pytest, k6._
+*Your Testbook journey! Playwright, pytest, k6.*
 
 **Q: "How do you prioritize testing when time is limited?"**
-_Risk-based testing, smoke tests, critical paths._
+*Risk-based testing, smoke tests, critical paths.*
 
 ### Show Your Work
 
@@ -970,11 +586,12 @@ You're ready for QA engineering roles when you can:
 
 **Technical Skills:**
 
-- [] Write unit, integration, and E2E tests
-- [] Use test fixtures and page objects
-- [] Implement security testing
-- [] Write at least one k6 performance test for your feature's key endpoint
-- [] Generate coverage reports
+- [] Made the given failing integration test pass, plus your own IDOR test
+- [] Wrote one E2E test (Page Object Model) covering the full user workflow
+- [] Met a k6 performance threshold you can defend, not just one you copied
+- [] Implemented and tested the rate-limiting and authorization requirements
+- [] Wrote a decision log explaining the order you worked in and why -
+      not a test plan written in advance
 - [] Debug failing tests
 
 **Professional Skills:**
@@ -1095,4 +712,4 @@ Once you've finished the reflection above, read [COMPLETION.md](../COMPLETION.md
 
 ---
 
-_Your portfolio is never "done" - keep updating it as you learn new skills and complete new projects._
+*Your portfolio is never "done" - keep updating it as you learn new skills and complete new projects.*
