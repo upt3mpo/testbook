@@ -337,26 +337,35 @@ class LoginPage:
 
 ### Page Object Structure
 
+Testbook's own page objects use Playwright's **sync** API in Python
+(no `async`/`await`), matching how the real test files call them. Here's
+a trimmed version of the real `tests/e2e-python/pages/feed_page.py`:
+
 ```python
-class FeedPage:
+class FeedPage(BasePage):
     def __init__(self, page):
-        self.page = page
+        super().__init__(page)
         # Centralized selectors
-        self.post_input = page.locator("#post-input")
-        self.submit_button = page.locator("#submit-post")
-        self.post_items = page.locator(".post-content")
+        self.create_post_textarea = '[data-testid="create-post-textarea"]'
+        self.create_post_submit = '[data-testid="create-post-submit-button"]'
+        self.post_items = '[data-testid-generic="post-item"]'
 
-    async def create_post(self, content):
-        """Create a new post."""
-        await self.post_input.fill(content)
-        await self.submit_button.click()
-        # Wait for post to appear
-        await self.post_items.first.wait_for()
+    def create_post(self, content: str) -> None:
+        """Create a new post and verify it appears."""
+        self.page.fill(self.create_post_textarea, content)
+        self.page.click(self.create_post_submit)
+        expect(self.first_post()).to_contain_text(content)
 
-    async def get_post_count(self):
-        """Get the number of posts visible."""
-        return await self.post_items.count()
+    def first_post(self):
+        """Get the first (most recent) post."""
+        return self.page.locator(self.post_items).first
 ```
+
+The JavaScript version (`tests/e2e/pages/FeedPage.js`) is `async`, since
+Playwright's JS API is asynchronous throughout - but the shape is the
+same: a class wrapping selectors and named methods, extended from a
+shared `BasePage`. See both files in full for the rest of the feed
+interactions (react, edit, delete, comment, repost).
 
 **Benefits:**
 
@@ -720,7 +729,11 @@ npx playwright test --headed
 Open `tests/e2e-python/pages/feed_page.py`
 
 **JavaScript Track:**
-Open `tests/e2e/fixtures/test-helpers.js`
+Open `tests/e2e/pages/FeedPage.js`
+
+Both files cover the same feed interactions (create post, react, edit,
+delete, comment) - compare them side by side and see how the same
+Page Object Model looks in each language's idioms.
 
 **Questions:**
 

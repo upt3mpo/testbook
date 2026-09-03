@@ -229,6 +229,14 @@ start htmlcov/index.html # Windows
 
 ## E2E Tests
 
+Both E2E suites (JavaScript and Python) are written against the Page
+Object Model: interactions go through page objects (`tests/e2e/pages/`
+for JS, `tests/e2e-python/pages/` for Python) rather than raw selectors
+in the test files, so a UI change only needs updating in one place. The
+two directories mirror each other one-to-one — `FeedPage.js` and
+`feed_page.py` expose the same interactions in each language's idioms —
+so if you've worked through one suite, the other should look familiar.
+
 ### Setup
 
 Start the backend with `TESTING=true` before running E2E tests — several
@@ -303,6 +311,12 @@ npm run report
 - `e2e/auth.spec.js` - Authentication flows
 - `e2e/posts.spec.js` - Post operations
 - `e2e/users.spec.js` - User profiles and interactions
+- `e2e/accessibility-axe.spec.js` - WCAG accessibility checks
+- `e2e/pages/` - Page objects shared by the files above
+
+The Python suite (`tests/e2e-python/`) covers the same flows using
+pytest and Playwright's sync API, with its own `pages/` directory. Run
+it with `cd tests/e2e-python && pytest`.
 
 **Documentation:** [tests/README.md](../../tests/README.md)
 

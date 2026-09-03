@@ -234,6 +234,20 @@ test("wait for element", async ({ page }) => {
 });
 ```
 
+**See it in the real codebase:** both of Testbook's E2E suites used to
+be full of exactly this anti-pattern - `wait_for_timeout()` in
+`tests/e2e-python/` and `waitForTimeout()` in `tests/e2e/` - and they've
+since been replaced with auto-waiting `expect()` assertions throughout.
+That cleanup surfaced a genuine bug the arbitrary waits had been
+masking: a positional locator like "the first post in the feed"
+occasionally resolved to the wrong post, because a seeded demo post's
+timestamp could collide with a freshly-created post's timestamp. The
+fix wasn't a longer wait - it was scoping the locator by content
+instead of position. See `find_post_by_content()` in
+`tests/e2e-python/pages/feed_page.py` and `findPostByContent()` in
+`tests/e2e/pages/FeedPage.js` for the real fix, and their docstrings
+for why a wait would only have hidden the race, not fixed it.
+
 ---
 
 ## 3. Dependency Anti-Patterns

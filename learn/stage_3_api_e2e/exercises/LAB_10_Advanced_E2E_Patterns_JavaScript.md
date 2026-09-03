@@ -63,8 +63,8 @@ export class FeedPage {
     await this.page.fill(this.createPostTextarea, content);
     await this.page.click(this.createPostSubmit);
 
-    // Wait for post to appear
-    await this.page.waitForTimeout(500);
+    // waitForSelector already retries until the post shows up (or the
+    // timeout is hit), so there's no need for a separate wait before it.
     await this.page.waitForSelector(this.postItems, { state: "visible" });
   }
 
@@ -91,8 +91,14 @@ export class FeedPage {
   async deleteFirstPost() {
     /**Delete the first post (must be your own).*/
     const firstPost = await this.getFirstPost();
+    const content = await firstPost.textContent();
     await firstPost.locator('[data-testid$="-delete-button"]').click();
-    await this.page.waitForTimeout(500);
+
+    // Wait for the deleted post to actually disappear, rather than
+    // guessing how long that takes.
+    await this.page
+      .locator(`text="${content}"`)
+      .waitFor({ state: "hidden", timeout: 5000 });
   }
 
   async waitForPostToAppear(content, timeout = 5000) {
@@ -116,6 +122,8 @@ Create `tests/e2e/pages/profile-page.js`:
  * Handles all interactions with user profile pages.
  */
 
+import { expect } from "@playwright/test";
+
 export class ProfilePage {
   constructor(page) {
     this.page = page;
@@ -135,14 +143,18 @@ export class ProfilePage {
 
   async followUser() {
     /**Click the follow/unfollow toggle button (call only when not following).*/
-    await this.page.click('[data-testid="profile-follow-button"]');
-    await this.page.waitForTimeout(300);
+    const button = this.page.locator('[data-testid="profile-follow-button"]');
+    await button.click();
+    // Wait for the button label to actually flip, rather than guessing
+    // how long the API call takes.
+    await expect(button).toContainText(/unfollow/i);
   }
 
   async unfollowUser() {
     /**Click the same toggle button again to unfollow.*/
-    await this.page.click('[data-testid="profile-follow-button"]');
-    await this.page.waitForTimeout(300);
+    const button = this.page.locator('[data-testid="profile-follow-button"]');
+    await button.click();
+    await expect(button).toContainText(/^follow$/i);
   }
 
   async isFollowing() {

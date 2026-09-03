@@ -165,8 +165,9 @@ test("My first E2E test - Login and create post", async ({ page }) => {
   );
   await page.click('[data-testid="create-post-submit-button"]');
 
-  // Step 5: Verify post appears
-  await page.waitForTimeout(1000); // Wait for post to appear
+  // Step 5: Verify post appears. toContainText() retries on its own until
+  // the post shows up (or the timeout is hit), so there's no need for a
+  // separate wait before it.
   const firstPost = page.locator('[data-testid-generic="post-item"]').first();
   await expect(firstPost).toContainText("My first E2E test post!");
 
@@ -247,7 +248,14 @@ Write a test that:
 **Solution:** Check the data-testid is correct, or add longer timeout
 
 **Problem:** `Test fails randomly`
-**Solution:** Add `await page.waitForTimeout(500)` after actions
+**Solution:** Resist the urge to add `await page.waitForTimeout()` - a
+fixed wait either isn't long enough (still flaky) or wastes time on every
+run (and still isn't guaranteed long enough). Use `expect(...).toBeVisible()`
+or `.toContainText()` instead: they retry until the condition is true or a
+timeout is hit, so they wait exactly as long as needed. If a test is flaky
+even with retrying assertions, that's usually a real race condition worth
+tracking down - see [`TESTING_ANTIPATTERNS.md`](../../../docs/concepts/TESTING_ANTIPATTERNS.md#2-time-and-sleep-anti-patterns)
+for a real example found and fixed in Testbook's own test suite.
 
 ---
 

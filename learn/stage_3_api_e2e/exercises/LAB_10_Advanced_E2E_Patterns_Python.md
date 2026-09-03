@@ -75,8 +75,9 @@ class FeedPage:
         self.page.fill(self.create_post_textarea, content)
         self.page.click(self.create_post_submit)
 
-        # Wait for post to appear
-        self.page.wait_for_timeout(500)
+        # to_contain_text() retries on its own until the post shows up
+        # (or the timeout is hit), so there's no need for a separate
+        # wait before it.
         expect(self.first_post()).to_contain_text(content)
 
     def first_post(self):
@@ -98,8 +99,14 @@ class FeedPage:
     def delete_first_post(self) -> None:
         """Delete the first post (must be your own)."""
         first = self.first_post()
+        content = first.text_content()
         first.locator('[data-testid$="-delete-button"]').click()
-        self.page.wait_for_timeout(500)
+
+        # Wait for the deleted post to actually disappear, rather than
+        # guessing how long that takes.
+        expect(self.page.locator(f'text="{content}"')).not_to_be_visible(
+            timeout=5000
+        )
 ```
 
 #### Step 2: Create Profile Page Object
@@ -108,6 +115,8 @@ Create `tests/e2e-python/pages/profile_page.py`:
 
 ```python
 """Page Object for the Profile page"""
+
+import re
 
 from playwright.sync_api import Page, expect
 
@@ -133,7 +142,11 @@ class ProfilePage:
         expect(button).to_be_visible()
         if "Follow" in button.inner_text():
             button.click()
-            self.page.wait_for_timeout(300)
+            # Wait for the button label to actually flip, rather than
+            # guessing how long the API call takes. Anchored to the whole
+            # label (not just a substring match) since "Unfollow" itself
+            # contains the word "Follow".
+            expect(button).to_contain_text(re.compile("unfollow", re.IGNORECASE))
 
     def unfollow_user(self) -> None:
         """Click the follow/unfollow toggle button, only if currently following."""
@@ -141,7 +154,7 @@ class ProfilePage:
         expect(button).to_be_visible()
         if "Unfollow" in button.inner_text():
             button.click()
-            self.page.wait_for_timeout(300)
+            expect(button).to_contain_text(re.compile("^follow$", re.IGNORECASE))
 
     def is_following(self) -> bool:
         """Check if currently following this user (button reads "Unfollow")."""
@@ -890,7 +903,12 @@ def test_ui_update_persists_to_database(
 
     page.fill('[data-testid="settings-bio-input"]', "Updated bio from UI test")
     page.click('[data-testid="settings-save-button"]')
-    page.wait_for_timeout(500)
+
+    # Wait for the save to actually finish (the success message appearing)
+    # rather than guessing how long the API call takes.
+    expect(page.locator('[data-testid="settings-success"]')).to_be_visible(
+        timeout=5000
+    )
 
     # 2. Verify via API that change persisted
     login_response = requests.post(
