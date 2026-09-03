@@ -19,6 +19,9 @@ vi.mock('../../api', () => ({
     blockUser: vi.fn(),
     unblockUser: vi.fn(),
   },
+  postsAPI: {
+    deletePost: vi.fn(),
+  },
 }));
 
 const sarah = { id: 1, username: 'sarahjohnson', display_name: 'Sarah Johnson' };
@@ -187,5 +190,45 @@ describe('Profile Page', () => {
     renderProfile('sarahjohnson');
 
     expect(await screen.findByText("Sarah's post")).toBeInTheDocument();
+  });
+
+  it('removes a post from the list when deleted via the real Post component', async () => {
+    const user = userEvent.setup();
+    window.confirm = vi.fn(() => true);
+    api.usersAPI.getProfile.mockResolvedValueOnce({
+      data: makeProfile({ username: 'sarahjohnson', display_name: 'Sarah Johnson' }),
+    });
+    api.usersAPI.getUserPosts.mockResolvedValueOnce({
+      data: [
+        {
+          id: 5,
+          content: 'Post to delete',
+          author_id: 1,
+          author_username: 'sarahjohnson',
+          author_display_name: 'Sarah Johnson',
+          author_profile_picture: '',
+          created_at: '2026-01-15T10:00:00Z',
+          image_url: null,
+          video_url: null,
+          is_repost: false,
+          reactions_count: 0,
+          comments_count: 0,
+          reposts_count: 0,
+          user_reaction: null,
+          has_reposted: false,
+        },
+      ],
+    });
+    api.postsAPI.deletePost.mockResolvedValueOnce({});
+
+    renderProfile('sarahjohnson');
+    await screen.findByText('Post to delete');
+
+    await user.click(screen.getByRole('button', { name: '⋯' }));
+    await user.click(screen.getByRole('button', { name: /delete/i }));
+
+    await waitFor(() => {
+      expect(screen.queryByText('Post to delete')).not.toBeInTheDocument();
+    });
   });
 });
