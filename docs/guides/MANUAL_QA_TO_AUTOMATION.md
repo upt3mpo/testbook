@@ -603,7 +603,6 @@ pytest -m smoke
 **Courses:**
 
 - [Test Automation University](https://testautomationu.applitools.com/) (Free)
-- [Udemy: Python for Testers](https://www.udemy.com/topic/python-for-testers/)
 - [Playwright Documentation](https://playwright.dev/docs/intro)
 
 **Books:**
