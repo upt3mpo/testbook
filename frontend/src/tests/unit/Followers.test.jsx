@@ -154,4 +154,25 @@ describe('Followers Page', () => {
     });
     console.error = originalError;
   });
+
+  it('shows an alert if unblocking a follower fails', async () => {
+    const user = userEvent.setup();
+    const originalError = console.error;
+    console.error = () => {};
+    window.alert = vi.fn();
+    api.usersAPI.getFollowers.mockResolvedValueOnce({
+      data: [makeFollower({ is_blocked: true })],
+    });
+    api.usersAPI.unblockUser.mockRejectedValueOnce(new Error('Network error'));
+
+    renderFollowers();
+    await screen.findByText('Mike Chen');
+
+    await user.click(screen.getByRole('button', { name: 'Unblock' }));
+
+    await waitFor(() => {
+      expect(window.alert).toHaveBeenCalledWith('Failed to unblock user');
+    });
+    console.error = originalError;
+  });
 });
