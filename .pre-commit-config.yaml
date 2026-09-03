@@ -58,6 +58,24 @@ repos:
         files: ^backend/
         exclude: ^backend/tests/examples/
 
+  # Type checking. A local hook (not the mirror-mypy repo) because this
+  # codebase's types depend on the real installed packages - SQLAlchemy
+  # 2.0's Mapped[] stubs, FastAPI's Request/Response types, Pydantic
+  # models - and the mirror's isolated hook environment would need every
+  # one of those duplicated into additional_dependencies, drifting from
+  # backend/requirements.txt's actual pinned versions over time. Runs
+  # the backend venv's own mypy directly instead. Verified this passes
+  # clean on the current codebase (backend/pyproject.toml's [tool.mypy])
+  # before enabling.
+  - repo: local
+    hooks:
+      - id: mypy
+        name: mypy (backend)
+        entry: backend/.venv/bin/mypy --config-file=backend/pyproject.toml backend
+        language: system
+        files: ^backend/(?!tests/examples/).*\.py$
+        pass_filenames: false
+
   # JavaScript/Node.js quality (optional - can be enabled later)
   # - repo: https://github.com/pre-commit/mirrors-eslint
   #   rev: v9.15.0
