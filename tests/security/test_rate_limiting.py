@@ -29,13 +29,12 @@ BASE_URL = "http://localhost:8000/api"
 class TestRateLimiting:
     """Test API rate limiting mechanisms."""
 
-    def test_login_attempts_should_be_rate_limited(self):
+    def test_login_attempts_should_be_rate_limited(self, server_testing_mode):
         """Test that repeated failed login attempts are rate limited."""
-        import os
-
-        # In TESTING mode, rate limits are very high (1000/min) for load tests
-        testing_mode = os.getenv("TESTING", "false").lower() == "true"
-        if testing_mode:
+        # In TESTING mode, rate limits are very high (1000/min) for load tests.
+        # server_testing_mode probes the actual server rather than this
+        # process's own TESTING env var - see conftest.py for why.
+        if server_testing_mode:
             pytest.skip(
                 "Rate limit testing skipped in TESTING mode (limits are 1000/min for load tests)"
             )
@@ -95,13 +94,12 @@ class TestRateLimiting:
                 "Rate limit headers not implemented - consider adding for API transparency"
             )
 
-    def test_registration_rate_limiting(self):
+    def test_registration_rate_limiting(self, server_testing_mode):
         """Test that user registration is rate limited."""
-        import os
-
-        # In TESTING mode, rate limits are very high (500/min) for load tests
-        testing_mode = os.getenv("TESTING", "false").lower() == "true"
-        if testing_mode:
+        # In TESTING mode, rate limits are very high (500/min) for load tests.
+        # server_testing_mode probes the actual server rather than this
+        # process's own TESTING env var - see conftest.py for why.
+        if server_testing_mode:
             pytest.skip(
                 "Rate limit testing skipped in TESTING mode (limits are 500/min for load tests)"
             )
