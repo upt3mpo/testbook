@@ -166,7 +166,7 @@ cd tests && npx playwright test
 
 ```bash
 # Backend linting
-cd backend && black . && isort . && flake8 .
+cd backend && black . && ruff check .
 
 # Frontend linting
 cd frontend && npm run lint && npm run format

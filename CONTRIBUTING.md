@@ -154,11 +154,8 @@ pytest ../tests/security/ -v
 # Format code (we use black)
 black backend/
 
-# Sort imports
-isort backend/
-
-# Lint
-flake8 backend/
+# Sort imports and lint (ruff covers both)
+ruff check backend/
 ```
 
 **Standards:**

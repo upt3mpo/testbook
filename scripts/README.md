@@ -97,7 +97,7 @@ markdownlint --fix README.md
 ./scripts/quality-check.sh
 ```
 
-Runs, in order: `black --check`, `isort --check-only`, `flake8` and `pytest --cov --cov-fail-under=80` in `backend/`, then `npm run lint`, `npm run format:check` and `npm test -- --run` in `frontend/`. Exits non-zero on the first failing step (`set -e`).
+Runs, in order: `black --check`, `ruff check` and `pytest --cov --cov-fail-under=80` in `backend/`, then `npm run lint`, `npm run format:check` and `npm test -- --run` in `frontend/`. Exits non-zero on the first failing step (`set -e`).
 
 ### verify-release.sh
 

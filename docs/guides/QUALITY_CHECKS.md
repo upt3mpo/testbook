@@ -11,12 +11,12 @@ Testbook uses automated quality checks to maintain code standards:
 | Check Type | Backend (Python) | Frontend (JavaScript) |
 | --- | --- | --- |
 | **Formatting** | Black | Prettier |
-| **Import Sorting** | isort (CI) / Ruff `I` ruleset (pre-commit) - see note | ESLint import rules |
-| **Linting** | Flake8 (CI) / Ruff `E`/`F` ruleset plus mypy (pre-commit) - see note | ESLint + plugins |
+| **Import Sorting** | Ruff `I` ruleset | ESLint import rules |
+| **Linting** | Ruff `E`/`F` ruleset (24 categories total - see `backend/pyproject.toml`'s `[tool.ruff.lint]`), plus mypy for type checking | ESLint + plugins |
 | **Coverage Gate** | 80% suggested, not enforced by `--cov-fail-under` | No gate (83% actual) |
 | **Pre-commit Hooks** | Enabled: whitespace/EOF/YAML/JSON checks, markdownlint, Black, Ruff, mypy, detect-secrets | Not enabled: ESLint/Prettier still commented out in `.pre-commit-config.yaml` |
 
-**Note on backend linting:** the local pre-commit hook and CI currently run different tools for the same job. `.pre-commit-config.yaml` runs Ruff (added in a later pass, configured to cover what isort and Flake8 were doing). `.github/workflows/testbook-ci.yml`'s `lint-backend` job still installs and runs isort and Flake8 directly - it was never migrated. Both are real and currently enforced; they just aren't the same tool, which means it's possible for pre-commit to pass locally while CI's separate isort/Flake8 run catches something different, or vice versa. This is a real inconsistency worth resolving (migrate CI to Ruff too, or document why both are intentionally kept), not something this pass fixed - flagging it rather than choosing an answer unilaterally, since it's a CI workflow change with more consequence than a documentation correction.
+**A note on history:** backend linting used to be isort + Flake8, run separately from what pre-commit checked (which had already moved to Ruff in an earlier pass). CI's `lint-backend` job and `scripts/quality-check.sh` now both run Ruff too, so there's a single tool and a single config (`backend/pyproject.toml`'s `[tool.ruff]`) enforced everywhere - local pre-commit, CI, and the manual quality-check script all agree.
 
 ---
 
@@ -31,8 +31,7 @@ Testbook uses automated quality checks to maintain code standards:
 This runs:
 
 - ✅ Black formatting check (Python)
-- ✅ isort import sort check (Python)
-- ✅ Flake8 linting (Python)
+- ✅ Ruff import sorting and linting (Python)
 - ✅ Backend tests with 80% coverage gate
 - ✅ ESLint linting (JavaScript)
 - ✅ Prettier formatting check (JavaScript)
@@ -62,53 +61,27 @@ black .
 ```toml
 [tool.black]
 line-length = 88
-target-version = ['py311']
+target-version = ['py313']
 ```
 
 ---
 
-### Import Sorting with isort
+### Import Sorting and Linting with Ruff
 
-**Check imports:**
-
-```bash
-cd backend
-isort --check-only --diff .
-```
-
-**Auto-fix:**
-
-```bash
-isort .
-```
-
-**Configuration:** `backend/pyproject.toml`
-
-```toml
-[tool.isort]
-profile = "black"
-line_length = 88
-```
-
----
-
-### Linting with Flake8
-
-**Run linter:**
+**Check imports and lint:**
 
 ```bash
 cd backend
-flake8 .
+ruff check .
 ```
 
-**Configuration:** `backend/.flake8`
+**Auto-fix what's fixable:**
 
-```ini
-[flake8]
-max-line-length = 100
-extend-ignore = E203, W503, E501
-exclude = venv, .venv, htmlcov
+```bash
+ruff check --fix .
 ```
+
+**Configuration:** `backend/pyproject.toml`'s `[tool.ruff]` and `[tool.ruff.lint]`. 24 rule categories are enabled (import sorting is just one - `I`), each checked against real hits in this codebase before being turned on rather than enabled by default. See the comment above `[tool.ruff.lint]` in that file for the full reasoning, and the `ignore` list right below it for the specific codes disabled and why.
 
 ---
 
@@ -239,7 +212,7 @@ pre-commit install
 9. Private key detection
 10. **Markdownlint** (Markdown files)
 11. **Black** (Python formatting, `--line-length=88`)
-12. **Ruff** (Python import sorting and linting, replacing isort/Flake8 for this hook - CI's `lint-backend` job still runs isort and Flake8 separately, see the note above)
+12. **Ruff** (Python import sorting and linting, replacing isort/Flake8 everywhere - see the note above)
 13. **mypy** (Python type checking)
 14. **detect-secrets** (all languages)
 
@@ -291,7 +264,7 @@ lint-frontend → frontend-tests ↗
 
 **Jobs:**
 
-1. `lint-backend` - Black, isort, Flake8
+1. `lint-backend` - Black, Ruff
 2. `lint-frontend` - ESLint, Prettier
 3. `backend-tests` - Tests with 80% coverage gate
 4. `frontend-tests` - Component tests
@@ -335,6 +308,7 @@ None of this is enforced by anything in this repository — it has to be configu
 
 - Python (Microsoft)
 - Black Formatter
+- Ruff (charliermarsh.ruff)
 - ESLint
 - Prettier
 
@@ -343,7 +317,6 @@ None of this is enforced by anything in this repository — it has to be configu
 ```json
 {
   "python.formatting.provider": "black",
-  "python.linting.flake8Enabled": true,
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
@@ -474,7 +447,7 @@ open htmlcov/index.html
 <h2 id="additional-resources">📚 Additional Resources</h2>
 
 - [Black Documentation](https://black.readthedocs.io/)
-- [Flake8 Rules](https://flake8.pycqa.org/en/latest/user/error-codes.html)
+- [Ruff Rules](https://docs.astral.sh/ruff/rules/)
 - [ESLint Rules](https://eslint.org/docs/latest/rules/)
 - [Prettier Options](https://prettier.io/docs/en/options.html)
 - [Pre-commit Hooks](https://pre-commit.com/)
@@ -490,7 +463,7 @@ Before pushing code:
 - [ ] Coverage above 80% (backend)
 - [ ] No console.log statements
 - [ ] Code formatted (Black/Prettier)
-- [ ] Imports sorted (isort)
+- [ ] Imports sorted (ruff)
 - [ ] Pre-commit hooks installed
 
 ---
