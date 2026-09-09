@@ -5,6 +5,20 @@ updates:
     schedule:
       interval: "weekly"
 
+  # Tracks the base images pinned in Dockerfile (python:3.13-slim-bookworm,
+  # node:24-alpine) and .devcontainer/Dockerfile.dev (python:3.13-slim-bookworm).
+  # Previously untracked - nothing in this repo flagged when a newer base
+  # image became available, unlike every pip/npm dependency below.
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+
+  - package-ecosystem: "docker"
+    directory: "/.devcontainer"
+    schedule:
+      interval: "weekly"
+
   - package-ecosystem: "npm"
     directory: "/frontend"
     schedule:
