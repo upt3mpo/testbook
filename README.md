@@ -1,7 +1,7 @@
 # 📱 Testbook - Automation Testing Platform
 
 ![CI Status](https://github.com/upt3mpo/testbook/actions/workflows/testbook-ci.yml/badge.svg)
-![Backend Coverage](https://img.shields.io/badge/backend_coverage-86%25-brightgreen)
+![Backend Coverage](https://img.shields.io/badge/backend_coverage-85%25-brightgreen)
 ![Frontend Coverage](https://img.shields.io/badge/frontend_coverage-83%25-brightgreen)
 ![Total Tests](https://img.shields.io/badge/tests-477-blue)
 ![Python](https://img.shields.io/badge/python-3.13-blue)
@@ -13,7 +13,7 @@ tests (JavaScript + Python), 29 security tests, and structured hands-on labs.
 
 Perfect for individual learners, junior developers exploring testing, or manual QA professionals transitioning to automation.
 
-**477 Tests | Complete Testing Pyramid | 86% Backend Coverage**
+**477 Tests | Complete Testing Pyramid | 85% Backend Coverage**
 
 <h2 id="table-of-contents">📋 Table of Contents</h2>
 
@@ -240,7 +240,7 @@ def test_sql_injection_prevention():
 
 ### 🧪 Testing Features
 
-- **185 Backend Tests** - pytest with 86% coverage
+- **185 Backend Tests** - pytest with 85% coverage
 - **144 Frontend Tests** - Vitest + React Testing Library (83% coverage)
 - **119 E2E Tests** - Playwright (59 JavaScript + 60 Python)
 - **Performance Tests** - k6 load testing

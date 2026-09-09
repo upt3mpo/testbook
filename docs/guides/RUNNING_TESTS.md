@@ -35,7 +35,7 @@ pytest -v
 ### Backend Tests (Python/pytest)
 
 - **185 tests** (unit, integration, database)
-- **86% coverage**
+- **85% coverage**
 - **Platform:** All (Python is cross-platform)
 - **Language:** Python
 

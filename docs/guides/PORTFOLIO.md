@@ -61,7 +61,7 @@ I completed the Testbook automation testing curriculum to build professional QA 
 - ✅ Security testing (OWASP Top 10, 29 tests)
 - ✅ CI/CD with GitHub Actions
 
-**Coverage achieved:** 86% backend | 83% frontend
+**Coverage achieved:** 85% backend | 83% frontend
 **Total tests:** 477
 **Time invested:** [X hours]
 
@@ -273,7 +273,7 @@ QA ENGINEER | AUTOMATION TESTING PROJECT
 September 2024 - Present
 
 • Developed and maintained 477 automated tests across full-stack social media application
-  using pytest (Python) and Vitest (JavaScript), achieving 86% backend coverage
+  using pytest (Python) and Vitest (JavaScript), achieving 85% backend coverage
 • Implemented E2E test automation with Playwright for both Python and JavaScript stacks,
   validating complete user workflows and cross-browser compatibility
 • Created API contract tests using OpenAPI validation to ensure frontend/backend agreement
@@ -366,7 +366,7 @@ social media application designed for QA learning.
 
 🎯 Achievements:
 • Wrote and maintained 477 automated tests (Python + JavaScript)
-• Achieved 86% backend coverage, 83% frontend coverage
+• Achieved 85% backend coverage, 83% frontend coverage
 • Implemented E2E testing with Playwright (dual-stack)
 • Performed OWASP Top 10 security testing
 • Conducted k6 performance testing under load
@@ -455,7 +455,7 @@ Skills: Test Automation • Python • JavaScript • pytest • Playwright • 
 ### Write a Great Repository Description
 
 ```text
-🧪 Automation testing portfolio - 477 tests | Python (pytest) + JavaScript (Vitest/Playwright) | 86% coverage | CI/CD | Full testing pyramid
+🧪 Automation testing portfolio - 477 tests | Python (pytest) + JavaScript (Vitest/Playwright) | 85% coverage | CI/CD | Full testing pyramid
 ```
 
 ### Add Topics/Tags
@@ -487,7 +487,7 @@ In your repo settings, add topics:
 
 ### 30-Second Elevator Pitch
 
-> "I recently completed a comprehensive automation testing project where I worked with 477 tests across a full-stack application. I have experience with Python pytest for backend testing, JavaScript Vitest and Playwright for frontend and E2E testing, plus performance and security testing. I've set up CI/CD pipelines and achieved 86% code coverage. I'm excited to bring these skills to a QA engineering role and continue growing."
+> "I recently completed a comprehensive automation testing project where I worked with 477 tests across a full-stack application. I have experience with Python pytest for backend testing, JavaScript Vitest and Playwright for frontend and E2E testing, plus performance and security testing. I've set up CI/CD pipelines and achieved 85% code coverage. I'm excited to bring these skills to a QA engineering role and continue growing."
 
 ### 2-Minute Detailed Version
 

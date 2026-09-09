@@ -73,12 +73,11 @@ pytest -v
 
 **A:**
 
-- **Backend:** 185 tests (86% coverage)
+- **Backend:** 185 tests (85% coverage)
 - **Frontend:** 144 tests (unit + integration + accessibility, 83% coverage)
 - **E2E:** 119 tests (59 JavaScript + 60 Python, Playwright)
-- **Security:** 29 tests (18 pass + 9 skip in a typical clean run, plus 2
-  rate-limit-timing tests that are environment-dependent - see
-  tests/security/README.md)
+- **Security:** 29 tests (18 pass, 11 skip - 5 real gaps plus 6 intentional
+  OWASP-coverage placeholders - see tests/security/README.md)
 - **Total:** 477 tests across every suite
 
 ### Q: Which testing framework should I learn?
@@ -210,7 +209,7 @@ start-dev.bat
 - **Good:** 80-90%
 - **Excellent:** 90%+
 
-Testbook currently has 86% coverage as an example.
+Testbook currently has 85% coverage as an example.
 
 ### Q: Should I test everything?
 
