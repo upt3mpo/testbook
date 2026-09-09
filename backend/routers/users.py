@@ -8,6 +8,7 @@ import models
 import schemas
 from auth import get_current_user
 from database import get_db
+from upload_validation import looks_like_declared_type
 
 router = APIRouter()
 
@@ -126,13 +127,23 @@ async def upload_avatar(
             detail=f"File type not allowed. Allowed types: {', '.join(allowed_extensions)}",
         )
 
+    contents = await file.read()
+
+    # The extension check above only looks at the filename, which the
+    # client fully controls. This checks the actual bytes, so a mislabeled
+    # file gets rejected too - see upload_validation.py.
+    if not looks_like_declared_type(contents, file_ext):
+        raise HTTPException(
+            status_code=400,
+            detail="File content doesn't match its extension",
+        )
+
     # Generate unique filename
     unique_filename = f"{uuid.uuid4()}{file_ext}"
     file_path = UPLOAD_DIR / unique_filename
 
     # Save file
     try:
-        contents = await file.read()
         with file_path.open("wb") as f:
             f.write(contents)
     except OSError as e:
