@@ -196,6 +196,7 @@ Includes environment config, fixtures, test helpers, and patterns.
 | **[TESTING_ANTIPATTERNS.md](concepts/TESTING_ANTIPATTERNS.md)** | 25 min | 🟡 Intermediate | 16 mistakes to avoid              |
 | **[TESTING_FEATURES.md](reference/TESTING_FEATURES.md)**        | 15 min | 🟢 Beginner     | All testable Testbook features    |
 | **[PROJECT_INFO.md](reference/PROJECT_INFO.md)**                | 20 min | 🟡 Intermediate | Technical architecture details    |
+| **[SECURITY_NOTES.md](reference/SECURITY_NOTES.md)**            | 15 min | 🟡 Intermediate | Known security tradeoffs and why  |
 
 ### Content Highlights
 
