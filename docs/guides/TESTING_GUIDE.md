@@ -1,6 +1,6 @@
 # 🧪 Testbook Testing Guide
 
-This guide provides comprehensive examples and scenarios for testing Testbook with various automation frameworks.
+Worked examples for testing Testbook with pytest, Vitest, and Playwright.
 
 ## Table of Contents
 
@@ -46,7 +46,6 @@ pip install selenium
 ```
 
 - Works with all major languages
-
 - Huge community support
 - Extensive browser support
 
@@ -57,7 +56,6 @@ npm install cypress --save-dev
 ```
 
 - Real-time reloads
-
 - Time-travel debugging
 - Beautiful UI
 
@@ -100,7 +98,7 @@ Before each test suite, reset the database:
 ./reset-database.sh
 
 # Or use API (requires the backend to be started with TESTING=true, or this
-# returns 403 — see docs/guides/PLAYWRIGHT_QUICKSTART.md)
+# returns 403 - see docs/guides/PLAYWRIGHT_QUICKSTART.md)
 curl -X POST http://localhost:8000/api/dev/reset
 ```
 
@@ -139,7 +137,7 @@ requests.post('http://localhost:8000/api/dev/reset')
 
 ### Key Testing Features
 
-✅ **138+ data-testid attributes** - Every interactive element is easily selectable
+✅ **150+ data-testid attributes** - Every interactive element is easily selectable
 ✅ **File upload support** - Test drag-and-drop and file picker functionality
 ✅ **Toggle actions** - Reactions, reposts, follow/unfollow all toggleable
 ✅ **Edit functionality** - Posts and profiles are editable
@@ -645,7 +643,7 @@ backend/
 - Automatically generate test cases from OpenAPI schema
 - Validate API matches documentation
 - Find edge cases and security vulnerabilities
-- **In Testbook:** See [Contract Testing Guide](CONTRACT_TESTING.md) for the full explanation (currently skipped pending a Schemathesis/OpenAPI 3.1.0 compatibility fix — see the guide for details)
+- **In Testbook:** See [Contract Testing Guide](CONTRACT_TESTING.md) for the full explanation (currently skipped pending a Schemathesis/OpenAPI 3.1.0 compatibility fix - see the guide for details)
 
 ### Authentication Flow
 
@@ -1340,16 +1338,16 @@ def teardown_tests():
 
 ## Tips & Best Practices
 
-1. **Reset data between tests**: Use `./reset-database.sh` or `/api/dev/reset` endpoint
-2. **Use data-testid attributes**: All elements have test IDs
-3. **Wait for network requests**: Posts, comments may have slight delays
-4. **Test with different users**: Verify permissions and visibility
-5. **Check both UI and API**: Ensure consistency
-6. **Test edge cases**: Empty feeds, blocked users, deleted content
-7. **Verify error messages**: Test invalid inputs
-8. **Test responsiveness**: Try different viewport sizes
-9. **Check accessibility**: Use screen reader testing
-10. **Monitor performance**: Check load times
+- **Reset data between tests**: Use `./reset-database.sh` or `/api/dev/reset` endpoint
+- **Use data-testid attributes**: All elements have test IDs
+- **Wait for network requests**: Posts, comments may have slight delays
+- **Test with different users**: Verify permissions and visibility
+- **Check both UI and API**: Ensure consistency
+- **Test edge cases**: Empty feeds, blocked users, deleted content
+- **Verify error messages**: Test invalid inputs
+- **Test responsiveness**: Try different viewport sizes
+- **Check accessibility**: Use screen reader testing
+- **Monitor performance**: Check load times
 
 ## Common Test Patterns
 
@@ -1396,12 +1394,12 @@ class TestbookAPI:
 
 ## Debugging Tips
 
-1. **Check API responses**: <http://localhost:8000/docs>
-2. **View browser console**: Look for errors
-3. **Check network tab**: Monitor API calls
-4. **Use verbose logging**: Enable in test framework
-5. **Take screenshots**: On test failures
-6. **Check database state**: Via dev endpoints
+- **Check API responses**: <http://localhost:8000/docs>
+- **View browser console**: Look for errors
+- **Check network tab**: Monitor API calls
+- **Use verbose logging**: Enable in test framework
+- **Take screenshots**: On test failures
+- **Check database state**: Via dev endpoints
 
 ---
 
