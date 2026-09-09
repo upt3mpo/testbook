@@ -132,9 +132,9 @@ function Profile() {
               data-testid="profile-avatar"
             />
             <div className="profile-details">
-              <h2 className="profile-name" data-testid="profile-display-name">
+              <h1 className="profile-name" data-testid="profile-display-name">
                 {profile.display_name}
-              </h2>
+              </h1>
               <p className="profile-username text-secondary" data-testid="profile-username">
                 @{profile.username}
               </p>
@@ -196,7 +196,7 @@ function Profile() {
         </div>
 
         <div className="profile-posts">
-          <h3 className="posts-title">Posts</h3>
+          <h2 className="posts-title">Posts</h2>
           {posts.length === 0 ? (
             <div className="empty-posts card" data-testid="profile-no-posts">
               <p className="text-secondary">No posts yet.</p>

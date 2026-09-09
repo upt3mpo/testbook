@@ -263,3 +263,19 @@ a:hover {
   border-radius: 6px;
   margin-bottom: 16px;
 }
+
+/* Visually hides content while keeping it readable by screen readers -
+   for headings pages need for accessible structure (a landmark heading
+   naming the page) but don't need to show, since the visual design
+   already conveys the same context another way (nav tabs, page chrome). */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

@@ -29,7 +29,7 @@ function Login() {
   };
 
   return (
-    <div className="auth-container" data-testid="login-page">
+    <main className="auth-container" data-testid="login-page">
       <div className="auth-card card">
         <h1 className="auth-title" data-testid="login-title">
           Testbook
@@ -85,7 +85,7 @@ function Login() {
           <p className="text-small text-secondary">mike.chen@testbook.com / MikeRocks88</p>
         </div>
       </div>
-    </div>
+    </main>
   );
 }
 

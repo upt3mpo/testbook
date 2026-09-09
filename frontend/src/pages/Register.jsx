@@ -44,7 +44,7 @@ function Register() {
   };
 
   return (
-    <div className="auth-container" data-testid="register-page">
+    <main className="auth-container" data-testid="register-page">
       <div className="auth-card card">
         <h1 className="auth-title" data-testid="register-title">
           Create Account
@@ -124,7 +124,7 @@ function Register() {
           </button>
         </Link>
       </div>
-    </div>
+    </main>
   );
 }
 

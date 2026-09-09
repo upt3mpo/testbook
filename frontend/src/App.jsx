@@ -48,7 +48,7 @@ function PrivateLayout({ children }) {
   return (
     <>
       <Navbar />
-      {children}
+      <main>{children}</main>
     </>
   );
 }
