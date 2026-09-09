@@ -280,6 +280,14 @@ tests/security/
 
    - Tokens work for multiple requests
    - Multiple sessions supported
+   - **Not tested here, because it doesn't exist:** token revocation. A
+     token issued before a password change or a logout stays valid until
+     it expires on its own (up to 24 hours by default - see
+     `ACCESS_TOKEN_EXPIRE_MINUTES` in `backend/auth.py`). This is a
+     deliberate simplification for a learning app, documented in a comment
+     on `get_current_user()` in that file, not an oversight - a real
+     deployment would need either a server-side revocation check on every
+     request or short-lived tokens with revocable refresh tokens.
 
 7. **DDoS Protection**
    - Request size limits (10MB max)
