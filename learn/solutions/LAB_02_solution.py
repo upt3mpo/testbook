@@ -10,7 +10,13 @@ import pytest
 
 from jose import jwt
 
-from auth import ALGORITHM, SECRET_KEY, create_access_token, get_password_hash, verify_password
+from auth import (
+    ALGORITHM,
+    SECRET_KEY,
+    create_access_token,
+    get_password_hash,
+    verify_password,
+)
 
 
 def decode_token(token):

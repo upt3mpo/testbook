@@ -261,7 +261,9 @@ class TestReactionsAPI:
 
         assert response.status_code == 200
 
-    def test_reacting_twice_with_same_type_is_idempotent(self, client, test_post, auth_headers):
+    def test_reacting_twice_with_same_type_is_idempotent(
+        self, client, test_post, auth_headers
+    ):
         """Test that reacting twice with the same type doesn't create a duplicate.
 
         Note: POST /{post_id}/reactions is not a toggle - sending the same

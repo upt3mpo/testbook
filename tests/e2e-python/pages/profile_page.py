@@ -48,9 +48,7 @@ class ProfilePage(BasePage):
         @username.
         """
         expect(self.page.locator(self.display_name)).to_contain_text(display_name)
-        expect(self.page.locator(self.profile_username)).to_contain_text(
-            f"@{username}"
-        )
+        expect(self.page.locator(self.profile_username)).to_contain_text(f"@{username}")
 
     def expect_own_profile_controls(self) -> None:
         """Assert this profile is showing as the logged-in user's own

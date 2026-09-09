@@ -377,9 +377,7 @@ class TestAccountDeletion:
         settings = SettingsPage(page)
         settings.goto()
 
-        expect(page.locator(settings.delete_account_button)).to_be_visible(
-            timeout=5000
-        )
+        expect(page.locator(settings.delete_account_button)).to_be_visible(timeout=5000)
         settings.delete_account()
 
         # Wait for redirect to login page - this is the key indicator of
@@ -389,6 +387,4 @@ class TestAccountDeletion:
             page.wait_for_url(re.compile(r".*/(login|$)"), timeout=15000)
         except Exception:
             # Fallback: check for login input if URL didn't change
-            expect(page.get_by_test_id("login-email-input")).to_be_visible(
-                timeout=5000
-            )
+            expect(page.get_by_test_id("login-email-input")).to_be_visible(timeout=5000)

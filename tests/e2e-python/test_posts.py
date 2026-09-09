@@ -139,9 +139,7 @@ class TestPosts:
 
         if is_visible:
             # Should not have edit menu
-            expect(
-                other_user_post.locator(feed.post_menu_button)
-            ).not_to_be_visible()
+            expect(other_user_post.locator(feed.post_menu_button)).not_to_be_visible()
 
     # Delete Post Tests
     def test_delete_own_post(self, page: Page, base_url: str, login_as, fresh_database):
@@ -237,9 +235,7 @@ class TestPosts:
         # All reactions should be visible
         reactions = ["like", "love", "haha", "wow", "sad", "angry"]
         for reaction in reactions:
-            reaction_locator = my_post.locator(
-                f'[data-testid$="-reaction-{reaction}"]'
-            )
+            reaction_locator = my_post.locator(f'[data-testid$="-reaction-{reaction}"]')
             expect(reaction_locator).to_be_visible(timeout=5000)
 
     # Comment Tests
