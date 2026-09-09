@@ -227,20 +227,20 @@ test("user can create post", async ({ page }) => {
 
 ```python
 # Navigation
-await page.goto("http://localhost:3000")
+page.goto("http://localhost:3000")
 
 # Filling forms
-await page.fill("#email", "user@test.com")
-await page.fill("#password", "password123")
+page.fill("#email", "user@test.com")
+page.fill("#password", "password123")
 
 # Clicking buttons
-await page.click("#login-button")
+page.click("#login-button")
 
 # Waiting for elements
-await page.wait_for_selector(".post-content")
+page.wait_for_selector(".post-content")
 
 # Taking screenshots
-await page.screenshot(path="test-result.png")
+page.screenshot(path="test-result.png")
 ```
 
 </details>
@@ -282,14 +282,14 @@ E2E tests must handle:
 
 ```python
 # Wait for element to appear
-await page.wait_for_selector(".post-content")
+page.wait_for_selector(".post-content")
 
 # Wait for navigation
-await page.wait_for_url("**/feed")
+page.wait_for_url("**/feed")
 
 # Wait for API response
-async with page.expect_response("**/api/posts") as response:
-    await page.click("#submit-post")
+with page.expect_response("**/api/posts") as response:
+    page.click("#submit-post")
 ```
 
 </details>
