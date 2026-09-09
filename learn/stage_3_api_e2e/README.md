@@ -484,7 +484,7 @@ def test_register_new_user_successfully(
 
    ```python
    # Temporarily change this line in the test:
-   await expect(page).to_have_url(f"{base_url}/")  # Change to: await expect(page).to_have_url(f"{base_url}/wrong")
+   expect(page).to_have_url(f"{base_url}/")  # Change to: expect(page).to_have_url(f"{base_url}/wrong")
    ```
 
    Then run with `--screenshot=only-on-failure` to see the screenshot!
