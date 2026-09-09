@@ -1,7 +1,7 @@
 repos:
   # General file checks (safe and useful)
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.6.0
+    rev: v6.0.0
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
@@ -15,9 +15,17 @@ repos:
       - id: debug-statements
       - id: detect-private-key
 
-  # Markdown linting
+  # Markdown linting. docs/AUDIT_REPORT.md is excluded deliberately, not
+  # missed: it's a maintainer-facing, dated audit trail across many past
+  # passes, and its original (pre-this-pass) sections have real MD022/
+  # MD032 issues that every pass has chosen not to touch, to keep each
+  # dated section an honest record of what was true when it was written,
+  # not silently rewritten by a later formatting pass. That was informal
+  # policy until this repo's markdownlint version was old enough to never
+  # actually catch these - upgrading it made this exclusion necessary to
+  # write down explicitly, not just remembered.
   - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.38.0
+    rev: v0.49.1
     hooks:
       - id: markdownlint
         args: [--config, .markdownlint.json]
@@ -25,10 +33,18 @@ repos:
         exclude: |
           (?x)^(
             \.github/.*|
-            \.devcontainer/.*
+            \.devcontainer/.*|
+            docs/AUDIT_REPORT\.md
           )$
 
-  # Python code quality
+  # Python code quality. Pinned to match backend/requirements.txt's own
+  # black==25.1.0 exactly, not just "close enough" - a real release
+  # (26.5.1 as of this check) exists, but bumping only this hook's rev
+  # without also bumping requirements.txt would split black into two
+  # different enforced versions, the same class of problem the isort/
+  # Flake8-vs-Ruff split was. requirements.txt's black already has an open
+  # Dependabot PR (25.1.0 to 25.11.0); bump this rev to match whatever
+  # version that PR lands at, together, not ahead of it.
   - repo: https://github.com/psf/black
     rev: 25.1.0
     hooks:
@@ -54,7 +70,7 @@ repos:
   # the full reasoning. Verified this passes clean on the current codebase
   # before enabling.
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.16.4
+    rev: v0.16.6
     hooks:
       - id: ruff
         args: [--fix]
