@@ -16,8 +16,30 @@
 
 **Estimated time remaining:** 5-7 hours (core content) + 3-5 hours (optional exercises)
 
+<h2 id="entry-criteria">Entry Criteria: What You Should Know Before Starting</h2>
+
+Before starting Stage 2, you should be able to:
+
+- Write a unit test using the Arrange-Act-Assert pattern and explain what it isolates (Stage 1)
+- Explain what a fixture or mock does and why a test uses one instead of the real thing (Stage 1)
+- Run your track's test command from the terminal and read the pass/fail output, including which assertion failed (Stage 1)
+- Python track: write a pytest test using a fixture like `db_session` or `test_user`. JavaScript track: write a Vitest test that mocks a function with `vi.fn()` and test a React component's rendered output.
+
+If any of those feel shaky, revisit [Stage 1's Success Criteria](../stage_1_unit/README.md#success-criteria) before starting - Stage 2 assumes you can do all of them without re-explanation.
+
+<h2 id="bridge-from-stage-1">Bridge: What's New in Stage 2</h2>
+
+Stage 1 tested functions directly - you called a function, checked what it returned. Stage 2 tests through HTTP instead: your test sends a request to a running API and checks the response, without calling any backend function directly. The fixtures and assertions you already know still apply; what's different is the layer you're testing at.
+
+Two things Lab 5 uses without stopping to explain, so you're not caught off guard:
+
+- **The test client** (`TestClient` in Python, `MSW` in JavaScript) fakes an HTTP request/response cycle without actually starting a server on a real port. When a test does `client.post("/api/auth/login", json={...})`, that's not hitting `localhost:8000` - it's calling the FastAPI app directly in-process and getting back a response object shaped exactly like a real one would be.
+- **Access tokens.** Login endpoints in this app (and most real APIs) don't just say "yes, you're logged in" - they return a token (a JWT, in Testbook's case) that the client then sends back on every later request to prove who it is, instead of re-sending a password every time. When a Stage 2 test asserts `"access_token" in data`, it's checking that the login endpoint actually issued one of these; later labs use that token to make authenticated requests. You don't need to know how JWTs are constructed to test with them - just that the token is the thing proving "this request is really from a logged-in user."
+
 <h2 id="table-of-contents">Table of Contents</h2>
 
+- [Entry Criteria](#entry-criteria)
+- [Bridge: What's New in Stage 2](#bridge-from-stage-1)
 - [Why Integration Testing Matters: The Glue That Holds Systems Together](#why-integration-testing-matters-the-glue-that-holds-systems-together)
 - [Part 1: What Are Integration Tests?](#part-1-what-are-integration-tests)
 - [Part 2: HTTP API Testing](#part-2-http-api-testing)
