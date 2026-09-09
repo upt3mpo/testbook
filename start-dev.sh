@@ -65,9 +65,10 @@ check_port() {
     local service_name=$2
 
     if lsof -Pi :$port -sTCP:LISTEN -t >/dev/null 2>&1; then
-        echo "⚠️  Port $port is already in use by another process"
-        echo "   This might be an existing $service_name instance"
-        echo "   Run 'lsof -ti:$port | xargs kill' to stop it, or use a different port"
+        echo -e "${RED}❌ Error: Port $port is already in use${NC}"
+        echo "   This might be an existing $service_name instance, or something else entirely."
+        echo "   Find it:  lsof -i :$port"
+        echo "   Stop it:  lsof -ti:$port | xargs kill"
         return 1
     fi
     return 0
@@ -80,14 +81,20 @@ if [ ! -f "backend/static/images/default-avatar.jpg" ]; then
     echo ""
 fi
 
-# Check backend port
-if ! check_port 8000 "backend"; then
-    echo "   Continuing anyway - remove the process or restart if you encounter issues..."
-fi
-
-# Check frontend port
-if ! check_port 3000 "frontend"; then
-    echo "   Continuing anyway - remove the process or restart if you encounter issues..."
+# Check both ports before starting anything. Continuing past a port conflict
+# used to just print a warning and proceed - but uvicorn/vite then either
+# crash outright or (for vite) silently pick a different port, while the
+# readiness check below still reports success because it only polls the
+# URL, not whether *this run's* process is the one answering it. The result
+# was a "Testbook is running!" banner while the backend that's supposed to
+# reload your code changes was actually dead. Exiting here means the error
+# is the first and only thing you see, not the first of several confusing
+# ones.
+PORT_CONFLICT=false
+check_port 8000 "backend" || PORT_CONFLICT=true
+check_port 3000 "frontend" || PORT_CONFLICT=true
+if [ "$PORT_CONFLICT" = true ]; then
+    exit 1
 fi
 
 # Start backend
