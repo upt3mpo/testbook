@@ -44,12 +44,15 @@ repos:
             \.pytest_cache/.*
           )$
 
-  # Ruff replaces isort + flake8 here: its `I` ruleset covers import
-  # sorting and its `E`/`F` rules cover what flake8 was configured for.
-  # Config lives in backend/pyproject.toml ([tool.ruff]) — deliberately
-  # scoped to E/F/I only (not ruff's stricter opt-in categories) so it
-  # doesn't overwhelm a teaching codebase with unrelated lint noise.
-  # Verified this passes clean on the current codebase before enabling.
+  # Ruff replaces isort + flake8 - not just here, everywhere: CI's
+  # lint-backend job and scripts/quality-check.sh both run `ruff check`
+  # too now, instead of installing and running isort/flake8 separately.
+  # Config lives in backend/pyproject.toml ([tool.ruff]) - re-triaged
+  # against `ruff check . --select=ALL` and now covers 24 rule categories
+  # (not just E/F/I), each checked against real hits in this codebase
+  # before being enabled - see the comment on [tool.ruff.lint] there for
+  # the full reasoning. Verified this passes clean on the current codebase
+  # before enabling.
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.16.4
     hooks:

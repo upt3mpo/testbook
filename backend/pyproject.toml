@@ -20,13 +20,6 @@ extend-exclude = '''
 )/
 '''
 
-[tool.isort]
-profile = "black"
-line_length = 88
-skip_gitignore = true
-known_first_party = ["models", "schemas", "auth", "database", "logger"]
-known_third_party = ["fastapi", "sqlalchemy", "pydantic", "slowapi", "jose", "passlib"]
-
 [tool.ruff]
 line-length = 88
 target-version = "py313"

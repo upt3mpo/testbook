@@ -27,22 +27,17 @@ jobs:
         run: |
           cd backend
           python -m pip install --upgrade pip
-          pip install black==25.1.0 flake8==7.1.1 isort==7.0.0
+          pip install black==25.1.0 ruff==0.16.4
 
       - name: Run Black (format check)
         run: |
           cd backend
           black --check --diff .
 
-      - name: Run isort (import sort check)
+      - name: Run Ruff (import sort + lint)
         run: |
           cd backend
-          isort --check-only --diff .
-
-      - name: Run Flake8 (linting)
-        run: |
-          cd backend
-          flake8 .
+          ruff check .
 
   lint-frontend:
     name: Lint Frontend (JavaScript)
@@ -512,7 +507,7 @@ jobs:
       - name: Create status badge
         run: |
           echo "All tests and quality checks passed! ✅" >> $GITHUB_STEP_SUMMARY
-          echo "- **Linting:** Black, isort, Flake8 (Python) | ESLint, Prettier (JS)" >> $GITHUB_STEP_SUMMARY
+          echo "- **Linting:** Black, Ruff (Python) | ESLint, Prettier (JS)" >> $GITHUB_STEP_SUMMARY
           echo "- **Backend:** 180 tests | 86% coverage (enforced minimum: 80%)" >> $GITHUB_STEP_SUMMARY
           echo "- **Frontend:** 40 tests | 41% coverage" >> $GITHUB_STEP_SUMMARY
           echo "- **E2E (JS):** Full suite" >> $GITHUB_STEP_SUMMARY

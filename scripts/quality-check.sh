@@ -16,11 +16,8 @@ cd backend
 echo "  ✓ Black (formatting)"
 black --check --diff .
 
-echo "  ✓ isort (import sorting)"
-isort --check-only --diff .
-
-echo "  ✓ Flake8 (linting)"
-flake8 .
+echo "  ✓ Ruff (import sorting + linting)"
+ruff check .
 
 echo "  ✓ Running tests with coverage gate (80% minimum)"
 pytest --cov --cov-fail-under=80

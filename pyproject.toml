@@ -21,24 +21,12 @@ extend-exclude = '''
 )/
 '''
 
-[tool.isort]
-profile = "black"
-line_length = 88
-multi_line_output = 3
-include_trailing_comma = true
-force_grid_wrap = 0
-use_parentheses = true
-ensure_newline_before_comments = true
-
-[tool.flake8]
-max-line-length = 88
-extend-ignore = ["E203", "W503", "E501", "E402", "E722", "F821", "F841"]
-exclude = [
-    ".git",
-    "__pycache__",
-    ".venv",
-    "venv",
-    "backend/venv",
-    "node_modules",
-    ".pytest_cache"
-]
+# isort and flake8 configs used to live here, but this file isn't actually
+# where either tool reads its config from for any real invocation in this
+# repo: flake8 needs the Flake8-pyproject plugin (not installed) to read
+# [tool.flake8] from a pyproject.toml at all - it was silently never
+# applied - and everything that runs isort/flake8 does so from backend/,
+# picking up backend/.flake8 and backend/pyproject.toml's [tool.isort]
+# instead. Both tools have been replaced by Ruff (see
+# backend/pyproject.toml's [tool.ruff]) - removed rather than left as dead,
+# never-read config.

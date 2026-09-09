@@ -77,7 +77,7 @@ cd backend
 source .venv/bin/activate 2>/dev/null || true
 
 run_check "Backend linting (Black)" "black --check ."
-run_check "Backend linting (Flake8)" "flake8 ."
+run_check "Backend linting (Ruff)" "ruff check ."
 run_check "Backend tests" "TESTING=true pytest -q"
 run_check "Backend coverage ≥80%" "TESTING=true pytest --cov --cov-fail-under=80 -q"
 
