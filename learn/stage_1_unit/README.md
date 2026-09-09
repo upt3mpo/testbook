@@ -18,7 +18,7 @@
 
 <h2 id="table-of-contents">Table of Contents</h2>
 
-- [Why Unit Testing Matters: The Foundation of Quality](#why-unit-testing-matters-the-foundation-of-quality)
+- [Why Unit Testing Matters: The Foundation of Quality](#why-unit-testing-matters)
 - [Part 1: What Are Unit Tests?](#part-1-what-are-unit-tests)
 - [Part 2: The AAA Pattern](#part-2-the-aaa-pattern)
 - [Part 3: Test Fixtures & Setup](#part-3-test-fixtures--setup)

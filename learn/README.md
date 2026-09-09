@@ -45,12 +45,12 @@ Answer these honestly before picking a track. There's no wrong answer here — t
 
 <h2 id="choose-your-track">Choose Your Track</h2>
 
-| Path                    | Language Focus      | Tools You'll Master                    | Time        | Start Here                                                                                         |
-| ----------------------- | -------------------- | --------------------------------------- | ----------- | --------------------------------------------------------------------------------------------------- |
-| **Python Track**        | Python              | pytest, Playwright Python, k6          | 24-34 hours | [Stage 1](stage_1_unit/)                                                                           |
-| **JavaScript Track**    | JavaScript          | Vitest, Playwright JS, MSW             | 26-36 hours | [Lab 1](stage_1_unit/exercises/LAB_01_Your_First_Test_JavaScript.md) then [Stage 1](stage_1_unit/) |
-| **Hybrid Track**        | Python + JavaScript | All tools from both stacks             | 28-38 hours | [Stage 1](stage_1_unit/)                                                                           |
-| **Manual QA Transition**| Python-first        | pytest, Playwright, automation mindset | 32-42 hours | [Manual QA Guide](../docs/guides/MANUAL_QA_TO_AUTOMATION.md)                                       |
+| Path | Language Focus | Tools You'll Master | Time | Start Here |
+| --- | --- | --- | --- | --- |
+| **Python Track** | Python | pytest, Playwright Python, k6 | 24-34 hours | [Stage 1](stage_1_unit/) |
+| **JavaScript Track** | JavaScript | Vitest, Playwright JS, MSW | 26-36 hours | [Lab 1](stage_1_unit/exercises/LAB_01_Your_First_Test_JavaScript.md) then [Stage 1](stage_1_unit/) |
+| **Hybrid Track** | Python + JavaScript | All tools from both stacks | 28-38 hours | [Stage 1](stage_1_unit/) |
+| **Manual QA Transition** | Python-first | pytest, Playwright, automation mindset | 32-42 hours | [Manual QA Guide](../docs/guides/MANUAL_QA_TO_AUTOMATION.md) |
 
 That table tells you what you'll build. It doesn't tell you which one to pick if you have no strong opinion yet, so here's the actual reasoning.
 

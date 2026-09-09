@@ -43,8 +43,8 @@ Organize tests with clear structure, proper data management, and CI/CD integrati
 
 **Note:** `tests/e2e-python/` already has real files from Labs 9-11 (`conftest.py`,
 `pytest.ini`, `pages/feed_page.py`, `pages/profile_page.py`, `test_auth.py`, etc.).
-The structure below is a larger, "how would this scale to 100+ tests" reorganization
-- it reuses some of the same filenames (`conftest.py`, `pytest.ini`, `pages/`) with
+The structure below is a larger, "how would this scale to 100+ tests" reorganization.
+It reuses some of the same filenames (`conftest.py`, `pytest.ini`, `pages/`) with
 different contents. Don't paste these over your working Lab 9-11 files; either
 build this in a separate scratch directory to see the pattern, or read through it
 comparing to what's already there rather than overwriting it.

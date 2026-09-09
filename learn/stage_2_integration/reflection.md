@@ -75,7 +75,7 @@ Document your learning and insights from Stage 2.
 **From my experience in Stage 1 vs Stage 2:**
 
 | Aspect | Unit Tests | Integration Tests |
-|--------|------------|-------------------|
+| -------- | ------------ | ------------------- |
 | Speed | | |
 | Complexity | | |
 | Debugging | | |

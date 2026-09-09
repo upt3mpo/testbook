@@ -43,8 +43,8 @@ Organize tests with clear structure, proper data management, and CI/CD integrati
 
 **Note:** `tests/e2e/` already has real files from Labs 9-11 (`playwright.config.js`,
 `auth.spec.js`, `posts.spec.js`, `users.spec.js`, `fixtures/test-helpers.js`, etc.).
-The structure below is a larger, "how would this scale to 100+ tests" reorganization
-- it reuses the same filename (`playwright.config.js`) with different contents and
+The structure below is a larger, "how would this scale to 100+ tests" reorganization.
+It reuses the same filename (`playwright.config.js`) with different contents and
 nests specs one level deeper (`tests/e2e/tests/smoke/...`). Don't paste these over
 your working Lab 9-11 config and specs; either build this in a separate scratch
 directory to see the pattern, or read through it comparing to what's already there

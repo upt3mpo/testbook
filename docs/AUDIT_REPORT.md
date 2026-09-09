@@ -54,7 +54,7 @@ Applied to: both entry-point docs, all 5 stage READMEs, `docs/concepts/` (4 file
 ### Real numbers (verified by running the suites, not reading badges)
 
 | Suite | Count | Notes |
-|---|---|---|
+| --- | --- | --- |
 | Backend (pytest) | **183 passed, 1 skipped** (184 collected) | Was 180 before this pass added 3 tests via splitting; see §7 for a self-correction along the way |
 | Backend coverage | **85.98% statement**, 81.23% branch | Badge claim of 86% was already accurate (statement coverage) |
 | Frontend (Vitest) | **40 passed** | Matches prior badge exactly |

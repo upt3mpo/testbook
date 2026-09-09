@@ -71,7 +71,7 @@ Document your learning about non-functional testing.
 **From running k6 tests, my results:**
 
 | Metric | Smoke Test | Load Test | Stress Test |
-|--------|------------|-----------|-------------|
+| -------- | ------------ | ----------- | ------------- |
 | Avg response time | | | |
 | p95 response time | | | |
 | Error rate | | | |

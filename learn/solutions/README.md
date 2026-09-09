@@ -6,11 +6,11 @@ This directory contains a small set of reference implementations that demonstrat
 
 ## Available Reference Solutions
 
-| Lab                            | File                 | Notes                                                     |
-| ------------------------------ | -------------------- | --------------------------------------------------------- |
-| Lab 1 – Your First Test        | `LAB_01_solution.py` | Demonstrates pytest basics and assertion patterns.        |
+| Lab | File | Notes |
+| --- | --- | --- |
+| Lab 1 – Your First Test | `LAB_01_solution.py` | Demonstrates pytest basics and assertion patterns. |
 | Lab 2 – Testing Real Functions | `LAB_02_solution.py` | Shows password hashing tests that mirror the lab prompts. |
-| Lab 5 – API Endpoint Testing   | `LAB_03_solution.py` | Covers TestClient usage and HTTP assertions (filename predates the Lab 5 renumbering). |
+| Lab 5 – API Endpoint Testing | `LAB_03_solution.py` | Covers TestClient usage and HTTP assertions (filename predates the Lab 5 renumbering). |
 
 > Advanced labs (fixtures, E2E testing, debugging, rate limiting, etc.) encourage learners to compare their work against the production codebase and test suite. We intentionally avoid including end-to-end solutions to preserve the exploratory experience.
 

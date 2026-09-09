@@ -47,8 +47,8 @@ Testbook/
 
 **The structured 5-stage journey to job-ready testing skills**
 
-| Stage                                                                         | Focus             | Time      | Description                                        |
-| ----------------------------------------------------------------------------- | ----------------- | --------- | -------------------------------------------------- |
+| Stage                                                                         | Focus          | Time      | Description                                        |
+| ----------------------------------------------------------------------------- | -------------- | --------- | -------------------------------------------------- |
 | **[Stage 1: Unit Tests](../learn/stage_1_unit/)**                             | Foundations    | 4-6 hours | Test individual functions, fixtures, AAA pattern   |
 | **[Stage 2: Integration Tests](../learn/stage_2_integration/)**               | Components     | 5-7 hours | API endpoints, database operations, test factories |
 | **[Stage 3: API & E2E](../learn/stage_3_api_e2e/)**                           | Full Stack     | 5-7 hours | Playwright, contracts, user workflows              |
@@ -71,28 +71,28 @@ Testbook/
 
 <h2 id="how-to-guides">📖 How-To Guides (`docs/guides/`)</h2>
 
-| Guide                                                                            | Time   | Level           | Purpose                                               |
-| -------------------------------------------------------------------------------- | ------ | --------------- | ----------------------------------------------------- |
-| **🆕 [QUICK_START.md](guides/QUICK_START.md)** ⭐                                | 15 min | 🟢 Beginner     | Complete setup guide for all platforms                |
-| **🆕 [DEPLOYMENT_MODES.md](guides/DEPLOYMENT_MODES.md)** ⭐                      | 10 min | 🟢 Beginner     | Development vs Production mode explained              |
-| **🆕 [FAQ.md](guides/FAQ.md)** ⭐                                                | 20 min | 🟢 All          | Frequently asked questions and answers                |
-| **[RUNNING_TESTS.md](guides/RUNNING_TESTS.md)**                                  | 15 min | 🟢 Beginner     | How to run all test types                             |
-| **🆕 [PLAYWRIGHT_QUICKSTART.md](guides/PLAYWRIGHT_QUICKSTART.md)** ⭐            | 10 min | 🟢 Beginner     | First browser test running in under 10 minutes        |
-| **[TESTING_GUIDE.md](guides/TESTING_GUIDE.md)**                                  | 45 min | 🟡 Intermediate | Comprehensive examples                                |
-| **🆕 [TESTING_COMPARISON_PYTHON_JS.md](guides/TESTING_COMPARISON_PYTHON_JS.md)** | 45 min | 🟡 Intermediate | Side-by-side Python vs JavaScript testing             |
-| **[FLAKY_TESTS_GUIDE.md](guides/FLAKY_TESTS_GUIDE.md)** ✨                       | 30 min | 🟡 Intermediate | Understanding & fixing flaky tests                    |
-| **🆕 [PORTFOLIO.md](guides/PORTFOLIO.md)** ⭐                                    | 30 min | 🟢 All          | Build job-ready portfolio from your work              |
-| **[TROUBLESHOOTING.md](reference/TROUBLESHOOTING.md)**                           | 20 min | 🟢 Beginner     | Technical errors with exact fixes                     |
-| **🆕 [QUALITY_CHECKS.md](guides/QUALITY_CHECKS.md)** ⭐                          | 20 min | 🟡 Intermediate | Linting, formatting, coverage gates                   |
-| **🆕 [ACCESSIBILITY_TESTING.md](guides/ACCESSIBILITY_TESTING.md)** ⭐            | 30 min | 🟡 Intermediate | WCAG 2.1, axe-core, Lighthouse                        |
-| **🆕 [CONTRACT_TESTING.md](guides/CONTRACT_TESTING.md)** ⭐                      | 30 min | 🟡 Intermediate | Property-based API contract testing with Schemathesis |
-| **🆕 [VISUAL_REGRESSION.md](guides/VISUAL_REGRESSION.md)** ⭐                    | 25 min | 🟡 Intermediate | Screenshot baselines, CI infra, why not every PR      |
-| **[WINDOWS_SETUP.md](guides/WINDOWS_SETUP.md)**                                  | 30 min | 🟢 Beginner     | Windows-specific setup                                |
-| **[TASK_RUNNER.md](guides/TASK_RUNNER.md)** ✨                                   | 20 min | 🟢 Beginner     | Simplified commands (Make/just)                       |
-| **[LOGGING.md](guides/LOGGING.md)** ✨                                           | 30 min | 🟡 Intermediate | Structured logging & observability                    |
-| **[RATE_LIMITING.md](guides/RATE_LIMITING.md)** ✨                               | 25 min | 🟡 Intermediate | Rate limit tuning & config                            |
-| **[MANUAL_QA_TO_AUTOMATION.md](guides/MANUAL_QA_TO_AUTOMATION.md)** ✨           | 60 min | 🟢 Beginner     | QA transition roadmap                                 |
-| **[TEST_DATA_SCENARIOS.md](guides/TEST_DATA_SCENARIOS.md)**                      | 20 min | 🟡 Intermediate | Pre-seeded test data scenarios for E2E/integration     |
+| Guide | Time | Level | Purpose |
+| --- | --- | --- | --- |
+| **🆕 [QUICK_START.md](guides/QUICK_START.md)** ⭐ | 15 min | 🟢 Beginner | Complete setup guide for all platforms |
+| **🆕 [DEPLOYMENT_MODES.md](guides/DEPLOYMENT_MODES.md)** ⭐ | 10 min | 🟢 Beginner | Development vs Production mode explained |
+| **🆕 [FAQ.md](guides/FAQ.md)** ⭐ | 20 min | 🟢 All | Frequently asked questions and answers |
+| **[RUNNING_TESTS.md](guides/RUNNING_TESTS.md)** | 15 min | 🟢 Beginner | How to run all test types |
+| **🆕 [PLAYWRIGHT_QUICKSTART.md](guides/PLAYWRIGHT_QUICKSTART.md)** ⭐ | 10 min | 🟢 Beginner | First browser test running in under 10 minutes |
+| **[TESTING_GUIDE.md](guides/TESTING_GUIDE.md)** | 45 min | 🟡 Intermediate | Comprehensive examples |
+| **🆕 [TESTING_COMPARISON_PYTHON_JS.md](guides/TESTING_COMPARISON_PYTHON_JS.md)** | 45 min | 🟡 Intermediate | Side-by-side Python vs JavaScript testing |
+| **[FLAKY_TESTS_GUIDE.md](guides/FLAKY_TESTS_GUIDE.md)** ✨ | 30 min | 🟡 Intermediate | Understanding & fixing flaky tests |
+| **🆕 [PORTFOLIO.md](guides/PORTFOLIO.md)** ⭐ | 30 min | 🟢 All | Build job-ready portfolio from your work |
+| **[TROUBLESHOOTING.md](reference/TROUBLESHOOTING.md)** | 20 min | 🟢 Beginner | Technical errors with exact fixes |
+| **🆕 [QUALITY_CHECKS.md](guides/QUALITY_CHECKS.md)** ⭐ | 20 min | 🟡 Intermediate | Linting, formatting, coverage gates |
+| **🆕 [ACCESSIBILITY_TESTING.md](guides/ACCESSIBILITY_TESTING.md)** ⭐ | 30 min | 🟡 Intermediate | WCAG 2.1, axe-core, Lighthouse |
+| **🆕 [CONTRACT_TESTING.md](guides/CONTRACT_TESTING.md)** ⭐ | 30 min | 🟡 Intermediate | Property-based API contract testing with Schemathesis |
+| **🆕 [VISUAL_REGRESSION.md](guides/VISUAL_REGRESSION.md)** ⭐ | 25 min | 🟡 Intermediate | Screenshot baselines, CI infra, why not every PR |
+| **[WINDOWS_SETUP.md](guides/WINDOWS_SETUP.md)** | 30 min | 🟢 Beginner | Windows-specific setup |
+| **[TASK_RUNNER.md](guides/TASK_RUNNER.md)** ✨ | 20 min | 🟢 Beginner | Simplified commands (Make/just) |
+| **[LOGGING.md](guides/LOGGING.md)** ✨ | 30 min | 🟡 Intermediate | Structured logging & observability |
+| **[RATE_LIMITING.md](guides/RATE_LIMITING.md)** ✨ | 25 min | 🟡 Intermediate | Rate limit tuning & config |
+| **[MANUAL_QA_TO_AUTOMATION.md](guides/MANUAL_QA_TO_AUTOMATION.md)** ✨ | 60 min | 🟢 Beginner | QA transition roadmap |
+| **[TEST_DATA_SCENARIOS.md](guides/TEST_DATA_SCENARIOS.md)** | 20 min | 🟡 Intermediate | Pre-seeded test data scenarios for E2E/integration |
 
 ### Guide Details
 
@@ -180,12 +180,12 @@ Includes environment config, fixtures, test helpers, and patterns.
 
 ### Quick References (⚡ 5-10 min each)
 
-| Reference                                                                    | Type       | Best For                             |
-| ---------------------------------------------------------------------------- | ---------- | ------------------------------------ |
-| **[QUICK_REFERENCE_PYTEST.md](reference/QUICK_REFERENCE_PYTEST.md)**         | One-page   | pytest commands & patterns           |
-| **[QUICK_REFERENCE_PLAYWRIGHT.md](reference/QUICK_REFERENCE_PLAYWRIGHT.md)** | One-page   | Playwright commands & locators       |
-| **[TESTING_CHEATSHEET.md](reference/TESTING_CHEATSHEET.md)**                 | Cheatsheet | Common commands, test IDs, endpoints |
-| **[GLOSSARY.md](reference/GLOSSARY.md)**                                     | Reference  | Plain-language definitions for recurring terms |
+| Reference | Type | Best For |
+| --- | --- | --- |
+| **[QUICK_REFERENCE_PYTEST.md](reference/QUICK_REFERENCE_PYTEST.md)** | One-page | pytest commands & patterns |
+| **[QUICK_REFERENCE_PLAYWRIGHT.md](reference/QUICK_REFERENCE_PLAYWRIGHT.md)** | One-page | Playwright commands & locators |
+| **[TESTING_CHEATSHEET.md](reference/TESTING_CHEATSHEET.md)** | Cheatsheet | Common commands, test IDs, endpoints |
+| **[GLOSSARY.md](reference/GLOSSARY.md)** | Reference | Plain-language definitions for recurring terms |
 
 ### In-Depth References (📖 15-45 min each)
 

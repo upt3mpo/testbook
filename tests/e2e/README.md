@@ -88,13 +88,13 @@ Logging in, registering, and interacting with posts/profiles/settings all
 go through the page objects in `pages/`, one file per page, mirroring the
 Python suite's `e2e-python/pages/` structure:
 
-| File               | Covers                                 |
-| ------------------ | --------------------------------------- |
-| `BasePage.js`       | Shared `goto`/`waitForLoad`/`screenshot` |
-| `AuthPage.js`       | Register, login, logout                 |
-| `FeedPage.js`       | Creating, editing, reacting to posts    |
-| `ProfilePage.js`    | Viewing profiles, follow/block          |
-| `SettingsPage.js`   | Display name, bio, theme, avatar        |
+| File | Covers |
+| --- | --- |
+| `BasePage.js` | Shared `goto`/`waitForLoad`/`screenshot` |
+| `AuthPage.js` | Register, login, logout |
+| `FeedPage.js` | Creating, editing, reacting to posts |
+| `ProfilePage.js` | Viewing profiles, follow/block |
+| `SettingsPage.js` | Display name, bio, theme, avatar |
 
 ```javascript
 import { AuthPage } from "./pages/AuthPage.js";

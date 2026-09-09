@@ -40,7 +40,7 @@ Two things Lab 5 uses without stopping to explain, so you're not caught off guar
 
 - [Entry Criteria](#entry-criteria)
 - [Bridge: What's New in Stage 2](#bridge-from-stage-1)
-- [Why Integration Testing Matters: The Glue That Holds Systems Together](#why-integration-testing-matters-the-glue-that-holds-systems-together)
+- [Why Integration Testing Matters: The Glue That Holds Systems Together](#why-integration-testing-matters)
 - [Part 1: What Are Integration Tests?](#part-1-what-are-integration-tests)
 - [Part 2: HTTP API Testing](#part-2-http-api-testing)
 - [Part 3: Database Integration](#part-3-database-integration)
