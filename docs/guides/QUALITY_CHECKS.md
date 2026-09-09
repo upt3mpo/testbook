@@ -8,13 +8,15 @@
 
 Testbook uses automated quality checks to maintain code standards:
 
-| Check Type           | Backend (Python) | Frontend (JavaScript) |
-| -------------------- | ---------------- | --------------------- |
-| **Formatting**       | Black            | Prettier              |
-| **Import Sorting**   | isort            | ESLint import rules   |
-| **Linting**          | Flake8           | ESLint + plugins      |
-| **Coverage Gate**    | 80% minimum      | No gate (~41% actual) |
-| **Pre-commit Hooks** | ⚠️ Partial (Black only; isort/Flake8 not yet enabled) | ❌ Not enabled (ESLint/Prettier still commented out in `.pre-commit-config.yaml`) |
+| Check Type | Backend (Python) | Frontend (JavaScript) |
+| --- | --- | --- |
+| **Formatting** | Black | Prettier |
+| **Import Sorting** | isort (CI) / Ruff `I` ruleset (pre-commit) - see note | ESLint import rules |
+| **Linting** | Flake8 (CI) / Ruff `E`/`F` ruleset plus mypy (pre-commit) - see note | ESLint + plugins |
+| **Coverage Gate** | 80% suggested, not enforced by `--cov-fail-under` | No gate (83% actual) |
+| **Pre-commit Hooks** | Enabled: whitespace/EOF/YAML/JSON checks, markdownlint, Black, Ruff, mypy, detect-secrets | Not enabled: ESLint/Prettier still commented out in `.pre-commit-config.yaml` |
+
+**Note on backend linting:** the local pre-commit hook and CI currently run different tools for the same job. `.pre-commit-config.yaml` runs Ruff (added in a later pass, configured to cover what isort and Flake8 were doing). `.github/workflows/testbook-ci.yml`'s `lint-backend` job still installs and runs isort and Flake8 directly - it was never migrated. Both are real and currently enforced; they just aren't the same tool, which means it's possible for pre-commit to pass locally while CI's separate isort/Flake8 run catches something different, or vice versa. This is a real inconsistency worth resolving (migrate CI to Ruff too, or document why both are intentionally kept), not something this pass fixed - flagging it rather than choosing an answer unilaterally, since it's a CI workflow change with more consequence than a documentation correction.
 
 ---
 
@@ -119,7 +121,7 @@ cd backend
 pytest --cov --cov-fail-under=80
 ```
 
-**Current coverage:** 86% (well above minimum!)
+**Current coverage:** 85% (well above minimum!)
 
 **Why 80%?**
 
@@ -237,8 +239,11 @@ pre-commit install
 9. Private key detection
 10. **Markdownlint** (Markdown files)
 11. **Black** (Python formatting, `--line-length=88`)
+12. **Ruff** (Python import sorting and linting, replacing isort/Flake8 for this hook - CI's `lint-backend` job still runs isort and Flake8 separately, see the note above)
+13. **mypy** (Python type checking)
+14. **detect-secrets** (all languages)
 
-**Not currently enabled in pre-commit** (present in `.pre-commit-config.yaml` but commented out): isort, Flake8, ESLint, and `detect-secrets`. These are still enforced separately by `./scripts/quality-check.sh` and the `lint-backend`/`lint-frontend` CI jobs — they just don't run as a local pre-commit hook yet.
+**Not currently enabled in pre-commit:** ESLint and Prettier for the frontend - still commented out in `.pre-commit-config.yaml`. These are enforced separately by the `lint-frontend` CI job, they just don't run as a local pre-commit hook yet.
 
 **Configuration:** `.pre-commit-config.yaml`
 
@@ -315,8 +320,8 @@ None of this is enforced by anything in this repository — it has to be configu
 
 | Metric                   | Value | Target | Status         |
 | ------------------------ | ----- | ------ | -------------- |
-| Backend Coverage         | 86%   | 80%    | ✅ +6%         |
-| Frontend Coverage        | 41%   | N/A    | ⚠️ Below typical bar |
+| Backend Coverage         | 85%   | 80%    | ✅ +5%         |
+| Frontend Coverage        | 83%   | N/A    | ✅ Good        |
 | Linting Violations       | 0     | 0      | ✅ Clean       |
 | Accessibility Violations | 0     | 0      | ✅ WCAG 2.1 AA |
 
