@@ -16,8 +16,20 @@
 
 **Estimated time remaining:** 5-7 hours (core content) + 3-5 hours (optional exercises)
 
+<h2 id="entry-criteria">Entry Criteria: What You Should Know Before Starting</h2>
+
+Before starting Stage 3, you should be able to:
+
+- Make an HTTP request against a real API endpoint and assert on the status code and response body (Stage 2)
+- Explain the difference between a 200/201, a 401/403, and a 404, and which one a given failure should return (Stage 2)
+- Write a test that checks both a successful response and at least one error case for the same endpoint (Stage 2)
+- Python track: use FastAPI's `TestClient` to test an endpoint with real database state. JavaScript track: use MSW to mock a backend API call and validate the response against its OpenAPI contract.
+
+If any of those feel shaky, revisit [Stage 2's Success Criteria](../stage_2_integration/README.md#success-criteria) before starting - Stage 3 assumes you can do all of them without re-explanation, since E2E tests here are asserting on the same API responses at a higher level, not on entirely new ones.
+
 <h2 id="table-of-contents">Table of Contents</h2>
 
+- [Entry Criteria](#entry-criteria)
 - [Why E2E Testing Matters: Testing Like a Real User](#why-e2e-testing-matters-testing-like-a-real-user)
 - [Part 1: What Are E2E Tests?](#part-1-what-are-e2e-tests)
 - [Part 2: Browser Automation with Playwright](#part-2-browser-automation-with-playwright)

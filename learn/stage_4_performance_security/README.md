@@ -64,8 +64,20 @@ By the end of Stage 4, you will:
 - **Lab 14**: Security Testing with OWASP - Security testing with OWASP guidelines
 - **Lab 15**: Rate Limiting Testing - Advanced rate limiting and security patterns
 
+<h2 id="entry-criteria">Entry Criteria: What You Should Know Before Starting</h2>
+
+Before starting Stage 4, you should be able to:
+
+- Write a Playwright test that drives a complete user workflow through the UI (login, navigate, act, assert) rather than testing one isolated action (Stage 3)
+- Use Page Object Model for at least one page, and explain why it's there (Stage 3)
+- Debug a failing E2E test using a screenshot or trace, not just the error message (Stage 3)
+- Explain the difference between an E2E test and an integration test, and why the E2E suite re-exercises API responses Stage 2 already tested, at a higher level (Stage 2, Stage 3)
+
+If any of those feel shaky, revisit [Stage 3's Success Criteria](../stage_3_api_e2e/README.md#success-criteria) before starting - Stage 4's load and security tests assume you're already comfortable driving the app end-to-end, since they're testing the same workflows under different conditions (concurrent load, malicious input), not new ones.
+
 <h2 id="table-of-contents">Table of Contents</h2>
 
+- [Entry Criteria](#entry-criteria)
 - [Why Performance & Security Testing Matters: The Foundation of Production Readiness](#why-performance--security-testing-matters-the-foundation-of-production-readiness)
 - [Lab Structure](#lab-structure)
 - [Part 1: What Are Performance Tests?](#part-1-what-are-performance-tests)
