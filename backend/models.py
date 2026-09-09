@@ -48,6 +48,15 @@ class User(Base):
     # that added this (Item 8 of the follow-up audit) for the grep that
     # confirmed it. That keeps their type honest as non-Optional, matching
     # what schemas.UserResponse already expected.
+    #
+    # Pre-merge review (see docs/AUDIT_REPORT.md) double-checked this is
+    # safe to ship: no *.db file is ever committed (root .gitignore excludes
+    # them), so there's no pre-existing database carrying legacy NULLs into
+    # this constraint, and there's no raw SQL anywhere in backend/ (grepped
+    # for execute()/text()/INSERT INTO/bulk_insert) - every write goes
+    # through the ORM, so these defaults always apply regardless of how a
+    # row is constructed. This same reasoning covers the equivalent
+    # nullable=False additions on Post, Comment, and Reaction below.
     bio: Mapped[str] = mapped_column(Text, nullable=False, default="")
     profile_picture: Mapped[str] = mapped_column(
         String, nullable=False, default="/static/images/default-avatar.jpg"
