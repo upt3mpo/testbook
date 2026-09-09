@@ -38,7 +38,7 @@ jobs:
     # it. ubuntu-latest is a moving target (GitHub periodically retargets
     # it to a newer image), which would invalidate every baseline the
     # moment the runner image changes, with no code change involved.
-    timeout-minutes: 20
+    timeout-minutes: 30
 
     services:
       postgres:

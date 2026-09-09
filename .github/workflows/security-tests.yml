@@ -11,6 +11,7 @@ on:
 jobs:
   security-scan:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     services:
       postgres:
@@ -92,6 +93,7 @@ jobs:
 
   dependency-review:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     # Only run on pull requests for public repos or repos with GitHub Advanced Security
     if: github.event_name == 'pull_request'
 

@@ -23,6 +23,7 @@ jobs:
   newman:
     name: Run Postman/Newman Tests
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     services:
       postgres:
@@ -96,6 +97,7 @@ jobs:
   python-requests:
     name: Run Python API Tests
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     services:
       postgres:

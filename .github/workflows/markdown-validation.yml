@@ -28,6 +28,7 @@ jobs:
   markdown-lint:
     name: Markdown Linting
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     steps:
       - name: Checkout code
