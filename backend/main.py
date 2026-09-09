@@ -61,10 +61,30 @@ app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)  # type: ignore[arg-type]
 
 # CORS middleware
+#
+# allow_origins=["*"] means any site can call this API from a browser. That's
+# appropriate for a local learning environment where "the frontend" could be
+# running on any port a student happens to pick, and there's nothing behind
+# this API worth protecting from a random third-party site. A real
+# deployment should replace it with the specific origin(s) the real frontend
+# is served from.
+#
+# allow_credentials is deliberately False, not True: this app authenticates
+# with a bearer token in the Authorization header (see auth.py), stored in
+# localStorage, never a cookie - confirmed no code anywhere sets a cookie or
+# sends `credentials: include`/`withCredentials`. CORS "credentials" means
+# cookies, TLS client certs, and HTTP auth, not a bearer token in a custom
+# header, so this app was never using it. Leaving it True while allow_origins
+# is a wildcard would have been a strictly worse combination for no benefit:
+# browsers refuse a literal `*` alongside credentials, so CORS middleware
+# implementations (Starlette's included) special-case it by reflecting
+# whatever Origin the request actually sent - meaning any origin, not just
+# a wildcard, would have been allowed to make credentialed requests, if this
+# app ever started using cookies without someone revisiting this setting.
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_credentials=True,
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
     max_age=600,
