@@ -211,7 +211,7 @@ Before starting, you need to install these tools:
 #### 🎭 Playwright (Required - for E2E Testing)
 
 - **What it does:** Runs automated browser tests (end-to-end testing)
-- **Why you need it:** Essential for learning comprehensive testing - tests the full application workflow from a user's perspective
+- **Why you need it:** Tests the full application workflow from a user's perspective, not just individual functions
 - **Think of it as:** A robot that controls a web browser to test your application automatically
 
 ---
@@ -496,7 +496,7 @@ curl --version
 <details>
 <summary>🤔 Why do I need this?</summary>
 
-**Playwright runs automated browser tests (end-to-end testing).** It's essential for learning comprehensive testing because:
+**Playwright runs automated browser tests (end-to-end testing).**
 
 - Tests the full application workflow from a user's perspective
 - Simulates real user interactions (clicking, typing, navigating)
@@ -548,8 +548,6 @@ curl --version
    # ✅ Success: Playwright 1.56.1
    # ❌ Error: 'playwright' is not recognized
    ```
-
-**Note:** This step is required for the complete testing tutorial experience. E2E testing is a fundamental part of comprehensive testing education.
 
 **💡 Learning-Focused Setup:** We configure Playwright to run only Chrome by default for faster execution. This reduces test time from ~5 minutes to ~1 minute, making the learning experience smoother. You can still run other browsers if needed for cross-browser testing.
 
@@ -693,6 +691,7 @@ The script will:
 ```bat
 🚀 Starting Testbook in development mode...
 
+⏳ Checking if ports are available...
 🔧 Setting up backend...
 📦 Creating Python virtual environment...
 📦 Installing backend dependencies with uv (fast!)...
@@ -1205,22 +1204,28 @@ choco install curl
 **Symptoms:**
 
 ```text
-Port 8000 is already in use by another process
-Port 3000 is already in use by another process
+❌ Error: Port 8000 is already in use
+❌ Error: Port 3000 is already in use
 ```
+
+`start-dev.bat` checks both ports before starting anything and stops here
+if either is taken, rather than starting a backend or frontend that
+immediately conflicts with whatever's already running.
 
 **Solutions:**
 
 ```powershell
-# Find process using port 8000
+# Find what's using port 8000
 netstat -ano | findstr :8000
 
-# Kill the process (replace <PID> with actual number)
+# Kill it (replace <PID> with the number from the command above)
 taskkill /PID <PID> /F
 
-# Or kill all processes on port 8000
+# Or kill everything on port 8000 at once
 netstat -ano | findstr :8000 | ForEach-Object { $pid = ($_ -split '\s+')[-1]; taskkill /PID $pid /F }
 ```
+
+Same commands work for port 3000 - just swap the port number.
 
 #### Issue 6: Database connection errors
 
