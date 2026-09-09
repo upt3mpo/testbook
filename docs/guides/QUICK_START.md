@@ -4,6 +4,8 @@ Get Testbook running in 5 minutes on any platform!
 
 **⚠️ IMPORTANT:** Use the **development mode** scripts below (`start-dev.sh` / `start-dev.bat`). These run the app on port 3000 and work with all tests. Do NOT use `start.sh` - it's for production deployment only!
 
+**⚠️ Never expose this application to the internet.** The login credentials shown throughout this guide (`sarah.johnson@testbook.com` / `Sarah2024!` and the other seed accounts in `backend/seed.py`) are published in this public repository, not secrets. Anyone who finds an internet-facing instance can log in with them. Run it locally only.
+
 > **🪟 Windows Users:** We show both PowerShell (recommended) and Command Prompt alternatives. Use PowerShell unless you have a specific reason to use Command Prompt. See [Windows Setup Guide](WINDOWS_SETUP.md) for details.
 
 ---

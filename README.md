@@ -52,6 +52,8 @@ start-dev.bat   # Windows
 
 **✅ Done!** You're ready to test!
 
+> **⚠️ Never expose this application to the internet.** The account above and every other seed account (see [`backend/seed.py`](backend/seed.py)) are development credentials published in this public repository. Anyone who finds an internet-facing instance of this app can log in with them. Run it locally only.
+
 **📖 Need detailed setup?** → [Complete Quick Start Guide](docs/guides/QUICK_START.md)
 
 > Versions used in this repo: Python 3.13, Node 24. Use `.python-version` and `.nvmrc` to match local environments.
@@ -360,6 +362,8 @@ Use these accounts to test the application:
 | `mike.chen@testbook.com`     | `MikeRocks88` | User | Secondary test account |
 
 **Note:** These accounts are automatically created when you start the application.
+
+**⚠️ These credentials are public** - they're in this repository's source code, not secrets. See the warning in [Quick Start](#quick-start): never expose an instance of this app to the internet.
 
 ---
 
