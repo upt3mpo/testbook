@@ -21,6 +21,16 @@ RUN curl -fsSL https://deb.nodesource.com/setup_24.x | bash - \
     && apt-get install -y nodejs \
     && rm -rf /var/lib/apt/lists/*
 
+# Install Chromium's system dependencies (this slim base image has none of
+# them - no GUI libs at all). `playwright install-deps` needs root, which is
+# why this runs here, before USER vscode, rather than in post-create.sh.
+# It only installs OS packages via apt; the actual browser binary download
+# happens later in post-create.sh (as vscode, no root needed for that part).
+# Version pinned to match tests/package.json's @playwright/test so the
+# installed system libs match the browser build that gets downloaded.
+RUN npx --yes playwright@1.56.1 install-deps chromium \
+    && rm -rf /var/lib/apt/lists/*
+
 # Create a non-root user
 RUN useradd -m -s /bin/bash vscode && \
     chown -R vscode:vscode /workspace
