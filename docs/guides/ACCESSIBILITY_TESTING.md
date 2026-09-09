@@ -365,15 +365,103 @@ background: #fff;
 
 ### Current Testbook Scores
 
-| Page     | axe-core Violations | Lighthouse Score |
-| -------- | ------------------- | ---------------- |
-| Home     | 0                   | TBD              |
-| Register | 0                   | TBD              |
-| Login    | 0                   | TBD              |
-| Feed     | 0                   | TBD              |
-| Profile  | 0                   | TBD              |
+Real numbers from a pre-merge accessibility review (see "Known Application
+Accessibility State" below for the full story, including what this table
+doesn't cover):
 
-**Goal:** 0 violations, 90+ Lighthouse score
+| Page | axe-core Violations (WCAG + best-practice) | Lighthouse Score |
+| --- | --- | --- |
+| Login | 0 | 100 |
+| Register | 0 | 100 |
+| Feed | 0 | not measured (see note below) |
+| Post Detail | 0 | not measured (see note below) |
+| Profile | 0 | not measured (see note below) |
+
+**Goal:** 0 violations, 90+ Lighthouse score - currently met everywhere this
+table can actually measure. Lighthouse can't reach an authenticated page
+without a login flow, which is why Feed, Post Detail, and Profile show as
+"not measured" for that column - axe-core, which can run against an
+authenticated page in a real browser session, found 0 violations on all
+three.
+
+---
+
+## 🩺 Known Application Accessibility State
+
+A pre-merge accessibility review (2026-09) audited every real page in the
+app - Login, Register, Feed, Post Detail, Profile, Settings - with axe-core
+run directly (`axe.run()`, no tag filter), not just through the existing
+`accessibility-axe.spec.js` suite. That distinction matters: it's the reason
+this review found real bugs the existing, passing test suite had missed.
+
+### What was found and fixed
+
+The existing `accessibility-axe.spec.js` suite scoped its checks to
+`['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']` and had been reporting zero
+violations. That was a true result, but a narrower one than it sounds: four
+real structural issues existed on every page, and none of them map to a
+specific WCAG success criterion, so none of them were in scope for that tag
+filter.
+
+- **No `<main>` landmark anywhere in the app.** Every page's content sat
+  directly under the page root with no landmark region wrapping it - a
+  screen reader user has no way to jump straight to the page's main content
+  and skip repeated navigation chrome. Fixed by wrapping the shared
+  authenticated layout's content in a `<main>` element
+  ([App.jsx](../../frontend/src/App.jsx)'s `PrivateLayout`) and changing
+  Login and Register's outermost container from a `<div>` to a `<main>`
+  (both are pure element-tag changes - the CSS targets the existing class
+  names, not the tag, so nothing visual changed).
+- **Feed, Post Detail, and Profile had no `<h1>`.** A screen reader user
+  navigating by heading has no way to identify what page they're on. Fixed
+  by adding a visually-hidden `<h1>` (a new `.sr-only` utility class in
+  [index.css](../../frontend/src/index.css)) to Feed and Post Detail, and by
+  promoting Profile's existing `<h2>` display-name heading to `<h1>` - it
+  already was the page's real headline, just at the wrong level.
+- **Heading order skipped a level on Post Detail and Profile** once the new
+  `<h1>`s existed and made the skip visible (`heading-order` couldn't flag
+  an `<h1>`-to-`<h3>` jump when there was no `<h1>` to jump from). Fixed by
+  changing Post Detail's "Comments" heading and Profile's "Posts" heading
+  from `<h3>` to `<h2>`.
+
+All four were moderate-severity, none critical or serious, and none were
+intentional teaching examples - they were genuine oversights. A re-run with
+axe-core's default rule set (WCAG plus best-practice rules) found 0
+violations across all six audited pages after the fix.
+
+### The test-suite gap, and why it was closed here too
+
+Fixing the app without also fixing why the existing suite missed this would
+leave the same blind spot in place for the next regression. `landmark-one-main`,
+`region`, `page-has-heading-one`, and `heading-order` are all tagged
+`best-practice` in axe-core, not any WCAG tag - confirmed directly against
+this repo's own `axe-core` package (`axe.getRules()`), not assumed.
+`accessibility-axe.spec.js` now includes `'best-practice'` in its tag list,
+so this exact class of issue - a missing landmark, a missing top-level
+heading, a broken heading order - will fail CI going forward instead of
+passing silently. If you're extending this suite to a new page, keep the
+tag list as-is; narrowing it back to WCAG-only tags would reopen this gap.
+
+### What's still not covered
+
+- **Lighthouse only ever sees unauthenticated pages** in both this review
+  and in `lighthouserc.js`'s existing CI configuration - `npx lighthouse
+  <url>` and Lighthouse CI's own server-driven flow both load a fresh,
+  logged-out browser session, and this app redirects an unauthenticated
+  visit to `/` straight to `/login`. Real Lighthouse accessibility scores
+  exist for Login and Register only (100 for both, see the table above).
+  Feed, Post Detail, and Profile are covered by axe-core instead, which can
+  run inside an authenticated Playwright session - that's a different tool
+  catching the same class of issue, not a gap left open. Building
+  Lighthouse CI a way to authenticate first (a storageState fixture, or a
+  pre-authenticated route) would close this if someone wants Lighthouse's
+  performance and SEO categories on those pages too, not just axe-core's
+  accessibility-only coverage.
+- **Manual testing (screen reader, keyboard-only navigation) was not
+  performed** as part of this review - see the Manual Testing Checklist
+  above. Automated tools like axe-core catch a meaningful chunk of WCAG
+  issues but not all of them (this doc's own portfolio section already says
+  as much); this review only ran the automated layer.
 
 ---
 
