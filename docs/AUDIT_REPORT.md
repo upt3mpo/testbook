@@ -224,7 +224,7 @@ README.md's badges and every test-count/coverage reference found across the repo
 **Scope:** a 10-checkpoint pre-merge pass, run one checkpoint at a time with maintainer confirmation between each: fix the two failing security tests blocking CI, add CI job timeouts and verify Dependabot, review the SQLAlchemy migration, audit application accessibility, audit DevOps startup/devcontainer/Docker reliability, an instructional-designer pass on curriculum entry criteria, an application security review, a technical-writer pass on the two largest remaining docs, open-source community infrastructure, and this final verification.
 **Audience:** the repo maintainer.
 
-This pass produced 22 commits on `develop`, none pushed. All numbers below are from real runs at the end of this pass.
+This pass produced 26 commits on `develop`, none pushed. All numbers below are from real runs at the end of this pass.
 
 ### What this pass completed
 
