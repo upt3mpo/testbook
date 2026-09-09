@@ -652,5 +652,4 @@ The most important thing is to continuously learn and adapt your testing strateg
 
 - [Advanced Topics](ADVANCED_TOPICS.md) - Advanced testing techniques
 - [Case Studies](../industry/CASE_STUDIES.md) - Real incidents and what's genuinely documented about industry practice
-- [Case Studies](../industry/CASE_STUDIES.md) - Real-world examples of advanced testing
 - [Testing Philosophy](../concepts/TESTING_PHILOSOPHY.md) - The mindset behind advanced testing

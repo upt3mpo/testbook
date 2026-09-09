@@ -682,6 +682,5 @@ Remember: advanced testing is not about using every technique, but about using t
 ## Further Reading
 
 - [Case Studies](../industry/CASE_STUDIES.md) - Real incidents and what's genuinely documented about industry practice
-- [Case Studies](../industry/CASE_STUDIES.md) - Real-world examples of advanced testing
 - [Tool Comparison](../industry/TOOL_COMPARISON.md) - Tools for advanced testing
 - [Testing Philosophy](../concepts/TESTING_PHILOSOPHY.md) - The mindset behind advanced testing
