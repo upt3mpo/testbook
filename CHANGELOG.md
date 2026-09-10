@@ -13,6 +13,53 @@ _Future updates will be documented here._
 
 ---
 
+## [1.4.0] - 2026-09-10 - "Test quality, accessibility, and application hardening"
+
+### Added
+
+- Page Object Model adopted consistently across both E2E language tracks; hard-coded waits replaced with auto-waiting assertions
+- Visual regression testing infrastructure: a scheduled CI workflow and a Playwright screenshot suite covering login, feed, and post detail
+- OWASP Top 10 gap scaffolding (`tests/security/test_owasp_gaps.py`) documenting the three categories this suite doesn't yet cover and what a real implementation would check
+- File upload validation now checks actual file content against each image format's signature, not just the extension
+- `docs/reference/SECURITY_NOTES.md`, consolidating JWT, CORS, and upload-security decisions in one place
+- `docs/reference/GLOSSARY.md` with plain-language definitions for recurring testing terms
+- Entry criteria added to Stages 2-4 of the learning path (Stage 5 already had them), sourced from each stage's own success-criteria checklist
+- `timeout-minutes` set on every CI job across all workflows
+
+### Changed
+
+- Backend models migrated to SQLAlchemy 2.0's `Mapped[]`/`mapped_column()` style; fully backward-compatible at the SQL and runtime level and now type-checkable end to end
+- Backend linting switched from isort/Flake8 to Ruff, consistent between local pre-commit hooks and CI (previously pre-commit ran Ruff while CI ran isort/Flake8 separately)
+- mypy added as a tracked backend dependency; the backend tree passes clean
+- Frontend statement coverage raised from 41% to 83%
+- Stage 5 capstone redesigned around one integrated ticket spanning all four prior stages instead of four independent single-stage tasks
+- CORS `allow_credentials` disabled: it was combined with a wildcard origin, and the app authenticates with bearer tokens only, never cookies
+- The learning path's self-assessment now routes students by their actual track choice instead of defaulting everyone toward Python
+
+### Fixed
+
+- 15 accessibility violations found via a full axe-core scan across all 6 application pages (missing `<main>` landmarks, missing page-level headings) and fixed; the existing accessibility test suite's tag scope was widened so this class of regression fails CI going forward
+- Rate-limit security tests now check the server's actual runtime mode instead of the invoking shell's environment variable, fixing two tests that could silently skip or run against the wrong expectation
+- `start-dev.sh` and `start-dev.bat` now exit with a clear error on a port conflict instead of reporting success against a server that failed to start
+- Devcontainer: Playwright's Chromium system dependencies are now installed at build time, fixing headless browser launches inside the dev container
+- Docker: production startup no longer silently creates an empty database directory when the database file doesn't exist yet
+
+### Documentation
+
+- Seed credential exposure warning added to README and the Quick Start guide
+- Mutation testing section now shows a real worked example (`mutmut` against `backend/auth.py`) instead of a hypothetical one
+
+### Validation
+
+- Backend: 185 passed, 1 skipped, ~85% statement coverage
+- Frontend: 144 passed, 2 skipped, 83.36% statement / 84.08% line coverage
+- E2E (JavaScript): 59 passed
+- E2E (Python): 60 passed
+- Security: 18 passed, 11 skipped, 0 failed
+- Accessibility (axe-core, full ruleset): 0 violations across all 6 pages
+
+---
+
 ## [1.3.2] - 2025-10-29 - "Node 24 baseline + majors"
 
 ### Added
