@@ -184,13 +184,13 @@ class TestSoftwareAndDataIntegrityFailures:
                             unpinned.append(f"{path}: {ref}")
             assert unpinned == [], f"Actions pinned by tag, not SHA: {unpinned}"
 
-        Why it's skipped: as of this pass, every workflow in this repo
-        (`backend-tests.yml`, `frontend-tests.yml`, `e2e-tests.yml`, and
-        others) pins actions by version tag - `actions/checkout@v7`,
-        `actions/setup-python@v7`, `actions/upload-artifact@v7` - not by
-        SHA. Writing this test to run (rather than skip) today would mean
-        it fails immediately on every one of those lines, which is a real
-        finding worth acting on, just not inside this PR's scope.
+        Why it's skipped: every workflow in this repo (`backend-tests.yml`,
+        `frontend-tests.yml`, `e2e-tests.yml`, and others) pins actions by
+        version tag - `actions/checkout@v7`, `actions/setup-python@v7`,
+        `actions/upload-artifact@v7` - not by SHA. Writing this test to run
+        (rather than skip) today would mean it fails immediately on every
+        one of those lines, which is a real finding worth acting on, just
+        not something this test suite enforces yet.
 
         How you would implement it: pick a pinning tool (GitHub's own
         dependabot.yml can auto-update pinned SHAs the same way it updates

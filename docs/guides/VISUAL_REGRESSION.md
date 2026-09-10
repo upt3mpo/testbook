@@ -7,13 +7,12 @@ stopped loading. Testbook's functional E2E suite (`tests/e2e/`) verifies
 that clicking things does the right thing. This suite verifies that the
 page still *looks* right.
 
-This is infrastructure-first content. A prior pass evaluated adding
-screenshot tests and correctly deferred: screenshot comparisons are the
-most failure-prone kind of test this repo could add, and adding them
-without deciding how baselines get managed first would have produced a
-flaky, ignored test suite. This document explains the infrastructure
-decisions made to avoid that, including a real one found while building
-it, not just the tests themselves.
+This is infrastructure-first content. Screenshot comparisons are the most
+failure-prone kind of test this repo could add, and adding them without
+deciding how baselines get managed first would produce a flaky, ignored
+test suite - so that decision came before the tests did. This document
+explains the infrastructure decisions made to avoid that, including a
+real bug found while building it, not just the tests themselves.
 
 ## Why this runs separately from the main test suite
 
@@ -27,11 +26,12 @@ assertion. A 2% pixel-difference threshold (configured in
 `tests/playwright.visual.config.js`) absorbs minor antialiasing noise, but
 it can't absorb everything: a font rendering difference between two
 supposedly-identical runner images, a genuinely unrelated design tweak
-landing in the same PR, or - as this pass found firsthand - nondeterministic
-seed data producing a different but equally valid page. Gating every PR on
-that risk would mean either training the team to click "re-run" on red CI
-without looking (defeating the point of CI) or spending review time
-investigating failures that turn out to be nothing. A weekly cadence still
+landing in the same PR, or - as discovered while building this suite -
+nondeterministic seed data producing a different but equally valid page.
+Gating every PR on that risk would mean either training the team to click
+"re-run" on red CI without looking (defeating the point of CI) or spending
+review time investigating failures that turn out to be nothing. A weekly
+cadence still
 catches a real regression within days, and `workflow_dispatch` means a
 baseline update after an intentional design change doesn't have to wait
 for Monday.
@@ -62,9 +62,9 @@ captured locally and committed by hand.
 Because of the platform constraint above, and because generating a real
 `ubuntu-22.04` baseline requires actually running the pinned CI
 environment (not something reproducible from a contributor's own
-machine), this pass adds the visual test suite and the CI infrastructure
-to run it, but does **not** commit baseline screenshots. `tests/visual-snapshots/`
-does not exist in the repository yet.
+machine), this repository ships the visual test suite and the CI
+infrastructure to run it, but does **not** commit baseline screenshots.
+`tests/visual-snapshots/` does not exist in the repository yet.
 
 The three tests in `tests/visual-tests/` were run and verified locally
 (on macOS, three consecutive clean comparisons against a locally-generated
@@ -109,7 +109,7 @@ platform note above for why that baseline would be silently wrong for CI.
 
 ## What a real visual regression failure looks like
 
-While verifying the feed page test during this pass, it failed on a
+While verifying the feed page test, it failed on a
 second run against its own freshly-generated baseline - both runs used
 identical database resets, no code changed in between, and yet the diff
 tool reported a 3% pixel difference (above the 2% threshold), concentrated

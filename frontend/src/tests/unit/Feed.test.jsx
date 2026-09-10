@@ -72,10 +72,9 @@ describe('Feed Page', () => {
   // hard - `window.dispatchEvent(new Event('focus'))` or
   // `window.dispatchEvent(new CustomEvent(BLOCK_STATUS_EVENT))` inside
   // a test would trigger them the same way a real focus/block event
-  // does - just not included in this pass since handlePostCreated/
-  // Deleted/Updated (the callbacks these listeners ultimately trigger
-  // via loadFeed) are already covered via direct user interaction
-  // above.
+  // does - handlePostCreated/Deleted/Updated (the callbacks these
+  // listeners ultimately trigger via loadFeed) are already covered via
+  // direct user interaction above.
   beforeEach(() => {
     vi.clearAllMocks();
     window.confirm = vi.fn(() => true);

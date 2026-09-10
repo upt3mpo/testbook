@@ -42,21 +42,19 @@ class User(Base):
     display_name: Mapped[str] = mapped_column(String, nullable=False)
     hashed_password: Mapped[str] = mapped_column(String, nullable=False)
     # bio/profile_picture/theme/text_density/created_at are nullable=False
-    # (tightened from the original schema's implicit nullable=True) because
-    # every insert path in this app goes through these Python-side
-    # defaults and none ever sets them to None - see the type-hints pass
-    # that added this (Item 8 of the follow-up audit) for the grep that
-    # confirmed it. That keeps their type honest as non-Optional, matching
-    # what schemas.UserResponse already expected.
+    # rather than the schema default of nullable=True, because every insert
+    # path in this app populates them via these Python-side defaults and
+    # none ever sets them to None. That keeps their type honest as
+    # non-Optional, matching what schemas.UserResponse already expects.
     #
-    # Pre-merge review (see docs/AUDIT_REPORT.md) double-checked this is
-    # safe to ship: no *.db file is ever committed (root .gitignore excludes
-    # them), so there's no pre-existing database carrying legacy NULLs into
-    # this constraint, and there's no raw SQL anywhere in backend/ (grepped
-    # for execute()/text()/INSERT INTO/bulk_insert) - every write goes
-    # through the ORM, so these defaults always apply regardless of how a
-    # row is constructed. This same reasoning covers the equivalent
-    # nullable=False additions on Post, Comment, and Reaction below.
+    # Safe to enforce at the DB level: no *.db file is ever committed (root
+    # .gitignore excludes them), so there's no pre-existing database with
+    # legacy NULLs that could violate this constraint, and there's no raw
+    # SQL anywhere in backend/ (no execute()/text()/INSERT INTO/bulk_insert)
+    # - every write goes through the ORM, so these defaults always apply
+    # regardless of how a row is constructed. This same reasoning covers the
+    # equivalent nullable=False additions on Post, Comment, and Reaction
+    # below.
     bio: Mapped[str] = mapped_column(Text, nullable=False, default="")
     profile_picture: Mapped[str] = mapped_column(
         String, nullable=False, default="/static/images/default-avatar.jpg"

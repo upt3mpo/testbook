@@ -6,7 +6,7 @@ import { resetDatabase } from "../e2e/fixtures/test-helpers.js";
 /**
  * Visual regression baseline for the login page.
  *
- * The simplest of the three surfaces this pass covers: no user data,
+ * The simplest of the three surfaces this suite covers: no user data,
  * no timestamps, no avatars - a static form. That makes it the best
  * one to start with if a baseline update ever needs sanity-checking,
  * since almost nothing here should ever legitimately change.
