@@ -15,15 +15,7 @@ repos:
       - id: debug-statements
       - id: detect-private-key
 
-  # Markdown linting. docs/AUDIT_REPORT.md is excluded deliberately, not
-  # missed: it's a maintainer-facing, dated audit trail across many past
-  # passes, and its original (pre-this-pass) sections have real MD022/
-  # MD032 issues that every pass has chosen not to touch, to keep each
-  # dated section an honest record of what was true when it was written,
-  # not silently rewritten by a later formatting pass. That was informal
-  # policy until this repo's markdownlint version was old enough to never
-  # actually catch these - upgrading it made this exclusion necessary to
-  # write down explicitly, not just remembered.
+  # Markdown linting.
   - repo: https://github.com/igorshubovych/markdownlint-cli
     rev: v0.49.1
     hooks:
@@ -33,8 +25,7 @@ repos:
         exclude: |
           (?x)^(
             \.github/.*|
-            \.devcontainer/.*|
-            docs/AUDIT_REPORT\.md
+            \.devcontainer/.*
           )$
 
   # Python code quality. Pinned to match backend/requirements.txt's own
@@ -108,16 +99,14 @@ repos:
   #         - eslint-plugin-jsx-a11y@^6.8.0
   #       args: [--fix]
 
-  # Security checks. A fresh scan turned up 158 candidate matches, all
-  # triaged by hand (see docs/AUDIT_REPORT.md). 148 are excluded below
-  # by path because the file or tree is entirely fixture, demo, or
-  # teaching content: seed account passwords, e2e/security/performance
+  # Security checks. Candidate matches were triaged by hand: excluded
+  # below by path where the file or tree is entirely fixture, demo, or
+  # teaching content (seed account passwords, e2e/security/performance
   # test credentials, CI-only environment values, or markdown showing
-  # what a credential looks like in an example. The remaining 10, in
-  # backend/auth.py and backend/seed.py, are marked inline with
-  # `# pragma: allowlist secret` instead, since those are real
-  # application files where a future genuine secret should still get
-  # caught.
+  # what a credential looks like in an example), or marked inline with
+  # `# pragma: allowlist secret` in backend/auth.py and backend/seed.py,
+  # since those are real application files where a future genuine
+  # secret should still get caught.
   - repo: https://github.com/Yelp/detect-secrets
     rev: v1.5.0
     hooks:
