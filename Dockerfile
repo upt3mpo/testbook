@@ -1,6 +1,6 @@
 # Multi-stage build for Testbook
 # Stage 1: Build frontend
-FROM node:24-alpine AS frontend-build
+FROM node:26-alpine AS frontend-build
 ENV CI=1
 
 WORKDIR /app/frontend
