@@ -1,4 +1,4 @@
-# 🎓 Testbook Learning Path
+# Testbook Learning Path
 
 **A structured, self-guided journey to master automation testing**
 
@@ -6,7 +6,7 @@ Welcome! This learning path transforms the Testbook project into your personal t
 
 ---
 
-<h2 id="learning-approach">🎯 Learning Approach</h2>
+<h2 id="learning-approach">Learning Approach</h2>
 
 **Structured curriculum** - Theory + hands-on labs with detailed instruction
 
@@ -81,7 +81,7 @@ If none of that resolves it for you, default to the Hybrid track — it's strict
 
 ---
 
-<h2 id="testing-pyramid">🏗️ The Testing Pyramid</h2>
+<h2 id="testing-pyramid">The Testing Pyramid</h2>
 
 Both Python and JavaScript tracks follow the same testing pyramid, but with different tools:
 
@@ -119,7 +119,7 @@ Both Python and JavaScript tracks follow the same testing pyramid, but with diff
 
 ---
 
-<h2 id="visual-learning-journey">📊 Visual Learning Journey</h2>
+<h2 id="visual-learning-journey">Visual Learning Journey</h2>
 
 ```mermaid
 flowchart TD
@@ -145,11 +145,11 @@ flowchart TD
 
 ---
 
-<h2 id="choose-your-learning-path">🎯 Choose Your Learning Path</h2>
+<h2 id="choose-your-learning-path">Choose Your Learning Path</h2>
 
 **Select the path that matches your background and goals**
 
-### Path 1: **Manual QA → Automation** 🔄
+### Path 1: **Manual QA → Automation**
 
 **You are:** Experienced manual tester wanting to add automation skills
 
@@ -168,7 +168,7 @@ flowchart TD
 
 ---
 
-### Path 2: **Developer → QA Engineer** 💻
+### Path 2: **Developer → QA Engineer**
 
 **You are:** Software engineer adding testing skills to your toolkit
 
@@ -187,7 +187,7 @@ flowchart TD
 
 ---
 
-### Path 3: **Complete Beginner → Tester** 🌱
+### Path 3: **Complete Beginner → Tester**
 
 **You are:** New to both programming and testing
 
@@ -206,9 +206,9 @@ flowchart TD
 
 ---
 
-<h2 id="the-5-stages">📊 The 5 Stages</h2>
+<h2 id="the-5-stages">The 5 Stages</h2>
 
-### 🧪 Stage 1: Unit Tests
+### Stage 1: Unit Tests
 
 **Duration:** 4-6 hours (core content) + 2-3 hours (optional exercises)
 **What you'll learn:** Test individual functions in isolation
@@ -216,11 +216,11 @@ flowchart TD
 **Core Content:** Theory + hands-on labs covering Arrange-Act-Assert pattern, parameterized tests, coverage analysis
 **Optional Exercises:** Explore existing unit tests, understand fixtures and mocking
 
-👉 [Start Stage 1](stage_1_unit/README.md)
+[Start Stage 1](stage_1_unit/README.md)
 
 ---
 
-### 🧱 Stage 2: Integration Tests
+### Stage 2: Integration Tests
 
 **Duration:** 5-7 hours (core content) + 3-5 hours (optional exercises)
 **What you'll learn:** Test how components work together
@@ -228,11 +228,11 @@ flowchart TD
 **Core Content:** Theory + hands-on labs covering HTTP testing, database fixtures, complete user journeys
 **Optional Exercises:** Examine API endpoint tests, understand TestClient patterns
 
-👉 [Start Stage 2](stage_2_integration/README.md)
+[Start Stage 2](stage_2_integration/README.md)
 
 ---
 
-### 🌐 Stage 3: API & E2E Testing
+### Stage 3: API & E2E Testing
 
 **Duration:** 5-7 hours (core content) + 3-5 hours (optional exercises)
 **What you'll learn:** Test complete user workflows and contracts
@@ -240,11 +240,11 @@ flowchart TD
 **Core Content:** Theory + hands-on labs covering component testing, E2E patterns, Page Object Model, network mocking
 **Optional Exercises:** Run Playwright tests, understand page interactions
 
-👉 [Start Stage 3](stage_3_api_e2e/README.md)
+[Start Stage 3](stage_3_api_e2e/README.md)
 
 ---
 
-### 🚀 Stage 4: Performance & Security
+### Stage 4: Performance & Security
 
 **Duration:** 6-8 hours (core content) + 4-6 hours (optional exercises)
 **What you'll learn:** Test scalability and protect against vulnerabilities
@@ -252,11 +252,11 @@ flowchart TD
 **Core Content:** Theory + hands-on labs covering load testing, OWASP Top 10, API testing, contract validation
 **Optional Exercises:** Run performance tests with k6, understand security testing basics
 
-👉 [Start Stage 4](stage_4_performance_security/README.md)
+[Start Stage 4](stage_4_performance_security/README.md)
 
 ---
 
-### 🎓 Stage 5: Job-Ready Capstone
+### Stage 5: Job-Ready Capstone
 
 **Duration:** 4-6 hours (core content) + 2-4 hours (optional exercises)
 **What you'll build:** Portfolio-ready test suite + documentation
@@ -264,36 +264,36 @@ flowchart TD
 **Core Content:** CI/CD setup, professional practices, complete project with full test coverage
 **Optional Exercises:** Build a feature with test coverage, create portfolio artifacts
 
-👉 [Start Stage 5](stage_5_capstone/README.md)
+[Start Stage 5](stage_5_capstone/README.md)
 
 ---
 
-<h2 id="learning-outcomes">🎯 Learning Outcomes</h2>
+<h2 id="learning-outcomes">Learning Outcomes</h2>
 
 By completing all 5 stages, you will be able to:
 
-✅ Write unit, integration, and E2E tests professionally
-✅ Use pytest, Playwright, and k6 effectively
-✅ Test APIs, UIs, databases, and security
-✅ Build test automation frameworks from scratch
-✅ Present your work confidently in interviews
-✅ Understand QA engineering workflows
+- Write unit, integration, and E2E tests professionally
+- Use pytest, Playwright, and k6 effectively
+- Test APIs, UIs, databases, and security
+- Build test automation frameworks from scratch
+- Present your work confidently in interviews
+- Understand QA engineering workflows
 
 ---
 
-<h2 id="prerequisites">📋 Prerequisites</h2>
+<h2 id="prerequisites">Prerequisites</h2>
 
 Before starting Stage 1:
 
-- ✅ Testbook installed and running ([Quick Start Guide](../README.md#quick-start))
-- ✅ Basic Python knowledge (functions, classes, imports)
-- ✅ Basic JavaScript knowledge (optional for E2E)
-- ✅ Terminal/command line familiarity
-- ✅ Code editor (VS Code recommended)
+- Testbook installed and running ([Quick Start Guide](../README.md#quick-start))
+- Basic Python knowledge (functions, classes, imports)
+- Basic JavaScript knowledge (optional for E2E)
+- Terminal/command line familiarity
+- Code editor (VS Code recommended)
 
 ---
 
-## 🏁 Getting Started
+## Getting Started
 
 ### Quick Start
 
@@ -321,7 +321,7 @@ start-dev.bat   # Windows
 
 ---
 
-## 💡 How to Use This Path
+## How to Use This Path
 
 ### ✅ DO
 
@@ -342,15 +342,15 @@ start-dev.bat   # Windows
 
 ---
 
-<h2 id="track-your-progress">🎖️ Track Your Progress</h2>
+<h2 id="track-your-progress">Track Your Progress</h2>
 
 As you complete stages, mark your achievements:
 
-- [ ] 🧪 **Stage 1 Complete** - Unit Testing Foundations
-- [ ] 🧱 **Stage 2 Complete** - Integration Testing Mastery
-- [ ] 🌐 **Stage 3 Complete** - API & E2E Testing Pro
-- [ ] 🚀 **Stage 4 Complete** - Performance & Security Expert
-- [ ] 🎓 **Stage 5 Complete** - Portfolio Ready!
+- [ ] **Stage 1 Complete** - Unit Testing Foundations
+- [ ] **Stage 2 Complete** - Integration Testing Mastery
+- [ ] **Stage 3 Complete** - API & E2E Testing Pro
+- [ ] **Stage 4 Complete** - Performance & Security Expert
+- [ ] **Stage 5 Complete** - Portfolio Ready!
 
 **Completion Milestones:**
 
@@ -360,7 +360,7 @@ As you complete stages, mark your achievements:
 
 ---
 
-<h2 id="relationship-to-labs">🔄 Relationship to Labs</h2>
+<h2 id="relationship-to-labs">Relationship to Labs</h2>
 
 **What's the difference between `/learn/` and the old `/labs/`?**
 
@@ -377,7 +377,7 @@ As you complete stages, mark your achievements:
 
 ---
 
-<h2 id="getting-help">📞 Getting Help</h2>
+<h2 id="getting-help">Getting Help</h2>
 
 **Stuck or confused?**
 
@@ -394,17 +394,17 @@ As you complete stages, mark your achievements:
 
 ---
 
-<h2 id="ready-to-begin">🚀 Ready to Begin?</h2>
+<h2 id="ready-to-begin">Ready to Begin?</h2>
 
-### 👉 [Start Stage 1: Unit Tests](stage_1_unit/README.md)
+### [Start Stage 1: Unit Tests](stage_1_unit/README.md)
 
-**Your testing journey starts now. Let's build skills that matter! 🎯**
+**Your testing journey starts now. Let's build skills that matter!**
 
 ---
 
-<h2 id="detailed-curriculum">📚 Detailed Curriculum Breakdown</h2>
+<h2 id="detailed-curriculum">Detailed Curriculum Breakdown</h2>
 
-### 🎯 Recommended Path for Beginners
+### Recommended Path for Beginners
 
 **Start here if you're new to testing!**
 
@@ -416,7 +416,7 @@ As you complete stages, mark your achievements:
 
 **Total time:** 24-34 hours over 5 weeks
 
-### 📊 Skill Progression
+### Skill Progression
 
 ```mermaid
 graph LR
@@ -434,7 +434,7 @@ graph LR
     F1[CI/CD + Portfolio] --> F
 ```
 
-### 🧪 Stage-by-Stage Breakdown
+### Stage-by-Stage Breakdown
 
 #### Stage 1: Unit Testing (4-6 hours)
 
@@ -472,7 +472,7 @@ Stage 5 is project-based rather than lab-based - see [Stage 5](stage_5_capstone/
 
 ---
 
-## 📈 What Happens After?
+## What Happens After?
 
 After finishing Stage 5's reflection, read [COMPLETION.md](COMPLETION.md) for a wrap-up of the full path and pointers to what to learn next.
 
