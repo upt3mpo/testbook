@@ -486,4 +486,4 @@ After completing all 5 stages:
 
 ---
 
-_Last updated: October 2025 | Testbook v1.3_
+_Last updated: September 2026 | Testbook v1.4_

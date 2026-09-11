@@ -356,7 +356,7 @@ Use these templates (fill in your specifics):
 
 **For Testbook:**
 
-- Built comprehensive test automation suite with pytest and Playwright, achieving 85%+ backend code coverage across 183 automated tests
+- Built comprehensive test automation suite with pytest and Playwright, achieving 85%+ backend code coverage across 203 automated tests
 - Implemented E2E testing framework using Page Object Model pattern, reducing test maintenance time by 40%
 - Developed security test suite covering OWASP Top 10 vulnerabilities, identifying and documenting 3 critical issues
 - Created performance testing strategy using k6, establishing baseline metrics for 500 concurrent users

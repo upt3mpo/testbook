@@ -17,7 +17,7 @@ Anti-patterns are common solutions that seem reasonable but cause problems. In t
 
 ---
 
-## 📚 Table of Contents
+## Table of Contents
 
 1. [Hardcoded Data Anti-Patterns](#1-hardcoded-data-anti-patterns)
 2. [Time and Sleep Anti-Patterns](#2-time-and-sleep-anti-patterns)
@@ -940,7 +940,7 @@ Before committing your tests, check:
 
 ---
 
-## 📚 Related Resources
+## Related Resources
 
 - **[TESTING_PATTERNS.md](TESTING_PATTERNS.md)** - What TO do (now includes dialog handling & force clicks!)
 - **[FLAKY_TESTS_GUIDE.md](../guides/FLAKY_TESTS_GUIDE.md)** ⭐ - Real fixes from this project

@@ -791,7 +791,7 @@ test("toggle repost", async ({ page }) => {
 6. ✅ **Use proper waits** after creating/updating content
 7. ✅ **Both specific and generic IDs** available for flexibility
 
-## 📚 More Resources
+## More Resources
 
 - **TESTING_CHEATSHEET.md** - Quick reference
 - **TESTING_GUIDE.md** - Detailed examples
@@ -800,7 +800,7 @@ test("toggle repost", async ({ page }) => {
 
 ---
 
-## 📚 Additional Resources
+## Additional Resources
 
 - **[README.md](../../README.md)** - Main documentation and project overview
 - **[TESTING_GUIDE.md](../guides/TESTING_GUIDE.md)** - Complete testing examples
@@ -1075,7 +1075,7 @@ await page.waitForURL(/.*\/login/, { timeout: 15000 });
 
 ---
 
-## 📚 More Info
+## More Info
 
 - **[TESTING_GUIDE.md](../guides/TESTING_GUIDE.md)** - Complete testing examples
 - **[CONTRACT_TESTING.md](../guides/CONTRACT_TESTING.md)** - Property-based API contract testing

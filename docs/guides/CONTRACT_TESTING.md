@@ -259,7 +259,7 @@ OpenAPI 3.1.0 introduced **complete JSON Schema compatibility** (Draft 2020-12),
 - 📚 Learn the **concept** (this guide)
 - 🔬 Study the **test file** (see how it's structured)
 - 🧪 Use **frontend contract testing** (LAB_08 - works today!)
-- 🎯 Focus on the **183 tests that DO run**
+- 🎯 Focus on the **203 tests that DO run**
 
 ### Discovered Workaround
 

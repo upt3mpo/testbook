@@ -274,7 +274,7 @@ pytest -v
 pytest -v
 ```
 
-**Expected:** 183 tests pass in ~72 seconds ✅
+**Expected:** 203 tests pass in ~48 seconds ✅
 
 </details>
 
@@ -287,7 +287,7 @@ cd backend
 pytest -v
 ```
 
-**Expected:** 183 tests pass in ~72 seconds ✅
+**Expected:** 203 tests pass in ~48 seconds ✅
 
 </details>
 
@@ -367,7 +367,7 @@ After setup, verify:
 - [ ] Can login with test account
 - [ ] Can create a post
 - [ ] Backend tests run: `cd backend && pytest -v`
-- [ ] See 183 tests pass
+- [ ] See 203 tests pass
 
 **⚠️ Common Mistake:** Don't open port 8000 - that's the API! The app is on port 3000.
 
