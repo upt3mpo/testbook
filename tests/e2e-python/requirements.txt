@@ -8,7 +8,7 @@ pytest-playwright>=0.4.0
 playwright>=1.40.0
 
 # Environment configuration
-python-dotenv>=1.0.0        # Load .env files
+python-dotenv>=1.2.3        # Load .env files
 
 # API requests for database seeding
 requests>=2.31.0            # HTTP library
