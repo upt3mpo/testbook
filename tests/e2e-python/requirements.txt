@@ -5,7 +5,7 @@ pytest>=7.4.0
 pytest-playwright>=0.4.0
 
 # Playwright
-playwright>=1.40.0
+playwright>=1.62.0
 
 # Environment configuration
 python-dotenv>=1.0.0        # Load .env files
