@@ -51,7 +51,7 @@ _Future updates will be documented here._
 
 ### Validation
 
-- Backend: 185 passed, 1 skipped, ~85% statement coverage
+- Backend: 203 passed, 1 skipped, 85.42% statement coverage
 - Frontend: 144 passed, 2 skipped, 83.36% statement / 84.08% line coverage
 - E2E (JavaScript): 59 passed
 - E2E (Python): 60 passed
