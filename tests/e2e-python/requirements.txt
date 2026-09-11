@@ -16,7 +16,7 @@ requests>=2.31.0            # HTTP library
 # Additional pytest plugins
 pytest-xdist>=3.3.0        # Parallel test execution
 pytest-timeout>=2.1.0       # Test timeouts
-pytest-rerunfailures>=12.0  # Retry flaky tests
+pytest-rerunfailures>=16.6.1  # Retry flaky tests
 
 # Optional: For test reporting
 pytest-html>=4.0.0          # HTML reports
