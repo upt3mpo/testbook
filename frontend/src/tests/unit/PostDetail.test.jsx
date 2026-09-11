@@ -88,7 +88,9 @@ describe('PostDetail Page', () => {
 
     renderPostDetail();
 
-    expect(await screen.findByText('No comments yet. Be the first to comment!')).toBeInTheDocument();
+    expect(
+      await screen.findByText('No comments yet. Be the first to comment!')
+    ).toBeInTheDocument();
   });
 
   it('lists comments when the post has them', async () => {

@@ -23,33 +23,30 @@
 import { describe, it } from 'vitest';
 
 describe('api.js (real network layer)', () => {
-  it.skip(
-    'attaches Authorization: Bearer <token> to requests when a token is stored',
-    () => {
-      // Not covered: mocking this module (as every other test does)
-      // replaces the interceptor along with everything else, so it
-      // never runs. Testing it honestly means observing a real
-      // outgoing request rather than asserting against another mock of
-      // this same file.
-      //
-      // Approach: this repo already has the tool for this -
-      // src/tests/mocks/handlers.js and MSW (Mock Service Worker),
-      // set up and documented ("Lab 6B: Advanced Component Testing")
-      // but not currently wired into any real test. MSW intercepts
-      // actual outgoing requests at the network level, so a test could
-      // render a component with no token in localStorage, inspect the
-      // Authorization header MSW observed (absent), then repeat with a
-      // token set and assert the header appears only the second time.
-      //
-      // handlers.js needs one fix first: it hardcodes
-      // `http://localhost:8000/api`, but api.js's baseURL is the
-      // relative `/api`, which axios resolves against jsdom's default
-      // test origin - `http://localhost:3000/api` in this project's
-      // Vitest setup (confirmed by logging window.location.href in a
-      // throwaway test). As written, handlers.js would never actually
-      // intercept a request this file makes.
-    }
-  );
+  it.skip('attaches Authorization: Bearer <token> to requests when a token is stored', () => {
+    // Not covered: mocking this module (as every other test does)
+    // replaces the interceptor along with everything else, so it
+    // never runs. Testing it honestly means observing a real
+    // outgoing request rather than asserting against another mock of
+    // this same file.
+    //
+    // Approach: this repo already has the tool for this -
+    // src/tests/mocks/handlers.js and MSW (Mock Service Worker),
+    // set up and documented ("Lab 6B: Advanced Component Testing")
+    // but not currently wired into any real test. MSW intercepts
+    // actual outgoing requests at the network level, so a test could
+    // render a component with no token in localStorage, inspect the
+    // Authorization header MSW observed (absent), then repeat with a
+    // token set and assert the header appears only the second time.
+    //
+    // handlers.js needs one fix first: it hardcodes
+    // `http://localhost:8000/api`, but api.js's baseURL is the
+    // relative `/api`, which axios resolves against jsdom's default
+    // test origin - `http://localhost:3000/api` in this project's
+    // Vitest setup (confirmed by logging window.location.href in a
+    // throwaway test). As written, handlers.js would never actually
+    // intercept a request this file makes.
+  });
 
   it.skip('every authAPI/usersAPI/postsAPI/feedAPI/devAPI wrapper hits its real endpoint', () => {
     // Not covered directly for the same module-mocking reason above.

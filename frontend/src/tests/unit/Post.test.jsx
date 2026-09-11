@@ -247,9 +247,7 @@ describe('Post Component', () => {
       const user = userEvent.setup();
       renderPost(basePost);
 
-      expect(
-        screen.queryByPlaceholderText('Write a comment...')
-      ).not.toBeInTheDocument();
+      expect(screen.queryByPlaceholderText('Write a comment...')).not.toBeInTheDocument();
 
       await user.click(screen.getByRole('button', { name: 'Comment' }));
 

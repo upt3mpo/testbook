@@ -33,9 +33,7 @@ function AuthConsumer() {
       <div data-testid="display-name">{user?.display_name ?? 'none'}</div>
       <button onClick={() => login('sarah.johnson@testbook.com', 'Sarah2024!')}>Login</button>
       <button
-        onClick={() =>
-          register({ email: 'new@testbook.com', username: 'newuser', password: 'pw' })
-        }
+        onClick={() => register({ email: 'new@testbook.com', username: 'newuser', password: 'pw' })}
       >
         Register
       </button>

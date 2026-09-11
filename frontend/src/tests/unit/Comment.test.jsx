@@ -45,10 +45,7 @@ describe('Comment Component', () => {
     // The avatar is also wrapped in a same-named link, so scope to the
     // text link specifically rather than getByRole('link', { name }),
     // which would match both.
-    expect(screen.getByText('Mike Chen').closest('a')).toHaveAttribute(
-      'href',
-      '/profile/mikechen'
-    );
+    expect(screen.getByText('Mike Chen').closest('a')).toHaveAttribute('href', '/profile/mikechen');
   });
 
   it("links the author's avatar to their profile", () => {
