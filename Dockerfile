@@ -10,7 +10,7 @@ COPY frontend/ ./
 RUN npm run build
 
 # Stage 2: Final image with backend and frontend
-FROM python:3.13-slim-bookworm
+FROM python:3.14-slim-bookworm
 
 # Speed up Python and keep images small
 ENV PIP_NO_CACHE_DIR=1 \
