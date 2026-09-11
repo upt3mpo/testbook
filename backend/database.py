@@ -1,11 +1,13 @@
 import os
+from collections.abc import Generator
+from pathlib import Path
 
 from sqlalchemy import create_engine
-from sqlalchemy.orm import declarative_base, sessionmaker
+from sqlalchemy.orm import DeclarativeBase, Session, sessionmaker
 
 # Get database URL from environment or use default
 # Use absolute path for Windows compatibility
-DATABASE_PATH = os.path.abspath("testbook.db")
+DATABASE_PATH = Path("testbook.db").resolve()
 SQLALCHEMY_DATABASE_URL = os.getenv("DATABASE_URL", f"sqlite:///{DATABASE_PATH}")
 
 # Normalize Postgres driver to psycopg (v3) if not explicitly set
@@ -22,10 +24,18 @@ if SQLALCHEMY_DATABASE_URL.startswith("sqlite"):
 engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args=connect_args)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-Base = declarative_base()
+
+class Base(DeclarativeBase):
+    """SQLAlchemy 2.0 declarative base.
+
+    Using the class-based DeclarativeBase (instead of the legacy
+    declarative_base() function call) is what lets mypy understand
+    models.py's Mapped[] columns natively - no sqlalchemy mypy plugin
+    needed, and no plugin-vs-mypy-version compatibility risk.
+    """
 
 
-def get_db():
+def get_db() -> Generator[Session]:
     db = SessionLocal()
     try:
         yield db
@@ -33,6 +43,6 @@ def get_db():
         db.close()
 
 
-def init_db():
+def init_db() -> None:
     """Initialize database tables"""
     Base.metadata.create_all(bind=engine)

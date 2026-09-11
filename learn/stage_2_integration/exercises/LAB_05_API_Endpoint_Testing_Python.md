@@ -157,7 +157,7 @@ def test_create_my_post(self, client, auth_headers):
     )
 
     # Assert
-    assert response.status_code == 200
+    assert response.status_code == 201  # Post creation returns 201 Created
     data = response.json()
     assert data["content"] == "This is my test post!"
     assert data["id"] is not None  # Post got an ID
@@ -271,7 +271,7 @@ assert "content" in data
 
 <h2 id="further-reading">📚 Further Reading</h2>
 
-- [TESTING_GUIDE.md - API Testing Section](../docs/guides/TESTING_GUIDE.md#api-testing)
+- [TESTING_GUIDE.md - API Testing Section](../../../docs/guides/TESTING_GUIDE.md#api-testing)
 - [FastAPI Testing Docs](https://fastapi.tiangolo.com/tutorial/testing/)
 - Study: `tests/integration/test_api_auth.py` (complete file)
 
@@ -279,7 +279,7 @@ assert "content" in data
 
 **🎉 You're now testing real APIs like a pro!**
 
-**Next Lab:** [Lab 5: Test Data Management (Python)](LAB_05_Test_Data_Management_Python.md)
+**Next Lab:** [Lab 6: Advanced API Testing (Python)](LAB_06_Advanced_API_Testing_Python.md)
 
 ---
 

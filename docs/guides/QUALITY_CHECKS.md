@@ -8,13 +8,15 @@
 
 Testbook uses automated quality checks to maintain code standards:
 
-| Check Type           | Backend (Python) | Frontend (JavaScript) |
-| -------------------- | ---------------- | --------------------- |
-| **Formatting**       | Black            | Prettier              |
-| **Import Sorting**   | isort            | ESLint import rules   |
-| **Linting**          | Flake8           | ESLint + plugins      |
-| **Coverage Gate**    | 80% minimum      | No gate (95%+ actual) |
-| **Pre-commit Hooks** | ✅ Enabled       | ✅ Enabled            |
+| Check Type | Backend (Python) | Frontend (JavaScript) |
+| --- | --- | --- |
+| **Formatting** | Black | Prettier |
+| **Import Sorting** | Ruff `I` ruleset | ESLint import rules |
+| **Linting** | Ruff `E`/`F` ruleset (24 categories total - see `backend/pyproject.toml`'s `[tool.ruff.lint]`), plus mypy for type checking | ESLint + plugins |
+| **Coverage Gate** | 80% suggested, not enforced by `--cov-fail-under` | No gate (83% actual) |
+| **Pre-commit Hooks** | Enabled: whitespace/EOF/YAML/JSON checks, markdownlint, Black, Ruff, mypy, detect-secrets | Not enabled: ESLint/Prettier still commented out in `.pre-commit-config.yaml` |
+
+**A note on history:** backend linting used to be isort + Flake8, run separately from what pre-commit checked (which had already moved to Ruff in an earlier pass). CI's `lint-backend` job and `scripts/quality-check.sh` now both run Ruff too, so there's a single tool and a single config (`backend/pyproject.toml`'s `[tool.ruff]`) enforced everywhere - local pre-commit, CI, and the manual quality-check script all agree.
 
 ---
 
@@ -29,8 +31,7 @@ Testbook uses automated quality checks to maintain code standards:
 This runs:
 
 - ✅ Black formatting check (Python)
-- ✅ isort import sort check (Python)
-- ✅ Flake8 linting (Python)
+- ✅ Ruff import sorting and linting (Python)
 - ✅ Backend tests with 80% coverage gate
 - ✅ ESLint linting (JavaScript)
 - ✅ Prettier formatting check (JavaScript)
@@ -59,54 +60,28 @@ black .
 
 ```toml
 [tool.black]
-line-length = 100
-target-version = ['py311']
+line-length = 88
+target-version = ['py313']
 ```
 
 ---
 
-### Import Sorting with isort
+### Import Sorting and Linting with Ruff
 
-**Check imports:**
-
-```bash
-cd backend
-isort --check-only --diff .
-```
-
-**Auto-fix:**
-
-```bash
-isort .
-```
-
-**Configuration:** `backend/pyproject.toml`
-
-```toml
-[tool.isort]
-profile = "black"
-line_length = 100
-```
-
----
-
-### Linting with Flake8
-
-**Run linter:**
+**Check imports and lint:**
 
 ```bash
 cd backend
-flake8 .
+ruff check .
 ```
 
-**Configuration:** `backend/.flake8`
+**Auto-fix what's fixable:**
 
-```ini
-[flake8]
-max-line-length = 100
-extend-ignore = E203, W503, E501
-exclude = venv, .venv, htmlcov
+```bash
+ruff check --fix .
 ```
+
+**Configuration:** `backend/pyproject.toml`'s `[tool.ruff]` and `[tool.ruff.lint]`. 24 rule categories are enabled (import sorting is just one - `I`), each checked against real hits in this codebase before being turned on rather than enabled by default. See the comment above `[tool.ruff.lint]` in that file for the full reasoning, and the `ignore` list right below it for the specific codes disabled and why.
 
 ---
 
@@ -119,7 +94,7 @@ cd backend
 pytest --cov --cov-fail-under=80
 ```
 
-**Current coverage:** 86% (well above minimum!)
+**Current coverage:** 85% (well above minimum!)
 
 **Why 80%?**
 
@@ -127,6 +102,26 @@ pytest --cov --cov-fail-under=80
 - Ensures critical paths are tested
 - Allows flexibility for edge cases
 - CI fails if coverage drops below threshold
+
+---
+
+<h2 id="markdown-validation">📝 Markdown Validation</h2>
+
+Documentation gets the same automated gate as code: markdownlint checks formatting/style, and `markdown-link-check` verifies every internal link, anchor, and external URL actually resolves.
+
+**Run locally before committing docs:**
+
+```bash
+make check-markdown    # or: just check-markdown — full validation
+make lint-markdown     # lint only
+make fix-markdown      # auto-fix what can be auto-fixed
+```
+
+**Config:** `.markdownlint.json` disables a handful of rules that don't fit this repo (`MD001` heading-increment, since some docs intentionally jump from `<h2>` to `###` for layout; `MD013` line length, needed for long URLs and code; `MD033` inline HTML; `MD024` duplicate headings; `MD036` emphasis-as-heading). `.markdown-link-check.json` ignores `localhost` URLs (unreachable in CI), retries on 429, and accepts 403 as alive (some sites block bot user-agents but are genuinely fine).
+
+**CI:** `.github/workflows/markdown-validation.yml` runs both checks on every push/PR that touches a `.md` file.
+
+Two habits worth keeping in mind while writing docs: use descriptive link text (`[the installation guide](link.md)`, not `[here](link.md)`), and never hardcode a personal machine path in an example (`~/docs/guide.md` or a relative path, not something like `/Users/yourname/docs/guide.md`).
 
 ---
 
@@ -147,7 +142,7 @@ npm run lint
 npm run lint:fix
 ```
 
-**Configuration:** `frontend/.eslintrc.json`
+**Configuration:** `frontend/eslint.config.js` (flat config, ESLint 9 — the older `frontend/.eslintrc.json` is no longer read)
 
 **Plugins enabled:**
 
@@ -204,18 +199,24 @@ pre-commit install
 
 ### What Gets Checked
 
-**On every commit:**
+**On every commit (currently active hooks):**
 
 1. Trailing whitespace removal
 2. End-of-file fixer
 3. YAML validation
-4. Large file check (max 1MB)
+4. JSON validation
 5. Merge conflict markers
-6. **Black** (Python formatting)
-7. **isort** (Python imports)
-8. **Flake8** (Python linting)
-9. **Prettier** (JavaScript formatting)
-10. **ESLint** (JavaScript linting)
+6. Large file check (max 1MB)
+7. Case-conflict check
+8. Debug statement check (Python)
+9. Private key detection
+10. **Markdownlint** (Markdown files)
+11. **Black** (Python formatting, `--line-length=88`)
+12. **Ruff** (Python import sorting and linting, replacing isort/Flake8 everywhere - see the note above)
+13. **mypy** (Python type checking)
+14. **detect-secrets** (all languages)
+
+**Not currently enabled in pre-commit:** ESLint and Prettier for the frontend - still commented out in `.pre-commit-config.yaml`. These are enforced separately by the `lint-frontend` CI job, they just don't run as a local pre-commit hook yet.
 
 **Configuration:** `.pre-commit-config.yaml`
 
@@ -263,7 +264,7 @@ lint-frontend → frontend-tests ↗
 
 **Jobs:**
 
-1. `lint-backend` - Black, isort, Flake8
+1. `lint-backend` - Black, Ruff
 2. `lint-frontend` - ESLint, Prettier
 3. `backend-tests` - Tests with 80% coverage gate
 4. `frontend-tests` - Component tests
@@ -271,6 +272,18 @@ lint-frontend → frontend-tests ↗
 6. `e2e-tests-python` - Playwright Python
 7. `security-tests` - OWASP checks
 8. `badge-update` - Update status
+
+### Recommended Branch Protection Rules
+
+This repo doesn't currently document what branch protection to enable on `main`, so a maintainer setting this up has to guess. If you're configuring GitHub's branch protection for `main` (Settings → Branches → Add rule), these settings match what the CI above is already built to support:
+
+- **Require a pull request before merging** - at least 1 approval, since this is a teaching repo where a second pair of eyes on curriculum changes matters as much as on code
+- **Require status checks to pass before merging** - select `lint-backend`, `lint-frontend`, `backend-tests`, `frontend-tests` at minimum (these are fast and should gate every merge); `e2e-tests-js`/`e2e-tests-python`/`security-tests` are worth requiring too once they're stable enough not to block contributors on flakiness
+- **Require branches to be up to date before merging** - avoids merging a PR whose CI ran against a stale base
+- **Do not allow bypassing the above settings** - including for administrators, so the rule actually holds
+- Force pushes and branch deletion should stay disabled for `main`
+
+None of this is enforced by anything in this repository — it has to be configured in the GitHub repo's own settings, which aren't tracked in version control.
 
 ---
 
@@ -280,8 +293,8 @@ lint-frontend → frontend-tests ↗
 
 | Metric                   | Value | Target | Status         |
 | ------------------------ | ----- | ------ | -------------- |
-| Backend Coverage         | 86%   | 80%    | ✅ +6%         |
-| Frontend Coverage        | 95%   | N/A    | ✅ Excellent   |
+| Backend Coverage         | 85%   | 80%    | ✅ +5%         |
+| Frontend Coverage        | 83%   | N/A    | ✅ Good        |
 | Linting Violations       | 0     | 0      | ✅ Clean       |
 | Accessibility Violations | 0     | 0      | ✅ WCAG 2.1 AA |
 
@@ -295,6 +308,7 @@ lint-frontend → frontend-tests ↗
 
 - Python (Microsoft)
 - Black Formatter
+- Ruff (charliermarsh.ruff)
 - ESLint
 - Prettier
 
@@ -303,7 +317,6 @@ lint-frontend → frontend-tests ↗
 ```json
 {
   "python.formatting.provider": "black",
-  "python.linting.flake8Enabled": true,
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
@@ -434,7 +447,7 @@ open htmlcov/index.html
 <h2 id="additional-resources">📚 Additional Resources</h2>
 
 - [Black Documentation](https://black.readthedocs.io/)
-- [Flake8 Rules](https://flake8.pycqa.org/en/latest/user/error-codes.html)
+- [Ruff Rules](https://docs.astral.sh/ruff/rules/)
 - [ESLint Rules](https://eslint.org/docs/latest/rules/)
 - [Prettier Options](https://prettier.io/docs/en/options.html)
 - [Pre-commit Hooks](https://pre-commit.com/)
@@ -450,7 +463,7 @@ Before pushing code:
 - [ ] Coverage above 80% (backend)
 - [ ] No console.log statements
 - [ ] Code formatted (Black/Prettier)
-- [ ] Imports sorted (isort)
+- [ ] Imports sorted (ruff)
 - [ ] Pre-commit hooks installed
 
 ---

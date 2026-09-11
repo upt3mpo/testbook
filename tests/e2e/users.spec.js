@@ -3,15 +3,19 @@
  *
  * Tests user profiles, follow/unfollow, block/unblock,
  * and settings.
+ *
+ * Page Object Model: interactions go through pages/AuthPage.js,
+ * pages/FeedPage.js, pages/ProfilePage.js, and pages/SettingsPage.js
+ * rather than raw selectors, so a UI change only needs updating in one
+ * place.
  */
 
 import { expect, test } from "@playwright/test";
-import {
-  loginUser,
-  resetDatabase,
-  setupDialogHandler,
-  TEST_USERS,
-} from "./fixtures/test-helpers.js";
+import { resetDatabase, setupDialogHandler, TEST_USERS } from "./fixtures/test-helpers.js";
+import { AuthPage } from "./pages/AuthPage.js";
+import { FeedPage } from "./pages/FeedPage.js";
+import { ProfilePage } from "./pages/ProfilePage.js";
+import { SettingsPage } from "./pages/SettingsPage.js";
 
 test.describe("Users", () => {
   test.beforeEach(async ({ page }) => {
@@ -19,194 +23,136 @@ test.describe("Users", () => {
     setupDialogHandler(page);
 
     await resetDatabase(page);
-    await loginUser(page, TEST_USERS.sarah.email, TEST_USERS.sarah.password);
+    const auth = new AuthPage(page);
+    await auth.gotoLogin();
+    await auth.login(TEST_USERS.sarah.email, TEST_USERS.sarah.password);
+    await auth.expectLoggedIn();
   });
 
   test.describe("User Profile", () => {
     test("should view own profile", async ({ page }) => {
-      await page.click('[data-testid="navbar-profile-link"]');
+      const auth = new AuthPage(page);
+      await auth.navbarProfileLink.click();
 
-      // Should show profile information
-      await expect(
-        page.locator('[data-testid="profile-display-name"]')
-      ).toContainText(TEST_USERS.sarah.displayName);
-      await expect(
-        page.locator('[data-testid="profile-username"]')
-      ).toContainText(`@${TEST_USERS.sarah.username}`);
-
-      // Should show edit button for own profile
-      await expect(
-        page.locator('[data-testid="profile-edit-button"]')
-      ).toBeVisible();
+      const profile = new ProfilePage(page);
+      await profile.expectProfileMatches(
+        TEST_USERS.sarah.displayName,
+        TEST_USERS.sarah.username
+      );
+      await profile.expectOwnProfileControls();
     });
 
     test("should view other user profile", async ({ page }) => {
-      await page.goto(`/profile/${TEST_USERS.mike.username}`);
+      const profile = new ProfilePage(page);
+      await profile.goto(TEST_USERS.mike.username);
 
-      // Should show user information
-      await expect(
-        page.locator('[data-testid="profile-display-name"]')
-      ).toContainText(TEST_USERS.mike.displayName);
-      await expect(
-        page.locator('[data-testid="profile-username"]')
-      ).toContainText(`@${TEST_USERS.mike.username}`);
-
-      // Should NOT show edit button for other user
-      await expect(
-        page.locator('[data-testid="profile-edit-button"]')
-      ).not.toBeVisible();
-
-      // Should show follow/block buttons
-      await expect(
-        page.locator('[data-testid="profile-follow-button"]')
-      ).toBeVisible();
-      await expect(
-        page.locator('[data-testid="profile-block-button"]')
-      ).toBeVisible();
+      await profile.expectProfileMatches(
+        TEST_USERS.mike.displayName,
+        TEST_USERS.mike.username
+      );
+      await profile.expectOtherUserProfileControls();
     });
 
     test("should show follower and following counts", async ({ page }) => {
-      await page.goto(`/profile/${TEST_USERS.sarah.username}`);
+      const profile = new ProfilePage(page);
+      await profile.goto(TEST_USERS.sarah.username);
 
-      // Wait for profile data to load - look for profile name first
-      await expect(
-        page.locator('[data-testid="profile-display-name"]')
-      ).toBeVisible({ timeout: 10000 });
-
-      // Then wait for count links to appear (the counts are inside the links)
-      await expect(
-        page.locator('[data-testid="profile-followers-link"]')
-      ).toBeVisible({ timeout: 10000 });
-      await expect(
-        page.locator('[data-testid="profile-following-link"]')
-      ).toBeVisible({ timeout: 10000 });
+      await expect(page.locator(profile.followersCount)).toBeVisible({
+        timeout: 10000,
+      });
+      await expect(page.locator(profile.followingCount)).toBeVisible({
+        timeout: 10000,
+      });
     });
 
     test("should show posts count", async ({ page }) => {
-      await page.goto(`/profile/${TEST_USERS.sarah.username}`);
+      const profile = new ProfilePage(page);
+      await profile.goto(TEST_USERS.sarah.username);
 
-      await expect(
-        page.locator('[data-testid="profile-posts-count"]')
-      ).toBeVisible();
+      await expect(page.locator(profile.postsCount)).toBeVisible();
     });
   });
 
   test.describe("Follow/Unfollow", () => {
     test("should follow a user", async ({ page }) => {
-      await page.goto(`/profile/${TEST_USERS.mike.username}`);
-
-      const followButton = page.locator(
-        '[data-testid="profile-follow-button"]'
-      );
-      await expect(followButton).toBeVisible({ timeout: 5000 });
-
-      // Click follow and wait for the button text to change
-      await followButton.click();
-
-      // Wait for button to update to "Unfollow" - this indicates the API call succeeded
-      await expect(followButton).toContainText(/unfollow/i, { timeout: 10000 });
+      const profile = new ProfilePage(page);
+      await profile.goto(TEST_USERS.mike.username);
+      await profile.followUser();
 
       // Verify following count increased on own profile
-      await page.goto(`/profile/${TEST_USERS.sarah.username}`);
-
-      // Wait for profile to load
-      await expect(
-        page.locator('[data-testid="profile-display-name"]')
-      ).toBeVisible({ timeout: 10000 });
-
-      // Check the following link contains a number greater than 0
-      const followingLink = page.locator(
-        '[data-testid="profile-following-link"]'
-      );
-      await expect(followingLink).toContainText(/[1-9]/, { timeout: 10000 }); // At least 1
+      await profile.goto(TEST_USERS.sarah.username);
+      await expect(page.locator(profile.followingCount)).toContainText(/[1-9]/, {
+        timeout: 10000,
+      });
     });
 
     test("should unfollow a user", async ({ page }) => {
-      await page.goto(`/profile/${TEST_USERS.mike.username}`);
+      const profile = new ProfilePage(page);
+      await profile.goto(TEST_USERS.mike.username);
 
-      const followButton = page.locator(
-        '[data-testid="profile-follow-button"]'
-      );
+      await profile.followUser();
+      await profile.unfollowUser();
 
-      // Follow first
-      await followButton.click();
-      await expect(followButton).toContainText(/unfollow/i);
-
-      // Then unfollow
-      await followButton.click();
-      await expect(followButton).toContainText(/^follow$/i);
+      const button = page.locator(profile.followUnfollowButton);
+      await expect(button).toContainText(/^follow$/i);
     });
 
     test("should show followed users posts in Following feed", async ({
       page,
     }) => {
-      // Follow Mike
-      await page.goto(`/profile/${TEST_USERS.mike.username}`);
-      await page.locator('[data-testid="profile-follow-button"]').click();
+      const profile = new ProfilePage(page);
+      await profile.goto(TEST_USERS.mike.username);
+      await profile.followUser();
 
       // Go to Following feed
-      await page.goto("/");
-      await page.click('[data-testid="feed-tab-following"]');
+      const feed = new FeedPage(page);
+      await feed.goto();
+      await feed.goToFollowingTab();
 
       // Should show Mike's posts (if he has any)
       const mikePosts = page.locator(
         `[data-post-author="${TEST_USERS.mike.username}"]`
       );
-      const count = await mikePosts.count();
-      expect(count).toBeGreaterThanOrEqual(0);
+      expect(await mikePosts.count()).toBeGreaterThanOrEqual(0);
     });
   });
 
   test.describe("Block/Unblock", () => {
     test("should block a user", async ({ page }) => {
-      await page.goto(`/profile/${TEST_USERS.mike.username}`);
+      const profile = new ProfilePage(page);
+      await profile.goto(TEST_USERS.mike.username);
+      await profile.blockUser();
 
-      const blockButton = page.locator('[data-testid="profile-block-button"]');
-      await expect(blockButton).toBeVisible({ timeout: 5000 });
-
-      // Click block and wait for button text to change
-      await blockButton.click();
-
-      // Button should change to Unblock - wait for this state change
-      await expect(blockButton).toContainText(/unblock/i, { timeout: 10000 });
+      const button = page.locator(profile.blockUnblockButton);
+      await expect(button).toContainText(/unblock/i);
     });
 
     test("should unblock a user", async ({ page }) => {
-      await page.goto(`/profile/${TEST_USERS.mike.username}`);
+      const profile = new ProfilePage(page);
+      await profile.goto(TEST_USERS.mike.username);
 
-      const blockButton = page.locator('[data-testid="profile-block-button"]');
-      await expect(blockButton).toBeVisible({ timeout: 5000 });
+      await profile.blockUser();
+      await profile.unblockUser();
 
-      // Block first and wait for state change
-      await blockButton.click();
-      await expect(blockButton).toContainText(/unblock/i, { timeout: 10000 });
-
-      // Then unblock and wait for state change
-      await blockButton.click();
-      await expect(blockButton).toContainText(/^block$/i, { timeout: 10000 });
+      const button = page.locator(profile.blockUnblockButton);
+      await expect(button).toContainText(/^block$/i);
     });
 
     test("should not see blocked users posts in feed", async ({ page }) => {
-      // Block Mike
-      await page.goto(`/profile/${TEST_USERS.mike.username}`);
-      await page.locator('[data-testid="profile-block-button"]').click();
+      const profile = new ProfilePage(page);
+      await profile.goto(TEST_USERS.mike.username);
+      await profile.blockUser();
 
-      // Go to All feed
-      await page.goto("/");
-
-      // Wait for feed to load
-      await page.waitForLoadState("networkidle", { timeout: 5000 });
-      await page.waitForTimeout(1000);
-
-      // Force reload to ensure fresh data
+      // Go to All feed. Force a reload to ensure fresh data, since the
+      // feed page may have cached the pre-block post list.
+      const feed = new FeedPage(page);
+      await feed.goto();
       await page.reload();
       await page.waitForLoadState("networkidle", { timeout: 5000 });
-      await page.waitForTimeout(500);
+      await feed.goToAllTab();
 
-      await page.click('[data-testid="feed-tab-all"]');
-      await page.waitForTimeout(500);
-
-      // Should not see Mike's posts
+      // Should not see Mike's posts. toHaveCount() retries, so it covers
+      // any remaining render delay after the reload and tab click.
       const mikePosts = page.locator(
         `[data-post-author="${TEST_USERS.mike.username}"]`
       );
@@ -216,43 +162,37 @@ test.describe("Users", () => {
 
   test.describe("Followers/Following Lists", () => {
     test("should view followers list", async ({ page }) => {
-      await page.goto(`/profile/${TEST_USERS.sarah.username}`);
+      const profile = new ProfilePage(page);
+      await profile.goto(TEST_USERS.sarah.username);
+      await profile.goToFollowersList();
 
-      // Click followers count
-      await page.click('[data-testid="profile-followers-link"]');
-
-      // Should be on followers page
-      await expect(
-        page.locator('[data-testid="followers-page"]')
-      ).toBeVisible();
+      await expect(page.getByTestId("followers-page")).toBeVisible();
     });
 
     test("should view following list", async ({ page }) => {
-      await page.goto(`/profile/${TEST_USERS.sarah.username}`);
+      const profile = new ProfilePage(page);
+      await profile.goto(TEST_USERS.sarah.username);
+      await profile.goToFollowingList();
 
-      // Click following count
-      await page.click('[data-testid="profile-following-link"]');
-
-      // Should be on following page
-      await expect(
-        page.locator('[data-testid="following-page"]')
-      ).toBeVisible();
+      await expect(page.getByTestId("following-page")).toBeVisible();
     });
 
     test("should unfollow from following page", async ({ page }) => {
+      const profile = new ProfilePage(page);
+
       // Follow Mike first
-      await page.goto(`/profile/${TEST_USERS.mike.username}`);
-      await page.locator('[data-testid="profile-follow-button"]').click();
+      await profile.goto(TEST_USERS.mike.username);
+      await profile.followUser();
 
       // Go to following page
-      await page.goto(`/profile/${TEST_USERS.sarah.username}`);
-      await page.click('[data-testid="profile-following-link"]');
+      await profile.goto(TEST_USERS.sarah.username);
+      await profile.goToFollowingList();
 
       // Unfollow Mike
-      const mikeInList = page.locator(
-        `[data-username="${TEST_USERS.mike.username}"]`
-      );
-      if (await mikeInList.isVisible()) {
+      const mikeInList = profile.findUserInList(TEST_USERS.mike.username);
+      const isVisible = await mikeInList.isVisible({ timeout: 5000 }).catch(() => false);
+
+      if (isVisible) {
         await mikeInList.locator('[data-testid$="-unfollow-button"]').click();
 
         // Mike should be removed from list
@@ -261,31 +201,21 @@ test.describe("Users", () => {
     });
 
     test("should block from followers page", async ({ page }) => {
-      await page.goto(`/profile/${TEST_USERS.sarah.username}`);
-
-      const followersLink = page.locator(
-        '[data-testid="profile-followers-link"]'
-      );
-      await expect(followersLink).toBeVisible({ timeout: 5000 });
-      await followersLink.click();
+      const profile = new ProfilePage(page);
+      await profile.goto(TEST_USERS.sarah.username);
+      await profile.goToFollowersList();
 
       // Wait for the followers page to load
-      await page
-        .waitForURL(/.*\/followers.*/, { timeout: 5000 })
-        .catch(() => {});
+      await page.waitForURL(/.*\/followers.*/, { timeout: 5000 }).catch(() => {});
 
       // If there are followers, try to block one
-      const firstFollower = page
-        .locator('[data-testid-generic="follower-item"]')
-        .first();
+      const firstFollower = profile.findFirstFollowerItem();
       const followerVisible = await firstFollower
         .isVisible({ timeout: 3000 })
         .catch(() => false);
 
       if (followerVisible) {
-        const blockButton = firstFollower.locator(
-          '[data-testid$="-block-button"]'
-        );
+        const blockButton = firstFollower.locator('[data-testid$="-block-button"]');
         await expect(blockButton).toBeVisible({ timeout: 5000 });
         await blockButton.click();
 
@@ -299,147 +229,90 @@ test.describe("Users", () => {
 
   test.describe("Settings", () => {
     test("should update display name", async ({ page }) => {
-      await page.goto("/settings");
-
-      const displayNameInput = page.locator(
-        '[data-testid="settings-display-name-input"]'
-      );
-      await displayNameInput.fill("Updated Name");
-
-      await page.click('[data-testid="settings-save-button"]');
-
-      // Should show success message
-      await expect(page.locator("text=/success/i")).toBeVisible({
-        timeout: 5000,
-      });
+      const settings = new SettingsPage(page);
+      await settings.goto();
+      await settings.updateDisplayName("Updated Name");
+      await settings.expectSaveSucceeded();
 
       // Verify on profile
-      await page.goto(`/profile/${TEST_USERS.sarah.username}`);
-      await expect(
-        page.locator('[data-testid="profile-display-name"]')
-      ).toContainText("Updated Name");
+      const profile = new ProfilePage(page);
+      await profile.goto(TEST_USERS.sarah.username);
+      await expect(page.locator(profile.displayName)).toContainText("Updated Name");
     });
 
     test("should update bio", async ({ page }) => {
-      await page.goto("/settings");
-
-      const bioInput = page.locator('[data-testid="settings-bio-input"]');
-      await bioInput.fill("My updated bio");
-
-      await page.click('[data-testid="settings-save-button"]');
-
-      // Should show success message
-      await expect(page.locator("text=/success/i")).toBeVisible({
-        timeout: 5000,
-      });
+      const settings = new SettingsPage(page);
+      await settings.goto();
+      await settings.updateBio("My updated bio");
+      await settings.expectSaveSucceeded();
     });
 
     test("should change theme", async ({ page }) => {
-      await page.goto("/settings");
-
-      const themeSelect = page.locator('[data-testid="settings-theme-select"]');
-      await themeSelect.selectOption("dark");
-
-      await page.click('[data-testid="settings-save-button"]');
-
-      // Page should have dark theme
-      const html = page.locator("html");
-      await expect(html).toHaveAttribute("data-theme", "dark");
+      const settings = new SettingsPage(page);
+      await settings.goto();
+      await settings.changeTheme("dark");
+      await settings.expectThemeApplied("dark");
     });
 
     test("should change text density", async ({ page }) => {
-      await page.goto("/settings");
-
-      const densitySelect = page.locator(
-        '[data-testid="settings-text-density-select"]'
-      );
-      await densitySelect.selectOption("compact");
-
-      await page.click('[data-testid="settings-save-button"]');
-
-      // Should show success
-      await expect(page.locator("text=/success/i")).toBeVisible({
-        timeout: 5000,
-      });
+      const settings = new SettingsPage(page);
+      await settings.goto();
+      await settings.changeTextDensity("compact");
+      await settings.expectSaveSucceeded();
     });
 
     test("should persist theme across sessions", async ({ page }) => {
-      // Set dark theme
-      await page.goto("/settings");
-      await page
-        .locator('[data-testid="settings-theme-select"]')
-        .selectOption("dark");
-      await page.click('[data-testid="settings-save-button"]');
+      const settings = new SettingsPage(page);
+      await settings.goto();
+      await settings.changeTheme("dark");
 
-      // Wait for success message to ensure the API call completed
-      await expect(page.locator("text=/success/i")).toBeVisible({
-        timeout: 10000,
-      });
-
-      // Reload page
       await page.reload();
 
-      // Should still be dark
-      const html = page.locator("html");
-      await expect(html).toHaveAttribute("data-theme", "dark");
+      await settings.expectThemeApplied("dark");
     });
   });
 
   test.describe("Profile Picture", () => {
     test("should upload profile picture", async ({ page }) => {
-      await page.goto("/settings");
-
-      // Upload file (requires actual file)
-      // This is a placeholder - actual implementation needs a test image
-      const fileInput = page.locator('[data-testid="settings-avatar-input"]');
+      const settings = new SettingsPage(page);
+      await settings.goto();
 
       // Check if file input exists
-      await expect(fileInput).toBeAttached();
+      await expect(page.locator(settings.avatarInput)).toBeAttached();
     });
 
     test("should clear profile picture", async ({ page }) => {
-      await page.goto("/settings");
+      const settings = new SettingsPage(page);
+      await settings.goto();
 
-      const clearButton = page.locator(
-        '[data-testid="settings-clear-avatar-button"]'
-      );
-
-      if (await clearButton.isVisible()) {
-        await clearButton.click();
-
-        // Should revert to default avatar
-        await expect(page.locator("text=/default/i")).toBeVisible({
-          timeout: 5000,
-        });
+      const clearButton = page.locator(settings.clearAvatarButton);
+      if (await clearButton.isVisible({ timeout: 5000 }).catch(() => false)) {
+        await settings.clearAvatar();
+        await settings.expectAvatarIsDefault();
       }
     });
   });
 
   test.describe("Account Deletion", () => {
     test("should delete account", async ({ page }) => {
-      await page.goto("/settings");
+      const settings = new SettingsPage(page);
+      await settings.goto();
 
-      const deleteButton = page.locator(
-        '[data-testid="settings-delete-account-button"]'
-      );
-      await expect(deleteButton).toBeVisible({ timeout: 5000 });
+      await expect(page.locator(settings.deleteAccountButton)).toBeVisible({
+        timeout: 5000,
+      });
+      await settings.deleteAccount();
 
-      // Click delete button
-      // Note: Browser confirm dialogs are auto-accepted by the setupDialogHandler
-      await deleteButton.click();
-
-      // Wait a moment for the browser confirms to be handled
-      await page.waitForTimeout(1000);
-
-      // Wait for redirect to login page - this is the key indicator of successful deletion
-      // Use waitForURL which is more reliable than checking for element visibility
+      // Wait for redirect to login page - this is the key indicator of
+      // successful deletion. waitForURL is more reliable than checking
+      // for element visibility.
       await page
         .waitForURL(/.*\/(login|$)/, { timeout: 15000 })
         .catch(async () => {
           // Fallback: check for login input if URL didn't change
-          await expect(
-            page.locator('[data-testid="login-email-input"]')
-          ).toBeVisible({ timeout: 5000 });
+          await expect(page.getByTestId("login-email-input")).toBeVisible({
+            timeout: 5000,
+          });
         });
     });
   });

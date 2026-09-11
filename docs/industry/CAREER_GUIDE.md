@@ -6,11 +6,12 @@ Quality Assurance (QA) is a rapidly growing field with diverse career paths and 
 
 ## Career Paths in QA
 
+A note on the salary figures below before you read them: compensation for these roles varies enormously by city, company size, and year, and any specific number printed in a document like this one is out of date the moment market conditions shift. Rather than guess at figures, check [levels.fyi](https://www.levels.fyi/) or [Glassdoor](https://www.glassdoor.com/) for current, location-specific data, and the U.S. Bureau of Labor Statistics' [Occupational Employment and Wage Statistics](https://www.bls.gov/oes/) for a government-sourced baseline. What's stable over time is the relative progression below — each level typically pays meaningfully more than the one before it, and automation skills command a premium over manual-only testing at every level.
+
 ### 1. Manual QA Tester
 
 **Entry Level (0-2 years)**
 
-- **Salary Range:** $65,000 - $90,000
 - **Responsibilities:**
   - Manual testing of applications
   - Bug reporting and tracking
@@ -35,7 +36,6 @@ Quality Assurance (QA) is a rapidly growing field with diverse career paths and 
 
 **Mid Level (2-5 years)**
 
-- **Salary Range:** $90,000 - $130,000
 - **Responsibilities:**
   - Writing automated test scripts
   - Maintaining test frameworks
@@ -60,7 +60,6 @@ Quality Assurance (QA) is a rapidly growing field with diverse career paths and 
 
 **Senior Level (5+ years)**
 
-- **Salary Range:** $120,000 - $180,000
 - **Responsibilities:**
   - Team management
   - Test strategy and planning
@@ -85,7 +84,6 @@ Quality Assurance (QA) is a rapidly growing field with diverse career paths and 
 
 **Expert Level (7+ years)**
 
-- **Salary Range:** $150,000 - $220,000
 - **Responsibilities:**
   - Test framework design
   - Technical strategy
@@ -108,57 +106,7 @@ Quality Assurance (QA) is a rapidly growing field with diverse career paths and 
 
 ## Salary Expectations by Location
 
-### United States
-
-**Entry Level (0-2 years):**
-
-- San Francisco: $95,000 - $125,000
-- New York: $85,000 - $110,000
-- Seattle: $90,000 - $115,000
-- Los Angeles: $80,000 - $105,000
-- Austin: $70,000 - $90,000
-- Remote: $65,000 - $85,000
-
-**Mid Level (2-5 years):**
-
-- San Francisco: $130,000 - $170,000
-- New York: $115,000 - $150,000
-- Seattle: $120,000 - $155,000
-- Los Angeles: $110,000 - $145,000
-- Austin: $90,000 - $120,000
-- Remote: $85,000 - $115,000
-
-**Senior Level (5+ years):**
-
-- San Francisco: $170,000 - $250,000
-- New York: $150,000 - $220,000
-- Seattle: $155,000 - $225,000
-- Los Angeles: $145,000 - $210,000
-- Austin: $120,000 - $170,000
-- Remote: $115,000 - $165,000
-
-### Europe
-
-**Entry Level (0-2 years):**
-
-- London: £35,000 - £45,000
-- Berlin: €40,000 - €50,000
-- Amsterdam: €35,000 - €45,000
-- Remote: €30,000 - €40,000
-
-**Mid Level (2-5 years):**
-
-- London: £50,000 - £70,000
-- Berlin: €55,000 - €70,000
-- Amsterdam: €50,000 - €65,000
-- Remote: €45,000 - €60,000
-
-**Senior Level (5+ years):**
-
-- London: £70,000 - £100,000
-- Berlin: €70,000 - €90,000
-- Amsterdam: €65,000 - €85,000
-- Remote: €60,000 - €80,000
+Location still matters a great deal for compensation in this field — major US tech hubs (San Francisco, Seattle, New York) and similarly Western European hubs (London, Berlin, Amsterdam) generally pay more than smaller markets, and fully remote roles often land somewhere in between, depending on the company's pay philosophy. Rather than repeat specific figures that would be stale within a year, use [levels.fyi](https://www.levels.fyi/) (filterable by role, company, and location) to see current, crowd-sourced compensation data before you negotiate or evaluate an offer.
 
 ## Essential Skills for QA Careers
 
@@ -615,7 +563,7 @@ Remember: your career is a journey, not a destination. Stay curious, keep learni
 
 ## Further Reading
 
-- [Industry Practices](INDUSTRY_PRACTICES.md) - How companies approach QA
+- [Case Studies](CASE_STUDIES.md) - Real incidents and what's genuinely documented about industry practice
 - [Case Studies](CASE_STUDIES.md) - Real-world QA success stories
 - [Tool Comparison](TOOL_COMPARISON.md) - Choosing the right tools
 - [Testing Philosophy](../concepts/TESTING_PHILOSOPHY.md) - The mindset behind QA

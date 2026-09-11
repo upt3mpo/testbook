@@ -1,9 +1,9 @@
-# 🧪 Lab 7: Playwright Deep Dive (JavaScript)
+# 🧪 Lab 11: Cross-Browser Testing (JavaScript)
 
 **Estimated Time:** 90 minutes<br>
 **Difficulty:** Advanced<br>
 **Language:** 🟨 JavaScript<br>
-**Prerequisites:** Lab 4B completed
+**Prerequisites:** Lab 10 completed
 
 **💡 Need Python instead?** Try [Lab 11: Cross Browser Testing (Python)](LAB_11_Cross_Browser_Testing_Python.md)!
 
@@ -17,6 +17,7 @@
 - **Codegen** - Generate tests by recording user actions
 - **Screenshot/Video** - Visual verification and debugging
 - **Network HAR files** - Analyze network requests
+- **Cross-browser projects** - Run the same spec against Chromium, Firefox, and WebKit
 - **Parallel execution** - Speed up test runs
 - **CI/CD integration** - Run tests in GitHub Actions
 - **Visual comparisons** - Detect UI changes
@@ -148,7 +149,7 @@ test("test", async ({ page }) => {
   await page.getByRole("link", { name: "Login" }).click();
   await page.getByPlaceholder("Email").fill("test@test.com");
   await page.getByPlaceholder("Password").fill("password");
-  await page.getByRole("button", { name: "Login" }).click();
+  await page.getByRole("button", { name: "Log In" }).click();
   await page.getByPlaceholder("What's on your mind?").fill("My first post!");
   await page.getByRole("button", { name: "Post" }).click();
   await page.getByRole("link", { name: "Profile" }).click();
@@ -170,7 +171,7 @@ test("should login and create post", async ({ page }) => {
   // Login
   await page.getByPlaceholder("Email").fill("sarah.johnson@testbook.com");
   await page.getByPlaceholder("Password").fill("Sarah2024!");
-  await page.getByRole("button", { name: "Login" }).click();
+  await page.getByRole("button", { name: "Log In" }).click();
 
   // Wait for navigation
   await page.waitForURL("http://localhost:3000/");
@@ -373,9 +374,98 @@ npx playwright show-trace test-results/network.har
 
 ---
 
-### Part 5: Parallel Execution & Performance (10 minutes)
+### Part 5: Cross-Browser & Mobile Viewport Testing (15 minutes)
+
+**This is the part that gives the lab its name.** Everything above (trace, codegen, screenshots, network) works the same regardless of browser engine - cross-browser testing is about actually running your suite against more than one engine.
+
+`tests/playwright.config.js` already defines a `projects` array, but only the `chromium` project is active - the `firefox`, `webkit`, and `Mobile Chrome` entries are commented out on purpose (the lab keeps things fast and simple by default):
+
+```javascript
+// tests/playwright.config.js (excerpt - already in the repo)
+projects: [
+  {
+    name: "chromium",
+    use: { ...devices["Desktop Chrome"] },
+  },
+
+  // Additional browsers available but not run by default
+  // Uncomment to enable cross-browser testing:
+  // {
+  //   name: 'firefox',
+  //   use: { ...devices['Desktop Firefox'] },
+  // },
+  // {
+  //   name: 'webkit',
+  //   use: { ...devices['Desktop Safari'] },
+  // },
+  // {
+  //   name: 'Mobile Chrome',
+  //   use: { ...devices['Pixel 5'] },
+  // },
+],
+```
+
+#### Step 1: Run the Same Test Against All Three Engines
+
+Uncomment the `firefox` and `webkit` blocks above, install the extra engines, then target each project from the CLI:
+
+```bash
+cd tests
+npx playwright install firefox webkit
+
+# Run against a single engine
+npx playwright test auth.spec.js --project=firefox
+npx playwright test auth.spec.js --project=webkit
+
+# Run against all active projects at once
+npx playwright test auth.spec.js --project=chromium --project=firefox --project=webkit
+```
+
+Each engine renders and handles events slightly differently - a selector or timing assumption that passes on Chromium can still fail on WebKit, which is exactly what cross-browser testing is meant to catch.
+
+#### Step 2: Mobile Viewport Testing
+
+Uncomment the `Mobile Chrome` project (it uses Playwright's built-in `devices['Pixel 5']` preset, which sets viewport size, user agent, and touch support together) and run against it directly:
+
+```bash
+npx playwright test auth.spec.js --project="Mobile Chrome"
+```
+
+You can also configure a mobile-sized context by hand in a single test, without touching the shared config:
+
+```javascript
+import { test, expect } from "@playwright/test";
+
+test("navbar renders correctly on a mobile viewport", async ({ browser }) => {
+  const context = await browser.newContext({
+    viewport: { width: 375, height: 812 }, // iPhone-ish size
+    isMobile: true,
+    hasTouch: true,
+  });
+  const page = await context.newPage();
+  await page.goto("http://localhost:3000");
+
+  await expect(page.locator('[data-testid="navbar"]')).toBeVisible();
+
+  await context.close();
+});
+```
+
+✅ **Checkpoint:** You can run the same spec against Chromium, Firefox, and WebKit, and against a mobile viewport
+
+---
+
+### Part 6: Parallel Execution & Performance (10 minutes)
 
 **Speed up test runs** with parallel execution and optimization.
+
+**⚠️ Note:** Testbook's own `tests/playwright.config.js` intentionally sets
+`workers: 1` and `fullyParallel: false`, because the E2E suite resets the
+shared database between tests - running it with `workers: 4` /
+`fullyParallel: true` as shown below would make tests interfere with each
+other and fail intermittently. The settings below are a general pattern for
+suites whose tests are independent, not a change you should make to
+Testbook's actual config.
 
 #### Step 1: Configure Parallel Execution
 
@@ -450,7 +540,7 @@ npx playwright test --reporter=html
 
 ---
 
-### Part 6: CI/CD Integration (15 minutes)
+### Part 7: CI/CD Integration (15 minutes)
 
 **Run Playwright tests in GitHub Actions** for continuous integration.
 
@@ -477,16 +567,19 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 18
+          # Testbook targets Node 24 (see .nvmrc / other workflows in .github/workflows/)
+          node-version: 24
 
-      - name: Install dependencies
+      - name: Install frontend dependencies
         run: |
           cd frontend
           npm ci
 
-      - name: Install Playwright Browsers
+      - name: Install E2E test dependencies
         run: |
-          cd frontend
+          # Playwright config and specs live under tests/, not frontend/
+          cd tests
+          npm ci
           npx playwright install --with-deps
 
       - name: Start Testbook
@@ -494,15 +587,11 @@ jobs:
           # Start backend
           cd backend
           python -m venv .venv
-          # Linux/Mac
           source .venv/bin/activate
           pip install -r requirements.txt
-          uvicorn main:app --host 0.0.0.0 --port 8000 &
-
-          # Windows (PowerShell)
-          .venv\Scripts\activate
-          pip install -r requirements.txt
-          Start-Process -NoNewWindow pwsh -ArgumentList "-Command", "uvicorn main:app --host 0.0.0.0 --port 8000"
+          # TESTING=true is required: it enables the /api/dev/reset endpoint
+          # and the relaxed rate limits that the E2E suite depends on.
+          TESTING=true uvicorn main:app --host 0.0.0.0 --port 8000 &
 
           # Start frontend
           cd ../frontend
@@ -514,15 +603,15 @@ jobs:
 
       - name: Run Playwright tests
         run: |
-          cd frontend
-          npx playwright test
+          cd tests
+          npx playwright test --project=chromium
 
       - name: Upload test results
         uses: actions/upload-artifact@v4
         if: always()
         with:
           name: playwright-report
-          path: frontend/playwright-report/
+          path: tests/playwright-report/
           retention-days: 30
 ```
 
@@ -572,6 +661,7 @@ docker run --rm -it -v $(pwd):/workspace -w /workspace mcr.microsoft.com/playwri
 - ✅ **Codegen** - Generate tests by recording user actions
 - ✅ **Screenshots/Videos** - Visual debugging and verification
 - ✅ **Network Analysis** - Understand API interactions
+- ✅ **Cross-Browser & Mobile Testing** - Run the same spec against Chromium, Firefox, WebKit, and a mobile viewport
 - ✅ **Parallel Execution** - Speed up test runs
 - ✅ **CI/CD Integration** - Run tests in GitHub Actions
 - ✅ **Performance Optimization** - Make tests run faster
@@ -653,6 +743,8 @@ export default defineConfig({
 - [ ] Generated tests using codegen
 - [ ] Captured screenshots and videos
 - [ ] Analyzed network requests
+- [ ] Ran the same test against Chromium, Firefox, and WebKit
+- [ ] Tested a mobile viewport
 - [ ] Configured parallel execution
 - [ ] Set up CI/CD integration
 - [ ] Optimized test performance
@@ -680,4 +772,4 @@ export default defineConfig({
 
 **🎉 Congratulations!** You've mastered Playwright's advanced features and are ready for production E2E testing!
 
-**Next Lab:** [Lab 6: Testing with Rate Limits (JavaScript)](LAB_06_Testing_With_Rate_Limits_JavaScript.md)
+**Next Lab:** [Lab 12: E2E Test Organization (JavaScript)](LAB_12_E2E_Test_Organization_JavaScript.md)

@@ -30,6 +30,18 @@ if not exist "backend\static\images\default-avatar.jpg" (
     echo.
 )
 
+REM docker-compose.yml bind-mounts backend\testbook.db into the container so
+REM data survives a restart. On a fresh clone that file doesn't exist yet -
+REM and Docker's behavior for a missing bind-mount *file* source is to
+REM create an empty *directory* there instead, which then makes the app
+REM crash trying to open a directory as a SQLite database. Creating the
+REM file first avoids that; the app's own startup seeds it if it's empty.
+if not exist "backend\testbook.db" (
+    echo 🗄️  Creating database file...
+    type nul > backend\testbook.db
+    echo.
+)
+
 REM Build and start containers
 echo 🔨 Building Docker containers...
 %COMPOSE_CMD% up --build -d

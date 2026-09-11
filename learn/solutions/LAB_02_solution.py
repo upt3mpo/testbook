@@ -4,11 +4,29 @@ Lab 2 Solution: Testing Real Functions
 Complete solutions for password hashing and JWT token testing.
 """
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 import pytest
 
-from auth import create_access_token, decode_token, get_password_hash, verify_password
+from jose import jwt
+
+from auth import (
+    ALGORITHM,
+    SECRET_KEY,
+    create_access_token,
+    get_password_hash,
+    verify_password,
+)
+
+
+def decode_token(token):
+    """Decode a JWT the same way auth.py's get_current_user() does.
+
+    auth.py has no standalone `decode_token` helper - it decodes inline
+    inside get_current_user() - so tests that need the raw payload do the
+    same jose.jwt.decode() call directly.
+    """
+    return jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
 
 
 @pytest.mark.unit
@@ -135,21 +153,31 @@ class TestJWTTokens:
 
         # Expiration should be in the future
         exp_timestamp = payload["exp"]
-        now_timestamp = datetime.utcnow().timestamp()
+        now_timestamp = datetime.now(timezone.utc).timestamp()
         assert exp_timestamp > now_timestamp
 
-    def test_token_expires_in_30_minutes(self):
-        """Test that token expires in 30 minutes (default)."""
+    def test_token_expires_in_24_hours_by_default(self):
+        """Test that a token created with no expires_delta uses the default.
+
+        Note: auth.py's default is ACCESS_TOKEN_EXPIRE_MINUTES, which is
+        60 * 24 = 1440 minutes (24 hours) unless overridden by the
+        ACCESS_TOKEN_EXPIRE_MINUTES environment variable - not 30 minutes.
+
+        Also note: auth.py builds `exp` from datetime.now(timezone.utc), so
+        we must decode and compare using timezone-aware UTC datetimes too -
+        mixing an aware exp with a naive datetime.utcnow() would silently
+        pick up the machine's local UTC offset and give a bogus diff.
+        """
         data = {"sub": "test@example.com"}
         token = create_access_token(data=data)
 
         payload = decode_token(token)
-        exp_time = datetime.fromtimestamp(payload["exp"])
-        now = datetime.utcnow()
+        exp_time = datetime.fromtimestamp(payload["exp"], tz=timezone.utc)
+        now = datetime.now(timezone.utc)
 
-        # Should expire in about 30 minutes
+        # Should expire in about 24 hours (1440 minutes)
         diff = exp_time - now
-        assert 29 < diff.total_seconds() / 60 < 31
+        assert 1439 < diff.total_seconds() / 60 < 1441
 
     def test_create_token_with_custom_expiration(self):
         """Test creating token with custom expiration."""
@@ -158,8 +186,8 @@ class TestJWTTokens:
         token = create_access_token(data=data, expires_delta=timedelta(minutes=60))
 
         payload = decode_token(token)
-        exp_time = datetime.fromtimestamp(payload["exp"])
-        now = datetime.utcnow()
+        exp_time = datetime.fromtimestamp(payload["exp"], tz=timezone.utc)
+        now = datetime.now(timezone.utc)
 
         # Should expire in about 60 minutes
         diff = exp_time - now

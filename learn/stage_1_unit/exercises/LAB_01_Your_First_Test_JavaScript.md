@@ -154,7 +154,7 @@ Duration  42ms
 
 ### Step 5: Make a Test Fail (On Purpose!) (5 minutes)
 
-**Change line 6 to:**
+**Find the `expect` line inside the "should add 2 + 2 equals 4" test and change it to:**
 
 ```javascript
 expect(result).toBe(5); // Wrong answer!

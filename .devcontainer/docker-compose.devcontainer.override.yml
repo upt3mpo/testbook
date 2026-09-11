@@ -2,8 +2,18 @@ services:
   testbook:
     platform: linux/amd64
     build:
-      context: ..
-      dockerfile: testbook/.devcontainer/Dockerfile.dev
+      # Compose resolves relative paths in a multi-file merge relative to
+      # the FIRST file listed in devcontainer.json's dockerComposeFile
+      # (../docker-compose.yml, i.e. the repo root) - not relative to this
+      # override file's own directory. The old "context: .. / dockerfile:
+      # testbook/.devcontainer/Dockerfile.dev" only worked because this
+      # repo happened to be cloned into a folder literally named
+      # "testbook"; verified with `docker compose config` that it resolves
+      # to <parent-of-repo>/testbook/..., which breaks for a fork or any
+      # differently-named clone. `.` and `.devcontainer/Dockerfile.dev`
+      # both resolve correctly regardless of what the clone is named.
+      context: .
+      dockerfile: .devcontainer/Dockerfile.dev
       args:
         - DEBIAN_FRONTEND=noninteractive
     volumes:

@@ -491,7 +491,7 @@ class TestYourChallenge:
                 # Missing required fields!
             }
         )
-        assert response.status_code == 200
+        assert response.status_code == 201
 
     def test_challenge_2(self, test_post):
         """Challenge: Fix this attribute test."""
@@ -531,7 +531,8 @@ class TestYourChallenge:
                 "password": "Pass123!"
             }
         )
-        assert response.status_code == 200
+        # Register returns 201 Created on success, not 200
+        assert response.status_code == 201
 
     def test_challenge_2(self, test_post):
         """Challenge: Fix this attribute test."""
@@ -627,12 +628,12 @@ When you encounter a failing test:
 
 **Continue building your skills:**
 
-- **[Lab 5: API Endpoint Testing (Python)](LAB_05_API_Endpoint_Testing_Python.md)** - Write more complex tests
-- **[Lab 9: Basic E2E Testing (Python)](LAB_09_Basic_E2E_Testing_Python.md)** - Debug browser tests
-- **[DEBUGGING_GUIDE.md](../docs/reference/DEBUGGING_GUIDE.md)** - Advanced debugging
+- **[Lab 5: API Endpoint Testing (Python)](../../stage_2_integration/exercises/LAB_05_API_Endpoint_Testing_Python.md)** - Write more complex tests
+- **[Lab 9: Basic E2E Testing (Python)](../../stage_3_api_e2e/exercises/LAB_09_Basic_E2E_Testing_Python.md)** - Debug browser tests
+- **[DEBUGGING_GUIDE.md](../../../docs/reference/DEBUGGING_GUIDE.md)** - Advanced debugging
 
 ---
 
 **🎉 Congratulations!** You're now a debugging expert. These skills will serve you throughout your entire testing career!
 
-**Next Lab:** [Lab 5: API Endpoint Testing (Python)](LAB_05_API_Endpoint_Testing_Python.md)
+**Next Lab:** [Lab 5: API Endpoint Testing (Python)](../../stage_2_integration/exercises/LAB_05_API_Endpoint_Testing_Python.md)

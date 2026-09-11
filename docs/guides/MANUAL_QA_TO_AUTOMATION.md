@@ -26,7 +26,7 @@ Welcome! If you're a manual QA professional looking to add automation to your sk
 ```text
 1. Open browser
 2. Navigate to login page
-3. Enter username: "testuser"
+3. Enter email: "testuser@example.com"
 4. Enter password: "password123"
 5. Click "Login" button
 6. Verify you're redirected to home page
@@ -37,15 +37,15 @@ Welcome! If you're a manual QA professional looking to add automation to your sk
 
 ```python
 def test_login_success(client):
-    """Test successful login redirects to home"""
+    """Test successful login returns an access token"""
     response = client.post("/api/auth/login", json={
-        "username": "testuser",
+        "email": "testuser@example.com",
         "password": "password123"
     })
 
     assert response.status_code == 200
-    assert "token" in response.json()
-    assert response.json()["user"]["username"] == "testuser"
+    assert "access_token" in response.json()
+    assert response.json()["token_type"] == "bearer"
 ```
 
 ### Key Differences
@@ -100,24 +100,21 @@ Let's start with something you've tested manually hundreds of times: verifying a
 ```python
 # backend/tests/integration/test_api_users.py
 
-def test_get_user(client):
-    """Test retrieving a single user"""
-    # Arrange: Create a user
-    user = create_test_user(username="testuser")
-
-    # Act: Make the request
-    response = client.get(f"/api/users/{user.id}")
+def test_get_user_by_username(client, test_user, auth_headers):
+    """Test getting a user's profile by username"""
+    # Act: Make the request (users are looked up by username, not id)
+    response = client.get(f"/api/users/{test_user.username}", headers=auth_headers)
 
     # Assert: Verify the response
     assert response.status_code == 200
-    assert response.json()["username"] == "testuser"
+    assert response.json()["username"] == test_user.username
 ```
 
 **Run it:**
 
 ```bash
 cd backend
-pytest tests/integration/test_api_users.py::test_get_user -v
+pytest tests/integration/test_api_users.py::TestGetUserProfile::test_get_user_by_username -v
 ```
 
 ### Understanding the Pattern
@@ -130,7 +127,7 @@ def test_something():
     user = create_user("testuser")
 
     # 2. ACT: Perform the action being tested
-    response = client.post("/api/posts", json={"content": "Hello"})
+    response = client.post("/api/posts/", json={"content": "Hello"})
 
     # 3. ASSERT: Verify the expected outcome
     assert response.status_code == 201
@@ -159,7 +156,7 @@ This is called **AAA pattern** (Arrange, Act, Assert).
 def test_create_post(client, authenticated_user):
     """Test creating a post"""
     response = client.post(
-        "/api/posts",
+        "/api/posts/",
         json={"content": "My first automated test!"},
         headers={"Authorization": f"Bearer {authenticated_user['token']}"}
     )
@@ -168,7 +165,7 @@ def test_create_post(client, authenticated_user):
     assert response.json()["content"] == "My first automated test!"
 ```
 
-**Your lab:** `LAB_03_Testing_API_Endpoints.md`
+**Your lab:** `learn/stage_2_integration/exercises/LAB_05_API_Endpoint_Testing_Python.md`
 
 ---
 
@@ -201,7 +198,7 @@ test("Login form submits with valid credentials", async () => {
 });
 ```
 
-**Your lab:** `frontend/README.md` (Component Testing section)
+**Your lab:** `learn/stage_2_integration/exercises/LAB_06_Component_Testing_JavaScript.md` (also see `frontend/README.md`'s "Component Testing vs E2E Testing" section)
 
 ---
 
@@ -220,9 +217,9 @@ test("Login form submits with valid credentials", async () => {
 test("User can create a post", async ({ page }) => {
   // Login
   await page.goto("http://localhost:3000/login");
-  await page.fill('[name="username"]', "testuser");
-  await page.fill('[name="password"]', "password123");
-  await page.click('button:has-text("Log In")');
+  await page.fill('[data-testid="login-email-input"]', "testuser@example.com");
+  await page.fill('[data-testid="login-password-input"]', "password123");
+  await page.click('[data-testid="login-submit-button"]');
 
   // Create post
   await page.fill(
@@ -236,7 +233,7 @@ test("User can create a post", async ({ page }) => {
 });
 ```
 
-**Your lab:** `LAB_04_E2E_Testing_JavaScript.md`
+**Your lab:** `learn/stage_3_api_e2e/exercises/LAB_09_Basic_E2E_Testing_JavaScript.md`
 
 ---
 
@@ -253,13 +250,13 @@ Test Case: Successful Login
 Prerequisites: User exists in database
 Steps:
   1. Navigate to /login
-  2. Enter username: "sarah.johnson@testbook.com"
+  2. Enter email: "sarah.johnson@testbook.com"
   3. Enter password: "Sarah2024!"
-  4. Click "Login" button
+  4. Click "Log In" button
 Expected Result:
-  - User is redirected to home page
-  - Username appears in navigation bar
-  - Welcome message is displayed
+  - User is redirected to the feed page
+  - Display name appears in navigation bar
+  - Feed content is displayed
 ```
 
 **Automated (E2E):**
@@ -268,18 +265,18 @@ Expected Result:
 test("Successful login redirects to home", async ({ page }) => {
   await page.goto("http://localhost:3000/login");
 
-  await page.fill('[name="email"]', "sarah.johnson@testbook.com");
-  await page.fill('[name="password"]', "Sarah2024!");
-  await page.click('button:has-text("Login")');
+  await page.fill('[data-testid="login-email-input"]', "sarah.johnson@testbook.com");
+  await page.fill('[data-testid="login-password-input"]', "Sarah2024!");
+  await page.click('[data-testid="login-submit-button"]');
 
-  // Verify redirection
-  await expect(page).toHaveURL(/.*\/home/);
+  // Verify redirection to the feed (root route)
+  await expect(page).toHaveURL("http://localhost:3000/");
 
   // Verify username in nav
-  await expect(page.locator("nav")).toContainText("Sarah Johnson");
+  await expect(page.locator('[data-testid="navbar-username"]')).toContainText("Sarah Johnson");
 
-  // Verify welcome message
-  await expect(page.locator("h1")).toContainText("Welcome");
+  // Verify feed loaded
+  await expect(page.locator('[data-testid="feed-page"]')).toBeVisible();
 });
 ```
 
@@ -293,7 +290,7 @@ Steps:
   1. Navigate to /register
   2. Enter email: "invalid-email"
   3. Enter password: "Test123!"
-  4. Click "Register"
+  4. Click "Sign Up"
 Expected Result:
   - Error message: "Please enter a valid email"
   - Form is not submitted
@@ -308,7 +305,8 @@ def test_register_invalid_email(client):
     response = client.post("/api/auth/register", json={
         "email": "invalid-email",
         "password": "Test123!",
-        "username": "testuser"
+        "username": "testuser",
+        "display_name": "Test User"
     })
 
     assert response.status_code == 422  # Validation error
@@ -321,12 +319,15 @@ def test_register_invalid_email(client):
 test("Registration fails with invalid email", async ({ page }) => {
   await page.goto("http://localhost:3000/register");
 
+  // username and display_name are also required fields on this form
+  await page.fill('[name="username"]', "testuser");
+  await page.fill('[name="display_name"]', "Test User");
   await page.fill('[name="email"]', "invalid-email");
   await page.fill('[name="password"]', "Test123!");
-  await page.click('button:has-text("Register")');
+  await page.click('[data-testid="register-submit-button"]'); // button text is "Sign Up"
 
   // Verify error message
-  await expect(page.locator(".error")).toContainText("valid email");
+  await expect(page.locator('[data-testid="register-error"]')).toContainText("valid email");
 
   // Verify still on registration page
   await expect(page).toHaveURL(/.*\/register/);
@@ -349,7 +350,8 @@ test("Registration fails with invalid email", async ({ page }) => {
 
 **Month 2: API Testing**
 
-- [ ] Complete LAB_03 (Testing API Endpoints)
+- [ ] Complete LAB_03 (Fixtures and Test Data)
+- [ ] Complete LAB_05 (API Endpoint Testing)
 - [ ] Write 10 API tests
 - [ ] Learn about fixtures and setup
 - [ ] Understand test data management
@@ -357,7 +359,7 @@ test("Registration fails with invalid email", async ({ page }) => {
 
 **Month 3: E2E Testing**
 
-- [ ] Complete LAB_04 (E2E Testing)
+- [ ] Complete LAB_09 (Basic E2E Testing)
 - [ ] Automate 5 critical user flows
 - [ ] Learn browser automation
 - [ ] Handle waits and timeouts
@@ -365,8 +367,8 @@ test("Registration fails with invalid email", async ({ page }) => {
 
 **Month 4: Advanced Topics**
 
-- [ ] Complete LAB_05 (Test Data Management)
-- [ ] Complete LAB_06 (Rate Limiting)
+- [ ] Complete LAB_07 (Test Data Management)
+- [ ] Complete LAB_15 (Rate Limiting in Production)
 - [ ] Learn performance testing
 - [ ] Practice security testing
 - [ ] Build test framework
@@ -484,8 +486,8 @@ npx playwright test --workers=4
 
 ```bash
 # Only test what changed
-pytest --lf  # Last failed
-pytest --testmon  # Test related to code changes
+pytest --lf  # Last failed (built into pytest, no extra install needed)
+pytest --testmon  # Test related to code changes (requires `pip install pytest-testmon`, not bundled with Testbook)
 ```
 
 - **Use test tags**
@@ -590,17 +592,17 @@ pytest -m smoke
 
 1. **LAB_01**: Your First Test - Introduction to testing
 2. **LAB_02**: Testing Real Functions - Unit testing
-3. **LAB_03**: Testing API Endpoints - API testing
-4. **LAB_04**: E2E Testing - Browser automation
-5. **LAB_05**: Test Data Management - Fixtures and factories
-6. **LAB_06**: Testing With Rate Limits - Real-world scenarios
+3. **LAB_03**: Fixtures and Test Data - Reusable test setup
+4. **LAB_05**: API Endpoint Testing - API testing
+5. **LAB_07**: Test Data Management - Fixtures and factories
+6. **LAB_09**: Basic E2E Testing - Browser automation
+7. **LAB_15**: Rate Limiting in Production - Real-world scenarios
 
 ### External Resources
 
 **Courses:**
 
 - [Test Automation University](https://testautomationu.applitools.com/) (Free)
-- [Udemy: Python for Testers](https://www.udemy.com/topic/python-for-testers/)
 - [Playwright Documentation](https://playwright.dev/docs/intro)
 
 **Books:**

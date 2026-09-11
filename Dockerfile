@@ -1,6 +1,6 @@
 # Multi-stage build for Testbook
 # Stage 1: Build frontend
-FROM node:20-alpine AS frontend-build
+FROM node:24-alpine AS frontend-build
 ENV CI=1
 
 WORKDIR /app/frontend
@@ -10,7 +10,7 @@ COPY frontend/ ./
 RUN npm run build
 
 # Stage 2: Final image with backend and frontend
-FROM python:3.11-slim-bookworm
+FROM python:3.13-slim-bookworm
 
 # Speed up Python and keep images small
 ENV PIP_NO_CACHE_DIR=1 \
@@ -29,12 +29,12 @@ WORKDIR /app
 # Install uv for faster package installation
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
 
-# Copy dependency files for reproducible builds
-COPY pyproject.toml uv.lock ./
+# Copy the backend dependency manifest for a reproducible, cacheable install
+COPY backend/requirements.txt ./requirements.txt
 
-# Install dependencies using uv sync (faster and uses lockfile)
+# Create the venv and install dependencies (uv pip is a fast pip-compatible installer)
 RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --frozen --no-dev --no-install-project
+    uv venv .venv && uv pip install -r requirements.txt
 
 # Copy backend code
 COPY backend/ ./

@@ -7,7 +7,7 @@ End-to-end tests for Testbook using Playwright.
 ### Prerequisites
 
 ```bash
-# Install Node.js 18+ if not already installed
+# Install Node.js 24 if not already installed (package.json requires >=24 <25)
 
 # Install dependencies
 cd tests

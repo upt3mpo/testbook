@@ -72,6 +72,8 @@ sudo dnf install k6
 k6 version
 ```
 
+> **⚠️ Backend prerequisite:** The scripts below hit a live Testbook backend on `localhost:8000`. Start it with `TESTING=true uvicorn main:app --reload --port 8000` (from `backend/`) rather than a plain `./start-dev.sh`. Without `TESTING=true`, `/api/auth/login` is rate-limited to 20 requests/minute per IP and `/api/auth/register` to 15/minute (see `backend/routers/auth.py`), so any scenario here that ramps past a handful of virtual users will get rejected with `429`s instead of measuring real performance. See [`../../../docs/guides/PLAYWRIGHT_QUICKSTART.md`](../../../docs/guides/PLAYWRIGHT_QUICKSTART.md) for the full explanation of `TESTING=true`.
+
 #### Step 2: Create Your First Load Test
 
 Create `tests/performance/load-test-basic.js`:
@@ -208,7 +210,7 @@ export default function () {
     if (loginSuccess) {
       // Test authenticated endpoint
       let token = JSON.parse(loginResponse.body).access_token;
-      let profileResponse = http.get("http://localhost:8000/api/users/me", {
+      let profileResponse = http.get("http://localhost:8000/api/auth/me", {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -290,15 +292,15 @@ export default function () {
       "Content-Type": "application/json",
     };
 
-    // Test creating a post
+    // Test creating a post (Testbook's PostCreate schema only has content,
+    // image_url, video_url - there's no title field)
     let postPayload = JSON.stringify({
-      title: `Load Test Post ${__VU}-${__ITER}`,
-      content: `This is a load test post created by virtual user ${__VU} at iteration ${__ITER}`,
+      content: `Load Test Post ${__VU}-${__ITER}: This is a load test post created by virtual user ${__VU} at iteration ${__ITER}`,
     });
 
     let startTime = Date.now();
     let postResponse = http.post(
-      "http://localhost:8000/api/posts",
+      "http://localhost:8000/api/posts/",
       postPayload,
       { headers }
     );
@@ -316,14 +318,14 @@ export default function () {
     postCreationDuration.add(endTime - startTime);
 
     // Test fetching posts
-    let postsResponse = http.get("http://localhost:8000/api/feed", { headers });
+    let postsResponse = http.get("http://localhost:8000/api/feed/all", { headers });
     check(postsResponse, {
       "posts fetch status is 200": (r) => r.status === 200,
       "posts fetch response time < 1000ms": (r) => r.timings.duration < 1000,
     });
 
     // Test fetching user profile
-    let profileResponse = http.get("http://localhost:8000/api/users/me", {
+    let profileResponse = http.get("http://localhost:8000/api/auth/me", {
       headers,
     });
     check(profileResponse, {
@@ -430,13 +432,12 @@ export default function () {
       Authorization: `Bearer ${token}`,
     };
 
-    // Test 4: Create post
+    // Test 4: Create post (only content is a real field on PostCreate)
     let postPayload = JSON.stringify({
-      title: `Load Test Post ${__VU}-${__ITER}`,
-      content: `This is a comprehensive load test post created by VU ${__VU} at iteration ${__ITER}. The content is designed to test the system under various load conditions.`,
+      content: `Load Test Post ${__VU}-${__ITER}: This is a comprehensive load test post created by VU ${__VU} at iteration ${__ITER}. The content is designed to test the system under various load conditions.`,
     });
 
-    let postResponse = http.post(`${baseUrl}/posts`, postPayload, {
+    let postResponse = http.post(`${baseUrl}/posts/`, postPayload, {
       headers: authHeaders,
     });
     let postSuccess = check(postResponse, {
@@ -452,14 +453,14 @@ export default function () {
     }
 
     // Test 5: Fetch posts
-    let postsResponse = http.get(`${baseUrl}/feed`, { headers: authHeaders });
+    let postsResponse = http.get(`${baseUrl}/feed/all`, { headers: authHeaders });
     check(postsResponse, {
       "posts fetch status is 200": (r) => r.status === 200,
       "posts fetch response time < 1500ms": (r) => r.timings.duration < 1500,
     });
 
     // Test 6: Fetch user profile
-    let profileResponse = http.get(`${baseUrl}/users/me`, {
+    let profileResponse = http.get(`${baseUrl}/auth/me`, {
       headers: authHeaders,
     });
     check(profileResponse, {
@@ -578,15 +579,14 @@ export default function () {
       Authorization: `Bearer ${token}`,
     };
 
-    // Create post
+    // Create post (only content is a real field on PostCreate)
     let postPayload = JSON.stringify({
-      title: `Scenario Test Post ${__VU}-${__ITER}`,
-      content: `This is a scenario test post for ${
+      content: `Scenario Test Post ${__VU}-${__ITER}: This is a scenario test post for ${
         __ENV.TEST_TYPE || "unknown"
       } scenario.`,
     });
 
-    let postResponse = http.post(`${baseUrl}/posts`, postPayload, {
+    let postResponse = http.post(`${baseUrl}/posts/`, postPayload, {
       headers: authHeaders,
     });
     check(postResponse, {
@@ -594,7 +594,7 @@ export default function () {
     });
 
     // Fetch posts
-    let postsResponse = http.get(`${baseUrl}/feed`, { headers: authHeaders });
+    let postsResponse = http.get(`${baseUrl}/feed/all`, { headers: authHeaders });
     check(postsResponse, {
       "posts fetch status is 200": (r) => r.status === 200,
     });
@@ -633,7 +633,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.11"
+          python-version: "3.13"
 
       - name: Install Python dependencies
         run: |
@@ -648,6 +648,8 @@ jobs:
           sudo apt-get install k6
 
       - name: Start backend server
+        env:
+          TESTING: "true" # Required: /auth/register and /auth/login are rate-limited to 15/min and 20/min without this
         run: |
           cd backend
           python -m uvicorn main:app --host 0.0.0.0 --port 8000 &
@@ -872,9 +874,9 @@ export default function () {
 
 **Continue building your skills:**
 
-- **[Lab 14: Security Testing & OWASP (Python)](LAB_14_Security_Testing_OWASP_Python.md)** - Security testing
-- **[Lab 15: Rate Limiting & Production Monitoring (Python)](LAB_15_Rate_Limiting_Production_Python.md)** - Production readiness
-- **[Lab 16: Complete Test Suite Design (Python)](LAB_16_Complete_Test_Suite_Design_Python.md)** - Test strategy
+- **[Lab 14: Security Testing & OWASP (Python)](LAB_14_Security_Testing_OWASP_Python.md)** / **[(JavaScript)](LAB_14_Security_Testing_OWASP_JavaScript.md)** - Security testing
+- **[Lab 15: Rate Limiting & Production Monitoring (Python)](LAB_15_Rate_Limiting_Production_Python.md)** / **[(JavaScript)](LAB_15_Rate_Limiting_Production_JavaScript.md)** - Production readiness
+- **[Stage 5: Capstone](../../stage_5_capstone/README.md)** - Apply everything in a project of your own
 
 ---
 

@@ -71,7 +71,7 @@ Document your learning about non-functional testing.
 **From running k6 tests, my results:**
 
 | Metric | Smoke Test | Load Test | Stress Test |
-|--------|------------|-----------|-------------|
+| -------- | ------------ | ----------- | ------------- |
 | Avg response time | | | |
 | p95 response time | | | |
 | Error rate | | | |
@@ -111,4 +111,13 @@ Document your learning about non-functional testing.
 
 ---
 
-*Performance and security testing differentiate senior QA engineers from juniors! 💪*
+## Interview Prep
+
+1. **"Walk me through the difference between load testing and stress testing."** Load testing verifies the system handles *expected* traffic correctly; stress testing deliberately pushes past that to find where and how it actually breaks. Different goals, different thresholds — mixing them up in an interview answer is a common tell that you've only skimmed the topic.
+2. **"How would you decide what performance thresholds to set for a new endpoint?"** There's no universal number — it depends on the actual user expectation for that action (a search should feel instant, a report generation can tolerate seconds) and your team's SLA. Reference that even this repo's own thresholds are explicitly a teaching default, not something to copy into a real production incident review.
+3. **"What's the difference between testing for a SQL injection vulnerability and testing that your dependencies don't have known CVEs?"** One is about your own code's input handling (an application-layer test); the other is about supply-chain risk in code you didn't write (a dependency-scanning concern, tools like `pip-audit`/`npm audit`/Dependabot, not something a hand-written test easily catches).
+4. **"Why does rate limiting sometimes cause your own tests to fail, and is that a bug?"** No — it's the rate limiter working. The real lesson is environment configuration: tests need a `TESTING` mode with relaxed limits, and a security suite that "fails" because production-strength rate limiting kicked in is evidence the feature works, not evidence of a broken test.
+
+---
+
+*Performance and security testing differentiate senior QA engineers from juniors!*

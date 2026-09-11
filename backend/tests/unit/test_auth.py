@@ -15,15 +15,20 @@ This file is referenced in Stage 1 learning materials as an example
 of professional unit testing practices.
 """
 
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
+from unittest.mock import MagicMock
 
 import pytest
+from fastapi import HTTPException
+from fastapi.security import HTTPAuthorizationCredentials
 from jose import JWTError, jwt
 
 from auth import (
+    ACCESS_TOKEN_EXPIRE_MINUTES,
     ALGORITHM,
     SECRET_KEY,
     create_access_token,
+    get_current_user,
     get_password_hash,
     verify_password,
 )
@@ -45,7 +50,7 @@ class TestPasswordHashing:
     - We ensure each hash is unique (salt prevents rainbow table attacks)
     """
 
-    def test_password_is_hashed(self):
+    def test_password_is_hashed(self) -> None:
         """
         Test that password hashing produces a different string.
 
@@ -89,11 +94,17 @@ class TestPasswordHashing:
         hashed = get_password_hash(password)
 
         # Assert - Verify the results
-        assert hashed != password  # Password is transformed, not stored plainly
-        assert len(hashed) > len(password)  # Hash is longer than original
-        assert hashed.startswith("$2b$")  # bcrypt hash format (industry standard)
+        assert (
+            hashed != password
+        ), "Password was stored unhashed - a critical security failure"
+        assert len(hashed) > len(
+            password
+        ), "bcrypt hashes carry salt and metadata, so they're always longer than the input"
+        assert hashed.startswith(
+            "$2b$"
+        ), f"Expected a bcrypt hash (starts with $2b$), got: {hashed[:10]}..."
 
-    def test_verify_correct_password(self):
+    def test_verify_correct_password(self) -> None:
         """
         Test that correct password verification succeeds.
 
@@ -111,7 +122,7 @@ class TestPasswordHashing:
         # Assert - Verification should succeed
         assert result is True
 
-    def test_verify_incorrect_password(self):
+    def test_verify_incorrect_password(self) -> None:
         """
         Test that incorrect password verification fails.
 
@@ -130,7 +141,7 @@ class TestPasswordHashing:
         # Assert - Verification should fail
         assert result is False
 
-    def test_different_hashes_for_same_password(self):
+    def test_different_hashes_for_same_password(self) -> None:
         """
         Test that same password produces different hashes (salt).
 
@@ -147,8 +158,12 @@ class TestPasswordHashing:
         hash2 = get_password_hash(password)
 
         # Assert - Different hashes due to random salt (security feature!)
-        assert hash1 != hash2  # Each hash is unique due to salt
-        assert verify_password(password, hash1) is True  # Both verify correctly
+        assert hash1 != hash2, (
+            "Hashing the same password twice produced identical hashes - "
+            "bcrypt's per-hash salt isn't taking effect, which would make "
+            "the app vulnerable to rainbow-table attacks"
+        )
+        assert verify_password(password, hash1) is True
         assert verify_password(password, hash2) is True
 
     @pytest.mark.parametrize(
@@ -160,7 +175,7 @@ class TestPasswordHashing:
             "a" * 100,  # Long password
         ],
     )
-    def test_various_password_formats(self, password):
+    def test_various_password_formats(self, password) -> None:
         """Test hashing works with various password formats."""
         hashed = get_password_hash(password)
         assert verify_password(password, hashed) is True
@@ -170,7 +185,7 @@ class TestPasswordHashing:
 class TestJWTTokens:
     """Test JWT token creation and validation."""
 
-    def test_create_token_with_email(self):
+    def test_create_token_with_email(self) -> None:
         """Test creating a token with email data."""
         email = "test@example.com"
         token = create_access_token(data={"sub": email})
@@ -179,7 +194,7 @@ class TestJWTTokens:
         assert isinstance(token, str)
         assert len(token) > 0
 
-    def test_token_contains_correct_data(self):
+    def test_token_contains_correct_data(self) -> None:
         """Test that token contains the correct payload data."""
         email = "test@example.com"
         token = create_access_token(data={"sub": email})
@@ -190,36 +205,37 @@ class TestJWTTokens:
         assert payload["sub"] == email
         assert "exp" in payload
 
-    def test_token_expiration_is_set(self):
-        """Test that token has expiration time."""
+    @pytest.mark.parametrize(
+        ("expires_delta", "expected_minutes"),
+        [
+            pytest.param(timedelta(minutes=30), 30, id="30_minutes"),
+            pytest.param(timedelta(hours=2), 120, id="2_hours"),
+        ],
+    )
+    def test_token_expiration_matches_requested_delta(
+        self, expires_delta, expected_minutes
+    ) -> None:
+        """A token's exp claim lands within a minute of now + the requested expires_delta, whether that's a short session or a long one.
+
+        Both cases exercise the same code path (create_access_token's
+        expires_delta handling) with only the duration changed, so a
+        second, third case beyond "short" and "long" wouldn't add
+        coverage a reader can't already infer from these two.
+        """
         email = "test@example.com"
-        expires_delta = timedelta(minutes=30)
         token = create_access_token(data={"sub": email}, expires_delta=expires_delta)
 
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        exp_timestamp = payload["exp"]
-        exp_datetime = datetime.fromtimestamp(exp_timestamp, tz=timezone.utc)
-        now = datetime.now(timezone.utc)
+        exp_datetime = datetime.fromtimestamp(payload["exp"], tz=UTC)
+        now = datetime.now(UTC)
 
-        # Token should expire approximately 30 minutes from now
-        time_diff = exp_datetime - now
-        assert 29 <= time_diff.total_seconds() / 60 <= 31
+        time_diff_minutes = (exp_datetime - now).total_seconds() / 60
+        assert expected_minutes - 1 <= time_diff_minutes <= expected_minutes + 1, (
+            f"Expected token to expire in ~{expected_minutes} minutes, "
+            f"got {time_diff_minutes:.1f}"
+        )
 
-    def test_token_with_custom_expiration(self):
-        """Test creating token with custom expiration time."""
-        email = "test@example.com"
-        custom_expiry = timedelta(hours=2)
-        token = create_access_token(data={"sub": email}, expires_delta=custom_expiry)
-
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        exp_timestamp = payload["exp"]
-        exp_datetime = datetime.fromtimestamp(exp_timestamp, tz=timezone.utc)
-        now = datetime.now(timezone.utc)
-
-        time_diff = exp_datetime - now
-        assert 119 <= time_diff.total_seconds() / 60 <= 121
-
-    def test_token_is_verifiable(self):
+    def test_token_is_verifiable(self) -> None:
         """Test that created token can be verified."""
         email = "test@example.com"
         token = create_access_token(data={"sub": email})
@@ -228,14 +244,14 @@ class TestJWTTokens:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         assert payload["sub"] == email
 
-    def test_invalid_token_raises_error(self):
+    def test_invalid_token_raises_error(self) -> None:
         """Test that invalid token raises JWTError."""
         invalid_token = "invalid.token.here"
 
         with pytest.raises(JWTError):
             jwt.decode(invalid_token, SECRET_KEY, algorithms=[ALGORITHM])
 
-    def test_token_with_wrong_secret_raises_error(self):
+    def test_token_with_wrong_secret_raises_error(self) -> None:
         """Test that token with wrong secret raises error."""
         email = "test@example.com"
         token = create_access_token(data={"sub": email})
@@ -243,7 +259,7 @@ class TestJWTTokens:
         with pytest.raises(JWTError):
             jwt.decode(token, "wrong-secret-key", algorithms=[ALGORITHM])
 
-    def test_expired_token_can_be_detected(self):
+    def test_expired_token_can_be_detected(self) -> None:
         """Test that expired tokens can be detected."""
         email = "test@example.com"
         # Create token that expires immediately
@@ -256,11 +272,55 @@ class TestJWTTokens:
 
 
 @pytest.mark.unit
+class TestGetCurrentUser:
+    """Test the get_current_user FastAPI dependency directly.
+
+    Added by a mutation-testing pass (see docs/advanced/ADVANCED_TOPICS.md's
+    Mutation Testing section for how these were found): before this class,
+    get_current_user and get_optional_user had zero unit-level coverage -
+    only integration tests exercised them, through a full FastAPI request.
+    That's real coverage, but it doesn't run as part of this file's fast
+    unit suite, so a mutant confined to tests/unit/test_auth.py (as a
+    mutation testing run typically is, for speed) survived undetected
+    inside this function's own logic, including one that inverted the
+    "user not found" check entirely (`if user is None` -> `if user is not
+    None`) - the kind of bug that would let requests with a valid token
+    for a deleted or nonexistent user through as authenticated, and reject
+    every legitimately authenticated request.
+    """
+
+    def test_returns_the_user_when_one_is_found(self) -> None:
+        email = "test@example.com"
+        token = create_access_token(data={"sub": email})
+        credentials = HTTPAuthorizationCredentials(scheme="Bearer", credentials=token)
+
+        found_user = MagicMock()
+        mock_db = MagicMock()
+        mock_db.query.return_value.filter.return_value.first.return_value = found_user
+
+        result = get_current_user(credentials=credentials, db=mock_db)
+
+        assert result is found_user
+
+    def test_raises_401_when_no_user_matches_the_token(self) -> None:
+        token = create_access_token(data={"sub": "nonexistent@example.com"})
+        credentials = HTTPAuthorizationCredentials(scheme="Bearer", credentials=token)
+
+        mock_db = MagicMock()
+        mock_db.query.return_value.filter.return_value.first.return_value = None
+
+        with pytest.raises(HTTPException) as exc_info:
+            get_current_user(credentials=credentials, db=mock_db)
+
+        assert exc_info.value.status_code == 401
+
+
+@pytest.mark.unit
 class TestPasswordComplexity:
     """Test password complexity requirements."""
 
     @pytest.mark.parametrize(
-        "password,should_hash",
+        ("password", "should_hash"),
         [
             ("Short1!", True),  # Short but valid
             ("a" * 1000, True),  # Very long
@@ -269,7 +329,9 @@ class TestPasswordComplexity:
             ("12345678", True),  # Only numbers
         ],
     )
-    def test_password_hashing_accepts_various_inputs(self, password, should_hash):
+    def test_password_hashing_accepts_various_inputs(
+        self, password, should_hash
+    ) -> None:
         """Test that password hashing accepts various inputs."""
         if should_hash:
             hashed = get_password_hash(password)
@@ -280,7 +342,7 @@ class TestPasswordComplexity:
 class TestTokenDataStructure:
     """Test token data structure and additional claims."""
 
-    def test_token_with_additional_claims(self):
+    def test_token_with_additional_claims(self) -> None:
         """Test creating token with additional custom claims."""
         data = {"sub": "test@example.com", "role": "admin", "user_id": 123}
         token = create_access_token(data=data)
@@ -291,21 +353,26 @@ class TestTokenDataStructure:
         assert payload["role"] == "admin"
         assert payload["user_id"] == 123
 
-    def test_token_without_expiration_delta(self):
-        """Test creating token with default expiration."""
+    def test_token_without_expiration_delta(self) -> None:
+        """Omitting expires_delta falls back to auth.ACCESS_TOKEN_EXPIRE_MINUTES, not some other default."""
         email = "test@example.com"
         token = create_access_token(data={"sub": email})
 
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-
-        # Should have default expiration
         assert "exp" in payload
-        exp_datetime = datetime.fromtimestamp(payload["exp"], tz=timezone.utc)
-        now = datetime.now(timezone.utc)
 
-        # Default is 15 minutes
-        time_diff = exp_datetime - now
-        assert time_diff.total_seconds() > 0  # Should be in future
+        exp_datetime = datetime.fromtimestamp(payload["exp"], tz=UTC)
+        now = datetime.now(UTC)
+        time_diff_minutes = (exp_datetime - now).total_seconds() / 60
+
+        assert (
+            ACCESS_TOKEN_EXPIRE_MINUTES - 1
+            <= time_diff_minutes
+            <= ACCESS_TOKEN_EXPIRE_MINUTES + 1
+        ), (
+            f"Expected the default expiration (~{ACCESS_TOKEN_EXPIRE_MINUTES} "
+            f"minutes), got {time_diff_minutes:.1f}"
+        )
 
 
 # 🧠 Why These Tests Matter:

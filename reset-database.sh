@@ -96,7 +96,7 @@ else
     cd backend
 
     # Activate virtual environment if it exists
-    if [ -d "venv" ]; then
+    if [ -d ".venv" ]; then
         echo "   🐍 Activating virtual environment..."
         source .venv/bin/activate
     else

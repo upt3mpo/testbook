@@ -1,6 +1,6 @@
 # 🧪 Lab 11: Cross-Browser Testing (Python)
 
-**Estimated Time:** 90 minutes<br>
+**Estimated Time:** 105 minutes<br>
 **Difficulty:** Advanced<br>
 **Language:** 🐍 Python<br>
 **Prerequisites:** Lab 10 completed
@@ -17,6 +17,7 @@
 - **Codegen** - Generate tests by recording user actions
 - **Screenshot/Video** - Visual verification and debugging
 - **Network HAR files** - Analyze network requests
+- **Cross-browser launching** - Run the same test against Chromium, Firefox, and WebKit
 - **Parallel execution** - Speed up test runs
 - **CI/CD integration** - Run tests in GitHub Actions
 - **Visual comparisons** - Detect UI changes
@@ -32,27 +33,28 @@
 
 #### Step 1: Enable Tracing
 
-**Create:** `playwright.config.py`
+**Note:** Unlike JavaScript Playwright Test, Python's `pytest-playwright` plugin
+has no `playwright.config.py` file - there's nothing in Python Playwright that
+reads a config file like that. Tracing is turned on with the `--tracing` CLI
+flag (or by adding it to `addopts` in `pytest.ini`):
 
-```python
-import pytest
-from playwright.sync_api import sync_playwright
-
-@pytest.fixture(scope="session")
-def playwright_config():
-    return {
-        "use": {
-            # Enable tracing for all tests
-            "trace": "on-first-retry",
-            # Or enable for specific tests
-            # "trace": "retain-on-failure",
-        },
-        # Retry failed tests once to capture trace
-        "retries": 1,
-        # Run tests in headed mode for better debugging
-        # "headless": False,
-    }
+```ini
+# tests/e2e-python/pytest.ini
+[pytest]
+addopts =
+    -v
+    --tb=short
+    --strict-markers
+    --tracing=retain-on-failure
 ```
+
+**Heads-up:** `tests/e2e-python/conftest.py` defines its own `browser`,
+`context`, and `page` fixtures (all hardcoded to Chromium), which take
+precedence over the ones `pytest-playwright` provides. That means flags like
+`--tracing`, `--screenshot`, and `--video` won't actually do anything here
+until those fixtures are updated to read the corresponding `pytestconfig`
+options and start/stop tracing themselves - keep that in mind as you work
+through this lab against the real Testbook fixtures.
 
 #### Step 2: Run Tests with Tracing
 
@@ -61,7 +63,7 @@ def playwright_config():
 pytest tests/e2e-python/test_auth.py -v --headed
 
 # Run with trace on failure
-pytest tests/e2e-python/ -v --trace on-first-retry
+pytest tests/e2e-python/ -v --tracing on-first-retry
 ```
 
 #### Step 3: View Trace Files
@@ -102,7 +104,7 @@ def test_should_demonstrate_trace_debugging(page: Page):
 **Run and debug:**
 
 ```bash
-pytest tests/e2e-python/test_trace_debug.py -v --trace on-first-retry
+pytest tests/e2e-python/test_trace_debug.py -v --tracing on-first-retry
 playwright show-trace test-results/trace.zip
 ```
 
@@ -150,7 +152,7 @@ def test_login_and_create_post(page: Page):
     page.get_by_role("link", name="Login").click()
     page.get_by_placeholder("Email").fill("test@test.com")
     page.get_by_placeholder("Password").fill("password")
-    page.get_by_role("button", name="Login").click()
+    page.get_by_role("button", name="Log In").click()
     page.get_by_placeholder("What's on your mind?").fill("My first post!")
     page.get_by_role("button", name="Post").click()
     page.get_by_role("link", name="Profile").click()
@@ -173,7 +175,7 @@ def test_should_login_and_create_post(page: Page):
     # Login
     page.get_by_placeholder("Email").fill("sarah.johnson@testbook.com")
     page.get_by_placeholder("Password").fill("Sarah2024!")
-    page.get_by_role("button", name="Login").click()
+    page.get_by_role("button", name="Log In").click()
 
     # Wait for navigation
     page.wait_for_url("http://localhost:3000/")
@@ -203,17 +205,20 @@ def test_should_login_and_create_post(page: Page):
 **Update `pytest.ini`:**
 
 ```ini
-[tool:pytest]
-playwright_config = {
-    "use": {
-        "screenshot": "only-on-failure",
-        "video": "retain-on-failure",
-    },
-    "expect": {
-        "to_have_screenshot": {"threshold": 0.2}
-    }
-}
+[pytest]
+addopts =
+    -v
+    --tb=short
+    --strict-markers
+    --screenshot=only-on-failure
+    --video=retain-on-failure
 ```
+
+(Remember the earlier caveat: since `tests/e2e-python/conftest.py` overrides the
+`browser`/`context`/`page` fixtures, `--screenshot` and `--video` won't take
+effect against the real Testbook suite unless those fixtures are updated to
+read them - the manual `page.screenshot()` calls below work regardless,
+since they don't depend on the plugin's automatic capture.)
 
 #### Step 2: Test Screenshot Capture
 
@@ -314,7 +319,7 @@ def test_should_analyze_network_requests(page: Page):
 
     # Create a post to see more API calls
     page.fill('[data-testid="create-post-textarea"]', "Network test post")
-    page.click('[data-testid="create-post-submit"]')
+    page.click('[data-testid="create-post-submit-button"]')
 
     page.wait_for_load_state("networkidle")
 ```
@@ -362,7 +367,95 @@ playwright show-trace test-results/network.har
 
 ---
 
-### Part 5: Parallel Execution & Performance (10 minutes)
+### Part 5: Cross-Browser & Mobile Viewport Testing (15 minutes)
+
+**A real difference from JavaScript Playwright:** in JS, you switch browser
+engines through `playwright.config.ts` projects. In Python there's no config
+file at all - you launch whichever `BrowserType` you want directly in code:
+`p.chromium.launch()`, `p.firefox.launch()`, or `p.webkit.launch()`.
+
+**Important:** `tests/e2e-python/conftest.py`'s session-scoped `browser`
+fixture is hardcoded to Chromium:
+
+```python
+# tests/e2e-python/conftest.py (excerpt - already in the repo)
+with sync_playwright() as p:
+    browser = p.chromium.launch(headless=headless, slow_mo=slow_mo)
+```
+
+Every test that depends on the shared `page`/`context`/`browser` fixtures
+therefore always runs against Chromium, no matter what CLI flags you pass.
+To actually exercise Firefox or WebKit you either (a) parametrize that
+fixture to read the engine from an environment variable, or (b) write a
+standalone test that opens its own `sync_playwright()` block instead of
+using the shared fixtures, as shown below.
+
+#### Step 1: Run a Test Against All Three Engines
+
+**Create:** `tests/e2e-python/test_cross_browser.py`
+
+```python
+import pytest
+from playwright.sync_api import sync_playwright
+
+@pytest.mark.parametrize("browser_name", ["chromium", "firefox", "webkit"])
+def test_login_works_across_browsers(browser_name):
+    """Launch each engine directly - bypasses the shared chromium-only fixtures."""
+    with sync_playwright() as p:
+        browser = getattr(p, browser_name).launch()
+        page = browser.new_page()
+
+        page.goto("http://localhost:3000")
+        page.fill('[data-testid="login-email-input"]', "sarah.johnson@testbook.com")
+        page.fill('[data-testid="login-password-input"]', "Sarah2024!")
+        page.click('[data-testid="login-submit-button"]')
+
+        page.wait_for_url("http://localhost:3000/", timeout=10000)
+
+        from playwright.sync_api import expect
+        expect(page.locator('[data-testid="navbar"]')).to_be_visible()
+
+        browser.close()
+```
+
+```bash
+# Playwright must have each engine installed first
+playwright install firefox webkit
+
+pytest tests/e2e-python/test_cross_browser.py -v
+```
+
+#### Step 2: Mobile Viewport Testing
+
+Mobile testing in Playwright is just a context configured with a small
+viewport (and optionally `is_mobile`/`has_touch`) - no separate mobile SDK:
+
+```python
+import pytest
+from playwright.sync_api import sync_playwright, expect
+
+def test_responsive_layout_on_mobile_viewport():
+    """Check the navbar still renders correctly on a phone-sized viewport."""
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        context = browser.new_context(
+            viewport={"width": 375, "height": 812},  # iPhone-ish size
+            is_mobile=True,
+            has_touch=True,
+        )
+        page = context.new_page()
+        page.goto("http://localhost:3000")
+
+        expect(page.locator('[data-testid="navbar"]')).to_be_visible()
+
+        browser.close()
+```
+
+✅ **Checkpoint:** You can launch Firefox/WebKit directly and test a mobile viewport size
+
+---
+
+### Part 6: Parallel Execution & Performance (10 minutes)
 
 **Speed up test runs** with parallel execution and optimization.
 
@@ -371,16 +464,18 @@ playwright show-trace test-results/network.har
 **Update `pytest.ini`:**
 
 ```ini
-[tool:pytest]
-addopts = -n auto  # Use pytest-xdist for parallel execution
-playwright_config = {
-    "workers": 4,
-    "fully_parallel": True,
-    "retries": 2,
-    "timeout": 30000,
-    "expect": {"timeout": 5000}
-}
+[pytest]
+addopts =
+    -v
+    --tb=short
+    --strict-markers
+    -n auto
+    --reruns 2
 ```
+
+`-n auto` comes from `pytest-xdist` (parallel workers); `--reruns` comes from
+`pytest-rerunfailures` (retries flaky tests) - both are already listed in
+`tests/e2e-python/requirements.txt`.
 
 **Install pytest-xdist for parallel execution:**
 
@@ -432,7 +527,7 @@ pytest tests/e2e-python/test_performance.py --html=report.html
 
 ---
 
-### Part 6: CI/CD Integration (15 minutes)
+### Part 7: CI/CD Integration (15 minutes)
 
 **Run Playwright tests in GitHub Actions** for continuous integration.
 
@@ -459,31 +554,30 @@ jobs:
 
       - uses: actions/setup-python@v4
         with:
-          python-version: "3.11"
+          python-version: "3.13"
 
       - name: Install dependencies
         run: |
-          pip install -r requirements.txt
-          pip install pytest-xdist
+          pip install -r backend/requirements.txt
+          pip install -r tests/e2e-python/requirements.txt
 
       - name: Install Playwright Browsers
         run: |
-          playwright install --with-deps
+          playwright install --with-deps chromium
 
       - name: Start Testbook
+        # runs-on: ubuntu-latest, so this is Linux/bash only - no Windows
+        # activation step belongs in a Linux CI job.
+        # TESTING=true is required: it unlocks the /api/dev/reset endpoint
+        # that reset_database/fresh_database rely on, and raises rate limits.
+        # See docs/guides/PLAYWRIGHT_QUICKSTART.md.
         run: |
           # Start backend
           cd backend
           python -m venv .venv
-          # Linux/Mac
           source .venv/bin/activate
           pip install -r requirements.txt
-          uvicorn main:app --host 0.0.0.0 --port 8000 &
-
-          # Windows (PowerShell)
-          .venv\Scripts\activate
-          pip install -r requirements.txt
-          Start-Process -NoNewWindow pwsh -ArgumentList "-Command", "uvicorn main:app --host 0.0.0.0 --port 8000"
+          TESTING=true uvicorn main:app --host 0.0.0.0 --port 8000 &
 
           # Start frontend
           cd ../frontend
@@ -512,20 +606,18 @@ jobs:
 **Update `pytest.ini` for CI:**
 
 ```ini
-[tool:pytest]
-addopts = -n auto --html=report.html
-playwright_config = {
-    "use": {
-        "base_url": "http://localhost:3000",
-        "headless": true,
-        "video": "retain-on-failure",
-        "trace": "retain-on-failure",
-    },
-    "timeout": 60000,
-    "retries": 2,
-    "workers": 4
-}
+[pytest]
+addopts =
+    -n auto
+    --html=report.html
+    --video=retain-on-failure
+    --tracing=retain-on-failure
 ```
+
+`HEADLESS` (not a `headless` config key) is how this suite controls headed
+vs. headless mode - it's an environment variable read by
+`tests/e2e-python/conftest.py`'s `browser` fixture, and defaults to `true`,
+so CI already runs headless with no extra flag needed.
 
 #### Step 3: Test CI Integration
 
@@ -534,7 +626,7 @@ playwright_config = {
 CI=true pytest tests/e2e-python/ -v
 
 # Test with Docker (simulates CI environment)
-docker run --rm -it -v $(pwd):/workspace -w /workspace mcr.microsoft.com/playwright:v1.40.0-focal bash
+docker run --rm -it -v $(pwd):/workspace -w /workspace mcr.microsoft.com/playwright:v1.62.0-noble bash
 ```
 
 ✅ **Checkpoint:** You can run Playwright tests in CI/CD
@@ -547,6 +639,7 @@ docker run --rm -it -v $(pwd):/workspace -w /workspace mcr.microsoft.com/playwri
 - ✅ **Codegen** - Generate tests by recording user actions
 - ✅ **Screenshots/Videos** - Visual debugging and verification
 - ✅ **Network Analysis** - Understand API interactions
+- ✅ **Cross-Browser & Mobile Testing** - Launch Firefox/WebKit directly and test mobile viewports
 - ✅ **Parallel Execution** - Speed up test runs
 - ✅ **CI/CD Integration** - Run tests in GitHub Actions
 - ✅ **Performance Optimization** - Make tests run faster
@@ -587,7 +680,7 @@ Using all the techniques learned:
 
 ```bash
 # Always run with trace when debugging
-pytest tests/e2e-python/ -v --trace on-first-retry --headed
+pytest tests/e2e-python/ -v --tracing on-first-retry --headed
 
 # View trace files
 playwright show-trace test-results/trace.zip
@@ -606,20 +699,18 @@ playwright codegen http://localhost:3000/new-feature --target python
 
 ### Tip 3: Optimize for CI/CD
 
-```python
-# Use environment variables for CI
-import os
+`tests/e2e-python/conftest.py` already reads its browser/video behavior from
+environment variables, so CI can just set them instead of touching any
+config file:
 
-is_ci = os.getenv("CI") == "true"
+```bash
+# Locally (defaults to headless=true already, this is just explicit)
+HEADLESS=true VIDEO_ON_FAILURE=true pytest tests/e2e-python/ -v
 
-playwright_config = {
-    "use": {
-        "headless": is_ci,
-        "video": "retain-on-failure" if is_ci else "off",
-        "trace": "retain-on-failure" if is_ci else "off",
-    },
-    "retries": 2 if is_ci else 0,
-}
+# In CI (GitHub Actions "env:" on the step, or exported in the shell)
+export HEADLESS=true
+export VIDEO_ON_FAILURE=true
+pytest tests/e2e-python/ -v --html=report.html
 ```
 
 ---
@@ -630,6 +721,7 @@ playwright_config = {
 - [ ] Generated tests using codegen
 - [ ] Captured screenshots and videos
 - [ ] Analyzed network requests
+- [ ] Launched Firefox/WebKit directly and tested a mobile viewport
 - [ ] Configured parallel execution
 - [ ] Set up CI/CD integration
 - [ ] Optimized test performance
@@ -657,4 +749,4 @@ playwright_config = {
 
 **🎉 Congratulations!** You've mastered Playwright's advanced features and are ready for production E2E testing!
 
-**Next Lab:** [Lab 6: Testing with Rate Limits (Python)](LAB_06_Testing_With_Rate_Limits_Python.md)
+**Next Lab:** [Lab 12: E2E Test Organization (Python)](LAB_12_E2E_Test_Organization_Python.md)

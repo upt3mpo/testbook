@@ -74,7 +74,8 @@ async def create_post(request: Request, post_data: PostCreate):
 
 - Default limit: 100 requests/minute (production)
 - Testing mode: 1000 requests/minute (when `TESTING=true`)
-- Login/Register: Uses environment-based rates (20/min in production, 100/min in testing)
+- Login: 20/min in production, 1000/min in testing
+- Register: 15/min in production, 500/min in testing
 - See `backend/routers/auth.py` for actual implementation
 
 ### Recommended Limits by Endpoint Type
@@ -226,7 +227,7 @@ done
 ### Automated Tests
 
 ```python
-# tests/test_rate_limiting.py
+# tests/security/test_rate_limiting.py (illustrative example)
 
 def test_rate_limit_exceeded(client):
     """Test that rate limits are enforced"""
@@ -252,7 +253,7 @@ def test_rate_limit_headers(client):
     assert "X-RateLimit-Reset" in response.headers
 ```
 
-See `LAB_06_Testing_With_Rate_Limits.md` for comprehensive testing examples.
+See `learn/stage_4_performance_security/exercises/LAB_15_Rate_Limiting_Production_Python.md` (or the `_JavaScript` variant) for comprehensive testing examples.
 
 ---
 
@@ -475,7 +476,7 @@ limiter = Limiter(
 ## Learn More
 
 - **SlowAPI Docs**: <https://slowapi.readthedocs.io/>
-- **LAB_06**: Testing With Rate Limits (practical exercises)
+- **LAB_15**: Rate Limiting in Production (`learn/stage_4_performance_security/exercises/LAB_15_Rate_Limiting_Production_Python.md` / `_JavaScript.md`)
 - **Flask-Limiter**: <https://flask-limiter.readthedocs.io/> (similar concepts)
 
 ---

@@ -54,8 +54,8 @@ k6 run load-test.js
 
 **Configuration:**
 
-- Ramps from 0 → 10 → 20 users
-- 15+ minute total duration
+- Ramps from 0 → 10 → 15 users locally (0 → 5 → 10 in CI)
+- ~4.5 minute total duration locally (~2 minutes in CI)
 - Simulates realistic user behavior
 - Creates posts, views feed, checks profiles
 
@@ -69,8 +69,8 @@ k6 run stress-test.js
 
 **Configuration:**
 
-- Ramps up to 100 users
-- 20+ minute duration
+- Ramps up to 50 users locally (25 users in CI)
+- ~5 minute duration locally (~2.5 minutes in CI)
 - More aggressive request patterns
 - Identifies breaking point
 
@@ -132,6 +132,12 @@ Tests will fail if thresholds are not met:
 - 99% of requests < 3000ms
 - Error rate < 10%
 
+### Why These Numbers
+
+These aren't Testbook-specific research — they're standard reference points from web-performance/UX literature (Jakob Nielsen's classic response-time thresholds: under ~0.1s feels instant, under ~1s feels responsive with the user's flow of thought uninterrupted, beyond that the user notices they're waiting). The smoke test's 500ms threshold targets "feels responsive" for a single request under light load — it's meant to catch a regression on every run, so it stays strict. The load test's looser 1000ms/2000ms thresholds and higher error tolerance (5%) reflect that under realistic concurrent traffic, some tail latency is expected and acceptable — the goal is "still usable under load," not "as fast as an idle server." The stress test's 3000ms/10% thresholds mark the point past which the system is considered to be failing under load rather than just slower — stress testing intentionally pushes past normal capacity to find that breaking point, so its thresholds are a "this is too degraded" line, not a target.
+
+If you're adapting these for a real production system, the right numbers depend on your actual users and SLA commitments, not on copying these — treat them as a reasonable teaching default, not a benchmark to defend in a real incident review.
+
 ## Custom Configuration
 
 ### Change Base URL
@@ -160,11 +166,10 @@ k6 cloud load-test.js
 
 ## CI/CD Integration
 
-Performance tests run automatically:
+Performance tests run automatically via `.github/workflows/performance-tests.yml`:
 
-- Weekly (Monday 2 AM)
-- On demand via workflow_dispatch
-- On changes to performance test files
+- On every push and pull request to `main`/`develop`
+- Weekly on a schedule (Sundays at 4 AM UTC)
 
 View results in GitHub Actions artifacts.
 
@@ -277,4 +282,4 @@ const res = http.post('http://localhost:8000/api/posts/', payload, {
 
 - [K6 Documentation](https://k6.io/docs/)
 - [Performance Testing Guide](https://k6.io/docs/testing-guides/api-load-testing/)
-- [K6 Cloud](https://k6.io/cloud/)
+- [K6 Cloud](https://k6.io/docs/cloud/)

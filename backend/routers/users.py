@@ -1,6 +1,5 @@
 import uuid
 from pathlib import Path
-from typing import List
 
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
 from sqlalchemy.orm import Session
@@ -9,6 +8,7 @@ import models
 import schemas
 from auth import get_current_user
 from database import get_db
+from upload_validation import looks_like_declared_type
 
 router = APIRouter()
 
@@ -17,60 +17,58 @@ UPLOAD_DIR = Path(__file__).parent.parent / "static" / "uploads" / "avatars"
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
 
-@router.get("/{username}/followers", response_model=List[schemas.UserListItem])
+@router.get("/{username}/followers", response_model=list[schemas.UserListItem])
 def get_followers(
     username: str,
     db: Session = Depends(get_db),
     current_user: models.User = Depends(get_current_user),
-):
+) -> list[schemas.UserListItem]:
     """Get list of users who follow this user"""
     user = db.query(models.User).filter(models.User.username == username).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
 
-    followers = []
-    for follower in user.followers:
-        followers.append(
-            schemas.UserListItem(
-                id=follower.id,
-                username=follower.username,
-                display_name=follower.display_name,
-                bio=follower.bio,
-                profile_picture=follower.profile_picture,
-                is_following=follower in current_user.following,
-                is_blocked=follower in current_user.blocking
-                or current_user in follower.blocking,
-            )
+    followers = [
+        schemas.UserListItem(
+            id=follower.id,
+            username=follower.username,
+            display_name=follower.display_name,
+            bio=follower.bio,
+            profile_picture=follower.profile_picture,
+            is_following=follower in current_user.following,
+            is_blocked=follower in current_user.blocking
+            or current_user in follower.blocking,
         )
+        for follower in user.followers
+    ]
 
     return followers
 
 
-@router.get("/{username}/following", response_model=List[schemas.UserListItem])
+@router.get("/{username}/following", response_model=list[schemas.UserListItem])
 def get_following(
     username: str,
     db: Session = Depends(get_db),
     current_user: models.User = Depends(get_current_user),
-):
+) -> list[schemas.UserListItem]:
     """Get list of users this user is following"""
     user = db.query(models.User).filter(models.User.username == username).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
 
-    following = []
-    for followed_user in user.following:
-        following.append(
-            schemas.UserListItem(
-                id=followed_user.id,
-                username=followed_user.username,
-                display_name=followed_user.display_name,
-                bio=followed_user.bio,
-                profile_picture=followed_user.profile_picture,
-                is_following=followed_user in current_user.following,
-                is_blocked=followed_user in current_user.blocking
-                or current_user in followed_user.blocking,
-            )
+    following = [
+        schemas.UserListItem(
+            id=followed_user.id,
+            username=followed_user.username,
+            display_name=followed_user.display_name,
+            bio=followed_user.bio,
+            profile_picture=followed_user.profile_picture,
+            is_following=followed_user in current_user.following,
+            is_blocked=followed_user in current_user.blocking
+            or current_user in followed_user.blocking,
         )
+        for followed_user in user.following
+    ]
 
     return following
 
@@ -80,7 +78,7 @@ def get_user_profile(
     username: str,
     db: Session = Depends(get_db),
     current_user: models.User = Depends(get_current_user),
-):
+) -> schemas.UserProfileResponse:
     """Get user profile by username"""
     user = db.query(models.User).filter(models.User.username == username).first()
     if not user:
@@ -114,8 +112,11 @@ async def upload_avatar(
     file: UploadFile = File(...),
     current_user: models.User = Depends(get_current_user),
     db: Session = Depends(get_db),
-):
+) -> dict[str, str | None]:
     """Upload a profile picture"""
+    if not file.filename:
+        raise HTTPException(status_code=400, detail="Uploaded file has no filename")
+
     # Validate file type
     allowed_extensions = {".jpg", ".jpeg", ".png", ".gif", ".webp"}
     file_ext = Path(file.filename).suffix.lower()
@@ -126,17 +127,29 @@ async def upload_avatar(
             detail=f"File type not allowed. Allowed types: {', '.join(allowed_extensions)}",
         )
 
+    contents = await file.read()
+
+    # The extension check above only looks at the filename, which the
+    # client fully controls. This checks the actual bytes, so a mislabeled
+    # file gets rejected too - see upload_validation.py.
+    if not looks_like_declared_type(contents, file_ext):
+        raise HTTPException(
+            status_code=400,
+            detail="File content doesn't match its extension",
+        )
+
     # Generate unique filename
     unique_filename = f"{uuid.uuid4()}{file_ext}"
     file_path = UPLOAD_DIR / unique_filename
 
     # Save file
     try:
-        contents = await file.read()
-        with open(file_path, "wb") as f:
+        with file_path.open("wb") as f:
             f.write(contents)
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to upload file: {str(e)}")
+    except OSError as e:
+        raise HTTPException(
+            status_code=500, detail=f"Failed to upload file: {e!s}"
+        ) from e
 
     # Update user's profile picture
     old_picture = current_user.profile_picture
@@ -163,7 +176,7 @@ def update_current_user(
     user_update: schemas.UserUpdate,
     current_user: models.User = Depends(get_current_user),
     db: Session = Depends(get_db),
-):
+) -> schemas.UserResponse:
     """Update current user's profile"""
     if user_update.display_name is not None:
         current_user.display_name = user_update.display_name
@@ -203,7 +216,7 @@ def update_current_user(
 @router.delete("/me")
 def delete_current_user(
     current_user: models.User = Depends(get_current_user), db: Session = Depends(get_db)
-):
+) -> dict[str, str]:
     """Delete current user's account"""
     db.delete(current_user)
     db.commit()
@@ -215,7 +228,7 @@ def follow_user(
     username: str,
     current_user: models.User = Depends(get_current_user),
     db: Session = Depends(get_db),
-):
+) -> dict[str, str]:
     """Follow a user"""
     user_to_follow = (
         db.query(models.User).filter(models.User.username == username).first()
@@ -240,7 +253,7 @@ def unfollow_user(
     username: str,
     current_user: models.User = Depends(get_current_user),
     db: Session = Depends(get_db),
-):
+) -> dict[str, str]:
     """Unfollow a user"""
     user_to_unfollow = (
         db.query(models.User).filter(models.User.username == username).first()
@@ -262,7 +275,7 @@ def block_user(
     username: str,
     current_user: models.User = Depends(get_current_user),
     db: Session = Depends(get_db),
-):
+) -> dict[str, str]:
     """Block a user"""
     user_to_block = (
         db.query(models.User).filter(models.User.username == username).first()
@@ -293,7 +306,7 @@ def unblock_user(
     username: str,
     current_user: models.User = Depends(get_current_user),
     db: Session = Depends(get_db),
-):
+) -> dict[str, str]:
     """Unblock a user"""
     user_to_unblock = (
         db.query(models.User).filter(models.User.username == username).first()
@@ -310,14 +323,14 @@ def unblock_user(
     return {"message": f"Unblocked {username}"}
 
 
-@router.get("/{username}/posts", response_model=List[schemas.PostResponse])
+@router.get("/{username}/posts", response_model=list[schemas.PostResponse])
 def get_user_posts(
     username: str,
     skip: int = 0,
     limit: int = 50,
     db: Session = Depends(get_db),
     current_user: models.User = Depends(get_current_user),
-):
+) -> list[schemas.PostResponse]:
     """Get posts by a specific user"""
     user = db.query(models.User).filter(models.User.username == username).first()
     if not user:

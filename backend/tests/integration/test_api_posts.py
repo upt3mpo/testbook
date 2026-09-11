@@ -12,7 +12,7 @@ import pytest
 class TestCreatePost:
     """Test post creation endpoint."""
 
-    def test_create_text_post(self, client, auth_headers):
+    def test_create_text_post(self, client, auth_headers) -> None:
         """Test creating a text-only post."""
         # Arrange - Prepare request data
         post_data = {"content": "This is a test post"}
@@ -29,7 +29,7 @@ class TestCreatePost:
         assert data["image_url"] is None  # Optional fields default to None
         assert data["video_url"] is None
 
-    def test_create_post_with_image(self, client, auth_headers):
+    def test_create_post_with_image(self, client, auth_headers) -> None:
         """Test creating a post with an image."""
         response = client.post(
             "/api/posts/",
@@ -41,7 +41,7 @@ class TestCreatePost:
         data = response.json()
         assert data["image_url"] == "/static/images/test.jpg"
 
-    def test_create_post_without_auth(self, client):
+    def test_create_post_without_auth(self, client) -> None:
         """Test that creating post requires authentication."""
         # Arrange - No auth headers (simulating unauthenticated request)
         post_data = {"content": "Test post"}
@@ -50,9 +50,12 @@ class TestCreatePost:
         response = client.post("/api/posts/", json=post_data)
 
         # Assert - Should be rejected (401 Unauthorized or 403 Forbidden)
-        assert response.status_code in [401, 403]  # Both are valid auth errors
+        assert response.status_code in [
+            401,
+            403,
+        ], f"Creating a post with no auth header should be rejected, got {response.status_code}"
 
-    def test_create_empty_post(self, client, auth_headers):
+    def test_create_empty_post(self, client, auth_headers) -> None:
         """Test creating post with empty content."""
         response = client.post(
             "/api/posts/", json={"content": ""}, headers=auth_headers
@@ -67,7 +70,7 @@ class TestCreatePost:
 class TestGetPost:
     """Test get post endpoint."""
 
-    def test_get_existing_post(self, client, test_post, auth_headers):
+    def test_get_existing_post(self, client, test_post, auth_headers) -> None:
         """Test getting an existing post."""
         response = client.get(f"/api/posts/{test_post.id}", headers=auth_headers)
 
@@ -76,7 +79,7 @@ class TestGetPost:
         assert data["id"] == test_post.id
         assert data["content"] == test_post.content
 
-    def test_get_nonexistent_post(self, client, auth_headers):
+    def test_get_nonexistent_post(self, client, auth_headers) -> None:
         """Test getting a non-existent post."""
         response = client.get("/api/posts/999999", headers=auth_headers)
 
@@ -84,7 +87,7 @@ class TestGetPost:
 
     def test_get_post_includes_counts(
         self, client, test_post, test_comment, test_reaction, auth_headers
-    ):
+    ) -> None:
         """Test that post includes comment and reaction counts."""
         response = client.get(f"/api/posts/{test_post.id}", headers=auth_headers)
 
@@ -101,7 +104,7 @@ class TestGetPost:
 class TestUpdatePost:
     """Test post update endpoint."""
 
-    def test_update_own_post(self, client, test_post, auth_headers):
+    def test_update_own_post(self, client, test_post, auth_headers) -> None:
         """Test updating own post."""
         response = client.put(
             f"/api/posts/{test_post.id}",
@@ -113,7 +116,9 @@ class TestUpdatePost:
         data = response.json()
         assert data["content"] == "Updated content"
 
-    def test_update_other_user_post(self, client, test_post, test_user_2, db_session):
+    def test_update_other_user_post(
+        self, client, test_post, test_user_2, db_session
+    ) -> None:
         """Test that updating another user's post fails."""
         # Create token for test_user_2
         from auth import create_access_token
@@ -127,9 +132,12 @@ class TestUpdatePost:
             headers=headers,
         )
 
-        assert response.status_code == 403
+        assert response.status_code == 403, (
+            f"A user should not be able to update another user's post "
+            f"(broken ownership check), got {response.status_code}"
+        )
 
-    def test_update_nonexistent_post(self, client, auth_headers):
+    def test_update_nonexistent_post(self, client, auth_headers) -> None:
         """Test updating non-existent post."""
         response = client.put(
             "/api/posts/999999", json={"content": "Updated"}, headers=auth_headers
@@ -143,7 +151,7 @@ class TestUpdatePost:
 class TestDeletePost:
     """Test post deletion endpoint."""
 
-    def test_delete_own_post(self, client, test_post, auth_headers):
+    def test_delete_own_post(self, client, test_post, auth_headers) -> None:
         """Test deleting own post."""
         response = client.delete(f"/api/posts/{test_post.id}", headers=auth_headers)
 
@@ -153,7 +161,7 @@ class TestDeletePost:
         get_response = client.get(f"/api/posts/{test_post.id}", headers=auth_headers)
         assert get_response.status_code == 404
 
-    def test_delete_other_user_post(self, client, test_post, test_user_2):
+    def test_delete_other_user_post(self, client, test_post, test_user_2) -> None:
         """Test that deleting another user's post fails."""
         from auth import create_access_token
 
@@ -162,7 +170,10 @@ class TestDeletePost:
 
         response = client.delete(f"/api/posts/{test_post.id}", headers=headers)
 
-        assert response.status_code == 403
+        assert response.status_code == 403, (
+            f"A user should not be able to delete another user's post "
+            f"(broken ownership check), got {response.status_code}"
+        )
 
 
 @pytest.mark.integration
@@ -170,7 +181,7 @@ class TestDeletePost:
 class TestComments:
     """Test comment functionality."""
 
-    def test_add_comment_to_post(self, client, test_post, auth_headers):
+    def test_add_comment_to_post(self, client, test_post, auth_headers) -> None:
         """Test adding a comment to a post."""
         response = client.post(
             f"/api/posts/{test_post.id}/comments",
@@ -182,7 +193,7 @@ class TestComments:
         data = response.json()
         assert data["content"] == "Great post!"
 
-    def test_add_comment_without_auth(self, client, test_post):
+    def test_add_comment_without_auth(self, client, test_post) -> None:
         """Test that adding comment requires authentication."""
         response = client.post(
             f"/api/posts/{test_post.id}/comments", json={"content": "Comment"}
@@ -190,7 +201,7 @@ class TestComments:
 
         assert response.status_code in [401, 403, 422]
 
-    def test_add_comment_to_nonexistent_post(self, client, auth_headers):
+    def test_add_comment_to_nonexistent_post(self, client, auth_headers) -> None:
         """Test adding comment to non-existent post."""
         response = client.post(
             "/api/posts/999999/comments",
@@ -202,7 +213,7 @@ class TestComments:
 
     def test_get_post_with_comments(
         self, client, test_post, test_comment, auth_headers
-    ):
+    ) -> None:
         """Test that getting post includes comments."""
         response = client.get(f"/api/posts/{test_post.id}", headers=auth_headers)
 
@@ -220,7 +231,9 @@ class TestReactions:
     @pytest.mark.parametrize(
         "reaction_type", ["like", "love", "haha", "wow", "sad", "angry"]
     )
-    def test_add_reaction_to_post(self, client, test_post, auth_headers, reaction_type):
+    def test_add_reaction_to_post(
+        self, client, test_post, auth_headers, reaction_type
+    ) -> None:
         """Test adding different reaction types to a post."""
         response = client.post(
             f"/api/posts/{test_post.id}/reactions",
@@ -230,7 +243,7 @@ class TestReactions:
 
         assert response.status_code == 201  # API returns 201 Created
 
-    def test_change_reaction(self, client, test_post, auth_headers):
+    def test_change_reaction(self, client, test_post, auth_headers) -> None:
         """Test changing reaction type."""
         # Add first reaction
         client.post(
@@ -248,7 +261,7 @@ class TestReactions:
 
         assert response.status_code == 201  # API returns 201 Created
 
-    def test_remove_reaction(self, client, test_post, auth_headers):
+    def test_remove_reaction(self, client, test_post, auth_headers) -> None:
         """Test removing a reaction."""
         # Add reaction first
         client.post(
@@ -264,7 +277,7 @@ class TestReactions:
 
         assert response.status_code == 200
 
-    def test_add_reaction_without_auth(self, client, test_post):
+    def test_add_reaction_without_auth(self, client, test_post) -> None:
         """Test that adding reaction requires authentication."""
         response = client.post(
             f"/api/posts/{test_post.id}/reactions", json={"reaction_type": "like"}
@@ -272,7 +285,7 @@ class TestReactions:
 
         assert response.status_code in [401, 403, 422]
 
-    def test_invalid_reaction_type(self, client, test_post, auth_headers):
+    def test_invalid_reaction_type(self, client, test_post, auth_headers) -> None:
         """Test adding invalid reaction type."""
         response = client.post(
             f"/api/posts/{test_post.id}/reactions",
@@ -289,7 +302,7 @@ class TestReactions:
 class TestReposts:
     """Test repost functionality."""
 
-    def test_create_repost(self, client, test_post, test_user_2, db_session):
+    def test_create_repost(self, client, test_post, test_user_2, db_session) -> None:
         """Test creating a repost."""
         from auth import create_access_token
 
@@ -307,7 +320,7 @@ class TestReposts:
         assert data["is_repost"] is True
         assert data["original_post_id"] == test_post.id
 
-    def test_remove_repost(self, client, test_post, test_user_2, db_session):
+    def test_remove_repost(self, client, test_post, test_user_2, db_session) -> None:
         """Test removing a repost."""
         from auth import create_access_token
 
@@ -329,7 +342,7 @@ class TestReposts:
 
             assert response.status_code == 200
 
-    def test_repost_without_auth(self, client, test_post):
+    def test_repost_without_auth(self, client, test_post) -> None:
         """Test that reposting requires authentication."""
         response = client.post(
             "/api/posts/repost", json={"original_post_id": test_post.id}
@@ -337,7 +350,7 @@ class TestReposts:
 
         assert response.status_code in [401, 403, 422]
 
-    def test_repost_nonexistent_post(self, client, auth_headers):
+    def test_repost_nonexistent_post(self, client, auth_headers) -> None:
         """Test reposting non-existent post."""
         response = client.post(
             "/api/posts/repost", json={"original_post_id": 999999}, headers=auth_headers
@@ -353,7 +366,7 @@ class TestPostInteractions:
 
     def test_post_with_multiple_interactions(
         self, client, test_post, test_user_2, test_user_3, db_session
-    ):
+    ) -> None:
         """Test post with multiple comments and reactions."""
         # Add comments from different users
         from auth import create_access_token

@@ -3,19 +3,15 @@
  *
  * Tests creating, editing, deleting posts, and post interactions
  * (comments, reactions, reposts).
+ *
+ * Page Object Model: interactions go through pages/FeedPage.js rather
+ * than raw selectors, so a UI change only needs updating in one place.
  */
 
 import { expect, test } from '@playwright/test';
-import {
-    addReaction,
-    createPost,
-    getFirstOwnPost,
-    getFirstPost,
-    loginUser,
-    resetDatabase,
-    setupDialogHandler,
-    TEST_USERS
-} from './fixtures/test-helpers.js';
+import { resetDatabase, setupDialogHandler, TEST_USERS } from './fixtures/test-helpers.js';
+import { AuthPage } from './pages/AuthPage.js';
+import { FeedPage } from './pages/FeedPage.js';
 
 test.describe('Posts', () => {
   test.beforeEach(async ({ page }) => {
@@ -23,124 +19,97 @@ test.describe('Posts', () => {
     setupDialogHandler(page);
 
     await resetDatabase(page);
-    await loginUser(page, TEST_USERS.sarah.email, TEST_USERS.sarah.password);
+    const auth = new AuthPage(page);
+    await auth.gotoLogin();
+    await auth.login(TEST_USERS.sarah.email, TEST_USERS.sarah.password);
+    await auth.expectLoggedIn();
   });
 
   test.describe('Create Post', () => {
     test('should create a text post', async ({ page }) => {
+      const feed = new FeedPage(page);
       const postContent = 'This is my test post!';
-      await createPost(page, postContent);
+      await feed.createPost(postContent);
 
-      // Post should appear in feed
-      const firstPost = getFirstPost(page);
+      // Post should appear in feed. This test is specifically about
+      // ordering (a new post appears first), so it stays scoped by
+      // position rather than by content - see findPostByContent()'s
+      // docstring for why that distinction matters.
+      const firstPost = feed.firstPost();
       await expect(firstPost).toContainText(postContent);
       await expect(firstPost).toHaveAttribute('data-is-own-post', 'true');
     });
 
     test('should disable submit button for empty post', async ({ page }) => {
-      const submitButton = page.locator('[data-testid="create-post-submit-button"]');
+      const submitButton = page.getByTestId('create-post-submit-button');
 
       // Should be disabled when empty
       await expect(submitButton).toBeDisabled();
 
       // Should enable when text is entered
-      await page.fill('[data-testid="create-post-textarea"]', 'Some content');
+      await page.getByTestId('create-post-textarea').fill('Some content');
       await expect(submitButton).toBeEnabled();
     });
 
     test('should clear textarea after posting', async ({ page }) => {
-      await createPost(page, 'Test post');
+      const feed = new FeedPage(page);
+      await feed.createPost('Test post');
 
       // Textarea should be clear
-      const textarea = page.locator('[data-testid="create-post-textarea"]');
+      const textarea = page.getByTestId('create-post-textarea');
       await expect(textarea).toHaveValue('');
     });
 
     test('should show posts in reverse chronological order', async ({ page }) => {
-      // Create multiple posts
-      await createPost(page, 'First post');
-      await createPost(page, 'Second post');
-      await createPost(page, 'Third post');
+      const feed = new FeedPage(page);
 
-      // Most recent should be first
-      const firstPost = getFirstPost(page);
-      await expect(firstPost).toContainText('Third post');
+      // Create multiple posts
+      await feed.createPost('First post');
+      await feed.createPost('Second post');
+      await feed.createPost('Third post');
+
+      // Most recent should be first - this test is specifically about
+      // ordering, so it stays scoped by position (see
+      // findPostByContent()'s docstring).
+      await expect(feed.firstPost()).toContainText('Third post');
     });
   });
 
   test.describe('Edit Post', () => {
     test('should edit own post', async ({ page }) => {
-      // Create a post first
-      await createPost(page, 'Original content');
+      const feed = new FeedPage(page);
+      await feed.createPost('Original content');
 
-      const ownPost = getFirstOwnPost(page);
-
-      // Scroll the post into view
+      let ownPost = feed.firstOwnPost();
+      // scrollIntoViewIfNeeded() already resolves only once the element is
+      // in the viewport, so no extra wait is needed here.
       await ownPost.scrollIntoViewIfNeeded();
-      await page.waitForTimeout(300);
 
-      // Click menu button
-      const menuButton = ownPost.locator('[data-testid$="-menu-button"]');
-      await menuButton.click();
-
-      // Wait for dropdown to appear
-      await page.waitForTimeout(500);
-
-      // Click the edit button
-      const editButton = ownPost.locator('[data-testid$="-edit-button"]');
-      await expect(editButton).toBeVisible({ timeout: 5000 });
-      await editButton.click({ force: true });
-
-      // Edit form should appear
-      const editTextarea = ownPost.locator('[data-testid$="-edit-textarea"]');
-      await expect(editTextarea).toBeVisible({ timeout: 5000 });
-
-      // Edit content
-      await editTextarea.fill('Edited content');
-
-      // Click save
-      await ownPost.locator('[data-testid$="-save-button"]').click();
-
-      // Wait for the alert to be dismissed (auto-handled by our dialog handler)
-      await page.waitForTimeout(500);
+      await feed.editPost(ownPost, 'Edited content');
 
       // Wait for edit form to disappear (indicating save completed)
-      await expect(editTextarea).not.toBeVisible({ timeout: 5000 });
+      await expect(ownPost.locator(feed.postEditTextarea)).not.toBeVisible({
+        timeout: 5000,
+      });
 
-      // Should show updated content
+      // Re-query the post to get a fresh locator, then verify updated content
+      ownPost = feed.firstOwnPost();
       await expect(ownPost).toContainText('Edited content', { timeout: 5000 });
       await expect(ownPost).not.toContainText('Original content');
     });
 
     test('should cancel edit', async ({ page }) => {
-      await createPost(page, 'Original content');
+      const feed = new FeedPage(page);
+      await feed.createPost('Original content');
 
-      const ownPost = getFirstOwnPost(page);
-
-      // Scroll the post into view
+      const ownPost = feed.firstOwnPost();
+      // scrollIntoViewIfNeeded() already resolves only once the element is
+      // in the viewport, so no extra wait is needed here.
       await ownPost.scrollIntoViewIfNeeded();
-      await page.waitForTimeout(300);
 
-      // Click menu button
-      await ownPost.locator('[data-testid$="-menu-button"]').click();
-
-      // Wait for dropdown to appear
-      await page.waitForTimeout(500);
-
-      // Click edit button
-      const editButton = ownPost.locator('[data-testid$="-edit-button"]');
-      await expect(editButton).toBeVisible({ timeout: 5000 });
-      await editButton.click({ force: true });
-
-      // Wait for edit textarea to appear
-      const editTextarea = ownPost.locator('[data-testid$="-edit-textarea"]');
-      await expect(editTextarea).toBeVisible({ timeout: 5000 });
-
-      // Change text
+      const editTextarea = await feed.startEditingPost(ownPost);
       await editTextarea.fill('Changed');
-
-      // Cancel
-      await ownPost.locator('[data-testid$="-cancel-button"]').click();
+      await feed.cancelEditingPost(ownPost);
 
       // Wait for edit form to disappear
       await expect(editTextarea).not.toBeVisible({ timeout: 5000 });
@@ -151,97 +120,79 @@ test.describe('Posts', () => {
     });
 
     test('should not show edit option on other users posts', async ({ page }) => {
+      const feed = new FeedPage(page);
+
       // View a post from another user
       const otherUserPost = page.locator('[data-post-author="mikechen"]').first();
 
       if (await otherUserPost.isVisible()) {
         // Should not have edit menu
-        await expect(otherUserPost.locator('[data-testid$="-menu-button"]')).not.toBeVisible();
+        await expect(otherUserPost.locator(feed.postMenuButton)).not.toBeVisible();
       }
     });
   });
 
   test.describe('Delete Post', () => {
     test('should delete own post', async ({ page }) => {
-      await createPost(page, 'Post to delete');
+      const feed = new FeedPage(page);
+      await feed.createPost('Post to delete');
 
-      const ownPost = getFirstOwnPost(page);
+      const ownPost = feed.firstOwnPost();
       const postContent = await ownPost.textContent();
 
-      // Scroll the post into view to ensure it's visible
-      await ownPost.scrollIntoViewIfNeeded();
-      await page.waitForTimeout(300);
+      await feed.deletePost(ownPost);
 
-      // Open menu with force click to avoid pointer issues
-      const menuButton = ownPost.locator('[data-testid$="-menu-button"]');
-      await expect(menuButton).toBeVisible({ timeout: 5000 });
-      await menuButton.click({ force: true });
-
-      // Wait for dropdown animation
-      await page.waitForTimeout(500);
-
-      // Click delete button (should be visible now within THIS post's context)
-      const deleteButton = ownPost.locator('[data-testid$="-delete-button"]');
-      await expect(deleteButton).toBeVisible({ timeout: 5000 });
-      await deleteButton.click({ force: true });
-
-      // Wait for browser confirm dialogs to be auto-handled
-      await page.waitForTimeout(1000);
-
-      // Post should be removed
+      // The confirm() dialog this triggers is auto-accepted by
+      // setupDialogHandler() as part of resolving the click above, so the
+      // post disappearing (checked next) already reflects that.
       await expect(page.locator(`text="${postContent}"`)).not.toBeVisible({ timeout: 5000 });
     });
   });
 
   test.describe('Reactions', () => {
     test('should add reaction to post', async ({ page }) => {
-      await createPost(page, 'React to this post');
+      const feed = new FeedPage(page);
+      await feed.createPost('React to this post');
+      const myPost = feed.findPostByContent('React to this post');
+      const reactButton = myPost.locator(feed.postReactButton);
 
-      const firstPost = getFirstPost(page);
-      const reactButton = firstPost.locator('[data-testid$="-react-button"]');
-
-      // Verify reaction button exists and get initial state
       await expect(reactButton).toBeVisible();
 
-      // Add reaction
-      await addReaction(firstPost, 'like');
+      await feed.reactToPost(myPost, 'like');
 
-      // Wait for button text to change to show the reaction was applied
+      // Wait for button to show reaction
       await expect(reactButton).toContainText('👍', { timeout: 10000 });
     });
 
     test('should change reaction type', async ({ page }) => {
-      await createPost(page, 'React to this post');
+      const feed = new FeedPage(page);
+      await feed.createPost('React to this post');
+      const myPost = feed.findPostByContent('React to this post');
+      const reactButton = myPost.locator(feed.postReactButton);
 
-      const firstPost = getFirstPost(page);
-      const reactButton = firstPost.locator('[data-testid$="-react-button"]');
-
-      // Add like and wait for it to be applied
-      await addReaction(firstPost, 'like');
+      // Add like
+      await feed.reactToPost(myPost, 'like');
       await expect(reactButton).toContainText('👍', { timeout: 10000 });
 
-      // Change to love and wait for the change
-      await addReaction(firstPost, 'love');
+      // Change to love
+      await feed.reactToPost(myPost, 'love');
       await expect(reactButton).toContainText('❤️', { timeout: 10000 });
     });
 
     test('should remove reaction', async ({ page }) => {
-      await createPost(page, 'React to this post');
+      const feed = new FeedPage(page);
+      await feed.createPost('React to this post');
+      const myPost = feed.findPostByContent('React to this post');
+      const reactButton = myPost.locator(feed.postReactButton);
 
-      const firstPost = getFirstPost(page);
-      const reactButton = firstPost.locator('[data-testid$="-react-button"]');
-
-      // Add reaction and wait for it to be applied
-      await addReaction(firstPost, 'like');
+      // Add reaction
+      await feed.reactToPost(myPost, 'like');
       await expect(reactButton).toContainText('👍', { timeout: 10000 });
 
-      // Click same reaction to remove it
-      await reactButton.hover();
-      const likeButton = firstPost.locator('[data-testid$="-reaction-like"]');
-      await expect(likeButton).toBeVisible({ timeout: 5000 });
-      await likeButton.click();
+      // Reacting with the same type again removes it
+      await feed.reactToPost(myPost, 'like');
 
-      // Wait for network to settle after removal
+      // Wait for network to settle
       await page.waitForLoadState('networkidle', { timeout: 3000 }).catch(() => {});
 
       // Should show default text after removal
@@ -249,60 +200,63 @@ test.describe('Posts', () => {
     });
 
     test('should show all reaction types', async ({ page }) => {
-      await createPost(page, 'React to this post');
+      const feed = new FeedPage(page);
+      await feed.createPost('React to this post');
+      const myPost = feed.findPostByContent('React to this post');
 
-      const firstPost = getFirstPost(page);
+      const reactButton = myPost.locator(feed.postReactButton);
+      await expect(reactButton).toBeVisible({ timeout: 5000 });
 
-      // Hover to show reaction menu
-      await firstPost.locator('[data-testid$="-react-button"]').hover();
+      // Force hover to open the reaction dropdown. The dropdown has a CSS
+      // fade-in transition, but each expect() below already retries for up
+      // to 5s, which covers that transition without a separate wait.
+      await reactButton.hover({ force: true });
 
       // All reactions should be visible
       const reactions = ['like', 'love', 'haha', 'wow', 'sad', 'angry'];
       for (const reaction of reactions) {
-        await expect(firstPost.locator(`[data-testid$="-reaction-${reaction}"]`)).toBeVisible();
+        await expect(myPost.locator(`[data-testid$="-reaction-${reaction}"]`)).toBeVisible({
+          timeout: 5000,
+        });
       }
     });
   });
 
   test.describe('Comments', () => {
     test('should add comment to post', async ({ page }) => {
-      await createPost(page, 'Post to comment on');
+      const feed = new FeedPage(page);
+      const postContent = 'Post to comment on';
+      await feed.createPost(postContent);
+      const myPost = feed.findPostByContent(postContent);
 
-      const firstPost = getFirstPost(page);
-
-      // Click to view post details
-      await firstPost.locator('[data-testid$="-comment-button"]').click();
-
-      // Wait for navigation or modal
-      await page.waitForTimeout(500);
-
-      // Should be on post detail page or show comments
-      // (Implementation may vary)
+      // Clicking the comment button toggles an inline comment form open
+      // (see Post.jsx's showCommentInput state) rather than navigating.
+      await feed.openCommentForm(myPost);
+      await expect(myPost.locator(feed.postCommentForm)).toBeVisible({ timeout: 5000 });
     });
 
     test('should show comment count', async ({ page }) => {
-      // This test requires existing posts with comments
-      // Check if comment count is displayed
-      const posts = page.locator('[data-testid-generic="post-item"]');
-      const firstPost = posts.first();
+      const feed = new FeedPage(page);
+      const firstPost = feed.firstPost();
 
       if (await firstPost.isVisible()) {
         // Comment button should show count or icon
-        await expect(firstPost.locator('[data-testid$="-comment-button"]')).toBeVisible();
+        await expect(firstPost.locator(feed.postCommentButton)).toBeVisible();
       }
     });
   });
 
   test.describe('Reposts', () => {
     test('should repost a post', async ({ page }) => {
+      const feed = new FeedPage(page);
+
       // Find a post from another user
-      const otherPost = page.locator('[data-testid-generic="post-item"]').first();
+      const otherPost = feed.firstPost();
 
       if (await otherPost.isVisible()) {
-        const repostButton = otherPost.locator('[data-testid$="-repost-button"]');
+        const repostButton = otherPost.locator(feed.postRepostButton);
 
-        // Repost
-        await repostButton.click();
+        await feed.toggleRepost(otherPost);
 
         // Button should show reposted state
         await expect(repostButton).toContainText(/reposted/i);
@@ -311,18 +265,22 @@ test.describe('Posts', () => {
     });
 
     test('should unrepost a post', async ({ page }) => {
-      const otherPost = page.locator('[data-testid-generic="post-item"]').first();
+      const feed = new FeedPage(page);
+
+      // Get first post - should be from seeded data (other users)
+      const otherPost = feed.firstPost();
 
       if (await otherPost.isVisible()) {
-        const repostButton = otherPost.locator('[data-testid$="-repost-button"]');
+        const repostButton = otherPost.locator(feed.postRepostButton);
 
-        // Repost
-        await repostButton.click();
-        await expect(repostButton).toContainText(/reposted/i);
+        // Repost. toContainText() below retries until the button's label
+        // actually updates, so no separate wait is needed.
+        await feed.toggleRepost(otherPost);
+        await expect(repostButton).toContainText(/reposted/i, { timeout: 10000 });
 
         // Unrepost
-        await repostButton.click();
-        await expect(repostButton).toContainText(/^repost$/i);
+        await feed.toggleRepost(otherPost);
+        await expect(repostButton).toContainText(/^repost$/i, { timeout: 10000 });
         await expect(repostButton).toHaveClass(/btn-secondary/);
       }
     });
@@ -330,32 +288,32 @@ test.describe('Posts', () => {
 
   test.describe('Feed Tabs', () => {
     test('should switch between All and Following tabs', async ({ page }) => {
-      const allTab = page.locator('[data-testid="feed-tab-all"]');
-      const followingTab = page.locator('[data-testid="feed-tab-following"]');
+      const feed = new FeedPage(page);
 
       // Should start on All tab
-      await expect(allTab).toHaveClass(/active|selected/i);
+      await expect(feed.feedTabAll).toHaveClass(/active|selected/i);
 
       // Switch to Following
-      await followingTab.click();
-      await expect(followingTab).toHaveClass(/active|selected/i);
+      await feed.goToFollowingTab();
+      await expect(feed.feedTabFollowing).toHaveClass(/active|selected/i);
 
       // Switch back to All
-      await allTab.click();
-      await expect(allTab).toHaveClass(/active|selected/i);
+      await feed.goToAllTab();
+      await expect(feed.feedTabAll).toHaveClass(/active|selected/i);
     });
 
     test('should show different posts in Following vs All feed', async ({ page }) => {
+      const feed = new FeedPage(page);
+
       // Get count of All posts
-      await page.click('[data-testid="feed-tab-all"]');
-      const allPosts = await page.locator('[data-testid-generic="post-item"]').count();
+      await feed.goToAllTab();
+      const allPosts = await feed.postCount();
 
       // Get count of Following posts
-      await page.click('[data-testid="feed-tab-following"]');
-      const followingPosts = await page.locator('[data-testid-generic="post-item"]').count();
+      await feed.goToFollowingTab();
+      const followingPosts = await feed.postCount();
 
       // Counts may differ (depending on who user follows)
-      // Just verify both tabs work
       expect(allPosts).toBeGreaterThanOrEqual(0);
       expect(followingPosts).toBeGreaterThanOrEqual(0);
     });

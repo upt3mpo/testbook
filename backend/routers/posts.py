@@ -1,6 +1,5 @@
 import uuid
 from pathlib import Path
-from typing import Optional
 
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
 from sqlalchemy.orm import Session
@@ -9,6 +8,7 @@ import models
 import schemas
 from auth import get_current_user, get_optional_user
 from database import get_db
+from upload_validation import looks_like_declared_type
 
 router = APIRouter()
 
@@ -20,9 +20,16 @@ UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 @router.post("/upload")
 async def upload_media(
     file: UploadFile = File(...),
-    current_user: models.User = Depends(get_current_user),
-):
-    """Upload an image or video file"""
+    current_user: models.User = Depends(get_current_user),  # noqa: ARG001
+) -> dict[str, str | None]:
+    """Upload an image or video file.
+
+    current_user is unused in the body - it's here to require
+    authentication, not because the handler needs the user's data.
+    """
+    if not file.filename:
+        raise HTTPException(status_code=400, detail="Uploaded file has no filename")
+
     # Validate file type
     allowed_extensions = {
         ".jpg",
@@ -42,17 +49,31 @@ async def upload_media(
             detail=f"File type not allowed. Allowed types: {', '.join(allowed_extensions)}",
         )
 
+    contents = await file.read()
+
+    # The extension check above only looks at the filename, which the
+    # client fully controls. This checks the actual bytes for the image
+    # types, so a mislabeled file (e.g. something else renamed to .png)
+    # gets rejected too - see upload_validation.py for why video types
+    # aren't checked this way.
+    if not looks_like_declared_type(contents, file_ext):
+        raise HTTPException(
+            status_code=400,
+            detail="File content doesn't match its extension",
+        )
+
     # Generate unique filename
     unique_filename = f"{uuid.uuid4()}{file_ext}"
     file_path = UPLOAD_DIR / unique_filename
 
     # Save file
     try:
-        contents = await file.read()
-        with open(file_path, "wb") as f:
+        with file_path.open("wb") as f:
             f.write(contents)
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to upload file: {str(e)}")
+    except OSError as e:
+        raise HTTPException(
+            status_code=500, detail=f"Failed to upload file: {e!s}"
+        ) from e
 
     # Return the URL
     file_url = f"/static/uploads/{unique_filename}"
@@ -66,7 +87,7 @@ def create_post(
     post_data: schemas.PostCreate,
     current_user: models.User = Depends(get_current_user),
     db: Session = Depends(get_db),
-):
+) -> schemas.PostResponse:
     """Create a new post"""
     new_post = models.Post(
         author_id=current_user.id,
@@ -107,7 +128,7 @@ def update_post(
     post_data: schemas.PostCreate,
     current_user: models.User = Depends(get_current_user),
     db: Session = Depends(get_db),
-):
+) -> schemas.PostResponse:
     """Update a post"""
     post = db.query(models.Post).filter(models.Post.id == post_id).first()
     if not post:
@@ -136,7 +157,7 @@ def delete_repost(
     post_id: int,
     current_user: models.User = Depends(get_current_user),
     db: Session = Depends(get_db),
-):
+) -> dict[str, str]:
     """Remove a repost of a post"""
     # Find the user's repost of this post
     repost = (
@@ -165,7 +186,7 @@ def create_repost(
     repost_data: schemas.RepostCreate,
     current_user: models.User = Depends(get_current_user),
     db: Session = Depends(get_db),
-):
+) -> schemas.PostResponse:
     """Create a repost of an existing post"""
     original_post = (
         db.query(models.Post)
@@ -248,7 +269,7 @@ def delete_post(
     post_id: int,
     current_user: models.User = Depends(get_current_user),
     db: Session = Depends(get_db),
-):
+) -> dict[str, str]:
     """Delete a post"""
     post = db.query(models.Post).filter(models.Post.id == post_id).first()
     if not post:
@@ -268,9 +289,9 @@ def delete_post(
 @router.get("/{post_id}", response_model=schemas.PostDetailResponse)
 def get_post(
     post_id: int,
-    current_user: Optional[models.User] = Depends(get_optional_user),
+    current_user: models.User | None = Depends(get_optional_user),
     db: Session = Depends(get_db),
-):
+) -> schemas.PostDetailResponse:
     """Get a single post with all details (public endpoint)"""
     post = db.query(models.Post).filter(models.Post.id == post_id).first()
     if not post:
@@ -304,34 +325,32 @@ def get_post(
         )
 
     # Prepare comments
-    comments = []
-    for comment in post.comments:
-        comments.append(
-            schemas.CommentResponse(
-                id=comment.id,
-                content=comment.content,
-                post_id=comment.post_id,
-                author_id=comment.author_id,
-                author_username=comment.author.username,
-                author_display_name=comment.author.display_name,
-                author_profile_picture=comment.author.profile_picture,
-                created_at=comment.created_at,
-            )
+    comments = [
+        schemas.CommentResponse(
+            id=comment.id,
+            content=comment.content,
+            post_id=comment.post_id,
+            author_id=comment.author_id,
+            author_username=comment.author.username,
+            author_display_name=comment.author.display_name,
+            author_profile_picture=comment.author.profile_picture,
+            created_at=comment.created_at,
         )
+        for comment in post.comments
+    ]
 
     # Prepare reactions
-    reactions = []
-    for reaction in post.reactions:
-        reactions.append(
-            schemas.ReactionResponse(
-                id=reaction.id,
-                reaction_type=reaction.reaction_type,
-                user_id=reaction.user_id,
-                username=reaction.user.username,
-                display_name=reaction.user.display_name,
-                created_at=reaction.created_at,
-            )
+    reactions = [
+        schemas.ReactionResponse(
+            id=reaction.id,
+            reaction_type=reaction.reaction_type,
+            user_id=reaction.user_id,
+            username=reaction.user.username,
+            display_name=reaction.user.display_name,
+            created_at=reaction.created_at,
         )
+        for reaction in post.reactions
+    ]
 
     # Handle original post for reposts
     original_post = None
@@ -394,7 +413,7 @@ def create_comment(
     comment_data: schemas.CommentCreate,
     current_user: models.User = Depends(get_current_user),
     db: Session = Depends(get_db),
-):
+) -> schemas.CommentResponse:
     """Add a comment to a post"""
     post = db.query(models.Post).filter(models.Post.id == post_id).first()
     if not post:
@@ -430,7 +449,7 @@ def add_reaction(
     reaction_data: schemas.ReactionCreate,
     current_user: models.User = Depends(get_current_user),
     db: Session = Depends(get_db),
-):
+) -> schemas.PostResponse:
     """Add or update reaction to a post"""
     post = db.query(models.Post).filter(models.Post.id == post_id).first()
     if not post:
@@ -472,7 +491,7 @@ def remove_reaction(
     post_id: int,
     current_user: models.User = Depends(get_current_user),
     db: Session = Depends(get_db),
-):
+) -> schemas.PostResponse:
     """Remove reaction from a post"""
     post = db.query(models.Post).filter(models.Post.id == post_id).first()
     if not post:

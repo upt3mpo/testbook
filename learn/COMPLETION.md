@@ -112,7 +112,7 @@ You've successfully completed all 5 stages of Testbook and now have the skills t
 
 - **Tools**: Appium, Detox, Maestro
 - **Concepts**: Mobile-specific testing challenges, device testing
-- **Resources**: [Appium Documentation](http://appium.io/docs/en/about-appium/intro/)
+- **Resources**: [Appium Documentation](https://appium.io/docs/en/latest/)
 
 #### 5. Test Automation Frameworks
 

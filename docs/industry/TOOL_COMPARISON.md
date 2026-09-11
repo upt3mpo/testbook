@@ -942,7 +942,7 @@ Remember: the best tool is the one that your team will actually use effectively.
 
 ## Further Reading
 
-- [Industry Practices](INDUSTRY_PRACTICES.md) - How companies choose tools
+- [Case Studies](CASE_STUDIES.md) - Real incidents and what's genuinely documented about industry practice
 - [Case Studies](CASE_STUDIES.md) - Real-world tool usage
 - [Career Guide](CAREER_GUIDE.md) - How tool knowledge impacts your career
 - [Testing Philosophy](../concepts/TESTING_PHILOSOPHY.md) - The mindset behind tool selection

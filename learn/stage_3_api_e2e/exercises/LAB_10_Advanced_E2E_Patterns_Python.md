@@ -31,6 +31,13 @@ The Page Object Model organizes your test code by putting page-specific logic in
 
 #### Step 1: Create Your First Page Object
 
+**Note:** `tests/e2e-python/pages/` already exists in Testbook with working
+`feed_page.py` and `profile_page.py` implementations, and `conftest.py`
+already wires up `feed_page`/`profile_page`/`authenticated_feed` fixtures
+from them. Treat the steps below as rebuilding those files from scratch to
+learn the pattern - if you're working against the real repo, compare what
+you write here with what's already there instead of overwriting it.
+
 Create `tests/e2e-python/pages/__init__.py` (empty file):
 
 ```bash
@@ -55,7 +62,7 @@ class FeedPage:
 
         # Selectors
         self.create_post_textarea = '[data-testid="create-post-textarea"]'
-        self.create_post_submit = '[data-testid="create-post-submit"]'
+        self.create_post_submit = '[data-testid="create-post-submit-button"]'
         self.post_items = '[data-testid-generic="post-item"]'
 
     def goto(self) -> None:
@@ -68,8 +75,9 @@ class FeedPage:
         self.page.fill(self.create_post_textarea, content)
         self.page.click(self.create_post_submit)
 
-        # Wait for post to appear
-        self.page.wait_for_timeout(500)
+        # to_contain_text() retries on its own until the post shows up
+        # (or the timeout is hit), so there's no need for a separate
+        # wait before it.
         expect(self.first_post()).to_contain_text(content)
 
     def first_post(self):
@@ -91,8 +99,14 @@ class FeedPage:
     def delete_first_post(self) -> None:
         """Delete the first post (must be your own)."""
         first = self.first_post()
+        content = first.text_content()
         first.locator('[data-testid$="-delete-button"]').click()
-        self.page.wait_for_timeout(500)
+
+        # Wait for the deleted post to actually disappear, rather than
+        # guessing how long that takes.
+        expect(self.page.locator(f'text="{content}"')).not_to_be_visible(
+            timeout=5000
+        )
 ```
 
 #### Step 2: Create Profile Page Object
@@ -101,6 +115,8 @@ Create `tests/e2e-python/pages/profile_page.py`:
 
 ```python
 """Page Object for the Profile page"""
+
+import re
 
 from playwright.sync_api import Page, expect
 
@@ -111,34 +127,54 @@ class ProfilePage:
     def __init__(self, page: Page) -> None:
         self.page = page
 
+        # Testbook uses a single toggle button (its label switches between
+        # "Follow" and "Unfollow") - there is no separate unfollow-button testid.
+        self.follow_unfollow_button = '[data-testid="profile-follow-button"]'
+
     def goto(self, username: str) -> None:
         """Navigate to a user's profile."""
         self.page.goto(f"http://localhost:3000/profile/{username}")
         expect(self.page.locator('[data-testid="profile-username"]')).to_be_visible()
 
     def follow_user(self) -> None:
-        """Click the follow button."""
-        self.page.click('[data-testid="profile-follow-button"]')
-        self.page.wait_for_timeout(300)
+        """Click the follow/unfollow toggle button, only if not already following."""
+        button = self.page.locator(self.follow_unfollow_button)
+        expect(button).to_be_visible()
+        if "Follow" in button.inner_text():
+            button.click()
+            # Wait for the button label to actually flip, rather than
+            # guessing how long the API call takes. Anchored to the whole
+            # label (not just a substring match) since "Unfollow" itself
+            # contains the word "Follow".
+            expect(button).to_contain_text(re.compile("unfollow", re.IGNORECASE))
 
     def unfollow_user(self) -> None:
-        """Click the unfollow button."""
-        self.page.click('[data-testid="profile-unfollow-button"]')
-        self.page.wait_for_timeout(300)
+        """Click the follow/unfollow toggle button, only if currently following."""
+        button = self.page.locator(self.follow_unfollow_button)
+        expect(button).to_be_visible()
+        if "Unfollow" in button.inner_text():
+            button.click()
+            expect(button).to_contain_text(re.compile("^follow$", re.IGNORECASE))
 
     def is_following(self) -> bool:
-        """Check if currently following this user."""
-        return self.page.locator('[data-testid="profile-unfollow-button"]').is_visible()
+        """Check if currently following this user (button reads "Unfollow")."""
+        return "Unfollow" in self.page.locator(self.follow_unfollow_button).inner_text()
 
     def get_follower_count(self) -> int:
         """Get the number of followers."""
-        text = self.page.locator('[data-testid="profile-followers-count"]').inner_text()
-        return int(text)
+        import re
+
+        text = self.page.locator('[data-testid="profile-followers-link"]').inner_text()
+        match = re.search(r"(\d+)", text)
+        return int(match.group(1)) if match else 0
 
     def get_following_count(self) -> int:
         """Get the number of following."""
-        text = self.page.locator('[data-testid="profile-following-count"]').inner_text()
-        return int(text)
+        import re
+
+        text = self.page.locator('[data-testid="profile-following-link"]').inner_text()
+        match = re.search(r"(\d+)", text)
+        return int(match.group(1)) if match else 0
 
     def get_post_count(self) -> int:
         """Get the number of posts on profile."""
@@ -186,15 +222,20 @@ class TestPageObjectExamples:
         profile = ProfilePage(page)
         profile.goto("mikechen")
 
-        # Get initial counts
+        # Note: the seeded test data already has Sarah following Mike, so we
+        # can't assume the count goes up by 1 - check the "before" state first.
+        was_following = profile.is_following()
         initial_followers = profile.get_follower_count()
 
-        # Follow user
+        # Follow user (no-ops if already following)
         profile.follow_user()
 
         # Verify follow worked
         assert profile.is_following() is True
-        assert profile.get_follower_count() == initial_followers + 1
+        if not was_following:
+            assert profile.get_follower_count() == initial_followers + 1
+        else:
+            assert profile.get_follower_count() == initial_followers
 
     def test_complete_workflow_with_pom(self, page: Page, login_as, fresh_database):
         """Test complete workflow: create post → view profile → follow."""
@@ -282,6 +323,13 @@ Add to `conftest.py`:
 # At the end of conftest.py
 pytest_plugins = ["advanced_conftest"]
 ```
+
+**Note:** the real `tests/e2e-python/conftest.py` already defines
+`feed_page`, `profile_page`, `authenticated_feed`, `create_test_posts`, and
+`any_user` directly (see the bottom of that file) instead of loading them
+from a separate `advanced_conftest.py` plugin. If you're adding this to the
+actual repo, skip the `pytest_plugins` line above - it would just redefine
+fixtures that already exist.
 
 Create `tests/e2e-python/test_advanced_fixtures.py`:
 
@@ -382,7 +430,7 @@ class TestNetworkInterception:
         # Try to create post
         page.goto("http://localhost:3000")
         page.fill('[data-testid="create-post-textarea"]', "This will fail")
-        page.click('[data-testid="create-post-submit"]')
+        page.click('[data-testid="create-post-submit-button"]')
 
         # Should show error message
         from playwright.sync_api import expect
@@ -430,6 +478,8 @@ markers =
     pom: Tests demonstrating Page Object Model
     fixtures: Tests demonstrating advanced fixtures
     network: Tests with network interception
+    builders: Tests using data builders
+    combined: Tests combining API and UI validation
     slow: Tests that take longer to run
 ```
 
@@ -644,7 +694,7 @@ def test_with_post_builder(page: Page, login_as, fresh_database):
 
 ### Part 6: Combined API + UI Validation (25 minutes)
 
-One powerful Python advantage: Use the same language for backend API setup AND frontend UI verification!
+Use the same language for backend API setup AND frontend UI verification! Note that this isn't actually a Python-only capability — Playwright's JavaScript API supports the same pattern via its `request` fixture — it's just not covered in this repo's JavaScript labs. If you're on the JS track and want the equivalent, look at [Playwright's API testing docs](https://playwright.dev/docs/api-testing) for the `request` fixture.
 
 #### Pattern 1: Seed Data via API, Verify via UI
 
@@ -757,7 +807,7 @@ class TestAPIPlusUIValidation:
 
         # Get feed via API
         feed_response = requests.get(
-            f"{api_url}/api/feed",
+            f"{api_url}/api/feed/all",
             headers={"Authorization": f"Bearer {token}"}
         )
         posts = feed_response.json()
@@ -767,8 +817,9 @@ class TestAPIPlusUIValidation:
         assert post_content in post_contents
 
         # Verify exact structure returned by API
+        # (PostResponse uses flat author_* fields, not a nested "author" object)
         created_post = next(p for p in posts if p["content"] == post_content)
-        assert created_post["author"]["username"] == "sarahjohnson"
+        assert created_post["author_username"] == "sarahjohnson"
 ```
 
 #### Pattern 2: Complex Setup via API
@@ -850,9 +901,14 @@ def test_ui_update_persists_to_database(
     login_as("sarah")
     page.goto("http://localhost:3000/settings")
 
-    page.fill('[data-testid="settings-bio"]', "Updated bio from UI test")
-    page.click('[data-testid="settings-save"]')
-    page.wait_for_timeout(500)
+    page.fill('[data-testid="settings-bio-input"]', "Updated bio from UI test")
+    page.click('[data-testid="settings-save-button"]')
+
+    # Wait for the save to actually finish (the success message appearing)
+    # rather than guessing how long the API call takes.
+    expect(page.locator('[data-testid="settings-success"]')).to_be_visible(
+        timeout=5000
+    )
 
     # 2. Verify via API that change persisted
     login_response = requests.post(
@@ -1069,11 +1125,11 @@ The concepts transfer directly between languages!
 
 **🐍 Python's Unique Advantage:** Unlike JavaScript, Python lets you use the same language for backend API manipulation AND frontend UI testing. This enables incredibly fast test setup by seeding data via API instead of clicking through UI!
 
-**Next Lab:** [Lab 7: Playwright Deep Dive (Python)](LAB_07_Playwright_Deep_Dive_Python.md)
+**Next Lab:** [Lab 11: Cross-Browser Testing (Python)](LAB_11_Cross_Browser_Testing_Python.md)
 
 **Next Steps:**
 
 - Apply these patterns to the full test suite
-- Explore [Section 8: Advanced E2E Patterns](../learn/stage_3_api_e2e/README.md#advanced-e2e-patterns) for more examples
-- Compare with [JavaScript advanced patterns](../docs/guides/TESTING_COMPARISON_PYTHON_JS.md)
-- Set up [CI/CD automation](../learn/stage_5_capstone/README.md#cicd-automation)
+- Explore [Section 8: Advanced E2E Patterns](../README.md#part-7-additional-patterns) for more examples
+- Compare with [JavaScript advanced patterns](../../../docs/guides/TESTING_COMPARISON_PYTHON_JS.md)
+- Set up [CI/CD automation](../../stage_5_capstone/README.md#cicd-integration)

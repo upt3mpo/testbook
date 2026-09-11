@@ -4,6 +4,8 @@ Get Testbook running in 5 minutes on any platform!
 
 **⚠️ IMPORTANT:** Use the **development mode** scripts below (`start-dev.sh` / `start-dev.bat`). These run the app on port 3000 and work with all tests. Do NOT use `start.sh` - it's for production deployment only!
 
+**⚠️ Never expose this application to the internet.** The login credentials shown throughout this guide (`sarah.johnson@testbook.com` / `Sarah2024!` and the other seed accounts in `backend/seed.py`) are published in this public repository, not secrets. Anyone who finds an internet-facing instance can log in with them. Run it locally only.
+
 > **🪟 Windows Users:** We show both PowerShell (recommended) and Command Prompt alternatives. Use PowerShell unless you have a specific reason to use Command Prompt. See [Windows Setup Guide](WINDOWS_SETUP.md) for details.
 
 ---
@@ -122,6 +124,7 @@ start-dev.bat
 ```bat
 🚀 Starting Testbook in development mode...
 
+⏳ Checking if ports are available...
 🔧 Setting up backend...
 📦 Creating Python virtual environment...
 📦 Installing backend dependencies with uv (fast!)...
@@ -271,7 +274,7 @@ pytest -v
 pytest -v
 ```
 
-**Expected:** 180 tests pass in ~72 seconds ✅
+**Expected:** 203 tests pass in ~48 seconds ✅
 
 </details>
 
@@ -284,7 +287,7 @@ cd backend
 pytest -v
 ```
 
-**Expected:** 180 tests pass in ~72 seconds ✅
+**Expected:** 203 tests pass in ~48 seconds ✅
 
 </details>
 
@@ -293,6 +296,12 @@ pytest -v
 <details>
 <summary><b>All Platforms</b></summary>
 
+**⚠️ Before running:** stop `start-dev.sh` if it's running without a
+`backend/.env` file, and restart the backend with `TESTING=true` set — a
+handful of E2E tests use the dev-only `/api/dev/reset` endpoint, which is
+disabled unless `TESTING=true`. See [Playwright Quick Start](PLAYWRIGHT_QUICKSTART.md)
+for the full setup.
+
 ```bash
 cd tests
 npm install
@@ -300,7 +309,7 @@ npx playwright install chromium
 npm test
 ```
 
-**Expected:** E2E tests run in browser ✅
+**Expected:** 59 E2E tests pass ✅
 
 </details>
 
@@ -358,7 +367,7 @@ After setup, verify:
 - [ ] Can login with test account
 - [ ] Can create a post
 - [ ] Backend tests run: `cd backend && pytest -v`
-- [ ] See 180 tests pass
+- [ ] See 203 tests pass
 
 **⚠️ Common Mistake:** Don't open port 8000 - that's the API! The app is on port 3000.
 

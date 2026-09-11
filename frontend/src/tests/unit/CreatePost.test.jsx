@@ -17,6 +17,7 @@
  */
 
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { BrowserRouter } from 'react-router-dom';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import * as api from '../../api';
@@ -105,18 +106,19 @@ describe('CreatePost Component', () => {
     expect(screen.getByRole('button', { name: /post/i })).toBeInTheDocument();
   });
 
-  it('allows user to type in the textarea', () => {
+  it('allows user to type in the textarea', async () => {
     /**
      * Test that users can type content into the textarea.
      *
      * This verifies the basic user interaction functionality
      * and ensures the input field accepts user input correctly.
      */
+    const user = userEvent.setup();
     renderCreatePost();
     const textarea = screen.getByPlaceholderText("What's on your mind?");
 
     // Simulate user typing in the textarea
-    fireEvent.change(textarea, { target: { value: 'Test post content' } });
+    await user.type(textarea, 'Test post content');
 
     // Verify the textarea contains the typed content
     expect(textarea.value).toBe('Test post content');
@@ -136,19 +138,20 @@ describe('CreatePost Component', () => {
     expect(postButton).toBeDisabled();
   });
 
-  it('enables Post button when textarea has content', () => {
+  it('enables Post button when textarea has content', async () => {
     /**
      * Test that the Post button is enabled when there's content.
      *
      * This ensures users can submit posts when they have content
      * and provides proper form validation feedback.
      */
+    const user = userEvent.setup();
     renderCreatePost();
     const textarea = screen.getByPlaceholderText("What's on your mind?");
     const postButton = screen.getByRole('button', { name: /post/i });
 
     // Simulate user typing content
-    fireEvent.change(textarea, { target: { value: 'Test post' } });
+    await user.type(textarea, 'Test post');
 
     // Verify the button is enabled when there's content
     expect(postButton).not.toBeDisabled();
@@ -169,6 +172,7 @@ describe('CreatePost Component', () => {
      */
 
     // Arrange - Set up mocks and test data
+    const user = userEvent.setup();
     const mockOnPostCreated = vi.fn(); // Mock function to track callback calls
     const mockPost = {
       id: 1,
@@ -188,10 +192,10 @@ describe('CreatePost Component', () => {
 
     // Act - Simulate user interaction
     // User types content in the textarea
-    fireEvent.change(textarea, { target: { value: 'Test post' } });
+    await user.type(textarea, 'Test post');
 
     // User clicks the submit button
-    fireEvent.click(postButton);
+    await user.click(postButton);
 
     // Assert - Verify API was called correctly and callback was triggered
     await waitFor(() => {
@@ -208,14 +212,15 @@ describe('CreatePost Component', () => {
   });
 
   it('clears textarea after successful post submission', async () => {
+    const user = userEvent.setup();
     api.postsAPI.createPost.mockResolvedValueOnce({ data: { id: 1, content: 'Test' } });
 
     renderCreatePost();
 
     const textarea = screen.getByPlaceholderText("What's on your mind?");
 
-    fireEvent.change(textarea, { target: { value: 'Test post' } });
-    fireEvent.click(screen.getByRole('button', { name: /post/i }));
+    await user.type(textarea, 'Test post');
+    await user.click(screen.getByRole('button', { name: /post/i }));
 
     await waitFor(() => {
       expect(textarea.value).toBe('');
@@ -223,6 +228,7 @@ describe('CreatePost Component', () => {
   });
 
   it('handles API errors gracefully', async () => {
+    const user = userEvent.setup();
     // Suppress expected error output in test logs
     const originalError = console.error;
     console.error = () => {};
@@ -234,8 +240,8 @@ describe('CreatePost Component', () => {
     const textarea = screen.getByPlaceholderText("What's on your mind?");
 
     // Act - User submits post but API fails
-    fireEvent.change(textarea, { target: { value: 'Test post' } });
-    fireEvent.click(screen.getByRole('button', { name: /post/i }));
+    await user.type(textarea, 'Test post');
+    await user.click(screen.getByRole('button', { name: /post/i }));
 
     // Assert - Error message displayed to user
     await waitFor(() => {
@@ -244,6 +250,93 @@ describe('CreatePost Component', () => {
 
     // Restore console.error
     console.error = originalError;
+  });
+
+  describe('Media attachments', () => {
+    // Not covered here: handleDragOver/handleDragLeave/handleDrop (the
+    // drag-and-drop zone) and the video-file preview branch
+    // (selectedFile.type.startsWith('video/') rendering a <video> tag
+    // instead of an <img>). Both are straightforward, not hard - same
+    // fireEvent/File techniques as the tests below - the file-input path
+    // already exercises the same handleFileSelect() validation and state
+    // updates underneath both drag-and-drop and the video branch. If
+    // picked up: drag/drop
+    // needs a DataTransfer-shaped object passed as
+    // `fireEvent.drop(dropZone, { dataTransfer: { files: [file] } })`
+    // (jsdom has no real DataTransfer), and the video branch just needs
+    // a `type: 'video/mp4'` File and a query for the <video> element
+    // instead of getByAltText('Preview').
+    beforeEach(() => {
+      // jsdom doesn't implement createObjectURL - CreatePost calls it to
+      // build a local preview URL for the selected file.
+      global.URL.createObjectURL = vi.fn(() => 'blob:mock-preview-url');
+    });
+
+    it('shows a preview after selecting a file', async () => {
+      const user = userEvent.setup();
+      renderCreatePost();
+
+      const file = new File(['fake-image-bytes'], 'photo.jpg', { type: 'image/jpeg' });
+      const fileInput = document.querySelector('[data-testid="create-post-file-input"]');
+      await user.upload(fileInput, file);
+
+      expect(screen.getByAltText('Preview')).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /remove/i })).toBeInTheDocument();
+    });
+
+    it('rejects a file type that is neither an accepted image nor video', async () => {
+      renderCreatePost();
+
+      const file = new File(['not-media'], 'notes.txt', { type: 'text/plain' });
+      const fileInput = document.querySelector('[data-testid="create-post-file-input"]');
+      // fireEvent bypasses userEvent's accept-attribute filtering, the
+      // same way a real browser's drag-and-drop would.
+      fireEvent.change(fileInput, { target: { files: [file] } });
+
+      expect(
+        await screen.findByText(
+          'Please select a valid image (JPG, PNG, GIF, WebP) or video (MP4, MOV, AVI) file'
+        )
+      ).toBeInTheDocument();
+      expect(screen.queryByAltText('Preview')).not.toBeInTheDocument();
+    });
+
+    it('removes the selected file when Remove is clicked', async () => {
+      const user = userEvent.setup();
+      renderCreatePost();
+
+      const file = new File(['fake-image-bytes'], 'photo.jpg', { type: 'image/jpeg' });
+      const fileInput = document.querySelector('[data-testid="create-post-file-input"]');
+      await user.upload(fileInput, file);
+      await user.click(screen.getByRole('button', { name: /remove/i }));
+
+      expect(screen.queryByAltText('Preview')).not.toBeInTheDocument();
+    });
+
+    it('uploads the file and includes its URL when submitting a post', async () => {
+      const user = userEvent.setup();
+      const mockPost = { id: 1, content: 'Check this out', image_url: '/static/uploads/x.jpg' };
+      api.postsAPI.uploadMedia.mockResolvedValueOnce({
+        data: { url: '/static/uploads/x.jpg' },
+      });
+      api.postsAPI.createPost.mockResolvedValueOnce({ data: mockPost });
+      renderCreatePost();
+
+      const file = new File(['fake-image-bytes'], 'photo.jpg', { type: 'image/jpeg' });
+      const fileInput = document.querySelector('[data-testid="create-post-file-input"]');
+      await user.upload(fileInput, file);
+      await user.type(screen.getByPlaceholderText("What's on your mind?"), 'Check this out');
+      await user.click(screen.getByRole('button', { name: 'Post' }));
+
+      await waitFor(() => {
+        expect(api.postsAPI.uploadMedia).toHaveBeenCalledWith(file);
+      });
+      expect(api.postsAPI.createPost).toHaveBeenCalledWith({
+        content: 'Check this out',
+        image_url: '/static/uploads/x.jpg',
+        video_url: null,
+      });
+    });
   });
 });
 

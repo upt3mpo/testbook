@@ -25,7 +25,7 @@ REM Run markdown linting
 echo 1️⃣  Running Markdown Linting...
 echo.
 
-markdownlint "**/*.md" --ignore node_modules --ignore venv --ignore backend/venv --ignore frontend/node_modules --ignore backend/htmlcov
+markdownlint "**/*.md" --ignore node_modules --ignore .venv --ignore backend/.venv --ignore frontend/node_modules --ignore backend/htmlcov
 if errorlevel 1 (
     echo.
     echo ❌ Markdown linting found issues
@@ -75,8 +75,8 @@ for /r docs %%f in (*.md) do (
     markdown-link-check "%%f" --config .markdown-link-check.json --quiet >nul 2>&1 || echo   ⚠️  Some links may be broken ^(non-blocking^)
 )
 
-REM Check labs
-for /r labs %%f in (*.md) do (
+REM Check learn/
+for /r learn %%f in (*.md) do (
     echo Checking: %%f
     markdown-link-check "%%f" --config .markdown-link-check.json --quiet >nul 2>&1 || echo   ⚠️  Some links may be broken ^(non-blocking^)
 )

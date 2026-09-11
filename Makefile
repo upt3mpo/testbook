@@ -72,7 +72,7 @@ install: install-backend install-frontend install-tests
 
 install-backend:
 	@echo "📦 Installing backend dependencies..."
-	cd backend && python -m .venv .venv
+	cd backend && python3 -m venv .venv
 	cd backend && . .venv/bin/activate && pip install --upgrade pip && pip install -r requirements.txt
 
 install-frontend:
@@ -159,7 +159,7 @@ test-performance:
 
 test-contract:
 	@echo "📋 Running API contract tests..."
-	cd backend && . .venv/bin/activate && TESTING=true pytest tests/test_api_contract.py -v
+	cd backend && . .venv/bin/activate && TESTING=true pytest tests/integration/test_api_contract.py -v
 
 test-all:
 	@echo "🧪 Running comprehensive test suite..."

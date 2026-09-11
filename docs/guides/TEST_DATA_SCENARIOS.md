@@ -372,7 +372,7 @@ console.log("Seeding complete:", result);
 - Backend Dev Endpoints: `backend/routers/dev.py`
 - Test Helpers (JavaScript): See E2E test files in `tests/e2e/`
 - Test Helpers (Python): `tests/e2e-python/conftest.py`
-- [LAB 05: Test Data Management](../../learn/stage_2_integration/exercises/LAB_05_Test_Data_Management.md)
+- [LAB 05: Test Data Management](../../learn/stage_2_integration/exercises/LAB_07_Test_Data_Management_Python.md)
 
 ---
 

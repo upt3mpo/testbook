@@ -143,7 +143,7 @@ tests/test_my_first.py::test_list_contains PASSED ✓
 
 ### Step 5: Make a Test Fail (On Purpose!) (5 minutes)
 
-**Change line 7 to:**
+**Find the `assert` line inside `test_basic_math` and change it to:**
 
 ```python
 assert result == 5  # Wrong answer!

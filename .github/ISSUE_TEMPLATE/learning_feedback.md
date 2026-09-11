@@ -27,11 +27,13 @@ Last Updated: October 2025
 
 ## 📚 What You Completed
 
-**Labs/Sections:**
-- [ ] Labs 1-3 (Beginner)
-- [ ] Labs 4-6 (Intermediate)
-- [ ] Debug Labs
-- [ ] Full course curriculum
+**Stages Completed:**
+- [ ] Stage 1: Unit Tests
+- [ ] Stage 2: Integration Tests
+- [ ] Stage 3: API & E2E Testing
+- [ ] Stage 4: Performance & Security
+- [ ] Stage 5: Capstone
+- [ ] Full 5-stage curriculum
 - [ ] Other: ___________
 
 **Time Invested:** [e.g. 5 hours, 2 weeks, etc.]

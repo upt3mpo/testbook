@@ -41,6 +41,15 @@ Organize tests with clear structure, proper data management, and CI/CD integrati
 
 ### Part 1: Test Structure Organization (30 minutes)
 
+**Note:** `tests/e2e/` already has real files from Labs 9-11 (`playwright.config.js`,
+`auth.spec.js`, `posts.spec.js`, `users.spec.js`, `fixtures/test-helpers.js`, etc.).
+The structure below is a larger, "how would this scale to 100+ tests" reorganization.
+It reuses the same filename (`playwright.config.js`) with different contents and
+nests specs one level deeper (`tests/e2e/tests/smoke/...`). Don't paste these over
+your working Lab 9-11 config and specs; either build this in a separate scratch
+directory to see the pattern, or read through it comparing to what's already there
+rather than overwriting it.
+
 #### Step 1: Create Test Directory Structure
 
 Create the following directory structure:
@@ -52,8 +61,8 @@ tests/e2e/
 ├── pages/                      # Page Object Model classes
 │   ├── BasePage.js
 │   ├── LoginPage.js
-│   ├── DashboardPage.js
-│   └── PostPage.js
+│   ├── RegisterPage.js
+│   └── FeedPage.js         # Testbook has no "/dashboard" route - posts live on the feed ("/")
 ├── tests/                      # Test files
 │   ├── smoke/                  # Critical path tests
 │   │   └── critical-flows.spec.js
@@ -82,9 +91,11 @@ tests/e2e/
 Create `tests/e2e/playwright.config.js`:
 
 ```javascript
-const { defineConfig, devices } = require("@playwright/test");
+// Note: tests/package.json declares "type": "module", so this project uses
+// ESM `import`/`export` syntax throughout - not CommonJS `require()`.
+import { defineConfig, devices } from "@playwright/test";
 
-module.exports = defineConfig({
+export default defineConfig({
   testDir: "./tests",
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
@@ -128,18 +139,30 @@ module.exports = defineConfig({
   webServer: [
     {
       command:
-        "cd ../../backend && python -m uvicorn main:app --host 0.0.0.0 --port 8000",
+        "cd ../../backend && TESTING=true python -m uvicorn main:app --host 0.0.0.0 --port 8000",
       port: 8000,
       reuseExistingServer: !process.env.CI,
     },
     {
-      command: "cd ../../frontend && npm start",
+      // frontend/package.json has no "start" script - "dev" runs the Vite dev server
+      command: "cd ../../frontend && npm run dev",
       port: 3000,
       reuseExistingServer: !process.env.CI,
     },
   ],
 });
 ```
+
+**⚠️ Important:** This is a separate, self-contained config for this
+exercise - it is not the real `tests/playwright.config.js` Testbook ships
+with. The real config only enables the `chromium` project by default
+(firefox/webkit/mobile projects are present but commented out); running
+`--project=firefox` or `--project=webkit` against the real Testbook suite
+will fail with "Project(s) 'firefox' not found" until you uncomment the
+corresponding block in `tests/playwright.config.js`. The config above
+enables all five projects explicitly, so cross-browser commands only "just
+work" here because this file defines them - they won't work against
+Testbook's real config as-is.
 
 #### Step 3: Create Base Page Object
 
@@ -206,13 +229,13 @@ class BasePage {
   }
 }
 
-module.exports = BasePage;
+export default BasePage;
 ```
 
 Create `tests/e2e/pages/LoginPage.js`:
 
 ```javascript
-const BasePage = require("./BasePage");
+import BasePage from "./BasePage.js";
 
 class LoginPage extends BasePage {
   constructor(page) {
@@ -220,8 +243,10 @@ class LoginPage extends BasePage {
     this.emailInput = "input[data-testid='login-email-input']";
     this.passwordInput = "input[data-testid='login-password-input']";
     this.loginButton = "button[data-testid='login-submit-button']";
-    this.errorMessage = "[data-testid='login-error-message']";
-    this.successMessage = "[data-testid='login-success-message']";
+    // Testbook's real testid is "login-error" (not "login-error-message"),
+    // and there is no dedicated success-message element - a successful
+    // login just redirects to "/" and shows the navbar.
+    this.errorMessage = "[data-testid='login-error']";
   }
 
   async login(email, password) {
@@ -231,7 +256,7 @@ class LoginPage extends BasePage {
   }
 
   async isLoginSuccessful() {
-    return await this.isVisible(this.successMessage);
+    return await this.isVisible("[data-testid='navbar']");
   }
 
   async getErrorMessage() {
@@ -242,11 +267,12 @@ class LoginPage extends BasePage {
   }
 
   async waitForLoginSuccess() {
-    await this.waitForUrl("**/dashboard");
+    // Testbook has no /dashboard route - a successful login redirects to "/"
+    await this.waitForUrl("http://localhost:3000/");
   }
 }
 
-module.exports = LoginPage;
+export default LoginPage;
 ```
 
 ---
@@ -293,6 +319,13 @@ Create `tests/e2e/data/users.json`:
 
 Create `tests/e2e/data/posts.json`:
 
+**Note:** Testbook's actual `Post` model only has a `content` field (plus
+optional `image_url`/`video_url`) - see `backend/schemas.py`'s
+`PostCreate`. There's no `title` or `tags` field on real posts. The
+`title`/`tags` fields below are kept as a generic example of structuring
+test data with more fields than the app under test currently has; drop
+them if you adapt this file to drive real Testbook E2E tests.
+
 ```json
 {
   "validPosts": [
@@ -327,8 +360,12 @@ Create `tests/e2e/data/posts.json`:
 Create `tests/e2e/utils/data-helpers.js`:
 
 ```javascript
-const fs = require("fs");
-const path = require("path");
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+
+// __dirname isn't available in ESM - derive it from import.meta.url instead
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 class DataHelper {
   constructor() {
@@ -396,7 +433,7 @@ class DataHelper {
   }
 }
 
-module.exports = DataHelper;
+export default DataHelper;
 ```
 
 ---
@@ -408,11 +445,16 @@ module.exports = DataHelper;
 Create `tests/e2e/tests/smoke/critical-flows.spec.js`:
 
 ```javascript
-const { test, expect } = require("@playwright/test");
-const LoginPage = require("../../pages/LoginPage");
-const DashboardPage = require("../../pages/DashboardPage");
-const DataHelper = require("../../utils/data-helpers");
+import { test, expect } from "@playwright/test";
+import LoginPage from "../../pages/LoginPage.js";
+import FeedPage from "../../pages/FeedPage.js";
+import DataHelper from "../../utils/data-helpers.js";
 
+// Note: Testbook has no "/dashboard" route or welcome-message banner -
+// after login, users land on the feed ("/"). These tests use a FeedPage
+// object (data-testid="feed-page") rather than a fictional DashboardPage,
+// and verify the logged-in user via navbar-username (which shows the
+// user's display name), matching how tests/e2e/auth.spec.js does it.
 test.describe("Critical Flows", () => {
   let dataHelper;
 
@@ -420,10 +462,10 @@ test.describe("Critical Flows", () => {
     dataHelper = new DataHelper();
   });
 
-  test("user can login and view dashboard", async ({ page }) => {
+  test("user can login and view feed", async ({ page }) => {
     // Arrange
     const loginPage = new LoginPage(page);
-    const dashboardPage = new DashboardPage(page);
+    const feedPage = new FeedPage(page);
     const user = dataHelper.getUserByEmail("test@example.com");
 
     // Act
@@ -432,41 +474,40 @@ test.describe("Critical Flows", () => {
 
     // Assert
     expect(await loginPage.isLoginSuccessful()).toBeTruthy();
-    expect(await dashboardPage.isDashboardVisible()).toBeTruthy();
-    expect(await dashboardPage.getWelcomeMessage()).toBe(
-      `Welcome, ${user.displayName}!`
+    expect(await feedPage.isVisible("[data-testid='feed-page']")).toBeTruthy();
+    expect(await loginPage.getText("[data-testid='navbar-username']")).toBe(
+      user.displayName
     );
   });
 
   test("user can create post", async ({ page }) => {
     // Arrange
     const loginPage = new LoginPage(page);
-    const dashboardPage = new DashboardPage(page);
-    const postPage = new PostPage(page);
+    const feedPage = new FeedPage(page);
     const user = dataHelper.getUserByEmail("test@example.com");
+    // Testbook posts only have a `content` field (no title/tags) - see
+    // backend/schemas.py PostCreate - so we use the post content directly.
     const post = dataHelper.getValidPosts()[0];
 
     // Act
     await loginPage.goto("/login");
     await loginPage.login(user.email, user.password);
-    await dashboardPage.clickCreatePost();
-    await postPage.createPost(post.title, post.content);
+    await feedPage.createPost(post.content);
 
     // Assert
-    expect(await postPage.isPostCreated()).toBeTruthy();
-    expect(await postPage.getPostTitle()).toBe(post.title);
+    expect(await feedPage.isPostVisible(post.content)).toBeTruthy();
   });
 
   test("user can logout", async ({ page }) => {
     // Arrange
     const loginPage = new LoginPage(page);
-    const dashboardPage = new DashboardPage(page);
+    const feedPage = new FeedPage(page);
     const user = dataHelper.getUserByEmail("test@example.com");
 
     // Act
     await loginPage.goto("/login");
     await loginPage.login(user.email, user.password);
-    await dashboardPage.logout();
+    await feedPage.logout();
 
     // Assert
     expect(
@@ -482,11 +523,10 @@ test.describe("Critical Flows", () => {
 Create `tests/e2e/tests/regression/user-management.spec.js`:
 
 ```javascript
-const { test, expect } = require("@playwright/test");
-const LoginPage = require("../../pages/LoginPage");
-const RegisterPage = require("../../pages/RegisterPage");
-const ProfilePage = require("../../pages/ProfilePage");
-const DataHelper = require("../../utils/data-helpers");
+import { test, expect } from "@playwright/test";
+import LoginPage from "../../pages/LoginPage.js";
+import RegisterPage from "../../pages/RegisterPage.js";
+import DataHelper from "../../utils/data-helpers.js";
 
 test.describe("User Management", () => {
   let dataHelper;
@@ -510,10 +550,13 @@ test.describe("User Management", () => {
     );
 
     // Assert
+    // Note: Testbook shows no "Registration successful!" banner - a
+    // successful registration auto-logs the user in and redirects to "/",
+    // so a passing registration is verified by the navbar appearing.
     expect(await registerPage.isRegistrationSuccessful()).toBeTruthy();
-    expect(await registerPage.getSuccessMessage()).toBe(
-      "Registration successful!"
-    );
+    expect(
+      await registerPage.isVisible("[data-testid='navbar']")
+    ).toBeTruthy();
   });
 
   test("user registration with invalid data", async ({ page }) => {
@@ -531,26 +574,33 @@ test.describe("User Management", () => {
     );
 
     // Assert
+    // Real error testid is "register-error" (not "register-error-message")
     expect(await registerPage.isRegistrationSuccessful()).toBeFalsy();
     expect(await registerPage.getErrorMessage()).not.toBe("");
   });
 
-  test("user profile update", async ({ page }) => {
+  test("user can update profile", async ({ page }) => {
     // Arrange
     const loginPage = new LoginPage(page);
-    const profilePage = new ProfilePage(page);
     const user = dataHelper.getUserByEmail("test@example.com");
 
     // Act
     await loginPage.goto("/login");
     await loginPage.login(user.email, user.password);
-    await profilePage.goto("/profile");
-    await profilePage.updateProfile("Updated Name", "Updated bio");
+
+    // Note: Testbook has no bare "/profile" route or inline edit form on the
+    // profile page - editing display name/bio happens on "/settings" (the
+    // Profile page's "Edit Profile" button just navigates there).
+    await page.goto("http://localhost:3000/settings");
+    await page.fill(
+      '[data-testid="settings-display-name-input"]',
+      "Updated Name"
+    );
+    await page.fill('[data-testid="settings-bio-input"]', "Updated bio");
+    await page.click('[data-testid="settings-save-button"]');
 
     // Assert
-    expect(await profilePage.isProfileUpdated()).toBeTruthy();
-    expect(await profilePage.getDisplayName()).toBe("Updated Name");
-    expect(await profilePage.getBio()).toBe("Updated bio");
+    await expect(page.locator('[data-testid="settings-success"]')).toBeVisible();
   });
 });
 ```
@@ -586,7 +636,8 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "18"
+          # Testbook targets Node 24 (see other workflows in .github/workflows/)
+          node-version: "24"
           cache: "npm"
 
       - name: Install dependencies
@@ -603,6 +654,11 @@ jobs:
           npx playwright install-deps
 
       - name: Start backend server
+        env:
+          # TESTING=true enables the /api/dev/reset endpoint and relaxed
+          # rate limits the E2E suite depends on - without it, tests that
+          # reset the database will fail.
+          TESTING: true
         run: |
           cd backend
           pip install -r requirements.txt
@@ -613,7 +669,9 @@ jobs:
         run: |
           cd frontend
           npm run build
-          npm start &
+          # frontend/package.json has no "start" script - use "preview"
+          # (Vite's static server) to serve the production build instead.
+          npm run preview -- --host 0.0.0.0 --port 3000 &
           sleep 10
 
       - name: Run E2E tests
@@ -640,6 +698,7 @@ Create `tests/e2e/package.json`:
   "name": "testbook-e2e-tests",
   "version": "1.0.0",
   "description": "E2E tests for Testbook application",
+  "type": "module",
   "scripts": {
     "test": "playwright test",
     "test:smoke": "playwright test tests/smoke/",
@@ -656,10 +715,19 @@ Create `tests/e2e/package.json`:
     "install": "playwright install"
   },
   "devDependencies": {
-    "@playwright/test": "^1.40.0"
+    "@playwright/test": "^1.56.1"
   }
 }
 ```
+
+**⚠️ Important:** Node resolves ESM vs. CommonJS using the *nearest*
+`package.json` in the directory tree. The real `tests/package.json` already
+sets `"type": "module"` for everything under `tests/`, which is why
+`tests/e2e/auth.spec.js`, `posts.spec.js`, etc. can use `import`. If you
+create a second `package.json` inside `tests/e2e/` without `"type": "module"`,
+Node would treat that subtree as CommonJS instead and break the real ESM spec
+files sitting right next to it - so this field is required, not optional,
+in this exercise.
 
 ---
 
@@ -669,8 +737,11 @@ Create `tests/e2e/package.json`:
 
 ```javascript
 // Create tests/e2e/run-tests.js
-const { execSync } = require("child_process");
-const path = require("path");
+import { execSync } from "child_process";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 class TestRunner {
   constructor() {
@@ -719,7 +790,11 @@ class TestRunner {
 }
 
 // CLI usage
-if (require.main === module) {
+// ESM equivalent of CommonJS's `require.main === module` check
+const isMainModule =
+  process.argv[1] && import.meta.url === `file://${process.argv[1]}`;
+
+if (isMainModule) {
   const args = process.argv.slice(2);
   const suite = args[0];
   const browser = args[1] || "chromium";
@@ -734,7 +809,7 @@ if (require.main === module) {
   }
 }
 
-module.exports = TestRunner;
+export default TestRunner;
 ```
 
 ### Challenge 2: Create Test Data Factory
@@ -775,7 +850,7 @@ class TestDataFactory {
   }
 }
 
-module.exports = TestDataFactory;
+export default TestDataFactory;
 ```
 
 ---
@@ -807,12 +882,12 @@ module.exports = TestDataFactory;
 
 **Continue building your skills:**
 
-- **[Lab 13: Load Testing with k6 (JavaScript)](LAB_13_Load_Testing_k6.md)** - Performance testing
-- **[Lab 14: Security Testing & OWASP (JavaScript)](LAB_14_Security_Testing_OWASP_JavaScript.md)** - Security testing
-- **[Lab 15: Rate Limiting & Production Monitoring (JavaScript)](LAB_15_Rate_Limiting_Production_JavaScript.md)** - Production readiness
+- **[Lab 13: Load Testing with k6 (JavaScript)](../../stage_4_performance_security/exercises/LAB_13_Load_Testing_k6.md)** - Performance testing
+- **[Lab 14: Security Testing & OWASP (JavaScript)](../../stage_4_performance_security/exercises/LAB_14_Security_Testing_OWASP_JavaScript.md)** - Security testing
+- **[Lab 15: Rate Limiting & Production Monitoring (JavaScript)](../../stage_4_performance_security/exercises/LAB_15_Rate_Limiting_Production_JavaScript.md)** - Production readiness
 
 ---
 
 **🎉 Congratulations!** You now understand how to organize E2E tests for maintainability and team collaboration!
 
-**Next Lab:** [Lab 13: Load Testing with k6 (JavaScript)](LAB_13_Load_Testing_k6.md)
+**Next Lab:** [Lab 13: Load Testing with k6 (JavaScript)](../../stage_4_performance_security/exercises/LAB_13_Load_Testing_k6.md)

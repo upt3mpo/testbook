@@ -2,57 +2,54 @@ name: Testbook CI
 
 on:
   push:
-    branches: [main, dev]
+    branches: [main, develop]
   pull_request:
-    branches: [main, dev]
+    branches: [main, develop]
   workflow_dispatch: # Allow manual trigger
 
 jobs:
   lint-backend:
     name: Lint Backend (Python)
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
-      - name: Set up Python 3.11
-        uses: actions/setup-python@v5
+      - name: Set up Python 3.13
+        uses: actions/setup-python@v7
         with:
-          python-version: "3.11"
+          python-version: "3.13"
           cache: "pip"
 
       - name: Install linting tools
         run: |
           cd backend
           python -m pip install --upgrade pip
-          pip install black==24.10.0 flake8==7.1.1 isort==5.13.2
+          pip install black==25.1.0 ruff==0.16.4
 
       - name: Run Black (format check)
         run: |
           cd backend
           black --check --diff .
 
-      - name: Run isort (import sort check)
+      - name: Run Ruff (import sort + lint)
         run: |
           cd backend
-          isort --check-only --diff .
-
-      - name: Run Flake8 (linting)
-        run: |
-          cd backend
-          flake8 .
+          ruff check .
 
   lint-frontend:
     name: Lint Frontend (JavaScript)
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Set up Node.js 24 (LTS)
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: "24"
           cache: "npm"
@@ -76,16 +73,17 @@ jobs:
   backend-tests:
     name: Backend Tests (Python)
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     needs: lint-backend
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
-      - name: Set up Python 3.11
-        uses: actions/setup-python@v5
+      - name: Set up Python 3.13
+        uses: actions/setup-python@v7
         with:
-          python-version: "3.11"
+          python-version: "3.13"
           cache: "pip"
 
       - name: Install dependencies
@@ -102,7 +100,7 @@ jobs:
           pytest --cov=. --cov-report=xml --cov-report=html --cov-report=term-missing --cov-fail-under=80 -v --ignore=tests/integration/test_api_contract.py
 
       - name: Upload backend coverage to Codecov
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v7
         with:
           files: ./backend/coverage.xml
           flags: backend
@@ -110,7 +108,7 @@ jobs:
           fail_ci_if_error: false
 
       - name: Upload backend coverage HTML
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: backend-coverage-report
           path: backend/htmlcov/
@@ -127,14 +125,15 @@ jobs:
   frontend-tests:
     name: Frontend Tests (JavaScript)
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     needs: lint-frontend
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Set up Node.js 24 (LTS)
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: "24"
           cache: "npm"
@@ -161,7 +160,7 @@ jobs:
           npm test -- --coverage --run
 
       - name: Upload frontend coverage to Codecov
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v7
         with:
           files: ./frontend/coverage/coverage-final.json
           flags: frontend
@@ -169,7 +168,7 @@ jobs:
           fail_ci_if_error: false
 
       - name: Upload frontend coverage HTML
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: frontend-coverage-report
           path: frontend/coverage/
@@ -178,6 +177,7 @@ jobs:
   e2e-tests-js:
     name: E2E Tests (Playwright JavaScript)
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     needs: [backend-tests, frontend-tests]
 
     services:
@@ -197,10 +197,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Set up Node.js 24 (LTS)
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: "24"
           cache: "npm"
@@ -208,10 +208,10 @@ jobs:
             frontend/package-lock.json
             tests/package-lock.json
 
-      - name: Set up Python 3.11
-        uses: actions/setup-python@v5
+      - name: Set up Python 3.13
+        uses: actions/setup-python@v7
         with:
-          python-version: "3.11"
+          python-version: "3.13"
           cache: "pip"
 
       - name: Install backend dependencies
@@ -233,11 +233,29 @@ jobs:
           echo "Test dependencies:"
           npm list --depth=0 | head -10
 
-      - name: Install Playwright browsers
+      - name: Install test dependencies
         run: |
           cd tests
           npm ci
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v6
+        id: playwright-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-browsers-chromium-${{ runner.os }}-${{ hashFiles('tests/package-lock.json') }}
+
+      - name: Install Playwright chromium
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: |
+          cd tests
           npx playwright install --with-deps chromium
+
+      - name: Install Playwright OS dependencies only
+        if: steps.playwright-cache.outputs.cache-hit == 'true'
+        run: |
+          cd tests
+          npx playwright install-deps chromium
 
       - name: Start backend server
         env:
@@ -281,7 +299,7 @@ jobs:
           npx playwright test --project=chromium
 
       - name: Upload Playwright report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: playwright-report-js
@@ -291,6 +309,7 @@ jobs:
   e2e-tests-python:
     name: E2E Tests (Playwright Python)
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     needs: [backend-tests, frontend-tests]
 
     services:
@@ -310,16 +329,16 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
-      - name: Set up Python 3.11
-        uses: actions/setup-python@v5
+      - name: Set up Python 3.13
+        uses: actions/setup-python@v7
         with:
-          python-version: "3.11"
+          python-version: "3.13"
           cache: "pip"
 
       - name: Set up Node.js 24 (LTS)
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: "24"
           cache: "npm"
@@ -335,7 +354,25 @@ jobs:
         run: |
           cd tests/e2e-python
           pip install -r requirements.txt
+
+      - name: Cache Playwright browsers (Python)
+        uses: actions/cache@v6
+        id: playwright-cache-python
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-browsers-chromium-${{ runner.os }}-${{ hashFiles('tests/e2e-python/requirements.txt') }}
+
+      - name: Install Playwright chromium
+        if: steps.playwright-cache-python.outputs.cache-hit != 'true'
+        run: |
+          cd tests/e2e-python
           playwright install --with-deps chromium
+
+      - name: Install Playwright OS dependencies only
+        if: steps.playwright-cache-python.outputs.cache-hit == 'true'
+        run: |
+          cd tests/e2e-python
+          playwright install-deps chromium
 
       - name: Install frontend dependencies
         run: |
@@ -383,7 +420,7 @@ jobs:
           pytest -v
 
       - name: Upload Python E2E artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: e2e-python-artifacts
@@ -393,6 +430,7 @@ jobs:
   security-tests:
     name: Security Tests
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     needs: backend-tests
 
     services:
@@ -412,12 +450,12 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
-      - name: Set up Python 3.11
-        uses: actions/setup-python@v5
+      - name: Set up Python 3.13
+        uses: actions/setup-python@v7
         with:
-          python-version: "3.11"
+          python-version: "3.13"
           cache: "pip"
 
       - name: Install dependencies
@@ -452,6 +490,7 @@ jobs:
   badge-update:
     name: Update Badges
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     needs:
       [
         lint-backend,
@@ -468,9 +507,9 @@ jobs:
       - name: Create status badge
         run: |
           echo "All tests and quality checks passed! ✅" >> $GITHUB_STEP_SUMMARY
-          echo "- **Linting:** Black, isort, Flake8 (Python) | ESLint, Prettier (JS)" >> $GITHUB_STEP_SUMMARY
-          echo "- **Backend:** 180+ tests | 86% coverage (enforced minimum: 80%)" >> $GITHUB_STEP_SUMMARY
-          echo "- **Frontend:** 30 tests | 95% coverage" >> $GITHUB_STEP_SUMMARY
+          echo "- **Linting:** Black, Ruff (Python) | ESLint, Prettier (JS)" >> $GITHUB_STEP_SUMMARY
+          echo "- **Backend:** 180 tests | 86% coverage (enforced minimum: 80%)" >> $GITHUB_STEP_SUMMARY
+          echo "- **Frontend:** 40 tests | 41% coverage" >> $GITHUB_STEP_SUMMARY
           echo "- **E2E (JS):** Full suite" >> $GITHUB_STEP_SUMMARY
           echo "- **E2E (Python):** Full suite" >> $GITHUB_STEP_SUMMARY
           echo "- **Security:** OWASP checks" >> $GITHUB_STEP_SUMMARY

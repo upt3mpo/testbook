@@ -1,4 +1,5 @@
 import os
+from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
@@ -10,7 +11,7 @@ from seed import seed_database
 router = APIRouter()
 
 
-def require_test_mode():
+def require_test_mode() -> bool:
     """Dependency to require test mode for dangerous operations"""
     # Check TESTING environment variable dynamically to support runtime changes
     testing = os.getenv("TESTING", "false").lower() == "true"
@@ -23,7 +24,9 @@ def require_test_mode():
 
 
 @router.post("/reset")
-def reset_database(db: Session = Depends(get_db), _: bool = Depends(require_test_mode)):
+def reset_database(
+    db: Session = Depends(get_db), _: bool = Depends(require_test_mode)
+) -> dict[str, str]:
     """Reset database to initial state (drop all tables and recreate)
 
     ⚠️ REQUIRES TEST MODE: Set TESTING=true in environment to use this endpoint.
@@ -45,7 +48,7 @@ def reset_database(db: Session = Depends(get_db), _: bool = Depends(require_test
 
 
 @router.post("/seed")
-def reseed_database(_: bool = Depends(require_test_mode)):
+def reseed_database(_: bool = Depends(require_test_mode)) -> dict[str, str]:
     """Reseed database with fresh data (keeps existing data)
 
     ⚠️ REQUIRES TEST MODE: Set TESTING=true in environment to use this endpoint.
@@ -57,7 +60,7 @@ def reseed_database(_: bool = Depends(require_test_mode)):
 @router.get("/users")
 def get_all_users_with_passwords(
     db: Session = Depends(get_db), _: bool = Depends(require_test_mode)
-):
+) -> list[dict[str, Any]]:
     """Get all users with their plain text passwords (for testing only)
 
     ⚠️ REQUIRES TEST MODE: Set TESTING=true in environment to use this endpoint.
@@ -101,11 +104,11 @@ def get_all_users_with_passwords(
 def create_test_post(
     user_id: int,
     content: str,
-    image_url: str = None,
-    video_url: str = None,
+    image_url: str | None = None,
+    video_url: str | None = None,
     db: Session = Depends(get_db),
     _: bool = Depends(require_test_mode),
-):
+) -> dict[str, Any]:
     """Quickly create a post for a specific user (for testing)
 
     ⚠️ REQUIRES TEST MODE: Set TESTING=true in environment to use this endpoint.

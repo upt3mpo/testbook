@@ -99,6 +99,7 @@ function Feed() {
   return (
     <div className="feed-container" data-testid="feed-page">
       <div className="feed-content">
+        <h1 className="sr-only">Feed</h1>
         <div className="feed-tabs" data-testid="feed-tabs">
           <button
             className={`feed-tab ${feedType === 'all' ? 'active' : ''}`}

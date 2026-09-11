@@ -13,7 +13,7 @@ Last Updated: October 2025
 ## 📄 Documentation Location
 
 **Which document?**
-[e.g. README.md, LAB_03_Testing_API_Endpoints.md, TESTING_CHEATSHEET.md]
+[e.g. README.md, LAB_05_API_Endpoint_Testing_Python.md, TESTING_CHEATSHEET.md]
 
 **Section/heading:**
 [e.g. "Step 3: Writing Your First Test"]

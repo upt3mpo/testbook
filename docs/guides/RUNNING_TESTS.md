@@ -2,7 +2,7 @@
 
 Comprehensive cross-platform guide for running all Testbook tests.
 
-**✅ 166 Backend Tests | 60+ E2E Tests | All Verified Working**
+**✅ 203 Backend Tests | 119 E2E Tests (59 JS + 60 Python) | All Verified Working**
 
 ---
 
@@ -26,7 +26,7 @@ cd backend
 pytest -v
 ```
 
-**Expected:** 166 tests pass in ~51 seconds ✅
+**Expected:** 203 tests pass in ~48 seconds ✅
 
 ---
 
@@ -34,19 +34,19 @@ pytest -v
 
 ### Backend Tests (Python/pytest)
 
-- **166 tests** (unit, integration, database)
-- **84% coverage**
+- **203 tests** (unit, integration, database)
+- **85% coverage**
 - **Platform:** All (Python is cross-platform)
 - **Language:** Python
 
 ### E2E Tests (Playwright)
 
-- **60+ tests** (browser automation)
+- **119 tests** (59 JavaScript + 60 Python, browser automation)
 - **Cross-browser** (Chrome, Firefox, Safari)
 - **Platform:** All
 - **Language:** JavaScript or Python (your choice!)
 
-> **Before you run E2E tests:** start the development servers with `./start-dev.sh` (macOS/Linux) or `start-dev.bat` (Windows). The UI will be available at `http://localhost:3000` and the API at `http://localhost:8000`.
+> **Before you run E2E tests:** start the backend with `TESTING=true` (see [E2E Tests → Setup](#e2e-tests) below) and the frontend with `npm run dev`, or use `./start-dev.sh` / `start-dev.bat` and export `TESTING=true` first. The UI will be available at `http://localhost:3000` and the API at `http://localhost:8000`.
 
 ### API Tests
 
@@ -60,7 +60,7 @@ pytest -v
 
 ### Security Tests
 
-- **23 tests**
+- **29 tests**
 - **Platform:** All
 - **Language:** Python
 
@@ -86,7 +86,7 @@ pytest -v
 cd backend
 
 # Activate virtual environment
-# See [Quick Commands](docs/reference/QUICK_COMMANDS.md#virtual-environment) for all platforms
+# See [Quick Commands](../reference/QUICK_COMMANDS.md#virtual-environment) for all platforms
 
 # Install dependencies (if not already installed)
 pip install -r requirements.txt
@@ -100,7 +100,7 @@ pytest
 
 # Run with verbose output
 pytest -v
-# See [Quick Commands](docs/reference/QUICK_COMMANDS.md) for all pytest options
+# See [Quick Commands](../reference/QUICK_COMMANDS.md) for all pytest options
 
 # Run specific test directory
 pytest tests/unit/
@@ -201,7 +201,7 @@ pytest --cov
 
 # Generate HTML coverage report
 pytest --cov --cov-report=html
-# See [Quick Commands](docs/reference/QUICK_COMMANDS.md) for all coverage options
+# See [Quick Commands](../reference/QUICK_COMMANDS.md) for all coverage options
 
 # View HTML report
 open htmlcov/index.html  # macOS
@@ -229,9 +229,32 @@ start htmlcov/index.html # Windows
 
 ## E2E Tests
 
+Both E2E suites (JavaScript and Python) are written against the Page
+Object Model: interactions go through page objects (`tests/e2e/pages/`
+for JS, `tests/e2e-python/pages/` for Python) rather than raw selectors
+in the test files, so a UI change only needs updating in one place. The
+two directories mirror each other one-to-one — `FeedPage.js` and
+`feed_page.py` expose the same interactions in each language's idioms —
+so if you've worked through one suite, the other should look familiar.
+
 ### Setup
 
+Start the backend with `TESTING=true` before running E2E tests — several
+tests rely on the dev-only `/api/dev/reset` endpoint and higher rate limits
+that are only enabled in that mode (this is what CI does). Starting the
+backend with plain `./start-dev.sh` and no `.env` file leaves `TESTING`
+unset, which causes dev-reset calls to fail with 403 and a handful of
+tests to fail or skip.
+
 ```bash
+# Terminal 1: backend in testing mode
+cd backend && source .venv/bin/activate
+TESTING=true uvicorn main:app --reload --port 8000
+
+# Terminal 2: frontend
+cd frontend && npm run dev
+
+# Terminal 3: E2E dependencies
 cd tests
 
 # Install dependencies
@@ -288,6 +311,12 @@ npm run report
 - `e2e/auth.spec.js` - Authentication flows
 - `e2e/posts.spec.js` - Post operations
 - `e2e/users.spec.js` - User profiles and interactions
+- `e2e/accessibility-axe.spec.js` - WCAG accessibility checks
+- `e2e/pages/` - Page objects shared by the files above
+
+The Python suite (`tests/e2e-python/`) covers the same flows using
+pytest and Playwright's sync API, with its own `pages/` directory. Run
+it with `cd tests/e2e-python && pytest`.
 
 **Documentation:** [tests/README.md](../../tests/README.md)
 
@@ -490,8 +519,9 @@ pytest tests/security/test_rate_limiting.py -v
 **If you see failures:**
 
 1. Check if backend is in TESTING mode
-2. See `tests/security/README.md` for troubleshooting
-3. Read `learn/stage_4_performance_security/exercises/LAB_06_Testing_With_Rate_Limits.md` for complete explanation
+2. Reset the dev database first if you just ran the E2E suites (`curl -X POST http://localhost:8000/api/dev/reset`) — E2E tests mutate persistent seed-account state (passwords, follows, deleted accounts), and running security tests right after without a reset causes real login/authorization failures that aren't security bugs, just stale state from the prior suite
+3. See `tests/security/README.md` for troubleshooting
+4. Read `learn/stage_4_performance_security/exercises/LAB_15_Rate_Limiting_Production_Python.md` (or the `_JavaScript.md` version) for complete explanation
 
 **The "failures" often prove security is working!**
 
@@ -689,6 +719,8 @@ k6 run tests/performance/smoke-test.js
 cd backend
 uvicorn main:app --reload --log-level debug
 ```
+
+If one of these quick recovery steps doesn't resolve it, [TROUBLESHOOTING.md](../reference/TROUBLESHOOTING.md) covers specific error messages in more depth.
 
 ---
 

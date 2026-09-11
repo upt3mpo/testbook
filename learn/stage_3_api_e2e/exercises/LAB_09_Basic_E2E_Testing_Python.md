@@ -43,13 +43,13 @@ playwright install chromium
 
 ```bash
 # macOS/Linux
-./start-dev.sh
+TESTING=true ./start-dev.sh
 
-# Windows
-start-dev.bat
+# Windows (PowerShell)
+$env:TESTING="true"; start-dev.bat
 ```
 
-This launches the backend API on `http://localhost:8000` and the frontend UI on `http://localhost:3000`.
+This launches the backend API on `http://localhost:8000` and the frontend UI on `http://localhost:3000`. `TESTING=true` enables the dev-only `/api/dev/reset` endpoint and higher rate limits that E2E tests rely on — see [`../../../docs/guides/PLAYWRIGHT_QUICKSTART.md`](../../../docs/guides/PLAYWRIGHT_QUICKSTART.md) for details.
 
 **Verify:** Open <http://localhost:3000> in your browser – you should see Testbook!
 
@@ -139,7 +139,7 @@ pytest test_auth.py::TestAuthentication::test_login_success -v
 **Find:**
 
 ```python
-page.fill('[data-testid="login-email"]', user["email"])
+page.fill('[data-testid="login-email-input"]', user["email"])
 ```
 
 **This means:**
@@ -157,7 +157,7 @@ page.fill('[data-testid="login-email"]', user["email"])
 **Other selectors you'll use:**
 
 ```python
-page.click('[data-testid="login-submit"]')
+page.click('[data-testid="login-submit-button"]')
 page.locator('[data-testid="navbar"]').is_visible()
 page.fill('[data-testid="create-post-textarea"]', 'My post')
 ```
@@ -177,19 +177,20 @@ def test_my_first_e2e_login_and_create_post(page: Page):
     page.goto('http://localhost:3000')
 
     # Step 2: Login
-    page.fill('[data-testid="login-email"]', 'sarah.johnson@testbook.com')
-    page.fill('[data-testid="login-password"]', 'Sarah2024!')
-    page.click('[data-testid="login-submit"]')
+    page.fill('[data-testid="login-email-input"]', 'sarah.johnson@testbook.com')
+    page.fill('[data-testid="login-password-input"]', 'Sarah2024!')
+    page.click('[data-testid="login-submit-button"]')
 
     # Step 3: Wait for page to load
     expect(page.locator('[data-testid="navbar"]')).to_be_visible()
 
     # Step 4: Create a post
     page.fill('[data-testid="create-post-textarea"]', 'My first E2E test post!')
-    page.click('[data-testid="create-post-submit"]')
+    page.click('[data-testid="create-post-submit-button"]')
 
-    # Step 5: Verify post appears
-    page.wait_for_timeout(1000)  # Wait for post to appear
+    # Step 5: Verify post appears. to_contain_text() retries on its own
+    # until the post shows up (or the timeout is hit), so there's no need
+    # for a separate wait before it.
     first_post = page.locator('[data-testid-generic="post-item"]').first
     expect(first_post).to_contain_text('My first E2E test post!')
 
@@ -284,7 +285,14 @@ Write a test that:
 **Solution:** Check the data-testid is correct, or add longer timeout
 
 **Problem:** `Test fails randomly`
-**Solution:** Add `page.wait_for_timeout(500)` after actions
+**Solution:** Resist the urge to add `page.wait_for_timeout()` - a fixed
+wait either isn't long enough (still flaky) or wastes time on every run
+(and still isn't guaranteed long enough). Use `expect(...).to_be_visible()`
+or `.to_contain_text()` instead: they retry until the condition is true or
+a timeout is hit, so they wait exactly as long as needed. If a test is
+flaky even with retrying assertions, that's usually a real race condition
+worth tracking down - see [`TESTING_ANTIPATTERNS.md`](../../../docs/concepts/TESTING_ANTIPATTERNS.md#2-time-and-sleep-anti-patterns)
+for a real example found and fixed in Testbook's own test suite.
 
 ---
 
@@ -348,4 +356,4 @@ page.pause()  # Add this line anywhere in your test
 
 **🎉 You're now writing E2E tests! This is professional-level testing!**
 
-**Next Lab:** [Lab 5: Test Data Management (Python)](LAB_05_Test_Data_Management_Python.md)
+**Next Lab:** [Lab 10: Advanced E2E Patterns (Python)](LAB_10_Advanced_E2E_Patterns_Python.md)

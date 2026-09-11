@@ -23,7 +23,11 @@ echo "📦 Installing test dependencies..."
 cd /workspace/tests
 npm install
 
-# Install Playwright browsers
+# Install Playwright browsers. No --with-deps here on purpose: this user
+# (vscode) has no sudo access, and --with-deps needs root to apt-get install
+# Chromium's system libraries. Those are already baked into the image at
+# build time (see Dockerfile.dev) - this step only downloads the browser
+# binary itself, which doesn't need elevated privileges.
 echo "🎭 Installing Playwright browsers..."
 npx playwright install chromium
 
@@ -53,5 +57,5 @@ echo "  Frontend: cd frontend && npm run dev -- --host 0.0.0.0"
 echo "  Tests:    cd backend && pytest -v"
 echo ""
 echo "📚 Begin learning:"
-echo "  - Open START_HERE.md to choose your learning path"
-echo "  - Check labs/LAB_01_Your_First_Test.md to begin"
+echo "  - Open learn/README.md to choose your learning path"
+echo "  - Check learn/stage_1_unit/exercises/ to begin"

@@ -1,4 +1,5 @@
-from datetime import datetime, timezone
+from datetime import UTC, datetime
+from typing import Optional
 
 from sqlalchemy import (
     Boolean,
@@ -10,7 +11,7 @@ from sqlalchemy import (
     Table,
     Text,
 )
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from database import Base
 
@@ -33,91 +34,153 @@ blocks = Table(
 class User(Base):
     __tablename__ = "users"
 
-    id = Column(Integer, primary_key=True, index=True)
-    email = Column(String, unique=True, index=True, nullable=False)
-    username = Column(String, unique=True, index=True, nullable=False)
-    display_name = Column(String, nullable=False)
-    hashed_password = Column(String, nullable=False)
-    bio = Column(Text, default="")
-    profile_picture = Column(String, default="/static/images/default-avatar.jpg")
-    theme = Column(String, default="light")  # light or dark
-    text_density = Column(String, default="normal")  # compact or normal
-    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
+    email: Mapped[str] = mapped_column(String, unique=True, index=True, nullable=False)
+    username: Mapped[str] = mapped_column(
+        String, unique=True, index=True, nullable=False
+    )
+    display_name: Mapped[str] = mapped_column(String, nullable=False)
+    hashed_password: Mapped[str] = mapped_column(String, nullable=False)
+    # bio/profile_picture/theme/text_density/created_at are nullable=False
+    # rather than the schema default of nullable=True, because every insert
+    # path in this app populates them via these Python-side defaults and
+    # none ever sets them to None. That keeps their type honest as
+    # non-Optional, matching what schemas.UserResponse already expects.
+    #
+    # Safe to enforce at the DB level: no *.db file is ever committed (root
+    # .gitignore excludes them), so there's no pre-existing database with
+    # legacy NULLs that could violate this constraint, and there's no raw
+    # SQL anywhere in backend/ (no execute()/text()/INSERT INTO/bulk_insert)
+    # - every write goes through the ORM, so these defaults always apply
+    # regardless of how a row is constructed. This same reasoning covers the
+    # equivalent nullable=False additions on Post, Comment, and Reaction
+    # below.
+    bio: Mapped[str] = mapped_column(Text, nullable=False, default="")
+    profile_picture: Mapped[str] = mapped_column(
+        String, nullable=False, default="/static/images/default-avatar.jpg"
+    )
+    theme: Mapped[str] = mapped_column(String, nullable=False, default="light")
+    text_density: Mapped[str] = mapped_column(String, nullable=False, default="normal")
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime, nullable=False, default=lambda: datetime.now(UTC)
+    )
 
     # Relationships
-    posts = relationship("Post", back_populates="author", cascade="all, delete-orphan")
-    comments = relationship(
+    posts: Mapped[list["Post"]] = relationship(
+        "Post", back_populates="author", cascade="all, delete-orphan"
+    )
+    comments: Mapped[list["Comment"]] = relationship(
         "Comment", back_populates="author", cascade="all, delete-orphan"
     )
-    reactions = relationship(
+    reactions: Mapped[list["Reaction"]] = relationship(
         "Reaction", back_populates="user", cascade="all, delete-orphan"
     )
 
-    # Following relationships
-    following = relationship(
+    # Following relationships. back_populates (rather than backref) on
+    # both sides so the reverse attributes (followers/blocked_by) are
+    # visible to mypy instead of only existing at runtime.
+    following: Mapped[list["User"]] = relationship(
         "User",
         secondary=followers,
         primaryjoin=id == followers.c.follower_id,
         secondaryjoin=id == followers.c.followed_id,
-        backref="followers",
+        back_populates="followers",
+    )
+    followers: Mapped[list["User"]] = relationship(
+        "User",
+        secondary=followers,
+        primaryjoin=id == followers.c.followed_id,
+        secondaryjoin=id == followers.c.follower_id,
+        back_populates="following",
     )
 
     # Blocking relationships
-    blocking = relationship(
+    blocking: Mapped[list["User"]] = relationship(
         "User",
         secondary=blocks,
         primaryjoin=id == blocks.c.blocker_id,
         secondaryjoin=id == blocks.c.blocked_id,
-        backref="blocked_by",
+        back_populates="blocked_by",
+    )
+    blocked_by: Mapped[list["User"]] = relationship(
+        "User",
+        secondary=blocks,
+        primaryjoin=id == blocks.c.blocked_id,
+        secondaryjoin=id == blocks.c.blocker_id,
+        back_populates="blocking",
     )
 
 
 class Post(Base):
     __tablename__ = "posts"
 
-    id = Column(Integer, primary_key=True, index=True)
-    author_id = Column(Integer, ForeignKey("users.id"), nullable=False)
-    content = Column(Text, nullable=False)
-    image_url = Column(String, nullable=True)
-    video_url = Column(String, nullable=True)
-    is_repost = Column(Boolean, default=False)
-    original_post_id = Column(Integer, ForeignKey("posts.id"), nullable=True)
-    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
+    author_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey("users.id"), nullable=False
+    )
+    content: Mapped[str] = mapped_column(Text, nullable=False)
+    image_url: Mapped[str | None] = mapped_column(String, nullable=True)
+    video_url: Mapped[str | None] = mapped_column(String, nullable=True)
+    # is_repost is nullable=False (tightened, see the User fields above for
+    # why) - every post goes through this default, repost or not.
+    is_repost: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    original_post_id: Mapped[int | None] = mapped_column(
+        Integer, ForeignKey("posts.id"), nullable=True
+    )
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime, nullable=False, default=lambda: datetime.now(UTC)
+    )
 
     # Relationships
-    author = relationship("User", back_populates="posts")
-    comments = relationship(
+    author: Mapped["User"] = relationship("User", back_populates="posts")
+    comments: Mapped[list["Comment"]] = relationship(
         "Comment", back_populates="post", cascade="all, delete-orphan"
     )
-    reactions = relationship(
+    reactions: Mapped[list["Reaction"]] = relationship(
         "Reaction", back_populates="post", cascade="all, delete-orphan"
     )
-    original_post = relationship("Post", remote_side=[id], backref="reposts")
+    original_post: Mapped[Optional["Post"]] = relationship(
+        "Post", remote_side=[id], backref="reposts"
+    )
 
 
 class Comment(Base):
     __tablename__ = "comments"
 
-    id = Column(Integer, primary_key=True, index=True)
-    post_id = Column(Integer, ForeignKey("posts.id"), nullable=False)
-    author_id = Column(Integer, ForeignKey("users.id"), nullable=False)
-    content = Column(Text, nullable=False)
-    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
+    post_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey("posts.id"), nullable=False
+    )
+    author_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey("users.id"), nullable=False
+    )
+    content: Mapped[str] = mapped_column(Text, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime, nullable=False, default=lambda: datetime.now(UTC)
+    )
 
     # Relationships
-    post = relationship("Post", back_populates="comments")
-    author = relationship("User", back_populates="comments")
+    post: Mapped["Post"] = relationship("Post", back_populates="comments")
+    author: Mapped["User"] = relationship("User", back_populates="comments")
 
 
 class Reaction(Base):
     __tablename__ = "reactions"
 
-    id = Column(Integer, primary_key=True, index=True)
-    post_id = Column(Integer, ForeignKey("posts.id"), nullable=False)
-    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
-    reaction_type = Column(String, nullable=False)  # like, love, haha, wow, sad, angry
-    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
+    post_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey("posts.id"), nullable=False
+    )
+    user_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey("users.id"), nullable=False
+    )
+    reaction_type: Mapped[str] = mapped_column(
+        String, nullable=False
+    )  # like, love, haha, wow, sad, angry
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime, nullable=False, default=lambda: datetime.now(UTC)
+    )
 
     # Relationships
-    post = relationship("Post", back_populates="reactions")
-    user = relationship("User", back_populates="reactions")
+    post: Mapped["Post"] = relationship("Post", back_populates="reactions")
+    user: Mapped["User"] = relationship("User", back_populates="reactions")

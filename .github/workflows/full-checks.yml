@@ -17,12 +17,26 @@ jobs:
   pre-commit:
     name: Pre-commit
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: "3.13"
+          cache: "pip"
+      - name: Set up backend virtual environment
+        # The local mypy hook in .pre-commit-config.yaml runs
+        # backend/.venv/bin/mypy directly (not the mirror-mypy repo, since
+        # this codebase's type-checking depends on the real installed
+        # packages - see the comment on that hook). That path only exists
+        # if this venv is created first; a developer's own machine already
+        # has it from normal setup, but a fresh CI checkout doesn't.
+        working-directory: ./backend
+        run: |
+          python -m venv .venv
+          .venv/bin/pip install --upgrade pip
+          .venv/bin/pip install -r requirements.txt
       - name: Run pre-commit
         uses: pre-commit/action@v3.0.1
         with:
@@ -31,6 +45,7 @@ jobs:
   backend:
     name: Backend Tests (pytest)
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     needs: pre-commit
     services:
       postgres:
@@ -47,9 +62,9 @@ jobs:
         ports:
           - 5432:5432
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: "3.13"
           cache: "pip"
@@ -71,11 +86,12 @@ jobs:
   frontend:
     name: Frontend Tests (vitest + lint)
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     needs: pre-commit
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: 24
           cache: "npm"

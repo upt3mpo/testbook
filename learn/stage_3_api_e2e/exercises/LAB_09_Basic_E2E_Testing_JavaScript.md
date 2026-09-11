@@ -41,13 +41,13 @@ npx playwright install chromium
 
 ```bash
 # macOS / Linux
-./start-dev.sh
+TESTING=true ./start-dev.sh
 
 # Windows
-start-dev.bat
+set TESTING=true && start-dev.bat
 ```
 
-This launches the backend on `http://localhost:8000` and the frontend UI on `http://localhost:3000`.
+This launches the backend on `http://localhost:8000` and the frontend UI on `http://localhost:3000`. `TESTING=true` enables the dev-only `/api/dev/reset` endpoint and higher rate limits that E2E tests rely on — see [`../../../docs/guides/PLAYWRIGHT_QUICKSTART.md`](../../../docs/guides/PLAYWRIGHT_QUICKSTART.md) for details.
 
 **Verify:** Open <http://localhost:3000> in your browser – you should see Testbook!
 
@@ -141,7 +141,7 @@ await page.fill('[data-testid="create-post-textarea"]', "My post");
 **Create:** `tests/e2e/my_first_e2e.spec.js`
 
 ```javascript
-const { test, expect } = require("@playwright/test");
+import { test, expect } from "@playwright/test";
 
 test("My first E2E test - Login and create post", async ({ page }) => {
   // Step 1: Go to Testbook
@@ -165,8 +165,9 @@ test("My first E2E test - Login and create post", async ({ page }) => {
   );
   await page.click('[data-testid="create-post-submit-button"]');
 
-  // Step 5: Verify post appears
-  await page.waitForTimeout(1000); // Wait for post to appear
+  // Step 5: Verify post appears. toContainText() retries on its own until
+  // the post shows up (or the timeout is hit), so there's no need for a
+  // separate wait before it.
   const firstPost = page.locator('[data-testid-generic="post-item"]').first();
   await expect(firstPost).toContainText("My first E2E test post!");
 
@@ -247,7 +248,14 @@ Write a test that:
 **Solution:** Check the data-testid is correct, or add longer timeout
 
 **Problem:** `Test fails randomly`
-**Solution:** Add `await page.waitForTimeout(500)` after actions
+**Solution:** Resist the urge to add `await page.waitForTimeout()` - a
+fixed wait either isn't long enough (still flaky) or wastes time on every
+run (and still isn't guaranteed long enough). Use `expect(...).toBeVisible()`
+or `.toContainText()` instead: they retry until the condition is true or a
+timeout is hit, so they wait exactly as long as needed. If a test is flaky
+even with retrying assertions, that's usually a real race condition worth
+tracking down - see [`TESTING_ANTIPATTERNS.md`](../../../docs/concepts/TESTING_ANTIPATTERNS.md#2-time-and-sleep-anti-patterns)
+for a real example found and fixed in Testbook's own test suite.
 
 ---
 
@@ -303,4 +311,4 @@ npx playwright codegen http://localhost:3000
 
 **🎉 You're now writing E2E tests! This is professional-level testing!**
 
-**Next Lab:** [Lab 5: Test Data Management (JavaScript)](LAB_05_Test_Data_Management_JavaScript.md)
+**Next Lab:** [Lab 10: Advanced E2E Patterns (JavaScript)](LAB_10_Advanced_E2E_Patterns_JavaScript.md)

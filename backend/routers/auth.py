@@ -35,8 +35,10 @@ REGISTER_RATE = "500/minute" if TESTING_MODE else "15/minute"
 )
 @limiter.limit(REGISTER_RATE)
 def register(
-    request: Request, user_data: schemas.UserCreate, db: Session = Depends(get_db)
-):
+    request: Request,  # noqa: ARG001 - required by @limiter.limit for the client's address
+    user_data: schemas.UserCreate,
+    db: Session = Depends(get_db),
+) -> schemas.RegisterResponse:
     """Register a new user and return access token (rate limited: 15/min prod, 500/min test)"""
     # Check if email already exists
     if db.query(models.User).filter(models.User.email == user_data.email).first():
@@ -78,8 +80,10 @@ def register(
 @router.post("/login", response_model=schemas.Token)
 @limiter.limit(LOGIN_RATE)
 def login(
-    request: Request, login_data: schemas.LoginRequest, db: Session = Depends(get_db)
-):
+    request: Request,  # noqa: ARG001 - required by @limiter.limit for the client's address
+    login_data: schemas.LoginRequest,
+    db: Session = Depends(get_db),
+) -> schemas.Token:
     """Login with email and password (rate limited: 20/min prod, 1000/min test)"""
     user = db.query(models.User).filter(models.User.email == login_data.email).first()
 
@@ -96,8 +100,8 @@ def login(
 
 @router.get("/me", response_model=schemas.UserResponse)
 def get_current_user_info(
-    current_user: models.User = Depends(get_current_user), db: Session = Depends(get_db)
-):
+    current_user: models.User = Depends(get_current_user),
+) -> schemas.UserResponse:
     """Get current authenticated user info"""
     followers_count = len(current_user.followers)
     following_count = len(current_user.following)

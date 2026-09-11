@@ -76,11 +76,11 @@ USER_REGISTRATION_CONTRACT = {
         "success": {
             "status_code": 201,  # Created - user successfully registered
             "body": {
-                "id": "integer",           # Auto-generated user ID
+                "access_token": "string",  # JWT for immediate login
+                "token_type": "string",    # Always "bearer"
                 "email": "string",         # User's email address
                 "username": "string",      # User's chosen username
-                "display_name": "string",  # User's display name
-                "created_at": "datetime"   # Timestamp when user was created
+                "display_name": "string"   # User's display name
             }
         },
         "error": {
@@ -141,16 +141,19 @@ USER_REGISTRATION_REQUEST_SCHEMA = {
 }
 
 # User registration response schema
+# Note: Testbook's actual /api/auth/register response returns an
+# access_token (it logs the new user in immediately) - it does NOT
+# return an "id" or "created_at" field.
 USER_REGISTRATION_RESPONSE_SCHEMA = {
     "type": "object",
     "properties": {
-        "id": {"type": "integer"},
+        "access_token": {"type": "string"},
+        "token_type": {"type": "string"},
         "email": {"type": "string"},
         "username": {"type": "string"},
-        "display_name": {"type": "string"},
-        "created_at": {"type": "string", "format": "date-time"}
+        "display_name": {"type": "string"}
     },
-    "required": ["id", "email", "username", "display_name", "created_at"],
+    "required": ["access_token", "token_type", "email", "username", "display_name"],
     "additionalProperties": False
 }
 
@@ -231,11 +234,11 @@ class TestUserRegistrationContract:
         jsonschema.validate(response_data, USER_REGISTRATION_RESPONSE_SCHEMA)
 
         # Validate specific fields
-        assert isinstance(response_data["id"], int)
+        assert isinstance(response_data["access_token"], str)
+        assert response_data["token_type"] == "bearer"
         assert response_data["email"] == "test@example.com"
         assert response_data["username"] == "testuser"
         assert response_data["display_name"] == "Test User"
-        assert "created_at" in response_data
 
     def test_registration_error_schema_validation(self, client: TestClient):
         """Test that registration error response matches expected schema."""
@@ -286,16 +289,16 @@ class TestUserRegistrationContract:
         response_data = response.json()
 
         # Required fields must be present
-        required_fields = ["id", "email", "username", "display_name", "created_at"]
+        required_fields = ["access_token", "token_type", "email", "username", "display_name"]
         for field in required_fields:
             assert field in response_data, f"Required field '{field}' missing from response"
 
         # Field types must be correct
-        assert isinstance(response_data["id"], int)
+        assert isinstance(response_data["access_token"], str)
+        assert isinstance(response_data["token_type"], str)
         assert isinstance(response_data["email"], str)
         assert isinstance(response_data["username"], str)
         assert isinstance(response_data["display_name"], str)
-        assert isinstance(response_data["created_at"], str)
 
         # No unexpected fields (additionalProperties: false)
         expected_fields = set(required_fields)
@@ -385,11 +388,11 @@ class ConsumerContract:
                 "success_response": {
                     "status_code": 201,
                     "body": {
-                        "id": "integer",
+                        "access_token": "string",
+                        "token_type": "string (bearer)",
                         "email": "string",
                         "username": "string",
-                        "display_name": "string",
-                        "created_at": "string (ISO datetime)"
+                        "display_name": "string"
                     }
                 },
                 "error_response": {
@@ -403,7 +406,13 @@ class ConsumerContract:
 
     @staticmethod
     def user_login_contract():
-        """Contract for user login from frontend perspective."""
+        """Contract for user login from frontend perspective.
+
+        Note: Testbook's actual /api/auth/login response only contains
+        access_token and token_type - there's no expires_in field (the
+        token's expiration is embedded in the JWT's own `exp` claim
+        instead).
+        """
         return {
             "endpoint": "POST /api/auth/login",
             "expectations": {
@@ -415,8 +424,7 @@ class ConsumerContract:
                     "status_code": 200,
                     "body": {
                         "access_token": "string",
-                        "token_type": "string (bearer)",
-                        "expires_in": "integer"
+                        "token_type": "string (bearer)"
                     }
                 },
                 "error_response": {
@@ -451,16 +459,16 @@ def test_user_registration_consumer_contract(self, client: TestClient):
     response_data = response.json()
 
     # Check required fields exist
-    expected_fields = ["id", "email", "username", "display_name", "created_at"]
+    expected_fields = ["access_token", "token_type", "email", "username", "display_name"]
     for field in expected_fields:
         assert field in response_data, f"Consumer expects field '{field}' in response"
 
     # Check field types match expectations
-    assert isinstance(response_data["id"], int)
+    assert isinstance(response_data["access_token"], str)
+    assert isinstance(response_data["token_type"], str)
     assert isinstance(response_data["email"], str)
     assert isinstance(response_data["username"], str)
     assert isinstance(response_data["display_name"], str)
-    assert isinstance(response_data["created_at"], str)
 
 def test_user_login_consumer_contract(self, client: TestClient, db_session):
     """Test that login API meets consumer expectations."""
@@ -492,14 +500,13 @@ def test_user_login_consumer_contract(self, client: TestClient, db_session):
     response_data = response.json()
 
     # Check required fields exist
-    expected_fields = ["access_token", "token_type", "expires_in"]
+    expected_fields = ["access_token", "token_type"]
     for field in expected_fields:
         assert field in response_data, f"Consumer expects field '{field}' in response"
 
     # Check field types and values
     assert isinstance(response_data["access_token"], str)
     assert response_data["token_type"] == "bearer"
-    assert isinstance(response_data["expires_in"], int)
 ```
 
 ---
@@ -640,12 +647,12 @@ def test_registration_contract_cases(self, client, test_case):
 
 **Continue building your skills:**
 
-- **[Lab 9: Basic E2E Testing (Python)](LAB_09_Basic_E2E_Testing_Python.md)** - End-to-end testing
-- **[Lab 10: Advanced E2E Patterns (Python)](LAB_10_Advanced_E2E_Patterns_Python.md)** - Advanced E2E testing
-- **[Lab 11: Cross-Browser Testing (Python)](LAB_11_Cross_Browser_Testing_Python.md)** - Multi-browser testing
+- **[Lab 9: Basic E2E Testing (Python)](../../stage_3_api_e2e/exercises/LAB_09_Basic_E2E_Testing_Python.md)** - End-to-end testing
+- **[Lab 10: Advanced E2E Patterns (Python)](../../stage_3_api_e2e/exercises/LAB_10_Advanced_E2E_Patterns_Python.md)** - Advanced E2E testing
+- **[Lab 11: Cross-Browser Testing (Python)](../../stage_3_api_e2e/exercises/LAB_11_Cross_Browser_Testing_Python.md)** - Multi-browser testing
 
 ---
 
 **🎉 Congratulations!** You now understand contract testing and can ensure API compatibility between frontend and backend!
 
-**Next Lab:** [Lab 9: Basic E2E Testing (Python)](LAB_09_Basic_E2E_Testing_Python.md)
+**Next Lab:** [Lab 9: Basic E2E Testing (Python)](../../stage_3_api_e2e/exercises/LAB_09_Basic_E2E_Testing_Python.md)

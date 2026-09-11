@@ -17,16 +17,14 @@
  *
  * This file is referenced in Stage 3 learning materials as an example
  * of professional E2E testing practices.
+ *
+ * Page Object Model: interactions go through pages/AuthPage.js rather
+ * than raw selectors, so a UI change only needs updating in one place.
  */
 
 import { expect, test } from "@playwright/test";
-import {
-  loginUser,
-  registerUser,
-  resetDatabase,
-  setupDialogHandler,
-  TEST_USERS,
-} from "./fixtures/test-helpers.js";
+import { resetDatabase, setupDialogHandler, TEST_USERS } from "./fixtures/test-helpers.js";
+import { AuthPage } from "./pages/AuthPage.js";
 
 test.describe("Authentication", () => {
   /**
@@ -64,7 +62,9 @@ test.describe("Authentication", () => {
        * registration flow works from the user's perspective.
        */
 
-      // Arrange - Prepare test user data
+      const auth = new AuthPage(page);
+      await auth.gotoRegister();
+
       const newUser = {
         email: "testuser@example.com",
         username: "testuser",
@@ -72,191 +72,123 @@ test.describe("Authentication", () => {
         password: "TestPassword123!",
       };
 
-      // Act - Register user through UI helper
-      await registerUser(page, newUser);
-
-      // Assert - Verify successful registration and auto-login
-      await expect(page).toHaveURL("/"); // Redirected to feed
-      await expect(page.locator('[data-testid="navbar"]')).toBeVisible(); // Logged in
-      await expect(
-        page.locator('[data-testid="navbar-username"]')
-      ).toContainText(newUser.displayName); // Correct user
+      await auth.register(newUser);
+      await auth.expectLoggedIn(newUser.displayName);
     });
 
     test("should show error for duplicate email", async ({ page }) => {
-      await page.goto("/register");
+      const auth = new AuthPage(page);
+      await auth.gotoRegister();
 
       // Try to register with existing email
-      await page.fill(
-        '[data-testid="register-email-input"]',
-        TEST_USERS.sarah.email
-      );
-      await page.fill(
-        '[data-testid="register-username-input"]',
-        "differentuser"
-      );
-      await page.fill(
-        '[data-testid="register-displayname-input"]',
-        "Different User"
-      );
-      await page.fill(
-        '[data-testid="register-password-input"]',
-        "Password123!"
-      );
-      await page.click('[data-testid="register-submit-button"]');
+      await auth.register({
+        email: TEST_USERS.sarah.email,
+        username: "differentuser",
+        displayName: "Different User",
+        password: "Password123!",
+      });
 
-      // Should show error
       await expect(page.locator("text=/email.*already/i")).toBeVisible({
         timeout: 5000,
       });
     });
 
     test("should show error for duplicate username", async ({ page }) => {
-      await page.goto("/register");
+      const auth = new AuthPage(page);
+      await auth.gotoRegister();
 
       // Try to register with existing username
-      await page.fill(
-        '[data-testid="register-email-input"]',
-        "newemail@example.com"
-      );
-      await page.fill(
-        '[data-testid="register-username-input"]',
-        TEST_USERS.sarah.username
-      );
-      await page.fill(
-        '[data-testid="register-displayname-input"]',
-        "Different User"
-      );
-      await page.fill(
-        '[data-testid="register-password-input"]',
-        "Password123!"
-      );
-      await page.click('[data-testid="register-submit-button"]');
+      await auth.register({
+        email: "newemail@example.com",
+        username: TEST_USERS.sarah.username,
+        displayName: "Different User",
+        password: "Password123!",
+      });
 
-      // Should show error
       await expect(page.locator("text=/username.*already/i")).toBeVisible({
         timeout: 5000,
       });
     });
 
     test("should validate email format", async ({ page }) => {
-      await page.goto("/register");
+      const auth = new AuthPage(page);
+      await auth.gotoRegister();
 
-      await page.fill('[data-testid="register-email-input"]', "notanemail");
-      await page.fill('[data-testid="register-username-input"]', "testuser");
-      await page.fill(
-        '[data-testid="register-displayname-input"]',
-        "Test User"
-      );
-      await page.fill(
-        '[data-testid="register-password-input"]',
-        "Password123!"
-      );
+      await auth.registerEmailInput.fill("notanemail");
+      await auth.registerUsernameInput.fill("testuser");
+      await auth.registerDisplayNameInput.fill("Test User");
+      await auth.registerPasswordInput.fill("Password123!");
 
       // Should show HTML5 validation or custom error
-      const emailInput = page.locator('[data-testid="register-email-input"]');
-      const isInvalid = await emailInput.evaluate((el) => !el.validity.valid);
-      expect(isInvalid).toBeTruthy();
+      expect(await auth.isRegisterEmailInvalid()).toBeTruthy();
     });
   });
 
   test.describe("Login", () => {
     test("should login with correct credentials", async ({ page }) => {
-      await loginUser(page, TEST_USERS.sarah.email, TEST_USERS.sarah.password);
+      const auth = new AuthPage(page);
+      await auth.gotoLogin();
+      await auth.login(TEST_USERS.sarah.email, TEST_USERS.sarah.password);
 
-      // Should be on feed page
-      await expect(page).toHaveURL("/");
-      await expect(page.locator('[data-testid="navbar"]')).toBeVisible();
-      await expect(
-        page.locator('[data-testid="navbar-username"]')
-      ).toContainText(TEST_USERS.sarah.displayName);
+      await auth.expectLoggedIn(TEST_USERS.sarah.displayName);
     });
 
     test("should show error for wrong password", async ({ page }) => {
-      await page.goto("/");
+      const auth = new AuthPage(page);
+      await auth.gotoLogin();
+      await auth.login(TEST_USERS.sarah.email, "WrongPassword123!");
 
-      await page.fill(
-        '[data-testid="login-email-input"]',
-        TEST_USERS.sarah.email
-      );
-      await page.fill(
-        '[data-testid="login-password-input"]',
-        "WrongPassword123!"
-      );
-      await page.click('[data-testid="login-submit-button"]');
-
-      // Should show error (backend returns "Incorrect email or password")
-      await expect(page.locator('[data-testid="login-error"]')).toBeVisible({
-        timeout: 5000,
-      });
-      await expect(page.locator('[data-testid="login-error"]')).toContainText(
-        /incorrect|invalid/i
-      );
+      // Backend returns "Incorrect email or password"
+      await auth.expectLoginError(/incorrect|invalid/i);
     });
 
     test("should show error for non-existent user", async ({ page }) => {
-      await page.goto("/");
+      const auth = new AuthPage(page);
+      await auth.gotoLogin();
+      await auth.login("nonexistent@example.com", "Password123!");
 
-      await page.fill(
-        '[data-testid="login-email-input"]',
-        "nonexistent@example.com"
-      );
-      await page.fill('[data-testid="login-password-input"]', "Password123!");
-      await page.click('[data-testid="login-submit-button"]');
-
-      // Should show error (backend returns "Incorrect email or password")
-      await expect(page.locator('[data-testid="login-error"]')).toBeVisible({
-        timeout: 5000,
-      });
-      await expect(page.locator('[data-testid="login-error"]')).toContainText(
-        /incorrect|invalid/i
-      );
+      // Backend returns "Incorrect email or password"
+      await auth.expectLoginError(/incorrect|invalid/i);
     });
 
     test("should persist login across page refreshes", async ({ page }) => {
-      await loginUser(page, TEST_USERS.sarah.email, TEST_USERS.sarah.password);
+      const auth = new AuthPage(page);
+      await auth.gotoLogin();
+      await auth.login(TEST_USERS.sarah.email, TEST_USERS.sarah.password);
+      await auth.expectLoggedIn(TEST_USERS.sarah.displayName);
 
-      // Reload page
       await page.reload();
 
       // Should still be logged in
-      await expect(page.locator('[data-testid="navbar"]')).toBeVisible();
-      await expect(
-        page.locator('[data-testid="navbar-username"]')
-      ).toContainText(TEST_USERS.sarah.displayName);
+      await auth.expectLoggedIn(TEST_USERS.sarah.displayName);
     });
   });
 
   test.describe("Logout", () => {
     test("should logout successfully", async ({ page }) => {
-      await loginUser(page, TEST_USERS.sarah.email, TEST_USERS.sarah.password);
+      const auth = new AuthPage(page);
+      await auth.gotoLogin();
+      await auth.login(TEST_USERS.sarah.email, TEST_USERS.sarah.password);
 
-      // Click logout
-      await page.click('[data-testid="navbar-logout-button"]');
+      await auth.logout();
 
-      // Should be redirected to login page
-      await expect(
-        page.locator('[data-testid="login-email-input"]')
-      ).toBeVisible();
-      await expect(page.locator('[data-testid="navbar"]')).not.toBeVisible();
+      await auth.expectLoggedOut();
     });
 
     test("should not access protected routes after logout", async ({
       page,
       context,
     }) => {
-      await loginUser(page, TEST_USERS.sarah.email, TEST_USERS.sarah.password);
+      const auth = new AuthPage(page);
+      await auth.gotoLogin();
+      await auth.login(TEST_USERS.sarah.email, TEST_USERS.sarah.password);
 
-      // Logout
-      await page.click('[data-testid="navbar-logout-button"]');
+      await auth.logout();
 
       // Try to access protected route
-      await page.goto("/settings");
+      await auth.goto("/settings");
 
-      // Should be redirected to login
-      await expect(
-        page.locator('[data-testid="login-email-input"]')
-      ).toBeVisible();
+      await auth.expectOnLoginPage();
     });
   });
 
@@ -264,34 +196,28 @@ test.describe("Authentication", () => {
     test("should redirect to login when accessing feed without auth", async ({
       page,
     }) => {
-      await page.goto("/");
+      const auth = new AuthPage(page);
+      await auth.goto("/");
 
-      // Should show login page
-      await expect(
-        page.locator('[data-testid="login-email-input"]')
-      ).toBeVisible();
+      await auth.expectOnLoginPage();
     });
 
     test("should redirect to login when accessing settings without auth", async ({
       page,
     }) => {
-      await page.goto("/settings");
+      const auth = new AuthPage(page);
+      await auth.goto("/settings");
 
-      // Should show login page
-      await expect(
-        page.locator('[data-testid="login-email-input"]')
-      ).toBeVisible();
+      await auth.expectOnLoginPage();
     });
 
     test("should redirect to login when accessing profile without auth", async ({
       page,
     }) => {
-      await page.goto(`/profile/${TEST_USERS.sarah.username}`);
+      const auth = new AuthPage(page);
+      await auth.goto(`/profile/${TEST_USERS.sarah.username}`);
 
-      // Should show login page
-      await expect(
-        page.locator('[data-testid="login-email-input"]')
-      ).toBeVisible();
+      await auth.expectOnLoginPage();
     });
   });
 
@@ -299,6 +225,9 @@ test.describe("Authentication", () => {
     test("should automatically login after successful registration", async ({
       page,
     }) => {
+      const auth = new AuthPage(page);
+      await auth.gotoRegister();
+
       const newUser = {
         email: "autouser@example.com",
         username: "autouser",
@@ -306,16 +235,14 @@ test.describe("Authentication", () => {
         password: "AutoPass123!",
       };
 
-      await registerUser(page, newUser);
+      await auth.register(newUser);
 
       // Should be logged in without manual login
-      await expect(page.locator('[data-testid="navbar"]')).toBeVisible();
+      await expect(auth.navbar).toBeVisible();
 
       // Should be able to access protected routes
-      await page.click('[data-testid="navbar-settings-link"]');
-      await expect(
-        page.locator('[data-testid="settings-email"]')
-      ).toContainText(newUser.email);
+      await auth.navbarSettingsLink.click();
+      await expect(page.getByTestId("settings-email")).toContainText(newUser.email);
     });
   });
 });

@@ -1,13 +1,18 @@
-import random
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
+from typing import Any
 
 import models
 from auth import get_password_hash
 from database import SessionLocal, engine
 
 
-def seed_database():
-    """Seed the database with initial users, posts, and relationships"""
+def seed_database() -> None:  # noqa: PLR0915
+    """Seed the database with initial users, posts, and relationships.
+
+    One long, linear function on purpose: this is a script meant to be
+    read top to bottom (users, then posts, then comments, then
+    reactions, then reposts), not a reusable API split into helpers.
+    """
     # Create tables first
     models.Base.metadata.create_all(bind=engine)
 
@@ -25,7 +30,7 @@ def seed_database():
                 "email": "sarah.johnson@testbook.com",
                 "username": "sarahjohnson",
                 "display_name": "Sarah Johnson",
-                "password": "Sarah2024!",
+                "password": "Sarah2024!",  # pragma: allowlist secret
                 "bio": "Mom of 3 | Coffee enthusiast ☕ | Living my best life!",
                 "profile_picture": "/static/images/avatar-sarah.jpg",
             },
@@ -33,7 +38,7 @@ def seed_database():
                 "email": "mike.chen@testbook.com",
                 "username": "mikechen",
                 "display_name": "Mike Chen",
-                "password": "MikeRocks88",
+                "password": "MikeRocks88",  # pragma: allowlist secret
                 "bio": "Adventure seeker 🏔️ | Photography lover | Always exploring",
                 "profile_picture": "/static/images/avatar-mike.jpg",
             },
@@ -41,7 +46,7 @@ def seed_database():
                 "email": "emma.davis@testbook.com",
                 "username": "emmadavis",
                 "display_name": "Emma Davis",
-                "password": "EmmaLovesPhotos",
+                "password": "EmmaLovesPhotos",  # pragma: allowlist secret
                 "bio": "Professional photographer 📸 | Nature lover | Dog mom 🐕",
                 "profile_picture": "/static/images/avatar-emma.jpg",
             },
@@ -49,7 +54,7 @@ def seed_database():
                 "email": "alex.rodriguez@testbook.com",
                 "username": "alexrodriguez",
                 "display_name": "XxAlexRodriguezxX",
-                "password": "Alex1234",
+                "password": "Alex1234",  # pragma: allowlist secret
                 "bio": "Gamer | Tech enthusiast | Always online 🎮",
                 "profile_picture": "/static/images/avatar-alex.jpg",
             },
@@ -57,7 +62,7 @@ def seed_database():
                 "email": "lisa.williams@testbook.com",
                 "username": "lisawilliams",
                 "display_name": "Lisa Williams",
-                "password": "LisaFitness2024",
+                "password": "LisaFitness2024",  # pragma: allowlist secret
                 "bio": "Fitness coach 💪 | Healthy living advocate | Let's get fit!",
                 "profile_picture": "/static/images/avatar-lisa.jpg",
             },
@@ -65,7 +70,7 @@ def seed_database():
                 "email": "james.taylor@testbook.com",
                 "username": "jamestaylor",
                 "display_name": "James Taylor",
-                "password": "JamesT@ylor99",
+                "password": "JamesT@ylor99",  # pragma: allowlist secret
                 "bio": "Music producer 🎵 | Food critic | NYC",
                 "profile_picture": "/static/images/avatar-james.jpg",
             },
@@ -73,7 +78,7 @@ def seed_database():
                 "email": "olivia.brown@testbook.com",
                 "username": "oliviabrown",
                 "display_name": "Olivia Brown",
-                "password": "OliviaBrown!23",
+                "password": "OliviaBrown!23",  # pragma: allowlist secret
                 "bio": "Travel blogger ✈️ | 50 countries and counting!",
                 "profile_picture": "/static/images/avatar-olivia.jpg",
             },
@@ -81,7 +86,7 @@ def seed_database():
                 "email": "daniel.kim@testbook.com",
                 "username": "danielkim",
                 "display_name": "Danny Kim",
-                "password": "DannyK1m2024",
+                "password": "DannyK1m2024",  # pragma: allowlist secret
                 "bio": "Software engineer | Coffee addict | Building cool stuff 👨‍💻",
                 "profile_picture": "/static/images/avatar-daniel.jpg",
             },
@@ -89,7 +94,7 @@ def seed_database():
                 "email": "newuser@testbook.com",
                 "username": "newuser123",
                 "display_name": "New User",
-                "password": "NewUser123!",
+                "password": "NewUser123!",  # pragma: allowlist secret
                 "bio": "",
                 "profile_picture": "/static/images/default-avatar.jpg",
             },
@@ -144,7 +149,10 @@ def seed_database():
         db.commit()
 
         # Create posts with varying timestamps
-        posts_data = [
+        # dict[str, Any]: each entry mixes str, int, and None values by
+        # design (it's literal seed data) - a precise TypedDict would be
+        # more ceremony than this fixture data warrants.
+        posts_data: list[dict[str, Any]] = [
             # Sarah's posts
             {
                 "author_idx": 0,
@@ -283,9 +291,7 @@ def seed_database():
 
         posts = []
         for post_data in posts_data:
-            created_time = datetime.now(timezone.utc) - timedelta(
-                days=post_data["days_ago"]
-            )
+            created_time = datetime.now(UTC) - timedelta(days=post_data["days_ago"])
             post = models.Post(
                 author_id=users[post_data["author_idx"]].id,
                 content=post_data["content"],
@@ -302,7 +308,7 @@ def seed_database():
             db.refresh(post)
 
         # Create some comments
-        comments_data = [
+        comments_data: list[dict[str, Any]] = [
             {
                 "post_idx": 0,
                 "author_idx": 1,
@@ -353,7 +359,7 @@ def seed_database():
         db.commit()
 
         # Create some reactions
-        reactions_data = [
+        reactions_data: list[dict[str, Any]] = [
             {"post_idx": 0, "author_idx": 1, "type": "love"},
             {"post_idx": 0, "author_idx": 2, "type": "love"},
             {"post_idx": 0, "author_idx": 4, "type": "like"},
@@ -383,16 +389,25 @@ def seed_database():
         db.commit()
 
         # Create some reposts
-        reposts_data = [
+        # hours_ago is a fixed value, not random: a random created_at meant
+        # the feed's sort order for these two reposts (relative to each
+        # other and to the regular posts around them) changed on every
+        # single database reset, which made the feed page's rendered
+        # order non-deterministic between test runs - real flakiness
+        # found by adding visual regression tests against this data (see
+        # docs/guides/VISUAL_REGRESSION.md).
+        reposts_data: list[dict[str, Any]] = [
             {
                 "original_post_idx": 3,
                 "author_idx": 0,
                 "content": "This is so inspiring! 🏔️",
+                "hours_ago": 3,
             },
             {
                 "original_post_idx": 11,
                 "author_idx": 5,
                 "content": "Motivation right here!",
+                "hours_ago": 12,
             },
         ]
 
@@ -402,8 +417,8 @@ def seed_database():
                 content=repost_data["content"],
                 is_repost=True,
                 original_post_id=posts[repost_data["original_post_idx"]].id,
-                created_at=datetime.now(timezone.utc)
-                - timedelta(hours=random.randint(1, 24)),
+                created_at=datetime.now(UTC)
+                - timedelta(hours=repost_data["hours_ago"]),
             )
             db.add(repost)
 
@@ -414,7 +429,10 @@ def seed_database():
         print(f"Created {len(posts)} posts")
         print("Created relationships and interactions")
 
-    except Exception as e:
+    # Top-level script boundary: any failure during seeding (DB error, bad
+    # seed data, etc.) should roll back and report, not crash with a
+    # half-seeded database.
+    except Exception as e:  # noqa: BLE001
         print(f"Error seeding database: {e}")
         db.rollback()
     finally:

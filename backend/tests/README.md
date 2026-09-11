@@ -21,6 +21,7 @@ This test suite demonstrates professional testing practices and serves as a lear
   - `test_database.py` - Database constraints and transactions
 - **`conftest.py`** - Shared fixtures and test configuration
 - **`factories.py`** - Test data factories
+- **`examples/`** - Educational good/bad test pattern examples (`good_tests.py`, `bad_tests.py`), referenced from [Stage 1 learning materials](../../learn/stage_1_unit/README.md)
 
 ## Running Tests
 
@@ -43,7 +44,7 @@ pytest
 
 # Run with verbose output
 pytest -v
-# See [Quick Commands](docs/reference/QUICK_COMMANDS.md) for all pytest options
+# See [Quick Commands](../../docs/reference/QUICK_COMMANDS.md) for all pytest options
 
 # Run specific test directory
 pytest tests/unit/
@@ -76,7 +77,7 @@ pytest --cov=.
 
 # Generate HTML coverage report
 pytest --cov=. --cov-report=html
-# See [Quick Commands](docs/reference/QUICK_COMMANDS.md) for all coverage options
+# See [Quick Commands](../../docs/reference/QUICK_COMMANDS.md) for all coverage options
 
 # View HTML report
 open htmlcov/index.html  # macOS
@@ -99,7 +100,7 @@ start htmlcov/index.html # Windows
 - When you need clean, focused output
 
 **Performance Impact:**
-Coverage collection adds ~20-30% overhead to test execution time. For 166 tests, this means ~15-20 seconds additional time.
+Coverage collection adds ~20-30% overhead to test execution time. For 203 tests, this means ~15-20 seconds additional time.
 
 ### Parallel Execution
 
@@ -155,7 +156,7 @@ Even though skipped, studying this test teaches you about:
 
 **Learn more:** [Contract Testing Guide](../../docs/guides/CONTRACT_TESTING.md) - Complete explanation with examples
 
-**Alternative:** Frontend contract testing works today! See [Lab 6C: Frontend Integration Testing](../../learn/stage_4_performance_security/exercises/LAB_06C_Frontend_Integration_Testing.md)
+**Alternative:** Frontend contract testing works today! See [Lab 6C: Frontend Integration Testing](../../learn/stage_2_integration/exercises/LAB_08_Contract_Testing_Foundations_Python.md)
 
 ## Test Markers
 
@@ -262,7 +263,7 @@ def test_database_operation(db_session, test_user):
 - **Database Tests**: All models and relationships covered
 - **Edge Cases**: Error handling, validation, authorization
 
-### Current Coverage: 84%
+### Current Coverage: 85%
 
 Generate a fresh coverage report instead of reading a static snapshot:
 
@@ -334,7 +335,7 @@ user = UserFactory.create(
 user, posts = create_user_with_posts(db_session, num_posts=5)
 ```
 
-See [LAB_05_Test_Data_Management.md](../../learn/stage_2_integration/exercises/LAB_05_Test_Data_Management.md) to learn more.
+See [LAB_05_Test_Data_Management.md](../../learn/stage_2_integration/exercises/LAB_07_Test_Data_Management_Python.md) to learn more.
 
 ## Contributing
 

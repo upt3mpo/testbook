@@ -6,13 +6,15 @@ This directory contains a small set of reference implementations that demonstrat
 
 ## Available Reference Solutions
 
-| Lab                            | File                 | Notes                                                     |
-| ------------------------------ | -------------------- | --------------------------------------------------------- |
-| Lab 1 – Your First Test        | `LAB_01_solution.py` | Demonstrates pytest basics and assertion patterns.        |
+| Lab | File | Notes |
+| --- | --- | --- |
+| Lab 1 – Your First Test | `LAB_01_solution.py` | Demonstrates pytest basics and assertion patterns. |
 | Lab 2 – Testing Real Functions | `LAB_02_solution.py` | Shows password hashing tests that mirror the lab prompts. |
-| Lab 3 – Testing API Endpoints  | `LAB_03_solution.py` | Covers TestClient usage and HTTP assertions.              |
+| Lab 5 – API Endpoint Testing | `LAB_03_solution.py` | Covers TestClient usage and HTTP assertions (filename predates the Lab 5 renumbering). |
 
 > Advanced labs (fixtures, E2E testing, debugging, rate limiting, etc.) encourage learners to compare their work against the production codebase and test suite. We intentionally avoid including end-to-end solutions to preserve the exploratory experience.
+
+**Running these files:** they rely on fixtures (`client`, `test_user`, `auth_headers`, etc.) defined in `backend/tests/conftest.py`, so pytest needs that conftest in scope — copy the file into `backend/tests/integration/` temporarily, or run pytest with `backend/` as the working directory and target the file by its copied path. Running a solution file directly from `learn/solutions/` will fail with `fixture 'client' not found`.
 
 ---
 
@@ -40,7 +42,6 @@ The self-assessment checklists inside each lab and the progress trackers in `lea
 
 ## Related Documentation
 
-- `docs/TESTBOOK_RELEASE_AUDIT.md` – Current release readiness report and curriculum rubric.
 - `docs/reference/TROUBLESHOOTING.md` – Catalog of issues learners typically encounter.
 - `docs/guides/RUNNING_TESTS.md` – How to execute the full test suite referenced by the labs.
 

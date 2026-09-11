@@ -47,7 +47,7 @@ export class FeedPage {
 
     // Selectors
     this.createPostTextarea = '[data-testid="create-post-textarea"]';
-    this.createPostSubmit = '[data-testid="create-post-submit"]';
+    this.createPostSubmit = '[data-testid="create-post-submit-button"]';
     this.postItems = '[data-testid-generic="post-item"]';
     this.navbar = '[data-testid="navbar"]';
   }
@@ -63,8 +63,8 @@ export class FeedPage {
     await this.page.fill(this.createPostTextarea, content);
     await this.page.click(this.createPostSubmit);
 
-    // Wait for post to appear
-    await this.page.waitForTimeout(500);
+    // waitForSelector already retries until the post shows up (or the
+    // timeout is hit), so there's no need for a separate wait before it.
     await this.page.waitForSelector(this.postItems, { state: "visible" });
   }
 
@@ -91,8 +91,14 @@ export class FeedPage {
   async deleteFirstPost() {
     /**Delete the first post (must be your own).*/
     const firstPost = await this.getFirstPost();
+    const content = await firstPost.textContent();
     await firstPost.locator('[data-testid$="-delete-button"]').click();
-    await this.page.waitForTimeout(500);
+
+    // Wait for the deleted post to actually disappear, rather than
+    // guessing how long that takes.
+    await this.page
+      .locator(`text="${content}"`)
+      .waitFor({ state: "hidden", timeout: 5000 });
   }
 
   async waitForPostToAppear(content, timeout = 5000) {
@@ -116,6 +122,8 @@ Create `tests/e2e/pages/profile-page.js`:
  * Handles all interactions with user profile pages.
  */
 
+import { expect } from "@playwright/test";
+
 export class ProfilePage {
   constructor(page) {
     this.page = page;
@@ -129,39 +137,49 @@ export class ProfilePage {
     });
   }
 
+  // Note: Testbook's Profile page has a single `profile-follow-button` that
+  // toggles between "Follow" and "Unfollow" based on `profile.is_following` -
+  // there is no separate unfollow button/testid.
+
   async followUser() {
-    /**Click the follow button.*/
-    await this.page.click('[data-testid="profile-follow-button"]');
-    await this.page.waitForTimeout(300);
+    /**Click the follow/unfollow toggle button (call only when not following).*/
+    const button = this.page.locator('[data-testid="profile-follow-button"]');
+    await button.click();
+    // Wait for the button label to actually flip, rather than guessing
+    // how long the API call takes.
+    await expect(button).toContainText(/unfollow/i);
   }
 
   async unfollowUser() {
-    /**Click the unfollow button.*/
-    await this.page.click('[data-testid="profile-unfollow-button"]');
-    await this.page.waitForTimeout(300);
+    /**Click the same toggle button again to unfollow.*/
+    const button = this.page.locator('[data-testid="profile-follow-button"]');
+    await button.click();
+    await expect(button).toContainText(/^follow$/i);
   }
 
   async isFollowing() {
-    /**Check if currently following this user.*/
-    return await this.page
-      .locator('[data-testid="profile-unfollow-button"]')
-      .isVisible();
+    /**Check if currently following this user (button reads "Unfollow").*/
+    const text = await this.page
+      .locator('[data-testid="profile-follow-button"]')
+      .innerText();
+    return text.trim().toLowerCase() === "unfollow";
   }
 
   async getFollowerCount() {
     /**Get the number of followers.*/
+    // The count lives inside the followers link, e.g. "12 followers"
     const text = await this.page
-      .locator('[data-testid="profile-followers-count"]')
+      .locator('[data-testid="profile-followers-link"]')
       .innerText();
-    return parseInt(text);
+    return parseInt(text, 10);
   }
 
   async getFollowingCount() {
     /**Get the number of following.*/
     const text = await this.page
-      .locator('[data-testid="profile-following-count"]')
+      .locator('[data-testid="profile-following-link"]')
       .innerText();
-    return parseInt(text);
+    return parseInt(text, 10);
   }
 
   async getPostCount() {
@@ -170,10 +188,11 @@ export class ProfilePage {
   }
 
   async getUsername() {
-    /**Get the profile username.*/
-    return await this.page
+    /**Get the profile username (element text is rendered as "@username").*/
+    const text = await this.page
       .locator('[data-testid="profile-username"]')
       .innerText();
+    return text.replace(/^@/, "");
   }
 }
 ```
@@ -321,16 +340,21 @@ export const test = base.extend({
   },
 
   anyUser: async ({ page }, use) => {
-    const users = ["sarah", "mike", "emma"];
-    const user = users[Math.floor(Math.random() * users.length)];
+    // Testbook's three seeded test accounts each have their own email and
+    // password - there's no shared naming/password pattern between them.
+    const TEST_USERS = {
+      sarah: { email: "sarah.johnson@testbook.com", password: "Sarah2024!" },
+      mike: { email: "mike.chen@testbook.com", password: "MikeRocks88" },
+      emma: { email: "emma.davis@testbook.com", password: "EmmaLovesPhotos" },
+    };
+    const usernames = Object.keys(TEST_USERS);
+    const user = usernames[Math.floor(Math.random() * usernames.length)];
+    const { email, password } = TEST_USERS[user];
 
     // Login as selected user
     await page.goto("http://localhost:3000");
-    await page.fill(
-      '[data-testid="login-email-input"]',
-      `${user}.johnson@testbook.com`
-    );
-    await page.fill('[data-testid="login-password-input"]', "Password123!");
+    await page.fill('[data-testid="login-email-input"]', email);
+    await page.fill('[data-testid="login-password-input"]', password);
     await page.click('[data-testid="login-submit-button"]');
     await page.waitForSelector('[data-testid="navbar"]', { state: "visible" });
 
@@ -447,10 +471,15 @@ test.describe("Network Interception", () => {
     // Try to create post
     await page.goto("http://localhost:3000");
     await page.fill('[data-testid="create-post-textarea"]', "This will fail");
-    await page.click('[data-testid="create-post-submit"]');
+    await page.click('[data-testid="create-post-submit-button"]');
 
     // Should show error message
-    await expect(page.locator("text=/error/i")).toBeVisible({ timeout: 5000 });
+    // Note: Testbook's CreatePost component always shows the generic text
+    // "Failed to create post" on any error - it doesn't surface the backend's
+    // detail message, so match on that literal text rather than /error/i.
+    await expect(page.locator("text=/failed to create post/i")).toBeVisible({
+      timeout: 5000,
+    });
   });
 
   test("should simulate slow network", async ({ page }) => {
@@ -474,8 +503,10 @@ test.describe("Network Interception", () => {
     await page.goto("http://localhost:3000");
 
     // Should show loading state (briefly)
+    // Testbook's Feed page renders `[data-testid="feed-loading"]` while
+    // posts are loading - there's no generic `[role="status"]` element.
     try {
-      await expect(page.locator('[role="status"]')).toBeVisible({
+      await expect(page.locator('[data-testid="feed-loading"]')).toBeVisible({
         timeout: 1000,
       });
     } catch {
@@ -540,7 +571,7 @@ test.describe("Test Organization", () => {
 
     // Create post
     await page.fill('[data-testid="create-post-textarea"]', "My first post!");
-    await page.click('[data-testid="create-post-submit"]');
+    await page.click('[data-testid="create-post-submit-button"]');
 
     // View profile
     await page.click('[data-testid="navbar-profile-link"]');
@@ -811,11 +842,9 @@ The concepts transfer directly between languages!
 
 ## 📚 Resources
 
-**Working Examples (Run These!):**
+**Files You Create in This Lab:**
 
-- **`tests/e2e/pages/`** - Page objects (feed, profile)
-- **`tests/e2e/fixtures/`** - Advanced fixtures
-- **`tests/e2e/builders.js`** - Data builders
+Unlike the Python track (which ships pre-built examples in `tests/e2e-python/examples/`), the JavaScript track has no pre-built page objects or builders in the repo - the `tests/e2e/pages/feed-page.js`, `tests/e2e/pages/profile-page.js`, and `tests/e2e/builders.js` files above are ones you create yourself by following Parts 1-5. `tests/e2e/fixtures/` does already exist in the repo (see `test-helpers.js`), so add `advanced-fixtures.js` alongside it.
 
 **Study Existing Tests:**
 
@@ -832,4 +861,4 @@ The concepts transfer directly between languages!
 
 **🎉 You've mastered advanced E2E testing patterns in JavaScript! These are professional-level skills used in production!**
 
-**Next Lab:** [Lab 7: Playwright Deep Dive (JavaScript)](LAB_07_Playwright_Deep_Dive_JavaScript.md)
+**Next Lab:** [Lab 11: Cross-Browser Testing (JavaScript)](LAB_11_Cross_Browser_Testing_JavaScript.md)

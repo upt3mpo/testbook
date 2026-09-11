@@ -596,12 +596,12 @@ Test your understanding:
 
 **Ready for more?**
 
-- **[LAB_03_Testing_API_Endpoints_Python.md](LAB_03_Testing_API_Endpoints_Python.md)** - Use fixtures with API tests
-- **[backend/tests/conftest.py](../backend/tests/conftest.py)** - Study professional fixtures
+- **[Lab 4: Debugging and Error Handling (Python)](LAB_04_Debugging_And_Error_Handling_Python.md)** - Use fixtures with API tests
+- **[backend/tests/conftest.py](../../../backend/tests/conftest.py)** - Study professional fixtures
 - **[Pytest Fixtures Documentation](https://docs.pytest.org/en/latest/fixture.html)** - Deep dive
 
 ---
 
 **🎉 Congratulations!** You now understand one of the most powerful features of pytest!
 
-**Next Lab:** [Lab DEBUG 01: Reading Errors (Python)](LAB_DEBUG_01_Reading_Errors_Python.md)
+**Next Lab:** [Lab DEBUG 01: Reading Errors (Python)](LAB_04_Debugging_And_Error_Handling_Python.md)

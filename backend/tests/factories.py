@@ -5,7 +5,9 @@ These factories make it easy to create test data with sensible defaults
 while allowing customization when needed.
 """
 
-from typing import Optional
+from typing import Any
+
+from sqlalchemy.orm import Session
 
 from auth import get_password_hash
 from models import Comment, Post, Reaction, User
@@ -43,15 +45,15 @@ class UserFactory:
     _counter = 0
 
     @classmethod
-    def create(
+    def create(  # noqa: PLR0913, PLR0917 - a factory's whole job is offering optional overrides for every field
         cls,
-        db_session,
-        email: Optional[str] = None,
-        username: Optional[str] = None,
-        display_name: Optional[str] = None,
+        db_session: Session,
+        email: str | None = None,
+        username: str | None = None,
+        display_name: str | None = None,
         password: str = "TestPassword123!",
-        bio: Optional[str] = None,
-        **kwargs,
+        bio: str | None = None,
+        **kwargs: Any,
     ) -> User:
         """
         Create a user with sensible defaults.
@@ -99,7 +101,7 @@ class UserFactory:
         return user
 
     @classmethod
-    def create_batch(cls, db_session, count: int, **kwargs) -> list[User]:
+    def create_batch(cls, db_session: Session, count: int, **kwargs: Any) -> list[User]:
         """Create multiple users at once.
 
         Args:
@@ -119,12 +121,12 @@ class PostFactory:
     @classmethod
     def create(
         cls,
-        db_session,
+        db_session: Session,
         author: User,
-        content: Optional[str] = None,
-        image_url: Optional[str] = None,
-        video_url: Optional[str] = None,
-        **kwargs,
+        content: str | None = None,
+        image_url: str | None = None,
+        video_url: str | None = None,
+        **kwargs: Any,
     ) -> Post:
         """Create a post with defaults.
 
@@ -157,7 +159,9 @@ class PostFactory:
         return post
 
     @classmethod
-    def create_batch(cls, db_session, author: User, count: int, **kwargs) -> list[Post]:
+    def create_batch(
+        cls, db_session: Session, author: User, count: int, **kwargs: Any
+    ) -> list[Post]:
         """Create multiple posts for an author.
 
         Args:
@@ -178,11 +182,11 @@ class CommentFactory:
     @classmethod
     def create(
         cls,
-        db_session,
+        db_session: Session,
         post: Post,
         author: User,
-        content: Optional[str] = None,
-        **kwargs,
+        content: str | None = None,
+        **kwargs: Any,
     ) -> Comment:
         """Create a comment with defaults.
 
@@ -211,7 +215,7 @@ class CommentFactory:
 
     @classmethod
     def create_batch(
-        cls, db_session, post: Post, author: User, count: int, **kwargs
+        cls, db_session: Session, post: Post, author: User, count: int, **kwargs: Any
     ) -> list[Comment]:
         """Create multiple comments on a post.
 
@@ -233,7 +237,12 @@ class ReactionFactory:
 
     @classmethod
     def create(
-        cls, db_session, post: Post, user: User, reaction_type: str = "like", **kwargs
+        cls,
+        db_session: Session,
+        post: Post,
+        user: User,
+        reaction_type: str = "like",
+        **kwargs: Any,
     ) -> Reaction:
         """Create a reaction with defaults.
 
@@ -262,7 +271,10 @@ class ReactionFactory:
 
 
 def create_user_with_posts(
-    db_session, num_posts: int = 3, username: Optional[str] = None, **user_kwargs
+    db_session: Session,
+    num_posts: int = 3,
+    username: str | None = None,
+    **user_kwargs: Any,
 ) -> tuple[User, list[Post]]:
     """Create a user with multiple posts.
 
@@ -281,7 +293,10 @@ def create_user_with_posts(
 
 
 def create_post_with_comments(
-    db_session, author: Optional[User] = None, num_comments: int = 3, **post_kwargs
+    db_session: Session,
+    author: User | None = None,
+    num_comments: int = 3,
+    **post_kwargs: Any,
 ) -> tuple[Post, list[Comment]]:
     """Create a post with multiple comments.
 
@@ -309,8 +324,8 @@ def create_post_with_comments(
 
 
 def create_social_network(
-    db_session, num_users: int = 5, posts_per_user: int = 2
-) -> dict:
+    db_session: Session, num_users: int = 5, posts_per_user: int = 2
+) -> dict[str, Any]:
     """Create a small social network for testing.
 
     Args:

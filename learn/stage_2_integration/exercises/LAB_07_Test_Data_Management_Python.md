@@ -78,7 +78,7 @@ def test_user_posts():
 
 **Create:** `backend/tests/test_data_builders.py`
 
-````python
+```python
 """
 Test Data Builders and Factories
 
@@ -91,10 +91,10 @@ import pytest
 from models import User, Post, Comment
 from auth import get_password_hash
 
+
 class UserBuilder:
-```python
-"""
-Builder pattern for creating test users with custom data.
+    """
+    Builder pattern for creating test users with custom data.
 
     This class allows you to create user objects with specific attributes
     using a fluent interface. This makes test data creation more readable
@@ -148,7 +148,7 @@ Builder pattern for creating test users with custom data.
         db_session.refresh(user)
         return user
 
-```python
+
 @pytest.mark.unit
 class TestUserBuilder:
     """Test the UserBuilder."""
@@ -186,8 +186,7 @@ class TestUserBuilder:
 
         assert user1.id != user2.id
         assert user1.email != user2.email
-
-````
+```
 
 **Run it:**
 
@@ -638,10 +637,10 @@ def test_get_user():
 - Use builders in your actual tests
 - Create builders for Reaction model
 - Build complex test scenarios
-- Read: [Test Data Scenarios Guide](../docs/guides/TEST_DATA_SCENARIOS.md) for more patterns
+- Read: [Test Data Scenarios Guide](../../../docs/guides/TEST_DATA_SCENARIOS.md) for more patterns
 
 ---
 
 **🎉 Congratulations!** You can now manage test data like a professional!
 
-**Next Lab:** Move to [Stage 3: API & E2E Testing](../../stage_3_api_e2e/README.md) or explore other labs
+**Next Lab:** [Lab 8: Contract Testing Foundations (Python)](LAB_08_Contract_Testing_Foundations_Python.md)

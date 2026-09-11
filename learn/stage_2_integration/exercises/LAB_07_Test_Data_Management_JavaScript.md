@@ -394,8 +394,8 @@ npm test test_data_builders.test.js
 **Create:** `frontend/src/tests/unit/PostList.test.jsx`
 
 ```javascript
-import { render, screen } from "@testing-library/react";
-import { describe, it, expect } from "vitest";
+import { fireEvent, render, screen } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
 
 // PostList component for testing
 function PostList({ posts, onPostClick }) {
@@ -744,10 +744,10 @@ it("should test user", () => {
 - Use builders in your actual tests
 - Create builders for other models
 - Build complex test scenarios
-- Read: [Test Data Patterns Guide](../docs/guides/TEST_DATA_PATTERNS.md) for more patterns
+- Read: [Test Data Patterns Guide](../../../docs/guides/TEST_DATA_SCENARIOS.md) for more patterns
 
 ---
 
 **🎉 Congratulations!** You can now manage test data like a professional!
 
-**Next Lab:** [Lab 4B: Advanced E2E Testing (JavaScript)](LAB_04B_Advanced_E2E_JavaScript.md)
+**Next Lab:** [Lab 8: Contract Testing Foundations (JavaScript)](LAB_08_Contract_Testing_Foundations_JavaScript.md)

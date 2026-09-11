@@ -1,48 +1,16 @@
 """
 Posts E2E Tests - Python/Playwright
 Tests creating, editing, deleting posts, and interactions
+
+Page Object Model: interactions go through pages.feed_page.FeedPage
+rather than raw selectors, so a UI change only needs updating in one place.
 """
 
 import re
 
 from playwright.sync_api import Page, expect
 
-
-def get_first_post(page: Page):
-    """Get the first (most recent) post on the feed"""
-    return page.locator('[data-testid-generic="post-item"]').first
-
-
-def get_first_own_post(page: Page):
-    """Get the first post owned by the current user"""
-    return page.locator('[data-is-own-post="true"]').first
-
-
-def create_post(page: Page, content: str):
-    """Helper to create a post"""
-    page.fill('[data-testid="create-post-textarea"]', content)
-    page.click('[data-testid="create-post-submit-button"]')
-    expect(page.locator(f'text="{content}"').first).to_be_visible(timeout=10000)
-    try:
-        page.wait_for_load_state("networkidle", timeout=5000)
-    except:
-        pass  # Continue even if networkidle times out
-
-
-def add_reaction(post, reaction_type: str, page: Page):
-    """Add a reaction to a post"""
-    react_button = post.locator('[data-testid$="-react-button"]')
-    expect(react_button).to_be_visible(timeout=5000)
-
-    # Click the react button to open the dropdown (force click to avoid pointer intercept)
-    react_button.click(force=True)
-    page.wait_for_timeout(1000)  # Increased wait for dropdown animation
-
-    # Click the specific reaction
-    reaction_btn = post.locator(f'[data-testid$="-reaction-{reaction_type}"]')
-    expect(reaction_btn).to_be_visible(timeout=5000)
-    reaction_btn.click(force=True)
-    page.wait_for_timeout(1500)  # Wait for API response
+from pages.feed_page import FeedPage
 
 
 class TestPosts:
@@ -54,12 +22,16 @@ class TestPosts:
     ):
         """Test creating a text-only post"""
         login_as("sarah")
+        feed = FeedPage(page)
 
         post_content = "This is my test post!"
-        create_post(page, post_content)
+        feed.create_post(post_content)
 
-        # Post should appear in feed
-        first_post = get_first_post(page)
+        # Post should appear in feed. This test is specifically about
+        # ordering (a new post appears first), so it stays scoped by
+        # position rather than by content - see find_post_by_content()'s
+        # docstring for why that distinction matters.
+        first_post = feed.first_post()
         expect(first_post).to_contain_text(post_content)
         expect(first_post).to_have_attribute("data-is-own-post", "true")
 
@@ -69,13 +41,13 @@ class TestPosts:
         """Test submit button is disabled for empty post"""
         login_as("sarah")
 
-        submit_button = page.locator('[data-testid="create-post-submit-button"]')
+        submit_button = page.get_by_test_id("create-post-submit-button")
 
         # Should be disabled when empty
         expect(submit_button).to_be_disabled()
 
         # Should enable when text is entered
-        page.fill('[data-testid="create-post-textarea"]', "Some content")
+        page.get_by_test_id("create-post-textarea").fill("Some content")
         expect(submit_button).to_be_enabled()
 
     def test_create_post_clear_textarea(
@@ -83,11 +55,10 @@ class TestPosts:
     ):
         """Test textarea clears after posting"""
         login_as("sarah")
-
-        create_post(page, "Test post")
+        FeedPage(page).create_post("Test post")
 
         # Textarea should be clear
-        textarea = page.locator('[data-testid="create-post-textarea"]')
+        textarea = page.get_by_test_id("create-post-textarea")
         expect(textarea).to_have_value("")
 
     def test_create_post_reverse_chronological(
@@ -95,68 +66,37 @@ class TestPosts:
     ):
         """Test posts show in reverse chronological order"""
         login_as("sarah")
+        feed = FeedPage(page)
 
         # Create multiple posts
-        create_post(page, "First post")
-        create_post(page, "Second post")
-        create_post(page, "Third post")
+        feed.create_post("First post")
+        feed.create_post("Second post")
+        feed.create_post("Third post")
 
-        # Most recent should be first
-        first_post = get_first_post(page)
-        expect(first_post).to_contain_text("Third post")
+        # Most recent should be first - this test is specifically about
+        # ordering, so it stays scoped by position (see
+        # find_post_by_content()'s docstring).
+        expect(feed.first_post()).to_contain_text("Third post")
 
     # Edit Post Tests
     def test_edit_own_post(self, page: Page, base_url: str, login_as, fresh_database):
         """Test editing own post"""
         login_as("sarah")
+        feed = FeedPage(page)
 
-        # Create a post first
-        create_post(page, "Original content")
-
-        own_post = get_first_own_post(page)
-
-        # Scroll the post into view
+        feed.create_post("Original content")
+        own_post = feed.first_own_post()
         own_post.scroll_into_view_if_needed()
-        page.wait_for_timeout(300)
 
-        # Click menu button
-        menu_button = own_post.locator('[data-testid$="-menu-button"]')
-        expect(menu_button).to_be_visible(timeout=5000)
-        menu_button.click(force=True)
+        feed.edit_post(own_post, "Edited content")
 
-        # Wait for dropdown to appear
-        page.wait_for_timeout(500)
+        # Wait for edit form to disappear (indicating save completed)
+        expect(own_post.locator(feed.post_edit_textarea)).not_to_be_visible(
+            timeout=5000
+        )
 
-        # Click the edit button
-        edit_button = own_post.locator('[data-testid$="-edit-button"]')
-        expect(edit_button).to_be_visible(timeout=5000)
-        edit_button.click(force=True)
-
-        # Edit form should appear
-        edit_textarea = own_post.locator('[data-testid$="-edit-textarea"]')
-        expect(edit_textarea).to_be_visible(timeout=5000)
-
-        # Edit content
-        edit_textarea.fill("Edited content")
-
-        # Wait for save button to be visible and click
-        save_button = own_post.locator('[data-testid$="-save-button"]')
-        expect(save_button).to_be_visible(timeout=5000)
-        save_button.click()
-
-        # Wait for the alert to be dismissed (auto-handled by our dialog handler)
-        page.wait_for_timeout(500)
-
-        # Wait for edit form to disappear
-        expect(edit_textarea).not_to_be_visible(timeout=5000)
-
-        # Wait for React to re-render with updated content
-        page.wait_for_timeout(1000)
-
-        # Re-query the post to get fresh locator
-        own_post = get_first_own_post(page)
-
-        # Should show updated content
+        # Re-query the post to get fresh locator, then verify updated content
+        own_post = feed.first_own_post()
         expect(own_post).to_contain_text("Edited content", timeout=5000)
         expect(own_post).not_to_contain_text("Original content")
 
@@ -165,39 +105,15 @@ class TestPosts:
     ):
         """Test canceling edit"""
         login_as("sarah")
+        feed = FeedPage(page)
 
-        create_post(page, "Original content")
-
-        own_post = get_first_own_post(page)
-
-        # Scroll the post into view
+        feed.create_post("Original content")
+        own_post = feed.first_own_post()
         own_post.scroll_into_view_if_needed()
-        page.wait_for_timeout(300)
 
-        # Click menu button
-        menu_button = own_post.locator('[data-testid$="-menu-button"]')
-        expect(menu_button).to_be_visible(timeout=5000)
-        menu_button.click(force=True)
-
-        # Wait for dropdown to appear
-        page.wait_for_timeout(500)
-
-        # Click edit button
-        edit_button = own_post.locator('[data-testid$="-edit-button"]')
-        expect(edit_button).to_be_visible(timeout=5000)
-        edit_button.click(force=True)
-
-        # Wait for edit textarea to appear
-        edit_textarea = own_post.locator('[data-testid$="-edit-textarea"]')
-        expect(edit_textarea).to_be_visible(timeout=5000)
-
-        # Change text
+        edit_textarea = feed.start_editing_post(own_post)
         edit_textarea.fill("Changed")
-
-        # Wait for cancel button to be visible and click
-        cancel_button = own_post.locator('[data-testid$="-cancel-button"]')
-        expect(cancel_button).to_be_visible(timeout=5000)
-        cancel_button.click()
+        feed.cancel_editing_post(own_post)
 
         # Wait for edit form to disappear
         expect(edit_textarea).not_to_be_visible(timeout=5000)
@@ -211,46 +127,31 @@ class TestPosts:
     ):
         """Test edit option not shown on other users' posts"""
         login_as("sarah")
+        feed = FeedPage(page)
 
         # View a post from another user
         other_user_post = page.locator('[data-post-author="mikechen"]').first
 
         try:
             is_visible = other_user_post.is_visible(timeout=5000)
-        except:
+        except Exception:
             is_visible = False
 
         if is_visible:
             # Should not have edit menu
-            expect(
-                other_user_post.locator('[data-testid$="-menu-button"]')
-            ).not_to_be_visible()
+            expect(other_user_post.locator(feed.post_menu_button)).not_to_be_visible()
 
     # Delete Post Tests
     def test_delete_own_post(self, page: Page, base_url: str, login_as, fresh_database):
         """Test deleting own post"""
         login_as("sarah")
+        feed = FeedPage(page)
 
-        create_post(page, "Post to delete")
-
-        own_post = get_first_own_post(page)
+        feed.create_post("Post to delete")
+        own_post = feed.first_own_post()
         post_content = own_post.text_content()
 
-        # Open menu with force click to avoid pointer issues
-        menu_button = own_post.locator('[data-testid$="-menu-button"]')
-        expect(menu_button).to_be_visible(timeout=5000)
-        menu_button.click(force=True)
-
-        # Wait for dropdown animation
-        page.wait_for_timeout(500)
-
-        # Click delete button directly (should be visible now)
-        delete_button = own_post.locator('[data-testid$="-delete-button"]')
-        expect(delete_button).to_be_visible(timeout=5000)
-        delete_button.click(force=True)
-
-        # Confirm deletion if there's a dialog
-        page.wait_for_timeout(1000)
+        feed.delete_post(own_post)
 
         # Post should be removed
         expect(page.locator(f'text="{post_content}"')).not_to_be_visible(timeout=5000)
@@ -259,17 +160,15 @@ class TestPosts:
     def test_add_reaction(self, page: Page, base_url: str, login_as, fresh_database):
         """Test adding reaction to post"""
         login_as("sarah")
+        feed = FeedPage(page)
 
-        create_post(page, "React to this post")
+        feed.create_post("React to this post")
+        my_post = feed.find_post_by_content("React to this post")
+        react_button = my_post.locator(feed.post_react_button)
 
-        first_post = get_first_post(page)
-        react_button = first_post.locator('[data-testid$="-react-button"]')
-
-        # Verify reaction button exists
         expect(react_button).to_be_visible()
 
-        # Add reaction
-        add_reaction(first_post, "like", page)
+        feed.react_to_post(my_post, "like")
 
         # Wait for button to show reaction
         expect(react_button).to_contain_text("👍", timeout=10000)
@@ -279,38 +178,35 @@ class TestPosts:
     ):
         """Test changing reaction type"""
         login_as("sarah")
+        feed = FeedPage(page)
 
-        create_post(page, "React to this post")
-
-        first_post = get_first_post(page)
-        react_button = first_post.locator('[data-testid$="-react-button"]')
+        feed.create_post("React to this post")
+        my_post = feed.find_post_by_content("React to this post")
+        react_button = my_post.locator(feed.post_react_button)
 
         # Add like
-        add_reaction(first_post, "like", page)
+        feed.react_to_post(my_post, "like")
         expect(react_button).to_contain_text("👍", timeout=10000)
 
         # Change to love
-        add_reaction(first_post, "love", page)
+        feed.react_to_post(my_post, "love")
         expect(react_button).to_contain_text("❤️", timeout=10000)
 
     def test_remove_reaction(self, page: Page, base_url: str, login_as, fresh_database):
         """Test removing reaction"""
         login_as("sarah")
+        feed = FeedPage(page)
 
-        create_post(page, "React to this post")
-
-        first_post = get_first_post(page)
-        react_button = first_post.locator('[data-testid$="-react-button"]')
+        feed.create_post("React to this post")
+        my_post = feed.find_post_by_content("React to this post")
+        react_button = my_post.locator(feed.post_react_button)
 
         # Add reaction
-        add_reaction(first_post, "like", page)
+        feed.react_to_post(my_post, "like")
         expect(react_button).to_contain_text("👍", timeout=10000)
 
-        # Click same reaction to remove
-        react_button.hover()
-        like_button = first_post.locator('[data-testid$="-reaction-like"]')
-        expect(like_button).to_be_visible(timeout=5000)
-        like_button.click()
+        # Reacting with the same type again removes it
+        feed.react_to_post(my_post, "like")
 
         # Wait for network to settle
         page.wait_for_load_state("networkidle", timeout=3000)
@@ -323,78 +219,71 @@ class TestPosts:
     ):
         """Test all reaction types are visible"""
         login_as("sarah")
+        feed = FeedPage(page)
 
-        create_post(page, "React to this post")
+        feed.create_post("React to this post")
+        my_post = feed.find_post_by_content("React to this post")
 
-        first_post = get_first_post(page)
-
-        # Hover to show reaction menu
-        react_button = first_post.locator('[data-testid$="-react-button"]')
-
-        # Ensure button is visible first
+        react_button = my_post.locator(feed.post_react_button)
         expect(react_button).to_be_visible(timeout=5000)
 
-        # Force hover and wait for CSS transition (0.15s) + buffer
+        # Force hover to open the reaction dropdown. The dropdown has a CSS
+        # fade-in transition, but each expect() below already retries for up
+        # to 5s, which covers that transition without a separate wait.
         react_button.hover(force=True)
-        page.wait_for_timeout(500)
 
         # All reactions should be visible
         reactions = ["like", "love", "haha", "wow", "sad", "angry"]
         for reaction in reactions:
-            reaction_locator = first_post.locator(
-                f'[data-testid$="-reaction-{reaction}"]'
-            )
+            reaction_locator = my_post.locator(f'[data-testid$="-reaction-{reaction}"]')
             expect(reaction_locator).to_be_visible(timeout=5000)
 
     # Comment Tests
     def test_add_comment(self, page: Page, base_url: str, login_as, fresh_database):
         """Test adding comment to post"""
         login_as("sarah")
+        feed = FeedPage(page)
 
-        create_post(page, "Post to comment on")
+        post_content = "Post to comment on"
+        feed.create_post(post_content)
+        my_post = feed.find_post_by_content(post_content)
 
-        first_post = get_first_post(page)
-
-        # Click to view post details
-        first_post.locator('[data-testid$="-comment-button"]').click()
-
-        # Wait for navigation or modal
-        page.wait_for_timeout(500)
+        # Clicking the comment button toggles an inline comment form open
+        # (see Post.jsx's showCommentInput state) rather than navigating.
+        feed.open_comment_form(my_post)
+        expect(my_post.locator(feed.post_comment_form)).to_be_visible(timeout=5000)
 
     def test_show_comment_count(
         self, page: Page, base_url: str, login_as, fresh_database
     ):
         """Test comment count is displayed"""
         login_as("sarah")
+        feed = FeedPage(page)
 
-        # Check if comment count is displayed
-        posts = page.locator('[data-testid-generic="post-item"]')
-        first_post = posts.first
+        first_post = feed.first_post()
 
         try:
             is_visible = first_post.is_visible(timeout=5000)
-        except:
+        except Exception:
             is_visible = False
 
         if is_visible:
             # Comment button should show count or icon
-            expect(
-                first_post.locator('[data-testid$="-comment-button"]')
-            ).to_be_visible()
+            expect(first_post.locator(feed.post_comment_button)).to_be_visible()
 
     # Repost Tests
     def test_repost_a_post(self, page: Page, base_url: str, login_as, fresh_database):
         """Test reposting a post"""
         login_as("sarah")
+        feed = FeedPage(page)
 
         # Find a post from another user
-        other_post = page.locator('[data-testid-generic="post-item"]').first
+        other_post = feed.first_post()
 
         if other_post.is_visible(timeout=5000):
-            repost_button = other_post.locator('[data-testid$="-repost-button"]')
+            repost_button = other_post.locator(feed.post_repost_button)
 
-            # Repost
-            repost_button.click()
+            feed.toggle_repost(other_post)
 
             # Button should show reposted state
             expect(repost_button).to_contain_text(re.compile("reposted", re.IGNORECASE))
@@ -403,32 +292,28 @@ class TestPosts:
     def test_unrepost_a_post(self, page: Page, base_url: str, login_as, fresh_database):
         """Test unreposting a post"""
         login_as("sarah")
+        feed = FeedPage(page)
 
         # Get first post - should be from seeded data (other users)
-        other_post = page.locator('[data-testid-generic="post-item"]').first
+        other_post = feed.first_post()
 
         try:
             is_visible = other_post.is_visible(timeout=5000)
-        except:
+        except Exception:
             is_visible = False
 
         if is_visible:
-            repost_button = other_post.locator('[data-testid$="-repost-button"]')
+            repost_button = other_post.locator(feed.post_repost_button)
 
-            # Repost
-            repost_button.click()
-
-            # Wait for button state to update
-            page.wait_for_timeout(1000)
+            # Repost. expect().to_contain_text() below retries until the
+            # button's label actually updates, so no separate wait is needed.
+            feed.toggle_repost(other_post)
             expect(repost_button).to_contain_text(
                 re.compile("reposted", re.IGNORECASE), timeout=10000
             )
 
             # Unrepost
-            repost_button.click()
-
-            # Wait for button state to update
-            page.wait_for_timeout(1000)
+            feed.toggle_repost(other_post)
             expect(repost_button).to_contain_text(
                 re.compile("^repost$", re.IGNORECASE), timeout=10000
             )
@@ -440,36 +325,39 @@ class TestPosts:
     ):
         """Test switching between All and Following tabs"""
         login_as("sarah")
-
-        all_tab = page.locator('[data-testid="feed-tab-all"]')
-        following_tab = page.locator('[data-testid="feed-tab-following"]')
+        feed = FeedPage(page)
 
         # Should start on All tab
-        expect(all_tab).to_have_class(re.compile("active|selected", re.IGNORECASE))
+        expect(feed.feed_tab_all).to_have_class(
+            re.compile("active|selected", re.IGNORECASE)
+        )
 
         # Switch to Following
-        following_tab.click()
-        expect(following_tab).to_have_class(
+        feed.go_to_following_tab()
+        expect(feed.feed_tab_following).to_have_class(
             re.compile("active|selected", re.IGNORECASE)
         )
 
         # Switch back to All
-        all_tab.click()
-        expect(all_tab).to_have_class(re.compile("active|selected", re.IGNORECASE))
+        feed.go_to_all_tab()
+        expect(feed.feed_tab_all).to_have_class(
+            re.compile("active|selected", re.IGNORECASE)
+        )
 
     def test_different_posts_in_feeds(
         self, page: Page, base_url: str, login_as, fresh_database
     ):
         """Test different posts in Following vs All feed"""
         login_as("sarah")
+        feed = FeedPage(page)
 
         # Get count of All posts
-        page.click('[data-testid="feed-tab-all"]')
-        all_posts = page.locator('[data-testid-generic="post-item"]').count()
+        feed.go_to_all_tab()
+        all_posts = feed.post_count()
 
         # Get count of Following posts
-        page.click('[data-testid="feed-tab-following"]')
-        following_posts = page.locator('[data-testid-generic="post-item"]').count()
+        feed.go_to_following_tab()
+        following_posts = feed.post_count()
 
         # Counts may differ
         assert all_posts >= 0

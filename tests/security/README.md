@@ -49,7 +49,7 @@ pytest tests/security/ -v
 **What TESTING mode does:**
 
 - Production: 20 login requests/minute
-- Testing: 100 login requests/minute (allows all tests to pass)
+- Testing: 1000 login requests/minute (allows all tests to pass)
 
 ---
 
@@ -90,40 +90,52 @@ pytest tests/security/ -v
 
 ## 📊 Expected Results
 
-### With TESTING=true (Correct Setup)
+### With the backend server running TESTING=true (Correct Setup)
 
 ```text
-=================== 17-19 passed, 3 skipped, 1-3 failed ===================
+======================= 18 passed, 11 skipped in 14.8s ========================
 ```
 
-**Passing (17-19 tests):**
+This is now deterministic - it doesn't matter whether `TESTING=true` is also
+set on the shell running pytest. `test_login_attempts_should_be_rate_limited`
+and `test_registration_rate_limiting` probe the server directly (via
+`conftest.py`'s `server_testing_mode` fixture, which checks `/api/dev/users`'
+status code) to decide whether to skip, instead of trusting `os.getenv`. See
+the comment in `conftest.py` for the full reasoning.
+
+**Passing (18 tests):**
 
 - ✅ All authentication tests
 - ✅ All authorization tests
 - ✅ Input validation (SQL injection, XSS)
 - ✅ Data exposure prevention
 - ✅ Session management
-- ✅ Registration rate limiting
 - ✅ Request size limits
 
-**Skipped (3 tests):**
+**Skipped (11 tests):**
 
 - ⏭️ Account lockout (feature not implemented - future enhancement)
 - ⏭️ IP banning (feature not implemented - future enhancement)
-- ⏭️ Rate limit headers (optional feature)
+- ⏭️ Rate limit headers (optional feature, not implemented)
+- ⏭️ Login rate-limit test (skips when the server it's calling is in
+  TESTING mode, where the limit is raised to 1000/min - too high to
+  trigger in a test)
+- ⏭️ Registration rate-limit test (same reasoning, 500/min)
+- ⏭️ Six OWASP-gap placeholders in `test_owasp_gaps.py` (always skipped by design, see [Coverage Against the OWASP Top 10](#coverage-against-the-owasp-top-10-2021) below)
 
-**Failing (1-3 tests):**
-
-- ⚠️ Test execution order issues (test infrastructure, not code bugs)
-- ⚠️ Timing issues with concurrent tests
-
-### Without TESTING=true (Will Fail)
+### Against a server NOT running TESTING=true
 
 ```text
-=================== 10 passed, 3 skipped, 10 failed/errors ===================
+============================== 2 passed in 5.48s ===============================
 ```
 
-Most failures will be due to rate limiting - this proves rate limiting works!
+(Running just the two rate-limit tests in isolation - the rest of the suite
+assumes a TESTING=true server for its own fixtures and will fail for
+unrelated reasons against a production-mode one.) The two tests above
+actually run instead of skipping, and pass, because production-level rate
+limits (20/min login, 15/min registration) really do trigger within the
+attempt budget each test uses - this is what proves rate limiting works,
+verified directly rather than inferred.
 
 ---
 
@@ -222,6 +234,7 @@ tests/security/
 ├── conftest.py              # Shared fixtures, rate limit handling
 ├── test_security.py         # Core security tests (auth, input, data)
 ├── test_rate_limiting.py    # Rate limiting specific tests
+├── test_owasp_gaps.py       # Skipped placeholders for A06/A08/A09 gaps
 └── README.md                # This file
 ```
 
@@ -264,8 +277,8 @@ tests/security/
 
 4. **Rate Limiting**
 
-   - Login endpoints rate limited (20/min prod, 100/min test)
-   - Registration rate limited (15/min prod, 100/min test)
+   - Login endpoints rate limited (20/min prod, 1000/min test)
+   - Registration rate limited (15/min prod, 500/min test)
    - Excessive attempts blocked
 
 5. **Data Exposure Prevention**
@@ -277,10 +290,35 @@ tests/security/
 
    - Tokens work for multiple requests
    - Multiple sessions supported
+   - **Not tested here, because it doesn't exist:** token revocation. A
+     token issued before a password change or a logout stays valid until
+     it expires on its own (up to 24 hours by default - see
+     `ACCESS_TOKEN_EXPIRE_MINUTES` in `backend/auth.py`). This is a
+     deliberate simplification for a learning app, documented in a comment
+     on `get_current_user()` in that file, not an oversight - a real
+     deployment would need either a server-side revocation check on every
+     request or short-lived tokens with revocable refresh tokens.
 
 7. **DDoS Protection**
    - Request size limits (10MB max)
    - Concurrent requests handled
+
+### Coverage Against the OWASP Top 10 (2021)
+
+| # | Category | Covered here? |
+| --- | --- | --- |
+| A01 | Broken Access Control | Yes — cross-user post edit/delete, profile-update ownership checks |
+| A02 | Cryptographic Failures | Partially — passwords never appear in API responses; actual hashing strength is unit-tested separately in `backend/tests/unit/test_auth.py`, not here |
+| A03 | Injection | Yes — SQL injection and XSS payloads in post content |
+| A04 | Insecure Design | Partially — rate limiting and account lockout touch on this, but there's no dedicated design-level review here |
+| A05 | Security Misconfiguration | Partially — error-message leakage is tested; no test verifies HTTP security headers, CORS policy, or debug-mode settings in production |
+| A06 | Vulnerable and Outdated Components | **Partial.** See [`test_owasp_gaps.py`](test_owasp_gaps.py). Two skipped placeholder tests sketch a `pip-audit`/`npm audit` check; both are skipped because they need a network call to a vulnerability database, which this offline test suite doesn't guarantee. Dependabot (`.github/dependabot.yml`) covers the real remediation path today |
+| A07 | Identification and Authentication Failures | Yes — invalid/malformed tokens, wrong passwords, brute-force lockout |
+| A08 | Software and Data Integrity Failures | **Partial.** See [`test_owasp_gaps.py`](test_owasp_gaps.py). Two skipped placeholder tests cover dependency hash-pinning and CI Actions being pinned by tag instead of commit SHA. The second one documents a real, current gap in this repo's own workflows |
+| A09 | Security Logging and Monitoring Failures | **Partial.** See [`test_owasp_gaps.py`](test_owasp_gaps.py). Two skipped placeholder tests would assert failed logins and authorization failures get logged, once something actually calls `backend/logger.py` from `routers/auth.py`. Right now nothing does, so there's no log line yet to assert on |
+| A10 | Server-Side Request Forgery (SSRF) | **Not covered** — and not obviously applicable, since this app doesn't take user-supplied URLs and fetch them server-side. Worth revisiting only if that changes |
+
+A06, A08, and A09 now have placeholder coverage instead of a bare "not covered": each skipped test is a complete sketch of what the real check would assert, why it's skipped today, how you'd wire it up, and what production would actually do differently (often a scheduled job, not a per-PR test). See [`test_owasp_gaps.py`](test_owasp_gaps.py) directly rather than taking this table's word for it.
 
 ---
 
@@ -296,7 +334,7 @@ tests/security/
 4. **HTTP status codes matter** → 401 vs 403 understanding
 5. **Tests prove features work** → Rate limits work SO well they affect tests!
 
-**See [LAB_06: Testing with Rate Limiting](../../learn/stage_4_performance_security/exercises/LAB_06_Testing_With_Rate_Limits.md)** for a complete lesson on these concepts!
+**See [LAB 15: Rate Limiting & Production Monitoring](../../learn/stage_4_performance_security/exercises/LAB_15_Rate_Limiting_Production_Python.md)** for a complete lesson on these concepts!
 
 ---
 
@@ -308,7 +346,7 @@ tests/security/
 - ✅ Use provided `conftest.py` fixtures
 - ✅ Wait between test runs (60s) if rerunning
 - ✅ Run sequentially, not in parallel
-- ✅ Expect 17-19/23 tests to pass
+- ✅ Expect 18/23 real tests to pass, 5 skipped (plus 6 always-skipped OWASP-gap placeholders, 29 collected total)
 
 ### DON'T
 
@@ -349,7 +387,7 @@ pytest tests/security/test_rate_limiting.py::TestRateLimiting::test_login_attemp
 
 ## 🔗 Related Documentation
 
-- [LAB_06: Testing with Rate Limiting](../../learn/stage_4_performance_security/exercises/LAB_06_Testing_With_Rate_Limits.md) - Complete lesson on this topic
+- [LAB_15: Rate Limiting in Production](../../learn/stage_4_performance_security/exercises/LAB_15_Rate_Limiting_Production_Python.md) - Complete lesson on this topic
 - [backend/main.py](../../backend/main.py) - Rate limiting implementation
 - [backend/routers/auth.py](../../backend/routers/auth.py) - Login/register rate limits
 - [slowapi Documentation](https://slowapi.readthedocs.io/) - Rate limiting library
@@ -362,10 +400,12 @@ pytest tests/security/test_rate_limiting.py::TestRateLimiting::test_login_attemp
 
 - ✅ All security features are implemented
 - ✅ Tests prove features work (by hitting limits!)
-- ✅ Some failures are test infrastructure challenges
+- ✅ The 5 skips are real, explained gaps (unimplemented features, or a
+  test that only makes sense against a production-mode server), not
+  flakiness
 - ✅ This is realistic and educational
 
-**Pass rate:** 17-19/23 (74-83%) ✅
+**Pass rate:** 18/23 real tests (78%), plus 6 intentionally-skipped OWASP-gap placeholders ✅
 **Security:** Fully implemented ✅
 **Teaching value:** Excellent ✅
 
@@ -378,8 +418,8 @@ pytest tests/security/test_rate_limiting.py::TestRateLimiting::test_login_attemp
 **See:**
 
 - This README (you're reading it!)
-- [LAB_06](../../learn/stage_4_performance_security/exercises/LAB_06_Testing_With_Rate_Limits.md)
-- [README.md](../../README.md#frequently-asked-questions) - Learning questions and quick setup guidance
+- [LAB_06](../../learn/stage_4_performance_security/exercises/LAB_15_Rate_Limiting_Production_Python.md)
+- [FAQ](../../docs/guides/FAQ.md) - Learning questions and quick setup guidance
 - [RUNNING_TESTS.md](../../docs/guides/RUNNING_TESTS.md)
 
 **Or:** Create an issue with:

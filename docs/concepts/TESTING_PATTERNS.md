@@ -791,7 +791,7 @@ test("toggle repost", async ({ page }) => {
 6. ✅ **Use proper waits** after creating/updating content
 7. ✅ **Both specific and generic IDs** available for flexibility
 
-## 📚 More Resources
+## More Resources
 
 - **TESTING_CHEATSHEET.md** - Quick reference
 - **TESTING_GUIDE.md** - Detailed examples
@@ -800,13 +800,13 @@ test("toggle repost", async ({ page }) => {
 
 ---
 
-## 📚 Additional Resources
+## Additional Resources
 
 - **[README.md](../../README.md)** - Main documentation and project overview
 - **[TESTING_GUIDE.md](../guides/TESTING_GUIDE.md)** - Complete testing examples
-- **[TESTING_FEATURES.md](TESTING_FEATURES.md)** - All testable features
-- **[TESTING_CHEATSHEET.md](TESTING_CHEATSHEET.md)** - Quick reference guide
-- **[README.md](../../README.md#quick-start-5-minutes)** - Get started quickly
+- **[TESTING_FEATURES.md](../reference/TESTING_FEATURES.md)** - All testable features
+- **[TESTING_CHEATSHEET.md](../reference/TESTING_CHEATSHEET.md)** - Quick reference guide
+- **[README.md](../../README.md#quick-start)** - Get started quickly
 
 ---
 
@@ -1075,12 +1075,12 @@ await page.waitForURL(/.*\/login/, { timeout: 15000 });
 
 ---
 
-## 📚 More Info
+## More Info
 
 - **[TESTING_GUIDE.md](../guides/TESTING_GUIDE.md)** - Complete testing examples
 - **[CONTRACT_TESTING.md](../guides/CONTRACT_TESTING.md)** - Property-based API contract testing
-- **[TESTING_FEATURES.md](TESTING_FEATURES.md)** - All testable features
-- **[TESTING_CHEATSHEET.md](TESTING_CHEATSHEET.md)** - Quick reference (updated with real fixes!)
+- **[TESTING_FEATURES.md](../reference/TESTING_FEATURES.md)** - All testable features
+- **[TESTING_CHEATSHEET.md](../reference/TESTING_CHEATSHEET.md)** - Quick reference (updated with real fixes!)
 - **[TESTING_ANTIPATTERNS.md](TESTING_ANTIPATTERNS.md)** - What NOT to do (includes dialog anti-pattern!)
 - **[FLAKY_TESTS_GUIDE.md](../guides/FLAKY_TESTS_GUIDE.md)** ⭐ - Comprehensive guide with real examples
 
@@ -1255,6 +1255,6 @@ pytest -n 4     # Use 4 processes
 
 **For more testing patterns and examples, see:**
 
-- [TESTING_CHEATSHEET.md](TESTING_CHEATSHEET.md) - Quick reference
+- [TESTING_CHEATSHEET.md](../reference/TESTING_CHEATSHEET.md) - Quick reference
 - [TESTING_ANTIPATTERNS.md](TESTING_ANTIPATTERNS.md) - What to avoid
 - [FLAKY_TESTS_GUIDE.md](../guides/FLAKY_TESTS_GUIDE.md) - Handling flaky tests

@@ -66,11 +66,15 @@ ERROR: KeyError: 'access_token'
 Open `backend/routers/auth.py` and look for:
 
 ```python
-@limiter.limit("20/minute")
+TESTING_MODE = os.getenv("TESTING", "false").lower() == "true"
+LOGIN_RATE = "1000/minute" if TESTING_MODE else "20/minute"
+
+@router.post("/login", response_model=schemas.Token)
+@limiter.limit(LOGIN_RATE)
 def login(...):
 ```
 
-This means: **20 login requests per minute, per IP address.**
+This means: **20 login requests per minute, per IP address in production** — or **1000/minute** when the backend runs with `TESTING=true`.
 
 ### Step 2: Count Your Test's Login Calls
 
@@ -93,7 +97,7 @@ Test 21+:  ❌ Get 429 "Rate limit exceeded"
 ### Step 3: Reproduce the Failure
 
 ```bash
-cd /Users/danmanez/Projects/Testbook
+# From the project root:
 
 # Start backend normally (with rate limiting)
 cd backend
@@ -128,16 +132,17 @@ def auth_token():
     return response.json()["access_token"]
 ```
 
-**You might think:** "`scope='session'` means this runs ONCE, right?"
+**You might think:** "`scope='session'` means this only makes ONE login call, so we're safe, right?"
 
-**Reality:** Pytest calls it once per **test class** or **test module**, not truly once per session.
+**Reality:** The fixture itself is correctly cached — but it's only one call among many. Testbook's real `tests/security/` suite has 23 tests, and plenty of them (wrong-password checks, duplicate-registration checks, token-reuse checks, the dedicated rate-limiting tests) call `/auth/login` or `/auth/register` directly, outside the cached fixture.
 
 **Result:**
 
-- You have 5 test classes
-- Fixture runs 5 times
-- Plus your actual login tests make 15+ more calls
-- **Total: 20+ login calls in 60 seconds** → Rate limited!
+- 23 tests, several making their own direct login/register calls on top of the shared fixture
+- All requests come from the same IP (localhost)
+- **Total easily exceeds 20 login calls in 60 seconds** → rate limited!
+
+This matches what `tests/security/README.md` documents as the real cause: it isn't fixture re-execution, it's that the whole suite shares one IP-scoped rate-limit budget.
 
 ---
 
@@ -172,8 +177,8 @@ Open `backend/routers/auth.py`:
 import os
 
 TESTING_MODE = os.getenv("TESTING", "false").lower() == "true"
-LOGIN_RATE = "100/minute" if TESTING_MODE else "20/minute"
-REGISTER_RATE = "100/minute" if TESTING_MODE else "15/minute"
+LOGIN_RATE = "1000/minute" if TESTING_MODE else "20/minute"
+REGISTER_RATE = "500/minute" if TESTING_MODE else "15/minute"
 
 @router.post("/login")
 @limiter.limit(LOGIN_RATE)  # Dynamic rate based on environment
@@ -335,7 +340,7 @@ Some tests fail because they expect `401` but get `403`.
 
 ```python
 # No token provided → 401
-GET /api/users/me
+GET /api/auth/me
 # Response: 401 "Authentication required"
 
 # Valid token, but not the owner → 403
@@ -343,7 +348,7 @@ DELETE /api/posts/123  # Trying to delete someone else's post
 # Response: 403 "Not authorized to delete this post"
 
 # Invalid/expired token → 401 OR 403 (both acceptable!)
-GET /api/users/me
+GET /api/auth/me
 Authorization: Bearer invalid_token_here
 # Response: Could be either 401 or 403
 ```
@@ -644,12 +649,12 @@ limiter = Limiter(
 
 **We implemented rate limiting in Testbook.** Great for security!
 
-**Then ran the test suite.** 23 security tests.
+**Then ran the test suite.** 29 security tests.
 
 **Result:**
 
-- Tests 1-15: ✅ PASS
-- Tests 16-23: ❌ ERROR (rate limited!)
+- Most of the real tests: ✅ PASS
+- Several of them: ❌ ERROR (rate limited!)
 
 **First reaction:** "The tests are broken!"
 
@@ -718,7 +723,7 @@ print(f"TESTING_MODE: {TESTING_MODE}")
 - [slowapi Documentation](https://slowapi.readthedocs.io/)
 - [HTTP Status Codes](https://httpstatuses.com/)
 - [pytest Fixture Scopes](https://docs.pytest.org/en/latest/reference/fixtures.html#scope)
-- [Lab 5: Test Data Management (Python)](LAB_05_Test_Data_Management_Python.md)
+- [Lab 5: Test Data Management (Python)](../../stage_2_integration/exercises/LAB_07_Test_Data_Management_Python.md)
 - [TESTING_ANTIPATTERNS.md](../../../docs/concepts/TESTING_ANTIPATTERNS.md)
 
 ---
@@ -741,8 +746,8 @@ $env:TESTING='false'; pytest  # Real rate limits (will fail!)
 
 ```python
 # Production: 20 requests/minute
-# Testing: 100 requests/minute
-LOGIN_RATE = "100/minute" if TESTING_MODE else "20/minute"
+# Testing: 1000 requests/minute
+LOGIN_RATE = "1000/minute" if TESTING_MODE else "20/minute"
 ```
 
 **Tip 3:** Test your rate limiting separately

@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import List, Optional
+from typing import Optional
 
 from pydantic import BaseModel, ConfigDict, EmailStr
 
@@ -21,7 +21,7 @@ class RegisterResponse(BaseModel):
 
 
 class TokenData(BaseModel):
-    email: Optional[str] = None
+    email: str | None = None
 
 
 class LoginRequest(BaseModel):
@@ -34,7 +34,7 @@ class UserBase(BaseModel):
     email: EmailStr
     username: str
     display_name: str
-    bio: Optional[str] = ""
+    bio: str | None = ""
 
 
 class UserCreate(UserBase):
@@ -42,11 +42,11 @@ class UserCreate(UserBase):
 
 
 class UserUpdate(BaseModel):
-    display_name: Optional[str] = None
-    bio: Optional[str] = None
-    profile_picture: Optional[str] = None
-    theme: Optional[str] = None
-    text_density: Optional[str] = None
+    display_name: str | None = None
+    bio: str | None = None
+    profile_picture: str | None = None
+    theme: str | None = None
+    text_density: str | None = None
 
 
 class UserListItem(BaseModel):
@@ -98,13 +98,13 @@ class UserProfileResponse(BaseModel):
 # Post schemas
 class PostCreate(BaseModel):
     content: str
-    image_url: Optional[str] = None
-    video_url: Optional[str] = None
+    image_url: str | None = None
+    video_url: str | None = None
 
 
 class RepostCreate(BaseModel):
     original_post_id: int
-    content: Optional[str] = ""
+    content: str | None = ""
 
 
 class CommentCreate(BaseModel):
@@ -144,10 +144,10 @@ class PostResponse(BaseModel):
 
     id: int
     content: str
-    image_url: Optional[str] = None
-    video_url: Optional[str] = None
+    image_url: str | None = None
+    video_url: str | None = None
     is_repost: bool = False
-    original_post_id: Optional[int] = None
+    original_post_id: int | None = None
     original_post: Optional["PostResponse"] = None
     author_id: int
     author_username: str
@@ -157,20 +157,20 @@ class PostResponse(BaseModel):
     comments_count: int = 0
     reactions_count: int = 0
     reposts_count: int = 0
-    user_reaction: Optional[str] = None
+    user_reaction: str | None = None
     has_reposted: bool = False
 
 
 class PostDetailResponse(PostResponse):
     model_config = ConfigDict(from_attributes=True)
 
-    comments: List[CommentResponse] = []
-    reactions: List[ReactionResponse] = []
+    comments: list[CommentResponse] = []
+    reactions: list[ReactionResponse] = []
 
 
 # Feed schemas
 class FeedResponse(BaseModel):
-    posts: List[PostResponse]
+    posts: list[PostResponse]
     total: int
 
 

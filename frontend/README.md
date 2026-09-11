@@ -4,8 +4,8 @@ React frontend for the Testbook testing platform.
 
 ## Tech Stack
 
-- **React 18** - UI framework
-- **React Router v6** - Client-side routing
+- **React 19** - UI framework
+- **React Router v7** - Client-side routing
 - **Vite** - Build tool and dev server
 - **Axios** - HTTP client
 - **Vitest** - Unit testing framework
@@ -61,13 +61,14 @@ npm run test:ui
 
 ```text
 src/
-├── components/
-│   ├── __tests__/          # Component tests
-│   │   ├── Navbar.test.jsx
-│   │   └── CreatePost.test.jsx
-│   └── ...
-└── test/
-    └── setup.js            # Test configuration
+├── components/              # Navbar.jsx, CreatePost.jsx, Post.jsx, Comment.jsx
+├── pages/                   # Feed, Login, Register, Profile, Settings, ...
+└── tests/
+    ├── unit/                # Navbar.test.jsx, CreatePost.test.jsx, Register.test.jsx
+    ├── integration/          # contract.test.js
+    ├── accessibility/        # accessibility.test.jsx
+    ├── mocks/                # MSW request handlers
+    └── setup.js              # Test configuration
 ```
 
 ### Writing Tests
@@ -131,7 +132,8 @@ frontend/
 ├── src/
 │   ├── components/   # Reusable React components
 │   ├── pages/        # Page components (routes)
-│   ├── test/         # Test configuration
+│   ├── utils/        # Shared helpers
+│   ├── tests/        # Unit, integration, accessibility tests + MSW mocks
 │   ├── api.js        # API client
 │   ├── App.jsx       # Main app component
 │   ├── AuthContext.jsx  # Authentication context

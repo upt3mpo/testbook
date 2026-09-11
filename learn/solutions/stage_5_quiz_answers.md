@@ -2,14 +2,13 @@
 
 ## Capstone Quiz Answers
 
-### 1. What's the main purpose of a CI/CD pipeline?
+### 1. What's the main purpose of a testing portfolio?
 
-**Answer: B) To automatically test code when changes are made**
+**Answer: B) To demonstrate your testing abilities to employers**
 
-- CI/CD pipelines automatically run tests when code changes
-- They catch issues early in the development process
-- They ensure code quality before deployment
-- They're not just about speed or organization
+- A portfolio shows real, working test code - not just a claim on a resume that you "know testing"
+- It gives interviewers something concrete to ask you about
+- It's not primarily about showing off coding skills for their own sake (A), replacing your resume entirely (C), or collecting GitHub stars (D) - it's evidence for the job search
 
 ### 2. What should you include in a testing portfolio?
 

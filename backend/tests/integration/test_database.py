@@ -5,6 +5,8 @@ These tests verify database operations, transactions,
 and edge cases that might not be covered in other tests.
 """
 
+import contextlib
+
 import pytest
 from sqlalchemy.exc import IntegrityError
 
@@ -16,7 +18,7 @@ from models import Comment, Post, Reaction, User
 class TestDatabaseConstraints:
     """Test database constraints and validations."""
 
-    def test_user_email_constraint(self, db_session):
+    def test_user_email_constraint(self, db_session) -> None:
         """Test that email unique constraint is enforced."""
         user1 = User(
             email="test@example.com",
@@ -38,7 +40,7 @@ class TestDatabaseConstraints:
         with pytest.raises(IntegrityError):
             db_session.commit()
 
-    def test_user_username_constraint(self, db_session):
+    def test_user_username_constraint(self, db_session) -> None:
         """Test that username unique constraint is enforced."""
         user1 = User(
             email="user1@example.com",
@@ -60,7 +62,7 @@ class TestDatabaseConstraints:
         with pytest.raises(IntegrityError):
             db_session.commit()
 
-    def test_post_requires_author(self, db_session):
+    def test_post_requires_author(self, db_session) -> None:
         """Test that post requires valid author_id."""
         post = Post(
             author_id=999999,  # Non-existent user
@@ -68,21 +70,20 @@ class TestDatabaseConstraints:
         )
         db_session.add(post)
 
-        # SQLite may or may not enforce foreign keys depending on configuration
-        try:
+        # SQLite may or may not enforce foreign keys depending on
+        # configuration. Either outcome is fine here: a raised
+        # IntegrityError means foreign keys are enforced (good); a clean
+        # commit means they're not, which is expected without
+        # PRAGMA foreign_keys=ON.
+        with contextlib.suppress(IntegrityError):
             db_session.commit()
-            # If it succeeds, SQLite foreign keys are not enforced
-            # This is expected behavior for SQLite without PRAGMA foreign_keys=ON
-        except IntegrityError:
-            # If it fails, foreign keys are enforced (good!)
-            pass
 
 
 @pytest.mark.database
 class TestDatabaseCRUD:
     """Test basic CRUD operations."""
 
-    def test_create_read_user(self, db_session):
+    def test_create_read_user(self, db_session) -> None:
         """Test creating and reading a user."""
         user = User(
             email="crud@example.com",
@@ -99,7 +100,7 @@ class TestDatabaseCRUD:
         assert retrieved_user is not None
         assert retrieved_user.email == "crud@example.com"
 
-    def test_update_user(self, db_session, test_user):
+    def test_update_user(self, db_session, test_user) -> None:
         """Test updating user fields."""
         test_user.display_name = "Updated Name"
         test_user.bio = "Updated bio"
@@ -109,7 +110,7 @@ class TestDatabaseCRUD:
         assert test_user.display_name == "Updated Name"
         assert test_user.bio == "Updated bio"
 
-    def test_delete_user(self, db_session):
+    def test_delete_user(self, db_session) -> None:
         """Test deleting a user."""
         user = User(
             email="delete@example.com",
@@ -132,7 +133,7 @@ class TestDatabaseCRUD:
 class TestDatabaseRelationships:
     """Test database relationship loading and queries."""
 
-    def test_lazy_loading_posts(self, db_session, test_user):
+    def test_lazy_loading_posts(self, db_session, test_user) -> None:
         """Test lazy loading of user posts."""
         # Create posts
         for i in range(3):
@@ -146,7 +147,7 @@ class TestDatabaseRelationships:
         # Access posts
         assert len(test_user.posts) == 3
 
-    def test_join_query_user_posts(self, db_session, test_user):
+    def test_join_query_user_posts(self, db_session, test_user) -> None:
         """Test joining users and posts."""
         # Create post
         post = Post(author_id=test_user.id, content="Test post")
@@ -166,7 +167,7 @@ class TestDatabaseRelationships:
         assert user.id == test_user.id
         assert post.author_id == test_user.id
 
-    def test_many_to_many_followers(self, db_session, test_user, test_user_2):
+    def test_many_to_many_followers(self, db_session, test_user, test_user_2) -> None:
         """Test many-to-many followers relationship."""
         test_user.following.append(test_user_2)
         db_session.commit()
@@ -183,7 +184,7 @@ class TestDatabaseRelationships:
 class TestDatabaseTransactions:
     """Test transaction behavior."""
 
-    def test_rollback_on_error(self, db_session):
+    def test_rollback_on_error(self, db_session) -> None:
         """Test that transactions rollback on error."""
         user1 = User(
             email="user1@example.com",
@@ -212,7 +213,7 @@ class TestDatabaseTransactions:
         assert user is not None
         assert user.username == "user1"
 
-    def test_multiple_operations_in_transaction(self, db_session, test_user):
+    def test_multiple_operations_in_transaction(self, db_session, test_user) -> None:
         """Test multiple operations in single transaction."""
         # Create multiple posts in one transaction
         posts = [Post(author_id=test_user.id, content=f"Post {i}") for i in range(5)]
@@ -233,7 +234,7 @@ class TestDatabaseTransactions:
 class TestDatabaseQueries:
     """Test complex database queries."""
 
-    def test_filter_posts_by_multiple_authors(self, db_session, test_posts):
+    def test_filter_posts_by_multiple_authors(self, db_session, test_posts) -> None:
         """Test filtering posts by multiple authors."""
         author_ids = [post.author_id for post in test_posts[:2]]
 
@@ -241,9 +242,12 @@ class TestDatabaseQueries:
 
         assert len(posts) > 0
         for post in posts:
-            assert post.author_id in author_ids
+            assert post.author_id in author_ids, (
+                f"Filter returned post {post.id} by author {post.author_id}, "
+                f"not one of the requested authors {author_ids}"
+            )
 
-    def test_count_user_posts(self, db_session, test_user):
+    def test_count_user_posts(self, db_session, test_user) -> None:
         """Test counting user's posts."""
         # Create posts
         for i in range(7):
@@ -256,7 +260,7 @@ class TestDatabaseQueries:
 
         assert count == 7
 
-    def test_order_posts_by_date(self, db_session, test_user):
+    def test_order_posts_by_date(self, db_session, test_user) -> None:
         """Test ordering posts by creation date."""
         import time
 
@@ -284,7 +288,7 @@ class TestDatabaseQueries:
 class TestCascadeOperations:
     """Test cascade delete behavior."""
 
-    def test_delete_user_cascades_to_posts(self, db_session, test_user):
+    def test_delete_user_cascades_to_posts(self, db_session, test_user) -> None:
         """Test that deleting user deletes their posts."""
         # Create posts
         post_ids = []
@@ -304,9 +308,14 @@ class TestCascadeOperations:
         # Posts should be deleted
         for post_id in post_ids:
             post = db_session.query(Post).filter(Post.id == post_id).first()
-            assert post is None
+            assert post is None, (
+                f"Post {post_id} survived its author's deletion - "
+                "the cascade delete isn't configured correctly"
+            )
 
-    def test_delete_post_cascades_to_comments(self, db_session, test_post, test_user_2):
+    def test_delete_post_cascades_to_comments(
+        self, db_session, test_post, test_user_2
+    ) -> None:
         """Test that deleting post deletes comments."""
         # Create comments
         comment_ids = []
@@ -327,11 +336,14 @@ class TestCascadeOperations:
         # Comments should be deleted
         for comment_id in comment_ids:
             comment = db_session.query(Comment).filter(Comment.id == comment_id).first()
-            assert comment is None
+            assert comment is None, (
+                f"Comment {comment_id} survived its post's deletion - "
+                "the cascade delete isn't configured correctly"
+            )
 
     def test_delete_post_cascades_to_reactions(
         self, db_session, test_post, test_user_2
-    ):
+    ) -> None:
         """Test that deleting post deletes reactions."""
         # Create reactions
         reaction = Reaction(
@@ -355,7 +367,7 @@ class TestDatabasePerformance:
     """Test database performance characteristics."""
 
     @pytest.mark.slow
-    def test_bulk_insert_performance(self, db_session, test_user):
+    def test_bulk_insert_performance(self, db_session, test_user) -> None:
         """Test bulk inserting many posts."""
         # Create 100 posts
         posts = [
@@ -373,7 +385,7 @@ class TestDatabasePerformance:
         assert count == 100
 
     @pytest.mark.slow
-    def test_query_performance_with_many_records(self, db_session, test_user):
+    def test_query_performance_with_many_records(self, db_session, test_user) -> None:
         """Test query performance with many records."""
         # Create many posts
         for i in range(50):

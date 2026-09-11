@@ -41,7 +41,7 @@ def rate_limit_spacing():
     """
     Add delay between tests to avoid hitting rate limits.
 
-    Even with TESTING mode (100 requests/minute), running 23 tests
+    Even with TESTING mode (1000 requests/minute on login), running 23 tests
     that each make multiple API calls can exceed limits.
 
     This fixture runs automatically before each test.
@@ -49,6 +49,27 @@ def rate_limit_spacing():
     yield
     # Delay AFTER each test completes
     time.sleep(0.5)  # 500ms between tests - enough to stay under limits
+
+
+@pytest.fixture(scope="session")
+def server_testing_mode():
+    """
+    Detect whether the server under test is actually running with TESTING=true.
+
+    This probes the server directly instead of reading os.getenv("TESTING") in
+    this process. The pytest process and the backend server are separate
+    processes with separate environments - exporting TESTING=true for one
+    doesn't set it for the other. A test that checks its own env var can end
+    up asserting production-level rate limits against a server that's
+    actually running with TESTING-mode limits (or vice versa), which looks
+    like a rate-limiting bug but is really just an environment mismatch.
+
+    /api/dev/users is gated behind the same require_test_mode() dependency
+    the server uses everywhere else, so its status code (200 vs 403) reports
+    the server's real mode. It's a read with no side effects.
+    """
+    response = requests.get(f"{BASE_URL}/dev/users", timeout=5)
+    return response.status_code == 200
 
 
 # Cached token to minimize login calls

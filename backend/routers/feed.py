@@ -1,5 +1,3 @@
-from typing import List, Optional, Set
-
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
@@ -11,13 +9,13 @@ from database import get_db
 router = APIRouter()
 
 
-@router.get("/all", response_model=List[schemas.PostResponse])
+@router.get("/all", response_model=list[schemas.PostResponse])
 def get_all_feed(
     skip: int = 0,
     limit: int = 50,
     current_user: models.User = Depends(get_current_user),
     db: Session = Depends(get_db),
-):
+) -> list[schemas.PostResponse]:
     """Get all posts from all users (excluding blocked users)"""
     blocked_user_ids = _get_all_blocked_user_ids(current_user)
 
@@ -36,13 +34,13 @@ def get_all_feed(
     return _format_posts(posts, current_user, db, blocked_user_ids)
 
 
-@router.get("/following", response_model=List[schemas.PostResponse])
+@router.get("/following", response_model=list[schemas.PostResponse])
 def get_following_feed(
     skip: int = 0,
     limit: int = 50,
     current_user: models.User = Depends(get_current_user),
     db: Session = Depends(get_db),
-):
+) -> list[schemas.PostResponse]:
     """Get posts from users you follow"""
     # Get following user IDs
     following_ids = [user.id for user in current_user.following]
@@ -68,11 +66,11 @@ def get_following_feed(
 
 
 def _format_posts(
-    posts: List[models.Post],
+    posts: list[models.Post],
     current_user: models.User,
     db: Session,
-    blocked_user_ids: Optional[Set[int]] = None,
-) -> List[schemas.PostResponse]:
+    blocked_user_ids: set[int] | None = None,
+) -> list[schemas.PostResponse]:
     """Helper function to format posts for response"""
     result = []
 
@@ -111,11 +109,14 @@ def _format_posts(
         original_post = None
         if post.is_repost and post.original_post:
             orig = post.original_post
-            if blocked_user_ids and orig.author_id in blocked_user_ids:
-                orig = None
+            orig_is_blocked = bool(
+                blocked_user_ids and orig.author_id in blocked_user_ids
+            )
 
             original_post = (
-                schemas.PostResponse(
+                None
+                if orig_is_blocked
+                else schemas.PostResponse(
                     id=orig.id,
                     content=orig.content,
                     image_url=orig.image_url,
@@ -136,8 +137,6 @@ def _format_posts(
                     user_reaction=None,
                     has_reposted=False,
                 )
-                if orig
-                else None
             )
 
         result.append(
@@ -165,7 +164,7 @@ def _format_posts(
     return result
 
 
-def _get_all_blocked_user_ids(user: models.User) -> Set[int]:
+def _get_all_blocked_user_ids(user: models.User) -> set[int]:
     blocked_ids = {blocked_user.id for blocked_user in user.blocking}
     blocked_by_ids = {blocking_user.id for blocking_user in user.blocked_by}
     return blocked_ids.union(blocked_by_ids)

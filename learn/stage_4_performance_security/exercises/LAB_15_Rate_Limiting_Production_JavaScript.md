@@ -74,11 +74,15 @@ Error: 429 Too Many Requests
 **Open `backend/routers/auth.py` and look for:**
 
 ```python
-@limiter.limit("20/minute")
+TESTING_MODE = os.getenv("TESTING", "false").lower() == "true"
+LOGIN_RATE = "1000/minute" if TESTING_MODE else "20/minute"
+
+@router.post("/login", response_model=schemas.Token)
+@limiter.limit(LOGIN_RATE)
 def login(...):
 ```
 
-This means: **20 login requests per minute, per IP address.**
+This means: **20 login requests per minute, per IP address in production** — or **1000/minute** when the backend runs with `TESTING=true` (which is how the E2E/Playwright suites are meant to be run; see `docs/guides/PLAYWRIGHT_QUICKSTART.md`).
 
 ### Step 2: Count Your Test's Login Calls
 
@@ -102,7 +106,7 @@ Test 21+:  ❌ Get 429 "Rate limit exceeded"
 
 ```bash
 cd tests
-npm test auth.spec.js
+npx playwright test auth.spec.js
 ```
 
 **You should see some tests failing with 429 errors.**
@@ -188,6 +192,8 @@ npx playwright test test-rate-limits.spec.js --headed
 ---
 
 <h2 id="lab-exercise-3-fix-the-problem">🔍 Lab Exercise 3: Fix the Problem</h2>
+
+> **Note:** Solutions 1 and 3 below use a `DISABLE_RATE_LIMITS` env var and a `/api/test/reset-rate-limits` endpoint as teaching illustrations of the *pattern* — neither actually exists in Testbook's backend, so writing them as shown won't change real rate-limiting behavior against this app. The mechanism Testbook actually implements is the `TESTING` environment variable read in `backend/routers/auth.py` (`TESTING_MODE = os.getenv("TESTING", "false").lower() == "true"`), which raises `LOGIN_RATE`/`REGISTER_RATE` from 20/15 per minute to 1000/500 per minute — start the backend with `TESTING=true uvicorn main:app --reload --port 8000` to get that real, working relief. Treat Solutions 1-3 below as illustrative alternative designs for apps that don't expose an environment toggle like Testbook's.
 
 ### Solution 1: Disable Rate Limiting in Tests
 

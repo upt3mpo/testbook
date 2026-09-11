@@ -41,12 +41,20 @@ Organize tests with clear structure, proper data management, and CI/CD integrati
 
 ### Part 1: Test Structure Organization (30 minutes)
 
+**Note:** `tests/e2e-python/` already has real files from Labs 9-11 (`conftest.py`,
+`pytest.ini`, `pages/feed_page.py`, `pages/profile_page.py`, `test_auth.py`, etc.).
+The structure below is a larger, "how would this scale to 100+ tests" reorganization.
+It reuses some of the same filenames (`conftest.py`, `pytest.ini`, `pages/`) with
+different contents. Don't paste these over your working Lab 9-11 files; either
+build this in a separate scratch directory to see the pattern, or read through it
+comparing to what's already there rather than overwriting it.
+
 #### Step 1: Create Test Directory Structure
 
 Create the following directory structure:
 
 ```text
-tests/e2e/
+tests/e2e-python/
 ├── conftest.py                 # Shared fixtures and configuration
 ├── pytest.ini                 # E2E-specific pytest configuration
 ├── requirements.txt            # E2E test dependencies
@@ -87,7 +95,7 @@ tests/e2e/
 
 #### Step 2: Create Base Configuration
 
-Create `tests/e2e/conftest.py`:
+Create `tests/e2e-python/conftest.py`:
 
 ```python
 import pytest
@@ -115,7 +123,7 @@ def browser_context_args():
     return {
         "viewport": {"width": 1280, "height": 720},
         "ignore_https_errors": True,
-        "record_video_dir": "tests/e2e/reports/videos/",
+        "record_video_dir": "tests/e2e-python/reports/videos/",
         "record_video_size": {"width": 1280, "height": 720}
     }
 
@@ -176,12 +184,14 @@ def test_user(db_session):
 @pytest.fixture
 def test_posts(db_session, test_user):
     """Create test posts for E2E tests."""
+    # Note: Testbook's Post model has no "title" field (posts are plain
+    # status updates, like the real app's feed) - only pass fields that
+    # actually exist on models.Post.
     posts = []
     for i in range(3):
         post = Post(
             author_id=test_user.id,
-            content=f"E2E test post {i+1}",
-            title=f"Test Post {i+1}"
+            content=f"E2E test post {i+1}"
         )
         posts.append(post)
         db_session.add(post)
@@ -210,7 +220,7 @@ def setup_test_environment(browser_page, test_user, test_posts):
 
 #### Step 3: Create Page Object Model
 
-Create `tests/e2e/pages/base_page.py`:
+Create `tests/e2e-python/pages/base_page.py`:
 
 ```python
 from playwright.sync_api import Page, Locator
@@ -258,14 +268,14 @@ class BasePage:
 
     def take_screenshot(self, name: str) -> None:
         """Take a screenshot."""
-        self.page.screenshot(path=f"tests/e2e/reports/screenshots/{name}.png")
+        self.page.screenshot(path=f"tests/e2e-python/reports/screenshots/{name}.png")
 
     def wait_for_url(self, url_pattern: str, timeout: int = 30000) -> None:
         """Wait for URL to match pattern."""
         self.page.wait_for_url(url_pattern, timeout=timeout)
 ```
 
-Create `tests/e2e/pages/login_page.py`:
+Create `tests/e2e-python/pages/login_page.py`:
 
 ```python
 from .base_page import BasePage
@@ -279,8 +289,11 @@ class LoginPage(BasePage):
         self.email_input = "input[data-testid='login-email-input']"
         self.password_input = "input[data-testid='login-password-input']"
         self.login_button = "button[data-testid='login-submit-button']"
-        self.error_message = "[data-testid='login-error-message']"
-        self.success_message = "[data-testid='login-success-message']"
+        self.error_message = "[data-testid='login-error']"
+        # Testbook has no login-success banner - a successful login just
+        # navigates away from /login (to the feed at "/"), so we check for
+        # that instead of a "success message" element.
+        self.navbar = "[data-testid='navbar']"
 
     def login(self, email: str, password: str) -> None:
         """Perform login action."""
@@ -289,8 +302,8 @@ class LoginPage(BasePage):
         self.click_element(self.login_button)
 
     def is_login_successful(self) -> bool:
-        """Check if login was successful."""
-        return self.is_visible(self.success_message)
+        """Check if login was successful (navbar appears once we're logged in)."""
+        return self.is_visible(self.navbar)
 
     def get_error_message(self) -> str:
         """Get login error message."""
@@ -299,8 +312,8 @@ class LoginPage(BasePage):
         return ""
 
     def wait_for_login_success(self) -> None:
-        """Wait for login success."""
-        self.wait_for_url("**/dashboard")
+        """Wait for login success (redirect to the feed at "/")."""
+        self.wait_for_url(f"{self.base_url}/")
 ```
 
 ---
@@ -309,7 +322,7 @@ class LoginPage(BasePage):
 
 #### Step 1: Create Test Data Files
 
-Create `tests/e2e/data/users.json`:
+Create `tests/e2e-python/data/users.json`:
 
 ```json
 {
@@ -345,30 +358,24 @@ Create `tests/e2e/data/users.json`:
 }
 ```
 
-Create `tests/e2e/data/posts.json`:
+Create `tests/e2e-python/data/posts.json`:
+
+Note: Testbook's `Post` model only has `content` (plus optional
+`image_url`/`video_url`) - there's no `title` or `tags` field on real posts,
+so this sample data sticks to fields the app actually stores.
 
 ```json
 {
   "valid_posts": [
     {
-      "title": "Test Post 1",
-      "content": "This is a test post for E2E testing.",
-      "tags": ["test", "e2e"]
+      "content": "This is a test post for E2E testing."
     },
     {
-      "title": "Test Post 2",
-      "content": "Another test post with different content.",
-      "tags": ["test", "automation"]
+      "content": "Another test post with different content."
     }
   ],
   "invalid_posts": [
     {
-      "title": "",
-      "content": "Post without title",
-      "expected_errors": ["Title is required"]
-    },
-    {
-      "title": "Valid Title",
       "content": "",
       "expected_errors": ["Content is required"]
     }
@@ -378,7 +385,7 @@ Create `tests/e2e/data/posts.json`:
 
 #### Step 2: Create Data Helper Functions
 
-Create `tests/e2e/utils/data_helpers.py`:
+Create `tests/e2e-python/utils/data_helpers.py`:
 
 ```python
 import json
@@ -434,7 +441,7 @@ class DataHelper:
 
 #### Step 1: Create Smoke Tests
 
-Create `tests/e2e/tests/smoke/test_critical_flows.py`:
+Create `tests/e2e-python/tests/smoke/test_critical_flows.py`:
 
 ```python
 import pytest
@@ -471,11 +478,12 @@ class TestCriticalFlows:
         login_page.goto("/login")
         login_page.login(test_user.email, "password123")
         dashboard_page.click_create_post()
-        post_page.create_post("Test Post", "This is a test post content")
+        # Testbook posts have no title - just content
+        post_page.create_post("This is a test post content")
 
         # Assert
         assert post_page.is_post_created()
-        assert post_page.get_post_title() == "Test Post"
+        assert post_page.get_post_content() == "This is a test post content"
 
     def test_user_can_logout(self, browser_page, test_user):
         """Test that user can logout successfully."""
@@ -495,7 +503,7 @@ class TestCriticalFlows:
 
 #### Step 2: Create Regression Tests
 
-Create `tests/e2e/tests/regression/test_user_management.py`:
+Create `tests/e2e-python/tests/regression/test_user_management.py`:
 
 ```python
 import pytest
@@ -599,13 +607,12 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.11"
+          python-version: "3.13"
 
       - name: Install dependencies
         run: |
-          cd backend
-          pip install -r requirements.txt
-          pip install -r tests/e2e/requirements.txt
+          pip install -r backend/requirements.txt
+          pip install -r tests/e2e-python/requirements.txt
 
       - name: Install Playwright browsers
         run: |
@@ -613,9 +620,12 @@ jobs:
           playwright install-deps
 
       - name: Start backend server
+        # TESTING=true unlocks the /api/dev/reset dev endpoint that
+        # reset_database/fresh_database depend on, and raises rate limits -
+        # see docs/guides/PLAYWRIGHT_QUICKSTART.md.
         run: |
           cd backend
-          python -m uvicorn main:app --host 0.0.0.0 --port 8000 &
+          TESTING=true python -m uvicorn main:app --host 0.0.0.0 --port 8000 &
           sleep 10
 
       - name: Start frontend server
@@ -623,13 +633,15 @@ jobs:
           cd frontend
           npm install
           npm run build
-          npm start &
+          npm run preview -- --host 0.0.0.0 --port 3000 &
           sleep 10
 
       - name: Run E2E tests
+        # This conftest's browser fixture reads the E2E_BROWSER env var
+        # (not a --browser CLI flag) to pick the engine - see TEST_CONFIG
+        # and the playwright_context fixture above.
         run: |
-          cd backend
-          pytest tests/e2e/ -v --browser=${{ matrix.browser }} --html=reports/e2e-report-${{ matrix.browser }}.html
+          E2E_BROWSER=${{ matrix.browser }} pytest tests/e2e-python/ -v --html=reports/e2e-report-${{ matrix.browser }}.html
 
       - name: Upload test results
         uses: actions/upload-artifact@v3
@@ -637,35 +649,30 @@ jobs:
         with:
           name: e2e-test-results-${{ matrix.browser }}
           path: |
-            backend/tests/e2e/reports/
+            tests/e2e-python/reports/
             backend/reports/
 ```
 
 #### Step 2: Create Pytest Configuration
 
-Create `tests/e2e/pytest.ini`:
+Create `tests/e2e-python/pytest.ini`:
+
+Note: this suite's `conftest.py` (Part 1) manages its own `sync_playwright()`
+session and reads browser/headless/timeout settings from the `E2E_*`
+environment variables in `TEST_CONFIG`, rather than from `pytest-playwright`'s
+built-in `--browser`/`--headed`/`--video`/`--screenshot` CLI options - so
+`addopts` here should only use real pytest (and pytest-html) flags:
 
 ```ini
-[tool:pytest]
-testpaths = tests/e2e/tests
+[pytest]
+testpaths = tests/e2e-python/tests
 python_files = test_*.py
 python_classes = Test*
 python_functions = test_*
 addopts =
     --strict-markers
-    --strict-config
     --html=reports/e2e-report.html
     --self-contained-html
-    --screenshot=on
-    --video=on
-    --video-encoding=vp8
-    --video-size=1280x720
-    --video-mode=retain-on-failure
-    --screenshot-mode=retain-on-failure
-    --browser=chromium
-    --headed
-    --slow-mo=1000
-    --timeout=30000
     --maxfail=5
     --tb=short
     --durations=10
@@ -678,6 +685,13 @@ markers =
     skip_ci: Tests to skip in CI environment
 ```
 
+Configure the browser/headless/video behavior via environment variables
+instead (matching `TEST_CONFIG` from Part 1):
+
+```bash
+E2E_BROWSER=firefox E2E_HEADLESS=false E2E_SLOW_MO=500 pytest
+```
+
 ---
 
 ## 💪 Challenge Exercises
@@ -685,7 +699,8 @@ markers =
 ### Challenge 1: Create Test Suite Runner
 
 ```python
-# Create tests/e2e/run_tests.py
+# Create tests/e2e-python/run_tests.py
+import os
 import subprocess
 import sys
 import argparse
@@ -694,8 +709,7 @@ def run_test_suite(suite: str, browser: str = "chromium", parallel: bool = False
     """Run specific test suite."""
     cmd = [
         "pytest",
-        f"tests/e2e/tests/{suite}/",
-        f"--browser={browser}",
+        f"tests/e2e-python/tests/{suite}/",
         "--html=reports/e2e-report.html",
         "--self-contained-html"
     ]
@@ -703,7 +717,10 @@ def run_test_suite(suite: str, browser: str = "chromium", parallel: bool = False
     if parallel:
         cmd.extend(["-n", "auto"])
 
-    result = subprocess.run(cmd, capture_output=True, text=True)
+    # This suite's conftest.py reads the browser from the E2E_BROWSER env
+    # var (not a --browser CLI flag), so pass it through the environment
+    env = {**os.environ, "E2E_BROWSER": browser}
+    result = subprocess.run(cmd, capture_output=True, text=True, env=env)
     print(result.stdout)
     if result.stderr:
         print(result.stderr)
@@ -725,7 +742,7 @@ if __name__ == "__main__":
 ### Challenge 2: Create Test Data Factory
 
 ```python
-# Create tests/e2e/utils/test_data_factory.py
+# Create tests/e2e-python/utils/test_data_factory.py
 import random
 import string
 from typing import Dict, List
@@ -751,11 +768,9 @@ class TestDataFactory:
 
     @staticmethod
     def generate_post(overrides: Dict = None) -> Dict[str, str]:
-        """Generate a random post."""
+        """Generate a random post. Testbook posts only have content (no title/tags)."""
         post = {
-            "title": f"Test Post {random.randint(1000, 9999)}",
-            "content": f"This is test content {random.randint(1000, 9999)}",
-            "tags": random.sample(["test", "automation", "e2e", "playwright"], 2)
+            "content": f"This is test content {random.randint(1000, 9999)}"
         }
 
         if overrides:
@@ -798,12 +813,12 @@ class TestDataFactory:
 
 **Continue building your skills:**
 
-- **[Lab 13: Load Testing with k6 (JavaScript)](LAB_13_Load_Testing_k6.md)** - Performance testing
-- **[Lab 14: Security Testing & OWASP (Python)](LAB_14_Security_Testing_OWASP_Python.md)** - Security testing
-- **[Lab 15: Rate Limiting & Production Monitoring (Python)](LAB_15_Rate_Limiting_Production_Python.md)** - Production readiness
+- **[Lab 13: Load Testing with k6 (JavaScript)](../../stage_4_performance_security/exercises/LAB_13_Load_Testing_k6.md)** - Performance testing
+- **[Lab 14: Security Testing & OWASP (Python)](../../stage_4_performance_security/exercises/LAB_14_Security_Testing_OWASP_Python.md)** - Security testing
+- **[Lab 15: Rate Limiting & Production Monitoring (Python)](../../stage_4_performance_security/exercises/LAB_15_Rate_Limiting_Production_Python.md)** - Production readiness
 
 ---
 
 **🎉 Congratulations!** You now understand how to organize E2E tests for maintainability and team collaboration!
 
-**Next Lab:** [Lab 13: Load Testing with k6 (JavaScript)](LAB_13_Load_Testing_k6.md)
+**Next Lab:** [Lab 13: Load Testing with k6 (JavaScript)](../../stage_4_performance_security/exercises/LAB_13_Load_Testing_k6.md)

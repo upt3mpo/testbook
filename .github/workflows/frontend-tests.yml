@@ -24,15 +24,16 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     strategy:
       matrix:
         node-version: [24]
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Setup Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
@@ -44,8 +45,7 @@ jobs:
 
       - name: Run linting
         working-directory: ./frontend
-        run: |
-          npm run lint || true
+        run: npm run lint
 
       - name: Run unit tests
         working-directory: ./frontend
@@ -66,7 +66,7 @@ jobs:
         run: npm run test:coverage -- --run
 
       - name: Upload coverage to artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: frontend-coverage-node${{ matrix.node-version }}
           path: frontend/coverage/
@@ -77,7 +77,7 @@ jobs:
         run: npm run build
 
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: frontend-dist-node${{ matrix.node-version }}
           path: frontend/dist/

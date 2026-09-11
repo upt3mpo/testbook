@@ -9,6 +9,8 @@
 
 **What This Adds:** Master React component testing with Vitest and React Testing Library - learn to test user interactions, component state, and API integration. This bridges unit tests and E2E tests.
 
+**Why this diverges from the Python track here:** the Python track's Lab 6 previews performance-testing concepts (response-time assertions) at this point instead, since there's no equivalent to component testing on the Python side (no Python frontend to test). You'll get full performance testing with k6 in Stage 4 either way — this lab number is where the two tracks' content genuinely diverges rather than mirroring each other.
+
 ---
 
 ## 🎯 What You'll Learn
@@ -139,8 +141,8 @@ npm test CreatePost.test.jsx
 **You should see:**
 
 ```text
-✓ CreatePost.test.jsx (7)
-  ✓ CreatePost Component (7)
+✓ CreatePost.test.jsx (8)
+  ✓ CreatePost Component (8)
     ✓ renders the textarea input
     ✓ renders the Post button
     ✓ allows user to type in the textarea
@@ -148,6 +150,7 @@ npm test CreatePost.test.jsx
     ✓ enables Post button when textarea has content
     ✓ calls onPostCreated when post is submitted successfully
     ✓ clears textarea after successful post submission
+    ✓ handles API errors gracefully
 ```
 
 ✅ **Checkpoint:** All component tests pass!
@@ -786,12 +789,12 @@ const renderWithProviders = (ui, options = {}) => {
 
 **Ready for more?**
 
-- **[LAB_05_Test_Data_Management_JavaScript.md](LAB_05_Test_Data_Management_JavaScript.md)** - Learn test data patterns
+- **[Lab 7: Test Data Management (JavaScript)](LAB_07_Test_Data_Management_JavaScript.md)** - Learn test data patterns
 - **[React Testing Library Docs](https://testing-library.com/docs/react-testing-library/intro/)** - Official documentation
-- **[Vitest Component Testing](https://vitest.dev/guide/testing.html#component-testing)** - Vitest component testing guide
+- **[Vitest Guide](https://vitest.dev/guide/)** - Vitest usage and configuration guide
 
 ---
 
 **🎉 Congratulations!** You're now testing React components like a pro!
 
-**Next Lab:** [Lab 5: Test Data Management (JavaScript)](LAB_05_Test_Data_Management_JavaScript.md)
+**Next Lab:** [Lab 7: Test Data Management (JavaScript)](LAB_07_Test_Data_Management_JavaScript.md)

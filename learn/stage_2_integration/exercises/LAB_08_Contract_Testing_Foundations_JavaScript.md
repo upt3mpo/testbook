@@ -76,11 +76,11 @@ const USER_REGISTRATION_CONTRACT = {
     success: {
       status_code: 201, // Created - user successfully registered
       body: {
-        id: "integer", // Auto-generated user ID
+        access_token: "string", // JWT for immediate login
+        token_type: "string", // Always "bearer"
         email: "string", // User's email address
         username: "string", // User's chosen username
         display_name: "string", // User's display name
-        created_at: "datetime", // Timestamp when user was created
       },
     },
     error: {
@@ -143,16 +143,19 @@ export const USER_REGISTRATION_REQUEST_SCHEMA = {
 };
 
 // User registration response schema
+// Note: Testbook's actual /api/auth/register response returns an
+// access_token (it logs the new user in immediately) - it does NOT
+// return an "id" or "created_at" field.
 export const USER_REGISTRATION_RESPONSE_SCHEMA = {
   type: "object",
   properties: {
-    id: { type: "integer" },
+    access_token: { type: "string" },
+    token_type: { type: "string" },
     email: { type: "string" },
     username: { type: "string" },
     display_name: { type: "string" },
-    created_at: { type: "string", format: "date-time" },
   },
-  required: ["id", "email", "username", "display_name", "created_at"],
+  required: ["access_token", "token_type", "email", "username", "display_name"],
   additionalProperties: false,
 };
 
@@ -229,11 +232,11 @@ describe("User Registration Contract", () => {
   it("should validate registration response schema", async () => {
     // Mock successful API response
     const mockResponse = {
-      id: 1,
+      access_token: "fake-jwt-token",
+      token_type: "bearer",
       email: "test@example.com",
       username: "testuser",
       display_name: "Test User",
-      created_at: "2024-01-01T00:00:00Z",
     };
 
     mockFetch.mockResolvedValueOnce({
@@ -265,11 +268,11 @@ describe("User Registration Contract", () => {
     }
 
     // Validate specific fields
-    expect(responseData.id).toBeTypeOf("number");
+    expect(responseData.access_token).toBeTypeOf("string");
+    expect(responseData.token_type).toBe("bearer");
     expect(responseData.email).toBe("test@example.com");
     expect(responseData.username).toBe("testuser");
     expect(responseData.display_name).toBe("Test User");
-    expect(responseData.created_at).toBeTypeOf("string");
   });
 
   it("should validate error response schema", async () => {
@@ -333,11 +336,11 @@ describe("User Registration Contract", () => {
 
     // Mock response with all required fields
     const mockResponse = {
-      id: 1,
+      access_token: "fake-jwt-token",
+      token_type: "bearer",
       email: "test@example.com",
       username: "testuser",
       display_name: "Test User",
-      created_at: "2024-01-01T00:00:00Z",
     };
 
     mockFetch.mockResolvedValueOnce({
@@ -364,22 +367,22 @@ describe("User Registration Contract", () => {
 
     // Required fields must be present
     const requiredFields = [
-      "id",
+      "access_token",
+      "token_type",
       "email",
       "username",
       "display_name",
-      "created_at",
     ];
     requiredFields.forEach((field) => {
       expect(responseData).toHaveProperty(field);
     });
 
     // Field types must be correct
-    expect(responseData.id).toBeTypeOf("number");
+    expect(responseData.access_token).toBeTypeOf("string");
+    expect(responseData.token_type).toBeTypeOf("string");
     expect(responseData.email).toBeTypeOf("string");
     expect(responseData.username).toBeTypeOf("string");
     expect(responseData.display_name).toBeTypeOf("string");
-    expect(responseData.created_at).toBeTypeOf("string");
 
     // No unexpected fields (additionalProperties: false)
     const expectedFields = new Set(requiredFields);
@@ -433,11 +436,11 @@ it("should generate valid OpenAPI schema", async () => {
                   schema: {
                     type: "object",
                     properties: {
-                      id: { type: "integer" },
+                      access_token: { type: "string" },
+                      token_type: { type: "string" },
                       email: { type: "string" },
                       username: { type: "string" },
                       display_name: { type: "string" },
-                      created_at: { type: "string" },
                     },
                   },
                 },
@@ -525,11 +528,11 @@ export class ConsumerContract {
         successResponse: {
           statusCode: 201,
           body: {
-            id: "integer",
+            access_token: "string",
+            token_type: "string (bearer)",
             email: "string",
             username: "string",
             display_name: "string",
-            created_at: "string (ISO datetime)",
           },
         },
         errorResponse: {
@@ -544,6 +547,11 @@ export class ConsumerContract {
 
   /**
    * Contract for user login from frontend perspective.
+   *
+   * Note: Testbook's actual /api/auth/login response only contains
+   * access_token and token_type - there's no expires_in field (the
+   * token's expiration is embedded in the JWT's own `exp` claim
+   * instead).
    */
   static userLoginContract() {
     return {
@@ -558,7 +566,6 @@ export class ConsumerContract {
           body: {
             access_token: "string",
             token_type: "string (bearer)",
-            expires_in: "integer",
           },
         },
         errorResponse: {
@@ -589,11 +596,11 @@ describe("Consumer Contract Testing", () => {
 
     // Mock successful response
     const mockResponse = {
-      id: 1,
+      access_token: "fake-jwt-token",
+      token_type: "bearer",
       email: "test@example.com",
       username: "testuser",
       display_name: "Test User",
-      created_at: "2024-01-01T00:00:00Z",
     };
 
     mockFetch.mockResolvedValueOnce({
@@ -621,22 +628,22 @@ describe("Consumer Contract Testing", () => {
 
     // Check required fields exist
     const expectedFields = [
-      "id",
+      "access_token",
+      "token_type",
       "email",
       "username",
       "display_name",
-      "created_at",
     ];
     expectedFields.forEach((field) => {
       expect(responseData).toHaveProperty(field);
     });
 
     // Check field types match expectations
-    expect(responseData.id).toBeTypeOf("number");
+    expect(responseData.access_token).toBeTypeOf("string");
+    expect(responseData.token_type).toBeTypeOf("string");
     expect(responseData.email).toBeTypeOf("string");
     expect(responseData.username).toBeTypeOf("string");
     expect(responseData.display_name).toBeTypeOf("string");
-    expect(responseData.created_at).toBeTypeOf("string");
   });
 
   it("should meet user login consumer expectations", async () => {
@@ -646,7 +653,6 @@ describe("Consumer Contract Testing", () => {
     const mockResponse = {
       access_token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
       token_type: "bearer",
-      expires_in: 3600,
     };
 
     mockFetch.mockResolvedValueOnce({
@@ -671,7 +677,7 @@ describe("Consumer Contract Testing", () => {
     expect(response.status).toBe(200);
 
     // Check required fields exist
-    const expectedFields = ["access_token", "token_type", "expires_in"];
+    const expectedFields = ["access_token", "token_type"];
     expectedFields.forEach((field) => {
       expect(responseData).toHaveProperty(field);
     });
@@ -679,7 +685,6 @@ describe("Consumer Contract Testing", () => {
     // Check field types and values
     expect(responseData.access_token).toBeTypeOf("string");
     expect(responseData.token_type).toBe("bearer");
-    expect(responseData.expires_in).toBeTypeOf("number");
   });
 });
 ```
@@ -844,12 +849,12 @@ describe.each([
 
 **Continue building your skills:**
 
-- **[Lab 9: Basic E2E Testing (JavaScript)](LAB_09_Basic_E2E_Testing_JavaScript.md)** - End-to-end testing
-- **[Lab 10: Advanced E2E Patterns (JavaScript)](LAB_10_Advanced_E2E_Patterns_JavaScript.md)** - Advanced E2E testing
-- **[Lab 11: Cross-Browser Testing (JavaScript)](LAB_11_Cross_Browser_Testing_JavaScript.md)** - Multi-browser testing
+- **[Lab 9: Basic E2E Testing (JavaScript)](../../stage_3_api_e2e/exercises/LAB_09_Basic_E2E_Testing_JavaScript.md)** - End-to-end testing
+- **[Lab 10: Advanced E2E Patterns (JavaScript)](../../stage_3_api_e2e/exercises/LAB_10_Advanced_E2E_Patterns_JavaScript.md)** - Advanced E2E testing
+- **[Lab 11: Cross-Browser Testing (JavaScript)](../../stage_3_api_e2e/exercises/LAB_11_Cross_Browser_Testing_JavaScript.md)** - Multi-browser testing
 
 ---
 
 **🎉 Congratulations!** You now understand contract testing and can ensure API compatibility between frontend and backend!
 
-**Next Lab:** [Lab 9: Basic E2E Testing (JavaScript)](LAB_09_Basic_E2E_Testing_JavaScript.md)
+**Next Lab:** [Lab 9: Basic E2E Testing (JavaScript)](../../stage_3_api_e2e/exercises/LAB_09_Basic_E2E_Testing_JavaScript.md)

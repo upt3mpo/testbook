@@ -4,12 +4,23 @@
  * These tests use axe-playwright to perform comprehensive WCAG 2.1 accessibility checks
  * on key pages in the application.
  *
+ * The tag list includes 'best-practice' alongside the WCAG tags. Rules like
+ * landmark-one-main, region, page-has-heading-one, and heading-order don't
+ * map to a specific WCAG success criterion, so they're excluded if you only
+ * ask for wcag2a/wcag2aa/wcag21a/wcag21aa - which is exactly why a real
+ * missing-<main>-landmark and missing-<h1> bug on this app's Feed, Post
+ * Detail, and Profile pages passed this suite for a while before a
+ * pre-merge accessibility review caught it with an untagged axe.run().
+ * Without 'best-practice', this suite would keep missing that whole class
+ * of issue.
+ *
  * Run with: npx playwright test accessibility-axe.spec.js
  */
 
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
-import { loginUser, resetDatabase, TEST_USERS } from './fixtures/test-helpers.js';
+import { resetDatabase, TEST_USERS } from './fixtures/test-helpers.js';
+import { AuthPage } from './pages/AuthPage.js';
 
 const BASE_URL = process.env.BASE_URL || 'http://localhost:3000';
 
@@ -24,7 +35,7 @@ test.describe('Accessibility (axe-core)', () => {
     await page.waitForLoadState('networkidle');
 
     const accessibilityScanResults = await new AxeBuilder({ page })
-      .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
+      .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'best-practice'])
       .analyze();
 
     expect(accessibilityScanResults.violations).toEqual([]);
@@ -35,7 +46,7 @@ test.describe('Accessibility (axe-core)', () => {
     await page.waitForLoadState('networkidle');
 
     const accessibilityScanResults = await new AxeBuilder({ page })
-      .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
+      .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'best-practice'])
       .analyze();
 
     expect(accessibilityScanResults.violations).toEqual([]);
@@ -46,7 +57,7 @@ test.describe('Accessibility (axe-core)', () => {
     await page.waitForLoadState('networkidle');
 
     const accessibilityScanResults = await new AxeBuilder({ page })
-      .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
+      .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'best-practice'])
       .analyze();
 
     expect(accessibilityScanResults.violations).toEqual([]);
@@ -55,29 +66,33 @@ test.describe('Accessibility (axe-core)', () => {
   test('Feed page (authenticated) should not have accessibility violations', async ({
     page,
   }) => {
-    // Login using test helper
-    await loginUser(page, TEST_USERS.sarah.email, TEST_USERS.sarah.password);
+    const auth = new AuthPage(page);
+    await auth.gotoLogin();
+    await auth.login(TEST_USERS.sarah.email, TEST_USERS.sarah.password);
+    await auth.expectLoggedIn();
 
     // Wait for feed to fully load
     await page.waitForLoadState('networkidle', { timeout: 5000 }).catch(() => {});
 
     const accessibilityScanResults = await new AxeBuilder({ page })
-      .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
+      .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'best-practice'])
       .analyze();
 
     expect(accessibilityScanResults.violations).toEqual([]);
   });
 
   test('Profile page should not have accessibility violations', async ({ page }) => {
-    // Login using test helper
-    await loginUser(page, TEST_USERS.sarah.email, TEST_USERS.sarah.password);
+    const auth = new AuthPage(page);
+    await auth.gotoLogin();
+    await auth.login(TEST_USERS.sarah.email, TEST_USERS.sarah.password);
+    await auth.expectLoggedIn();
 
     // Go to profile
-    await page.click('[data-testid="navbar-profile-link"]');
+    await auth.navbarProfileLink.click();
     await page.waitForLoadState('networkidle', { timeout: 5000 }).catch(() => {});
 
     const accessibilityScanResults = await new AxeBuilder({ page })
-      .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
+      .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'best-practice'])
       .analyze();
 
     expect(accessibilityScanResults.violations).toEqual([]);

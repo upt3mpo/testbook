@@ -1,245 +1,130 @@
-# 🤔 Stage 5 Reflection: Job-Ready Capstone
+# Stage 5 Reflection: Job-Ready Capstone
 
-Final reflection on your complete testing journey.
-
----
-
-## Capstone Project Summary
-
-**Feature tested:**
-
-**Total tests written:**
-
-- Unit tests:
-- Integration tests:
-- E2E tests:
-- Security tests:
-
-**Coverage achieved:**
-
-**Time invested:**
+These questions are about the capstone ticket you just worked - the
+bookmarks feature (or whatever feature you substituted), delivered as one
+bundle: a product requirement, a failing test, a performance threshold, and
+a security requirement, all at once. If you can only answer these by
+describing one stage at a time, you haven't finished the capstone yet -
+finish [Part 2 and 3](README.md#part-2-the-capstone-ticket) first.
 
 ---
 
-## Final Reflection Questions
+## Capstone Summary
 
-### 1. What was the most challenging part of your Testbook journey?
+**Feature built:**
 
-*Your answer here...*
+**Link to the decision log:**
 
----
-
-### 2. What surprised you most about testing?
-
-*Your answer here...*
+**p95 response time actually measured, at what concurrency:**
 
 ---
 
-### 3. What's your favorite type of testing and why?
+## Reflection Questions
 
-**Favorite type:**
+These require judgment, not recall. Each one only makes sense once you've
+actually worked the ticket - they're asking about decisions you made, not
+facts you can look up.
 
-**Why:**
+### 1. You found a bug during E2E testing that was caused by a missing unit test. How do you decide where in the pyramid to add coverage, and what do you add?
 
-*Your answer here...*
+Not "add a unit test and an E2E test" - that's not a decision, that's
+covering yourself. What specifically tells you the unit-test layer was
+the right layer to close the gap in, rather than, say, an integration
+test at the API boundary? If you hit this exact situation while working
+the bookmarks ticket, use it. If you didn't, construct the scenario from
+what you know about where each layer catches (and misses) different
+classes of bug.
 
----
+### 2. Your k6 threshold and your IDOR security check both touch the same query. Which did you build first, and did satisfying one make the other harder or easier?
 
-### 4. How has your understanding of software quality changed?
+Point to the actual query. If you didn't notice a relationship between
+the two, look again - a user-scoped bookmarks query is doing double duty
+whether you designed it that way on purpose or not. Explain what you'd
+tell a reviewer who asked "why does this query look the way it does?"
 
-**Before Testbook:**
+### 3. Imagine the ticket had shipped without the failing test attached - just the product requirement, the performance threshold, and the security requirement. What would you have built differently, and what would you have gotten wrong that the test would have caught?
 
-**After Testbook:**
+This is asking you to notice what the given test actually pinned down
+that you might not have thought to test yourself (the cross-user IDOR
+case is the likely answer, but defend your own).
 
-*Your answer here...*
+### 4. Which of the four requirements would you cut first if you had half the time, and which would you refuse to cut no matter what?
 
----
+Defend both answers. A real answer names the actual risk of cutting each one - "the E2E test
+is expensive and the integration tests already prove the API works" is a
+defensible reason to cut E2E under time pressure; "ship without the auth
+check" is not defensible under any time pressure, and you should be able
+to say why the difference isn't just severity, it's blast radius.
 
-### 5. What's next in your QA journey?
+### 5. Pick one specific decision in your implementation that you could only have made correctly because of something you learned in exactly one prior stage - not "I used pytest," a real decision. What would you have gotten wrong without that stage?
 
-*Your answer here...*
-
----
-
-## Skills Inventory
-
-**Rate your confidence (1-5, 5 being expert):**
-
-| Skill | Confidence | Notes |
-|-------|------------|-------|
-| Writing unit tests | /5 | |
-| Writing integration tests | /5 | |
-| E2E testing with Playwright | /5 | |
-| Performance testing | /5 | |
-| Security testing | /5 | |
-| pytest framework | /5 | |
-| Test fixtures and factories | /5 | |
-| Page Object Model | /5 | |
-| Debugging test failures | /5 | |
-| Test documentation | /5 | |
-
----
-
-## Journey Timeline
-
-**My Testbook journey:**
-
-- **Started:** [Date]
-- **Stage 1 completed:** [Date]
-- **Stage 2 completed:** [Date]
-- **Stage 3 completed:** [Date]
-- **Stage 4 completed:** [Date]
-- **Stage 5 completed:** [Date]
-- **Total duration:** [X weeks/months]
+If you can't name one, that's worth sitting with: it may mean the four
+requirements didn't actually interact as much as they could have for
+the feature you chose, which is itself worth writing down as an honest
+finding about your own capstone.
 
 ---
 
-## Key Learnings
+## Real-World Connection
 
-**Top 10 things I learned:**
-
-1.
-2.
-3.
-4.
-5.
-6.
-7.
-8.
-9.
-10.
+The 2024 CrowdStrike outage - one of the largest IT outages in history -
+wasn't a scale problem or a subtle logic bug; it was a testing/rollout-
+process gap (no staged canary release before a global push, see
+[Case Studies](../../docs/industry/CASE_STUDIES.md)). Across all five
+stages of this curriculum, the pattern repeats: the most expensive real
+failures are rarely caught by "more tests" in the abstract - they're
+caught by testing at the *right layer* for that specific failure mode. As
+you finish this capstone, which layer of your own test suite are you
+least confident actually covers what it claims to?
 
 ---
 
-## Challenges Overcome
+## Interview Prep
 
-**Biggest challenges and how I solved them:**
+Beyond questions about specific tools, expect these at the capstone/
+portfolio-review level:
 
-**Challenge 1:**
-
-- Problem:
-- Solution:
-
-**Challenge 2:**
-
-- Problem:
-- Solution:
-
-**Challenge 3:**
-
-- Problem:
-- Solution:
+1. **"Walk me through your test suite design for the feature you built."**
+   Be ready to explain not just what you tested, but why - what layer of
+   the pyramid each test belongs to and why, and what you deliberately
+   chose not to test and why that was a reasonable call.
+2. **"You had four requirements land at once. Walk me through how you
+   triaged them."** This is the actual capstone question. Your decision
+   log is your answer - practice saying it out loud, not just having it
+   written down.
+3. **"What was the hardest bug or flaky test you ran into, and how did
+   you actually fix it?"** Have a real, specific story ready - "I fixed a
+   flaky test" is forgettable, "the test was racing a toast notification
+   that auto-dismissed after 3 seconds, and I replaced a hardcoded wait
+   with an assertion on the notification actually appearing" is not.
+4. **"How would this test suite need to change if this app had 100x the
+   users?"** A reasonable answer touches on what your current performance
+   thresholds don't yet account for, and what your CI would need
+   (parallelization, faster feedback) to stay useful at that scale.
+5. **"Why should I trust that your tests actually catch regressions,
+   instead of just padding a coverage number?"** Point to something
+   concrete: a test you wrote that would have caught a real bug, or a
+   case where you deliberately chose one meaningful assertion over five
+   superficial ones.
 
 ---
 
-## Portfolio Artifacts Created
+## Portfolio Artifacts
 
-**Links to my work:**
-
-- [ ] GitHub repository: _______________
+- [ ] GitHub repository link: _______________
+- [ ] `DECISION_LOG.md`: _______________
 - [ ] Coverage report screenshot: _______________
-- [ ] E2E test video: _______________
-- [ ] TESTING.md documentation: _______________
-- [ ] PORTFOLIO.md: _______________
-- [ ] Resume updated: _______________
-- [ ] LinkedIn post: _______________
+- [ ] E2E test video or screenshot: _______________
+- [ ] `TESTING.md` documentation: _______________
 
 ---
 
-## Interview Preparation
+## Next Steps
 
-**My prepared answers to common questions:**
+- [ ] Update resume with a bullet describing the bookmarks ticket (or
+      your substitute feature) - lead with the triage decision, not the
+      tools
+- [ ] Read [COMPLETION.md](../COMPLETION.md) - it closes out the full
+      5-stage path and points you toward what to learn next
 
-### "Tell me about a challenging bug you found."
-
-*Your answer here...*
-
----
-
-### "Walk me through your testing strategy for a new feature."
-
-*Your answer here...*
-
----
-
-### "How do you prioritize what to test?"
-
-*Your answer here...*
-
----
-
-## Goals Moving Forward
-
-**In the next 3 months:**
-
-1.
-2.
-3.
-
-**In the next 6 months:**
-
-1.
-2.
-3.
-
-**In the next year:**
-
-1.
-2.
-3.
-
----
-
-## Gratitude & Acknowledgments
-
-**People, resources, or moments that helped me:**
-
----
-
-## Final Thoughts
-
-**If I could give advice to someone starting Testbook today:**
-
-*Your wisdom here...*
-
----
-
-## 🎓 Certificate of Completion
-
-**I, [Your Name], have successfully completed:**
-
-✅ Stage 1: Unit Tests
-✅ Stage 2: Integration Tests
-✅ Stage 3: API & E2E Testing
-✅ Stage 4: Performance & Security
-✅ Stage 5: Job-Ready Capstone
-
-**Completion Date:** __________
-
-**Total Tests Written:** __________
-
-**Skills Mastered:** pytest, Playwright, k6, test automation, security testing
-
-**I am now ready to pursue QA engineering roles professionally.**
-
----
-
-**Signature:** ____________________
-
----
-
-*Save this document! It's your personal record of an incredible learning journey. Come back and read it when you land your first QA role! 🎉*
-
----
-
-## 🚀 Next Steps
-
-- [ ] Update resume
-- [ ] Update LinkedIn
-- [ ] Polish GitHub profile
-- [ ] Start job applications
-- [ ] Practice interview questions
-- [ ] Continue learning
-- [ ] Give back to the community
-
-**You've got this! 💪**
+**You've got this.**

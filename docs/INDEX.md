@@ -10,7 +10,7 @@
 
 **New to Testbook?** → [../README.md#learning-path](../README.md#learning-path)
 
-**Want to run the app?** → [../README.md#quick-start-5-minutes](../README.md#quick-start-5-minutes)
+**Want to run the app?** → [../README.md#quick-start](../README.md#quick-start)
 
 **Want main overview?** → [../README.md](../README.md)
 
@@ -30,7 +30,6 @@ Testbook/
 │   └── solutions/              📝 Lab solutions
 │
 ├── docs/
-│   ├── course/                 👨‍🎓 Course materials
 │   ├── guides/                 📖 How-to guides
 │   ├── reference/              📚 Reference documentation
 │   ├── concepts/               🧠 Deep conceptual understanding
@@ -48,15 +47,15 @@ Testbook/
 
 **The structured 5-stage journey to job-ready testing skills**
 
-| Stage                                                                         | Focus             | Time      | Description                                        |
-| ----------------------------------------------------------------------------- | ----------------- | --------- | -------------------------------------------------- |
-| **[Stage 1: Unit Tests](../learn/stage_1_unit/)**                             | 🧪 Foundations    | 2-3 hours | Test individual functions, fixtures, AAA pattern   |
-| **[Stage 2: Integration Tests](../learn/stage_2_integration/)**               | 🧱 Components     | 3-4 hours | API endpoints, database operations, test factories |
-| **[Stage 3: API & E2E](../learn/stage_3_api_e2e/)**                           | 🌐 Full Stack     | 4-5 hours | Playwright, contracts, user workflows              |
-| **[Stage 4: Performance & Security](../learn/stage_4_performance_security/)** | 🚀 Non-Functional | 2-3 hours | k6 load testing, OWASP security, rate limiting     |
-| **[Stage 5: Capstone](../learn/stage_5_capstone/)**                           | 🎯 Portfolio      | 2-3 hours | Build test suite, documentation, job artifacts     |
+| Stage                                                                         | Focus          | Time      | Description                                        |
+| ----------------------------------------------------------------------------- | -------------- | --------- | -------------------------------------------------- |
+| **[Stage 1: Unit Tests](../learn/stage_1_unit/)**                             | Foundations    | 4-6 hours | Test individual functions, fixtures, AAA pattern   |
+| **[Stage 2: Integration Tests](../learn/stage_2_integration/)**               | Components     | 5-7 hours | API endpoints, database operations, test factories |
+| **[Stage 3: API & E2E](../learn/stage_3_api_e2e/)**                           | Full Stack     | 5-7 hours | Playwright, contracts, user workflows              |
+| **[Stage 4: Performance & Security](../learn/stage_4_performance_security/)** | Non-Functional | 6-8 hours | k6 load testing, OWASP security, rate limiting     |
+| **[Stage 5: Capstone](../learn/stage_5_capstone/)**                           | Portfolio      | 4-6 hours | Build test suite, documentation, job artifacts     |
 
-**Total: 12-18 hours self-paced**
+**Total: 24-34 hours of core content**, matching the estimates in [README.md](../README.md#learning-path) and [learn/README.md](../learn/README.md#the-5-stages). Add 14-23 hours if you also work through the optional exercises in each stage.
 
 **What makes this path special:**
 
@@ -70,78 +69,36 @@ Testbook/
 
 ---
 
-## 👨‍🎓 Course Materials (`docs/course/`)
-
-| Resource                                                                        | Time Estimate | Experience Level          | Description                                   |
-| ------------------------------------------------------------------------------- | ------------- | ------------------------- | --------------------------------------------- |
-| **[COURSE_AUTOMATION_TESTING_101.md](course/COURSE_AUTOMATION_TESTING_101.md)** | 30-40 hours   | 🟢 Beginner → 🔴 Advanced | Self-paced curriculum with 12 sections        |
-| **[Learning Paths](../learn/README.md#choose-your-track)**                      | 15 min        | 🟢 All levels             | Choose path based on your background          |
-| **🆕 [SECTION_08_ADVANCED_E2E_PATTERNS.md](advanced/ADVANCED_E2E_PATTERNS.md)** | 8-10 hours    | 🔴 Advanced               | Advanced E2E patterns for Python & JavaScript |
-| **🆕 [CI_CD_E2E_TESTING.md](course/CI_CD_E2E_TESTING.md)**                      | 3-4 hours     | 🔴 Advanced               | CI/CD automation for both stacks              |
-| **[TROUBLESHOOTING.md](reference/TROUBLESHOOTING.md)**                          | 30 min        | 🟢 Beginner               | 24+ common errors and solutions               |
-| **[Learning Roadmap](../learn/README.md#visual-learning-journey)**              | 10 min        | 🟢 All levels             | Visual skill progression guide                |
-
-### Learning Path Details
-
-**COURSE_AUTOMATION_TESTING_101.md:**
-
-- 12 progressive sections (self-paced)
-- Theory + hands-on practice
-- Practice projects with solutions
-- Self-assessment checkpoints
-- Covers unit, integration, E2E, API, performance, security, CI/CD
-
-**LEARNING_PATHS.md:**
-
-- Complete beginner path
-- Manual QA → Automation path
-- Developer → Testing path
-- Language-specific tracks (Python/JavaScript)
-
-**TROUBLESHOOTING.md:**
-
-- Setup & environment issues
-- pytest common errors
-- Playwright troubleshooting
-
-- Quick reference for debugging
-
-**LEARNING_ROADMAP.md:**
-
-- Visual flowcharts
-- Milestone tracking
-- Skill matrix by experience level
-
----
-
 <h2 id="how-to-guides">📖 How-To Guides (`docs/guides/`)</h2>
 
-| Guide                                                                            | Time   | Level           | Purpose                                               |
-| -------------------------------------------------------------------------------- | ------ | --------------- | ----------------------------------------------------- |
-| **🆕 [QUICK_START.md](guides/QUICK_START.md)** ⭐                                | 15 min | 🟢 Beginner     | Complete setup guide for all platforms                |
-| **🆕 [DEPLOYMENT_MODES.md](guides/DEPLOYMENT_MODES.md)** ⭐                      | 10 min | 🟢 Beginner     | Development vs Production mode explained              |
-| **🆕 [FAQ.md](guides/FAQ.md)** ⭐                                                | 20 min | 🟢 All          | Frequently asked questions and answers                |
-| **[RUNNING_TESTS.md](guides/RUNNING_TESTS.md)**                                  | 15 min | 🟢 Beginner     | How to run all test types                             |
-| **[TESTING_GUIDE.md](guides/TESTING_GUIDE.md)**                                  | 45 min | 🟡 Intermediate | Comprehensive examples                                |
-| **🆕 [TESTING_COMPARISON_PYTHON_JS.md](guides/TESTING_COMPARISON_PYTHON_JS.md)** | 45 min | 🟡 Intermediate | Side-by-side Python vs JavaScript testing             |
-| **[FLAKY_TESTS_GUIDE.md](guides/FLAKY_TESTS_GUIDE.md)** ✨                       | 30 min | 🟡 Intermediate | Understanding & fixing flaky tests                    |
-| **🆕 [PORTFOLIO.md](guides/PORTFOLIO.md)** ⭐                                    | 30 min | 🟢 All          | Build job-ready portfolio from your work              |
-| **[TROUBLESHOOTING.md](reference/TROUBLESHOOTING.md)**                           | 20 min | 🟢 Beginner     | Technical errors with exact fixes                     |
-| **🆕 [QUALITY_CHECKS.md](guides/QUALITY_CHECKS.md)** ⭐                          | 20 min | 🟡 Intermediate | Linting, formatting, coverage gates                   |
-| **🆕 [ACCESSIBILITY_TESTING.md](guides/ACCESSIBILITY_TESTING.md)** ⭐            | 30 min | 🟡 Intermediate | WCAG 2.1, axe-core, Lighthouse                        |
-| **🆕 [CONTRACT_TESTING.md](guides/CONTRACT_TESTING.md)** ⭐                      | 30 min | 🟡 Intermediate | Property-based API contract testing with Schemathesis |
-| **[WINDOWS_SETUP.md](guides/WINDOWS_SETUP.md)**                                  | 30 min | 🟢 Beginner     | Windows-specific setup                                |
-| **[ROADMAP.md](ROADMAP.md)**                                                     | 10 min | 🟡 Intermediate | Future improvements & maintenance                     |
-| **[TASK_RUNNER.md](guides/TASK_RUNNER.md)** ✨                                   | 20 min | 🟢 Beginner     | Simplified commands (Make/just)                       |
-| **[LOGGING.md](guides/LOGGING.md)** ✨                                           | 30 min | 🟡 Intermediate | Structured logging & observability                    |
-| **[RATE_LIMITING.md](guides/RATE_LIMITING.md)** ✨                               | 25 min | 🟡 Intermediate | Rate limit tuning & config                            |
-| **[MANUAL_QA_TO_AUTOMATION.md](guides/MANUAL_QA_TO_AUTOMATION.md)** ✨           | 60 min | 🟢 Beginner     | QA transition roadmap                                 |
+| Guide | Time | Level | Purpose |
+| --- | --- | --- | --- |
+| **🆕 [QUICK_START.md](guides/QUICK_START.md)** ⭐ | 15 min | 🟢 Beginner | Complete setup guide for all platforms |
+| **🆕 [DEPLOYMENT_MODES.md](guides/DEPLOYMENT_MODES.md)** ⭐ | 10 min | 🟢 Beginner | Development vs Production mode explained |
+| **🆕 [FAQ.md](guides/FAQ.md)** ⭐ | 20 min | 🟢 All | Frequently asked questions and answers |
+| **[RUNNING_TESTS.md](guides/RUNNING_TESTS.md)** | 15 min | 🟢 Beginner | How to run all test types |
+| **🆕 [PLAYWRIGHT_QUICKSTART.md](guides/PLAYWRIGHT_QUICKSTART.md)** ⭐ | 10 min | 🟢 Beginner | First browser test running in under 10 minutes |
+| **[TESTING_GUIDE.md](guides/TESTING_GUIDE.md)** | 45 min | 🟡 Intermediate | Comprehensive examples |
+| **🆕 [TESTING_COMPARISON_PYTHON_JS.md](guides/TESTING_COMPARISON_PYTHON_JS.md)** | 45 min | 🟡 Intermediate | Side-by-side Python vs JavaScript testing |
+| **[FLAKY_TESTS_GUIDE.md](guides/FLAKY_TESTS_GUIDE.md)** ✨ | 30 min | 🟡 Intermediate | Understanding & fixing flaky tests |
+| **🆕 [PORTFOLIO.md](guides/PORTFOLIO.md)** ⭐ | 30 min | 🟢 All | Build job-ready portfolio from your work |
+| **[TROUBLESHOOTING.md](reference/TROUBLESHOOTING.md)** | 20 min | 🟢 Beginner | Technical errors with exact fixes |
+| **🆕 [QUALITY_CHECKS.md](guides/QUALITY_CHECKS.md)** ⭐ | 20 min | 🟡 Intermediate | Linting, formatting, coverage gates |
+| **🆕 [ACCESSIBILITY_TESTING.md](guides/ACCESSIBILITY_TESTING.md)** ⭐ | 30 min | 🟡 Intermediate | WCAG 2.1, axe-core, Lighthouse |
+| **🆕 [CONTRACT_TESTING.md](guides/CONTRACT_TESTING.md)** ⭐ | 30 min | 🟡 Intermediate | Property-based API contract testing with Schemathesis |
+| **🆕 [VISUAL_REGRESSION.md](guides/VISUAL_REGRESSION.md)** ⭐ | 25 min | 🟡 Intermediate | Screenshot baselines, CI infra, why not every PR |
+| **[WINDOWS_SETUP.md](guides/WINDOWS_SETUP.md)** | 30 min | 🟢 Beginner | Windows-specific setup |
+| **[TASK_RUNNER.md](guides/TASK_RUNNER.md)** ✨ | 20 min | 🟢 Beginner | Simplified commands (Make/just) |
+| **[LOGGING.md](guides/LOGGING.md)** ✨ | 30 min | 🟡 Intermediate | Structured logging & observability |
+| **[RATE_LIMITING.md](guides/RATE_LIMITING.md)** ✨ | 25 min | 🟡 Intermediate | Rate limit tuning & config |
+| **[MANUAL_QA_TO_AUTOMATION.md](guides/MANUAL_QA_TO_AUTOMATION.md)** ✨ | 60 min | 🟢 Beginner | QA transition roadmap |
+| **[TEST_DATA_SCENARIOS.md](guides/TEST_DATA_SCENARIOS.md)** | 20 min | 🟡 Intermediate | Pre-seeded test data scenarios for E2E/integration |
 
 ### Guide Details
 
 **RUNNING_TESTS.md:**
 
-- Backend tests (pytest) - 166 tests
+- Backend tests (pytest) - 203 tests
 - E2E tests (Playwright - JS & Python)
 - API tests (Postman/Newman)
 - Performance tests (K6)
@@ -223,11 +180,12 @@ Includes environment config, fixtures, test helpers, and patterns.
 
 ### Quick References (⚡ 5-10 min each)
 
-| Reference                                                                    | Type       | Best For                             |
-| ---------------------------------------------------------------------------- | ---------- | ------------------------------------ |
-| **[QUICK_REFERENCE_PYTEST.md](reference/QUICK_REFERENCE_PYTEST.md)**         | One-page   | pytest commands & patterns           |
-| **[QUICK_REFERENCE_PLAYWRIGHT.md](reference/QUICK_REFERENCE_PLAYWRIGHT.md)** | One-page   | Playwright commands & locators       |
-| **[TESTING_CHEATSHEET.md](reference/TESTING_CHEATSHEET.md)**                 | Cheatsheet | Common commands, test IDs, endpoints |
+| Reference | Type | Best For |
+| --- | --- | --- |
+| **[QUICK_REFERENCE_PYTEST.md](reference/QUICK_REFERENCE_PYTEST.md)** | One-page | pytest commands & patterns |
+| **[QUICK_REFERENCE_PLAYWRIGHT.md](reference/QUICK_REFERENCE_PLAYWRIGHT.md)** | One-page | Playwright commands & locators |
+| **[TESTING_CHEATSHEET.md](reference/TESTING_CHEATSHEET.md)** | Cheatsheet | Common commands, test IDs, endpoints |
+| **[GLOSSARY.md](reference/GLOSSARY.md)** | Reference | Plain-language definitions for recurring terms |
 
 ### In-Depth References (📖 15-45 min each)
 
@@ -238,6 +196,7 @@ Includes environment config, fixtures, test helpers, and patterns.
 | **[TESTING_ANTIPATTERNS.md](concepts/TESTING_ANTIPATTERNS.md)** | 25 min | 🟡 Intermediate | 16 mistakes to avoid              |
 | **[TESTING_FEATURES.md](reference/TESTING_FEATURES.md)**        | 15 min | 🟢 Beginner     | All testable Testbook features    |
 | **[PROJECT_INFO.md](reference/PROJECT_INFO.md)**                | 20 min | 🟡 Intermediate | Technical architecture details    |
+| **[SECURITY_NOTES.md](reference/SECURITY_NOTES.md)**            | 15 min | 🟡 Intermediate | Known security tradeoffs and why  |
 
 ### Content Highlights
 
@@ -311,7 +270,6 @@ Includes environment config, fixtures, test helpers, and patterns.
 | Resource                                                    | Time   | Level           | Purpose                            |
 | ----------------------------------------------------------- | ------ | --------------- | ---------------------------------- |
 | **[CASE_STUDIES.md](industry/CASE_STUDIES.md)**             | 45 min | 🟡 Intermediate | Real testing disasters & successes |
-| **[INDUSTRY_PRACTICES.md](industry/INDUSTRY_PRACTICES.md)** | 30 min | 🟡 Intermediate | How top companies test             |
 | **[TOOL_COMPARISON.md](industry/TOOL_COMPARISON.md)**       | 25 min | 🟡 Intermediate | When to use what testing tool      |
 | **[CAREER_GUIDE.md](industry/CAREER_GUIDE.md)**             | 20 min | 🟢 All levels   | QA career paths & salary data      |
 
@@ -319,17 +277,9 @@ Includes environment config, fixtures, test helpers, and patterns.
 
 **Case Studies:**
 
-- Knight Capital $440M loss
-- E-commerce platform outages
-- Airline booking system bugs
-- Video conferencing failures
-
-**Industry Practices:**
-
-- Google's testing culture
-- Netflix's chaos engineering
-- Amazon's testing strategies
-- Microsoft's quality gates
+- Knight Capital's $440M deployment failure, Equifax's breach — real incidents, with their actual (often surprising) root causes
+- The 2024 CrowdStrike outage — a real, recent example of what skipping staged rollout testing costs
+- What's genuinely publicly documented about Google's and Netflix's testing practices, vs. what isn't verifiable about other companies
 
 ---
 
@@ -340,7 +290,6 @@ Includes environment config, fixtures, test helpers, and patterns.
 | Resource                                                                      | Time   | Level       | Purpose                          |
 | ----------------------------------------------------------------------------- | ------ | ----------- | -------------------------------- |
 | **[ADVANCED_TOPICS.md](advanced/ADVANCED_TOPICS.md)**                         | 40 min | 🔴 Advanced | Mutation testing, property-based |
-| **[ADVANCED_E2E_PATTERNS.md](advanced/ADVANCED_E2E_PATTERNS.md)**             | 35 min | 🔴 Advanced | Advanced E2E patterns            |
 | **[ADVANCED_TESTING_STRATEGIES.md](advanced/ADVANCED_TESTING_STRATEGIES.md)** | 30 min | 🔴 Advanced | Enterprise testing strategies    |
 
 ### Content Highlights
@@ -352,43 +301,11 @@ Includes environment config, fixtures, test helpers, and patterns.
 - Test-driven development (TDD)
 - Behavior-driven development (BDD)
 
-**Advanced E2E Patterns:**
-
-- Visual regression testing
-- Cross-browser strategies
-- Mobile testing patterns
-- Performance testing integration
-
 ---
 
 <h2 id="hands-on-exercises">🧪 Hands-On Exercises (`../learn/`)</h2>
 
-**All lab exercises have been moved into the structured learning stages!**
-
-**New Structure:**
-
-- **Stage 1:** Unit test exercises in `learn/stage_1_unit/exercises/`
-- **Stage 2:** Integration test exercises in `learn/stage_2_integration/exercises/`
-- **Stage 3:** E2E test exercises in `learn/stage_3_api_e2e/exercises/`
-- **Stage 4:** Performance & security exercises in `learn/stage_4_performance_security/exercises/`
-- **Solutions:** All lab solutions in `learn/solutions/`
-
-**Total time:** ~12-18 hours (same content, better organization)
-
-**Recommended:** Start with the [Self-Guided Learning Path](../learn/) for the best experience!
-
-**Choose your path:**
-
-- 🐍 **Python-only:** Lab 4B
-- ☕ **JavaScript-only:** Lab 6B → Lab 6C
-- 🎯 **Hybrid (Python + JS):** Lab 4B + Lab 6B + Lab 6C
-- 🌟 **Full-stack:** All three
-
-### Future Labs - Roadmap
-
-> **Status:** Additional advanced labs planned. Current focus: dual-stack coverage complete!
-
-**Planned (Labs 7+):** Database Testing Deep Dive, Performance Testing, Security Testing Comprehensive, Full CI/CD Pipeline Setup
+Every lab exercise lives inside its stage folder — `learn/stage_1_unit/exercises/`, `learn/stage_2_integration/exercises/`, and so on through Stage 4, with solutions in `learn/solutions/`. See the [stage-by-stage breakdown](../learn/README.md#detailed-curriculum-breakdown) in learn/README.md for the full lab list per stage.
 
 ---
 
@@ -399,7 +316,7 @@ Includes environment config, fixtures, test helpers, and patterns.
 **[backend/tests/README.md](../backend/tests/README.md)**
 Backend testing guide
 
-- 166 tests
+- 203 tests
 - pytest usage
 - Fixtures
 - Coverage
@@ -446,9 +363,9 @@ Security testing guide
 
 ### "I want to..."
 
-**...learn testing** → [../README.md#choose-your-learning-path](../README.md#choose-your-learning-path)
+**...learn testing** → [../README.md#learning-path](../README.md#learning-path)
 
-**...run the app** → [../README.md#quick-start-5-minutes](../README.md#quick-start-5-minutes)
+**...run the app** → [../README.md#quick-start](../README.md#quick-start)
 
 **...run tests** → [guides/RUNNING_TESTS.md](guides/RUNNING_TESTS.md)
 
@@ -517,7 +434,7 @@ source .venv/bin/activate  # Activate Python (macOS/Linux)
 
 - Labs 1-3 (Python/pytest)
 
-- Backend tests (166 tests)
+- Backend tests (203 tests)
 - API examples (Python requests)
 - Security tests (Python)
 
@@ -532,7 +449,7 @@ source .venv/bin/activate  # Activate Python (macOS/Linux)
 **Resources:**
 
 - Lab 4 (JavaScript/Playwright)
-- E2E tests (60+ tests)
+- E2E tests (59 tests)
 - Performance tests (K6)
 
 **Tools:**
@@ -551,7 +468,7 @@ source .venv/bin/activate  # Activate Python (macOS/Linux)
 - Unit tests: `backend/tests/unit/test_auth.py`
 - API tests: `backend/tests/integration/test_api_auth.py`
 - E2E tests: `tests/e2e/auth.spec.js`, `tests/e2e-python/test_auth.py`
-- Guide: [guides/TESTING_GUIDE.md](guides/TESTING_GUIDE.md#authentication)
+- Guide: [guides/TESTING_GUIDE.md](guides/TESTING_GUIDE.md#authentication-flow)
 
 ### API Testing
 
@@ -580,63 +497,13 @@ source .venv/bin/activate  # Activate Python (macOS/Linux)
 
 ---
 
-## 🔄 Recently Organized
-
-**Moved to `docs/course/`:**
-
-- COURSE_AUTOMATION_TESTING_101.md
-- LEARNING_PATHS.md
-- LEARNING_ROADMAP.md
-- TROUBLESHOOTING.md
-
-**Moved to `docs/guides/`:**
-
-- RUNNING_TESTS.md
-- TESTING_GUIDE.md
-
-**Moved to `docs/reference/`:**
-
-- TESTING_CHEATSHEET.md
-- TESTING_PATTERNS.md
-- TESTING_FEATURES.md
-- PROJECT_INFO.md
-
-**Removed (redundant summaries):**
-
-- IMPLEMENTATION_COMPLETE.md
-- TEST_VERIFICATION_REPORT.md
-
-- TESTING_IMPLEMENTATION_SUMMARY.md
-- TRANSFORMATION_SUMMARY.md
-- FINAL_SUMMARY_FOR_USER.md
-- QUICK_START_TESTING.md
-
-**Removed (classroom-specific materials):**
-
-- EDUCATOR_GUIDE.md
-- GRADING_RUBRICS.md
-
-- ASSESSMENT_CHECKPOINTS.md
-- CLASSROOM_SETUP_CHECKLIST.md
-- COURSE_PRESENTATION_GUIDE.md
-- INSTRUCTOR_QUICK_START.md
-- STUDENT_FEEDBACK_FORM.md
-
-- STUDENT_PROGRESS_TRACKER.md
-
-**Result:** Clean, organized, individual learner-focused documentation!
-
----
-
----
-
-## 🎯 Recommended Reading Order
+## Recommended Reading Order
 
 ### Day 1
 
-1. [../README.md#choose-your-learning-path](../README.md#choose-your-learning-path) - Choose path (2 min)
+1. [../README.md#learning-path](../README.md#learning-path) - Choose path (2 min)
 2. [../README.md](../README.md) - Project overview (10 min)
-3. [../README.md#quick-start-5-minutes](../README.md#quick-start-5-minutes) - Get running (5 min)
+3. [../README.md#quick-start](../README.md#quick-start) - Get running (5 min)
 
 ### Day 2-7
 
@@ -646,7 +513,7 @@ source .venv/bin/activate  # Activate Python (macOS/Linux)
 
 ### Week 2+
 
-1. [course/COURSE_AUTOMATION_TESTING_101.md](course/COURSE_AUTOMATION_TESTING_101.md) - Self-paced curriculum
+1. [../learn/stage_2_integration/](../learn/stage_2_integration/) through [../learn/stage_5_capstone/](../learn/stage_5_capstone/) - Continue the self-paced curriculum
 2. [guides/RUNNING_TESTS.md](guides/RUNNING_TESTS.md) - Reference
 3. [reference/TESTING_CHEATSHEET.md](reference/TESTING_CHEATSHEET.md) - Quick lookups
 
@@ -657,7 +524,7 @@ source .venv/bin/activate  # Activate Python (macOS/Linux)
 **Can't find something?**
 
 - Check this index first
-- Try [../README.md#choose-your-learning-path](../README.md#choose-your-learning-path)
+- Try [../README.md#learning-path](../README.md#learning-path)
 - See [guides/RUNNING_TESTS.md](guides/RUNNING_TESTS.md) for troubleshooting
 
 **Platform issues?**

@@ -1,8 +1,18 @@
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { BrowserRouter } from 'react-router-dom';
-import { describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { AuthContext } from '../../AuthContext';
 import Navbar from '../../components/Navbar';
+
+const mockNavigate = vi.fn();
+vi.mock('react-router-dom', async () => {
+  const actual = await vi.importActual('react-router-dom');
+  return {
+    ...actual,
+    useNavigate: () => mockNavigate,
+  };
+});
 
 // Helper to render with required providers
 const renderNavbar = (authValue) => {
@@ -16,6 +26,26 @@ const renderNavbar = (authValue) => {
 };
 
 describe('Navbar Component', () => {
+  beforeEach(() => {
+    mockNavigate.mockClear();
+  });
+
+  it('logs out and navigates to the login page when Logout is clicked', async () => {
+    const user = userEvent.setup();
+    const mockLogout = vi.fn();
+    const mockAuth = {
+      user: { id: 1, username: 'testuser', display_name: 'Test User' },
+      login: vi.fn(),
+      logout: mockLogout,
+    };
+
+    renderNavbar(mockAuth);
+    await user.click(screen.getByRole('button', { name: 'Logout' }));
+
+    expect(mockLogout).toHaveBeenCalled();
+    expect(mockNavigate).toHaveBeenCalledWith('/login');
+  });
+
   it('renders Testbook title', () => {
     const mockAuth = {
       user: null,

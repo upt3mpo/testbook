@@ -9,6 +9,8 @@
 
 **What This Adds:** Advanced API testing patterns including database transactions, complex authentication flows, error handling, and performance testing.
 
+**Why this diverges from the JS track here:** this lab previews lightweight response-time assertions early because they're a natural extension of the API tests you're already writing. The JavaScript track's Lab 6 instead covers React component testing, which has no Python equivalent (there's no Python frontend to component-test) — so the two tracks intentionally teach different material at this lab number. Both tracks get full performance testing with k6 in Stage 4, so nothing here is skipped for JS learners, just introduced later.
+
 ---
 
 ## 🎯 What You'll Learn
@@ -42,7 +44,7 @@ that involve multiple related records and transaction management.
 
 import pytest
 from sqlalchemy.orm import Session
-from models import User, Post, Like
+from models import User, Post, Reaction
 from auth import get_password_hash
 
 class TestDatabaseTransactions:
@@ -122,9 +124,11 @@ class TestDatabaseTransactions:
 
 #### Step 2: Test Complex Relationships
 
+**Note:** Testbook doesn't have a separate `Like` model - "liking" a post is modeled as a `Reaction` with `reaction_type="like"` (other reaction types are `love`, `haha`, `wow`, `sad`, `angry`). The `User` model exposes these through its `reactions` relationship.
+
 ```python
 def test_user_likes_posts(self, db_session: Session):
-    """Test user liking multiple posts."""
+    """Test user reacting to (liking) multiple posts."""
     # Arrange
     user = User(
         email="liker@example.com",
@@ -152,17 +156,17 @@ def test_user_likes_posts(self, db_session: Session):
         db_session.add(post)
     db_session.flush()
 
-    # Act - User likes all posts
+    # Act - User reacts with "like" to all posts
     for post in posts:
-        like = Like(user_id=user.id, post_id=post.id)
-        db_session.add(like)
+        reaction = Reaction(user_id=user.id, post_id=post.id, reaction_type="like")
+        db_session.add(reaction)
 
     db_session.commit()
     db_session.refresh(user)
 
     # Assert
-    assert len(user.likes) == 3
-    assert all(like.user_id == user.id for like in user.likes)
+    assert len(user.reactions) == 3
+    assert all(reaction.user_id == user.id for reaction in user.reactions)
 ```
 
 ---
@@ -200,9 +204,12 @@ def test_complete_login_flow(self, client, db_session: Session):
     assert data["token_type"] == "bearer"
 
     # Test token is valid
+    # Note: the endpoint for "get my own profile" is /api/auth/me, not
+    # /api/users/me - GET /api/users/{username} looks up a user by
+    # username, and there's no user literally named "me".
     token = data["access_token"]
     headers = {"Authorization": f"Bearer {token}"}
-    profile_response = client.get("/api/users/me", headers=headers)
+    profile_response = client.get("/api/auth/me", headers=headers)
     assert profile_response.status_code == 200
     assert profile_response.json()["email"] == "test@example.com"
 
@@ -230,11 +237,16 @@ def test_login_with_wrong_password(self, client, db_session: Session):
     assert "Incorrect email or password" in response.json()["detail"]
 ```
 
-#### Step 2: Test Token Refresh
+#### Step 2: Test Token Expiration Claim
+
+**Note:** Testbook's API does not implement a refresh-token flow - there's no `POST /api/auth/refresh` endpoint, and the login response only ever contains `access_token` and `token_type` (no `refresh_token`). Instead, let's verify the access token itself carries a valid expiration claim, which is what actually backs session length in this app.
 
 ```python
-def test_token_refresh(self, client, db_session: Session):
-    """Test token refresh functionality."""
+def test_login_token_has_expiration_claim(self, client, db_session: Session):
+    """Test that the access token issued at login has a valid expiration claim."""
+    from jose import jwt
+    from auth import SECRET_KEY, ALGORITHM
+
     # Arrange - Login first
     user = User(
         email="test@example.com",
@@ -249,18 +261,14 @@ def test_token_refresh(self, client, db_session: Session):
         "email": "test@example.com",
         "password": "password123"
     })
-    refresh_token = login_response.json()["refresh_token"]
+    access_token = login_response.json()["access_token"]
 
-    # Act - Refresh token
-    response = client.post("/api/auth/refresh", json={
-        "refresh_token": refresh_token
-    })
+    # Act - Decode the token the same way auth.py does
+    payload = jwt.decode(access_token, SECRET_KEY, algorithms=[ALGORITHM])
 
     # Assert
-    assert response.status_code == 200
-    data = response.json()
-    assert "access_token" in data
-    assert data["access_token"] != login_response.json()["access_token"]
+    assert payload["sub"] == "test@example.com"
+    assert "exp" in payload  # Token has an expiration claim
 ```
 
 ---
@@ -331,28 +339,30 @@ def test_duplicate_email(self, client, db_session: Session):
 def test_unauthorized_access(self, client):
     """Test accessing protected endpoint without token."""
     # Act
-    response = client.get("/api/users/me")
+    response = client.get("/api/auth/me")
 
-    # Assert
-    assert response.status_code == 401
+    # Assert - FastAPI's HTTPBearer rejects a missing Authorization
+    # header with 403 (not 401) before your own code ever runs
+    assert response.status_code == 403
     assert "Not authenticated" in response.json()["detail"]
 
 def test_invalid_token(self, client):
     """Test accessing protected endpoint with invalid token."""
     # Act
     headers = {"Authorization": "Bearer invalid_token"}
-    response = client.get("/api/users/me", headers=headers)
+    response = client.get("/api/auth/me", headers=headers)
 
-    # Assert
+    # Assert - get_current_user() raises this exact message for any
+    # token that fails to decode/verify
     assert response.status_code == 401
-    assert "Invalid token" in response.json()["detail"]
+    assert "Could not validate credentials" in response.json()["detail"]
 
 def test_expired_token(self, client, db_session: Session):
     """Test accessing protected endpoint with expired token."""
     # This would require mocking time or using a very short token expiry
     # For now, we'll test the structure
     headers = {"Authorization": "Bearer expired_token"}
-    response = client.get("/api/users/me", headers=headers)
+    response = client.get("/api/auth/me", headers=headers)
 
     # Should return 401 for expired token
     assert response.status_code == 401
@@ -391,23 +401,17 @@ def test_api_response_time(self, client, db_session: Session):
     assert response.status_code == 200
     assert response_time < 1.0  # Should respond within 1 second
 
-def test_bulk_operations_performance(self, client, db_session: Session):
+def test_bulk_operations_performance(self, client, auth_headers):
     """Test performance of bulk operations."""
-    # Arrange - Create user
-    user = User(
-        email="test@example.com",
-        username="testuser",
-        display_name="Test User",
-        hashed_password=get_password_hash("password123")
-    )
-    db_session.add(user)
-    db_session.commit()
+    # Arrange - `auth_headers` (from conftest.py) already provides a
+    # logged-in user's Authorization header. Creating a post requires
+    # authentication, so requests without it would get 403, not 201.
 
     # Act - Create multiple posts
     start_time = time.time()
     for i in range(10):
         post_data = {"content": f"Test post {i}"}
-        response = client.post("/api/posts", json=post_data)
+        response = client.post("/api/posts/", json=post_data, headers=auth_headers)
         assert response.status_code == 201
     end_time = time.time()
 
@@ -598,7 +602,7 @@ def test_external_api_call(self, client):
 
 - **[Lab 7: Test Data Management (Python)](LAB_07_Test_Data_Management_Python.md)** - Advanced test data patterns
 - **[Lab 8: Contract Testing Foundations (Python)](LAB_08_Contract_Testing_Foundations_Python.md)** - API contract testing
-- **[Lab 9: Basic E2E Testing (Python)](LAB_09_Basic_E2E_Testing_Python.md)** - End-to-end testing
+- **[Lab 9: Basic E2E Testing (Python)](../../stage_3_api_e2e/exercises/LAB_09_Basic_E2E_Testing_Python.md)** - End-to-end testing
 
 ---
 

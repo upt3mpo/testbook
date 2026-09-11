@@ -47,36 +47,7 @@ def test_service_b_with_mocked_dependencies():
 
 ### Strategy 2: Contract Testing
 
-**Principle:** Test the contracts between services to ensure compatibility.
-
-**Benefits:**
-
-- Prevents integration failures
-- Enables independent deployment
-- Reduces coupling
-- Faster feedback
-
-**Implementation:**
-
-```python
-# Consumer contract test
-def test_user_service_contract():
-    pact = Consumer('UserService').has_pact_with(Provider('UserAPI'))
-
-    (pact
-     .given('user exists')
-     .upon_receiving('a request for user')
-     .with_request('GET', '/users/123')
-     .will_respond_with(200, body={
-         'id': 123,
-         'name': 'John Doe',
-         'email': 'john@example.com'
-     }))
-
-    with pact:
-        response = requests.get('http://localhost:8080/users/123')
-        assert response.status_code == 200
-```
+Test the contracts between distributed services to ensure compatibility without standing up every dependency for every test run. See [Contract Testing Guide](../guides/CONTRACT_TESTING.md) for the full explanation and a worked example against this repo's own API.
 
 ### Strategy 3: Integration Testing
 
@@ -109,40 +80,7 @@ def test_user_registration_flow():
 
 ### Strategy 4: Chaos Engineering
 
-**Principle:** Intentionally introduce failures to test system resilience.
-
-**Benefits:**
-
-- Proves system resilience
-- Identifies weak points
-- Improves recovery procedures
-- Builds confidence
-
-**Implementation:**
-
-```python
-def test_system_resilience():
-    # Normal operation
-    def normal_operation():
-        while True:
-            response = process_request()
-            assert response.success is True
-            time.sleep(0.1)
-
-    # Chaos monkey
-    def chaos_monkey():
-        while True:
-            time.sleep(random.uniform(1, 5))
-            if random.random() < 0.1:
-                simulate_network_failure()
-            elif random.random() < 0.1:
-                simulate_database_failure()
-
-    # Run both concurrently
-    with ThreadPoolExecutor(max_workers=2) as executor:
-        executor.submit(normal_operation)
-        executor.submit(chaos_monkey)
-```
+Intentionally introduce failures (network partitions, dependency outages) into a distributed system to test whether it actually recovers the way its design assumes it will. See [Chaos Engineering](ADVANCED_TOPICS.md#chaos-engineering) in the Advanced Topics catalog for the full explanation, tooling by platform, and when it's (and isn't) worth the operational overhead.
 
 ## Testing Microservices
 
@@ -713,6 +651,5 @@ The most important thing is to continuously learn and adapt your testing strateg
 ## Further Reading
 
 - [Advanced Topics](ADVANCED_TOPICS.md) - Advanced testing techniques
-- [Industry Practices](../industry/INDUSTRY_PRACTICES.md) - How companies use advanced strategies
-- [Case Studies](../industry/CASE_STUDIES.md) - Real-world examples of advanced testing
+- [Case Studies](../industry/CASE_STUDIES.md) - Real incidents and what's genuinely documented about industry practice
 - [Testing Philosophy](../concepts/TESTING_PHILOSOPHY.md) - The mindset behind advanced testing

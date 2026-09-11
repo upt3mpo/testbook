@@ -1,6 +1,6 @@
 [tool.black]
 line-length = 88
-target-version = ['py311']
+target-version = ['py313']
 include = '\.pyi?$'
 extend-exclude = '''
 /(
@@ -20,9 +20,133 @@ extend-exclude = '''
 )/
 '''
 
-[tool.isort]
-profile = "black"
-line_length = 88
-skip_gitignore = true
-known_first_party = ["models", "schemas", "auth", "database", "logger"]
-known_third_party = ["fastapi", "sqlalchemy", "pydantic", "slowapi", "jose", "passlib"]
+[tool.ruff]
+line-length = 88
+target-version = "py313"
+# tests/examples/ contains deliberately-illustrative code (including an
+# intentionally-flawed bad_tests.py used to teach anti-patterns) - it's
+# not part of the real test suite and isn't meant to lint clean.
+extend-exclude = ["tests/examples"]
+
+[tool.ruff.lint]
+# Re-triaged against `ruff check . --select=ALL` (previously only E/F/I
+# were enabled, avoiding ~163 hits without looking at what any of them
+# actually were). Every category below fired at least one real,
+# worth-catching issue when this triage ran; the `ignore` list is
+# specific codes, not whole families, each with a reason - and each of
+# those was checked against its actual hits in this codebase before
+# being disabled, not disabled by assumption.
+select = [
+  "E",     # pycodestyle errors
+  "F",     # pyflakes (undefined names, unused imports)
+  "I",     # import sorting
+  "B",     # bugbear (real bugs: mutable defaults, missing `raise ... from`, etc.)
+  "UP",    # pyupgrade - modern syntax for the pinned target-version
+  "PERF",  # obvious perf footguns (e.g. append-in-a-loop instead of a comprehension)
+  "SIM",   # obvious simplifications (ternary over if/else, contextlib.suppress)
+  "C4",    # comprehension correctness (e.g. an unnecessary generator)
+  "RUF",   # ruff's own rules (e.g. mutable class-level defaults)
+  "ASYNC", # blocking calls inside async def
+  "PTH",   # prefer pathlib over os.path
+  "PT",    # pytest style conventions
+  "TC",    # type-checking-only import/cast correctness
+  "A",     # shadowing a Python builtin
+  "S",     # bandit-style security checks
+  "ANN",   # missing type annotations
+  "ARG",   # unused function/method arguments
+  "PLC",   # pylint conventions
+  "PLR",   # pylint refactor suggestions
+  "ISC",   # implicit string concatenation
+  "COM",   # trailing comma conventions
+  "T20",   # print() left in code
+  "ERA",   # commented-out code
+  "CPY",   # copyright headers
+  "FBT",   # boolean positional arguments
+  "BLE",   # blind `except Exception`
+  "FURB",  # modernization suggestions (refurb)
+]
+ignore = [
+  "E501",   # line length is black's job, not ruff's
+  "COM812", # conflicts with the black formatter (ruff's own docs say don't pair these)
+  "ISC001", # same conflict, for implicit string concatenation specifically
+  "CPY001", # this repo has no copyright-header convention to enforce
+  "A003",   # every SQLAlchemy model and Pydantic schema has an `id` field; that's the domain, not a bug
+  "ANN401", # the only `Any` usages here are `**kwargs: Any` in tests/factories.py's generic factory methods, already commented with why a precise type isn't practical
+  "ERA001", # every "commented-out code" hit here is deliberate: logger.py's usage example, conftest.py's Windows-encoding workaround note, test_api_contract.py's opt-in hook template
+  "T201",   # legitimate CLI/console output (seed.py's seeding progress, auth.py's missing-SECRET_KEY warning, conftest.py's test-run banner), not debug leftovers
+  "S105",   # bandit's hardcoded-password heuristic false-positives on seed/test account passwords and on "token_type": "bearer" - the same false-positive class already triaged for detect-secrets, see .pre-commit-config.yaml
+  "S106",   # same as S105, for keyword-argument form
+  "S107",   # same as S105, for a default-argument form (tests/factories.py's `password: str = "TestPassword123!"`)  # pragma: allowlist secret
+  "S311",   # `random.randint`/`random.choice` in seed.py generate demo data timing, not cryptographic material
+  "FBT001", # mostly fires on FastAPI's `_: bool = Depends(require_test_mode)` dependency-injection marker, which is never actually called positionally
+]
+
+[tool.ruff.lint.flake8-bugbear]
+# B008 ("function call in default argument") doesn't know about FastAPI's
+# dependency-injection pattern - `param: X = Depends(get_db)` is how the
+# framework is designed to be used, not a mutable-default footgun.
+# Keeping B008 enabled and exempting exactly these callables (rather than
+# disabling B008 outright) still catches a real mutable-default-argument
+# bug anywhere else in the codebase.
+extend-immutable-calls = [
+  "fastapi.Depends",
+  "fastapi.Query",
+  "fastapi.Path",
+  "fastapi.Body",
+  "fastapi.Header",
+  "fastapi.Cookie",
+  "fastapi.File",
+  "fastapi.Form",
+  "fastapi.Security",
+]
+
+[tool.ruff.lint.per-file-ignores]
+# Test functions get a return type but not full parameter typing (see the
+# matching [[tool.mypy.overrides]] below for the full reasoning) - ANN001/
+# ANN201 cover the same gap ruff-side. The rest here are patterns that are
+# correct pytest usage, not bugs: `assert` is how pytest tests check
+# anything (S101); a fixture requested purely for its setup side effect
+# and never referenced in the body is the standard way to express "this
+# test needs data X to exist" (ARG001/ARG002); HTTP status codes compared
+# directly (200, 404, ...) aren't "magic numbers" in an API test (PLR2004);
+# a test with many fixtures isn't a design smell the way a
+# many-parameter production function would be (PLR0913/PLR0917/PLR0915);
+# and a local `from auth import create_access_token` inside one test that
+# needs a second user's token is normal, not a missed top-level import
+# (PLC0415). NOT applied to conftest.py or factories.py - shared fixture
+# code stays held to the same bar as application code.
+"tests/integration/*" = ["ANN001", "ANN201", "S101", "ARG001", "ARG002", "PLR2004", "PLR0913", "PLR0917", "PLR0915", "PLC0415"]
+"tests/unit/*" = ["ANN001", "ANN201", "S101", "ARG001", "ARG002", "PLR2004", "PLR0913", "PLR0917", "PLR0915", "PLC0415"]
+
+[tool.mypy]
+python_version = "3.13"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+ignore_missing_imports = true
+exclude = ["tests/examples/"]
+# No sqlalchemy mypy plugin needed: models.py uses SQLAlchemy 2.0's
+# native Mapped[]/mapped_column() style with a class-based
+# DeclarativeBase (see database.py), which mypy understands directly.
+# The plugin was tried first (needed for the older Column()-style
+# declarative models this file used before this pass), but on this
+# mypy/SQLAlchemy version pairing it silently failed to synthesize a
+# working __init__ for the mapped classes - every ORM constructor call
+# (e.g. models.User(email=...)) came back "Unexpected keyword
+# argument" even though the attribute was a plain, correctly mapped
+# column. Migrating to Mapped[] removed the need for the plugin
+# entirely, which also removed that failure mode.
+
+[[tool.mypy.overrides]]
+# Test functions get a return type (-> None, since none of them return
+# a value) but not full parameter typing - fixture parameters like
+# client, auth_headers, and test_user are supplied by pytest via
+# fixture-name matching, not by the caller, so typing them here would
+# mean re-declaring every fixture's type at every one of its ~200 call
+# sites for no real safety benefit. conftest.py and tests/factories.py
+# are NOT covered by this override - fixture definitions and shared
+# test helpers are written once and reused everywhere, so they stay
+# held to the same full-typing bar as application code.
+module = ["tests.integration.*", "tests.unit.*"]
+disallow_untyped_defs = false
+disallow_incomplete_defs = false

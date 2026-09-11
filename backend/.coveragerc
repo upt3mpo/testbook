@@ -1,7 +1,7 @@
 [run]
 source = .
 omit =
-    */venv/*
+    */.venv/*
     */tests/*
     */migrations/*
     */__pycache__/*

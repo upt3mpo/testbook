@@ -20,7 +20,7 @@
 
 ```python
 ================================ FAILURES =================================
-_______________ TestLogin::test_login_wrong_password ______________
+_______________ TestLoginEndpoint::test_login_wrong_password ______________
 
 client = <fastapi.testclient.TestClient object at 0x7f8b9c>
 
@@ -39,7 +39,7 @@ tests/integration/test_api_auth.py:45: AssertionError
 
 **How to Read This:**
 
-1. **Test Name**: `TestLogin::test_login_wrong_password` - Which test failed
+1. **Test Name**: `TestLoginEndpoint::test_login_wrong_password` - Which test failed
 2. **Location**: `tests/integration/test_api_auth.py:45` - Exact line that failed
 3. **Expected**: `401` - What you expected
 4. **Actual**: `500` - What you got
@@ -214,7 +214,7 @@ pytest -v -x --pdb  # Stop and debug first failure
 
 ```bash
 # Run just one test
-pytest tests/integration/test_api_auth.py::TestLogin::test_login_wrong_password -v
+pytest tests/integration/test_api_auth.py::TestLoginEndpoint::test_login_wrong_password -v
 
 # Even more specific with -k
 pytest -k "login and wrong" -v
@@ -223,6 +223,8 @@ pytest -k "login and wrong" -v
 ---
 
 <h2 id="debugging-playwright-tests">🎭 Debugging Playwright Tests</h2>
+
+> Most "everything times out" E2E failures trace back to one thing: the backend not running with `TESTING=true`. See [PLAYWRIGHT_QUICKSTART.md](../guides/PLAYWRIGHT_QUICKSTART.md#prerequisites) before digging further.
 
 ### Method 1: Headed Mode
 

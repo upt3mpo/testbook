@@ -12,7 +12,7 @@ Quick reference for testers and automation engineers.
 - **[Postman](https://www.postman.com/)** - API testing (visual interface)
 - **[PyTest](https://pytest.org/)** - Python testing framework
 
-**More options**: See [README.md](../../README.md#-testing-frameworks-you-can-use) for a complete list
+**More options**: See [README.md](../../README.md#tech-stack) for the full tech stack
 
 <h2 id="quick-start">🚀 Quick Start</h2>
 
@@ -28,19 +28,18 @@ start.bat             # Windows Docker
 reset-database.bat    # Windows
 ```
 
-**URLs:**<ht<http://localhost:3000>
-<http://localhost:8000/api>
+**URLs:**
 
-- Frontend: <http://localhost:8000/docs>ev) or <http://localhost:8000> (Docker)
+- Frontend: <http://localhost:3000> (dev) or <http://localhost:8000> (Docker)
 - Backend API: <http://localhost:8000/api>
 - API Docs: <http://localhost:8000/docs>
 
 ## 🔐 Test Accounts
 
-| <sarah.johnson@testbook.com> |
-|-<mike.chen@testbook.com>-----|
-| <emma.davis@testbook.com>.com> | Sarah2024! | Active, has followers |
-| <newuser@testbook.com>com> | MikeRocks88 | Many posts |
+| Email | Password | Use Case |
+| ----- | -------- | -------- |
+| <sarah.johnson@testbook.com> | Sarah2024! | Active, has followers |
+| <mike.chen@testbook.com> | MikeRocks88 | Many posts |
 | <emma.davis@testbook.com> | EmmaLovesPhotos | Photographer |
 | <newuser@testbook.com> | NewUser123! | Clean account |
 
@@ -348,7 +347,7 @@ def test_login():
 
 ✅ **138+ unique test IDs** - Every element selectable
 ✅ **RESTful API** - All features accessible via HTTP
-✅ **File uploads** - Te<http://localhost:8000/docs>
+✅ **File uploads** - Test drag-and-drop and file picker uploads
 ✅ **Toggle actions** - Test state changes (react, repost, follow)
 ✅ **Emoji reactions** - Test visual feedback
 ✅ **Edit functionality** - Test inline editing

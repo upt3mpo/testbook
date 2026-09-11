@@ -5,24 +5,40 @@ echo.
 echo 🚀 Starting Testbook in development mode...
 echo.
 
-REM Check if ports are already in use
+REM Check if ports are already in use. This used to warn and continue, but
+REM that let uvicorn/vite crash or silently switch ports while the
+REM readiness check below still reported success (it only polls the URL,
+REM not whether this run's own process is the one answering it) - so you'd
+REM see "Testbook is running!" while the backend that's supposed to reload
+REM your code changes was actually dead. Exiting here means you see the
+REM real problem once, immediately, instead of a misleading success banner.
 echo ⏳ Checking if ports are available...
+set PORT_CONFLICT=0
+
 netstat -ano | findstr ":8000" | findstr "LISTENING" >nul 2>&1
 if not errorlevel 1 (
-    echo ⚠️  Port 8000 is already in use by another process
-    echo    This might be an existing backend instance
-    echo    Run 'netstat -ano ^| findstr :8000' to find the PID and stop it
-    echo    Continuing anyway...
+    echo ❌ Error: Port 8000 is already in use
+    echo    This might be an existing backend instance, or something else entirely.
+    echo    Find it: netstat -ano ^| findstr :8000
+    echo    Stop it: taskkill /PID ^<pid^> /F
     echo.
+    set PORT_CONFLICT=1
 )
 
 netstat -ano | findstr ":3000" | findstr "LISTENING" >nul 2>&1
 if not errorlevel 1 (
-    echo ⚠️  Port 3000 is already in use by another process
-    echo    This might be an existing frontend instance
-    echo    Run 'netstat -ano ^| findstr :3000' to find the PID and stop it
-    echo    Continuing anyway...
+    echo ❌ Error: Port 3000 is already in use
+    echo    This might be an existing frontend instance, or something else entirely.
+    echo    Find it: netstat -ano ^| findstr :3000
+    echo    Stop it: taskkill /PID ^<pid^> /F
     echo.
+    set PORT_CONFLICT=1
+)
+
+if "%PORT_CONFLICT%"=="1" (
+    echo Startup stopped - free the port^(s^) above and try again.
+    pause
+    exit /b 1
 )
 
 REM Generate placeholder images if they don't exist

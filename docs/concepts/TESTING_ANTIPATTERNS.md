@@ -17,7 +17,7 @@ Anti-patterns are common solutions that seem reasonable but cause problems. In t
 
 ---
 
-## 📚 Table of Contents
+## Table of Contents
 
 1. [Hardcoded Data Anti-Patterns](#1-hardcoded-data-anti-patterns)
 2. [Time and Sleep Anti-Patterns](#2-time-and-sleep-anti-patterns)
@@ -233,6 +233,20 @@ test("wait for element", async ({ page }) => {
   await page.click('[data-testid="button"]');
 });
 ```
+
+**See it in the real codebase:** both of Testbook's E2E suites used to
+be full of exactly this anti-pattern - `wait_for_timeout()` in
+`tests/e2e-python/` and `waitForTimeout()` in `tests/e2e/` - and they've
+since been replaced with auto-waiting `expect()` assertions throughout.
+That cleanup surfaced a genuine bug the arbitrary waits had been
+masking: a positional locator like "the first post in the feed"
+occasionally resolved to the wrong post, because a seeded demo post's
+timestamp could collide with a freshly-created post's timestamp. The
+fix wasn't a longer wait - it was scoping the locator by content
+instead of position. See `find_post_by_content()` in
+`tests/e2e-python/pages/feed_page.py` and `findPostByContent()` in
+`tests/e2e/pages/FeedPage.js` for the real fix, and their docstrings
+for why a wait would only have hidden the race, not fixed it.
 
 ---
 
@@ -926,12 +940,12 @@ Before committing your tests, check:
 
 ---
 
-## 📚 Related Resources
+## Related Resources
 
 - **[TESTING_PATTERNS.md](TESTING_PATTERNS.md)** - What TO do (now includes dialog handling & force clicks!)
 - **[FLAKY_TESTS_GUIDE.md](../guides/FLAKY_TESTS_GUIDE.md)** ⭐ - Real fixes from this project
-- **[TESTING_CHEATSHEET.md](TESTING_CHEATSHEET.md)** - Quick reference (updated with critical patterns)
-- **[Troubleshooting](TROUBLESHOOTING.md)** - Student errors
+- **[TESTING_CHEATSHEET.md](../reference/TESTING_CHEATSHEET.md)** - Quick reference (updated with critical patterns)
+- **[Troubleshooting](../reference/TROUBLESHOOTING.md)** - Student errors
 - **[Test Examples](../../backend/tests/examples/)** - Good vs bad tests
 - **[Flaky Tests Guide](../guides/FLAKY_TESTS_GUIDE.md)** - How to fix unreliable tests
 
@@ -939,4 +953,4 @@ Before committing your tests, check:
 
 **Remember:** These anti-patterns are common. Even experienced developers make these mistakes. The key is to recognize them and fix them!
 
-**Real-world impact:** Following these patterns helped us achieve **100% test pass rate (234/234 tests)** in Testbook!
+**Real-world impact:** Following these patterns helped us achieve **100% test pass rate** in Testbook!

@@ -88,11 +88,13 @@ wheels/
 .hypothesis/
 .mypy_cache/
 .ruff_cache/
+.mutmut-cache
 
 ########################################
 # Databases (local dev)
 ########################################
 *.db
+*.db.backup.*
 *.sqlite
 *.sqlite3
 
@@ -103,4 +105,6 @@ htmlcov/
 **/htmlcov/
 test-results/
 playwright-report/
+playwright-report-visual/
 playwright/.cache/
+reports/

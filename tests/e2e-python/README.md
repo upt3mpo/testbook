@@ -23,12 +23,14 @@ playwright install chromium
 ./start-dev.sh
 ```
 
+**Important:** The backend must be started with `TESTING=true` (e.g. `TESTING=true uvicorn main:app --reload --port 8000`) for most of these tests to pass. This enables the `/api/dev/reset` endpoint and higher rate limits that tests rely on between runs — plain `./start-dev.sh` with no `backend/.env` leaves `TESTING` unset and tests will fail/skip with 403s. See [Playwright Quickstart](../../docs/guides/PLAYWRIGHT_QUICKSTART.md) for the full explanation.
+
 ### 3. Run Tests
 
 ```bash
 # Run all tests
 pytest -v
-# See [Quick Commands](docs/reference/QUICK_COMMANDS.md) for all pytest options
+# See [Quick Commands](../../docs/reference/QUICK_COMMANDS.md) for all pytest options
 
 # Run specific test file
 pytest test_auth.py -v
@@ -157,7 +159,7 @@ def test_api_setup_ui_verify(page, login_as, api_url):
     assert feed.post_count() == 10
 ```
 
-**Learn these patterns:** [Lab 4B: Advanced E2E Python](../../learn/stage_3_api_e2e/exercises/LAB_04B_Advanced_E2E_Python.md)
+**Learn these patterns:** [Lab 4B: Advanced E2E Python](../../learn/stage_3_api_e2e/exercises/LAB_10_Advanced_E2E_Patterns_Python.md)
 
 ---
 
@@ -244,7 +246,7 @@ pytest -v
 
 - JavaScript E2E tests: `tests/e2e/`
 - [Testing Comparison Guide](../../docs/guides/TESTING_COMPARISON_PYTHON_JS.md)
-- [Section 8: Advanced E2E Patterns](../../learn/stage_3_api_e2e/README.md#advanced-e2e-patterns)
+- [Section 8: Advanced E2E Patterns](../../learn/stage_3_api_e2e/README.md#part-7-additional-patterns)
 
 **Key difference:** Python uses synchronous syntax while JavaScript uses async/await. The Playwright API is otherwise identical!
 
@@ -289,8 +291,7 @@ pytest -v
 
 **Getting Started:**
 
-- [Lab 4: E2E Testing Python](../../learn/stage_3_api_e2e/exercises/LAB_04_E2E_Testing_Python.md) - Beginner lab
-- [Test Alignment Guide](../E2E_TEST_ALIGNMENT.md) - JS vs Python differences
+- [Lab 4: E2E Testing Python](../../learn/stage_3_api_e2e/exercises/LAB_09_Basic_E2E_Testing_Python.md) - Beginner lab
 
 **Documentation:**
 
@@ -298,7 +299,7 @@ pytest -v
 
 **CI/CD:**
 
-- [CI/CD for E2E Testing](../../learn/stage_5_capstone/README.md#cicd-automation) - Automate these tests
+- [CI/CD for E2E Testing](../../learn/stage_5_capstone/README.md#cicd-integration) - Automate these tests
 
 ---
 

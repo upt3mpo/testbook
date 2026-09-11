@@ -22,6 +22,18 @@ if [ ! -f "backend/static/images/default-avatar.jpg" ]; then
     echo ""
 fi
 
+# docker-compose.yml bind-mounts backend/testbook.db into the container so
+# data survives a restart. On a fresh clone that file doesn't exist yet -
+# and Docker's behavior for a missing bind-mount *file* source is to create
+# an empty *directory* there instead, which then makes the app crash trying
+# to open a directory as a SQLite database. Creating the file first avoids
+# that entirely; the app's own startup seeds it if it's empty.
+if [ ! -f "backend/testbook.db" ]; then
+    echo "🗄️  Creating database file..."
+    touch backend/testbook.db
+    echo ""
+fi
+
 # Build and start containers
 echo "🔨 Building Docker containers..."
 docker-compose up --build -d

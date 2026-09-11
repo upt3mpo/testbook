@@ -46,7 +46,7 @@ class TestRegistrationEndpoint:
             },
         )
 
-        assert response.status_code == 200
+        assert response.status_code == 201
         data = response.json()
         assert "access_token" in data
         assert data["token_type"] == "bearer"
@@ -102,7 +102,9 @@ class TestProtectedEndpoints:
         """Test that /api/auth/me requires authentication."""
         response = client.get("/api/auth/me")
 
-        assert response.status_code == 401
+        # FastAPI's HTTPBearer rejects a missing Authorization header with
+        # 403 (not 401) before our own code ever runs
+        assert response.status_code == 403
 
     def test_create_post_without_auth(self, client):
         """Test that creating post requires authentication."""
@@ -111,7 +113,7 @@ class TestProtectedEndpoints:
             json={"content": "Test post"},
         )
 
-        assert response.status_code == 401
+        assert response.status_code == 403
 
 
 @pytest.mark.integration
@@ -131,7 +133,7 @@ class TestPostsAPI:
             headers=auth_headers,
         )
 
-        assert response.status_code == 200
+        assert response.status_code == 201
         data = response.json()
         assert "id" in data
         assert data["content"] == "This is my test post!"
@@ -213,15 +215,10 @@ class TestCommentsAPI:
         assert data["content"] == "Great post!"
         assert data["post_id"] == test_post.id
 
-    def test_delete_own_comment(self, client, test_comment, auth_headers):
-        """Test deleting your own comment."""
-        response = client.delete(
-            f"/api/posts/{test_comment.post_id}/comments/{test_comment.id}",
-            headers=auth_headers,
-        )
-
-        # Should succeed (test_comment is created by test_user via fixture chain)
-        assert response.status_code in [200, 403]  # Depends on fixture setup
+    # Note: there is no comment-deletion endpoint in the current API
+    # (only POST /{post_id}/comments to create one) - a
+    # `test_delete_own_comment` test doesn't correspond to any real
+    # route, so it's intentionally omitted here.
 
 
 @pytest.mark.integration
@@ -237,10 +234,15 @@ class TestReactionsAPI:
             headers=auth_headers,
         )
 
+        # This endpoint returns the full post (schemas.PostResponse), not a
+        # standalone reaction object - there's no "reaction_type" key at
+        # the top level. The caller's own reaction shows up as
+        # `user_reaction` on the post.
         assert response.status_code == 201
         data = response.json()
-        assert data["reaction_type"] == "like"
-        assert data["post_id"] == test_post.id
+        assert data["id"] == test_post.id
+        assert data["user_reaction"] == "like"
+        assert data["reactions_count"] == 1
 
     def test_remove_reaction(self, client, test_post, auth_headers):
         """Test removing a reaction from a post."""
@@ -259,25 +261,33 @@ class TestReactionsAPI:
 
         assert response.status_code == 200
 
-    def test_toggle_reaction(self, client, test_post, auth_headers):
-        """Test that adding same reaction twice removes it."""
-        # Add like
+    def test_reacting_twice_with_same_type_is_idempotent(
+        self, client, test_post, auth_headers
+    ):
+        """Test that reacting twice with the same type doesn't create a duplicate.
+
+        Note: POST /{post_id}/reactions is not a toggle - sending the same
+        reaction_type again just updates the existing reaction in place
+        (still 201, still one reaction). To remove a reaction you call
+        DELETE /{post_id}/reactions instead (see test_remove_reaction).
+        """
         response1 = client.post(
             f"/api/posts/{test_post.id}/reactions",
             json={"reaction_type": "like"},
             headers=auth_headers,
         )
         assert response1.status_code == 201
+        assert response1.json()["reactions_count"] == 1
 
-        # Add like again - should remove it
+        # Reacting again with the same type does not remove or duplicate it
         response2 = client.post(
             f"/api/posts/{test_post.id}/reactions",
             json={"reaction_type": "like"},
             headers=auth_headers,
         )
-
-        # Either 200 (removed) or 201 (toggled) depending on implementation
-        assert response2.status_code in [200, 201]
+        assert response2.status_code == 201
+        assert response2.json()["reactions_count"] == 1
+        assert response2.json()["user_reaction"] == "like"
 
 
 # Challenge Solutions
@@ -318,7 +328,7 @@ class TestCompleteUserJourney:
             json={"content": "My first post!"},
             headers=headers,
         )
-        assert post_response.status_code == 200
+        assert post_response.status_code == 201
         post_id = post_response.json()["id"]
 
         # Step 4: Get the post

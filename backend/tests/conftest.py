@@ -5,9 +5,10 @@ This module provides reusable test fixtures and configuration
 that are available to all test files.
 """
 
-import os
 import sys
-from typing import Generator
+from collections.abc import Generator
+from pathlib import Path
+from typing import Any, cast
 
 import pytest
 from fastapi.testclient import TestClient
@@ -15,19 +16,28 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
 
 # Add parent directory to path so we can import from backend
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from auth import create_access_token, get_password_hash
 from database import Base, get_db
 from main import app
 from models import Comment, Post, Reaction, User
 
+HTTP_OK = 200
+
 # ═══════════════════════════════════════════════════════════════════
 # Welcome Banner & Completion Messages
 # ═══════════════════════════════════════════════════════════════════
 
+# The completion banner only makes sense for a run of the whole suite,
+# not a single test or a small filtered subset - this is the threshold
+# for "comprehensive enough to bother printing it."
+COMPREHENSIVE_RUN_THRESHOLD = 50
 
-def pytest_configure(config):
+
+def pytest_configure(
+    config: pytest.Config,  # noqa: ARG001 - required by pytest's hook signature
+) -> None:
     """Display welcome banner when pytest starts."""
     print("=" * 70)
     print("Welcome to Testbook Testing Platform!")
@@ -39,14 +49,14 @@ def pytest_configure(config):
     # print(banner.encode('utf-8', errors='ignore').decode('utf-8'))  # Disabled for Windows encoding issues
 
 
-def pytest_sessionfinish(session, exitstatus):
+def pytest_sessionfinish(session: pytest.Session, exitstatus: int) -> None:
     """Display completion message after all tests run."""
     if exitstatus == 0:
         # Only show completion message for comprehensive test runs (50+ tests)
         # Skip for individual tests, small subsets, or specific test classes
         collected_tests = len(session.items) if hasattr(session, "items") else 0
 
-        if collected_tests >= 50:  # Only for comprehensive runs
+        if collected_tests >= COMPREHENSIVE_RUN_THRESHOLD:
             print(
                 """
 Congratulations! All Backend Tests Passed!
@@ -67,7 +77,7 @@ Keep up the great work!
         # Skip for individual tests, small subsets, or specific test classes
         collected_tests = len(session.items) if hasattr(session, "items") else 0
 
-        if collected_tests >= 50:  # Only for comprehensive runs
+        if collected_tests >= COMPREHENSIVE_RUN_THRESHOLD:
             print(
                 """
 Some Tests Failed
@@ -91,8 +101,10 @@ test_engine = create_engine(
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=test_engine)
 
 
-@pytest.fixture(scope="function")
-def db_session() -> Generator[Session, None, None]:
+@pytest.fixture(
+    scope="function"  # noqa: PT003 - explicit on purpose, see docstring's scope explanation below
+)
+def db_session() -> Generator[Session]:
     """
     Create a fresh database session for each test.
 
@@ -167,8 +179,10 @@ def db_session() -> Generator[Session, None, None]:
         Base.metadata.drop_all(bind=test_engine)
 
 
-@pytest.fixture(scope="function")
-def client(db_session: Session) -> TestClient:
+@pytest.fixture(
+    scope="function"  # noqa: PT003 - explicit on purpose, see docstring's scope explanation below
+)
+def client(db_session: Session) -> Generator[TestClient]:
     """
     Create a FastAPI TestClient with test database integration.
 
@@ -237,7 +251,7 @@ def client(db_session: Session) -> TestClient:
     """
 
     # Override the database dependency to use our test database
-    def override_get_db():
+    def override_get_db() -> Generator[Session]:
         try:
             yield db_session  # Use test database instead of production
         finally:
@@ -354,7 +368,7 @@ def auth_token(test_user: User) -> str:
 
 
 @pytest.fixture
-def auth_headers(auth_token: str) -> dict:
+def auth_headers(auth_token: str) -> dict[str, str]:
     """
     Create authorization headers with JWT token.
 
@@ -475,7 +489,7 @@ def test_reaction(db_session: Session, test_post: Post, test_user_2: User) -> Re
 # Helper functions for tests
 
 
-def login_user(client: TestClient, email: str, password: str) -> dict:
+def login_user(client: TestClient, email: str, password: str) -> dict[str, Any]:
     """
     Helper function to login a user and return the token.
 
@@ -490,11 +504,17 @@ def login_user(client: TestClient, email: str, password: str) -> dict:
     response = client.post(
         "/api/auth/login", json={"email": email, "password": password}
     )
-    assert response.status_code == 200
-    return response.json()
+    # A real exception, not assert: this is shared test infrastructure,
+    # not a test itself, and asserts are stripped under python -O.
+    if response.status_code != HTTP_OK:
+        raise RuntimeError(
+            f"login_user() precondition failed: expected 200, got "
+            f"{response.status_code}: {response.text}"
+        )
+    return cast("dict[str, Any]", response.json())
 
 
-def create_authenticated_headers(token: str) -> dict:
+def create_authenticated_headers(token: str) -> dict[str, str]:
     """
     Create headers with authentication token.
 

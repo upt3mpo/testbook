@@ -79,6 +79,7 @@ function PostDetail() {
   return (
     <div className="post-detail-container" data-testid="post-detail-page">
       <div className="post-detail-content">
+        <h1 className="sr-only">Post by {post.author_display_name}</h1>
         <Post
           post={post}
           onDelete={handlePostDeleted}
@@ -87,7 +88,7 @@ function PostDetail() {
         />
 
         <div className="comments-section card" data-testid="comments-section">
-          <h3 className="comments-title">Comments ({post.comments?.length || 0})</h3>
+          <h2 className="comments-title">Comments ({post.comments?.length || 0})</h2>
           {post.comments && post.comments.length > 0 ? (
             <div className="comments-list" data-testid="comments-list">
               {post.comments.map((comment) => (

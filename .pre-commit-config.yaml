@@ -1,7 +1,7 @@
 repos:
   # General file checks (safe and useful)
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.6.0
+    rev: v6.0.0
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
@@ -15,9 +15,9 @@ repos:
       - id: debug-statements
       - id: detect-private-key
 
-  # Markdown linting
+  # Markdown linting.
   - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.38.0
+    rev: v0.49.1
     hooks:
       - id: markdownlint
         args: [--config, .markdownlint.json]
@@ -28,9 +28,16 @@ repos:
             \.devcontainer/.*
           )$
 
-  # Python code quality
+  # Python code quality. Pinned to match backend/requirements.txt's own
+  # black==25.1.0 exactly, not just "close enough" - a real release
+  # (26.5.1 as of this check) exists, but bumping only this hook's rev
+  # without also bumping requirements.txt would split black into two
+  # different enforced versions, the same class of problem the isort/
+  # Flake8-vs-Ruff split was. requirements.txt's black already has an open
+  # Dependabot PR (25.1.0 to 25.11.0); bump this rev to match whatever
+  # version that PR lands at, together, not ahead of it.
   - repo: https://github.com/psf/black
-    rev: 24.10.0
+    rev: 25.1.0
     hooks:
       - id: black
         language_version: python3
@@ -44,34 +51,40 @@ repos:
             \.pytest_cache/.*
           )$
 
-  # - repo: https://github.com/pycqa/isort
-  #   rev: 5.13.2
-  #   hooks:
-  #     - id: isort
-  #       args: [--profile=black, --line-length=88]
-  #       exclude: |
-  #         (?x)^(
-  #           \.venv/.*|
-  #           venv/.*|
-  #           backend/venv/.*|
-  #           __pycache__/.*|
-  #           \.pytest_cache/.*
-  #         )$
+  # Ruff replaces isort + flake8 - not just here, everywhere: CI's
+  # lint-backend job and scripts/quality-check.sh both run `ruff check`
+  # too now, instead of installing and running isort/flake8 separately.
+  # Config lives in backend/pyproject.toml ([tool.ruff]) - re-triaged
+  # against `ruff check . --select=ALL` and now covers 24 rule categories
+  # (not just E/F/I), each checked against real hits in this codebase
+  # before being enabled - see the comment on [tool.ruff.lint] there for
+  # the full reasoning. Verified this passes clean on the current codebase
+  # before enabling.
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.16.6
+    hooks:
+      - id: ruff
+        args: [--fix]
+        files: ^backend/
+        exclude: ^backend/tests/examples/
 
-  # - repo: https://github.com/pycqa/flake8
-  #   rev: 7.1.1
-  #   hooks:
-  #     - id: flake8
-  #       args: [--max-line-length=88, --extend-ignore=E203,W503,E501,E402,E722,F821,F841]
-  #       exclude: |
-  #         (?x)^(
-  #           \.venv/.*|
-  #           venv/.*|
-  #           backend/venv/.*|
-  #           __pycache__/.*|
-  #           \.pytest_cache/.*|
-  #           backend/tests/examples/.*
-  #         )$
+  # Type checking. A local hook (not the mirror-mypy repo) because this
+  # codebase's types depend on the real installed packages - SQLAlchemy
+  # 2.0's Mapped[] stubs, FastAPI's Request/Response types, Pydantic
+  # models - and the mirror's isolated hook environment would need every
+  # one of those duplicated into additional_dependencies, drifting from
+  # backend/requirements.txt's actual pinned versions over time. Runs
+  # the backend venv's own mypy directly instead. Verified this passes
+  # clean on the current codebase (backend/pyproject.toml's [tool.mypy])
+  # before enabling.
+  - repo: local
+    hooks:
+      - id: mypy
+        name: mypy (backend)
+        entry: backend/.venv/bin/mypy --config-file=backend/pyproject.toml backend
+        language: system
+        files: ^backend/(?!tests/examples/).*\.py$
+        pass_filenames: false
 
   # JavaScript/Node.js quality (optional - can be enabled later)
   # - repo: https://github.com/pre-commit/mirrors-eslint
@@ -86,18 +99,31 @@ repos:
   #         - eslint-plugin-jsx-a11y@^6.8.0
   #       args: [--fix]
 
-  # Security checks (optional - can be enabled later)
-  # - repo: https://github.com/Yelp/detect-secrets
-  #   rev: v1.4.0
-  #   hooks:
-  #     - id: detect-secrets
-  #       args: [--baseline, .secrets.baseline]
-  #       exclude: |
-  #         (?x)^(
-  #           package-lock\.json$|
-  #           yarn\.lock$|
-  #           \.venv/.*|
-  #           venv/.*|
-  #           backend/venv/.*|
-  #           node_modules/.*
-  #         )$
+  # Security checks. Candidate matches were triaged by hand: excluded
+  # below by path where the file or tree is entirely fixture, demo, or
+  # teaching content (seed account passwords, e2e/security/performance
+  # test credentials, CI-only environment values, or markdown showing
+  # what a credential looks like in an example), or marked inline with
+  # `# pragma: allowlist secret` in backend/auth.py and backend/seed.py,
+  # since those are real application files where a future genuine
+  # secret should still get caught.
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.5.0
+    hooks:
+      - id: detect-secrets
+        args: [--baseline, .secrets.baseline]
+        exclude: |
+          (?x)^(
+            package-lock\.json$|
+            yarn\.lock$|
+            \.venv/.*|
+            venv/.*|
+            backend/venv/.*|
+            node_modules/.*|
+            \.github/workflows/.*|
+            backend/tests/.*|
+            frontend/src/tests/.*|
+            tests/.*|
+            learn/solutions/.*|
+            .*\.md$
+          )$

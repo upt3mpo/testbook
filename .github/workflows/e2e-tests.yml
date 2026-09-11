@@ -18,7 +18,7 @@ on:
 jobs:
   playwright:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
 
     services:
       postgres:
@@ -36,10 +36,10 @@ jobs:
           - 5432:5432
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: 24
           cache: "npm"
@@ -48,7 +48,7 @@ jobs:
             frontend/package-lock.json
 
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: "3.13"
           cache: "pip"
@@ -65,9 +65,24 @@ jobs:
 
       - name: Install E2E test dependencies
         working-directory: ./tests
-        run: |
-          npm ci
-          npx playwright install --with-deps
+        run: npm ci
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v6
+        id: playwright-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-browsers-${{ runner.os }}-${{ hashFiles('tests/package-lock.json') }}
+
+      - name: Install Playwright browsers
+        working-directory: ./tests
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps
+
+      - name: Install Playwright OS dependencies only
+        working-directory: ./tests
+        if: steps.playwright-cache.outputs.cache-hit == 'true'
+        run: npx playwright install-deps
 
       - name: Start backend server
         working-directory: ./backend
@@ -111,7 +126,7 @@ jobs:
 
       - name: Upload Playwright report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: playwright-report
           path: tests/playwright-report/
@@ -119,7 +134,7 @@ jobs:
 
       - name: Upload test videos
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: playwright-videos
           path: tests/test-results/
@@ -127,7 +142,7 @@ jobs:
 
   selenium-python:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
 
     services:
       postgres:
@@ -145,16 +160,16 @@ jobs:
           - 5432:5432
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: "3.13"
           cache: "pip"
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: 24
           cache: "npm"
@@ -170,11 +185,26 @@ jobs:
         working-directory: ./frontend
         run: npm ci
 
-      - name: Install Selenium dependencies
+      - name: Install Python E2E dependencies
         working-directory: ./tests/e2e-python
-        run: |
-          pip install -r requirements.txt
-          playwright install --with-deps chromium
+        run: pip install -r requirements.txt
+
+      - name: Cache Playwright browsers (Python)
+        uses: actions/cache@v6
+        id: playwright-cache-python
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-browsers-chromium-${{ runner.os }}-${{ hashFiles('tests/e2e-python/requirements.txt') }}
+
+      - name: Install Playwright chromium
+        working-directory: ./tests/e2e-python
+        if: steps.playwright-cache-python.outputs.cache-hit != 'true'
+        run: playwright install --with-deps chromium
+
+      - name: Install Playwright OS dependencies only
+        working-directory: ./tests/e2e-python
+        if: steps.playwright-cache-python.outputs.cache-hit == 'true'
+        run: playwright install-deps chromium
 
       - name: Start backend server
         working-directory: ./backend
@@ -214,7 +244,7 @@ jobs:
 
       - name: Upload screenshots
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: selenium-screenshots
           path: tests/e2e-python/screenshots/

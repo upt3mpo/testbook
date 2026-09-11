@@ -1,6 +1,6 @@
 # 🧪 Testbook Testing Guide
 
-This guide provides comprehensive examples and scenarios for testing Testbook with various automation frameworks.
+Worked examples for testing Testbook with pytest, Vitest, and Playwright.
 
 ## Table of Contents
 
@@ -46,7 +46,6 @@ pip install selenium
 ```
 
 - Works with all major languages
-
 - Huge community support
 - Extensive browser support
 
@@ -57,7 +56,6 @@ npm install cypress --save-dev
 ```
 
 - Real-time reloads
-
 - Time-travel debugging
 - Beautiful UI
 
@@ -99,7 +97,8 @@ Before each test suite, reset the database:
 # Easy way (recommended)
 ./reset-database.sh
 
-# Or use API
+# Or use API (requires the backend to be started with TESTING=true, or this
+# returns 403 - see docs/guides/PLAYWRIGHT_QUICKSTART.md)
 curl -X POST http://localhost:8000/api/dev/reset
 ```
 
@@ -108,8 +107,10 @@ Or use the dev API in your tests:
 ```javascript
 // JavaScript/Playwright
 await fetch('http://localhost:8000/api/dev/reset', { method: 'POST' });
+```
 
-// Python/Requests
+```python
+# Python/Requests
 import requests
 requests.post('http://localhost:8000/api/dev/reset')
 ```
@@ -136,7 +137,7 @@ requests.post('http://localhost:8000/api/dev/reset')
 
 ### Key Testing Features
 
-✅ **138+ data-testid attributes** - Every interactive element is easily selectable
+✅ **150+ data-testid attributes** - Every interactive element is easily selectable
 ✅ **File upload support** - Test drag-and-drop and file picker functionality
 ✅ **Toggle actions** - Reactions, reposts, follow/unfollow all toggleable
 ✅ **Edit functionality** - Posts and profiles are editable
@@ -162,6 +163,19 @@ pip install pytest pytest-asyncio httpx
 .venv\Scripts\activate
 pip install -r requirements.txt
 pip install pytest pytest-asyncio httpx
+```
+
+Set `TESTING=true` before running the examples below - login and
+registration are rate-limited (20/min and 15/min in production), and
+several of these examples call login more than once. `TESTING=true`
+raises those to 1000/min and 500/min, matching what CI does:
+
+```bash
+# Linux/Mac
+TESTING=true pytest
+
+# Windows (PowerShell)
+$env:TESTING='true'; pytest
 ```
 
 ### Unit Tests - Testing Models
@@ -290,7 +304,7 @@ def test_login_invalid_credentials():
     )
 
     assert response.status_code == 401
-    assert "Invalid credentials" in response.json()["detail"]
+    assert "Incorrect email or password" in response.json()["detail"]
 
 def test_get_current_user_authenticated():
     """Test getting current user with valid token"""
@@ -560,10 +574,10 @@ pytest
 pytest -v
 
 # Run specific test file
-pytest test_auth.py
+pytest tests/integration/test_api_auth.py
 
 # Run specific test function
-pytest test_auth.py::test_login_success
+pytest tests/integration/test_api_auth.py::TestLoginEndpoint::test_login_success
 
 # Run with coverage
 pytest --cov=. --cov-report=html
@@ -574,7 +588,7 @@ pytest -n auto
 
 ### Test Configuration
 
-Create a `pytest.ini` file in the backend directory:
+Testbook already ships a `backend/pytest.ini` (with more markers and coverage options than shown here). A minimal version looks like this:
 
 ```ini
 [pytest]
@@ -599,16 +613,18 @@ backend/
 ├── tests/
 │   ├── __init__.py
 │   ├── conftest.py          # Shared fixtures
-│   ├── test_models.py       # Unit tests for models
-│   ├── test_auth.py         # Integration tests for auth
+│   ├── factories.py         # Test data factories
 │   ├── unit/
-│   │   ├── test_auth.py     # Unit tests for auth
+│   │   ├── test_auth.py     # Unit tests for auth helpers
 │   │   └── test_models.py   # Unit tests for models
 │   ├── integration/
-│   │   ├── test_api_auth.py # Integration tests for auth
-│   │   ├── test_api_posts.py # Integration tests for posts
-│   │   ├── test_api_users.py # Integration tests for users
-│   │   └── test_database.py # Database tests
+│   │   ├── test_api_auth.py     # Integration tests for auth
+│   │   ├── test_api_posts.py    # Integration tests for posts
+│   │   ├── test_api_users.py    # Integration tests for users
+│   │   ├── test_api_feed.py     # Integration tests for the feed
+│   │   ├── test_api_dev.py      # Integration tests for dev endpoints
+│   │   ├── test_api_contract.py # Contract tests (currently skipped)
+│   │   └── test_database.py     # Database tests
 ```
 
 ## API Testing
@@ -620,14 +636,14 @@ backend/
 - Test specific scenarios you design
 - Validate business logic
 - Check exact expected behavior
-- **In Testbook:** 140+ tests in `backend/tests/integration/`
+- **In Testbook:** 130 tests in `backend/tests/integration/`
 
 **Contract Tests** (Automated from schema):
 
 - Automatically generate test cases from OpenAPI schema
 - Validate API matches documentation
 - Find edge cases and security vulnerabilities
-- **In Testbook:** See [Contract Testing Guide](CONTRACT_TESTING.md) for explanation (currently using experimental features)
+- **In Testbook:** See [Contract Testing Guide](CONTRACT_TESTING.md) for the full explanation (currently skipped pending a Schemathesis/OpenAPI 3.1.0 compatibility fix - see the guide for details)
 
 ### Authentication Flow
 
@@ -671,6 +687,19 @@ const me = await axios.get(`${BASE_URL}/auth/me`, {
 console.log(me.data);
 ```
 
+The scenarios below all call a `login()` helper to get a token. It's just
+the login call above wrapped in a function, so each scenario doesn't have
+to repeat it:
+
+```python
+def login(email, password):
+    response = requests.post(f"{BASE_URL}/auth/login", json={
+        "email": email,
+        "password": password
+    })
+    return response.json()["access_token"]
+```
+
 ### API Test Scenarios
 
 #### 1. User Registration
@@ -684,7 +713,7 @@ def test_user_registration():
         "password": "Test123!",
         "bio": "Testing account"
     })
-    assert response.status_code == 200
+    assert response.status_code == 201
     assert response.json()["email"] == "test@testbook.com"
 ```
 
@@ -701,7 +730,7 @@ def test_create_post():
         json={"content": "Test post content"},
         headers={"Authorization": f"Bearer {token}"}
     )
-    assert response.status_code == 200
+    assert response.status_code == 201
     assert "id" in response.json()
 ```
 
@@ -744,7 +773,7 @@ def test_upload_media():
         json={"content": "Check out my photo!", "image_url": image_url},
         headers={"Authorization": f"Bearer {token}"}
     )
-    assert post_response.status_code == 200
+    assert post_response.status_code == 201
 ```
 
 #### 5. Edit Post
@@ -783,7 +812,7 @@ def test_toggle_repost():
         json={"original_post_id": 1, "content": ""},
         headers={"Authorization": f"Bearer {token}"}
     )
-    assert repost_response.status_code == 200
+    assert repost_response.status_code == 201
 
     # Remove repost
     unrepost_response = requests.delete(
@@ -826,7 +855,7 @@ def test_get_followers_following():
 const { test, expect } = require("@playwright/test");
 
 test("user can login", async ({ page }) => {
-  await page.goto("http://localhost:8000");
+  await page.goto("http://localhost:3000");
 
   await page.fill(
     '[data-testid="login-email-input"]',
@@ -840,6 +869,20 @@ test("user can login", async ({ page }) => {
     "Sarah Johnson"
   );
 });
+```
+
+The examples below call a `loginAs()` helper to get past the login
+screen. It's the same fill/click/wait sequence as the Login Test above,
+wrapped in a function so each example doesn't have to repeat it:
+
+```javascript
+async function loginAs(page, email, password) {
+  await page.goto("http://localhost:3000");
+  await page.fill('[data-testid="login-email-input"]', email);
+  await page.fill('[data-testid="login-password-input"]', password);
+  await page.click('[data-testid="login-submit-button"]');
+  await page.waitForSelector('[data-testid="navbar"]');
+}
 ```
 
 #### Create Post Test
@@ -890,29 +933,38 @@ test("user can create post with uploaded image", async ({ page }) => {
 });
 ```
 
+Posts are identified by database ID (`post-7-menu-button`, not
+`post-first-menu-button`), and IDs depend on seed order and whatever
+earlier tests already created. Hardcoding an ID like `post-1` only
+works immediately after a fresh reset, and breaks the moment another
+test runs first. Locate the post by content or ownership instead -
+`[data-is-own-post="true"]` marks every post the logged-in user
+authored - then scope the suffix-matched testid selectors to it:
+
 #### Edit Post Test
 
 ```javascript
 test("user can edit their own post", async ({ page }) => {
   await loginAs(page, "sarah.johnson@testbook.com", "Sarah2024!");
+  await page.fill('[data-testid="create-post-textarea"]', "Original content");
+  await page.click('[data-testid="create-post-submit-button"]');
 
-  // Click 3-dot menu on first post
-  await page.click('[data-testid="post-1-menu-button"]');
+  const ownPost = page.locator('[data-is-own-post="true"]').first();
 
-  // Click edit
-  await page.click('[data-testid="post-1-edit-button"]');
+  // Click 3-dot menu, then edit
+  await ownPost.locator('[data-testid$="-menu-button"]').click();
+  await ownPost.locator('[data-testid$="-edit-button"]').click();
 
   // Verify edit form appears
-  await expect(page.locator('[data-testid="post-1-edit-form"]')).toBeVisible();
+  const editTextarea = ownPost.locator('[data-testid$="-edit-textarea"]');
+  await expect(editTextarea).toBeVisible();
 
-  // Edit content
-  await page.fill('[data-testid="post-1-edit-textarea"]', "Updated content");
-  await page.click('[data-testid="post-1-save-button"]');
+  // Edit content and save
+  await editTextarea.fill("Updated content");
+  await ownPost.locator('[data-testid$="-save-button"]').click();
 
-  // Verify updated
-  await expect(page.locator('[data-testid="post-1-content"]')).toContainText(
-    "Updated content"
-  );
+  // Verify updated. toContainText() retries until the save completes.
+  await expect(ownPost).toContainText("Updated content");
 });
 ```
 
@@ -921,26 +973,27 @@ test("user can edit their own post", async ({ page }) => {
 ```javascript
 test("user can toggle reactions", async ({ page }) => {
   await loginAs(page, "sarah.johnson@testbook.com", "Sarah2024!");
+  await page.fill('[data-testid="create-post-textarea"]', "React to this");
+  await page.click('[data-testid="create-post-submit-button"]');
+
+  const post = page
+    .locator('[data-testid-generic="post-item"]')
+    .filter({ hasText: "React to this" });
+  const reactButton = post.locator('[data-testid$="-react-button"]');
 
   // Hover over react button to show dropdown
-  await page.hover('[data-testid="post-1-react-button"]');
-
-  // Click like emoji
-  await page.click('[data-testid="post-1-reaction-like"]');
+  await reactButton.hover();
+  await post.locator('[data-testid$="-reaction-like"]').click();
 
   // Verify reaction is active
-  await expect(
-    page.locator('[data-testid="post-1-react-button"]')
-  ).toContainText("👍");
+  await expect(reactButton).toContainText("👍");
 
   // Click again to remove
-  await page.hover('[data-testid="post-1-react-button"]');
-  await page.click('[data-testid="post-1-reaction-like"]');
+  await reactButton.hover();
+  await post.locator('[data-testid$="-reaction-like"]').click();
 
   // Verify reaction removed
-  await expect(
-    page.locator('[data-testid="post-1-react-button"]')
-  ).toContainText("React");
+  await expect(reactButton).toContainText("React");
 });
 ```
 
@@ -997,12 +1050,11 @@ test("user can upload profile picture", async ({ page }) => {
     "path/to/avatar.jpg"
   );
 
-  // Wait for upload to complete
-  await page.waitForTimeout(1000);
-
-  // Verify success message
+  // Verify success message. toContainText() retries until the upload
+  // finishes and the message appears, so no separate wait is needed.
   await expect(page.locator('[data-testid="settings-success"]')).toContainText(
-    "updated successfully"
+    "updated successfully",
+    { timeout: 10000 }
   );
 
   // Go to profile
@@ -1025,7 +1077,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 def test_login():
     driver = webdriver.Chrome()
-    driver.get("http://localhost:8000")
+    driver.get("http://localhost:3000")
 
     # Login
     email_input = driver.find_element(By.CSS_SELECTOR, '[data-testid="login-email-input"]')
@@ -1050,6 +1102,21 @@ def test_login():
 ```
 
 ### Cypress Examples
+
+The second test below calls a `cy.login()` custom command. Custom
+commands are defined once in `cypress/support/commands.js`, not inline
+in the test file:
+
+```javascript
+// cypress/support/commands.js
+Cypress.Commands.add("login", (email, password) => {
+  cy.visit("/");
+  cy.get('[data-testid="login-email-input"]').type(email);
+  cy.get('[data-testid="login-password-input"]').type(password);
+  cy.get('[data-testid="login-submit-button"]').click();
+  cy.get('[data-testid="navbar"]').should("be.visible");
+});
+```
 
 ```javascript
 describe("Testbook Tests", () => {
@@ -1089,8 +1156,12 @@ describe("Testbook Tests", () => {
         cy.get('[data-testid$="-reaction-like"]').click();
       });
 
-    // Verify reaction
-    cy.get('[data-testid^="post-"]').first().should("contain", "like");
+    // Verify reaction - the button shows the reaction's emoji, not the
+    // word "like" (see Post.jsx's reactionEmojis map)
+    cy.get('[data-testid^="post-"]')
+      .first()
+      .find('[data-testid$="-react-button"]')
+      .should("contain", "👍");
   });
 });
 ```
@@ -1248,7 +1319,9 @@ def setup_test_scenario():
     sarah = next(u for u in users if u["username"] == "sarahjohnson")
 
     # Create specific test posts
-    requests.post(f"{BASE_URL}/dev/create-post", json={
+    # Note: /dev/create-post takes query params, not a JSON body
+    # (the route has no Pydantic request model)
+    requests.post(f"{BASE_URL}/dev/create-post", params={
         "user_id": sarah["id"],
         "content": "Specific test post for scenario",
         "image_url": "/static/images/test-image.jpg"
@@ -1265,16 +1338,16 @@ def teardown_tests():
 
 ## Tips & Best Practices
 
-1. **Reset data between tests**: Use `./reset-database.sh` or `/api/dev/reset` endpoint
-2. **Use data-testid attributes**: All elements have test IDs
-3. **Wait for network requests**: Posts, comments may have slight delays
-4. **Test with different users**: Verify permissions and visibility
-5. **Check both UI and API**: Ensure consistency
-6. **Test edge cases**: Empty feeds, blocked users, deleted content
-7. **Verify error messages**: Test invalid inputs
-8. **Test responsiveness**: Try different viewport sizes
-9. **Check accessibility**: Use screen reader testing
-10. **Monitor performance**: Check load times
+- **Reset data between tests**: Use `./reset-database.sh` or `/api/dev/reset` endpoint
+- **Use data-testid attributes**: All elements have test IDs
+- **Wait for network requests**: Posts, comments may have slight delays
+- **Test with different users**: Verify permissions and visibility
+- **Check both UI and API**: Ensure consistency
+- **Test edge cases**: Empty feeds, blocked users, deleted content
+- **Verify error messages**: Test invalid inputs
+- **Test responsiveness**: Try different viewport sizes
+- **Check accessibility**: Use screen reader testing
+- **Monitor performance**: Check load times
 
 ## Common Test Patterns
 
@@ -1321,12 +1394,12 @@ class TestbookAPI:
 
 ## Debugging Tips
 
-1. **Check API responses**: <http://localhost:8000/docs>
-2. **View browser console**: Look for errors
-3. **Check network tab**: Monitor API calls
-4. **Use verbose logging**: Enable in test framework
-5. **Take screenshots**: On test failures
-6. **Check database state**: Via dev endpoints
+- **Check API responses**: <http://localhost:8000/docs>
+- **View browser console**: Look for errors
+- **Check network tab**: Monitor API calls
+- **Use verbose logging**: Enable in test framework
+- **Take screenshots**: On test failures
+- **Check database state**: Via dev endpoints
 
 ---
 
@@ -1336,7 +1409,7 @@ class TestbookAPI:
 - **[TESTING_PATTERNS.md](../concepts/TESTING_PATTERNS.md)** - Testing dynamic content patterns
 - **[TESTING_CHEATSHEET.md](../reference/TESTING_CHEATSHEET.md)** - Quick reference guide
 - **[TESTING_FEATURES.md](../reference/TESTING_FEATURES.md)** - All testable features
-- **[README.md](../../README.md#quick-start-5-minutes)** - Get started quickly
+- **[README.md](../../README.md#quick-start)** - Get started quickly
 
 ---
 

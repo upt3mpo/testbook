@@ -34,53 +34,118 @@ Mutation testing is a technique for evaluating the quality of your test suite by
 - Provides better confidence in test suite
 - Helps improve test design
 
-### Example: Mutation Testing in Python
+### A Worked Example: Mutating Testbook's Own Auth Code
 
-**Original Code:**
+The process above is the idea in outline. Here's what it looks like against
+a real file in this repo, with real output, not a constructed scenario.
 
-```python
-def calculate_discount(price, discount_rate):
-    if price > 0 and discount_rate > 0:
-        return price * discount_rate
-    return 0
+**The command:**
+
+```bash
+cd backend
+pip install "mutmut<3"  # pinned - mutmut 3.x has a different CLI/config
+                         # interface (setup.cfg-based source_paths instead
+                         # of --paths-to-mutate); 2.x is what this example
+                         # was run against
+mutmut run --paths-to-mutate=auth.py \
+  --runner="python -m pytest tests/unit/test_auth.py -x -q" \
+  --test-time-multiplier=2.0
+mutmut results
+mutmut show <id>  # for any specific mutant
 ```
 
-**Test:**
+The `--runner` points at `tests/unit/test_auth.py` specifically, not the
+whole backend suite - mutation testing reruns the test command once per
+mutant, so scoping to a fast, self-contained file (no database, no HTTP
+client) keeps a 47-mutant run down to about a minute instead of tying it
+to the full suite's ~50-second runtime per mutant.
 
-```python
-def test_calculate_discount():
-    result = calculate_discount(100, 0.1)
-    assert result == 10
+**Real output, first run:** 47 mutants generated, 35 survived, 12 killed.
+Every one of the 35 survivors was inside `get_current_user` or
+`get_optional_user` - both are FastAPI dependencies that need a request's
+credentials and a database session to run, and `tests/unit/test_auth.py`
+never called them directly. They're covered, but only indirectly, through
+`tests/integration/test_api_auth.py` hitting real endpoints - coverage
+that's real but invisible to a mutation run scoped to the unit suite for
+speed.
+
+**One real surviving mutant (id 40):**
+
+```diff
+     user = db.query(models.User).filter(models.User.email == email).first()
+-    if user is None:
++    if user is not None:
+         raise credentials_exception
+
+     return user
 ```
 
-**Mutation 1: Change `>` to `>=`**
+This is `mutmut show 40`'s actual diff, not a constructed example. mutmut
+flipped `is None` to `is not None` - and every test in the unit suite still
+passed, because nothing in that file called `get_current_user` at all.
+
+**What this mutant means:** if this were the real code, a request with a
+valid token for a user who exists would be *rejected* (the found-user
+branch now raises), and a token for a deleted or nonexistent user would
+be silently *accepted* as authenticated (the not-found branch now returns
+`user`, which is `None`, instead of raising). That's an inverted
+authentication check landing in production undetected by the unit suite -
+exactly the class of bug mutation testing exists to surface, and exactly
+the kind that a coverage percentage alone would never reveal, since these
+lines were "covered" by the integration suite the whole time.
+
+**The test written to kill it**, added to `tests/unit/test_auth.py`:
 
 ```python
-def calculate_discount(price, discount_rate):
-    if price >= 0 and discount_rate > 0:  # Changed > to >=
-        return price * discount_rate
-    return 0
+class TestGetCurrentUser:
+    def test_returns_the_user_when_one_is_found(self):
+        email = "test@example.com"
+        token = create_access_token(data={"sub": email})
+        credentials = HTTPAuthorizationCredentials(scheme="Bearer", credentials=token)
+
+        found_user = MagicMock()
+        mock_db = MagicMock()
+        mock_db.query.return_value.filter.return_value.first.return_value = found_user
+
+        result = get_current_user(credentials=credentials, db=mock_db)
+
+        assert result is found_user
+
+    def test_raises_401_when_no_user_matches_the_token(self):
+        token = create_access_token(data={"sub": "nonexistent@example.com"})
+        credentials = HTTPAuthorizationCredentials(scheme="Bearer", credentials=token)
+
+        mock_db = MagicMock()
+        mock_db.query.return_value.filter.return_value.first.return_value = None
+
+        with pytest.raises(HTTPException) as exc_info:
+            get_current_user(credentials=credentials, db=mock_db)
+
+        assert exc_info.value.status_code == 401
 ```
 
-**Result:** Test still passes, but behavior changed! Mutation survived.
+No FastAPI app, no HTTP client, no real database - just the function
+called directly with a mocked `Session` and a token built by the same
+`create_access_token` the app itself uses. That's what makes it a unit
+test rather than a slower integration test re-run.
 
-**Better Test:**
+**Real output, second run**, after adding those two tests: 47 mutants, 27
+survived (down from 35), 20 killed (up from 12). Mutant 40 is no longer
+in the survivors list - both new tests fail against it (the first because
+it would raise where it should return; the second because it would
+return `None` where it should raise), so either one alone would have
+killed it.
 
-```python
-def test_calculate_discount():
-    result = calculate_discount(100, 0.1)
-    assert result == 10
-
-def test_calculate_discount_zero_price():
-    result = calculate_discount(0, 0.1)
-    assert result == 0
-
-def test_calculate_discount_negative_rate():
-    result = calculate_discount(100, -0.1)
-    assert result == 0
-```
-
-**Result:** All mutations are killed. Test quality is high.
+**What's still unresolved:** the other 27 survivors are still inside
+`get_current_user`/`get_optional_user` - things like mutating the string
+`"Could not validate credentials"` or the `"sub"` dict key, which the
+integration suite's status-code assertions don't distinguish from a
+correctly-worded 401. Closing that gap fully would mean either writing
+several more targeted unit tests like the two above, or accepting that
+some of it is adequately covered by integration tests and not worth
+duplicating at the unit level - a real trade-off, not laziness, and
+exactly the kind of judgment call mutation testing is for surfacing in
+the first place rather than resolving automatically.
 
 ### Tools for Mutation Testing
 
@@ -385,76 +450,7 @@ def chaos_test_microservice():
 
 ## Contract Testing
 
-### What is Contract Testing?
-
-Contract testing verifies that services can communicate correctly by checking the contracts between them.
-
-**Types of Contracts:**
-
-- **API Contracts:** Request/response formats
-- **Message Contracts:** Event schemas
-- **Database Contracts:** Data formats
-
-### Why Use Contract Testing?
-
-**Benefits:**
-
-- Prevents integration failures
-- Enables independent deployment
-- Reduces coupling between services
-- Faster feedback
-
-**Example: API Contract Testing**
-
-```python
-from pact import Consumer, Provider
-
-def test_user_service_contract():
-    # Define the contract
-    pact = Consumer('UserService').has_pact_with(Provider('UserAPI'))
-
-    # Define expected interaction
-    (pact
-     .given('user exists')
-     .upon_receiving('a request for user')
-     .with_request('GET', '/users/123')
-     .will_respond_with(200, body={
-         'id': 123,
-         'name': 'John Doe',
-         'email': 'john@example.com'
-     }))
-
-    # Test the contract
-    with pact:
-        response = requests.get('http://localhost:8080/users/123')
-        assert response.status_code == 200
-        assert response.json()['id'] == 123
-```
-
-### Tools for Contract Testing
-
-**Popular Tools:**
-
-- `Pact` - Most popular
-- `Spring Cloud Contract` - Java/Spring
-- `Pacto` - Ruby
-- `Pact-JS` - JavaScript
-
-### When to Use Contract Testing
-
-**Good Use Cases:**
-
-- Microservices
-- API-first development
-- Service-oriented architecture
-- Independent deployment
-
-**Not Ideal For:**
-
-- Monolithic applications
-- Tightly coupled services
-- Simple applications
-- Prototype projects
+Contract testing verifies that services can communicate correctly by checking the contracts between them (a consumer's expectations against a provider's actual API), commonly with tools like Pact or, for property-based contract checking against an OpenAPI spec, Schemathesis. See [Contract Testing Guide](../guides/CONTRACT_TESTING.md) for the full explanation, a worked Schemathesis example against this repo's own API, and a comparison against integration testing.
 
 ## Visual Testing
 
@@ -685,7 +681,6 @@ Remember: advanced testing is not about using every technique, but about using t
 
 ## Further Reading
 
-- [Industry Practices](../industry/INDUSTRY_PRACTICES.md) - How companies use advanced techniques
-- [Case Studies](../industry/CASE_STUDIES.md) - Real-world examples of advanced testing
+- [Case Studies](../industry/CASE_STUDIES.md) - Real incidents and what's genuinely documented about industry practice
 - [Tool Comparison](../industry/TOOL_COMPARISON.md) - Tools for advanced testing
 - [Testing Philosophy](../concepts/TESTING_PHILOSOPHY.md) - The mindset behind advanced testing

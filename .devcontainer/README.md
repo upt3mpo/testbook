@@ -63,7 +63,7 @@ pytest -v
 
 The following ports are automatically forwarded:
 - **8000**: Backend API (FastAPI)
-- **5173**: Frontend Dev Server (Vite)
+- **3000**: Frontend Dev Server (Vite)
 - **5432**: PostgreSQL (for future labs)
 
 VS Code will notify you when services are running on these ports.
