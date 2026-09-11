@@ -22,6 +22,20 @@ jobs:
         uses: actions/setup-python@v7
         with:
           python-version: "3.13"
+          cache: "pip"
+
+      - name: Set up backend virtual environment
+        # The local mypy hook in .pre-commit-config.yaml runs
+        # backend/.venv/bin/mypy directly (not the mirror-mypy repo, since
+        # this codebase's type-checking depends on the real installed
+        # packages - see the comment on that hook). That path only exists
+        # if this venv is created first; a developer's own machine already
+        # has it from normal setup, but a fresh CI checkout doesn't.
+        working-directory: ./backend
+        run: |
+          python -m venv .venv
+          .venv/bin/pip install --upgrade pip
+          .venv/bin/pip install -r requirements.txt
 
       - name: Run pre-commit
         uses: pre-commit/action@v3.0.1
