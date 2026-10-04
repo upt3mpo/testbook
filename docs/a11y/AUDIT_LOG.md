@@ -2,8 +2,11 @@
 
 **Target standard:** WCAG 2.2 Level AA
 **Audit date:** 2026-10-04
-**Status:** All 13 defects fixed and guarded by tests (2026-10-04). Phase 2 manual
+**Status:** All 14 defects fixed and guarded by tests (2026-10-04). Phase 2 manual
 scripts cover what automation cannot (see "Needs manual verification").
+
+See [WORKED_EXAMPLES.md](WORKED_EXAMPLES.md) for the most instructive findings written up as case
+studies.
 
 ## Method
 
@@ -22,7 +25,7 @@ seed data from `/api/dev/reset`, signed in as `sarah.johnson@testbook.com`):
 
 | Result | Count |
 | --- | --- |
-| Defects found | 13 (11 from the scans, 2 found while fixing) |
+| Defects found | 14 (11 from the scans, 3 found while fixing) |
 | Needs a human (manual script) | 3 |
 | Checked and passing | 7 |
 
@@ -32,7 +35,7 @@ reflow, titles, announcements) are things axe can see.
 
 ## Defects
 
-All 13 are fixed, each with a guarding test. "Guarded by" names the file; every
+All 14 are fixed, each with a guarding test. "Guarded by" names the file; every
 guard was confirmed to fail against the pre-fix code (22 of 26 new component tests
 and 21 browser tests fail without the fixes; the remainder cover new components).
 
@@ -51,6 +54,7 @@ and 21 browser tests fail without the fixes; the remainder cover new components)
 | A11Y-011 | Low | 2.4.7, 1.4.11 | `.input:focus`, `.textarea:focus` | `outline: none`, leaving a 1 px border-colour change (#e0e0e0 -> #1264d0). Currently passes on contrast, but it is fragile and inconsistent with buttons, which keep the default ring. Use `:focus-visible` outline. | Yes: Global `:focus-visible` 3px outline; removed `outline: none` from inputs | accessibility-behavior.spec.js (A11Y-011) |
 | A11Y-012 | High | 2.4.7, 2.1.1 | Reaction picker (every post) | The closed picker was hidden with `opacity: 0; pointer-events: none`, so its 6 emoji buttons stayed in the Tab order while invisible: 6 invisible Tab stops per post. axe cannot see this. Found while reading `Post.css`, not by a scan. | Yes: `visibility: hidden` when closed | a11y-regressions.test.jsx (A11Y-012); accessibility-behavior.spec.js (A11Y-012) |
 | A11Y-013 | Med | 4.1.3 | Whole app | No live region anywhere, so reactions, reposts, comments, deletions and client-side page changes produced no announcement. | Yes: `LiveRegion` + `announce()`, route announcer | a11y-regressions.test.jsx (A11Y-013); accessibility-behavior.spec.js (A11Y-013) |
+| A11Y-014 | Med | 4.1.2, 2.1.1 | Reaction picker | Hover and click both wrote the same React state, so a mouse click opened then immediately re-closed the picker while CSS `:hover` kept it visible: the button reported `aria-expanded="false"` while the picker was on screen. A resting pointer could also close a picker a keyboard user had opened. Found when a keyboard test behaved inconsistently. | Yes: hover is CSS-only, state is written only by click/keyboard, plus click-outside | a11y-regressions.test.jsx (A11Y-014); accessibility-behavior.spec.js (A11Y-014) |
 
 ## Needs manual verification
 

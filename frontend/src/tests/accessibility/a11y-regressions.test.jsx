@@ -196,8 +196,6 @@ describe('A11Y-006: icon-only and disclosure controls have names and state', () 
     const { rerender } = renderPost();
     const react = screen.getByRole('button', { name: 'React' });
 
-    // Keyboard path: a mouse click also fires hover first, which opens the picker
-    // before the click toggles it, so only the keyboard path tests the toggle itself.
     expect(react).toHaveAttribute('aria-expanded', 'false');
     react.focus();
     await user.keyboard('{Enter}');
@@ -303,6 +301,45 @@ describe('A11Y-012: a closed reaction picker is not in the tab order', () => {
     screen.getByRole('button', { name: 'React' }).focus();
     await user.keyboard('{Enter}');
     expect(screen.getByRole('button', { name: 'Like' })).toBeInTheDocument();
+  });
+});
+
+describe('A11Y-014: hover and click do not fight over the reaction picker', () => {
+  it('a mouse click leaves the picker open and aria-expanded true', async () => {
+    const user = userEvent.setup();
+    renderPost();
+    const react = screen.getByRole('button', { name: 'React' });
+
+    // user.click() hovers first, then clicks - exactly what a real mouse does.
+    // Before the fix, hover opened the picker and the click toggled it shut again.
+    await user.click(react);
+
+    expect(react).toHaveAttribute('aria-expanded', 'true');
+    expect(screen.getByRole('button', { name: 'Like' })).toBeInTheDocument();
+  });
+
+  it('moving the pointer away does not close a picker opened by keyboard', async () => {
+    const user = userEvent.setup();
+    renderPost();
+    const react = screen.getByRole('button', { name: 'React' });
+
+    react.focus();
+    await user.keyboard('{Enter}');
+    await user.hover(screen.getByRole('button', { name: 'Like' }));
+    await user.unhover(screen.getByRole('button', { name: 'Like' }));
+
+    expect(react).toHaveAttribute('aria-expanded', 'true');
+  });
+
+  it('clicking elsewhere closes the picker', async () => {
+    const user = userEvent.setup();
+    renderPost();
+    const react = screen.getByRole('button', { name: 'React' });
+
+    await user.click(react);
+    await user.click(document.body);
+
+    expect(react).toHaveAttribute('aria-expanded', 'false');
   });
 });
 

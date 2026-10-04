@@ -16,6 +16,7 @@ function Post({ post, onDelete, onUpdate, detailed = false }) {
   const [showReactions, setShowReactions] = useState(false);
   const [imageOrientation, setImageOrientation] = useState('square');
   const dropdownRef = useRef(null);
+  const reactionsRef = useRef(null);
   const menuButtonRef = useRef(null);
   const reactButtonRef = useRef(null);
   const editTextareaRef = useRef(null);
@@ -85,6 +86,18 @@ function Post({ post, onDelete, onUpdate, detailed = false }) {
       };
     }
   }, [showDropdown]);
+
+  // Close the reaction picker when clicking outside it (it no longer closes on mouse-leave)
+  useEffect(() => {
+    if (!showReactions) return undefined;
+    const handleClickOutside = (event) => {
+      if (reactionsRef.current && !reactionsRef.current.contains(event.target)) {
+        setShowReactions(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [showReactions]);
 
   const emitUpdate = (updatedPost) => {
     if (onUpdate) {
@@ -379,14 +392,11 @@ function Post({ post, onDelete, onUpdate, detailed = false }) {
       </div>
 
       <div className="post-actions">
-        {/* Hover is a pointer-only enhancement. The keyboard path is the React button
-            (aria-expanded) inside, so this wrapper needs no key handler or role. */}
-        {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
-        <div
-          className="reactions-container"
-          onMouseEnter={() => setShowReactions(true)}
-          onMouseLeave={() => setShowReactions(false)}
-        >
+        {/* Hover-to-reveal is done in CSS (.reactions-container:hover), not React state.
+            React state (showReactions) is only ever set by an explicit click, tap or key
+            press, so aria-expanded always matches what the user chose, and a hover can
+            neither fight a click nor close a picker a keyboard user opened. */}
+        <div className="reactions-container" ref={reactionsRef}>
           <button
             ref={reactButtonRef}
             className="btn btn-secondary"

@@ -184,10 +184,6 @@ test.describe("Accessibility behaviour", () => {
     page,
   }) => {
     await loginAsSarah(page);
-    // The picker also opens on hover and closes on mouse-leave. Park the pointer
-    // off the content so a resting pointer can't close it mid-test; a real
-    // keyboard user has no pointer over the page.
-    await page.mouse.move(0, 0);
     // exact: true - "React" would otherwise also match "Your reaction: like. Change reaction"
     const react = page.getByRole("button", { name: "React", exact: true }).first();
     await react.focus();
@@ -204,6 +200,22 @@ test.describe("Accessibility behaviour", () => {
     await page.keyboard.press("Escape");
     await expect(react).toHaveAttribute("aria-expanded", "false");
     await expect(react).toBeFocused();
+  });
+
+  test("A11Y-014: a real mouse click opens the picker and aria-expanded agrees", async ({
+    page,
+  }) => {
+    await loginAsSarah(page);
+    const react = page.getByRole("button", { name: "React", exact: true }).first();
+    await react.click(); // Playwright hovers, then clicks, like a real pointer
+    await expect(react).toHaveAttribute("aria-expanded", "true");
+    await expect(page.getByRole("button", { name: "Like", exact: true }).first()).toBeVisible();
+
+    // Moving the pointer away must not close it; clicking elsewhere does.
+    await page.mouse.move(0, 0);
+    await expect(react).toHaveAttribute("aria-expanded", "true");
+    await page.mouse.click(5, 300);
+    await expect(react).toHaveAttribute("aria-expanded", "false");
   });
 
   test("2.4.11: the sticky navbar never fully covers the focused element", async ({
