@@ -1,145 +1,167 @@
 /**
- * Accessibility Tests with Playwright + axe-core
+ * Accessibility tests with Playwright + axe-core (WCAG 2.2 AA + best-practice).
  *
- * These tests use axe-playwright to perform comprehensive WCAG 2.1 accessibility checks
- * on key pages in the application.
+ * Three groups:
+ *   1. Every route in its default state, at desktop width.
+ *   2. Interaction states a default-state scan never reaches: error messages,
+ *      open menus, edit mode, open comment box. Several real defects only
+ *      appear once the state is open (the edit textarea had no label; the login
+ *      error failed contrast), so scanning only default pages misses them.
+ *   3. The same routes at a 320 px phone width, where the layout differs.
  *
- * The tag list includes 'best-practice' alongside the WCAG tags. Rules like
- * landmark-one-main, region, page-has-heading-one, and heading-order don't
- * map to a specific WCAG success criterion, so they're excluded if you only
- * ask for wcag2a/wcag2aa/wcag21a/wcag21aa - which is exactly why a real
- * missing-<main>-landmark and missing-<h1> bug on this app's Feed, Post
- * Detail, and Profile pages passed this suite for a while before a
- * pre-merge accessibility review caught it with an untagged axe.run().
- * Without 'best-practice', this suite would keep missing that whole class
- * of issue.
+ * axe is one layer. It cannot see focus management, tab order, announcements or
+ * reflow - those are in accessibility-behavior.spec.js. The tag list lives in
+ * fixtures/a11y.js and is shared; read the comment there before changing it.
  *
- * Run with: npx playwright test accessibility-axe.spec.js
+ * Run with: npm run test:a11y   (or: npx playwright test accessibility)
  */
 
-import AxeBuilder from '@axe-core/playwright';
-import { expect, test } from '@playwright/test';
-import { resetDatabase, TEST_USERS } from './fixtures/test-helpers.js';
-import { AuthPage } from './pages/AuthPage.js';
+import { test } from "@playwright/test";
+import { expectNoA11yViolations } from "./fixtures/a11y.js";
+import { resetDatabase, TEST_USERS } from "./fixtures/test-helpers.js";
+import { AuthPage } from "./pages/AuthPage.js";
 
-const BASE_URL = process.env.BASE_URL || 'http://localhost:3000';
+const PUBLIC_ROUTES = [
+  { name: "Login", path: "/login" },
+  { name: "Register", path: "/register" },
+];
 
-test.describe('Accessibility (axe-core)', () => {
+const username = TEST_USERS.sarah.username;
+const AUTHENTICATED_ROUTES = [
+  { name: "Feed", path: "/" },
+  { name: "Profile", path: `/profile/${username}` },
+  { name: "Followers", path: `/profile/${username}/followers` },
+  { name: "Following", path: `/profile/${username}/following` },
+  { name: "Settings", path: "/settings" },
+];
+
+async function loginAsSarah(page) {
+  const auth = new AuthPage(page);
+  await auth.gotoLogin();
+  await auth.login(TEST_USERS.sarah.email, TEST_USERS.sarah.password);
+  await auth.expectLoggedIn();
+  await page.getByTestId("post-1").waitFor().catch(() => {});
+}
+
+/** Open the first seeded post's detail page; returns its path. */
+async function openFirstPostDetail(page) {
+  const link = page.locator('a[href^="/post/"]').first();
+  const href = await link.getAttribute("href");
+  await page.goto(href);
+  await page.waitForLoadState("networkidle");
+  return href;
+}
+
+async function settle(page) {
+  await page.waitForLoadState("networkidle", { timeout: 5000 }).catch(() => {});
+}
+
+test.describe("Accessibility (axe-core) - routes", () => {
   test.beforeEach(async ({ page }) => {
-    // Reset database for clean state
     await resetDatabase(page);
   });
 
-  test('Home page should not have accessibility violations', async ({ page }) => {
-    await page.goto(BASE_URL);
-    await page.waitForLoadState('networkidle');
+  for (const route of PUBLIC_ROUTES) {
+    test(`${route.name} page`, async ({ page }, testInfo) => {
+      await page.goto(route.path);
+      await settle(page);
+      await expectNoA11yViolations(page, testInfo, { name: route.name });
+    });
+  }
 
-    const accessibilityScanResults = await new AxeBuilder({ page })
-      .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'best-practice'])
-      .analyze();
+  for (const route of AUTHENTICATED_ROUTES) {
+    test(`${route.name} page (authenticated)`, async ({ page }, testInfo) => {
+      await loginAsSarah(page);
+      await page.goto(route.path);
+      await settle(page);
+      await expectNoA11yViolations(page, testInfo, { name: route.name });
+    });
+  }
 
-    expect(accessibilityScanResults.violations).toEqual([]);
-  });
-
-  test('Register page should not have accessibility violations', async ({ page }) => {
-    await page.goto(`${BASE_URL}/register`);
-    await page.waitForLoadState('networkidle');
-
-    const accessibilityScanResults = await new AxeBuilder({ page })
-      .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'best-practice'])
-      .analyze();
-
-    expect(accessibilityScanResults.violations).toEqual([]);
-  });
-
-  test('Login page should not have accessibility violations', async ({ page }) => {
-    await page.goto(`${BASE_URL}/login`);
-    await page.waitForLoadState('networkidle');
-
-    const accessibilityScanResults = await new AxeBuilder({ page })
-      .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'best-practice'])
-      .analyze();
-
-    expect(accessibilityScanResults.violations).toEqual([]);
-  });
-
-  test('Feed page (authenticated) should not have accessibility violations', async ({
-    page,
-  }) => {
-    const auth = new AuthPage(page);
-    await auth.gotoLogin();
-    await auth.login(TEST_USERS.sarah.email, TEST_USERS.sarah.password);
-    await auth.expectLoggedIn();
-
-    // Wait for feed to fully load
-    await page.waitForLoadState('networkidle', { timeout: 5000 }).catch(() => {});
-
-    const accessibilityScanResults = await new AxeBuilder({ page })
-      .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'best-practice'])
-      .analyze();
-
-    expect(accessibilityScanResults.violations).toEqual([]);
-  });
-
-  test('Profile page should not have accessibility violations', async ({ page }) => {
-    const auth = new AuthPage(page);
-    await auth.gotoLogin();
-    await auth.login(TEST_USERS.sarah.email, TEST_USERS.sarah.password);
-    await auth.expectLoggedIn();
-
-    // Go to profile
-    await auth.navbarProfileLink.click();
-    await page.waitForLoadState('networkidle', { timeout: 5000 }).catch(() => {});
-
-    const accessibilityScanResults = await new AxeBuilder({ page })
-      .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'best-practice'])
-      .analyze();
-
-    expect(accessibilityScanResults.violations).toEqual([]);
+  test("Post detail page (authenticated)", async ({ page }, testInfo) => {
+    await loginAsSarah(page);
+    await openFirstPostDetail(page);
+    await expectNoA11yViolations(page, testInfo, { name: "Post detail" });
   });
 });
 
-/**
- * Why These Tests Matter
- *
- * **Accessibility is a Legal and Ethical Requirement:**
- * - WCAG 2.1 AA is the standard for ADA compliance
- * - Many countries require accessible web applications by law
- * - 15% of the population has some form of disability
- * - Inaccessible apps exclude users and risk lawsuits
- *
- * **What These Tests Catch:**
- * - Missing alt text on images
- * - Insufficient color contrast
- * - Missing ARIA labels
- * - Keyboard navigation issues
- * - Form labels and error associations
- * - Semantic HTML structure problems
- *
- * **How Real QA Teams Use These:**
- * - Run on every PR to catch accessibility regressions
- * - Include in CI/CD pipeline (prevent deployment of inaccessible code)
- * - Generate reports for compliance documentation
- * - Test with real assistive technologies (screen readers)
- * - Perform manual keyboard-only navigation testing
- *
- * **Career/Interview Value:**
- * - Accessibility testing is a specialized, high-demand skill
- * - Shows awareness of inclusive design
- * - Demonstrates knowledge of WCAG standards
- * - Many companies require accessibility expertise
- * - Can lead to specialized QA roles (Accessibility QA Engineer)
- *
- * **Interview Questions You Can Answer:**
- * Q: "How do you test for accessibility?"
- * A: "I use automated tools like axe-core to catch common WCAG violations,
- *     then perform manual testing with screen readers and keyboard-only
- *     navigation. For Testbook, I wrote Playwright tests with axe-core
- *     integration that check every key page for WCAG 2.1 AA compliance."
- *
- * Q: "What's the difference between automated and manual accessibility testing?"
- * A: "Automated tools like axe-core can catch ~40% of accessibility issues
- *     (missing alt text, color contrast, ARIA). Manual testing catches the
- *     other 60%: keyboard navigation flow, screen reader output, focus management,
- *     and context-dependent issues. Both are necessary."
- */
+test.describe("Accessibility (axe-core) - interaction states", () => {
+  test.beforeEach(async ({ page }) => {
+    await resetDatabase(page);
+  });
+
+  test("Login with an error message showing", async ({ page }, testInfo) => {
+    await page.goto("/login");
+    await page.getByLabel("Email").fill("nobody@example.com");
+    await page.getByLabel("Password").fill("wrong-password");
+    await page.getByRole("button", { name: "Log In" }).click();
+    await page.getByRole("alert").waitFor();
+    // Catches the error text failing contrast (A11Y-004).
+    await expectNoA11yViolations(page, testInfo, { name: "Login error" });
+  });
+
+  test("Register with an error message showing", async ({ page }, testInfo) => {
+    await page.goto("/register");
+    await page.getByLabel("Email").fill(TEST_USERS.sarah.email); // already taken
+    await page.getByLabel(/^Username/).fill("someone");
+    await page.getByLabel("Display Name").fill("Someone");
+    await page.getByLabel("Password").fill("Password123!");
+    await page.getByRole("button", { name: "Sign Up" }).click();
+    await page.getByRole("alert").waitFor();
+    await expectNoA11yViolations(page, testInfo, { name: "Register error" });
+  });
+
+  test("Feed with a post menu open", async ({ page }, testInfo) => {
+    await loginAsSarah(page);
+    await page.getByRole("button", { name: "Post options" }).first().click();
+    await expectNoA11yViolations(page, testInfo, { name: "Post menu open" });
+  });
+
+  test("Feed with a post in edit mode", async ({ page }, testInfo) => {
+    await loginAsSarah(page);
+    await page.getByRole("button", { name: "Post options" }).first().click();
+    await page.getByRole("button", { name: /Edit/ }).click();
+    await page.getByRole("textbox", { name: "Edit post content" }).waitFor();
+    // Catches the unlabeled edit textarea (A11Y-002).
+    await expectNoA11yViolations(page, testInfo, { name: "Post edit mode" });
+  });
+
+  test("Feed with a comment box open", async ({ page }, testInfo) => {
+    await loginAsSarah(page);
+    await page.getByRole("button", { name: "Comment" }).first().click();
+    await page.getByRole("textbox", { name: "Write a comment" }).waitFor();
+    await expectNoA11yViolations(page, testInfo, { name: "Comment box open" });
+  });
+
+  test("Feed with a reaction picker open", async ({ page }, testInfo) => {
+    await loginAsSarah(page);
+    await page.getByRole("button", { name: "React" }).first().click();
+    await page.getByRole("button", { name: "Like" }).first().waitFor();
+    await expectNoA11yViolations(page, testInfo, { name: "Reaction picker open" });
+  });
+});
+
+test.describe("Accessibility (axe-core) - phone width (320px)", () => {
+  test.use({ viewport: { width: 320, height: 700 } });
+
+  test.beforeEach(async ({ page }) => {
+    await resetDatabase(page);
+  });
+
+  for (const route of PUBLIC_ROUTES) {
+    test(`${route.name} page`, async ({ page }, testInfo) => {
+      await page.goto(route.path);
+      await settle(page);
+      await expectNoA11yViolations(page, testInfo, { name: `${route.name} @320` });
+    });
+  }
+
+  for (const route of AUTHENTICATED_ROUTES) {
+    test(`${route.name} page (authenticated)`, async ({ page }, testInfo) => {
+      await loginAsSarah(page);
+      await page.goto(route.path);
+      await settle(page);
+      await expectNoA11yViolations(page, testInfo, { name: `${route.name} @320` });
+    });
+  }
+});

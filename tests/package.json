@@ -8,15 +8,15 @@
     "test:headed": "playwright test --project=chromium --headed",
     "test:debug": "playwright test --project=chromium --debug",
     "test:ui": "playwright test --project=chromium --ui",
-    "test:a11y": "playwright test --project=chromium accessibility-axe.spec.js",
+    "test:a11y": "playwright test --project=chromium accessibility",
     "test:all-browsers": "playwright test",
     "install-browsers": "playwright install chromium",
     "lighthouse": "lhci autorun"
   },
   "devDependencies": {
-    "@playwright/test": "^1.56.1",
-    "@axe-core/playwright": "^4.8.3",
-    "@lhci/cli": "^0.15.1"
+    "@axe-core/playwright": "^4.13.0",
+    "@lhci/cli": "^0.15.1",
+    "@playwright/test": "^1.56.1"
   },
   "engines": {
     "node": ">=24 <25"

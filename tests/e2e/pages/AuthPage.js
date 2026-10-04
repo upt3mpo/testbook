@@ -11,10 +11,11 @@ import { BasePage } from "./BasePage.js";
  * object covers both rather than splitting into two classes that would
  * mostly duplicate each other.
  *
- * The form inputs and buttons have no <label>, aria-label, or ARIA role
- * of their own in the markup, so getByTestId is the honest choice here
- * (not a raw CSS locator, just the semantic API's testid method) rather
- * than forcing getByRole/getByLabel where the app doesn't support them.
+ * The form inputs now have real (visually hidden) labels, so getByLabel works,
+ * and the accessibility specs use it. These locators stay on getByTestId so the
+ * functional tests keep working if label wording is ever tweaked for copy
+ * reasons; the accessibility specs are the ones that must find controls the way
+ * a user (or screen reader) does.
  */
 class AuthPage extends BasePage {
   constructor(page) {
