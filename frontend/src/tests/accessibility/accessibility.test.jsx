@@ -143,12 +143,12 @@ describe('Accessibility Tests', () => {
   });
 
   describe('ARIA Labels and Roles', () => {
-    it('Form inputs should be accessible via test IDs', () => {
-      const { getByTestId } = renderWithRouter(<LoginPage />);
+    it('Form inputs should be accessible by label', () => {
+      const { getByLabelText } = renderWithRouter(<LoginPage />);
 
-      // Verify all inputs are accessible (using test IDs since labels aren't present)
-      expect(getByTestId('login-email-input')).toBeInTheDocument();
-      expect(getByTestId('login-password-input')).toBeInTheDocument();
+      // Real labels (visually hidden), not just placeholders or test IDs
+      expect(getByLabelText('Email')).toBeInTheDocument();
+      expect(getByLabelText('Password')).toBeInTheDocument();
     });
 
     it('Buttons should have descriptive text', () => {

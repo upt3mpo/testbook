@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { postsAPI } from '../api';
+import Alert from './Alert';
 import './CreatePost.css';
 
 function CreatePost({ onPostCreated }) {
@@ -115,7 +116,11 @@ function CreatePost({ onPostCreated }) {
   return (
     <div className="create-post card" data-testid="create-post">
       <form onSubmit={handleSubmit}>
+        <label htmlFor="create-post-content" className="sr-only">
+          What&apos;s on your mind?
+        </label>
         <textarea
+          id="create-post-content"
           className="textarea"
           placeholder="What's on your mind?"
           value={content}
@@ -132,6 +137,8 @@ function CreatePost({ onPostCreated }) {
             onDragLeave={handleDragLeave}
             onDrop={handleDrop}
             onClick={() => fileInputRef.current?.click()}
+            // Pointer-only convenience: the "Add Media" button below is the keyboard path.
+            role="presentation"
             data-testid="create-post-drop-zone"
           >
             <div className="drop-zone-content">
@@ -176,7 +183,7 @@ function CreatePost({ onPostCreated }) {
           </div>
         )}
 
-        {error && <div className="error text-small">{error}</div>}
+        {error && <Alert className="text-small">{error}</Alert>}
 
         <div className="create-post-actions">
           <button

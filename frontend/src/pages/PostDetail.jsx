@@ -3,6 +3,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { postsAPI } from '../api';
 import Comment from '../components/Comment';
 import Post from '../components/Post';
+import Alert from '../components/Alert';
+import useDocumentTitle from '../hooks/useDocumentTitle';
 import './PostDetail.css';
 
 function PostDetail() {
@@ -11,6 +13,7 @@ function PostDetail() {
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  useDocumentTitle(post ? `Post by ${post.author_display_name}` : 'Post');
 
   const reactionEmojis = {
     like: '👍',
@@ -69,9 +72,7 @@ function PostDetail() {
   if (error || !post) {
     return (
       <div className="post-detail-container">
-        <div className="error" data-testid="post-detail-error">
-          {error || 'Post not found'}
-        </div>
+        <Alert data-testid="post-detail-error">{error || 'Post not found'}</Alert>
       </div>
     );
   }

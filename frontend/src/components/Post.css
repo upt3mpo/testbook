@@ -136,19 +136,24 @@
   flex-wrap: wrap;
   width: 200px;
   opacity: 0;
+  /* visibility (not just opacity) removes the hidden buttons from the tab order */
+  visibility: hidden;
   pointer-events: none;
   transform: translateY(5px);
   transition:
     opacity 0.15s ease,
-    transform 0.15s ease;
+    transform 0.15s ease,
+    visibility 0s linear 0.15s;
 }
 
 /* Show dropdown on hover (CSS) or when show class is present (React) */
 .reactions-container:hover .reactions-dropdown,
 .reactions-dropdown.show {
   opacity: 1;
+  visibility: visible;
   pointer-events: all;
   transform: translateY(0);
+  transition-delay: 0s;
 }
 
 .reaction-btn {

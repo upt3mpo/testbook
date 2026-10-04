@@ -3,10 +3,13 @@ import { Link, useParams } from 'react-router-dom';
 import { usersAPI } from '../api';
 import { useAuth } from '../AuthContext';
 import { broadcastBlockStatusChange } from '../utils/relationshipEvents';
+import Alert from '../components/Alert';
+import useDocumentTitle from '../hooks/useDocumentTitle';
 import './Followers.css';
 
 function Followers() {
   const { username } = useParams();
+  useDocumentTitle(`Followers of @${username}`);
   const { user } = useAuth();
   const [followers, setFollowers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -73,11 +76,7 @@ function Followers() {
         <p className="text-secondary">{followers.length} followers</p>
       </div>
 
-      {error && (
-        <div className="error" data-testid="followers-error">
-          {error}
-        </div>
-      )}
+      {error && <Alert data-testid="followers-error">{error}</Alert>}
 
       {followers.length === 0 ? (
         <div className="card" data-testid="no-followers">

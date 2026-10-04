@@ -1,5 +1,5 @@
-import React, { Suspense, useEffect } from 'react';
-import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import React, { Suspense, useEffect, useRef } from 'react';
+import { Navigate, Route, BrowserRouter as Router, Routes, useLocation } from 'react-router-dom';
 import { AuthProvider, useAuth } from './AuthContext';
 
 // Pages
@@ -13,6 +13,7 @@ import Register from './pages/Register';
 import Settings from './pages/Settings';
 
 // Components
+import LiveRegion, { announce } from './components/LiveRegion';
 import Navbar from './components/Navbar';
 
 // Loading component
@@ -45,12 +46,44 @@ function PrivateRoute({ children }) {
 }
 
 function PrivateLayout({ children }) {
+  // A plain #hash link would work, but moving focus too means the next Tab
+  // starts inside the content instead of back in the navbar.
+  const skipToContent = (event) => {
+    event.preventDefault();
+    document.getElementById('main-content')?.focus();
+  };
+
   return (
     <>
+      <a href="#main-content" className="skip-link" onClick={skipToContent}>
+        Skip to main content
+      </a>
       <Navbar />
-      <main>{children}</main>
+      <main id="main-content" tabIndex={-1}>
+        {children}
+      </main>
     </>
   );
+}
+
+// A single-page app never reloads, so screen readers get no "new page" cue.
+// Announce the new page title after each client-side navigation (skipping the
+// initial load, which the browser already announces).
+function RouteAnnouncer() {
+  const { pathname } = useLocation();
+  const isFirstRender = useRef(true);
+
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    // Pages set document.title in their own effects; wait a tick so we read the new one.
+    const timer = setTimeout(() => announce(document.title), 100);
+    return () => clearTimeout(timer);
+  }, [pathname]);
+
+  return null;
 }
 
 function AppContent() {
@@ -66,7 +99,9 @@ function AppContent() {
 
   return (
     <div className="app" data-testid="app">
+      <LiveRegion />
       <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+        <RouteAnnouncer />
         <Suspense fallback={<LoadingSpinner />}>
           <Routes>
             {/* Public routes */}

@@ -2,9 +2,12 @@ import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../AuthContext';
 import { usersAPI } from '../api';
+import Alert from '../components/Alert';
+import useDocumentTitle from '../hooks/useDocumentTitle';
 import './Settings.css';
 
 function Settings() {
+  useDocumentTitle('Settings');
   const { user, updateUser, logout } = useAuth();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -163,15 +166,11 @@ function Settings() {
         <div className="settings-card card">
           <h2 className="settings-section-title">Profile Picture</h2>
 
-          {error && (
-            <div className="error" data-testid="settings-error">
-              {error}
-            </div>
-          )}
+          {error && <Alert data-testid="settings-error">{error}</Alert>}
           {success && (
-            <div className="success" data-testid="settings-success">
+            <Alert type="success" data-testid="settings-success">
               {success}
-            </div>
+            </Alert>
           )}
 
           <div className="avatar-section">

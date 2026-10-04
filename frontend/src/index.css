@@ -15,6 +15,7 @@
   --accent-color: #1264d0; /* WCAG AA compliant: 4.7:1 contrast with white (was #1877f2: 4.23:1) */
   --accent-hover: #0d5ab8; /* Darkened hover state for consistency */
   --danger-color: #d32f2f;
+  --error-text: #b71c1c; /* 6.3:1 on the tinted .error background (danger-color alone is ~4:1) */
   --danger-hover: #b71c1c;
   --success-color: #4caf50;
   --card-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
@@ -27,11 +28,17 @@
   --bg-hover: #3a3b3c;
   --text-primary: #e4e6eb;
   --text-secondary: #b0b3b8;
+  --error-text: #ff8a80;
   --border-color: #3e4042;
   --accent-color: #2d88ff;
   --accent-hover: #4e9eff;
   --card-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
   --modal-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+html {
+  /* Keep focused elements clear of the sticky navbar (WCAG 2.4.11) */
+  scroll-padding-top: 96px;
 }
 
 body {
@@ -88,6 +95,11 @@ body {
   align-items: center;
   justify-content: center;
   gap: 6px;
+  text-decoration: none;
+}
+
+a.btn:hover {
+  text-decoration: none;
 }
 
 .btn:disabled {
@@ -135,7 +147,6 @@ body {
 }
 
 .input:focus {
-  outline: none;
   border-color: var(--accent-color);
 }
 
@@ -153,7 +164,6 @@ body {
 }
 
 .textarea:focus {
-  outline: none;
   border-color: var(--accent-color);
 }
 
@@ -248,7 +258,7 @@ a:hover {
 
 /* Error message */
 .error {
-  color: var(--danger-color);
+  color: var(--error-text);
   padding: 12px;
   background-color: rgba(211, 47, 47, 0.1);
   border-radius: 6px;
@@ -278,4 +288,36 @@ a:hover {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
+}
+
+/* Visible keyboard focus on every interactive element (WCAG 2.4.7, 1.4.11, 2.4.13-ready) */
+:focus-visible {
+  outline: 3px solid var(--accent-color);
+  outline-offset: 2px;
+}
+
+.btn-primary:focus-visible {
+  outline-color: var(--text-primary);
+}
+
+/* Skip link: hidden until focused (WCAG 2.4.1) */
+.skip-link {
+  position: absolute;
+  left: 8px;
+  top: -100px;
+  z-index: 1000;
+  padding: 10px 16px;
+  border-radius: 6px;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-weight: 600;
+  box-shadow: var(--modal-shadow);
+}
+
+.skip-link:focus {
+  top: 8px;
+}
+
+main:focus {
+  outline: none;
 }

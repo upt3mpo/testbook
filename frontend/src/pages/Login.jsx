@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import Alert from '../components/Alert';
 import { useAuth } from '../AuthContext';
+import useDocumentTitle from '../hooks/useDocumentTitle';
 import './Auth.css';
 
 function Login() {
+  useDocumentTitle('Log In');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -37,14 +40,19 @@ function Login() {
         <p className="auth-subtitle">Connect with friends and practice testing!</p>
 
         {error && (
-          <div className="error" data-testid="login-error">
+          <Alert focusOnMount data-testid="login-error">
             {error}
-          </div>
+          </Alert>
         )}
 
         <form onSubmit={handleSubmit} className="auth-form" data-testid="login-form">
+          <label htmlFor="login-email" className="sr-only">
+            Email
+          </label>
           <input
+            id="login-email"
             type="email"
+            autoComplete="username"
             className="input"
             placeholder="Email"
             value={email}
@@ -52,8 +60,13 @@ function Login() {
             required
             data-testid="login-email-input"
           />
+          <label htmlFor="login-password" className="sr-only">
+            Password
+          </label>
           <input
+            id="login-password"
             type="password"
+            autoComplete="current-password"
             className="input"
             placeholder="Password"
             value={password}
@@ -73,10 +86,8 @@ function Login() {
 
         <div className="auth-divider"></div>
 
-        <Link to="/register">
-          <button className="btn btn-secondary" data-testid="create-account-button">
-            Create New Account
-          </button>
+        <Link to="/register" className="btn btn-secondary" data-testid="create-account-button">
+          Create New Account
         </Link>
 
         <div className="auth-hint">

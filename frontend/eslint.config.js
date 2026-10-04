@@ -42,9 +42,11 @@ export default [
       ...reactHooks.configs.recommended.rules,
       'react/react-in-jsx-scope': 'off',
       'react/prop-types': 'off',
-      // Align with previous behavior: treat a11y as warnings
-      'jsx-a11y/click-events-have-key-events': 'warn',
-      'jsx-a11y/no-static-element-interactions': 'warn',
+      // Mouse-only interaction and non-keyboard click handlers are real WCAG 2.1.1
+      // failures, so they fail the lint instead of warning.
+      'jsx-a11y/click-events-have-key-events': 'error',
+      'jsx-a11y/no-static-element-interactions': 'error',
+      // Stays a warning: user-uploaded videos have no captions we could supply.
       'jsx-a11y/media-has-caption': 'warn',
       // General
       'no-unused-vars': ['warn', { args: 'none', ignoreRestSiblings: true }],

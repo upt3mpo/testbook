@@ -90,22 +90,27 @@ describe('Post Component', () => {
 
   it('shows the menu button on your own post', () => {
     renderPost(basePost, { currentUser: sarah });
-    expect(screen.getByRole('button', { name: '⋯' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Post options' })).toBeInTheDocument();
   });
 
   it("does not show the menu button on another user's post", () => {
     renderPost(basePost, { currentUser: { id: 999, username: 'mikechen' } });
-    expect(screen.queryByRole('button', { name: '⋯' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Post options' })).not.toBeInTheDocument();
   });
 
   it('does not show a "View" link when rendered in detailed mode', () => {
     renderPost(basePost, { detailed: true });
-    expect(screen.queryByRole('link', { name: 'View' })).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('link', { name: 'View post by Sarah Johnson' })
+    ).not.toBeInTheDocument();
   });
 
   it('shows a "View" link to the post when not in detailed mode', () => {
     renderPost(basePost, { detailed: false });
-    expect(screen.getByRole('link', { name: 'View' })).toHaveAttribute('href', '/post/7');
+    expect(screen.getByRole('link', { name: 'View post by Sarah Johnson' })).toHaveAttribute(
+      'href',
+      '/post/7'
+    );
   });
 
   describe('Editing', () => {
@@ -113,7 +118,7 @@ describe('Post Component', () => {
       const user = userEvent.setup();
       renderPost(basePost);
 
-      await user.click(screen.getByRole('button', { name: '⋯' }));
+      await user.click(screen.getByRole('button', { name: 'Post options' }));
       await user.click(screen.getByRole('button', { name: /edit/i }));
 
       expect(screen.getByDisplayValue('Hello Testbook!')).toBeInTheDocument();
@@ -123,7 +128,7 @@ describe('Post Component', () => {
       const user = userEvent.setup();
       renderPost(basePost);
 
-      await user.click(screen.getByRole('button', { name: '⋯' }));
+      await user.click(screen.getByRole('button', { name: 'Post options' }));
       await user.click(screen.getByRole('button', { name: /edit/i }));
       await user.clear(screen.getByDisplayValue('Hello Testbook!'));
       await user.type(screen.getByRole('textbox'), 'Changed my mind');
@@ -141,7 +146,7 @@ describe('Post Component', () => {
       });
       renderPost(basePost, { onUpdate });
 
-      await user.click(screen.getByRole('button', { name: '⋯' }));
+      await user.click(screen.getByRole('button', { name: 'Post options' }));
       await user.click(screen.getByRole('button', { name: /edit/i }));
       await user.clear(screen.getByDisplayValue('Hello Testbook!'));
       await user.type(screen.getByRole('textbox'), 'Edited content');
@@ -161,7 +166,7 @@ describe('Post Component', () => {
       const user = userEvent.setup();
       renderPost(basePost);
 
-      await user.click(screen.getByRole('button', { name: '⋯' }));
+      await user.click(screen.getByRole('button', { name: 'Post options' }));
       await user.click(screen.getByRole('button', { name: /edit/i }));
       await user.clear(screen.getByDisplayValue('Hello Testbook!'));
       await user.click(screen.getByRole('button', { name: /save/i }));
@@ -178,7 +183,7 @@ describe('Post Component', () => {
       api.postsAPI.deletePost.mockResolvedValueOnce({});
       renderPost(basePost, { onDelete });
 
-      await user.click(screen.getByRole('button', { name: '⋯' }));
+      await user.click(screen.getByRole('button', { name: 'Post options' }));
       await user.click(screen.getByRole('button', { name: /delete/i }));
 
       await waitFor(() => expect(onDelete).toHaveBeenCalledWith(7));
@@ -190,7 +195,7 @@ describe('Post Component', () => {
       window.confirm = vi.fn(() => false);
       renderPost(basePost);
 
-      await user.click(screen.getByRole('button', { name: '⋯' }));
+      await user.click(screen.getByRole('button', { name: 'Post options' }));
       await user.click(screen.getByRole('button', { name: /delete/i }));
 
       expect(api.postsAPI.deletePost).not.toHaveBeenCalled();
@@ -229,12 +234,16 @@ describe('Post Component', () => {
       });
       renderPost({ ...basePost, user_reaction: 'like' });
 
-      // The toggle button reads "👍 ▼" - distinct from the reaction
-      // option below, which shows only the bare emoji.
-      const reactButton = screen.getByRole('button', { name: '👍 ▼' });
+      // The toggle button's accessible name states the current reaction -
+      // distinct from the "Like" option inside the picker.
+      const reactButton = screen.getByRole('button', {
+        name: 'Your reaction: like. Change reaction',
+      });
 
       await user.click(reactButton);
-      await user.click(screen.getByTitle('like'));
+      // The active option is exposed as a pressed toggle button.
+      const likeOption = screen.getByRole('button', { name: 'Like', pressed: true });
+      await user.click(likeOption);
 
       await waitFor(() => {
         expect(api.postsAPI.removeReaction).toHaveBeenCalledWith(7);

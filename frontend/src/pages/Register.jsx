@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import Alert from '../components/Alert';
 import { useAuth } from '../AuthContext';
+import useDocumentTitle from '../hooks/useDocumentTitle';
 import './Auth.css';
 
 function Register() {
+  useDocumentTitle('Sign Up');
   const [formData, setFormData] = useState({
     email: '',
     username: '',
@@ -52,15 +55,20 @@ function Register() {
         <p className="auth-subtitle">Join Testbook today!</p>
 
         {error && (
-          <div className="error" data-testid="register-error">
+          <Alert focusOnMount data-testid="register-error">
             {error}
-          </div>
+          </Alert>
         )}
 
         <form onSubmit={handleSubmit} className="auth-form" data-testid="register-form">
+          <label htmlFor="register-email" className="sr-only">
+            Email
+          </label>
           <input
+            id="register-email"
             type="email"
             name="email"
+            autoComplete="email"
             className="input"
             placeholder="Email"
             value={formData.email}
@@ -68,9 +76,14 @@ function Register() {
             required
             data-testid="register-email-input"
           />
+          <label htmlFor="register-username" className="sr-only">
+            Username (lowercase, no spaces)
+          </label>
           <input
+            id="register-username"
             type="text"
             name="username"
+            autoComplete="username"
             className="input"
             placeholder="Username (lowercase, no spaces)"
             value={formData.username}
@@ -78,9 +91,14 @@ function Register() {
             required
             data-testid="register-username-input"
           />
+          <label htmlFor="register-display_name" className="sr-only">
+            Display Name
+          </label>
           <input
+            id="register-display_name"
             type="text"
             name="display_name"
+            autoComplete="name"
             className="input"
             placeholder="Display Name"
             value={formData.display_name}
@@ -88,9 +106,14 @@ function Register() {
             required
             data-testid="register-displayname-input"
           />
+          <label htmlFor="register-password" className="sr-only">
+            Password
+          </label>
           <input
+            id="register-password"
             type="password"
             name="password"
+            autoComplete="new-password"
             className="input"
             placeholder="Password"
             value={formData.password}
@@ -98,7 +121,11 @@ function Register() {
             required
             data-testid="register-password-input"
           />
+          <label htmlFor="register-bio" className="sr-only">
+            Bio (optional)
+          </label>
           <textarea
+            id="register-bio"
             name="bio"
             className="textarea"
             placeholder="Bio (optional)"
@@ -118,10 +145,8 @@ function Register() {
 
         <div className="auth-divider"></div>
 
-        <Link to="/login">
-          <button className="btn btn-secondary" data-testid="back-to-login-button">
-            Already have an account? Log In
-          </button>
+        <Link to="/login" className="btn btn-secondary" data-testid="back-to-login-button">
+          Already have an account? Log In
         </Link>
       </div>
     </main>

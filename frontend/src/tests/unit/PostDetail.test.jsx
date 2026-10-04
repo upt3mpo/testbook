@@ -150,7 +150,7 @@ describe('PostDetail Page', () => {
     renderPostDetail();
     await screen.findByText('A detailed post');
 
-    await user.click(screen.getByRole('button', { name: '⋯' }));
+    await user.click(screen.getByRole('button', { name: 'Post options' }));
     await user.click(screen.getByRole('button', { name: /delete/i }));
 
     await waitFor(() => expect(mockNavigate).toHaveBeenCalledWith('/'));
@@ -184,7 +184,7 @@ describe('PostDetail Page', () => {
     renderPostDetail();
     await screen.findByText('A detailed post');
 
-    await user.click(screen.getByRole('button', { name: '⋯' }));
+    await user.click(screen.getByRole('button', { name: 'Post options' }));
     await user.click(screen.getByRole('button', { name: /edit/i }));
     await user.clear(screen.getByDisplayValue('A detailed post'));
     await user.type(screen.getByRole('textbox'), 'Edited content');

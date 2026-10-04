@@ -75,7 +75,13 @@
   .navbar-menu {
     order: 3;
     width: 100%;
+    flex-wrap: wrap;
     justify-content: space-around;
+    gap: 8px;
     padding-top: 12px;
+  }
+
+  .navbar-link {
+    padding: 8px;
   }
 }

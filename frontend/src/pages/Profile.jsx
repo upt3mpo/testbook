@@ -4,6 +4,8 @@ import { usersAPI } from '../api';
 import { useAuth } from '../AuthContext';
 import Post from '../components/Post';
 import { broadcastBlockStatusChange } from '../utils/relationshipEvents';
+import Alert from '../components/Alert';
+import useDocumentTitle from '../hooks/useDocumentTitle';
 import './Profile.css';
 
 function Profile() {
@@ -14,6 +16,7 @@ function Profile() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  useDocumentTitle(profile ? `${profile.display_name} (@${profile.username})` : 'Profile');
 
   const isOwnProfile = currentUser?.username === username;
 
@@ -113,9 +116,7 @@ function Profile() {
   if (error || !profile) {
     return (
       <div className="profile-container">
-        <div className="error" data-testid="profile-error">
-          {error || 'Profile not found'}
-        </div>
+        <Alert data-testid="profile-error">{error || 'Profile not found'}</Alert>
       </div>
     );
   }

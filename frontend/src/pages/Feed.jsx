@@ -3,9 +3,12 @@ import { feedAPI } from '../api';
 import CreatePost from '../components/CreatePost';
 import Post from '../components/Post';
 import { BLOCK_EVENT_STORAGE_KEY, BLOCK_STATUS_EVENT } from '../utils/relationshipEvents';
+import Alert from '../components/Alert';
+import useDocumentTitle from '../hooks/useDocumentTitle';
 import './Feed.css';
 
 function Feed() {
+  useDocumentTitle('Home');
   const [feedType, setFeedType] = useState('all'); // 'all' or 'following'
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -119,11 +122,7 @@ function Feed() {
 
         <CreatePost onPostCreated={handlePostCreated} />
 
-        {error && (
-          <div className="error" data-testid="feed-error">
-            {error}
-          </div>
-        )}
+        {error && <Alert data-testid="feed-error">{error}</Alert>}
 
         {loading ? (
           <div className="loading" data-testid="feed-loading">

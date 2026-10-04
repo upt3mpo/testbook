@@ -229,7 +229,7 @@ describe('Profile Page', () => {
     renderProfile('sarahjohnson');
     await screen.findByText('Post to delete');
 
-    await user.click(screen.getByRole('button', { name: '⋯' }));
+    await user.click(screen.getByRole('button', { name: 'Post options' }));
     await user.click(screen.getByRole('button', { name: /delete/i }));
 
     await waitFor(() => {

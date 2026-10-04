@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { postsAPI } from '../api';
 import { useAuth } from '../AuthContext';
+import { announce } from './LiveRegion';
 import './Post.css';
 
 function Post({ post, onDelete, onUpdate, detailed = false }) {
@@ -15,6 +16,13 @@ function Post({ post, onDelete, onUpdate, detailed = false }) {
   const [showReactions, setShowReactions] = useState(false);
   const [imageOrientation, setImageOrientation] = useState('square');
   const dropdownRef = useRef(null);
+  const menuButtonRef = useRef(null);
+  const reactButtonRef = useRef(null);
+  const editTextareaRef = useRef(null);
+  const commentButtonRef = useRef(null);
+  const commentInputRef = useRef(null);
+  const wasEditing = useRef(false);
+  const wasCommenting = useRef(false);
 
   useEffect(() => {
     if (!isEditing) {
@@ -23,6 +31,44 @@ function Post({ post, onDelete, onUpdate, detailed = false }) {
   }, [post, isEditing]);
 
   const isOwnPost = post.author_id === user?.id;
+
+  // Focus management: when a control opens something, move focus into it; when
+  // it closes, put focus back on the control that opened it. Without this,
+  // focus falls back to <body> every time the opener unmounts or is hidden.
+  useEffect(() => {
+    if (isEditing) {
+      editTextareaRef.current?.focus();
+    } else if (wasEditing.current) {
+      menuButtonRef.current?.focus();
+    }
+    wasEditing.current = isEditing;
+  }, [isEditing]);
+
+  useEffect(() => {
+    if (showCommentInput) {
+      commentInputRef.current?.focus();
+    } else if (wasCommenting.current) {
+      commentButtonRef.current?.focus();
+    }
+    wasCommenting.current = showCommentInput;
+  }, [showCommentInput]);
+
+  // Escape closes the open menu or reaction picker and returns focus to its trigger.
+  useEffect(() => {
+    if (!showDropdown && !showReactions) return undefined;
+    const handleEscape = (event) => {
+      if (event.key !== 'Escape') return;
+      if (showDropdown) {
+        setShowDropdown(false);
+        menuButtonRef.current?.focus();
+      } else {
+        setShowReactions(false);
+        reactButtonRef.current?.focus();
+      }
+    };
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, [showDropdown, showReactions]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -51,9 +97,11 @@ function Post({ post, onDelete, onUpdate, detailed = false }) {
       if (post.user_reaction === reactionType) {
         const response = await postsAPI.removeReaction(post.id);
         emitUpdate(response.data);
+        announce('Reaction removed');
       } else {
         const response = await postsAPI.addReaction(post.id, reactionType);
         emitUpdate(response.data);
+        announce(`Reacted with ${reactionType}`);
       }
     } catch (err) {
       console.error('Failed to update reaction:', err);
@@ -73,6 +121,7 @@ function Post({ post, onDelete, onUpdate, detailed = false }) {
           has_reposted: false,
           reposts_count: Math.max(0, post.reposts_count - 1),
         });
+        announce('Repost removed');
       } else {
         await postsAPI.createRepost({ original_post_id: targetPostId, content: '' });
         emitUpdate({
@@ -80,6 +129,7 @@ function Post({ post, onDelete, onUpdate, detailed = false }) {
           has_reposted: true,
           reposts_count: post.reposts_count + 1,
         });
+        announce('Reposted');
       }
     } catch (err) {
       console.error('Failed to toggle repost:', err);
@@ -125,7 +175,11 @@ function Post({ post, onDelete, onUpdate, detailed = false }) {
 
     try {
       await postsAPI.deletePost(post.id);
+      // This post (and the focused control inside it) is about to unmount, so
+      // park focus on <main> instead of letting it fall back to <body>.
+      document.getElementById('main-content')?.focus();
       onDelete(post.id);
+      announce('Post deleted');
     } catch (err) {
       console.error('Failed to delete post:', err);
       alert('Failed to delete post');
@@ -141,6 +195,7 @@ function Post({ post, onDelete, onUpdate, detailed = false }) {
       await postsAPI.addComment(post.id, commentText);
       setCommentText('');
       setShowCommentInput(false);
+      announce('Comment posted');
       emitUpdate({
         ...post,
         comments_count: post.comments_count + 1,
@@ -178,8 +233,9 @@ function Post({ post, onDelete, onUpdate, detailed = false }) {
   };
 
   return (
-    <div
+    <article
       className="post card"
+      aria-label={`Post by ${post.author_display_name}`}
       data-testid={`post-${post.id}`}
       data-testid-generic="post-item"
       data-post-id={post.id}
@@ -221,14 +277,22 @@ function Post({ post, onDelete, onUpdate, detailed = false }) {
         {isOwnPost && (
           <div className="post-actions-menu" ref={dropdownRef}>
             <button
+              ref={menuButtonRef}
               onClick={() => setShowDropdown(!showDropdown)}
               className="btn btn-secondary post-menu-btn"
+              aria-label="Post options"
+              aria-expanded={showDropdown}
+              aria-controls={`post-${post.id}-dropdown`}
               data-testid={`post-${post.id}-menu-button`}
             >
-              ⋯
+              <span aria-hidden="true">⋯</span>
             </button>
             {showDropdown && (
-              <div className="post-dropdown" data-testid={`post-${post.id}-dropdown`}>
+              <div
+                className="post-dropdown"
+                id={`post-${post.id}-dropdown`}
+                data-testid={`post-${post.id}-dropdown`}
+              >
                 <button
                   onClick={handleEdit}
                   className="dropdown-item"
@@ -252,6 +316,8 @@ function Post({ post, onDelete, onUpdate, detailed = false }) {
       {isEditing ? (
         <div className="post-edit-form" data-testid={`post-${post.id}-edit-form`}>
           <textarea
+            ref={editTextareaRef}
+            aria-label="Edit post content"
             className="input post-edit-textarea"
             value={editedContent}
             onChange={(e) => setEditedContent(e.target.value)}
@@ -313,13 +379,22 @@ function Post({ post, onDelete, onUpdate, detailed = false }) {
       </div>
 
       <div className="post-actions">
+        {/* Hover is a pointer-only enhancement. The keyboard path is the React button
+            (aria-expanded) inside, so this wrapper needs no key handler or role. */}
+        {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
         <div
           className="reactions-container"
           onMouseEnter={() => setShowReactions(true)}
           onMouseLeave={() => setShowReactions(false)}
         >
           <button
+            ref={reactButtonRef}
             className="btn btn-secondary"
+            aria-expanded={showReactions}
+            aria-controls={`post-${post.id}-reactions`}
+            aria-label={
+              post.user_reaction ? `Your reaction: ${post.user_reaction}. Change reaction` : 'React'
+            }
             data-testid={`post-${post.id}-react-button`}
             onClick={(e) => {
               e.stopPropagation();
@@ -328,7 +403,10 @@ function Post({ post, onDelete, onUpdate, detailed = false }) {
           >
             {post.user_reaction ? `${reactionEmojis[post.user_reaction]} ▼` : 'React ▼'}
           </button>
-          <div className={`reactions-dropdown ${showReactions ? 'show' : ''}`}>
+          <div
+            className={`reactions-dropdown ${showReactions ? 'show' : ''}`}
+            id={`post-${post.id}-reactions`}
+          >
             {reactions.map((reaction) => (
               <button
                 key={reaction}
@@ -336,6 +414,8 @@ function Post({ post, onDelete, onUpdate, detailed = false }) {
                 className={`reaction-btn ${post.user_reaction === reaction ? 'active' : ''}`}
                 data-testid={`post-${post.id}-reaction-${reaction}`}
                 title={reaction}
+                aria-label={reaction.charAt(0).toUpperCase() + reaction.slice(1)}
+                aria-pressed={post.user_reaction === reaction}
               >
                 {reactionEmojis[reaction]}
               </button>
@@ -344,7 +424,9 @@ function Post({ post, onDelete, onUpdate, detailed = false }) {
         </div>
 
         <button
+          ref={commentButtonRef}
           onClick={() => setShowCommentInput(!showCommentInput)}
+          aria-expanded={showCommentInput}
           className="btn btn-secondary"
           data-testid={`post-${post.id}-comment-button`}
         >
@@ -360,10 +442,13 @@ function Post({ post, onDelete, onUpdate, detailed = false }) {
         </button>
 
         {!detailed && (
-          <Link to={`/post/${post.id}`}>
-            <button className="btn btn-secondary" data-testid={`post-${post.id}-view-button`}>
-              View
-            </button>
+          <Link
+            to={`/post/${post.id}`}
+            className="btn btn-secondary"
+            aria-label={`View post by ${post.author_display_name}`}
+            data-testid={`post-${post.id}-view-button`}
+          >
+            View
           </Link>
         )}
       </div>
@@ -375,8 +460,10 @@ function Post({ post, onDelete, onUpdate, detailed = false }) {
           data-testid={`post-${post.id}-comment-form`}
         >
           <input
+            ref={commentInputRef}
             type="text"
             className="input"
+            aria-label="Write a comment"
             placeholder="Write a comment..."
             value={commentText}
             onChange={(e) => setCommentText(e.target.value)}
@@ -393,7 +480,7 @@ function Post({ post, onDelete, onUpdate, detailed = false }) {
           </button>
         </form>
       )}
-    </div>
+    </article>
   );
 }
 

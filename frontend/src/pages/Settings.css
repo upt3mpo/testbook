@@ -45,6 +45,7 @@
 
 .info-value {
   color: var(--text-secondary);
+  overflow-wrap: anywhere;
 }
 
 .settings-form {

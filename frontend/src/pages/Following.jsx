@@ -2,10 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { usersAPI } from '../api';
 import { useAuth } from '../AuthContext';
+import Alert from '../components/Alert';
+import useDocumentTitle from '../hooks/useDocumentTitle';
 import './Following.css';
 
 function Following() {
   const { username } = useParams();
+  useDocumentTitle(`People @${username} follows`);
   const { user } = useAuth();
   const [following, setFollowing] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -60,11 +63,7 @@ function Following() {
         <p className="text-secondary">{following.length} following</p>
       </div>
 
-      {error && (
-        <div className="error" data-testid="following-error">
-          {error}
-        </div>
-      )}
+      {error && <Alert data-testid="following-error">{error}</Alert>}
 
       {following.length === 0 ? (
         <div className="card" data-testid="no-following">
