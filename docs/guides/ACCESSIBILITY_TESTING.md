@@ -123,18 +123,20 @@ test("Home page should not have accessibility violations", async ({ page }) => {
 - Best practices
 - SEO
 
+It audits **six pages, including the signed-in ones** (Feed, Post detail, Profile,
+Settings). Lighthouse starts every run logged out, and the app redirects a logged-out visit
+to `/login`, so `tests/lighthouse/login.cjs` signs in first (a Lighthouse CI
+`puppeteerScript`). The accessibility score must be at least 0.95; performance, best
+practices and SEO only warn.
+
 **Run:**
 
 ```bash
-# Start the app first
-cd frontend && npm run dev
-
-# In another terminal
-cd tests
-npm run lighthouse    # runs `lhci autorun` (@lhci/cli is a devDependency here)
+# Start the app first (./start-dev.sh), with seeded data
+make lighthouse            # or: cd tests && npm run lighthouse
 ```
 
-**Reports saved to:** `reports/lighthouse/`
+**Reports saved to:** `tests/reports/lighthouse/` (HTML and JSON)
 
 ---
 
@@ -226,17 +228,21 @@ cd tests
 npm run test:a11y
 
 # Lighthouse audit
-cd tests
-npm run lighthouse
+make lighthouse
+
+# Everything automated (component + E2E)
+make test-a11y
 ```
 
 ### In CI/CD
 
-All accessibility tests run automatically on every PR:
+Accessibility tests run automatically on every PR:
 
-- Component-level (vitest-axe)
-- E2E level (axe-playwright)
-- Lighthouse scores checked
+- Component-level (vitest-axe plus the regression tests), in `frontend-tests.yml`
+- E2E level (axe-core via `@axe-core/playwright`, plus the behaviour specs) and
+  Lighthouse, in the dedicated `accessibility.yml` workflow, which uploads the Playwright
+  report (with the axe violation JSON) and the Lighthouse reports as artifacts
+- The full `e2e-tests.yml` run also executes the same specs
 
 ---
 
@@ -377,16 +383,16 @@ doesn't cover):
 | --- | --- | --- |
 | Login | 0 | 100 |
 | Register | 0 | 100 |
-| Feed | 0 | not measured (see note below) |
-| Post Detail | 0 | not measured (see note below) |
-| Profile | 0 | not measured (see note below) |
+| Feed | 0 | 100 |
+| Post Detail | 0 | 100 |
+| Profile | 0 | 100 |
+| Settings | 0 | 100 |
 
-**Goal:** 0 violations, 90+ Lighthouse score - currently met everywhere this
-table can actually measure. Lighthouse can't reach an authenticated page
-without a login flow, which is why Feed, Post Detail, and Profile show as
-"not measured" for that column - axe-core, which can run against an
-authenticated page in a real browser session, found 0 violations on all
-three.
+**Goal:** 0 violations, 95+ Lighthouse score - met on every page. The signed-in pages are
+measured by Lighthouse through a login script (`tests/lighthouse/login.cjs`). A
+Lighthouse score of 100 does not mean the page is accessible: it runs a subset of axe's
+rules, and several real defects (see `docs/a11y/AUDIT_LOG.md`) passed it. Treat it as a
+regression guard.
 
 ---
 
@@ -448,24 +454,10 @@ tag list as-is; narrowing it back to WCAG-only tags would reopen this gap.
 
 ### What's still not covered
 
-- **Lighthouse only ever sees unauthenticated pages** in both this review
-  and in `lighthouserc.js`'s existing CI configuration - `npx lighthouse
-  <url>` and Lighthouse CI's own server-driven flow both load a fresh,
-  logged-out browser session, and this app redirects an unauthenticated
-  visit to `/` straight to `/login`. Real Lighthouse accessibility scores
-  exist for Login and Register only (100 for both, see the table above).
-  Feed, Post Detail, and Profile are covered by axe-core instead, which can
-  run inside an authenticated Playwright session - that's a different tool
-  catching the same class of issue, not a gap left open. Building
-  Lighthouse CI a way to authenticate first (a storageState fixture, or a
-  pre-authenticated route) would close this if someone wants Lighthouse's
-  performance and SEO categories on those pages too, not just axe-core's
-  accessibility-only coverage.
-- **Manual testing (screen reader, keyboard-only navigation) was not
-  performed** as part of this review - see the Manual Testing Checklist
-  above. Automated tools like axe-core catch a meaningful chunk of WCAG
-  issues but not all of them (this doc's own portfolio section already says
-  as much); this review only ran the automated layer.
+- **Screen reader testing has not been done by a person yet.** The scripted manual suite
+  is in [`docs/a11y/manual/`](../a11y/manual/README.md). Automated tools catch a
+  meaningful chunk of WCAG issues but not all of them; whether live-region announcements
+  are actually *spoken* can only be checked with a real screen reader.
 
 ---
 

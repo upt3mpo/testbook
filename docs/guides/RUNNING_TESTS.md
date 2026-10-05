@@ -311,7 +311,8 @@ npm run report
 - `e2e/auth.spec.js` - Authentication flows
 - `e2e/posts.spec.js` - Post operations
 - `e2e/users.spec.js` - User profiles and interactions
-- `e2e/accessibility-axe.spec.js` - WCAG accessibility checks
+- `e2e/accessibility-axe.spec.js` - axe-core scans (every route, states, dark theme, 320px)
+- `e2e/accessibility-behavior.spec.js` - focus, tab order, announcements, reflow
 - `e2e/pages/` - Page objects shared by the files above
 
 The Python suite (`tests/e2e-python/`) covers the same flows using

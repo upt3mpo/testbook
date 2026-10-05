@@ -1,0 +1,162 @@
+name: Accessibility
+# WCAG 2.2 AA. Runs the browser-level accessibility suites against the real app:
+#   1. Playwright + axe-core (every route, interaction states, dark theme, 320px)
+#      and the behaviour specs (focus, tab order, announcements, reflow).
+#   2. Lighthouse CI accessibility score, including signed-in pages.
+# The component-level accessibility tests (vitest-axe) already run in
+# frontend-tests.yml. The full e2e suite in e2e-tests.yml also runs these specs;
+# this workflow exists so accessibility has its own check, its own artifacts,
+# and a Lighthouse score gate, and so a PR that only touches styles still runs it.
+
+permissions:
+  contents: read
+
+concurrency:
+  group: accessibility-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - 'frontend/**'
+      - 'backend/**'
+      - 'tests/**'
+      - 'lighthouserc.js'
+      - '.github/workflows/accessibility.yml'
+  workflow_dispatch:
+
+jobs:
+  accessibility:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: testbook
+          POSTGRES_PASSWORD: testbook
+          POSTGRES_DB: testbook_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: 'npm'
+          cache-dependency-path: |
+            tests/package-lock.json
+            frontend/package-lock.json
+
+      - name: Setup Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.13'
+          cache: 'pip'
+
+      - name: Install backend dependencies
+        working-directory: ./backend
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Install frontend dependencies
+        working-directory: ./frontend
+        run: npm ci
+
+      - name: Install test dependencies
+        working-directory: ./tests
+        run: npm ci
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v6
+        id: playwright-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-browsers-${{ runner.os }}-${{ hashFiles('tests/package-lock.json') }}
+
+      - name: Install Playwright browsers
+        working-directory: ./tests
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps chromium
+
+      - name: Install Playwright OS dependencies only
+        working-directory: ./tests
+        if: steps.playwright-cache.outputs.cache-hit == 'true'
+        run: npx playwright install-deps chromium
+
+      - name: Start backend server
+        working-directory: ./backend
+        env:
+          TESTING: true
+          SECRET_KEY: test-secret-key-for-ci
+          DATABASE_URL: postgresql+psycopg://testbook:testbook@localhost:5432/testbook_test
+        run: |
+          python seed.py
+          uvicorn main:app --host 0.0.0.0 --port 8000 &
+
+      - name: Wait for backend
+        run: |
+          timeout 60 bash -c 'until curl -f http://localhost:8000/api/health; do sleep 1; done'
+
+      - name: Start frontend server
+        working-directory: ./frontend
+        run: npm run dev &
+
+      - name: Wait for frontend
+        run: |
+          timeout 90 bash -c 'until curl -f http://localhost:3000; do sleep 1; done'
+          sleep 5
+
+      - name: Run accessibility tests (axe + behaviour)
+        working-directory: ./tests
+        env:
+          API_URL: http://localhost:8000
+          BASE_URL: http://localhost:3000
+          BACKEND_URL: http://localhost:8000
+          FORCE_COLOR: 0
+        run: npm run test:a11y
+
+      # Playwright's resetDatabase leaves the seed data in place, but reset anyway so
+      # Lighthouse's signed-in audit never depends on what the previous step did.
+      - name: Reset database for Lighthouse
+        run: curl -f -X POST http://localhost:8000/api/dev/reset
+
+      - name: Run Lighthouse CI (accessibility score gate)
+        working-directory: ./tests
+        env:
+          BASE_URL: http://localhost:3000
+        run: |
+          # Use the Chromium that Playwright installed, so no separate Chrome is needed.
+          export CHROME_PATH="$(node -e "console.log(require('@playwright/test').chromium.executablePath())")"
+          npm run lighthouse
+
+      - name: Upload Playwright report and axe violations
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: accessibility-playwright-report
+          path: |
+            tests/playwright-report/
+            tests/test-results/
+          retention-days: 7
+
+      - name: Upload Lighthouse reports
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: accessibility-lighthouse-reports
+          path: tests/reports/lighthouse/
+          retention-days: 7

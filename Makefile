@@ -1,7 +1,7 @@
 # Testbook Development Task Runner
 # Cross-platform task automation using Make
 
-.PHONY: help install install-backend install-frontend install-tests setup start start-backend start-frontend test test-backend test-frontend test-frontend-a11y test-frontend-contracts test-frontend-coverage test-e2e test-e2e-all test-e2e-a11y test-security test-performance test-contract test-all coverage lint format format-check quality-check verify-release install-browsers install-browsers-all run-all-tests run-tests-no-warnings clean reset-db docker-up docker-down
+.PHONY: help install install-backend install-frontend install-tests setup start start-backend start-frontend test test-backend test-frontend test-frontend-a11y test-a11y lighthouse test-frontend-contracts test-frontend-coverage test-e2e test-e2e-all test-e2e-a11y test-security test-performance test-contract test-all coverage lint format format-check quality-check verify-release install-browsers install-browsers-all run-all-tests run-tests-no-warnings clean reset-db docker-up docker-down
 
 # Default target - show help
 help:
@@ -28,7 +28,9 @@ help:
 	@echo "  make test-frontend-coverage - Run frontend tests with coverage"
 	@echo "  make test-e2e         - Run E2E tests (Playwright - Chrome only)"
 	@echo "  make test-e2e-all     - Run E2E tests (all browsers)"
-	@echo "  make test-e2e-a11y    - Run E2E accessibility tests"
+	@echo "  make test-e2e-a11y    - Run E2E accessibility tests (axe + behaviour specs)"
+	@echo "  make test-a11y        - Run all automated accessibility tests (component + E2E)"
+	@echo "  make lighthouse       - Lighthouse CI accessibility score (app must be running)"
 	@echo "  make test-security    - Run security tests"
 	@echo "  make test-performance - Run performance tests"
 	@echo "  make test-contract    - Run API contract tests"
@@ -148,6 +150,16 @@ test-e2e-all:
 test-e2e-a11y:
 	@echo "♿ Running E2E accessibility tests..."
 	cd tests && npm run test:a11y
+
+# All automated accessibility layers. The manual scripts are in docs/a11y/manual/.
+test-a11y: test-frontend-a11y test-e2e-a11y
+	@echo "✅ Automated accessibility tests done. Manual scripts: docs/a11y/manual/README.md"
+
+# Lighthouse CI, including signed-in pages. The app must already be running and seeded.
+# Uses the Chromium Playwright installed unless CHROME_PATH is set.
+lighthouse:
+	@echo "🔦 Running Lighthouse CI (app must be running on :3000 with seeded data)..."
+	cd tests && CHROME_PATH="$${CHROME_PATH:-$$(node -e "console.log(require('@playwright/test').chromium.executablePath())")}" npm run lighthouse
 
 test-security:
 	@echo "🔒 Running security tests..."

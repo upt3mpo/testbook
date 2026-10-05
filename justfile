@@ -150,11 +150,23 @@ test-e2e-all:
     echo "🧪 Running E2E tests (all browsers)..."
     cd tests && npm run test:all-browsers
 
-# Run E2E accessibility tests
+# Run E2E accessibility tests (axe + behaviour specs)
 test-e2e-a11y:
     #!/usr/bin/env bash
     echo "♿ Running E2E accessibility tests..."
     cd tests && npm run test:a11y
+
+# Run all automated accessibility tests (component + E2E). Manual scripts: docs/a11y/manual/
+test-a11y: test-frontend-a11y test-e2e-a11y
+    @echo "✅ Automated accessibility tests done. Manual scripts: docs/a11y/manual/README.md"
+
+# Lighthouse CI incl. signed-in pages (app must be running on :3000 with seeded data)
+lighthouse:
+    #!/usr/bin/env bash
+    echo "🔦 Running Lighthouse CI..."
+    cd tests
+    export CHROME_PATH="${CHROME_PATH:-$(node -e "console.log(require('@playwright/test').chromium.executablePath())")}"
+    npm run lighthouse
 
 # Run security tests
 test-security:

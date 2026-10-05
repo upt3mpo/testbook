@@ -11,7 +11,7 @@
     "test:a11y": "playwright test --project=chromium accessibility",
     "test:all-browsers": "playwright test",
     "install-browsers": "playwright install chromium",
-    "lighthouse": "lhci autorun"
+    "lighthouse": "lhci autorun --config=../lighthouserc.js"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",
