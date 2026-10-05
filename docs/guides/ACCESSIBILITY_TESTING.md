@@ -336,6 +336,10 @@ background: #fff;
 
 ## 🧑‍🦯 Manual Testing Checklist
 
+> **Full scripted suite:** this checklist is the short version. The step-by-step manual
+> tests, with expected results and a run sheet, are in
+> [`docs/a11y/manual/`](../a11y/manual/README.md). Start there.
+
 ### Keyboard Navigation
 
 - [ ] Tab through all interactive elements

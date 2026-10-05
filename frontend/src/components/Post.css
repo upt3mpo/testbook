@@ -156,6 +156,15 @@
   transition-delay: 0s;
 }
 
+/* Escape dismisses a hover-revealed picker without moving the pointer (WCAG 1.4.13).
+   Applies only to the hover path: a picker opened by click/keyboard carries .show. */
+.reactions-container.hover-dismissed:hover .reactions-dropdown:not(.show) {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(5px);
+}
+
 .reaction-btn {
   padding: 6px 12px;
   border: 1px solid var(--border-color);

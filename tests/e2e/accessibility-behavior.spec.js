@@ -247,6 +247,30 @@ test.describe("Accessibility behaviour", () => {
     await expect(all).toHaveAttribute("aria-pressed", "false");
   });
 
+  test("A11Y-018: Escape dismisses a hover-revealed picker without moving the pointer (1.4.13)", async ({
+    page,
+  }) => {
+    await loginAsSarah(page);
+    const react = page.getByRole("button", { name: "React", exact: true }).first();
+    const like = page.getByRole("button", { name: "Like", exact: true }).first();
+
+    await react.hover(); // hover only: no click, no focus
+    await expect(like).toBeVisible(); // revealed by hover (CSS :hover)
+
+    // Hoverable: the pointer can travel onto the picker without it vanishing.
+    await like.hover();
+    await expect(like).toBeVisible();
+
+    // Dismissible: Escape hides it while the pointer stays exactly where it is.
+    await page.keyboard.press("Escape");
+    await expect(like).toBeHidden();
+
+    // Moving away and back brings it back.
+    await page.mouse.move(0, 0);
+    await react.hover();
+    await expect(like).toBeVisible();
+  });
+
   test("2.4.11: the sticky navbar never fully covers the focused element", async ({
     page,
   }) => {

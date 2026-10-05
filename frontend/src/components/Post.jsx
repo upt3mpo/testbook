@@ -19,6 +19,11 @@ function Post({ post, onDelete, onUpdate, detailed = false }) {
   const [editedContent, setEditedContent] = useState(post.content);
   const [showDropdown, setShowDropdown] = useState(false);
   const [showReactions, setShowReactions] = useState(false);
+  // Pointer-only: is the pointer over the reaction picker, and has Escape dismissed the
+  // hover-revealed picker? Deliberately separate from showReactions (click/keyboard state)
+  // so hover can never fight a click or change aria-expanded.
+  const [hoveringReactions, setHoveringReactions] = useState(false);
+  const [hoverDismissed, setHoverDismissed] = useState(false);
   const [imageOrientation, setImageOrientation] = useState('square');
   const dropdownRef = useRef(null);
   const reactionsRef = useRef(null);
@@ -59,22 +64,25 @@ function Post({ post, onDelete, onUpdate, detailed = false }) {
     wasCommenting.current = showCommentInput;
   }, [showCommentInput]);
 
-  // Escape closes the open menu or reaction picker and returns focus to its trigger.
+  // Escape closes the open menu or reaction picker and returns focus to its trigger. It also
+  // dismisses a picker that is only showing because the pointer is hovering (WCAG 1.4.13).
   useEffect(() => {
-    if (!showDropdown && !showReactions) return undefined;
+    if (!showDropdown && !showReactions && !hoveringReactions) return undefined;
     const handleEscape = (event) => {
       if (event.key !== 'Escape') return;
       if (showDropdown) {
         setShowDropdown(false);
         menuButtonRef.current?.focus();
-      } else {
+      } else if (showReactions) {
         setShowReactions(false);
         reactButtonRef.current?.focus();
+      } else {
+        setHoverDismissed(true);
       }
     };
     document.addEventListener('keydown', handleEscape);
     return () => document.removeEventListener('keydown', handleEscape);
-  }, [showDropdown, showReactions]);
+  }, [showDropdown, showReactions, hoveringReactions]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -401,7 +409,19 @@ function Post({ post, onDelete, onUpdate, detailed = false }) {
             React state (showReactions) is only ever set by an explicit click, tap or key
             press, so aria-expanded always matches what the user chose, and a hover can
             neither fight a click nor close a picker a keyboard user opened. */}
-        <div className="reactions-container" ref={reactionsRef}>
+        {/* Hover/pointer handlers only: hover-reveal is a pointer enhancement, and the keyboard
+            path is the React button inside (aria-expanded). They exist so Escape can dismiss
+            a hover-revealed picker without moving the pointer (WCAG 1.4.13). */}
+        {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
+        <div
+          className={`reactions-container ${hoverDismissed ? 'hover-dismissed' : ''}`}
+          ref={reactionsRef}
+          onMouseEnter={() => setHoveringReactions(true)}
+          onMouseLeave={() => {
+            setHoveringReactions(false);
+            setHoverDismissed(false);
+          }}
+        >
           <button
             ref={reactButtonRef}
             className="btn btn-secondary"

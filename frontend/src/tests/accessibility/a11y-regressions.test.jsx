@@ -396,6 +396,35 @@ describe('A11Y-017: ids referenced by aria-controls are unique in the document',
   });
 });
 
+describe('A11Y-018: Escape dismisses a hover-revealed picker (WCAG 1.4.13)', () => {
+  it('marks the picker dismissed on Escape while hovering, and resets on mouse-leave', async () => {
+    const user = userEvent.setup();
+    const { container } = renderPost();
+    const wrapper = container.querySelector('.reactions-container');
+
+    // jsdom cannot evaluate :hover, so assert the state the CSS keys off.
+    await user.hover(screen.getByRole('button', { name: 'React' }));
+    expect(wrapper).not.toHaveClass('hover-dismissed');
+
+    await user.keyboard('{Escape}');
+    expect(wrapper).toHaveClass('hover-dismissed');
+
+    await user.unhover(screen.getByRole('button', { name: 'React' }));
+    expect(wrapper).not.toHaveClass('hover-dismissed');
+  });
+
+  it('does not touch aria-expanded, which only click and keyboard control', async () => {
+    const user = userEvent.setup();
+    renderPost();
+    const react = screen.getByRole('button', { name: 'React' });
+
+    await user.hover(react);
+    await user.keyboard('{Escape}');
+
+    expect(react).toHaveAttribute('aria-expanded', 'false');
+  });
+});
+
 describe('A11Y-013: changes with no visible message are announced', () => {
   it('announce() writes to the polite live region', async () => {
     render(<LiveRegion />);
