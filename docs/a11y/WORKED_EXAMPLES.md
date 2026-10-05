@@ -204,14 +204,48 @@ was darkened.
 A browser test submits a bad login with the keyboard alone and asserts the alert is
 focused. An axe scan runs *with the error showing*.
 
-**Takeaway.** Scan states, not just pages. Several of the 14 defects only existed once
+**Takeaway.** Scan states, not just pages. Several of the 17 defects only existed once
 something was open, expanded or in error.
 
 **Plant it.** Replace `<Alert>` with a plain `<div className="error">`.
 
 ---
 
-## What these four have in common
+## Case 5: The theme nobody scanned (A11Y-016)
+
+**The bug.** Dark mode had never been included in any accessibility scan. White text
+on the dark accent colour (`#2d88ff`) had a contrast of 3.45:1, and `#d32f2f` text on
+the dark background was 3.5:1. WCAG AA needs 4.5:1 for this text.
+
+**Why the scans passed.** The scans ran in the default (light) theme only. The
+suite was "green" about a state the user could leave at any time from Settings.
+
+**How it was found.** Preparing the manual contrast script: before writing "check dark
+mode" into a checklist, the author tried it with axe first, and it failed on four pages.
+
+**The cause is a design-token mistake worth recognising.** One variable,
+`--accent-color`, was used for two jobs: text and borders *on* the page background,
+and a fill *behind* white text. Those want different colours in dark mode (a light
+blue reads well as text on dark; a darker blue is needed to hold white text). One
+variable cannot satisfy both.
+
+**The fix.** Split the roles: `--accent-color` for text and borders,
+`--accent-fill` for surfaces that carry white text. Light mode keeps identical values.
+
+**The guard.** Seven axe scans run in dark mode, reached through the real Settings
+flow (not by setting `data-theme` directly) so they exercise the same path a user
+takes.
+
+**Takeaway.** Every mode, theme or preference a user can switch is another state to
+scan. If the app has a dark mode, a high-contrast mode or a text-size setting, the
+suite should run in each.
+
+**Plant it.** Use the same variable for fill and text again, or set the dark accent
+to the lighter value on buttons.
+
+---
+
+## What these five have in common
 
 | Case | Passed axe? | What catches it |
 | --- | --- | --- |
@@ -219,8 +253,9 @@ something was open, expanded or in error.
 | Hover vs click | Yes | Behaviour test with a real pointer |
 | Placeholder as label | Yes | Role/label queries; manual review |
 | Silent error | Partly | Scan the error state; assert focus and role |
+| Unscanned dark theme | Light theme passes | Scan every theme, through the real settings flow |
 
-None of the four is exotic. Each is a normal, plausible piece of UI code, and each
+None of the five is exotic. Each is a normal, plausible piece of UI code, and each
 looks fine in a screenshot.
 
 ---
@@ -241,6 +276,7 @@ named. Pair them with seeds from the other test types.
 | Lost focus on close | Drop the focus-restore effects in `Post.jsx` | Passes | Focus-management tests |
 | Button in a link | `<Link><button>View</button></Link>` | Fails `target-size` only | Nested-interactive check |
 | Generic page title | Remove `useDocumentTitle` | Passes | Title test |
+| Dark-mode contrast | Reuse one colour variable for text and for a white-text fill | Passes in light mode | Scan in dark mode |
 | Sticky header covers focus | Remove `scroll-padding-top` and enlarge the navbar | Passes | Focus-not-obscured test |
 
 Design notes for whoever builds it:

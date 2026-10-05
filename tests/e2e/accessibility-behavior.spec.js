@@ -218,6 +218,35 @@ test.describe("Accessibility behaviour", () => {
     await expect(react).toHaveAttribute("aria-expanded", "false");
   });
 
+  test("A11Y-017: no duplicate ids on the feed (4.1.2, aria-controls targets)", async ({
+    page,
+  }) => {
+    await loginAsSarah(page);
+    // The seed data has reposts, which embed the original post: a second copy of
+    // a post already on the page. Any id derived from the post id would collide.
+    await expect(page.locator('[data-is-repost="true"]').first()).toBeVisible();
+    const duplicates = await page.evaluate(() => {
+      const seen = new Map();
+      for (const el of document.querySelectorAll("[id]")) {
+        seen.set(el.id, (seen.get(el.id) || 0) + 1);
+      }
+      return [...seen].filter(([, count]) => count > 1).map(([id]) => id);
+    });
+    expect(duplicates).toEqual([]);
+  });
+
+  test("A11Y-015: the active Feed tab is exposed to assistive technology", async ({
+    page,
+  }) => {
+    await loginAsSarah(page);
+    const all = page.getByRole("button", { name: "See All" });
+    const following = page.getByRole("button", { name: "Following" });
+    await expect(all).toHaveAttribute("aria-pressed", "true");
+    await following.click();
+    await expect(following).toHaveAttribute("aria-pressed", "true");
+    await expect(all).toHaveAttribute("aria-pressed", "false");
+  });
+
   test("2.4.11: the sticky navbar never fully covers the focused element", async ({
     page,
   }) => {

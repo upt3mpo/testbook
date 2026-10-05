@@ -106,6 +106,7 @@ function Feed() {
         <div className="feed-tabs" data-testid="feed-tabs">
           <button
             className={`feed-tab ${feedType === 'all' ? 'active' : ''}`}
+            aria-pressed={feedType === 'all'}
             onClick={() => setFeedType('all')}
             data-testid="feed-tab-all"
           >
@@ -113,6 +114,7 @@ function Feed() {
           </button>
           <button
             className={`feed-tab ${feedType === 'following' ? 'active' : ''}`}
+            aria-pressed={feedType === 'following'}
             onClick={() => setFeedType('following')}
             data-testid="feed-tab-following"
           >

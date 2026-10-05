@@ -14,6 +14,11 @@
   --border-color: #e0e0e0;
   --accent-color: #1264d0; /* WCAG AA compliant: 4.7:1 contrast with white (was #1877f2: 4.23:1) */
   --accent-hover: #0d5ab8; /* Darkened hover state for consistency */
+  /* Fill colours for surfaces that carry white text. --accent-color is also used as
+     text/border colour, which wants a different value in dark mode, so the two roles
+     are separate variables. */
+  --accent-fill: #1264d0;
+  --accent-fill-hover: #0d5ab8;
   --danger-color: #d32f2f;
   --error-text: #b71c1c; /* 6.3:1 on the tinted .error background (danger-color alone is ~4:1) */
   --danger-hover: #b71c1c;
@@ -32,6 +37,8 @@
   --border-color: #3e4042;
   --accent-color: #2d88ff;
   --accent-hover: #4e9eff;
+  --accent-fill: #1668d9; /* white text on this: 5.2:1 (white on #2d88ff was 3.45:1) */
+  --accent-fill-hover: #1259bb;
   --card-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
   --modal-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
@@ -108,12 +115,12 @@ a.btn:hover {
 }
 
 .btn-primary {
-  background-color: var(--accent-color);
+  background-color: var(--accent-fill);
   color: white;
 }
 
 .btn-primary:hover:not(:disabled) {
-  background-color: var(--accent-hover);
+  background-color: var(--accent-fill-hover);
 }
 
 .btn-secondary {

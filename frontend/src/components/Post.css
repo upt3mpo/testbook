@@ -175,9 +175,9 @@
 }
 
 .reaction-btn.active {
-  background-color: var(--accent-color);
+  background-color: var(--accent-fill);
   color: white;
-  border-color: var(--accent-color);
+  border-color: var(--accent-fill);
 }
 
 .comment-form {
@@ -241,7 +241,7 @@
 }
 
 .dropdown-item-danger {
-  color: var(--danger-color);
+  color: var(--error-text);
 }
 
 .dropdown-item-danger:hover {

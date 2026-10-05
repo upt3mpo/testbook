@@ -37,7 +37,7 @@
 }
 
 .feed-tab.active {
-  background-color: var(--accent-color);
+  background-color: var(--accent-fill);
   color: white;
 }
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useId, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { postsAPI } from '../api';
 import { useAuth } from '../AuthContext';
@@ -7,6 +7,11 @@ import './Post.css';
 
 function Post({ post, onDelete, onUpdate, detailed = false }) {
   const { user } = useAuth();
+  // useId, not `post-${post.id}-...`: a repost embeds its original, so the same post id can
+  // appear twice on one page, and aria-controls needs ids that are unique in the document.
+  const uid = useId();
+  const dropdownId = `${uid}-menu`;
+  const reactionsId = `${uid}-reactions`;
   const [showCommentInput, setShowCommentInput] = useState(false);
   const [commentText, setCommentText] = useState('');
   const [loading, setLoading] = useState(false);
@@ -295,7 +300,7 @@ function Post({ post, onDelete, onUpdate, detailed = false }) {
               className="btn btn-secondary post-menu-btn"
               aria-label="Post options"
               aria-expanded={showDropdown}
-              aria-controls={`post-${post.id}-dropdown`}
+              aria-controls={dropdownId}
               data-testid={`post-${post.id}-menu-button`}
             >
               <span aria-hidden="true">⋯</span>
@@ -303,7 +308,7 @@ function Post({ post, onDelete, onUpdate, detailed = false }) {
             {showDropdown && (
               <div
                 className="post-dropdown"
-                id={`post-${post.id}-dropdown`}
+                id={dropdownId}
                 data-testid={`post-${post.id}-dropdown`}
               >
                 <button
@@ -401,7 +406,7 @@ function Post({ post, onDelete, onUpdate, detailed = false }) {
             ref={reactButtonRef}
             className="btn btn-secondary"
             aria-expanded={showReactions}
-            aria-controls={`post-${post.id}-reactions`}
+            aria-controls={reactionsId}
             aria-label={
               post.user_reaction ? `Your reaction: ${post.user_reaction}. Change reaction` : 'React'
             }
@@ -413,10 +418,7 @@ function Post({ post, onDelete, onUpdate, detailed = false }) {
           >
             {post.user_reaction ? `${reactionEmojis[post.user_reaction]} ▼` : 'React ▼'}
           </button>
-          <div
-            className={`reactions-dropdown ${showReactions ? 'show' : ''}`}
-            id={`post-${post.id}-reactions`}
-          >
+          <div className={`reactions-dropdown ${showReactions ? 'show' : ''}`} id={reactionsId}>
             {reactions.map((reaction) => (
               <button
                 key={reaction}

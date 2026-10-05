@@ -70,7 +70,7 @@
 }
 
 .danger-zone .settings-section-title {
-  color: var(--danger-color);
+  color: var(--error-text);
 }
 
 /* Avatar section */

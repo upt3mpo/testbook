@@ -22,10 +22,15 @@ import Alert from '../../components/Alert';
 import CreatePost from '../../components/CreatePost';
 import LiveRegion, { announce } from '../../components/LiveRegion';
 import Post from '../../components/Post';
+import Feed from '../../pages/Feed';
 import Login from '../../pages/Login';
 import Register from '../../pages/Register';
 
 vi.mock('../../api', () => ({
+  feedAPI: {
+    getAllFeed: vi.fn().mockResolvedValue({ data: [] }),
+    getFollowingFeed: vi.fn().mockResolvedValue({ data: [] }),
+  },
   postsAPI: {
     createPost: vi.fn(),
     updatePost: vi.fn(),
@@ -340,6 +345,54 @@ describe('A11Y-014: hover and click do not fight over the reaction picker', () =
     await user.click(document.body);
 
     expect(react).toHaveAttribute('aria-expanded', 'false');
+  });
+});
+
+describe('A11Y-015: the active Feed tab is exposed, not just coloured', () => {
+  it('marks exactly one tab as pressed and follows the selection', async () => {
+    const user = userEvent.setup();
+    renderWith(<Feed />);
+
+    const all = screen.getByRole('button', { name: 'See All' });
+    const following = screen.getByRole('button', { name: 'Following' });
+    expect(all).toHaveAttribute('aria-pressed', 'true');
+    expect(following).toHaveAttribute('aria-pressed', 'false');
+
+    await user.click(following);
+    expect(all).toHaveAttribute('aria-pressed', 'false');
+    expect(following).toHaveAttribute('aria-pressed', 'true');
+  });
+});
+
+describe('A11Y-017: ids referenced by aria-controls are unique in the document', () => {
+  it('a post and a repost of it, on the same page, do not duplicate any id', () => {
+    // The feed shows post 3 AND a repost of post 3 (which embeds post 3 again).
+    const original = { ...basePost, id: 3, content: 'The original' };
+    const repost = {
+      ...basePost,
+      id: 9,
+      is_repost: true,
+      original_post_id: 3,
+      original_post: original,
+    };
+    const { container } = renderWith(
+      <>
+        <Post post={original} onDelete={vi.fn()} onUpdate={vi.fn()} />
+        <Post post={repost} onDelete={vi.fn()} onUpdate={vi.fn()} />
+      </>
+    );
+
+    const ids = [...container.querySelectorAll('[id]')].map((el) => el.id);
+    expect(ids.length).toBeGreaterThan(0);
+    expect(new Set(ids).size).toBe(ids.length);
+
+    // ...and every aria-controls that is expanded points at exactly one element.
+    // (A collapsed menu has nothing to point at yet, which ARIA allows.)
+    for (const el of container.querySelectorAll('[aria-controls][aria-expanded="true"]')) {
+      expect(container.querySelectorAll(`[id="${el.getAttribute('aria-controls')}"]`)).toHaveLength(
+        1
+      );
+    }
   });
 });
 

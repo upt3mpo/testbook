@@ -16,7 +16,7 @@
  * Run with: npm run test:a11y   (or: npx playwright test accessibility)
  */
 
-import { test } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 import { expectNoA11yViolations } from "./fixtures/a11y.js";
 import { resetDatabase, TEST_USERS } from "./fixtures/test-helpers.js";
 import { AuthPage } from "./pages/AuthPage.js";
@@ -164,4 +164,42 @@ test.describe("Accessibility (axe-core) - phone width (320px)", () => {
       await expectNoA11yViolations(page, testInfo, { name: `${route.name} @320` });
     });
   }
+});
+
+test.describe("Accessibility (axe-core) - dark theme", () => {
+  // The theme is a per-user setting, so go through the real Settings flow rather
+  // than poking data-theme. The original suite never scanned dark mode, and it hid
+  // real contrast failures (white text on the dark accent colour was 3.45:1).
+  test.beforeEach(async ({ page }) => {
+    await resetDatabase(page);
+    await loginAsSarah(page);
+    await page.goto("/settings");
+    await page.getByLabel("Theme").selectOption("dark");
+    await page.getByRole("button", { name: /save/i }).click();
+    await page.getByRole("status").waitFor();
+    await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+  });
+
+  for (const route of AUTHENTICATED_ROUTES) {
+    test(`${route.name} page`, async ({ page }, testInfo) => {
+      await page.goto(route.path);
+      await settle(page);
+      await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+      await expectNoA11yViolations(page, testInfo, { name: `${route.name} (dark)` });
+    });
+  }
+
+  test("Post detail page", async ({ page }, testInfo) => {
+    await page.goto("/");
+    await openFirstPostDetail(page);
+    await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+    await expectNoA11yViolations(page, testInfo, { name: "Post detail (dark)" });
+  });
+
+  test("Feed with the reaction picker open", async ({ page }, testInfo) => {
+    await page.goto("/");
+    await page.getByRole("button", { name: "React", exact: true }).first().click();
+    await page.getByRole("button", { name: "Like", exact: true }).first().waitFor();
+    await expectNoA11yViolations(page, testInfo, { name: "Reaction picker (dark)" });
+  });
 });
