@@ -47,12 +47,23 @@
 - Problem-solving skills help debug and fix issues
 - All three are needed for success in QA
 
+### 6. A vendor's accessibility conformance report marks all 55 criteria "Supports", with no caveats. What should you do first?
+
+**Answer: B) Ask who evaluated the product and how, and be suspicious of a report with no "Not evaluated" or "Does not support" rows**
+
+- Automated tools cannot decide most WCAG criteria, so a report built on them alone cannot honestly claim all 55.
+- A report written by the vendor is a self-assessment, not an audit. That is not wrong, but you should know which you are reading.
+- A credible report names its scope, links evidence for each row, admits what has not been evaluated, and says what was not done
+  (no screen reader run by a person, no disabled testers). Testbook's own
+  [conformance report](../../docs/a11y/CONFORMANCE_REPORT.md) is built that way.
+- "Complete" (A), a logo (C) and a longer table (D) say nothing about whether anyone looked closely.
+
 ## How Did You Do?
 
-- **5/5:** Excellent! You're ready for QA engineering roles
-- **4/5:** Very good! You understand the fundamentals
-- **3/5:** Good! Review the concepts you missed
-- **2/5 or less:** Consider reviewing the materials before job hunting
+- **6/6:** Excellent! You're ready for QA engineering roles
+- **5/6:** Very good! You understand the fundamentals
+- **4/6:** Good! Review the concepts you missed
+- **3/6 or less:** Consider reviewing the materials before job hunting
 
 ## Congratulations! 🎉
 

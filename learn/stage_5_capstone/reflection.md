@@ -2,8 +2,8 @@
 
 These questions are about the capstone ticket you just worked - the
 bookmarks feature (or whatever feature you substituted), delivered as one
-bundle: a product requirement, a failing test, a performance threshold, and
-a security requirement, all at once. If you can only answer these by
+bundle: a product requirement, a failing test, a performance threshold, a
+security requirement, and an accessibility requirement, all at once. If you can only answer these by
 describing one stage at a time, you haven't finished the capstone yet -
 finish [Part 2 and 3](README.md#part-2-the-capstone-ticket) first.
 
@@ -48,20 +48,33 @@ This is asking you to notice what the given test actually pinned down
 that you might not have thought to test yourself (the cross-user IDOR
 case is the likely answer, but defend your own).
 
-### 4. Which of the four requirements would you cut first if you had half the time, and which would you refuse to cut no matter what?
+### 4. Which of the five requirements would you cut first if you had half the time, and which would you refuse to cut no matter what?
 
 Defend both answers. A real answer names the actual risk of cutting each one - "the E2E test
 is expensive and the integration tests already prove the API works" is a
 defensible reason to cut E2E under time pressure; "ship without the auth
 check" is not defensible under any time pressure, and you should be able
-to say why the difference isn't just severity, it's blast radius.
+to say why the difference isn't just severity, it's blast radius. And for each requirement you would cut, name **who is excluded or harmed when it is cut**, not only what is delayed.
 
 ### 5. Pick one specific decision in your implementation that you could only have made correctly because of something you learned in exactly one prior stage - not "I used pytest," a real decision. What would you have gotten wrong without that stage?
 
-If you can't name one, that's worth sitting with: it may mean the four
+If you can't name one, that's worth sitting with: it may mean the five
 requirements didn't actually interact as much as they could have for
 the feature you chose, which is itself worth writing down as an honest
 finding about your own capstone.
+
+### 6. Where did accessibility change a decision in your implementation, and what would it have cost to make that decision late?
+
+Point to something concrete: the markup you chose for the bookmark toggle, where focus goes after an item is removed from the list,
+how a change is announced. Then say what you would have had to rewrite if you had only discovered the problem with a screen reader
+after the UI was built. If nothing changed, say why: either the requirement was already satisfied by the shared components you
+reused (which is a good answer, and is exactly what Stage 0's prevention ladder predicts), or you did not take it seriously
+enough, and an honest note about that is better than an invented example.
+
+### 7. Your conformance report has some "Not evaluated" rows. Why is that better than a column of "Supports", and what would it take to close each one?
+
+A good answer names the specific evidence each row is missing (a screen reader run, a zoom check, a disabled tester) and who
+would have to provide it.
 
 ---
 
@@ -88,7 +101,7 @@ portfolio-review level:
    Be ready to explain not just what you tested, but why - what layer of
    the pyramid each test belongs to and why, and what you deliberately
    chose not to test and why that was a reasonable call.
-2. **"You had four requirements land at once. Walk me through how you
+2. **"You had five requirements land at once. Walk me through how you
    triaged them."** This is the actual capstone question. Your decision
    log is your answer - practice saying it out loud, not just having it
    written down.
@@ -101,7 +114,14 @@ portfolio-review level:
    users?"** A reasonable answer touches on what your current performance
    thresholds don't yet account for, and what your CI would need
    (parallelization, faster feedback) to stay useful at that scale.
-5. **"Why should I trust that your tests actually catch regressions,
+5. **"How do you test for accessibility, and what do your tests not prove?"**
+   A strong answer layers it: acceptance criteria first, automated scans of
+   every state and theme, keyboard and focus behaviour tests, manual keyboard
+   and screen reader checks, and testing with disabled users as the gold
+   standard. It then says plainly what automation cannot see (whether a name is
+   meaningful, whether an announcement is understandable) and points to the
+   conformance report as the honest record of what is and is not verified.
+6. **"Why should I trust that your tests actually catch regressions,
    instead of just padding a coverage number?"** Point to something
    concrete: a test you wrote that would have caught a real bug, or a
    case where you deliberately chose one meaningful assertion over five
@@ -116,6 +136,8 @@ portfolio-review level:
 - [ ] Coverage report screenshot: _______________
 - [ ] E2E test video or screenshot: _______________
 - [ ] `TESTING.md` documentation: _______________
+- [ ] `ACCESSIBILITY_CONFORMANCE_REPORT.md`: _______________
+- [ ] Accessibility run sheet (keyboard and screen reader or inspector): _______________
 
 ---
 

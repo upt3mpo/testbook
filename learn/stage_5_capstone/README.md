@@ -18,14 +18,16 @@
 
 <h2 id="entry-criteria">Entry Criteria: What You Should Know Before Starting</h2>
 
-Stage 5 doesn't teach new testing techniques - it asks you to combine everything from Stages 1-4 on a feature of your own choosing. Before starting, you should be able to:
+Stage 5 doesn't teach new testing techniques - it asks you to combine everything from Stages 0-4 on a feature of your own choosing. Before starting, you should be able to:
 
 - Write a unit test with the Arrange-Act-Assert pattern and explain what it isolates (Stage 1)
 - Write an integration test that hits a real API endpoint with `TestClient` or an equivalent, including auth and database state (Stage 2)
 - Write a Playwright E2E test that drives a full user workflow through the UI, using Page Object Model for at least one page (Stage 3)
 - Explain what a k6 load test threshold measures and write at least one security test for input validation or authorization (Stage 4)
+- Write an automated accessibility scan of a page state, write a keyboard test that asserts where focus goes, and say what automation cannot judge (Stages 3 and 4)
+- Place an accessibility defect on the prevention ladder and write acceptance criteria that would prevent it (Stage 0)
 
-If any of those feel shaky, revisit that stage's exercises before starting the capstone - the project below assumes you can do all four without step-by-step guidance.
+If any of those feel shaky, revisit that stage's exercises before starting the capstone - the project below assumes you can do all of them without step-by-step guidance.
 
 <h2 id="table-of-contents">Table of Contents</h2>
 
@@ -100,11 +102,11 @@ A **testing portfolio** is a collection of your best testing work that demonstra
 
 <h2 id="part-2-the-capstone-ticket">Part 2: The Capstone Ticket</h2>
 
-### Why This Isn't Four Separate Assignments
+### Why This Isn't Five Separate Assignments
 
-In Stages 1 through 4, you practiced one layer of the pyramid at a time - unit tests in isolation in Stage 1, then integration, then E2E, then performance and security. That's the right way to *learn* each layer. It's not how a real ticket arrives.
+In Stages 1 through 4, you practiced one layer of the pyramid at a time - unit tests in isolation in Stage 1, then integration, then E2E, then performance, security and accessibility. (Stage 0 taught you why accessibility is a requirement from the first conversation, not a pass at the end.) That's the right way to *learn* each layer. It's not how a real ticket arrives.
 
-A real ticket shows up as one bundle: a product requirement, a test someone already wrote against it, a performance budget it has to meet, and a security bar it can't ship without. Nobody hands them to you one at a time, waiting for you to finish the last one before showing you the next. You read all four before you decide what to do first - and that decision is the actual skill this stage is testing. Getting the code working is Stages 1-4. Deciding how to get there, in what order, and being able to explain why, is the capstone.
+A real ticket shows up as one bundle: a product requirement, a test someone already wrote against it, a performance budget it has to meet, a security bar it can't ship without, and an accessibility bar it can't ship without. Nobody hands them to you one at a time, waiting for you to finish the last one before showing you the next. You read all five before you decide what to do first - and that decision is the actual skill this stage is testing. Getting the code working is Stages 1-4. Deciding how to get there, in what order, and being able to explain why, is the capstone.
 
 ### The Ticket
 
@@ -171,13 +173,116 @@ class TestBookmarks:
 
 > This ships with security sign-off attached, not bolted on after. At minimum: bookmarking must require authentication (the test file above already pins this), a user must not be able to read or modify another user's bookmark list under any input (the IDOR case above checks the direct route - now find at least one more way a typical implementation gets this wrong, and write a test for it), and the bookmark endpoints follow the same rate-limiting convention already used in `routers/auth.py` (`slowapi`, permissive under `TESTING=true`, conservative in production) rather than being left unlimited.
 
+**Accessibility requirement**, from the same ticket:
+
+> This ships with accessibility sign-off attached, not bolted on after. The bookmark control and the Saved Posts view meet WCAG 2.2 Level AA. Write the acceptance criteria **first** (use the template from [Exercise 0.3](../stage_0_inclusion_first/exercises/EXERCISE_0_3_Built_In_Then_Verified.md) and attach them to your decision log), then build to them. At minimum:
+>
+> - The bookmark control is a toggle button with a **stable accessible name**, it **exposes whether the post is saved**, it works by keyboard, it has a visible focus indicator, and it is at least 24 by 24 CSS pixels.
+> - Saving and un-saving is **announced** to assistive technology. Testbook already has a live-region helper (`announce()` in `frontend/src/components/LiveRegion.jsx`).
+> - Saved Posts has its own page title and one top-level heading, is reachable **from Settings by keyboard**, has an empty state that says what to do, and works in both themes and at 320 px wide.
+> - **Un-bookmarking from the Saved Posts list removes an item, so focus must go somewhere sensible, not fall to the top of the page.** Decide where, and write a test that asserts it.
+> - If a bookmark request fails, the user sees a **readable alert**, never a blank page or `[object Object]`. Remember [A11Y-019](../../docs/a11y/AUDIT_LOG.md): the API returns errors in two shapes.
+> - The evidence: an automated scan of the new view in its **default, empty and dark** states; one behaviour test that bookmarks and un-bookmarks **by keyboard** and asserts focus and the announcement; a manual pass (keyboard, plus a screen reader or the accessibility inspector) recorded on a [run sheet](../../docs/a11y/manual/RUN_SHEET_TEMPLATE.md); and an [Accessibility Conformance Report](../../docs/a11y/CONFORMANCE_REPORT_TEMPLATE.md) for the feature.
+
 ### Your Job
 
-Build the feature until the test file above passes, meet the performance threshold, satisfy the security requirement, and add one Playwright E2E test (Python or JS, your choice, Page Object Model) that drives the real user workflow: log in, bookmark a post from the feed, navigate to Saved Posts, see it there, un-bookmark it, confirm it's gone.
+Build the feature until the test file above passes, meet the performance threshold, satisfy the security requirement, satisfy the accessibility requirement, and add one Playwright E2E test (Python or JS, your choice, Page Object Model) that drives the real user workflow: log in, bookmark a post from the feed, navigate to Saved Posts, see it there, un-bookmark it, confirm it's gone.
 
 Then write the [decision log](#part-3-working-the-ticket) - not a test plan you wrote in advance, a record of the order you actually worked in and why.
 
-**Prefer a different feature?** The same four-artifact structure applies to anything with real state and real access control - "pin one post to your profile," or "mute a user without blocking them," work the same way. Write your own failing test first (that's the Stage 2 skill), and don't skip the performance or security artifact just because you changed the feature. Dropping either one is exactly the shortcut this stage exists to close off.
+**Prefer a different feature?** The same five-artifact structure applies to anything with real state and real access control - "pin one post to your profile," or "mute a user without blocking them," work the same way. Write your own failing test first (that's the Stage 2 skill), and don't skip the performance, security or accessibility artifact just because you changed the feature. Dropping any of them is exactly the shortcut this stage exists to close off.
+
+### Optional second ticket: image descriptions
+
+If you want a second capstone, or you prefer to start from accessibility itself, here is a ticket whose *feature* is accessibility. Testbook has a known limitation (recorded in the [audit log](../../docs/a11y/AUDIT_LOG.md)): every user-uploaded image carries the same generic alternative text, "Post content", because authors have no way to describe an image. This ticket fixes that, and it moves one of the report's only "Does not support" rows.
+
+**Product requirement:**
+
+> When a user attaches an image to a post, they can add a short **description** for people who cannot see the image. The description is shown to assistive technology as the image's alternative text. Posts without one keep working. A description is only accepted with an image, and is at most 500 characters.
+
+**A test a teammate already wrote**, before the field existed, so it currently fails. Drop it into `backend/tests/integration/test_api_image_descriptions.py`:
+
+```python
+"""Integration tests for image descriptions - written against the spec,
+before the feature exists. This file should fail until you build it."""
+
+
+class TestImageDescriptions:
+    def test_a_post_can_carry_an_image_description(self, client, auth_headers):
+        response = client.post(
+            "/api/posts/",
+            headers=auth_headers,
+            json={
+                "content": "Sunset hike",
+                "image_url": "/static/images/sunset-hike.jpg",
+                "image_description": "A hiker silhouetted against an orange sunset",
+            },
+        )
+
+        assert response.status_code == 201
+        assert response.json()["image_description"] == "A hiker silhouetted against an orange sunset"
+
+    def test_the_description_comes_back_in_the_feed(self, client, auth_headers):
+        client.post(
+            "/api/posts/",
+            headers=auth_headers,
+            json={
+                "content": "Sunset hike",
+                "image_url": "/static/images/sunset-hike.jpg",
+                "image_description": "A hiker silhouetted against an orange sunset",
+            },
+        )
+
+        feed = client.get("/api/feed/all", headers=auth_headers).json()
+        mine = next(p for p in feed if p["content"] == "Sunset hike")
+
+        assert mine["image_description"] == "A hiker silhouetted against an orange sunset"
+
+    def test_a_description_is_optional(self, client, auth_headers):
+        response = client.post(
+            "/api/posts/",
+            headers=auth_headers,
+            json={"content": "No description", "image_url": "/static/images/sunset-hike.jpg"},
+        )
+
+        assert response.status_code == 201
+        assert response.json()["image_description"] in (None, "")
+
+    def test_a_description_without_an_image_is_rejected_with_a_clear_message(self, client, auth_headers):
+        response = client.post(
+            "/api/posts/",
+            headers=auth_headers,
+            json={"content": "Words only", "image_description": "Describes nothing"},
+        )
+
+        assert response.status_code == 422
+
+    def test_a_description_has_a_length_limit(self, client, auth_headers):
+        response = client.post(
+            "/api/posts/",
+            headers=auth_headers,
+            json={
+                "content": "Too long",
+                "image_url": "/static/images/sunset-hike.jpg",
+                "image_description": "x" * 501,
+            },
+        )
+
+        assert response.status_code == 422
+```
+
+**Performance requirement:** the feed must not get slower. Run the same k6 script against `GET /api/feed/all` before and after, and defend the comparison you make.
+
+**Security requirement:** a description is user-controlled text that ends up in an `alt` attribute. Enforce the length limit on the server (the test above pins it), show that markup in a description comes back as plain text and is rendered as text, and find at least one more way a typical implementation gets this wrong, with a test.
+
+**Accessibility requirement:** the people this feature exists for must be able to use it, and it must not make anything else worse.
+
+- The description field has a **visible label** and a short hint that says what a good description is (what the image shows, not "image of").
+- The rendered image uses the description as its alternative text, and falls back to the old generic text **only when there is none**.
+- The post form passes your scan, keyboard and focus checks with the new field in place, including its error states.
+- Write the acceptance criteria first, and make the same five artifacts as the bookmarks ticket.
+
+**Your job:** build until the test file passes, and produce all five artifacts. Then ask the question this ticket is really about: **who is still excluded** when authors forget, or choose not to, add a description? What product decision would you raise?
 
 ---
 
@@ -190,6 +295,7 @@ Different reasonable engineers triage this ticket differently, and that's fine -
 - The failing test file is your fastest feedback loop. Making it pass first tells you whether your data model and endpoints are shaped right, before you spend time on performance or the UI.
 - The security requirement isn't a separate pass at the end. The IDOR check in the test file constrains your query design from the start - you can't query bookmarks by post alone without also filtering by the requesting user. Build it the naive way first and you'll be rewriting the query later, not patching it.
 - The performance and security requirements pull in a related direction here: satisfying "don't leak other users' bookmarks" cheaply usually means an indexed, user-scoped query - which is also most of what "fast at 500 bookmarks" needs. Notice when a requirement from one stage does double duty for another; that's a real signal, not a coincidence to write off.
+- Accessibility is not a pass at the end either. The question "where does focus go when the user un-bookmarks an item from the list?" shapes your component from the start, and so does "how is this announced?". Answer them in your acceptance criteria and they cost almost nothing. Discover them with a screen reader after the UI is built and you are rewriting markup.
 - The E2E test is your slowest feedback loop, and it depends on the backend being done. Writing it first would mean testing against a feature that doesn't exist yet.
 
 None of that is a prescribed order. It's the kind of reasoning your decision log should contain.
@@ -221,6 +327,26 @@ something you chose not to build or not to test, and defend the call -
 not "I ran out of time," but "here's the actual risk of skipping this,
 and here's why I judged it acceptable."]
 
+## Where accessibility changed the design
+
+[Name one decision that would have been different if you had treated
+accessibility as something to check at the end: the markup you chose for
+the toggle, where focus goes after an item is removed, how a change is
+announced. Be specific about what you would have built instead.]
+
+## What would have been expensive to retrofit
+
+[Pick the one accessibility decision that was cheap because you made it
+early and would have been costly later. Explain why, in terms of what
+you would have had to rewrite.]
+
+## Accessibility sign-off
+
+[What you verified automatically, what you verified by hand, and what you
+could not verify (for example, no screen reader was available). Say what
+you would want a disabled tester to check, and be honest about what your
+sign-off does not cover.]
+
 ## Where each stage's knowledge was actually load-bearing
 
 [Not "I used pytest for backend tests and Playwright for E2E" - that's
@@ -228,7 +354,8 @@ just naming tools. Point to one specific decision in this feature you
 could only have made correctly because you understood a specific prior
 stage - a fixture-scope choice from Stage 1, an authorization pattern
 from Stage 2, a locator strategy from Stage 3, a threshold number you
-can defend from Stage 4.]
+can defend from Stage 4, or an acceptance criterion from Stage 0
+that would otherwise have been a late discovery.]
 ```
 
 Save this alongside your tests as `DECISION_LOG.md` - it belongs in your portfolio (see [Part 4](#part-4-creating-portfolio-artifacts)) as much as the tests themselves do.
@@ -335,6 +462,22 @@ Create `TESTING.md` for your feature:
 [Show metrics and outcomes]
 ```
 
+**Artifact 5: Accessibility Conformance Report**
+
+Copy [the template](../../docs/a11y/CONFORMANCE_REPORT_TEMPLATE.md) to your capstone folder as
+`ACCESSIBILITY_CONFORMANCE_REPORT.md` and fill it in for your feature. Testbook's own
+[conformance report](../../docs/a11y/CONFORMANCE_REPORT.md) is the worked example.
+
+This is the document procurement teams and enterprise customers ask vendors for (usually as a Voluntary Product Accessibility
+Template, or VPAT), and very few testers can write one well. What makes yours credible is not a column of "Supports". It is:
+
+- **A scope that matches what you tested.** Say which pages, states, themes and widths.
+- **Evidence for every row**, linking to a test, a scan, or a run sheet.
+- **Honest "Not evaluated" rows** where you have no evidence yet, with a note on what would close each one.
+- **A plain statement of who evaluated it**, and what was not done: no screen reader operated by a person, no disabled users.
+
+A report that claims "Supports" for all 55 criteria with no caveats should make a reader suspicious, not confident.
+
 ---
 
 <h2 id="part-5-professional-presentation">Part 5: Professional Presentation</h2>
@@ -367,6 +510,8 @@ Use these templates (fill in your specifics):
 - Achieved 85%+ test coverage using pytest, FastAPI TestClient, and Playwright
 - Documented testing strategy and created reusable test fixtures and factories
 - Produced portfolio artifacts including coverage reports, test videos, and comprehensive documentation
+- Treated accessibility as a requirement: wrote WCAG 2.2 AA acceptance criteria first, automated scans of each state and keyboard behaviour tests, ran manual keyboard and screen reader checks, and produced a conformance report that says honestly what is and is not verified
+- Analysed 19 real accessibility defects, showed that a default automated scan found none of them, and traced each one to the point where it should have been prevented
 
 ### Portfolio README Template
 
@@ -397,6 +542,7 @@ I completed Testbook's 5-stage learning path and built a comprehensive test suit
 - ✅ E2E testing
 - ✅ Security testing
 - ✅ Performance testing
+- Accessibility testing (automated WCAG 2.2 AA scans, keyboard and screen reader testing, conformance reporting)
 
 ## Projects
 
@@ -415,9 +561,9 @@ I completed Testbook's 5-stage learning path and built a comprehensive test suit
 ### 2. Capstone: [Feature] - Built From a Bundled Ticket
 
 **Description:** Given a product requirement, a failing integration test, a
-performance threshold, and a security requirement simultaneously - built
-[feature] to satisfy all four and documented the triage decisions in a
-decision log.
+performance threshold, a security requirement, and an accessibility
+requirement simultaneously - built [feature] to satisfy all five and
+documented the triage decisions in a decision log.
 
 **Test Coverage:**
 
@@ -425,10 +571,11 @@ decision log.
 - 1 E2E test covering the full user workflow (Page Object Model)
 - 1 k6 load test with a defended threshold
 - [N] security tests (auth, IDOR, rate limiting)
+- [N] accessibility tests (scans of each state, keyboard and focus behaviour) and an accessibility conformance report
 
 **Results:**
 
-- All four requirements satisfied, in an order documented in
+- All five requirements satisfied, in an order documented in
   `DECISION_LOG.md`
 - [p95 response time you actually hit] at [concurrency] concurrent users
 - 0 production bugs in 30 days
@@ -466,6 +613,9 @@ Think of job interviews like performing in a play. You need:
 **Q: "What's your approach to security testing?"**
 *Reference OWASP Top 10, your security tests.*
 
+**Q: "How do you test for accessibility?"**
+*Layer it: write acceptance criteria first, automate what is deterministic (axe scans of every state and theme, keyboard and focus behaviour), then run manual keyboard and screen reader checks for what needs judgement. Say what automation cannot see, and that testing with disabled users is the gold standard. Use the 19-defect analysis from Stage 0 as your evidence.*
+
 **Behavioral Questions:**
 
 **Q: "Tell me about a bug you found."**
@@ -473,6 +623,9 @@ Think of job interviews like performing in a play. You need:
 
 **Q: "Describe a time you had to learn a new testing tool."**
 *Your Testbook journey! Playwright, pytest, k6.*
+
+**Q: "Tell me about a bug your automated tools missed."**
+*Pick one from this course: the invisible Tab stops, or the hover and click fight. Explain why a scan was blind to it, how you found it, and which test now guards it.*
 
 **Q: "How do you prioritize testing when time is limited?"**
 *Risk-based testing, smoke tests, critical paths.*
@@ -590,6 +743,8 @@ You're ready for QA engineering roles when you can:
 - [] Wrote one E2E test (Page Object Model) covering the full user workflow
 - [] Met a k6 performance threshold you can defend, not just one you copied
 - [] Implemented and tested the rate-limiting and authorization requirements
+- [] Wrote accessibility acceptance criteria before building, and met them: a scan of the default, empty and dark states, a keyboard behaviour test that asserts focus and announcement, and a manual pass recorded on a run sheet
+- [] Produced an Accessibility Conformance Report with evidence for every row, honest "Not evaluated" rows, and a plain statement of what was not verified
 - [] Wrote a decision log explaining the order you worked in and why -
       not a test plan written in advance
 - [] Debug failing tests
@@ -621,6 +776,7 @@ You're ready for QA engineering roles when you can:
 - **Knowledge sharing** - Help others learn from your work
 - **Professional development** - Build skills systematically
 - **Career planning** - Know where you want to go
+- **Accessibility as a requirement** - Teams that write acceptance criteria first, and report honestly on what they have and have not verified, ship products people can use and avoid late, expensive rewrites
 
 ---
 
@@ -630,6 +786,7 @@ You're ready for QA engineering roles when you can:
 
 - [Portfolio Guide](../../docs/guides/PORTFOLIO.md)
 - [Interview Preparation](../../docs/industry/CAREER_GUIDE.md#interview-preparation)
+- [Accessibility Conformance Report template](../../docs/a11y/CONFORMANCE_REPORT_TEMPLATE.md) and Testbook's own [worked example](../../docs/a11y/CONFORMANCE_REPORT.md)
 
 ### Technical Resources
 
@@ -675,10 +832,17 @@ Before considering yourself job-ready, can you answer these questions?
    - D) There's no difference
 
 5. **What makes a good QA engineer?**
+
    - A) Only technical skills
    - B) Only communication skills
    - C) Technical skills, communication, and problem-solving
    - D) Only problem-solving skills
+
+6. **A vendor's accessibility conformance report marks all 55 criteria "Supports", with no caveats. What should you do first?**
+   - A) Trust it, because it is complete
+   - B) Ask who evaluated the product and how, and be suspicious of a report with no "Not evaluated" or "Does not support" rows
+   - C) Check that it has the vendor's logo
+   - D) Ask for a longer table
 
 **Answers:** [Check your answers here](../solutions/stage_5_quiz_answers.md)
 
