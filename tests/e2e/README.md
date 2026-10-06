@@ -526,6 +526,23 @@ test("verify post created via API", async ({ page, request }) => {
 - **Reset database liberally:** Isolation prevents flaky tests
 - **Check the HTML report:** Great for understanding failures
 
+## Accessibility tests
+
+Two spec files check WCAG 2.2 AA, and both are tagged `@a11y`:
+
+- `accessibility-axe.spec.js`: axe-core scans of every route, interaction states, the dark theme and a 320 px phone width
+- `accessibility-behavior.spec.js`: focus, tab order, announcements, reflow, and other things a scan cannot see
+
+```bash
+npm run test:a11y                         # both files, Chromium
+npx playwright test --grep @a11y          # by tag, from anywhere in the suite
+```
+
+All scans go through one helper, `fixtures/a11y.js`, which owns the standard (read its comments before changing it) and waits for
+animations to finish so a scan never measures a colour mid-fade. `pressTab` presses the right key per browser engine, because
+Safari's Tab skips links and buttons by default. See [Lab 16](../../learn/stage_4_performance_security/exercises/LAB_16_Accessibility_Automation_JavaScript.md)
+and the [JavaScript and Python comparison](../../docs/a11y/JS_VS_PYTHON_ACCESSIBILITY_TESTING.md).
+
 ---
 
 **Happy Testing!** 🚀

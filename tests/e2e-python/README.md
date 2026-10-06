@@ -301,6 +301,21 @@ pytest -v
 
 - [CI/CD for E2E Testing](../../learn/stage_5_capstone/README.md#cicd-integration) - Automate these tests
 
+## Accessibility tests
+
+`test_accessibility.py` is the Python twin of the JavaScript accessibility specs: 50 tests, marked `a11y`, covering axe scans of
+every route, interaction states, the dark theme and a 320 px width, plus the behaviour checks a scan cannot make.
+
+```bash
+pytest -m a11y -v            # only the accessibility tests
+pytest -m "not a11y" -v      # everything else
+```
+
+Python has no official axe integration, so `a11y.py` injects the axe-core script (read from `frontend/node_modules`, so run
+`npm install` in `frontend/` first) and calls `axe.run()` itself. It also owns the standard and waits for animations to finish.
+See [Lab 16](../../learn/stage_4_performance_security/exercises/LAB_16_Accessibility_Automation_Python.md) and the
+[JavaScript and Python comparison](../../docs/a11y/JS_VS_PYTHON_ACCESSIBILITY_TESTING.md).
+
 ---
 
 **🎉 Happy testing with Playwright Python!**

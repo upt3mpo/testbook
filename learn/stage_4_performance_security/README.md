@@ -21,12 +21,16 @@
 **Lab 13: Load Testing with k6** - Performance testing fundamentals with k6
 **Lab 14: Security Testing with OWASP** - Security testing with OWASP guidelines
 **Lab 15: Rate Limiting Testing** - Advanced rate limiting and security patterns
+**Lab 16: Accessibility Automation** - Automated WCAG 2.2 AA testing, and what it cannot see
+**Lab 17: Manual Accessibility Testing** - Keyboard and screen reader testing, and writing bug reports
 
 ### Lab Progression
 
 1. **Lab 13** - Start with performance testing basics using k6
 2. **Lab 14** - Learn security testing with OWASP Top 10
 3. **Lab 15** - Master rate limiting and advanced security patterns
+4. **Lab 16** - Automate accessibility checks and learn their limits
+5. **Lab 17** - Test by hand what automation cannot judge
 
 ### Language Tracks
 
@@ -48,6 +52,8 @@ By the end of Stage 4, you will:
 - Implement load testing with k6
 - Test for OWASP Top 10 security vulnerabilities
 - Master rate limiting and security patterns
+- Automate WCAG 2.2 AA checks, scanning states and not just pages, and say what automation cannot see
+- Run scripted keyboard and screen reader tests and write accessibility bug reports that name who is affected
 - Be ready for production-level testing challenges
 
 ### Quick Start
@@ -63,6 +69,8 @@ By the end of Stage 4, you will:
 - **Lab 13**: Load Testing with k6 - Performance testing fundamentals
 - **Lab 14**: Security Testing with OWASP - Security testing with OWASP guidelines
 - **Lab 15**: Rate Limiting Testing - Advanced rate limiting and security patterns
+- **Lab 16**: Accessibility Automation - [JavaScript](exercises/LAB_16_Accessibility_Automation_JavaScript.md) or [Python](exercises/LAB_16_Accessibility_Automation_Python.md)
+- **Lab 17**: Manual Accessibility Testing - [no code, both tracks](exercises/LAB_17_Manual_Accessibility_Testing.md)
 
 <h2 id="entry-criteria">Entry Criteria: What You Should Know Before Starting</h2>
 
@@ -747,6 +755,10 @@ You're ready for Stage 5 when you can:
 - [] Verify rate limiting works correctly
 - [] Think critically about edge cases and attack vectors
 - [] Prioritize security issues by severity
+- [] Explain why accessibility is a non-functional requirement alongside performance and security
+- [] Write an automated accessibility scan of a page *state*, and make it reliable by waiting for the page to settle
+- [] Say what an automated accessibility suite proves (the mechanism) and what it cannot (the experience)
+- [] Run a scripted keyboard or screen reader test, record the actual result, and write a bug report that names who is affected
 
 **Performance Track:**
 
@@ -799,12 +811,16 @@ You're ready for Stage 5 when you can:
 - [Lab 13: Load Testing with k6 (Python)](exercises/LAB_13_Load_Testing_k6.md)
 - [Lab 14: Security Testing with OWASP (Python)](exercises/LAB_14_Security_Testing_OWASP_Python.md)
 - [Lab 15: Rate Limiting Testing (Python)](exercises/LAB_15_Rate_Limiting_Production_Python.md)
+- [Lab 16: Accessibility Automation (Python)](exercises/LAB_16_Accessibility_Automation_Python.md)
+- [Lab 17: Manual Accessibility Testing](exercises/LAB_17_Manual_Accessibility_Testing.md)
 
 **🟨 JavaScript Track:**
 
 - [Lab 13: Load Testing with k6 (JavaScript)](exercises/LAB_13_Load_Testing_k6.md)
 - [Lab 14: Security Testing with OWASP (JavaScript)](exercises/LAB_14_Security_Testing_OWASP_JavaScript.md)
 - [Lab 15: Rate Limiting Testing (JavaScript)](exercises/LAB_15_Rate_Limiting_Production_JavaScript.md)
+- [Lab 16: Accessibility Automation (JavaScript)](exercises/LAB_16_Accessibility_Automation_JavaScript.md)
+- [Lab 17: Manual Accessibility Testing](exercises/LAB_17_Manual_Accessibility_Testing.md)
 
 ### Documentation
 
@@ -817,6 +833,24 @@ You're ready for Stage 5 when you can:
 - [k6](https://k6.io/) - Performance testing
 - [OWASP ZAP](https://www.zaproxy.org/) - Security scanning
 - [Burp Suite](https://portswigger.net/burp) - Security testing
+
+---
+
+<h2 id="accessibility-in-this-stage">Accessibility in this stage</h2>
+
+Performance asks "does it hold up under load?" and security asks "does it hold up under attack?" Accessibility
+asks the third non-functional question: **does it work for everyone who needs to use it?** The labs follow the same
+shape as the other two:
+
+| Lab | What you do | What it teaches |
+| --- | --- | --- |
+| Lab 16 | Work with the automated suite (JavaScript or Python), extend it, break the app on purpose, read the failures | One helper owns the standard, scan states and not just pages, flaky scans are a liability |
+| Lab 17 | Run scripted keyboard and screen reader tests and write bug reports (the same for both tracks) | What only a person can judge, and how to report it so it gets fixed |
+
+The Python and JavaScript versions of Lab 16 differ in real ways, mainly that JavaScript has an official axe
+integration and Python makes you write the glue yourself. They are compared in
+[JavaScript and Python accessibility testing compared](../../docs/a11y/JS_VS_PYTHON_ACCESSIBILITY_TESTING.md).
+If you skipped [Stage 0](../stage_0_inclusion_first/README.md), read it first.
 
 ---
 
@@ -853,10 +887,17 @@ Before moving to Stage 5, can you answer these questions?
    - D) It reduces development time
 
 5. **What's the difference between load testing and stress testing?**
+
    - A) Load testing uses more users
    - B) Load testing checks normal load, stress testing checks breaking point
    - C) Stress testing is faster
    - D) There's no difference
+
+6. **An automated test confirms an error message has `role="alert"`. What can it NOT tell you?**
+   - A) Whether the element exists
+   - B) Whether the message is understandable and is actually spoken, in good time, by a screen reader
+   - C) Whether the role is spelled correctly
+   - D) Whether the page has a title
 
 **Answers:** [Check your answers here](../solutions/stage_4_quiz_answers.md)
 
@@ -876,6 +917,8 @@ Before moving to Stage 5, answer these:
 
 5. **What's one security test you think every application should have?**
 
+6. **Pick one thing from Lab 17 that a person noticed and automation could not. How would you make sure it is checked before every release?**
+
 **Document your answers** in [reflection.md](reflection.md).
 
 ---
@@ -888,4 +931,4 @@ You now understand non-functional testing that protects users and business!
 
 ---
 
-_Pro tip: Performance and security testing are where QA engineers become invaluable. Master these, and you're ready for senior roles! 🚀_
+*Pro tip: Performance and security testing are where QA engineers become invaluable. Master these, and you're ready for senior roles! 🚀*

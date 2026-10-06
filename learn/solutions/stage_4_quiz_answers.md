@@ -47,12 +47,23 @@
 - Both are important for understanding system limits
 - The difference is in the load level, not speed or users
 
+### 6. An automated test confirms an error message has `role="alert"`. What can it NOT tell you?
+
+**Answer: B) Whether the message is understandable and is actually spoken, in good time, by a screen reader**
+
+- A test can prove the **mechanism**: the element exists, it has the right role, focus moved. Those are deterministic.
+- It cannot prove the **experience**: whether the words help, whether the announcement arrives at a useful moment, whether a real
+  screen reader speaks it as you expect. Only a person with a screen reader can judge that.
+- That is why Lab 16 (automation) and Lab 17 (manual testing) come as a pair. Automate the mechanism, and keep a human for the
+  experience.
+- The other three options (existence, a correct role, a page title) are all things a test can check directly.
+
 ## How Did You Do?
 
-- **5/5:** Excellent! You understand performance and security testing
-- **4/5:** Very good! You're ready for Stage 5
-- **3/5:** Good! Review the concepts you missed
-- **2/5 or less:** Consider reviewing Stage 4 materials before moving on
+- **6/6:** Excellent! You understand performance, security and accessibility testing
+- **5/6:** Very good! You're ready for Stage 5
+- **4/6:** Good! Review the concepts you missed
+- **3/6 or less:** Consider reviewing Stage 4 materials before moving on
 
 ## Need More Practice?
 
@@ -63,7 +74,7 @@
 
 ## Ready for Stage 5?
 
-If you got 3/5 or better, you're ready to move on to [Stage 5: Capstone](../stage_5_capstone/README.md)!
+If you got 4/6 or better, you're ready to move on to [Stage 5: Capstone](../stage_5_capstone/README.md)!
 
 ---
 

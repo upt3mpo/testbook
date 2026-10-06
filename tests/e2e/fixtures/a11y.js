@@ -32,6 +32,11 @@ export const AXE_TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa',
 export async function expectNoA11yViolations(page, testInfo, options = {}) {
   const { name = 'axe', include, exclude = [] } = options;
 
+  // CSS transitions animate colours. Scanning mid-fade measures colours that never exist at rest
+  // and reports contrast failures that are not real (this happened on the Following tab). Wait
+  // for running animations to finish first. Capped, so an endless animation cannot hang a test.
+  await page.waitForFunction(() => document.getAnimations().length === 0, null, { timeout: 3000 }).catch(() => {});
+
   let builder = new AxeBuilder({ page }).withTags(AXE_TAGS);
   if (include) builder = builder.include(include);
   for (const selector of exclude) builder = builder.exclude(selector);
