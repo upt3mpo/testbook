@@ -1,6 +1,6 @@
 # 🧪 Lab 2: Testing Real Functions (JavaScript)
 
-**Estimated Time:** 45 minutes<br>
+**Estimated Time:** 75 minutes (45 minutes of core steps and a 30 minute accessibility step)<br>
 **Difficulty:** Beginner<br>
 **Language:** 🟨 JavaScript<br>
 **Prerequisites:** Lab 1 completed
@@ -18,6 +18,7 @@
 - Use Vitest mocking
 - Understand test coverage
 - Test async functions
+- Test a pure function with boundary values, and why that matters for accessibility
 
 ---
 
@@ -312,6 +313,135 @@ npm test utils.test.js
 
 ---
 
+### Step 6: A function that decides who can read your page (30 minutes)
+
+**Accessibility thread.** Some of the most valuable functions to test are small and pure. One
+of them decides whether people with low vision can read your text.
+
+**Why it matters.** The *contrast ratio* between text and its background is a number. WCAG
+requires at least **4.5:1** for normal text. Testbook's dark theme once failed this: white text
+on the blue button was **3.46:1**, and nobody noticed because nobody had checked dark mode. A
+unit test over the numbers would have caught it before a user ever saw it. You can read the
+whole story in [Case 5 of the worked examples](../../../docs/a11y/WORKED_EXAMPLES.md).
+
+**Open the function:** `frontend/src/tests/helpers/contrast.js`
+
+```javascript
+export function contrastRatio(colourA, colourB) { /* 1 to 21 */ }
+export function passesAA(foreground, background, { largeText = false } = {}) { /* true or false */ }
+```
+
+Read it. It converts each colour to a *relative luminance* between 0 (black) and 1 (white) using
+the formula in the WCAG definition, and returns `(lighter + 0.05) / (darker + 0.05)`. You do
+not need to memorise the maths. You need to test that it gives the right answers.
+
+> **Do not open `frontend/src/tests/unit/contrast.test.js` yet.** That is the maintainers'
+> version of the tests you are about to write. Compare against it at the end.
+
+**Create your own test file:** `frontend/src/tests/unit/contrast_lab.test.js`
+
+**Start with this and complete it:**
+
+```javascript
+import { describe, expect, it } from "vitest";
+import { contrastRatio, hexToRgb, passesAA } from "../helpers/contrast.js";
+
+describe("contrastRatio", () => {
+  it("is 21:1 for black on white", () => {
+    // Arrange / Act / Assert: the WCAG definition says the maximum ratio is 21.
+    expect(contrastRatio("#000000", "#ffffff")).toBeCloseTo(21, 5);
+  });
+
+  // TODO 1: a colour on itself is 1:1.
+
+  // TODO 2: the answer must not depend on which colour is the foreground.
+});
+```
+
+**Now write these tests yourself:**
+
+1. **Known values.** Use `it.each` to check these real Testbook colour pairs. Compare with
+   `toBeCloseTo(expected, 2)`, never `toBe`: floating-point maths is not exact.
+
+   | Foreground | Background | Expected ratio |
+   | --- | --- | --- |
+   | `#ffffff` | `#2d88ff` | 3.46 (the dark-theme bug) |
+   | `#ffffff` | `#1668d9` | 5.23 (the fix) |
+   | `#ffffff` | `#1264d0` | 5.59 |
+
+2. **The boundary.** Boundary values are where bugs live, and this function has a sharp one.
+   Check that `#767676` on white **passes** AA and `#777777` on white **fails**. To your eye the
+   two greys are identical. Their ratios are 4.54 and 4.48, on either side of 4.5. Also assert
+   that the failing ratio is **less than 4.5 but more than 4.4**, to prove it is not being
+   rounded: WCAG treats 4.499 as a fail, not as "close enough".
+
+3. **Large text.** Check that the 3.46:1 pair fails for normal text and **passes** with
+   `{ largeText: true }`, because large text only needs 3:1.
+
+4. **Bad input.** `hexToRgb` should throw for `""`, `"#12"`, `"blue"` and `null`. Use
+   `it.each` with `expect(() => ...).toThrow()`.
+
+**Run your tests:**
+
+```bash
+cd frontend
+npx vitest --run src/tests/unit/contrast_lab.test.js
+```
+
+✅ **Checkpoint:** all your tests pass.
+
+**Now compare** with `frontend/src/tests/unit/contrast.test.js`. Did you cover something it
+does not, or miss something it covers?
+
+### Step 7: Watch it guard the real app (10 minutes)
+
+A function test is good. A test that applies the function to **your real design** is better.
+
+**Open:** `frontend/src/tests/accessibility/tokens.test.js` and read the `PAIRS` list. It reads
+the colour tokens from `frontend/src/index.css` and checks every text and background pair, in
+**both** the light and dark themes, against 4.5:1.
+
+**Run it:**
+
+```bash
+npx vitest --run src/tests/accessibility/tokens.test.js
+```
+
+**Now break the app on purpose.** In `frontend/src/index.css`, find the dark theme block
+(`[data-theme='dark']`) and change this line:
+
+```css
+--accent-fill: #1668d9;
+```
+
+to the colour the bug used:
+
+```css
+--accent-fill: #2d88ff;
+```
+
+Run the test again. **It should fail**, with a message like:
+
+```text
+#ffffff (#ffffff) on --accent-fill (#2d88ff) is 3.46:1, needs 4.5:1
+```
+
+That message names the pair, the colours and the ratio, so the failure tells you exactly what to
+fix. **Now undo your change:**
+
+```bash
+git checkout src/index.css
+```
+
+✅ **Checkpoint:** the test failed with the contrast message, and passes again after you
+reverted.
+
+**What you just saw.** This is a *unit test*, layer 4 on the
+[prevention ladder](../../stage_0_inclusion_first/README.md#the-prevention-ladder). It runs in
+milliseconds, needs no browser, and would have caught a bug that a full browser test missed for
+months. Cheap tests that apply a pure function to your real design are some of the best value in
+accessibility testing.
+
 <h2 id="what-you-learned">🎓 What You Learned</h2>
 
 - ✅ How to test real application functions
@@ -376,6 +506,9 @@ Before moving to Lab 3, ensure you:
 - [ ] Wrote `utils.test.js` and it passes
 - [ ] Understand Arrange-Act-Assert pattern
 - [ ] Can explain why testing utility functions matters
+- [ ] Wrote `contrast_lab.test.js`, including the `#767676` / `#777777` boundary test, and it passes
+- [ ] Watched `tokens.test.js` fail when the dark accent colour was changed, then reverted
+- [ ] Can explain why a 4.48:1 pair fails even though it looks the same as a 4.54:1 pair
 
 ---
 

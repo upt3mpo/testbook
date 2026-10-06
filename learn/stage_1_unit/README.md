@@ -989,6 +989,7 @@ You're ready for Stage 2 when you can:
 - [ ] Run unit tests from the command line
 - [ ] Read a test and explain what it verifies
 - [ ] Make a test fail intentionally and understand the output
+- [ ] Write a boundary-value test for a pure function (Lab 2's contrast-ratio step) and explain why the boundary matters
 
 **Python Track:**
 
@@ -1059,6 +1060,21 @@ You're ready for Stage 2 when you can:
 
 ---
 
+<h2 id="accessibility-in-this-stage">Accessibility in this stage</h2>
+
+Accessibility is not a separate topic in this course, so each stage has a small piece of it. In
+Stage 1 it is a **unit test**: Lab 2 has you test a function that decides whether text is
+readable, and then watch a test over Testbook's real colours catch a bug that once shipped in
+dark mode.
+
+The point to carry forward: cheap, fast tests over pure logic and design data are some of the
+best-value accessibility tests there are. They sit at layer 4 of the
+[prevention ladder](../stage_0_inclusion_first/README.md#the-prevention-ladder), well before
+any browser is involved. If you skipped [Stage 0](../stage_0_inclusion_first/README.md), read it
+first: it explains why.
+
+---
+
 <h2 id="self-check-quiz-optional">Self-Check Quiz (Optional)</h2>
 
 Before moving to Stage 2, can you answer these questions?
@@ -1092,10 +1108,18 @@ Before moving to Stage 2, can you answer these questions?
    - D) Matches the function name
 
 5. **Why do we test edge cases?**
+
    - A) They're easier to write
    - B) They catch bugs that happy path tests miss
    - C) They run faster
    - D) They're more fun
+
+6. **A contrast-checking function is tested with `#767676` (4.54:1) and `#777777` (4.48:1) on
+   white. Why are those good test cases?**
+   - A) They are the most common greys on the web
+   - B) They sit on either side of the 4.5:1 threshold, where a small mistake would flip the result
+   - C) They are the darkest and lightest colours
+   - D) Any two colours would be equally good
 
 **Answers:** [Check your answers here](../solutions/stage_1_quiz_answers.md)
 
@@ -1114,6 +1138,8 @@ Before moving to Stage 2, answer these questions:
 4. **How are unit tests different from just manually testing a function in the Python REPL?**
 
 5. **What's one thing you're still confused about?**
+
+6. **A pure function like the contrast ratio is cheap to test. What else in an app could you check the same cheap way to protect users? (Lab 2's Step 7 gives you one example.)**
 
 **Document your answers** in [reflection.md](reflection.md) or your own notes.
 

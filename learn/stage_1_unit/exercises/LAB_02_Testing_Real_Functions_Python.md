@@ -1,6 +1,6 @@
 # 🧪 Lab 2: Testing Real Functions
 
-**Estimated Time:** 45 minutes<br>
+**Estimated Time:** 75 minutes (45 minutes of core steps and a 30 minute accessibility step)<br>
 **Difficulty:** Beginner<br>
 **Language:** 🐍 Python<br>
 **Prerequisites:** Lab 1 completed
@@ -18,6 +18,7 @@
 - Test authentication
 - Use pytest fixtures
 - Understand test coverage
+- Test a pure function with boundary values, and why that matters for accessibility
 
 ---
 
@@ -175,6 +176,128 @@ pytest tests/unit/test_auth.py::TestPasswordHashing::test_wrong_password_fails -
 
 ---
 
+### Step 6: A function that decides who can read your page (30 minutes)
+
+**Accessibility thread.** Some of the most valuable functions to test are small and pure. One
+of them decides whether people with low vision can read your text.
+
+**Why it matters.** The *contrast ratio* between text and its background is a number. WCAG
+requires at least **4.5:1** for normal text. Testbook's dark theme once failed this: white text
+on the blue button was **3.46:1**, and nobody noticed because nobody had checked dark mode. A
+unit test over the numbers would have caught it before a user ever saw it. You can read the
+whole story in [Case 5 of the worked examples](../../../docs/a11y/WORKED_EXAMPLES.md).
+
+**Get the function.** Testbook's backend has no colour code, so you are given one. Copy the
+starter file into your backend:
+
+```bash
+cp learn/stage_1_unit/exercises/starter_files/contrast.py backend/contrast.py
+```
+
+**Open it** and read it. It converts each colour to a *relative luminance* between 0 (black) and
+1 (white) using the formula in the WCAG definition, and returns
+`(lighter + 0.05) / (darker + 0.05)`. You do not need to memorise the maths. You need to test that
+it gives the right answers.
+
+```python
+def contrast_ratio(colour_a, colour_b): ...      # 1 to 21
+def passes_aa(foreground, background, large_text=False): ...   # True or False
+```
+
+> **Do not look at `learn/solutions/LAB_02_contrast_solution.py` yet.** That is the reference
+> version of the tests you are about to write.
+
+**Create your own test file:** `backend/tests/test_contrast_lab.py`
+
+**Start with this and complete it:**
+
+```python
+import pytest
+from contrast import contrast_ratio, hex_to_rgb, passes_aa
+
+
+class TestContrastRatio:
+    def test_black_on_white_is_21(self):
+        # Arrange / Act / Assert: the WCAG definition says the maximum ratio is 21.
+        assert contrast_ratio("#000000", "#ffffff") == pytest.approx(21, abs=1e-5)
+
+    # TODO 1: a colour on itself is 1:1.
+
+    # TODO 2: the answer must not depend on which colour is the foreground.
+```
+
+**Now write these tests yourself:**
+
+1. **Known values.** Use `@pytest.mark.parametrize` to check these real Testbook colour pairs.
+   Compare with `pytest.approx(expected, abs=0.005)`, never `==`: floating-point maths is not
+   exact.
+
+   | Foreground | Background | Expected ratio |
+   | --- | --- | --- |
+   | `#ffffff` | `#2d88ff` | 3.46 (the dark-theme bug) |
+   | `#ffffff` | `#1668d9` | 5.23 (the fix) |
+   | `#ffffff` | `#1264d0` | 5.59 |
+
+2. **The boundary.** Boundary values are where bugs live, and this function has a sharp one.
+   Check that `#767676` on white **passes** AA and `#777777` on white **fails**. To your eye the
+   two greys are identical. Their ratios are 4.54 and 4.48, on either side of 4.5. Also assert
+   that the failing ratio is **less than 4.5 but more than 4.4**, to prove it is not being
+   rounded: WCAG treats 4.499 as a fail, not as "close enough".
+
+3. **Large text.** Check that the 3.46:1 pair fails for normal text and **passes** with
+   `large_text=True`, because large text only needs 3:1.
+
+4. **Bad input.** `hex_to_rgb` should raise `ValueError` for `""`, `"#12"`, `"blue"` and `None`.
+   Use `parametrize` with `pytest.raises(ValueError)`.
+
+**Run your tests:**
+
+```bash
+cd backend
+pytest tests/test_contrast_lab.py -v
+```
+
+✅ **Checkpoint:** all your tests pass.
+
+**Now compare** with `learn/solutions/LAB_02_contrast_solution.py`. Did you cover something it
+does not, or miss something it covers?
+
+### Step 7: Check the real design (optional challenge, 10 to 15 minutes)
+
+A function test is good. A test that applies the function to **your real design** is better.
+
+**The task.** Write a test that reads Testbook's real colours from `frontend/src/index.css` and
+checks that every text and background pair meets 4.5:1 in **both** the light and dark themes.
+
+**Hints:**
+
+- The colours are CSS custom properties such as `--text-primary: #050505;`. The `:root` block
+  holds the light theme. The `[data-theme='dark']` block overrides some of them for dark mode;
+  anything it does not redefine falls back to the light value.
+- A regular expression such as `(--[\w-]+)\s*:\s*(#[0-9a-fA-F]{3,6})` pulls out the pairs.
+- Use `@pytest.mark.parametrize` over the pairs, and over the two themes.
+- A good failure message names the pair, both colours, the ratio and the theme.
+
+**Pairs to check:** `--text-primary` on `--bg-primary` and `--bg-secondary`; `--text-secondary` on
+both; `--accent-color` on `--bg-primary` (links); white on `--accent-fill` (the primary button);
+`--error-text` on `--bg-primary`.
+
+**Then break it on purpose.** In the dark theme block, change `--accent-fill: #1668d9;` to
+`--accent-fill: #2d88ff;` (the colour the bug used). Your test should fail and name the pair.
+Undo with `git checkout frontend/src/index.css`.
+
+The reference version is at the bottom of `learn/solutions/LAB_02_contrast_solution.py`.
+
+> **Python and JavaScript differ here.** The repository's own guard for these tokens is a
+> JavaScript test (`frontend/src/tests/accessibility/tokens.test.js`), because the frontend owns
+> the CSS. JavaScript learners read and run it. Python learners write their own version of it, so
+> the Python track gets the extra practice of parsing a file and parametrising over themes.
+
+**What you just saw.** This is a *unit test*, layer 4 on the
+[prevention ladder](../../stage_0_inclusion_first/README.md#the-prevention-ladder). It runs in
+milliseconds, needs no browser, and would have caught a bug that a full browser test missed for
+months.
+
 <h2 id="what-you-learned">🎓 What You Learned</h2>
 
 - ✅ How to test real application functions
@@ -240,6 +363,9 @@ Before moving to Lab 3, ensure you:
 - [ ] Wrote `test_wrong_password_fails` and it passes
 - [ ] Understand Arrange-Act-Assert pattern
 - [ ] Can explain why password hashing matters
+- [ ] Wrote `test_contrast_lab.py`, including the `#767676` / `#777777` boundary test, and it passes
+- [ ] Can explain why a 4.48:1 pair fails even though it looks the same as a 4.54:1 pair
+- [ ] (Optional) Wrote a test that checks the real design tokens in both themes
 
 ---
 

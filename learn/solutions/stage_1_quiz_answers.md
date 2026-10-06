@@ -47,12 +47,23 @@
 - Examples: empty strings, null values, maximum values
 - They're not necessarily easier or more fun, but they're important
 
+### 6. A contrast-checking function is tested with `#767676` and `#777777` on white. Why are those good test cases?
+
+**Answer: B) They sit on either side of the 4.5:1 threshold, where a small mistake would flip the result**
+
+- This is **boundary value testing**: bugs cluster at the edges of a rule, not in the middle.
+- `#767676` is 4.54:1 and passes AA. `#777777` is 4.48:1 and fails. To the eye they are identical.
+- A function that rounded 4.48 up to 4.5, or used `>` where it should use `>=`, would pass every
+  mid-range test and fail only here.
+- Any two colours (D) would not exercise the threshold at all, and "common greys" (A) is not a
+  testing reason.
+
 ## How Did You Do?
 
-- **5/5:** Excellent! You understand unit testing fundamentals
-- **4/5:** Very good! You're ready for Stage 2
-- **3/5:** Good! Review the concepts you missed
-- **2/5 or less:** Consider reviewing Stage 1 materials before moving on
+- **6/6:** Excellent! You understand unit testing fundamentals
+- **5/6:** Very good! You're ready for Stage 2
+- **4/6:** Good! Review the concepts you missed
+- **3/6 or less:** Consider reviewing Stage 1 materials before moving on
 
 ## Need More Practice?
 
@@ -63,7 +74,7 @@
 
 ## Ready for Stage 2?
 
-If you got 3/5 or better, you're ready to move on to [Stage 2: Integration Tests](../stage_2_integration/README.md)!
+If you got 4/6 or better, you're ready to move on to [Stage 2: Integration Tests](../stage_2_integration/README.md)!
 
 ---
 

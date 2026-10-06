@@ -76,6 +76,7 @@ Questions an interviewer might actually ask about what you just learned, and wha
 2. **"What's the difference between a mock and the real thing you're testing, and why not just use real dependencies everywhere?"** Touch on speed (mocks run in milliseconds, real dependencies don't), determinism (a mock always behaves the way you told it to; a real API might not), and the tradeoff (mocking too much means you're not testing real integration — that's what Stage 2 covers).
 3. **"If your test suite has 90% coverage, does that mean your code is well-tested?"** No — coverage tells you code was executed, not that anything meaningful was asserted about it. A good answer gives an example: a test that calls a function but doesn't check its return value adds to coverage without adding confidence.
 4. **"How do you decide what to unit test versus what to leave for integration or E2E tests?"** Reference the testing pyramid: unit tests for pure logic and edge cases in isolation, integration tests for how pieces work together, E2E for full user workflows — and that most of your tests should be the cheap, fast layer.
+5. **"How would you test that a colour palette is accessible, without opening a browser?"** A strong answer names the contrast-ratio calculation, says it is a pure function you can unit test with known values and boundary cases (just under and just over 4.5:1), and describes applying it to every text and background pair in the design tokens for every theme, so a bad colour fails a test the moment someone changes it.
 
 ---
 
