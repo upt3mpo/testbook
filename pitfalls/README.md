@@ -78,6 +78,10 @@ only follow the Python track.
 | Catch it | The hover and click fight | axe | A real pointer plus `aria-expanded` |
 | Catch it | A placeholder is not a label | axe | Find the field by its label |
 | Catch it | The silent error | axe | The `alert` role, and where focus went |
+| Catch it | A button inside a link | axe | Tab through the page and count the stops |
+| Catch it | Lost focus | axe | Check where focus is after an action |
+| Catch it | Every page has the same title | axe | The title and an announcement after navigating |
+| Catch it | The theme nobody scanned | a default-theme scan | Reach the dark state, then scan it |
 | Trust it? | The vacuous Escape test | the test itself | Assert the precondition first |
 | Trust it? | The test id that hides the bug | functional tests using test ids | Find controls by role and name |
 

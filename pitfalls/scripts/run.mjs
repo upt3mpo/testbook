@@ -19,7 +19,9 @@ if (mode === 'red') {
 } else if (mode === 'exercise') {
   env.EXERCISES = '1';
   env.SHOW_RED = '1';
-  [cmd, args] = ['npx', ['playwright', 'test', '--project=broken', '--project=fixed', target]];
+  // Run ONLY the learner's own exercise/ folder, never the reference solution beside it.
+  const exerciseDir = target.endsWith('/exercise') ? target : `${target.replace(/\/$/, '')}/exercise`;
+  [cmd, args] = ['npx', ['playwright', 'test', '--project=broken', '--project=fixed', exerciseDir]];
 } else if (mode === 'py') {
   [cmd, args] = ['python3', ['-m', 'pytest', target || '.']];
 } else {

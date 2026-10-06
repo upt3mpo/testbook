@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Lost focus - broken</title>
+    <style>
+      body { font: 16px/1.5 system-ui, sans-serif; margin: 2rem; color: #111; background: #fff; }
+      .edition { font-size: 0.875rem; color: #444; }
+      .card { max-width: 32rem; border: 1px solid #767676; border-radius: 8px; padding: 1rem; }
+      button, input { font: inherit; }
+      button { padding: 0.5rem 0.9rem; border: 1px solid #444; border-radius: 6px; background: #eee; color: #111; }
+      input { padding: 0.5rem; border: 1px solid #444; border-radius: 6px; width: 100%; box-sizing: border-box; }
+      button:focus-visible, input:focus-visible, [tabindex]:focus-visible { outline: 3px solid #1264d0; outline-offset: 2px; }
+      .wrap { position: relative; display: inline-block; }
+      ul { position: absolute; top: 100%; left: 0; margin: 0.25rem 0 0; padding: 0.25rem; list-style: none;
+        background: #fff; border: 1px solid #767676; border-radius: 6px; min-width: 8rem; }
+      li button { width: 100%; text-align: left; }
+      textarea { width: 100%; box-sizing: border-box; font: inherit; padding: 0.5rem; border: 1px solid #444; border-radius: 6px; }
+      [hidden] { display: none; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <p class="edition">Pitfall: Lost focus (<strong>broken</strong> edition)</p>
+      <h1>Sarah Johnson</h1>
+      <article class="card" aria-label="Post by Sarah Johnson">
+        <p id="content">Just shipped my first accessible form.</p>
+        <div id="editor" hidden>
+          <label for="edit-box">Edit post</label>
+          <textarea id="edit-box" rows="2">Just shipped my first accessible form.</textarea>
+          <button id="cancel" type="button">Cancel</button>
+        </div>
+        <div class="wrap">
+          <button id="menu-btn" aria-expanded="false" aria-controls="menu" aria-label="Post options">&#8943;</button>
+          <ul id="menu" hidden><li><button id="edit-btn">Edit</button></li></ul>
+        </div>
+      </article>
+    </main>
+    <script>
+      const menuBtn = document.getElementById('menu-btn');
+      const menu = document.getElementById('menu');
+      const editBtn = document.getElementById('edit-btn');
+      const editor = document.getElementById('editor');
+      const box = document.getElementById('edit-box');
+      const cancel = document.getElementById('cancel');
+      const content = document.getElementById('content');
+      function setMenu(open) { menu.hidden = !open; menuBtn.setAttribute('aria-expanded', String(open)); }
+      menuBtn.addEventListener('click', () => setMenu(menu.hidden));
+      editBtn.addEventListener('click', () => {
+        setMenu(false); // the menu, and the button that has focus, disappears
+        content.hidden = true;
+        editor.hidden = false;
+        // BUG: nothing moves focus. The Edit button just vanished, so focus falls back to <body>.
+      });
+      cancel.addEventListener('click', () => {
+        editor.hidden = true;
+        content.hidden = false;
+        // BUG: and nothing returns it here either.
+      });
+    </script>
+  </body>
+</html>

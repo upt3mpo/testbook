@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Nested interactive - fixed</title>
+    <style>
+      body { font: 16px/1.5 system-ui, sans-serif; margin: 2rem; color: #111; background: #fff; }
+      .edition { font-size: 0.875rem; color: #444; }
+      .card { max-width: 32rem; border: 1px solid #767676; border-radius: 8px; padding: 1rem; }
+      button, input { font: inherit; }
+      button { padding: 0.5rem 0.9rem; border: 1px solid #444; border-radius: 6px; background: #eee; color: #111; }
+      input { padding: 0.5rem; border: 1px solid #444; border-radius: 6px; width: 100%; box-sizing: border-box; }
+      button:focus-visible, input:focus-visible, [tabindex]:focus-visible { outline: 3px solid #1264d0; outline-offset: 2px; }
+      .actions { display: flex; gap: 0.5rem; margin-top: 1rem; align-items: center; }
+      a.btn { display: inline-block; font: inherit; padding: 0.5rem 0.9rem; border: 1px solid #444; border-radius: 6px;
+        background: #eee; color: #111; text-decoration: none; }
+      a { color: #0b4ea8; }
+      a:focus-visible { outline: 3px solid #1264d0; outline-offset: 2px; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <p class="edition">Pitfall: Nested interactive (<strong>fixed</strong> edition)</p>
+      <h1>Sarah Johnson</h1>
+      <article class="card" aria-label="Post by Sarah Johnson">
+        <p>Just shipped my first accessible form.</p>
+        <div class="actions">
+          <button>Comment</button>
+          <a class="btn" href="#post-1">View</a>
+        </div>
+      </article>
+      <p id="status" role="status">Nothing opened yet.</p>
+    </main>
+    <script>
+      window.addEventListener('hashchange', () => {
+        document.getElementById('status').textContent = 'Opened ' + location.hash.slice(1);
+      });
+    </script>
+  </body>
+</html>
