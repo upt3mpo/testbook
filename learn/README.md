@@ -208,6 +208,18 @@ flowchart TD
 
 <h2 id="the-5-stages">The 5 Stages</h2>
 
+### Stage 0: Inclusion First (start here)
+
+**Duration:** 2.5 hours (core content)
+**What you'll learn:** Why accessibility and inclusion are designed in, not tested in, and how to meet, describe and trace real barriers
+
+**Core Content:** Reading plus three short exercises, with no code: meet eight real barriers using a keyboard and assistive technology, map each to the people it excludes and the standard it breaks, and trace Testbook's 18 real accessibility defects back to the point where they should have been prevented.
+**Same for every track:** Python, JavaScript and Hybrid learners all start here.
+
+[Start Stage 0](stage_0_inclusion_first/README.md)
+
+---
+
 ### Stage 1: Unit Tests
 
 **Duration:** 4-6 hours (core content) + 2-3 hours (optional exercises)
