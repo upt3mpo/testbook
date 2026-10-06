@@ -1,6 +1,6 @@
 # 🧪 Lab 11: Cross-Browser Testing (Python)
 
-**Estimated Time:** 105 minutes<br>
+**Estimated Time:** 120 minutes (105 minutes of core parts and a 15 minute accessibility part)<br>
 **Difficulty:** Advanced<br>
 **Language:** 🐍 Python<br>
 **Prerequisites:** Lab 10 completed
@@ -379,43 +379,50 @@ fixture is hardcoded to Chromium:
 
 ```python
 # tests/e2e-python/conftest.py (excerpt - already in the repo)
-with sync_playwright() as p:
-    browser = p.chromium.launch(headless=headless, slow_mo=slow_mo)
+browser = playwright_instance.chromium.launch(headless=headless, slow_mo=slow_mo)
 ```
 
 Every test that depends on the shared `page`/`context`/`browser` fixtures
 therefore always runs against Chromium, no matter what CLI flags you pass.
 To actually exercise Firefox or WebKit you either (a) parametrize that
 fixture to read the engine from an environment variable, or (b) write a
-standalone test that opens its own `sync_playwright()` block instead of
-using the shared fixtures, as shown below.
+standalone test that launches its own browser from the shared
+`playwright_instance` fixture instead of the shared `browser`, as shown below.
+
+> **Why `playwright_instance` and not `sync_playwright()`?** Playwright's sync API cannot be
+> started twice in one process. A test that opens its own `with sync_playwright():` block works
+> when run alone, then fails with *"It looks like you are using Playwright Sync API inside the
+> asyncio loop"* the moment it runs after any test that used the shared `page` fixture, which
+> includes a full-suite run. Reusing the session's single instance avoids that.
 
 #### Step 1: Run a Test Against All Three Engines
 
 **Create:** `tests/e2e-python/test_cross_browser.py`
 
+> **Why the parameter is called `engine`, not `browser_name`:** `pytest-playwright` already uses
+> `browser_name` for one of its own fixtures, and pytest refuses to collect a test that
+> parametrizes the same name.
+
 ```python
 import pytest
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import expect
 
-@pytest.mark.parametrize("browser_name", ["chromium", "firefox", "webkit"])
-def test_login_works_across_browsers(browser_name):
-    """Launch each engine directly - bypasses the shared chromium-only fixtures."""
-    with sync_playwright() as p:
-        browser = getattr(p, browser_name).launch()
-        page = browser.new_page()
+@pytest.mark.parametrize("engine", ["chromium", "firefox", "webkit"])
+def test_login_works_across_browsers(playwright_instance, engine):
+    """Launch each engine directly - bypasses the shared chromium-only browser."""
+    browser = getattr(playwright_instance, engine).launch()
+    page = browser.new_page()
 
-        page.goto("http://localhost:3000")
-        page.fill('[data-testid="login-email-input"]', "sarah.johnson@testbook.com")
-        page.fill('[data-testid="login-password-input"]', "Sarah2024!")
-        page.click('[data-testid="login-submit-button"]')
+    page.goto("http://localhost:3000")
+    page.fill('[data-testid="login-email-input"]', "sarah.johnson@testbook.com")
+    page.fill('[data-testid="login-password-input"]', "Sarah2024!")
+    page.click('[data-testid="login-submit-button"]')
 
-        page.wait_for_url("http://localhost:3000/", timeout=10000)
+    page.wait_for_url("http://localhost:3000/", timeout=10000)
 
-        from playwright.sync_api import expect
-        expect(page.locator('[data-testid="navbar"]')).to_be_visible()
+    expect(page.locator('[data-testid="navbar"]')).to_be_visible()
 
-        browser.close()
+    browser.close()
 ```
 
 ```bash
@@ -633,6 +640,122 @@ docker run --rm -it -v $(pwd):/workspace -w /workspace mcr.microsoft.com/playwri
 
 ---
 
+### Part 8: Browsers and assistive technology (15 minutes)
+
+**Accessibility thread.** "Cross-browser" usually means "does it render the same". For accessibility
+it also means "does it behave the same when driven by a keyboard", and "which assistive technology
+is paired with which browser".
+
+Part 5 showed you that the shared fixtures only launch Chromium, so to test other engines you launch
+them yourself. That is what you will do here for a keyboard test.
+
+> **Two bugs in an older version of Part 5's example, both fixed.** It named its parameter
+> `browser_name`, which `pytest-playwright` already uses for its own fixture, so pytest refused to
+> collect it ("duplicate parametrization"). And it opened its own `sync_playwright()`, which fails
+> when it runs after any test that used the shared `page` fixture. Part 5 now uses the parameter
+> name `engine` and the shared `playwright_instance` fixture. If you copied the older version,
+> switch to the new one.
+
+**Create:** `tests/e2e-python/test_cross_browser_keyboard.py`
+
+```python
+import pytest
+from playwright.sync_api import expect
+
+ORDER = [
+    "login-email-input",
+    "login-password-input",
+    "login-submit-button",
+    "create-account-button",
+]
+
+
+def press_tab(page, plain=False):
+    """Press the key that moves focus to the next control, in whichever engine is running."""
+    engine = page.context.browser.browser_type.name
+    page.keyboard.press("Alt+Tab" if engine == "webkit" and not plain else "Tab")
+
+
+def focused_id(page):
+    return page.evaluate(
+        "document.activeElement.getAttribute('data-testid') || document.activeElement.tagName"
+    )
+
+
+@pytest.mark.parametrize("engine", ["chromium", "firefox", "webkit"])
+def test_login_tab_order_in_every_engine(playwright_instance, engine):
+    browser = getattr(playwright_instance, engine).launch()
+    page = browser.new_page()
+    page.goto("http://localhost:3000/login")
+    expect(page.get_by_label("Email")).to_be_visible()
+
+    order = []
+    for _ in range(4):
+        press_tab(page)
+        order.append(focused_id(page))
+
+    browser.close()
+    assert order == ORDER
+
+
+def test_plain_tab_skips_the_button_on_webkit(playwright_instance):
+    """Not an app bug: this is how the engine behaves by default."""
+    browser = playwright_instance.webkit.launch()
+    page = browser.new_page()
+    page.goto("http://localhost:3000/login")
+    expect(page.get_by_label("Email")).to_be_visible()
+
+    order = []
+    for _ in range(3):
+        press_tab(page, plain=True)
+        order.append(focused_id(page))
+
+    browser.close()
+    assert "login-submit-button" not in order
+```
+
+```bash
+playwright install firefox webkit
+cd tests/e2e-python
+pytest test_cross_browser_keyboard.py -v
+```
+
+All four tests pass. Read them to see **why**:
+
+- The first test passes in all three engines because `press_tab` uses `Alt+Tab` on WebKit.
+- The second test **proves the difference**: pressed with a plain `Tab`, WebKit never lands on the
+  **Log In** button at all.
+
+That is not a bug in Testbook. It is how the engine behaves by default, and a test that assumed
+otherwise would have blamed the app for it.
+
+#### Engine is not assistive technology
+
+A cross-browser run tells you the **page** works in each engine. Real users arrive with a browser
+**and** an assistive technology together:
+
+| Pairing | Where it is used | What Playwright can test |
+| --- | --- | --- |
+| VoiceOver with Safari | macOS (and iPhone with iOS VoiceOver) | The **engine** (WebKit), not the screen reader |
+| NVDA with Firefox | Windows | The **engine** (Gecko), not NVDA |
+| NVDA or JAWS with Chrome | Windows | The **engine** (Chromium), not the screen reader |
+| TalkBack with Chrome | Android | A **mobile viewport** in Chromium, not TalkBack |
+
+Playwright's Firefox is not NVDA, and its WebKit is not VoiceOver. Playwright can prove that the
+**markup** behaves the same in each engine. It cannot tell you what a screen reader **says**, and
+two screen readers can speak the same markup differently. That is what the manual screen reader
+scripts are for: [VoiceOver with Safari](../../../docs/a11y/manual/02_SCREEN_READER_VOICEOVER.md),
+[NVDA with Firefox](../../../docs/a11y/manual/03_SCREEN_READER_NVDA.md), and the
+[comparison](../../../docs/a11y/manual/SCREEN_READER_COMPARISON.md).
+
+**Your task.** Write a four-row release checklist for Testbook: for each row, name a browser and
+an assistive technology pairing, say whether it is **automated** (Playwright) or **manual**, and
+give one sentence on what it would catch that the others would not. Keep it as a note you can
+reuse in the Stage 5 capstone.
+
+✅ **Checkpoint:** you ran the keyboard tests on more than one engine, you saw the plain-`Tab`
+difference for yourself, and you can explain why a Firefox test run says nothing about NVDA.
+
 ## 🎓 What You Learned
 
 - ✅ **Trace Viewer** - Debug test failures with visual timeline
@@ -725,6 +848,7 @@ pytest tests/e2e-python/ -v --html=report.html
 - [ ] Configured parallel execution
 - [ ] Set up CI/CD integration
 - [ ] Optimized test performance
+- [ ] Ran the keyboard tests on more than one engine, saw plain `Tab` skip the button on WebKit, and can explain why an engine is not an assistive technology
 
 ---
 

@@ -45,12 +45,27 @@
 - Using them for every test case (A) would make the suite painfully slow and flaky
 - They're not a substitute for unit testing (C) or API testing (D) - each layer of the pyramid covers what the others can't
 
+### 6. A keyboard test passes in Chromium and Firefox but fails in WebKit when it presses `Tab` to reach a button. What is the most likely cause?
+
+**Answer: B) WebKit by default only tabs through form fields, so the test needs `Alt+Tab` there**
+
+- Browsers disagree about what Tab does. Chromium and Firefox tab through every link, button and
+  field. Safari (WebKit) by default only tabs through form fields, and needs Option (Alt) held to
+  include links and buttons, unless the user has turned on *Press Tab to highlight each item on a
+  webpage*.
+- So the test, not the app, assumed the wrong thing. The fix is a small helper that presses the
+  right key for each engine (see `pressTab` in `tests/e2e/fixtures/a11y.js`).
+- It is not a Safari-only app bug (A), Playwright does support WebKit (C), and a retry would fail
+  the same way every time (D).
+- An engine is also not an assistive technology: a green run in Firefox says nothing about how NVDA
+  will speak the page.
+
 ## How Did You Do?
 
-- **5/5:** Excellent! You understand E2E testing
-- **4/5:** Very good! You're ready for Stage 4
-- **3/5:** Good! Review the concepts you missed
-- **2/5 or less:** Consider reviewing Stage 3 materials before moving on
+- **6/6:** Excellent! You understand E2E testing
+- **5/6:** Very good! You're ready for Stage 4
+- **4/6:** Good! Review the concepts you missed
+- **3/6 or less:** Consider reviewing Stage 3 materials before moving on
 
 ## Need More Practice?
 
@@ -61,8 +76,8 @@
 
 ## Ready for Stage 4?
 
-If you got 3/5 or better, you're ready to move on to [Stage 4: Performance & Security](../stage_4_performance_security/README.md)!
+If you got 4/6 or better, you're ready to move on to [Stage 4: Performance & Security](../stage_4_performance_security/README.md)!
 
 ---
 
-_Remember: E2E testing is about testing real user workflows. Focus on what users actually do, not just technical details._
+*Remember: E2E testing is about testing real user workflows. Focus on what users actually do, not just technical details.*

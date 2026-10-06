@@ -885,6 +885,10 @@ You're ready for Stage 4 when you can:
 - [] Understand API contract testing
 - [] Test complete multi-step user workflows
 - [] Choose appropriate test granularity (unit vs integration vs E2E)
+- [] Find elements by role and label first, and explain why a test id cannot notice an inaccessible page
+- [] Write a keyboard-only test, including focus assertions, that waits for the page before pressing keys
+- [] Explain why a keyboard test can pass in one browser engine and fail in another, and why an engine is not an assistive technology
+- [] Tag or mark accessibility tests so they can be run and excluded as a group
 
 **Python Track:**
 
@@ -960,6 +964,24 @@ You're ready for Stage 4 when you can:
 
 ---
 
+<h2 id="accessibility-in-this-stage">Accessibility in this stage</h2>
+
+End-to-end tests drive a real browser, which is exactly where keyboard, focus and screen reader
+problems appear. Each lab in this stage has a short accessibility step:
+
+| Lab | The step | What it teaches |
+| --- | --- | --- |
+| Lab 9 | Rewrite your first test the way a user finds things | Role and label locators fail when the page is inaccessible. Test ids never do |
+| Lab 10 | Test like a keyboard user | Tab order, focus management, and waiting for the page before pressing keys |
+| Lab 11 | Browsers and assistive technology | The same keyboard test behaves differently per engine. An engine is not a screen reader |
+| Lab 12 | Organize your accessibility tests | Tags and markers, and where accessibility tests should live |
+
+Two of the real Testbook bugs behind these steps, the invisible Tab stops and the lost focus, are
+available as small [pitfalls](../../pitfalls/README.md) you can try first. If you skipped
+[Stage 0](../stage_0_inclusion_first/README.md), read it before starting.
+
+---
+
 <h2 id="self-check-quiz-optional">Self-Check Quiz (Optional)</h2>
 
 Before moving to Stage 4, can you answer these questions?
@@ -993,10 +1015,18 @@ Before moving to Stage 4, can you answer these questions?
    - D) To test API security
 
 5. **When should you use E2E tests?**
+
    - A) For every test case
    - B) For critical user workflows only
    - C) For unit testing
    - D) For API testing only
+
+6. **A keyboard test passes in Chromium and Firefox but fails in WebKit when it presses `Tab` to
+   reach a button. What is the most likely cause?**
+   - A) A bug in the app that only affects Safari users
+   - B) WebKit by default only tabs through form fields, so the test needs `Alt+Tab` there
+   - C) Playwright does not support WebKit
+   - D) The test is flaky and should be retried
 
 **Answers:** [Check your answers here](../solutions/stage_3_quiz_answers.md)
 
@@ -1015,6 +1045,8 @@ Before moving to Stage 4, answer these:
 4. **What's the difference between a 200 and a 201 status code? Find an example of each in the tests.**
 
 5. **What's one E2E test you would add to improve test coverage?**
+
+6. **Pick one E2E test you wrote and rewrite its locators the way a user would find things. What would that test now notice that it could not before?**
 
 **Document your answers** in [reflection.md](reflection.md).
 

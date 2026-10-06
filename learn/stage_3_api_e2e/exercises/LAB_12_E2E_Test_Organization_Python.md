@@ -1,6 +1,6 @@
 # 🧪 Lab 12: E2E Test Organization
 
-**Estimated Time:** 90 minutes<br>
+**Estimated Time:** 100 minutes (90 minutes of core parts and a 10 minute accessibility part)<br>
 **Difficulty:** Intermediate<br>
 **Language:** 🐍 Python<br>
 **Prerequisites:** Lab 11 completed
@@ -694,6 +694,69 @@ E2E_BROWSER=firefox E2E_HEADLESS=false E2E_SLOW_MO=500 pytest
 
 ---
 
+### Part 5: Organize your accessibility tests (10 minutes)
+
+**Accessibility thread.** Accessibility tests need to be easy to run **on their own** (while you work
+on a component), easy to run **together** (in CI), and easy to **leave out** (when you want a fast
+loop). That is an organization problem, and tags solve it.
+
+**Mark the tests.** pytest lets you attach a marker to a test, and then select by marker from
+anywhere in the suite. Add an `a11y` marker to your keyboard test from Lab 10:
+
+```python
+import pytest
+
+
+@pytest.mark.a11y
+def test_login_works_by_keyboard_alone_in_a_sensible_order(page):
+    ...
+```
+
+Testbook has already registered the marker in `tests/e2e-python/pytest.ini`, next to the others, so
+pytest does not warn about an unknown marker:
+
+```ini
+markers =
+    a11y: Accessibility tests (keyboard, focus, axe)
+```
+
+**Select by marker:**
+
+```bash
+cd tests/e2e-python
+pytest -m a11y -v                  # only the accessibility tests
+pytest -m "not a11y" -v            # everything except them
+pytest -m a11y --collect-only -q   # just list what would run
+```
+
+Selecting by **file name** works while every accessibility test stays in a file with that name. A
+marker follows the test wherever it lives.
+
+**Your task.** Mark the tests in your `test_my_keyboard.py` with `@pytest.mark.a11y`, run
+`pytest -m a11y --collect-only -q`, and check that **your tests appear**. Then run
+`pytest -m "not a11y" --collect-only -q` and check that they disappear.
+
+**Where should accessibility tests live?** Both places, for different reasons:
+
+| Kind of test | Where it lives | Why |
+| --- | --- | --- |
+| A scan of every route and state | A dedicated accessibility spec | It cuts across features, and it is one thing to run and report |
+| A focus or keyboard behaviour of one feature | Alongside that feature's tests, tagged | It belongs to the feature, and changes when the feature changes |
+
+**One helper owns the standard.** In the JavaScript suite every accessibility scan goes through one
+helper (`expectNoA11yViolations` in `tests/e2e/fixtures/a11y.js`) that holds the axe tag list (WCAG
+2.2 AA plus best practice) in one place. When you write Python accessibility tests in Lab 16, do the
+same: one function that runs axe with the agreed tags, so nobody narrows the standard by accident.
+This is the organization pattern from Part 1 (one helper, many specs) applied to accessibility.
+
+**In CI.** Testbook runs accessibility as its own workflow
+(`.github/workflows/accessibility.yml`) in addition to the full suite, so a pull request that only
+touches styles still gets its accessibility check, and the reports are uploaded as separate
+artifacts. Open the file and find where it selects the accessibility tests.
+
+✅ **Checkpoint:** your keyboard tests are tagged, you can include and exclude them by tag, and you
+can say when an accessibility test belongs in its own spec and when it belongs beside its feature.
+
 ## 💪 Challenge Exercises
 
 ### Challenge 1: Create Test Suite Runner
@@ -796,6 +859,7 @@ class TestDataFactory:
 - [ ] Can run tests in parallel for efficiency
 - [ ] Completed all challenge exercises
 - [ ] Understand how to scale E2E testing for teams
+- [ ] Tagged or marked my accessibility tests and can include and exclude them as a group
 
 ---
 

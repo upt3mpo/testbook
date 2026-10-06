@@ -1,6 +1,6 @@
 # 🧪 Lab 9: Basic E2E Testing (Python)
 
-**Estimated Time:** 90 minutes<br>
+**Estimated Time:** 105 minutes (90 minutes of core steps and a 15 minute accessibility step)<br>
 **Difficulty:** Intermediate<br>
 **Language:** 🐍 Python<br>
 **Prerequisites:** Lab 8 completed
@@ -153,6 +153,7 @@ page.fill('[data-testid="login-email-input"]', user["email"])
 - Specifically for testing
 - Won't change if CSS changes
 - Clear and reliable
+- (But they have a blind spot: see Step 7.)
 
 **Other selectors you'll use:**
 
@@ -227,6 +228,92 @@ pytest test_my_first.py -v
 - Test verifies result
 
 ✅ **Checkpoint:** YOUR first E2E test runs and passes!
+
+### Step 7: Rewrite your test the way a user finds things (15 minutes)
+
+**Accessibility thread.** In Step 5 you learned that `data-testid` selectors are stable, and they
+are. They also have a blind spot: **a test id is invisible to every user**, so a test that finds
+everything by test id can pass while the page is unusable. A user finds a field by what it is
+*called*, and a button by what it *does*.
+
+Playwright recommends the same order: reach for **user-facing locators** first (`get_by_role`,
+`get_by_label`, `get_by_text`), and use `get_by_test_id` as the fallback when nothing a user can
+perceive identifies the element. A role or label locator **fails when the page is inaccessible**,
+so your test notices the problem without any extra work.
+
+**Create:** `tests/e2e-python/test_my_first_accessible.py`
+
+```python
+from playwright.sync_api import Page, expect
+
+
+def test_my_first_e2e_the_way_a_user_finds_things(page: Page):
+    page.goto("http://localhost:3000")
+
+    page.get_by_label("Email").fill("sarah.johnson@testbook.com")
+    page.get_by_label("Password").fill("Sarah2024!")
+    page.get_by_role("button", name="Log In").click()
+
+    expect(page.get_by_role("navigation")).to_be_visible()
+
+    page.get_by_label("What's on your mind?").fill("My accessible E2E test post!")
+    page.get_by_role("button", name="Post", exact=True).click()
+
+    first_post = page.get_by_role("article").first
+    expect(first_post).to_contain_text("My accessible E2E test post!")
+```
+
+Notice what each locator says: the field called "Email", the button named "Log In", the
+navigation landmark, the first post (an `article`). Anyone using the page, with any tool, finds
+them the same way. `exact=True` stops "Post" from also matching "Post options".
+
+```bash
+pytest test_my_first_accessible.py -v
+```
+
+✅ **Checkpoint:** both of your tests pass.
+
+**Now break the page on purpose.** Open `frontend/src/pages/Login.jsx` and delete this element (the
+visually hidden label for the email field):
+
+```jsx
+<label htmlFor="login-email" className="sr-only">
+  Email
+</label>
+```
+
+Run both tests. Set a short timeout so you do not wait the full thirty seconds (the shared
+`conftest.py` reads `DEFAULT_TIMEOUT`):
+
+**macOS/Linux:**
+
+```bash
+DEFAULT_TIMEOUT=8000 pytest test_my_first.py test_my_first_accessible.py -v
+```
+
+**Windows (PowerShell):**
+
+```powershell
+$env:DEFAULT_TIMEOUT="8000"; pytest test_my_first.py test_my_first_accessible.py -v
+```
+
+- **Your original test passes.** It uses `data-testid` and never noticed the field lost its name.
+- **Your new test fails.** `get_by_label("Email")` finds nothing, which is exactly right: a screen
+  reader user would no longer know what the field is.
+
+**Undo your change:**
+
+```bash
+git checkout frontend/src/pages/Login.jsx
+```
+
+✅ **Checkpoint:** you watched the test-id test pass while the label test failed, then restored the
+label.
+
+**When is a test id still the right choice?** When nothing user-facing identifies the element, for
+example picking one specific post out of a list (`data-testid="post-12"`). A good rule: use roles and
+labels for **controls**, and test ids for **containers and data**. This is the same lesson as the
+[test id that hides the bug](../../../pitfalls/trust-it/test-id-hides-bug/README.md) pitfall.
 
 ---
 
@@ -304,6 +391,7 @@ for a real example found and fixed in Testbook's own test suite.
 - [ ] Wrote `test_my_first.py` and it passes
 - [ ] Understand selectors and interactions
 - [ ] Completed at least 1 practice challenge
+- [ ] Rewrote my test with role and label locators, and watched it fail when a label was removed while the test-id version still passed
 
 ---
 

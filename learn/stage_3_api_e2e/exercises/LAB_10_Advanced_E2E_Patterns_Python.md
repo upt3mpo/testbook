@@ -1,6 +1,6 @@
 # 🧪 Lab 10: Advanced E2E Patterns (Python)
 
-**Estimated Time:** 120 minutes<br>
+**Estimated Time:** 150 minutes (120 minutes of core parts and a 30 minute accessibility part)<br>
 **Difficulty:** Advanced<br>
 **Language:** 🐍 Python<br>
 **Prerequisites:** Lab 9 completed
@@ -933,6 +933,146 @@ def test_ui_update_persists_to_database(
 
 ---
 
+### Part 7: Test like a keyboard user (30 minutes)
+
+**Accessibility thread.** Every click in your tests so far uses a mouse. Plenty of real users never
+touch one: people who cannot use a pointer, people using a screen reader, people with a broken
+trackpad, and anyone who prefers shortcuts. A test that only clicks **can never find a keyboard
+bug**, such as controls you cannot reach, focus that disappears, or a page you cannot operate.
+
+Two real Testbook bugs live exactly here, and you can try both as small pages first:
+[invisible Tab stops](../../../pitfalls/catch-it/invisible-tab-stops/README.md) and
+[lost focus](../../../pitfalls/catch-it/lost-focus/README.md).
+
+#### The helper: pressing Tab in every browser
+
+Browsers disagree about what Tab does. Chromium and Firefox move focus through every interactive
+element. Safari (WebKit) only tabs through **form fields** by default, and needs `Alt` held to
+include links and buttons. A test that hard-codes `Tab` fails on WebKit even though the app is fine.
+Part 8 of Lab 11 explores this properly; for now use a small helper that presses the right key.
+
+Add this to the top of your test file:
+
+```python
+def press_tab(page):
+    """Press the key that moves focus to the next control, in whichever engine is running."""
+    engine = page.context.browser.browser_type.name
+    page.keyboard.press("Alt+Tab" if engine == "webkit" else "Tab")
+```
+
+It presses `Alt+Tab` on WebKit and `Tab` everywhere else. (Your shared `conftest.py` only launches
+Chromium, so this makes no difference yet. It matters in Lab 11, Part 8.)
+
+**Create:** `tests/e2e-python/test_my_keyboard.py`
+
+```python
+from playwright.sync_api import Page, expect
+
+
+def press_tab(page: Page):
+    """Press the key that moves focus to the next control, in whichever engine is running."""
+    engine = page.context.browser.browser_type.name
+    page.keyboard.press("Alt+Tab" if engine == "webkit" else "Tab")
+
+
+def focused_id(page: Page) -> str:
+    """What is focused right now? The test id if it has one, otherwise the tag name."""
+    return page.evaluate(
+        "document.activeElement.getAttribute('data-testid') || document.activeElement.tagName"
+    )
+
+
+def test_login_works_by_keyboard_alone_in_a_sensible_order(page: Page):
+    page.goto("http://localhost:3000/login")
+    # Keys fire instantly. Wait until the form exists, or the first Tab lands on nothing.
+    expect(page.get_by_label("Email")).to_be_visible()
+
+    # The Tab order: email, password, submit, then the link to create an account.
+    order = []
+    for _ in range(4):
+        press_tab(page)
+        order.append(focused_id(page))
+    assert order == [
+        "login-email-input",
+        "login-password-input",
+        "login-submit-button",
+        "create-account-button",
+    ]
+
+    # And the whole task, without the mouse.
+    page.goto("http://localhost:3000/login")
+    expect(page.get_by_label("Email")).to_be_visible()
+    press_tab(page)
+    page.keyboard.type("sarah.johnson@testbook.com")
+    press_tab(page)
+    page.keyboard.type("Sarah2024!")
+    page.keyboard.press("Enter")
+    expect(page.get_by_role("navigation")).to_be_visible()
+
+
+def test_editing_a_post_moves_focus_in_and_cancelling_puts_it_back(page: Page):
+    page.goto("http://localhost:3000/login")
+    page.get_by_label("Email").fill("sarah.johnson@testbook.com")
+    page.get_by_label("Password").fill("Sarah2024!")
+    page.get_by_role("button", name="Log In").click()
+    expect(page.get_by_role("navigation")).to_be_visible()
+
+    # Open the menu on one of your own posts, and choose Edit, using the keyboard.
+    menu = page.get_by_role("button", name="Post options").first
+    menu.focus()
+    page.keyboard.press("Enter")
+    page.get_by_role("button", name="Edit").focus()
+    page.keyboard.press("Enter")
+
+    # Focus should now be inside the edit box, ready to type.
+    expect(page.get_by_label("Edit post content")).to_be_focused()
+
+    # Cancel, and focus should return to the control that opened the editor.
+    page.get_by_role("button", name="Cancel").focus()
+    page.keyboard.press("Enter")
+    expect(menu).to_be_focused()
+```
+
+```bash
+cd tests/e2e-python
+pytest test_my_keyboard.py -v
+```
+
+**Now break focus on purpose.** Open `frontend/src/components/Post.jsx` and find the line that moves
+focus into the editor when editing starts:
+
+```jsx
+editTextareaRef.current?.focus();
+```
+
+Comment it out (put `//` in front of it), then run the tests with a short timeout (the shared
+`conftest.py` reads `DEFAULT_TIMEOUT`):
+
+```bash
+DEFAULT_TIMEOUT=8000 pytest test_my_keyboard.py -v
+```
+
+On Windows PowerShell use `$env:DEFAULT_TIMEOUT="8000"; pytest test_my_keyboard.py -v`.
+
+The second test **fails**: the Edit button disappears, so focus has nowhere to go, and a keyboard
+user is dropped back at the top of the page. That is the exact bug the
+[lost focus](../../../pitfalls/catch-it/lost-focus/README.md) pitfall demonstrates. **Undo your
+change:**
+
+```bash
+git checkout frontend/src/components/Post.jsx
+```
+
+✅ **Checkpoint:** both tests pass, and the second one failed when you removed the focus line.
+
+**Two things to take away.**
+
+1. **Keyboard tests must wait for the page.** A key press happens instantly. Press Tab before the
+   form has rendered and focus lands on nothing, and your test fails for a reason that has nothing
+   to do with accessibility. That is why each test first waits for a visible field.
+2. **A click-only suite has a hole.** The click-driven tests in this lab pass on a page with
+   invisible Tab stops and lost focus. Only a test that uses the keyboard can see them.
+
 ## 🎓 What You Learned
 
 - ✅ **Page Object Model** - Reusable, maintainable page helpers
@@ -1078,6 +1218,7 @@ This pattern is **10-100x faster** than clicking through UI for setup!
 - [ ] 🆕 Implemented combined API + UI validation patterns
 - [ ] 🆕 Understand Python's unique advantage for full-stack testing
 - [ ] All tests pass
+- [ ] Wrote keyboard-only tests (tab order, and focus moving in and back out) and watched one fail when the focus line was removed
 
 ---
 

@@ -15,6 +15,7 @@
  */
 
 import { expect, test } from '@playwright/test';
+import { pressTab } from './fixtures/a11y.js';
 import { resetDatabase, TEST_USERS } from './fixtures/test-helpers.js';
 import { AuthPage } from './pages/AuthPage.js';
 
@@ -44,16 +45,18 @@ const focused = (page) =>
 /** The id of a seeded post that belongs to Sarah (so the menu button exists). */
 const ownPostId = (page) => page.locator('[data-is-own-post="true"]').first().getAttribute('data-post-id');
 
-test.describe('Accessibility behaviour', () => {
+test.describe('Accessibility behaviour', { tag: '@a11y' }, () => {
   test.beforeEach(async ({ page }) => {
     await resetDatabase(page);
   });
 
   test('login: Tab order is email, password, submit, create-account (2.4.3)', async ({ page }) => {
     await page.goto('/login');
+    // Keys fire instantly: wait for the form to exist or the first Tab lands on nothing.
+    await expect(page.getByLabel('Email')).toBeVisible();
     const order = [];
     for (let i = 0; i < 4; i++) {
-      await page.keyboard.press('Tab');
+      await pressTab(page);
       order.push(await focused(page));
     }
     expect(order).toEqual([
@@ -66,9 +69,10 @@ test.describe('Accessibility behaviour', () => {
 
   test('login: the whole form works by keyboard alone (2.1.1)', async ({ page }) => {
     await page.goto('/login');
-    await page.keyboard.press('Tab');
+    await expect(page.getByLabel('Email')).toBeVisible();
+    await pressTab(page);
     await page.keyboard.type(TEST_USERS.sarah.email);
-    await page.keyboard.press('Tab');
+    await pressTab(page);
     await page.keyboard.type(TEST_USERS.sarah.password);
     await page.keyboard.press('Enter');
     await expect(page.getByTestId('navbar')).toBeVisible();
@@ -124,7 +128,7 @@ test.describe('Accessibility behaviour', () => {
 
   test('A11Y-010: a skip link is the first Tab stop and moves focus to main (2.4.1)', async ({ page }) => {
     await loginAsSarah(page);
-    await page.keyboard.press('Tab');
+    await pressTab(page);
     const skip = page.getByRole('link', { name: 'Skip to main content' });
     await expect(skip).toBeFocused();
     await expect(skip).toBeVisible(); // not just focusable - visible once focused
@@ -135,7 +139,7 @@ test.describe('Accessibility behaviour', () => {
 
   test('A11Y-011: inputs show a focus indicator (2.4.7, 1.4.11)', async ({ page }) => {
     await page.goto('/login');
-    await page.keyboard.press('Tab'); // keyboard focus, so :focus-visible applies
+    await pressTab(page); // keyboard focus, so :focus-visible applies
     const style = await page.getByLabel('Email').evaluate((el) => {
       const s = getComputedStyle(el);
       return { style: s.outlineStyle, width: parseFloat(s.outlineWidth) };
@@ -162,7 +166,7 @@ test.describe('Accessibility behaviour', () => {
     await page.mouse.click(5, 300); // park focus at the top of the page
     const stops = [];
     for (let i = 0; i < 40; i++) {
-      await page.keyboard.press('Tab');
+      await pressTab(page);
       stops.push(await focused(page));
     }
     expect(stops.filter((id) => id.includes('-reaction-'))).toEqual([]);
@@ -180,7 +184,7 @@ test.describe('Accessibility behaviour', () => {
     const like = page.getByRole('button', { name: 'Like', exact: true }).first();
     await expect(like).toBeVisible();
 
-    await page.keyboard.press('Tab');
+    await pressTab(page);
     await expect(like).toBeFocused();
 
     await page.keyboard.press('Escape');
@@ -278,7 +282,7 @@ test.describe('Accessibility behaviour', () => {
     const navBottom = await page.getByTestId('navbar').evaluate((el) => el.getBoundingClientRect().bottom);
 
     for (let i = 0; i < 80; i++) {
-      await page.keyboard.press('Tab');
+      await pressTab(page);
       const { id, bottom } = await page.evaluate(() => {
         const el = document.activeElement;
         return {
@@ -295,7 +299,7 @@ test.describe('Accessibility behaviour', () => {
     }
   });
 
-  test.describe('focus management in the post card (2.4.3)', () => {
+  test.describe('focus management in the post card (2.4.3)', { tag: '@a11y' }, () => {
     test('A11Y-007: Edit focuses the textarea; Cancel returns to the menu button', async ({ page }) => {
       await loginAsSarah(page);
       const id = await ownPostId(page);

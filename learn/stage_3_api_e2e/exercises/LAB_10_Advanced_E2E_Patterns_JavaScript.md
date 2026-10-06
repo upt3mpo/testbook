@@ -1,6 +1,6 @@
 # 🧪 Lab 10: Advanced E2E Patterns (JavaScript)
 
-**Estimated Time:** 120 minutes<br>
+**Estimated Time:** 150 minutes (120 minutes of core parts and a 30 minute accessibility part)<br>
 **Difficulty:** Advanced<br>
 **Language:** 🟨 JavaScript<br>
 **Prerequisites:** Lab 9 completed
@@ -709,6 +709,135 @@ test("should register user with builder", async ({ page }) => {
 
 ---
 
+### Part 6: Test like a keyboard user (30 minutes)
+
+**Accessibility thread.** Every click in your tests so far uses a mouse. Plenty of real users never
+touch one: people who cannot use a pointer, people using a screen reader, people with a broken
+trackpad, and anyone who prefers shortcuts. A test that only clicks **can never find a keyboard
+bug**, such as controls you cannot reach, focus that disappears, or a page you cannot operate.
+
+Two real Testbook bugs live exactly here, and you can try both as small pages first:
+[invisible Tab stops](../../../pitfalls/catch-it/invisible-tab-stops/README.md) and
+[lost focus](../../../pitfalls/catch-it/lost-focus/README.md).
+
+#### The helper: pressing Tab in every browser
+
+Browsers disagree about what Tab does. Chromium and Firefox move focus through every interactive
+element. Safari (WebKit) only tabs through **form fields** by default, and needs `Alt` held to
+include links and buttons. A test that hard-codes `Tab` fails on WebKit even though the app is fine.
+Part 8 of Lab 11 explores this properly; for now use a small helper that presses the right key.
+
+Testbook already has one in `tests/e2e/fixtures/a11y.js`:
+
+```javascript
+import { pressTab } from "./fixtures/a11y.js";
+```
+
+It looks at `page.context().browser().browserType().name()` and presses `Alt+Tab` on WebKit and
+`Tab` everywhere else. Read it before you use it.
+
+**Create:** `tests/e2e/my_keyboard.spec.js`
+
+```javascript
+import { test, expect } from "@playwright/test";
+import { pressTab } from "./fixtures/a11y.js";
+
+// What is focused right now? The test id if it has one, otherwise the tag name.
+const focusedId = (page) =>
+  page.evaluate(
+    () => document.activeElement.getAttribute("data-testid") || document.activeElement.tagName
+  );
+
+test("login works by keyboard alone, in a sensible order", async ({ page }) => {
+  await page.goto("http://localhost:3000/login");
+  // Keys fire instantly. Wait until the form exists, or the first Tab lands on nothing.
+  await expect(page.getByLabel("Email")).toBeVisible();
+
+  // The Tab order: email, password, submit, then the link to create an account.
+  const order = [];
+  for (let i = 0; i < 4; i++) {
+    await pressTab(page);
+    order.push(await focusedId(page));
+  }
+  expect(order).toEqual([
+    "login-email-input",
+    "login-password-input",
+    "login-submit-button",
+    "create-account-button",
+  ]);
+
+  // And the whole task, without the mouse.
+  await page.goto("http://localhost:3000/login");
+  await expect(page.getByLabel("Email")).toBeVisible();
+  await pressTab(page);
+  await page.keyboard.type("sarah.johnson@testbook.com");
+  await pressTab(page);
+  await page.keyboard.type("Sarah2024!");
+  await page.keyboard.press("Enter");
+  await expect(page.getByRole("navigation")).toBeVisible();
+});
+
+test("editing a post moves focus in, and cancelling puts it back", async ({ page }) => {
+  await page.goto("http://localhost:3000/login");
+  await page.getByLabel("Email").fill("sarah.johnson@testbook.com");
+  await page.getByLabel("Password").fill("Sarah2024!");
+  await page.getByRole("button", { name: "Log In" }).click();
+  await expect(page.getByRole("navigation")).toBeVisible();
+
+  // Open the menu on one of your own posts, and choose Edit, using the keyboard.
+  const menu = page.getByRole("button", { name: "Post options" }).first();
+  await menu.focus();
+  await page.keyboard.press("Enter");
+  await page.getByRole("button", { name: "Edit" }).focus();
+  await page.keyboard.press("Enter");
+
+  // Focus should now be inside the edit box, ready to type.
+  await expect(page.getByLabel("Edit post content")).toBeFocused();
+
+  // Cancel, and focus should return to the control that opened the editor.
+  await page.getByRole("button", { name: "Cancel" }).focus();
+  await page.keyboard.press("Enter");
+  await expect(menu).toBeFocused();
+});
+```
+
+```bash
+cd tests
+npx playwright test my_keyboard.spec.js --headed
+```
+
+**Now break focus on purpose.** Open `frontend/src/components/Post.jsx` and find the line that moves
+focus into the editor when editing starts:
+
+```jsx
+editTextareaRef.current?.focus();
+```
+
+Comment it out (put `//` in front of it), then run the tests with a short timeout:
+
+```bash
+npx playwright test my_keyboard.spec.js --timeout=8000
+```
+
+The second test **fails**: the Edit button disappears, so focus has nowhere to go, and a keyboard
+user is dropped back at the top of the page. That is the exact bug the
+[lost focus](../../../pitfalls/catch-it/lost-focus/README.md) pitfall demonstrates. **Undo your
+change:**
+
+```bash
+git checkout frontend/src/components/Post.jsx
+```
+
+✅ **Checkpoint:** both tests pass, and the second one failed when you removed the focus line.
+
+**Two things to take away.**
+
+1. **Keyboard tests must wait for the page.** A key press happens instantly. Press Tab before the
+   form has rendered and focus lands on nothing, and your test fails for a reason that has nothing
+   to do with accessibility. That is why each test first waits for a visible field.
+2. **A click-only suite has a hole.** The click-driven tests in this lab pass on a page with
+   invisible Tab stops and lost focus. Only a test that uses the keyboard can see them.
+
 ## 🎓 What You Learned
 
 - ✅ **Page Object Model** - Reusable, maintainable page helpers
@@ -821,6 +950,7 @@ test("should test advanced pattern", async ({
 - [ ] Used test tags to organize tests
 - [ ] Created and used data builders
 - [ ] All tests pass
+- [ ] Wrote keyboard-only tests (tab order, and focus moving in and back out) and watched one fail when the focus line was removed
 
 ---
 

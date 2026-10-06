@@ -14,15 +14,26 @@ load_dotenv()
 
 
 @pytest.fixture(scope="session")
-def browser():
+def playwright_instance():
+    """The one Playwright instance for the whole session.
+
+    Playwright's sync API cannot be started twice in one process ("It looks like you are using
+    Playwright Sync API inside the asyncio loop"), so anything that needs to launch its own browser,
+    for example a cross-browser test, must reuse this instead of calling sync_playwright() itself.
+    """
+    with sync_playwright() as p:
+        yield p
+
+
+@pytest.fixture(scope="session")
+def browser(playwright_instance):
     """Launch browser for the entire test session"""
     headless = os.getenv("HEADLESS", "true").lower() == "true"
     slow_mo = int(os.getenv("SLOW_MO", "0"))
 
-    with sync_playwright() as p:
-        browser = p.chromium.launch(headless=headless, slow_mo=slow_mo)
-        yield browser
-        browser.close()
+    browser = playwright_instance.chromium.launch(headless=headless, slow_mo=slow_mo)
+    yield browser
+    browser.close()
 
 
 @pytest.fixture(scope="function")

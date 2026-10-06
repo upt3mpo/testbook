@@ -1,6 +1,6 @@
 # 🧪 Lab 9: Basic E2E Testing (JavaScript)
 
-**Estimated Time:** 90 minutes<br>
+**Estimated Time:** 105 minutes (90 minutes of core steps and a 15 minute accessibility step)<br>
 **Difficulty:** Intermediate<br>
 **Language:** 🟨 JavaScript<br>
 **Prerequisites:** Lab 8 completed
@@ -125,6 +125,7 @@ await page.fill('[data-testid="login-email-input"]', email);
 - Specifically for testing
 - Won't change if CSS changes
 - Clear and reliable
+- (But they have a blind spot: see Step 7.)
 
 **Other selectors you'll use:**
 
@@ -190,6 +191,83 @@ npx playwright test my_first_e2e.spec.js --headed
 - Test verifies result
 
 ✅ **Checkpoint:** YOUR first E2E test runs and passes!
+
+### Step 7: Rewrite your test the way a user finds things (15 minutes)
+
+**Accessibility thread.** In Step 5 you learned that `data-testid` selectors are stable, and they
+are. They also have a blind spot: **a test id is invisible to every user**, so a test that finds
+everything by test id can pass while the page is unusable. A user finds a field by what it is
+*called*, and a button by what it *does*.
+
+Playwright recommends the same order: reach for **user-facing locators** first (`getByRole`,
+`getByLabel`, `getByText`), and use `getByTestId` as the fallback when nothing a user can perceive
+identifies the element. A role or label locator **fails when the page is inaccessible**, so your
+test notices the problem without any extra work.
+
+**Create:** `tests/e2e/my_first_e2e_accessible.spec.js`
+
+```javascript
+import { test, expect } from "@playwright/test";
+
+test("My first E2E test - the way a user finds things", async ({ page }) => {
+  await page.goto("http://localhost:3000");
+
+  await page.getByLabel("Email").fill("sarah.johnson@testbook.com");
+  await page.getByLabel("Password").fill("Sarah2024!");
+  await page.getByRole("button", { name: "Log In" }).click();
+
+  await expect(page.getByRole("navigation")).toBeVisible();
+
+  await page.getByLabel("What's on your mind?").fill("My accessible E2E test post!");
+  await page.getByRole("button", { name: "Post", exact: true }).click();
+
+  const firstPost = page.getByRole("article").first();
+  await expect(firstPost).toContainText("My accessible E2E test post!");
+});
+```
+
+Notice what each locator says: the field called "Email", the button named "Log In", the
+navigation landmark, the first post (an `article`). Anyone using the page, with any tool, finds
+them the same way. `exact: true` stops "Post" from also matching "Post options".
+
+```bash
+npx playwright test my_first_e2e_accessible.spec.js --headed
+```
+
+✅ **Checkpoint:** both of your tests pass.
+
+**Now break the page on purpose.** Open `frontend/src/pages/Login.jsx` and delete this element (the
+visually hidden label for the email field):
+
+```jsx
+<label htmlFor="login-email" className="sr-only">
+  Email
+</label>
+```
+
+Run both tests, with a short timeout so you do not wait long:
+
+```bash
+npx playwright test my_first_e2e --timeout=8000
+```
+
+- **Your original test passes.** It uses `data-testid` and never noticed the field lost its name.
+- **Your new test fails.** `getByLabel("Email")` finds nothing, which is exactly right: a screen
+  reader user would no longer know what the field is.
+
+**Undo your change:**
+
+```bash
+git checkout frontend/src/pages/Login.jsx
+```
+
+✅ **Checkpoint:** you watched the test-id test pass while the label test failed, then restored the
+label.
+
+**When is a test id still the right choice?** When nothing user-facing identifies the element, for
+example picking one specific post out of a list (`data-testid="post-12"`). A good rule: use roles and
+labels for **controls**, and test ids for **containers and data**. This is the same lesson as the
+[test id that hides the bug](../../../pitfalls/trust-it/test-id-hides-bug/README.md) pitfall.
 
 ---
 
@@ -267,6 +345,7 @@ for a real example found and fixed in Testbook's own test suite.
 - [ ] Wrote `my_first_e2e.spec.js` and it passes
 - [ ] Understand selectors and interactions
 - [ ] Completed at least 1 practice challenge
+- [ ] Rewrote my test with role and label locators, and watched it fail when a label was removed while the test-id version still passed
 
 ---
 

@@ -1,6 +1,6 @@
 # 🧪 Lab 12: E2E Test Organization
 
-**Estimated Time:** 90 minutes<br>
+**Estimated Time:** 100 minutes (90 minutes of core parts and a 10 minute accessibility part)<br>
 **Difficulty:** Intermediate<br>
 **Language:** 🟨 JavaScript<br>
 **Prerequisites:** Lab 11 completed
@@ -731,6 +731,62 @@ in this exercise.
 
 ---
 
+### Part 5: Organize your accessibility tests (10 minutes)
+
+**Accessibility thread.** Accessibility tests need to be easy to run **on their own** (while you work
+on a component), easy to run **together** (in CI), and easy to **leave out** (when you want a fast
+loop). That is an organization problem, and tags solve it.
+
+**Tag the tests.** Playwright lets you attach a tag to a test or a whole group, and then select by
+tag from anywhere in the suite. Testbook tags its accessibility specs `@a11y`:
+
+```javascript
+test.describe("Accessibility behaviour", { tag: "@a11y" }, () => {
+  // ...
+});
+```
+
+Look at `tests/e2e/accessibility-axe.spec.js` and `tests/e2e/accessibility-behavior.spec.js` to see
+the tag on each `describe` block.
+
+**Select by tag:**
+
+```bash
+cd tests
+npx playwright test --grep @a11y                 # only the accessibility tests
+npx playwright test --grep-invert @a11y          # everything except them
+npx playwright test --project=chromium --grep @a11y --list   # just list what would run
+```
+
+Selecting by **file name** (`npx playwright test accessibility`) works today, but only while every
+accessibility test stays in a file with that name. A tag follows the test wherever it lives.
+
+**Your task.** Tag the `my_keyboard.spec.js` you wrote in Lab 10 with `@a11y`, run
+`npx playwright test --grep @a11y --list`, and check that **your tests now appear** alongside the
+existing ones. Then run `--grep-invert @a11y` and check they disappear.
+
+**Where should accessibility tests live?** Both places, for different reasons:
+
+| Kind of test | Where it lives | Why |
+| --- | --- | --- |
+| A scan of every route and state | A dedicated accessibility spec | It cuts across features, and it is one thing to run and report |
+| A focus or keyboard behaviour of one feature | Alongside that feature's tests, tagged | It belongs to the feature, and changes when the feature changes |
+
+**One helper owns the standard.** Every scan in the accessibility specs goes through
+`expectNoA11yViolations` in `tests/e2e/fixtures/a11y.js`, which holds the axe tag list (WCAG 2.2 AA
+plus best practice) in one place and attaches the full axe report to the Playwright report on
+failure. Open it and read the comment above `AXE_TAGS`. This is the organization pattern from Part 1
+(one helper, many specs) applied to accessibility, and it stops anyone narrowing the standard by
+accident.
+
+**In CI.** Testbook runs accessibility as its own workflow
+(`.github/workflows/accessibility.yml`) in addition to the full suite, so a pull request that only
+touches styles still gets its accessibility check, and the reports are uploaded as separate
+artifacts. Open the file and find where it selects the accessibility tests.
+
+✅ **Checkpoint:** your keyboard tests are tagged, you can include and exclude them by tag, and you
+can say when an accessibility test belongs in its own spec and when it belongs beside its feature.
+
 ## 💪 Challenge Exercises
 
 ### Challenge 1: Create Test Suite Runner
@@ -865,6 +921,7 @@ export default TestDataFactory;
 - [ ] Can run tests in parallel for efficiency
 - [ ] Completed all challenge exercises
 - [ ] Understand how to scale E2E testing for teams
+- [ ] Tagged or marked my accessibility tests and can include and exclude them as a group
 
 ---
 

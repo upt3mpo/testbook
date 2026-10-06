@@ -1,6 +1,6 @@
 # 🧪 Lab 11: Cross-Browser Testing (JavaScript)
 
-**Estimated Time:** 90 minutes<br>
+**Estimated Time:** 105 minutes (90 minutes of core parts and a 15 minute accessibility part)<br>
 **Difficulty:** Advanced<br>
 **Language:** 🟨 JavaScript<br>
 **Prerequisites:** Lab 10 completed
@@ -655,6 +655,75 @@ docker run --rm -it -v $(pwd):/workspace -w /workspace mcr.microsoft.com/playwri
 
 ---
 
+### Part 8: Browsers and assistive technology (15 minutes)
+
+**Accessibility thread.** "Cross-browser" usually means "does it render the same". For accessibility
+it also means "does it behave the same when driven by a keyboard", and "which assistive technology
+is paired with which browser".
+
+Part 5 showed you how to enable Firefox and WebKit. With them enabled, run Testbook's accessibility
+specs on all three engines:
+
+```bash
+cd tests
+npx playwright test accessibility --project=chromium --project=firefox --project=webkit
+```
+
+Everything passes in all three engines. Now find out **why**, because it is not an accident.
+
+#### Why the keyboard tests pass everywhere
+
+Open `tests/e2e/fixtures/a11y.js` and read `pressTab`. It presses `Alt+Tab` on WebKit and `Tab`
+elsewhere. Browsers disagree about Tab:
+
+| Engine | What plain `Tab` does by default |
+| --- | --- |
+| Chromium | Moves focus through every link, button and field |
+| Firefox | Moves focus through every link, button and field |
+| WebKit (Safari) | Moves focus through **form fields only**, and skips links and buttons. `Alt+Tab` includes everything |
+
+(Safari users can change this under *Settings > Advanced > Press Tab to highlight each item on a
+webpage*. Many do not, so the default is what most Safari users get.)
+
+**Prove it.** In `tests/e2e/accessibility-behavior.spec.js`, find the test
+`login: Tab order is email, password, submit, create-account` and temporarily replace the
+`pressTab(page)` calls with `page.keyboard.press("Tab")`. Run it on WebKit only:
+
+```bash
+npx playwright test accessibility-behavior -g "Tab order" --project=webkit
+```
+
+It fails: the focus order you receive is missing the **Log In** button, because plain `Tab` on
+WebKit never lands on it. That is not a bug in Testbook. It is how the engine behaves, and your test had assumed otherwise.
+**Undo your change** (`git checkout tests/e2e/accessibility-behavior.spec.js`).
+
+#### Engine is not assistive technology
+
+A cross-browser run tells you the **page** works in each engine. Real users arrive with a browser
+**and** an assistive technology together:
+
+| Pairing | Where it is used | What Playwright can test |
+| --- | --- | --- |
+| VoiceOver with Safari | macOS (and iPhone with iOS VoiceOver) | The **engine** (WebKit), not the screen reader |
+| NVDA with Firefox | Windows | The **engine** (Gecko), not NVDA |
+| NVDA or JAWS with Chrome | Windows | The **engine** (Chromium), not the screen reader |
+| TalkBack with Chrome | Android | A **mobile viewport** in Chromium, not TalkBack |
+
+Playwright's Firefox is not NVDA, and its WebKit is not VoiceOver. Playwright can prove that the
+**markup** behaves the same in each engine. It cannot tell you what a screen reader **says**, and
+two screen readers can speak the same markup differently. That is what the manual screen reader
+scripts are for: [VoiceOver with Safari](../../../docs/a11y/manual/02_SCREEN_READER_VOICEOVER.md),
+[NVDA with Firefox](../../../docs/a11y/manual/03_SCREEN_READER_NVDA.md), and the
+[comparison](../../../docs/a11y/manual/SCREEN_READER_COMPARISON.md).
+
+**Your task.** Write a four-row release checklist for Testbook: for each row, name a browser and
+an assistive technology pairing, say whether it is **automated** (Playwright) or **manual**, and
+give one sentence on what it would catch that the others would not. Keep it as a note you can
+reuse in the Stage 5 capstone.
+
+✅ **Checkpoint:** you ran the keyboard tests on more than one engine, you saw the plain-`Tab`
+difference for yourself, and you can explain why a Firefox test run says nothing about NVDA.
+
 ## 🎓 What You Learned
 
 - ✅ **Trace Viewer** - Debug test failures with visual timeline
@@ -748,6 +817,7 @@ export default defineConfig({
 - [ ] Configured parallel execution
 - [ ] Set up CI/CD integration
 - [ ] Optimized test performance
+- [ ] Ran the keyboard tests on more than one engine, saw plain `Tab` skip the button on WebKit, and can explain why an engine is not an assistive technology
 
 ---
 
