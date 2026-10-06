@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pitfalls - Testbook</title>
+    <style>
+      body { font: 16px/1.6 system-ui, sans-serif; margin: 0 auto; max-width: 46rem; padding: 1.5rem; color: #111; background: #fff; }
+      a { color: #0b4ea8; }
+      a:focus-visible { outline: 3px solid #0b4ea8; outline-offset: 2px; }
+      h2 { margin-top: 2rem; }
+      table { border-collapse: collapse; width: 100%; }
+      th, td { text-align: left; padding: 0.5rem 0.75rem; border-bottom: 1px solid #767676; vertical-align: top; }
+      caption { text-align: left; font-weight: 600; padding-bottom: 0.5rem; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Pitfalls</h1>
+      <p>
+        Small standalone pages that show how bugs slip past tests, and how tests lie. Each one
+        has a <strong>broken</strong> page and a <strong>fixed</strong> page. See the
+        <a href="README.md">README</a> for how to use them.
+      </p>
+
+      <h2>Catch it</h2>
+      <p>There is a bug. Write the test that fails on the broken page and passes on the fixed one.</p>
+      <table>
+        <caption>Catch it pitfalls</caption>
+        <thead><tr><th scope="col">Pitfall</th><th scope="col">Broken</th><th scope="col">Fixed</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Invisible tab stops</th><td><a href="catch-it/invisible-tab-stops/broken/">broken</a></td><td><a href="catch-it/invisible-tab-stops/fixed/">fixed</a></td></tr>
+          <tr><th scope="row">The hover and click fight</th><td><a href="catch-it/hover-click-fight/broken/">broken</a></td><td><a href="catch-it/hover-click-fight/fixed/">fixed</a></td></tr>
+          <tr><th scope="row">A placeholder is not a label</th><td><a href="catch-it/placeholder-as-label/broken/">broken</a></td><td><a href="catch-it/placeholder-as-label/fixed/">fixed</a></td></tr>
+          <tr><th scope="row">The silent error</th><td><a href="catch-it/silent-error/broken/">broken</a></td><td><a href="catch-it/silent-error/fixed/">fixed</a></td></tr>
+        </tbody>
+      </table>
+
+      <h2>Trust it?</h2>
+      <p>A test is green. Decide whether you should believe it.</p>
+      <table>
+        <caption>Trust it pitfalls</caption>
+        <thead><tr><th scope="col">Pitfall</th><th scope="col">Broken</th><th scope="col">Fixed</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">The vacuous Escape test</th><td><a href="trust-it/vacuous-escape-test/broken/">broken</a></td><td><a href="trust-it/vacuous-escape-test/fixed/">fixed</a></td></tr>
+          <tr><th scope="row">The test id that hides the bug</th><td><a href="trust-it/test-id-hides-bug/broken/">broken</a></td><td><a href="trust-it/test-id-hides-bug/fixed/">fixed</a></td></tr>
+        </tbody>
+      </table>
+    </main>
+  </body>
+</html>

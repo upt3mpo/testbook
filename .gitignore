@@ -109,3 +109,8 @@ playwright-report-visual/
 playwright/.cache/
 reports/
 .lighthouseci/
+
+# Pitfalls (standalone teaching pages) have their own dependencies and reports
+pitfalls/node_modules/
+pitfalls/playwright-report/
+pitfalls/test-results/

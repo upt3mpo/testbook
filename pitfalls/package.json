@@ -1,0 +1,22 @@
+{
+  "name": "testbook-pitfalls",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Standalone teaching pages: how bugs slip past tests, and how tests lie. Independent of Testbook's own test suite.",
+  "scripts": {
+    "serve": "node serve.mjs",
+    "test": "playwright test",
+    "test:py": "node scripts/run.mjs py",
+    "red": "node scripts/run.mjs red",
+    "exercise": "node scripts/run.mjs exercise"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.11.0",
+    "@playwright/test": "~1.56.1",
+    "axe-core": "~4.13.0"
+  },
+  "engines": {
+    "node": ">=24 <25"
+  }
+}

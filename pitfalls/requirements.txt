@@ -1,0 +1,3 @@
+# Python-track tests for the pitfalls. Same pins as tests/e2e-python.
+pytest>=8
+pytest-playwright>=0.7

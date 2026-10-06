@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Invisible tab stops - fixed</title>
+    <style>
+      body { font: 16px/1.5 system-ui, sans-serif; margin: 2rem; color: #111; background: #fff; }
+      .edition { font-size: 0.875rem; color: #444; }
+      .card { max-width: 32rem; border: 1px solid #767676; border-radius: 8px; padding: 1rem; }
+      .actions { position: relative; display: flex; gap: 0.5rem; margin-top: 1rem; }
+      button { font: inherit; padding: 0.5rem 0.9rem; border: 1px solid #444; border-radius: 6px; background: #eee; color: #111; }
+      button:focus-visible { outline: 3px solid #1264d0; outline-offset: 2px; }
+      .picker {
+        position: absolute; bottom: 100%; left: 0; display: flex; gap: 0.25rem;
+        background: #fff; border: 1px solid #767676; border-radius: 6px; padding: 0.4rem;
+        /* visibility removes it from the Tab order and the accessibility tree */
+        visibility: hidden;
+        opacity: 0;
+        pointer-events: none;
+      }
+      .picker.open {
+        visibility: visible;
+        opacity: 1;
+        pointer-events: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <p class="edition">Pitfall: invisible Tab stops (<strong>fixed</strong> edition)</p>
+      <h1>Sarah Johnson</h1>
+      <article class="card" aria-label="Post by Sarah Johnson">
+        <p>Just shipped my first accessible form.</p>
+        <div class="actions">
+          <button id="react" aria-expanded="false" aria-controls="picker">React</button>
+          <div class="picker" id="picker">
+            <button aria-label="Like">&#128077;</button>
+            <button aria-label="Love">&#10084;&#65039;</button>
+            <button aria-label="Haha">&#128518;</button>
+          </div>
+          <button>Comment</button>
+          <button>Repost</button>
+        </div>
+      </article>
+    </main>
+    <script>
+      const react = document.getElementById('react');
+      const picker = document.getElementById('picker');
+      react.addEventListener('click', () => {
+        const open = picker.classList.toggle('open');
+        react.setAttribute('aria-expanded', String(open));
+      });
+    </script>
+  </body>
+</html>
