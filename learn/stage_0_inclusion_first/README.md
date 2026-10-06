@@ -60,11 +60,11 @@ inclusion that should have been designed in.
 
 Testbook proves the point. It was built as a normal testing-course app, by people who cared
 about quality, with a test suite that was green. When we audited it against WCAG 2.2 AA we
-found **18 real defects**. The original accessibility tests had reported **zero violations**
+found **19 real defects**. The original accessibility tests had reported **zero violations**
 the whole time, because they only looked at each page in its default state and most of the
 problems were not the kind a snapshot can see.
 
-Almost every one of those 18 defects was a decision made early: a design token, a component
+Almost every one of those 19 defects was a decision made early: a design token, a component
 without a required label, a CSS property chosen for the wrong reason. Testing could find
 them. Only design, code and review could have **prevented** them.
 
@@ -254,7 +254,7 @@ Do them in order. Each has a deliverable you keep, and each builds on the one be
 | --- | --- | --- | --- |
 | [0.1 Meet the barriers](exercises/EXERCISE_0_1_Meet_The_Barriers.md) | 45 minutes | Use eight small pages with a keyboard and assistive technology, and compare each with its fixed version | A barrier log |
 | [0.2 Who is excluded](exercises/EXERCISE_0_2_Who_Is_Excluded.md) | 30 minutes | Map each barrier to the people affected and to a WCAG criterion | A completed mapping table |
-| [0.3 Built in, then verified](exercises/EXERCISE_0_3_Built_In_Then_Verified.md) | 45 minutes | Trace 18 real defects back to the layer that should have prevented them | A prevention matrix and a set of acceptance criteria |
+| [0.3 Built in, then verified](exercises/EXERCISE_0_3_Built_In_Then_Verified.md) | 45 minutes | Trace 19 real defects back to the layer that should have prevented them | A prevention matrix and a set of acceptance criteria |
 
 The reading in this README is the remaining half an hour.
 
@@ -288,7 +288,7 @@ You are ready for Stage 1 when you can:
 
 ### Testbook's own accessibility record
 
-- [The audit log: 18 defects, all fixed and tested](../../docs/a11y/AUDIT_LOG.md)
+- [The audit log: 19 defects, all fixed and tested](../../docs/a11y/AUDIT_LOG.md)
 - [Worked examples: the most instructive findings](../../docs/a11y/WORKED_EXAMPLES.md)
 - [The manual testing scripts](../../docs/a11y/manual/README.md)
 
@@ -328,12 +328,12 @@ Prefer writing, talks and courses by disabled practitioners wherever you find th
    - C) A person holding a baby in one arm
    - D) A person with low vision
 
-4. **In Testbook's audit, how many of the 18 defects did the original default accessibility
+4. **In Testbook's audit, how many of the 19 defects did the original default accessibility
    scan report?**
 
-   - A) All 18
+   - A) All 19
    - B) About half
-   - C) None: it reported zero violations while all 18 existed
+   - C) None: it reported zero violations while all 19 existed
    - D) Exactly one
 
 5. **What is true of `opacity: 0` compared with `visibility: hidden`?**
@@ -361,7 +361,7 @@ Before moving to Stage 1, answer these:
    stage.**
 
 4. **What would you want to ask in a design meeting, before any code is written, to prevent one
-   of the 18 defects?**
+   of the 19 defects?**
 
 5. **What can a few minutes of using a barrier teach you, and what can it not? What would you
    need to do next to learn the rest?**

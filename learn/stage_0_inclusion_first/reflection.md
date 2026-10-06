@@ -47,7 +47,7 @@ what changed in how you think about testing.
 
 ---
 
-### 4. What would you ask in a design meeting, before any code, to prevent one of the 18 defects?
+### 4. What would you ask in a design meeting, before any code, to prevent one of the 19 defects?
 
 **The defect (audit ID):**
 

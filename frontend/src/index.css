@@ -328,3 +328,15 @@ a:hover {
 main:focus {
   outline: none;
 }
+
+/* Shown by ErrorBoundary when the app crashes, instead of a blank page */
+.error-boundary {
+  max-width: 32rem;
+  margin: 4rem auto;
+  padding: 0 1rem;
+  text-align: center;
+}
+
+.error-boundary h1:focus {
+  outline: none;
+}

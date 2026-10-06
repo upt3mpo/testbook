@@ -204,7 +204,7 @@ was darkened.
 A browser test submits a bad login with the keyboard alone and asserts the alert is
 focused. An axe scan runs *with the error showing*.
 
-**Takeaway.** Scan states, not just pages. Several of the 18 defects only existed once
+**Takeaway.** Scan states, not just pages. Several of the 19 defects only existed once
 something was open, expanded or in error.
 
 **Plant it.** Replace `<Alert>` with a plain `<div className="error">`.

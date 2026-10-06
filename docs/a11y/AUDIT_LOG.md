@@ -2,7 +2,7 @@
 
 **Target standard:** WCAG 2.2 Level AA
 **Audit date:** 2026-10-04
-**Status:** All 18 defects fixed and guarded by tests (2026-10-04). Phase 2 manual
+**Status:** All 19 defects fixed and guarded by tests (2026-10-04). Phase 2 manual
 scripts cover what automation cannot (see "Needs manual verification").
 
 See [WORKED_EXAMPLES.md](WORKED_EXAMPLES.md) for the most instructive findings written up as case
@@ -25,7 +25,7 @@ seed data from `/api/dev/reset`, signed in as `sarah.johnson@testbook.com`):
 
 | Result | Count |
 | --- | --- |
-| Defects found | 18 (11 from the scans, 3 found while fixing, 4 found while preparing the manual scripts) |
+| Defects found | 19 (11 from the scans, 3 found while fixing, 4 found while preparing the manual scripts, 1 found while writing course labs) |
 | Needs a human (manual script) | 3 |
 | Checked and passing | 7 |
 
@@ -35,7 +35,7 @@ reflow, titles, announcements) are things axe can see.
 
 ## Defects
 
-All 18 are fixed, each with a guarding test. "Guarded by" names the file; every
+All 19 are fixed, each with a guarding test. "Guarded by" names the file; every
 guard was confirmed to fail against the pre-fix code (22 of 26 new component tests
 and 21 browser tests fail without the fixes; the remainder cover new components).
 
@@ -59,6 +59,7 @@ and 21 browser tests fail without the fixes; the remainder cover new components)
 | A11Y-016 | High | 1.4.3 | Dark theme (primary buttons, active tab, avatar upload, delete-account heading, delete menu item) | Dark mode had never been scanned. White text on the dark accent `#2d88ff` was 3.45:1 and `#d32f2f` text on the dark background was 3.5:1 (4.5:1 needed). The accent colour doubled as both a text colour and a fill for white text, which want different values in dark mode. | Yes: split into `--accent-fill` (fill, 5.2:1 with white) and `--accent-color` (text/border); danger text uses `--error-text` | accessibility-axe.spec.js "dark theme" (7 scans, via the real Settings flow) |
 | A11Y-017 | Med | 4.1.2 | Post `aria-controls` ids | Introduced by this audit's own A11Y-006 fix: ids built from the post id (`post-12-reactions`) repeat when the feed shows a post and a repost that embeds it. axe reported it as `duplicate-id-aria` (incomplete). | Yes: `useId()` | a11y-regressions.test.jsx (A11Y-017); accessibility-behavior.spec.js (A11Y-017) |
 | A11Y-018 | Med | 1.4.13 | Reaction picker (hover) | The picker revealed by hovering could not be dismissed without moving the pointer: Escape worked only for a click-opened picker. 1.4.13 requires hover-revealed content to be dismissible, hoverable and persistent. Found while writing the zoom/hover manual script (ZM-06). | Yes: Escape sets a pointer-only `hover-dismissed` state (separate from the click state) | a11y-regressions.test.jsx (A11Y-018); accessibility-behavior.spec.js (A11Y-018) |
+| A11Y-019 | High | 3.3.1, 3.3.3 | Register and Login (any API validation error) | The API returns validation errors (HTTP 422) as a **list of objects**, but the UI put `detail` straight into the page. Rendering a list of objects crashes React, and with no error boundary the **whole page went blank**: nothing to see and nothing for a screen reader to read. Reproduce: register with the email `a@b`, which the browser accepts. Found while writing the Stage 2 lab on error responses. | Yes: `getErrorMessage()` turns either error shape into a readable string that names the field and says how to fix it; `ErrorBoundary` replaces any future render crash with a focused, readable message | errors.test.js; a11y-regressions.test.jsx (A11Y-019); accessibility-behavior.spec.js (A11Y-019) |
 
 ## Needs manual verification
 
@@ -84,6 +85,7 @@ These are not failures yet. They need a human, so each has a script in `manual/`
 
 ## Not defects (decisions)
 
+- **The API accepts an empty post and a 300-character username.** Found with the same probing that found A11Y-019. It is a validation gap, not an accessibility defect, so it was left as is and is used as a challenge in the Stage 2 lab on error responses.
 - **Native `alert()` and `confirm()`.** Browsers expose these to assistive technology
   correctly, so they are not WCAG failures. Replacing them would also break existing
   tests that handle dialogs. Leave as is. Revisit only if the app grows a design

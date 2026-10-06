@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Alert from '../components/Alert';
 import { useAuth } from '../AuthContext';
 import useDocumentTitle from '../hooks/useDocumentTitle';
+import { getErrorMessage } from '../utils/errors';
 import './Auth.css';
 
 function Register() {
@@ -40,7 +41,7 @@ function Register() {
       // User is now automatically logged in, redirect to feed
       navigate('/');
     } catch (err) {
-      setError(err.response?.data?.detail || 'Registration failed. Please try again.');
+      setError(getErrorMessage(err, 'Registration failed. Please try again.'));
     } finally {
       setLoading(false);
     }

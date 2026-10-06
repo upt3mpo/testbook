@@ -213,7 +213,7 @@ flowchart TD
 **Duration:** 2.5 hours (core content)
 **What you'll learn:** Why accessibility and inclusion are designed in, not tested in, and how to meet, describe and trace real barriers
 
-**Core Content:** Reading plus three short exercises, with no code: meet eight real barriers using a keyboard and assistive technology, map each to the people it excludes and the standard it breaks, and trace Testbook's 18 real accessibility defects back to the point where they should have been prevented.
+**Core Content:** Reading plus three short exercises, with no code: meet eight real barriers using a keyboard and assistive technology, map each to the people it excludes and the standard it breaks, and trace Testbook's 19 real accessibility defects back to the point where they should have been prevented.
 **Same for every track:** Python, JavaScript and Hybrid learners all start here.
 
 [Start Stage 0](stage_0_inclusion_first/README.md)

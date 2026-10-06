@@ -19,6 +19,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { axe } from 'vitest-axe';
 import { AuthContext } from '../../AuthContext';
 import Alert from '../../components/Alert';
+import ErrorBoundary from '../../components/ErrorBoundary';
 import CreatePost from '../../components/CreatePost';
 import LiveRegion, { announce } from '../../components/LiveRegion';
 import Post from '../../components/Post';
@@ -422,6 +423,83 @@ describe('A11Y-018: Escape dismisses a hover-revealed picker (WCAG 1.4.13)', () 
     await user.keyboard('{Escape}');
 
     expect(react).toHaveAttribute('aria-expanded', 'false');
+  });
+});
+
+describe('A11Y-019: an unexpected API error shape must not blank the page', () => {
+  // The real body of a 422 from POST /api/auth/register with the email "a@b".
+  const validationError = {
+    response: {
+      data: {
+        detail: [
+          {
+            type: 'value_error',
+            loc: ['body', 'email'],
+            msg: 'value is not a valid email address: The part after the @-sign is not valid.',
+            input: 'a@b',
+          },
+        ],
+      },
+    },
+  };
+
+  it('Register shows a readable alert for a list-shaped (422) error instead of crashing', async () => {
+    const user = userEvent.setup();
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    renderWith(<Register />, { register: vi.fn().mockRejectedValue(validationError) });
+
+    await user.type(screen.getByLabelText('Email'), 'a@b');
+    await user.type(screen.getByLabelText(/^Username/), 'zed');
+    await user.type(screen.getByLabelText('Display Name'), 'Zed');
+    await user.type(screen.getByLabelText('Password'), 'Password1!');
+    await user.click(screen.getByRole('button', { name: 'Sign Up' }));
+
+    const alert = await screen.findByRole('alert');
+    expect(alert).toHaveTextContent('Enter a valid email address');
+    // The page is still there: the form was not unmounted by a render crash.
+    expect(screen.getByRole('heading', { name: 'Create Account' })).toBeInTheDocument();
+    errorSpy.mockRestore();
+  });
+
+  it('Login does the same', async () => {
+    const user = userEvent.setup();
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    renderWith(<Login />, { login: vi.fn().mockRejectedValue(validationError) });
+
+    await user.type(screen.getByLabelText('Email'), 'a@b');
+    await user.type(screen.getByLabelText('Password'), 'x');
+    await user.click(screen.getByRole('button', { name: 'Log In' }));
+
+    expect(await screen.findByRole('alert')).toHaveTextContent('Enter a valid email address');
+    errorSpy.mockRestore();
+  });
+
+  it('ErrorBoundary replaces a crashed tree with a readable, focused explanation', () => {
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const Bomb = () => {
+      throw new Error('boom');
+    };
+    render(
+      <ErrorBoundary>
+        <Bomb />
+      </ErrorBoundary>
+    );
+
+    // Not a blank page: there is a heading, and focus is on it so assistive technology reads it.
+    const heading = screen.getByRole('heading', { name: 'Something went wrong' });
+    expect(heading).toHaveFocus();
+    expect(screen.getByRole('button', { name: 'Reload the page' })).toBeInTheDocument();
+    expect(document.title).toBe('Something went wrong - Testbook');
+    errorSpy.mockRestore();
+  });
+
+  it('ErrorBoundary renders its children when nothing is wrong', () => {
+    render(
+      <ErrorBoundary>
+        <p>All fine</p>
+      </ErrorBoundary>
+    );
+    expect(screen.getByText('All fine')).toBeInTheDocument();
   });
 });
 

@@ -14,6 +14,7 @@ import Settings from './pages/Settings';
 
 // Components
 import LiveRegion, { announce } from './components/LiveRegion';
+import ErrorBoundary from './components/ErrorBoundary';
 import Navbar from './components/Navbar';
 
 // Loading component
@@ -178,9 +179,11 @@ function AppContent() {
 
 function App() {
   return (
-    <AuthProvider>
-      <AppContent />
-    </AuthProvider>
+    <ErrorBoundary>
+      <AuthProvider>
+        <AppContent />
+      </AuthProvider>
+    </ErrorBoundary>
   );
 }
 

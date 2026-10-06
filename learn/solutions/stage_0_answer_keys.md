@@ -69,21 +69,22 @@ bug was written.
 | A11Y-016 | Dark-mode contrast failures | Layer 1: colour tokens by role, and "every theme" in the definition of done | Partly: yes if you scan dark mode | Layer 5: axe in dark theme |
 | A11Y-017 | Duplicate ids from the fix for A11Y-006 | Layer 3: review (use a generated id) | Partly: reported as "incomplete" | Layer 5: axe |
 | A11Y-018 | Hover content not dismissible | Layer 1: review against WCAG 1.4.13 when adding hover reveal | No | Writing the zoom and hover script |
+| A11Y-019 | An API error shape the UI did not expect blanked the whole page | Layer 2: one shared helper that turns any error into text, plus an error boundary (or layer 1: agree the API's error shapes up front) | No: it only appears when the API returns that shape | Probing the API's error responses while writing a lab |
 
 ### The totals
 
 | Question | Count |
 | --- | --- |
-| Defects a default axe scan could have caught on its own | **0 of 18**. The original suite reported zero violations |
-| Defects axe could catch with states, themes or the WCAG 2.2 tag | 5 of 18 (002, 004, 005, 016, 017), and only partly |
-| Defects that could have been prevented at layers 1 to 3 | **18 of 18**: 5 at layer 1, 10 at layer 2, 3 at layer 3 |
+| Defects a default axe scan could have caught on its own | **0 of 19**. The original suite reported zero violations |
+| Defects axe could catch with states, themes or the WCAG 2.2 tag | 5 of 19 (002, 004, 005, 016, 017), and only partly |
+| Defects that could have been prevented at layers 1 to 3 | **19 of 19**: 5 at layer 1, 11 at layer 2, 3 at layer 3 |
 | Defects that needed layer 5 or later to find | The majority, found by scripted browser checks, reading, or writing the manual scripts |
 
 ### What to take from it
 
-- **Layer 2 dominates.** Ten of the eighteen are best prevented by a shared component that makes
+- **Layer 2 dominates.** Eleven of the nineteen are best prevented by a shared component that makes
   the right thing the only easy thing. That is a design-system decision, not a testing one.
-- **Tools are blind to most of it.** Thirteen of eighteen are invisible to axe in any state,
+- **Tools are blind to most of it.** Fourteen of nineteen are invisible to axe in any state,
   because they depend on time, on judgement, or on what a screen reader does.
 - **Prevention is cheap and testing is not free.** Every one of these could have been stopped
   earlier. And the ones testing did find needed browser-driven checks, not a simple scan.
@@ -92,7 +93,7 @@ bug was written.
 
 - *"Isn't this hindsight?"* Partly, and that is fine. Hindsight is how teams learn what to
   add to a definition of done. The point is the pattern, not blame.
-- *"So is testing pointless?"* No. Testing found all 18, and it keeps them from coming back.
+- *"So is testing pointless?"* No. Testing found all 19, and it keeps them from coming back.
   It is the last line of defence, not the first.
 
 ## Exercise 0.3, Step 5: acceptance criteria

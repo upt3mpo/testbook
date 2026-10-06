@@ -5,7 +5,7 @@
 **Language:** None (no code)
 **Prerequisites:** [Exercise 0.2](EXERCISE_0_2_Who_Is_Excluded.md) completed
 
-**What this adds:** you trace Testbook's 18 real accessibility defects back to the layer that
+**What this adds:** you trace Testbook's 19 real accessibility defects back to the layer that
 should have prevented each one, and turn what you learn into acceptance criteria you will use
 on the capstone ticket.
 
@@ -17,7 +17,7 @@ This is the heart of Stage 0. If you only remember one thing from it, it should 
 **most accessibility defects are not found by testing because most are not testing problems.**
 They are decisions made earlier. This exercise makes you see that with real evidence.
 
-Testbook was audited against WCAG 2.2 AA and 18 defects were found and fixed. For every one of
+Testbook was audited against WCAG 2.2 AA and 19 defects were found and fixed. For every one of
 them you can ask two questions:
 
 1. **Where could it have been stopped earliest?**
@@ -65,7 +65,7 @@ You do not need to read every word. Skim each defect to understand what went wro
 
 ## Step 3: Fill in the prevention matrix (20 minutes)
 
-Copy this table. There is one row for each of the 18 defects. Fill in the last three columns.
+Copy this table. There is one row for each of the 19 defects. Fill in the last three columns.
 
 | Audit ID | What went wrong (your own words) | Earliest layer that could have prevented it (1 to 7) | Would a default axe scan have caught it? (yes, no, partly) | Which layer would actually catch it? (1 to 7) |
 | --- | --- | --- | --- | --- |
@@ -87,6 +87,7 @@ Copy this table. There is one row for each of the 18 defects. Fill in the last t
 | A11Y-016 | | | | |
 | A11Y-017 | | | | |
 | A11Y-018 | | | | |
+| A11Y-019 | | | | |
 
 **Guidance:**
 
@@ -140,7 +141,7 @@ Stage 5.
 
 You can:
 
-- Explain why a default scan found none of the 18 defects
+- Explain why a default scan found none of the 19 defects
 - Say which layer you would invest in first, and why
 - Write acceptance criteria that are specific enough to test
 

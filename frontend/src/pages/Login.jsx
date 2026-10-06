@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Alert from '../components/Alert';
 import { useAuth } from '../AuthContext';
 import useDocumentTitle from '../hooks/useDocumentTitle';
+import { getErrorMessage } from '../utils/errors';
 import './Auth.css';
 
 function Login() {
@@ -23,9 +24,7 @@ function Login() {
       await login(email, password);
       navigate('/');
     } catch (err) {
-      setError(
-        err.response?.data?.detail || 'Invalid credentials. Please check your email and password.'
-      );
+      setError(getErrorMessage(err, 'Invalid credentials. Please check your email and password.'));
     } finally {
       setLoading(false);
     }

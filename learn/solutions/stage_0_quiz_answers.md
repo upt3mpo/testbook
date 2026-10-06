@@ -8,7 +8,7 @@
 
 - Testing can find a missing ramp. It cannot create the inclusion that should have been
   designed in.
-- Testbook's audit found 18 defects, almost all of them early decisions (a component without a
+- Testbook's audit found 19 defects, almost all of them early decisions (a component without a
   required label, a CSS property chosen for the wrong reason). Testing found them; only design,
   code and review could have prevented them.
 - A specialist after release (C) is the pattern this stage argues against, because late fixes
@@ -36,9 +36,9 @@
 - The same design choice often affects all three, which is why fixing a barrier helps so many
   people.
 
-### 4. In Testbook's audit, how many of the 18 defects did the original default accessibility scan report?
+### 4. In Testbook's audit, how many of the 19 defects did the original default accessibility scan report?
 
-**Answer: C) None: it reported zero violations while all 18 existed**
+**Answer: C) None: it reported zero violations while all 19 existed**
 
 - The original suite scanned five pages in their default state and reported zero violations the
   whole time.
