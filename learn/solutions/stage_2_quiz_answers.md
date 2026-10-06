@@ -47,12 +47,26 @@
 - Headers can contain important metadata
 - You should verify all aspects of the response
 
+### 6. An API returns a validation error as a list of objects, but the frontend assumed a string, and the page went blank. Which test would have caught the mismatch earliest?
+
+**Answer: B) A test that pins the shape of the API's error responses, or a component test fed the real error shape**
+
+- The bug lived in the **gap between two pieces**. Testbook's API returns a plain string for most
+  errors and a list of objects for HTTP 422. The frontend only handled the string.
+- A test on the **producer** that asserts "`detail` is a string or a list of issues with a `msg` and
+  a `loc`" documents both shapes, so the frontend developer learns about the list.
+- A test on the **consumer** that renders the component with the real list-shaped error fails the
+  moment the component cannot cope. Both are cheap, run in milliseconds, and need no browser.
+- A load test (A) and a home-page visual test (D) say nothing about error handling. A manual
+  click-through (C) only finds it if someone happens to try an email like `a@b`.
+- See [audit finding A11Y-019](../../docs/a11y/AUDIT_LOG.md).
+
 ## How Did You Do?
 
-- **5/5:** Excellent! You understand integration testing
-- **4/5:** Very good! You're ready for Stage 3
-- **3/5:** Good! Review the concepts you missed
-- **2/5 or less:** Consider reviewing Stage 2 materials before moving on
+- **6/6:** Excellent! You understand integration testing
+- **5/6:** Very good! You're ready for Stage 3
+- **4/6:** Good! Review the concepts you missed
+- **3/6 or less:** Consider reviewing Stage 2 materials before moving on
 
 ## Need More Practice?
 
@@ -63,7 +77,7 @@
 
 ## Ready for Stage 3?
 
-If you got 3/5 or better, you're ready to move on to [Stage 3: API & E2E Testing](../stage_3_api_e2e/README.md)!
+If you got 4/6 or better, you're ready to move on to [Stage 3: API & E2E Testing](../stage_3_api_e2e/README.md)!
 
 ---
 

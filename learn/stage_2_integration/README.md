@@ -1033,6 +1033,7 @@ You're ready for Stage 3 when you can:
 - [ ] Verify authorization and authentication
 - [ ] Understand HTTP status codes (200, 201, 401, 403, 404)
 - [ ] Debug failing integration tests
+- [ ] Explain why error responses need a consistent shape and a message that names what to fix, and how a mismatch between API and frontend can blank a page
 
 **Python Track:**
 
@@ -1104,6 +1105,24 @@ You're ready for Stage 3 when you can:
 
 ---
 
+<h2 id="accessibility-in-this-stage">Accessibility in this stage</h2>
+
+Stage 2 tests how pieces work together, and some of the most important accessibility defects live
+in the **gap between two pieces**. In Lab 6 you meet one: Testbook's API returned a validation
+error as a list of objects, the frontend expected a string, and registering with the email `a@b`
+**blanked the whole page**. Neither side's tests could see it alone.
+
+- **JavaScript track:** you test the *consumer*. You find controls by role and label (so a missing
+  name fails your test instead of passing silently), scan an error *state* with axe, and feed a
+  component the exact error shape the API really sends.
+- **Python track:** you test the *producer*. You pin the shape, wording and field-naming of the
+  API's error responses, which is also WCAG 3.3.1 Error Identification.
+
+Both tracks end up with the same lesson: **an error message is part of the user interface.** If
+you skipped [Stage 0](../stage_0_inclusion_first/README.md), read it first.
+
+---
+
 <h2 id="self-check-quiz-optional">Self-Check Quiz (Optional)</h2>
 
 Before moving to Stage 3, can you answer these questions?
@@ -1137,10 +1156,19 @@ Before moving to Stage 3, can you answer these questions?
    - D) To generate random test cases
 
 5. **When testing API endpoints, what should you verify?**
+
    - A) Only the response status code
    - B) Only the response data
    - C) Status code, response data, and headers
    - D) Only that the endpoint doesn't crash
+
+6. **An API returns a validation error as a list of objects, but the frontend assumed a string,
+   and the page went blank. Which test would have caught the mismatch earliest?**
+   - A) A load test
+   - B) A test that pins the shape of the API's error responses, or a component test fed the real
+     error shape
+   - C) Only a manual click-through
+   - D) A visual regression test of the home page
 
 **Answers:** [Check your answers here](../solutions/stage_2_quiz_answers.md)
 
@@ -1160,6 +1188,8 @@ Before moving to Stage 3, answer these:
 
 5. **What's one integration test you would add to improve test coverage?**
 
+6. **Find an error message in Testbook (an API response or something the UI shows). Does it tell a user what went wrong and what to do next? Rewrite it if not.**
+
 **Document your answers** in [reflection.md](reflection.md).
 
 ---
@@ -1172,4 +1202,4 @@ You now understand how to test multi-component systems!
 
 ---
 
-_Pro tip: Integration tests are where most QA engineers spend their time. Master this, and you're job-ready! 💼_
+*Pro tip: Integration tests are where most QA engineers spend their time. Master this, and you're job-ready! 💼*

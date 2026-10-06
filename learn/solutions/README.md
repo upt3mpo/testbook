@@ -11,6 +11,7 @@ This directory contains a small set of reference implementations that demonstrat
 | Lab 1 – Your First Test | `LAB_01_solution.py` | Demonstrates pytest basics and assertion patterns. |
 | Lab 2 – Testing Real Functions | `LAB_02_solution.py` | Shows password hashing tests that mirror the lab prompts. |
 | Lab 2 – accessibility step (Python) | `LAB_02_contrast_solution.py` | Tests for the contrast-ratio function and, as an optional challenge, Testbook's real design tokens. Needs `starter_files/contrast.py` copied to `backend/contrast.py`. The JavaScript reference is `frontend/src/tests/unit/contrast.test.js`. |
+| Lab 6 – error responses (Python) | `LAB_06_error_responses_solution.py` | Tests the shape, wording and field-naming of the API's error responses, plus a strict `xfail` documenting a validation gap. Uses the standard `client`, `test_user` and `auth_headers` fixtures, so copy it into `backend/tests/integration/` to run it. The JavaScript equivalent is `frontend/src/tests/accessibility/a11y-regressions.test.jsx`. |
 | Lab 5 – API Endpoint Testing | `LAB_03_solution.py` | Covers TestClient usage and HTTP assertions (filename predates the Lab 5 renumbering). |
 
 > Advanced labs (fixtures, E2E testing, debugging, rate limiting, etc.) encourage learners to compare their work against the production codebase and test suite. We intentionally avoid including end-to-end solutions to preserve the exploratory experience.

@@ -1,6 +1,6 @@
 # 🧪 Lab 6: Component Testing with Vitest
 
-**Estimated Time:** 120 minutes<br>
+**Estimated Time:** 150 minutes (120 minutes of core steps and a 30 minute accessibility step)<br>
 **Difficulty:** Advanced<br>
 **Language:** 🟨 JavaScript/React<br>
 **Prerequisites:** Lab 5 completed
@@ -20,7 +20,7 @@
 - Simulate user interactions (clicks, typing, etc.)
 - Test component state and props
 - Test component integration with APIs
-- Test accessibility and user experience
+- Test accessibility and user experience: find controls by role and label, scan states, and test the error shapes an API really returns
 
 ---
 
@@ -601,6 +601,145 @@ npm test LoginForm.test.jsx
 
 ---
 
+### Step 6: Find controls the way users do (30 minutes)
+
+**Accessibility thread.** Your component tests so far find elements with `getByTestId` or
+`getByPlaceholderText`. Those queries are convenient, and they have a hidden flaw: they keep
+working when the page is inaccessible. A test id is invisible to every user. A placeholder is not
+a reliable name. A test that finds a control by either can pass while a person cannot use the
+control at all.
+
+Testing Library's own guidance is to query in the order a user would find things: **by role and
+name first** (`getByRole`), then **by label** (`getByLabelText`), and to use test ids last. A
+role or label query *fails* when the control has no accessible name, so your test notices the
+problem for free. See the pitfall
+[the test id that hides the bug](../../../pitfalls/trust-it/test-id-hides-bug/README.md) for a
+small example you can run.
+
+**Create your own test file:** `frontend/src/tests/unit/a11y_lab.test.jsx`
+
+Start with the same setup your other component tests use (a `BrowserRouter`, an `AuthContext`
+provider, and a mocked `../../api`). Then complete these four tasks.
+
+#### Task A: Query by label and role (5 minutes)
+
+Open `frontend/src/tests/unit/Login.test.jsx`. It finds fields with
+`getByPlaceholderText("Email")`. In your own file, render `Login` and find the same controls the
+way a screen reader user would:
+
+```javascript
+expect(screen.getByLabelText("Email")).toBeInTheDocument();
+expect(screen.getByRole("textbox", { name: "Email" })).toBeInTheDocument();
+expect(screen.getByRole("button", { name: "Log In" })).toBeInTheDocument();
+```
+
+**Think:** these would have **failed** on the original Testbook, where the fields had only
+placeholders. That failure is the feature.
+
+#### Task B: Scan a state, not just the page (10 minutes)
+
+`frontend/src/tests/accessibility/accessibility.test.jsx` runs vitest-axe on each page in its
+default state. Many real defects only exist once something is open or showing. Write a test that
+puts the login form into its **error** state and scans *that*:
+
+1. Mock `login` to reject with `{ response: { data: { detail: "Incorrect email or password" } } }`.
+2. Type into the fields and click **Log In**.
+3. Wait for the error: `await screen.findByRole("alert")`.
+4. Run `axe(container, { rules: { "color-contrast": { enabled: false } } })` and assert
+   `violations` is `[]`. (Contrast is turned off because the test environment has no layout
+   engine. Stage 3's browser tests check contrast for real.)
+
+Notice `findByRole("alert")`: you are asserting the error is exposed in a way a screen reader
+will announce, not just that some text appeared.
+
+#### Task C: Test the error shape the API really returns (10 minutes)
+
+On the real Testbook, registering with the email `a@b` **blanked the whole page**. The browser
+accepts that address, but the API rejects it with a 422 whose `detail` is a *list of objects*, and
+the page tried to render that list. Reproduce it in a component test:
+
+```javascript
+const unprocessable = {
+  response: {
+    data: {
+      detail: [
+        {
+          type: "value_error",
+          loc: ["body", "email"],
+          msg: "value is not a valid email address: The part after the @-sign is not valid.",
+          input: "a@b",
+        },
+      ],
+    },
+  },
+};
+```
+
+Render `Register` with `register: vi.fn().mockRejectedValue(unprocessable)`, fill in and submit
+the form, and assert that `await screen.findByRole("alert")` has text matching
+`/valid email address/i`. Silence the expected console noise with
+`vi.spyOn(console, "error").mockImplementation(() => {})` and restore it afterwards.
+
+**Now break it on purpose.** In `frontend/src/pages/Register.jsx`, find
+
+```javascript
+setError(getErrorMessage(err, 'Registration failed. Please try again.'));
+```
+
+and temporarily replace it with the original code:
+
+```javascript
+setError(err.response?.data?.detail || 'Registration failed. Please try again.');
+```
+
+Run your test. It should fail with `Objects are not valid as a React child`. That is the exact
+crash users saw. **Undo your change** (`git checkout src/pages/Register.jsx`) and confirm the test
+passes again.
+
+#### Task D: Every button has a name (5 minutes)
+
+Render the `Post` component for the post's author (so the menu button is shown) and check that
+every button has an accessible name. jest-dom has a matcher for it:
+
+```javascript
+for (const button of screen.getAllByRole("button")) {
+  expect(button).toHaveAccessibleName();
+}
+```
+
+It passes. **Now find out whether it is good enough.** In `frontend/src/components/Post.jsx`,
+find the menu button and temporarily delete its `aria-label="Post options"` line and change
+`<span aria-hidden="true">⋯</span>` back to a bare `⋯`. This is how the button used to be.
+
+Run the test again. **It still passes.** The ellipsis symbol counts as a name, so the check is
+satisfied even though a screen reader would say nothing useful.
+
+Make the check stronger by requiring the name to contain a letter or a digit:
+
+```javascript
+expect(button).toHaveAccessibleName(/[\p{L}\p{N}]/u);
+```
+
+Run it with the bug still in place. **Now it fails.** Undo your changes (`git checkout
+src/components/Post.jsx`) and confirm it passes.
+
+> **The lesson:** a check that "a name exists" can be satisfied by a symbol. Whether a name is
+> *meaningful* is a judgement a tool cannot fully make, so you assert what you can (it contains
+> real words) and leave the rest to the manual testing in Stage 3 and Stage 4.
+
+**Run your tests:**
+
+```bash
+cd frontend
+npx vitest --run src/tests/unit/a11y_lab.test.jsx
+```
+
+✅ **Checkpoint:** all four tasks pass, and you watched Tasks C and D fail when you reintroduced
+the original bugs.
+
+Compare your work with `frontend/src/tests/accessibility/a11y-regressions.test.jsx`, which holds
+the real regression tests for these defects.
+
 ## 🎓 What You Learned
 
 - ✅ How to render React components in tests
@@ -774,6 +913,9 @@ const renderWithProviders = (ui, options = {}) => {
 - [ ] Understand how to test user interactions
 - [ ] Understand how to test forms and validation
 - [ ] Completed at least 1 practice challenge
+- [ ] Found controls by label and role instead of test id, and can say why that is better
+- [ ] Watched the 422 test fail with `Objects are not valid as a React child` when the original code was restored
+- [ ] Can explain why "every button has a name" is satisfied by a bare symbol, and how to strengthen it
 
 ---
 

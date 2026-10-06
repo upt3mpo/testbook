@@ -1,6 +1,6 @@
 # 🧪 Lab 6: Advanced API Testing
 
-**Estimated Time:** 120 minutes<br>
+**Estimated Time:** 150 minutes (120 minutes of core steps and a 30 minute accessibility step)<br>
 **Difficulty:** Advanced<br>
 **Language:** 🐍 Python<br>
 **Prerequisites:** Lab 5 completed
@@ -17,7 +17,7 @@
 
 - **Database transactions** - Test complex data operations
 - **Authentication flows** - Test login, logout, token refresh
-- **Error handling** - Test API error responses
+- **Error handling** - Test API error responses, including their shape, wording and whether they name the field
 - **Performance testing** - Test API response times
 - **Data validation** - Test API input/output validation
 - **Edge cases** - Test boundary conditions
@@ -370,6 +370,107 @@ def test_expired_token(self, client, db_session: Session):
 
 ---
 
+#### Step 3: Errors are a user interface (accessibility thread, 30 minutes)
+
+Every error message your API returns is something a person reads, or something a frontend turns
+into something a person reads. If the shape is surprising or the wording is useless, the user
+pays for it. This step tests the *quality* of your errors, not only their status codes.
+
+**The real story.** Testbook's API returns errors in **two shapes**:
+
+```json
+{ "detail": "Email already registered" }
+```
+
+```json
+{ "detail": [ { "type": "missing", "loc": ["body", "username"], "msg": "Field required" } ] }
+```
+
+The first is a string. The second, which the framework returns for any HTTP 422, is a **list of
+objects**. The frontend only expected a string, so when a user registered with the email `a@b`
+(which browsers accept), the page tried to render a list of objects, crashed, and showed a
+**completely blank page**. Nothing on screen, and nothing for a screen reader to read. A test that
+pinned the *shape* of error responses would have told the frontend developer both shapes exist.
+
+**Create your own test file:** `backend/tests/integration/test_error_responses_lab.py`
+
+Start by collecting a set of bad requests, made once and shared by your tests. Use the standard
+fixtures from `backend/tests/conftest.py` (`client`, `test_user`, `auth_headers`):
+
+```python
+import pytest
+
+VALID_REGISTRATION = {
+    "email": "zed@example.com",
+    "username": "zed",
+    "display_name": "Zed",
+    "password": "Password1!",
+}
+
+
+@pytest.fixture
+def error_responses(client, test_user, auth_headers):
+    """Make every bad request once and return {label: response}."""
+    return {
+        "invalid email": client.post("/api/auth/register", json={**VALID_REGISTRATION, "email": "a@b"}),
+        "missing fields": client.post("/api/auth/register", json={"email": "x@y.com"}),
+        "duplicate email": client.post(
+            "/api/auth/register", json={**VALID_REGISTRATION, "email": test_user.email}
+        ),
+        "wrong password": client.post(
+            "/api/auth/login", json={"email": test_user.email, "password": "nope"}
+        ),
+        "unknown post": client.get("/api/posts/99999", headers=auth_headers),
+    }
+```
+
+**Now write these tests yourself.** Each takes `error_responses` and loops over it, putting the
+label in the assertion message so a failure says *which* request misbehaved.
+
+1. **The shape contract.** For every response, `detail` must be either a non-empty string, or a
+   non-empty list where every issue has a string `msg` and a list `loc`. This is the contract the
+   frontend has to honour.
+2. **Both shapes really occur.** Assert that the invalid-email response's `detail` is a list and
+   the wrong-password response's `detail` is a string. This documents *why* the frontend needs
+   two code paths.
+3. **Messages are specific.** No message may be a generic word like `"error"` or `"bad request"`,
+   and none may be shorter than 10 characters.
+4. **Errors say which field (WCAG 3.3.1 Error Identification).** For "missing fields", collect
+   `issue["loc"][-1]` for each issue and check that `username`, `display_name` and `password`
+   are all there. For "duplicate email", check the message mentions "email".
+5. **Login does not reveal which half was wrong.** Log in once with a valid email and a wrong
+   password, and once with an unknown email. Assert the status codes (both 401) and the messages
+   are **identical**. Clear enough to act on, vague enough not to help someone discover which
+   emails have accounts.
+6. **No internals leak.** Assert that no response body (lower-cased) contains `traceback`,
+   `sqlalchemy`, `internal server error`, or the word `select` followed by a space (a leaked SQL
+   statement).
+
+**Run your tests:**
+
+```bash
+cd backend
+pytest tests/integration/test_error_responses_lab.py -v
+```
+
+✅ **Checkpoint:** all six pass.
+
+**Challenge: find a gap.** Probing like this finds things. Try posting an **empty** post
+directly to the API (`POST /api/posts/` with `{"content": ""}`), and registering with a 300
+character username. Both are accepted today. Write a test that states what *should* happen (an
+empty post gets a 422 with a clear message), and mark it
+`@pytest.mark.xfail(strict=True, reason="The API currently accepts an empty post")`. A strict
+`xfail` documents a known gap and turns red the day someone fixes it, so the marker cannot be
+forgotten.
+
+Compare with `learn/solutions/LAB_06_error_responses_solution.py`.
+
+> **Python and JavaScript differ here.** JavaScript learners test the *consumer* of these errors
+> (the component that has to render them). Python learners test the *producer* (the API). Both are
+> needed: the bug lived in the gap between them, and neither side's tests could see it alone.
+
+---
+
 ### Part 4: Performance Testing (30 minutes)
 
 Test API performance and response times.
@@ -581,6 +682,8 @@ def test_external_api_call(self, client):
 - [ ] Can test API performance and response times
 - [ ] Can write custom fixtures for complex test data
 - [ ] Can test edge cases and boundary conditions
+- [ ] Can test that error responses have a consistent shape, specific messages and name the field
+- [ ] Can explain why the frontend crashed on a 422, and why tests on both sides were needed
 - [ ] Completed all challenge exercises
 - [ ] Understand when to use integration vs unit tests
 
