@@ -23,7 +23,8 @@ def test_the_label_is_still_visible_after_the_user_has_typed(page: Page, open_pi
 
 def test_a_default_axe_scan_does_not_see_the_problem_that_is_the_lesson(page: Page, open_pitfall, axe_source):
     # axe accepts a non-empty placeholder as an accessible name, so its `label` rule is
-    # satisfied. The requirement (WCAG 3.3.2) is stronger than what a tool can check.
+    # satisfied. The expectation of a persistent label (WCAG 3.3.2, and good practice) is
+    # stronger than what a tool can check.
     open_pitfall(PITFALL)
     page.evaluate(axe_source)
     assert page.evaluate("axe.run()")["violations"] == []

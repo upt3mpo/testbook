@@ -78,6 +78,25 @@ test.describe('Accessibility behaviour', { tag: '@a11y' }, () => {
     await expect(page.getByTestId('navbar')).toBeVisible();
   });
 
+  test('A11Y-001: the login and register labels are visible on screen, and stay visible while typing (3.3.2)', async ({
+    page,
+  }) => {
+    for (const [path, labels] of [
+      ['/login', ['login-email', 'login-password']],
+      ['/register', ['register-email', 'register-username', 'register-display_name', 'register-password']],
+    ]) {
+      await page.goto(path);
+      await expect(page.getByLabel('Email')).toBeVisible();
+      await page.getByLabel('Email').fill('typing@example.com');
+      for (const id of labels) {
+        // A visually hidden label is 1px by 1px. A real, visible label has a real size.
+        const box = await page.locator(`label[for="${id}"]`).boundingBox();
+        expect(box?.height ?? 0, `the label for ${id} on ${path} is not visible`).toBeGreaterThan(8);
+        expect(box?.width ?? 0).toBeGreaterThan(30);
+      }
+    }
+  });
+
   test('A11Y-003/3.3.8: password fields accept paste', async ({ page }) => {
     await page.goto('/login');
     const blocked = await page.getByLabel('Password').evaluate((el) => {

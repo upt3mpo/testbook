@@ -34,6 +34,19 @@
   gap: 12px;
 }
 
+.auth-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* A visible, persistent label for every field. A placeholder disappears as soon as you type. */
+.auth-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
 .auth-divider {
   height: 1px;
   background-color: var(--border-color);

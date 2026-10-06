@@ -62,78 +62,88 @@ function Register() {
         )}
 
         <form onSubmit={handleSubmit} className="auth-form" data-testid="register-form">
-          <label htmlFor="register-email" className="sr-only">
-            Email
-          </label>
-          <input
-            id="register-email"
-            type="email"
-            name="email"
-            autoComplete="email"
-            className="input"
-            placeholder="Email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-            data-testid="register-email-input"
-          />
-          <label htmlFor="register-username" className="sr-only">
-            Username (lowercase, no spaces)
-          </label>
-          <input
-            id="register-username"
-            type="text"
-            name="username"
-            autoComplete="username"
-            className="input"
-            placeholder="Username (lowercase, no spaces)"
-            value={formData.username}
-            onChange={handleChange}
-            required
-            data-testid="register-username-input"
-          />
-          <label htmlFor="register-display_name" className="sr-only">
-            Display Name
-          </label>
-          <input
-            id="register-display_name"
-            type="text"
-            name="display_name"
-            autoComplete="name"
-            className="input"
-            placeholder="Display Name"
-            value={formData.display_name}
-            onChange={handleChange}
-            required
-            data-testid="register-displayname-input"
-          />
-          <label htmlFor="register-password" className="sr-only">
-            Password
-          </label>
-          <input
-            id="register-password"
-            type="password"
-            name="password"
-            autoComplete="new-password"
-            className="input"
-            placeholder="Password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-            data-testid="register-password-input"
-          />
-          <label htmlFor="register-bio" className="sr-only">
-            Bio (optional)
-          </label>
-          <textarea
-            id="register-bio"
-            name="bio"
-            className="textarea"
-            placeholder="Bio (optional)"
-            value={formData.bio}
-            onChange={handleChange}
-            data-testid="register-bio-input"
-          ></textarea>
+          <div className="auth-field">
+            <label htmlFor="register-email" className="auth-label">
+              Email
+            </label>
+            <input
+              id="register-email"
+              type="email"
+              name="email"
+              autoComplete="email"
+              className="input"
+              placeholder="Email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+              data-testid="register-email-input"
+            />
+          </div>
+          <div className="auth-field">
+            <label htmlFor="register-username" className="auth-label">
+              Username (lowercase, no spaces)
+            </label>
+            <input
+              id="register-username"
+              type="text"
+              name="username"
+              autoComplete="username"
+              className="input"
+              placeholder="Username (lowercase, no spaces)"
+              value={formData.username}
+              onChange={handleChange}
+              required
+              data-testid="register-username-input"
+            />
+          </div>
+          <div className="auth-field">
+            <label htmlFor="register-display_name" className="auth-label">
+              Display Name
+            </label>
+            <input
+              id="register-display_name"
+              type="text"
+              name="display_name"
+              autoComplete="name"
+              className="input"
+              placeholder="Display Name"
+              value={formData.display_name}
+              onChange={handleChange}
+              required
+              data-testid="register-displayname-input"
+            />
+          </div>
+          <div className="auth-field">
+            <label htmlFor="register-password" className="auth-label">
+              Password
+            </label>
+            <input
+              id="register-password"
+              type="password"
+              name="password"
+              autoComplete="new-password"
+              className="input"
+              placeholder="Password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+              data-testid="register-password-input"
+            />
+          </div>
+          <div className="auth-field">
+            <label htmlFor="register-bio" className="auth-label">
+              Bio (optional)
+            </label>
+            <textarea
+              id="register-bio"
+              name="bio"
+              className="textarea"
+              placeholder="Bio (optional)"
+              value={formData.bio}
+              onChange={handleChange}
+              data-testid="register-bio-input"
+            ></textarea>
+          </div>
           <button
             type="submit"
             className="btn btn-primary"

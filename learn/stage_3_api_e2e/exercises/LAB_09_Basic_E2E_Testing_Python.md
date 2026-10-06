@@ -274,10 +274,10 @@ pytest test_my_first_accessible.py -v
 ✅ **Checkpoint:** both of your tests pass.
 
 **Now break the page on purpose.** Open `frontend/src/pages/Login.jsx` and delete this element (the
-visually hidden label for the email field):
+label for the email field):
 
 ```jsx
-<label htmlFor="login-email" className="sr-only">
+<label htmlFor="login-email" className="auth-label">
   Email
 </label>
 ```

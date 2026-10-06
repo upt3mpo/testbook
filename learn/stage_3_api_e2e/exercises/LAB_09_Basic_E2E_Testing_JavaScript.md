@@ -237,10 +237,10 @@ npx playwright test my_first_e2e_accessible.spec.js --headed
 ✅ **Checkpoint:** both of your tests pass.
 
 **Now break the page on purpose.** Open `frontend/src/pages/Login.jsx` and delete this element (the
-visually hidden label for the email field):
+label for the email field):
 
 ```jsx
-<label htmlFor="login-email" className="sr-only">
+<label htmlFor="login-email" className="auth-label">
   Email
 </label>
 ```

@@ -103,6 +103,27 @@ describe('A11Y-001: form fields have a real accessible name, not just a placehol
   });
 });
 
+describe('A11Y-001 (continued): the auth form labels are visible, not just present', () => {
+  // A visually hidden label gives a screen reader a name, but a sighted user is left with only a
+  // placeholder, which vanishes as soon as they type. WCAG 3.3.2 is met either way; the persistent
+  // cue is what helps people with memory and attention difficulties.
+  it.each([
+    ['Login', () => renderWith(<Login />, { login: vi.fn() }), ['Email', 'Password']],
+    [
+      'Register',
+      () => renderWith(<Register />, { register: vi.fn() }),
+      ['Email', 'Username (lowercase, no spaces)', 'Display Name', 'Password', 'Bio (optional)'],
+    ],
+  ])('%s: every field has a visible label', (_name, renderForm, labels) => {
+    renderForm();
+    for (const text of labels) {
+      const label = screen.getByText(text, { selector: 'label' });
+      expect(label).toBeVisible();
+      expect(label).not.toHaveClass('sr-only');
+    }
+  });
+});
+
 describe('A11Y-002: the post edit textarea has an accessible name', () => {
   it('names the textarea once edit mode is open, and axe is clean in that state', async () => {
     const user = userEvent.setup();

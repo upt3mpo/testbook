@@ -45,34 +45,38 @@ function Login() {
         )}
 
         <form onSubmit={handleSubmit} className="auth-form" data-testid="login-form">
-          <label htmlFor="login-email" className="sr-only">
-            Email
-          </label>
-          <input
-            id="login-email"
-            type="email"
-            autoComplete="username"
-            className="input"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            data-testid="login-email-input"
-          />
-          <label htmlFor="login-password" className="sr-only">
-            Password
-          </label>
-          <input
-            id="login-password"
-            type="password"
-            autoComplete="current-password"
-            className="input"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            data-testid="login-password-input"
-          />
+          <div className="auth-field">
+            <label htmlFor="login-email" className="auth-label">
+              Email
+            </label>
+            <input
+              id="login-email"
+              type="email"
+              autoComplete="username"
+              className="input"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              data-testid="login-email-input"
+            />
+          </div>
+          <div className="auth-field">
+            <label htmlFor="login-password" className="auth-label">
+              Password
+            </label>
+            <input
+              id="login-password"
+              type="password"
+              autoComplete="current-password"
+              className="input"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              data-testid="login-password-input"
+            />
+          </div>
           <button
             type="submit"
             className="btn btn-primary"

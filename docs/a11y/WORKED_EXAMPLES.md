@@ -167,12 +167,16 @@ a `placeholder` and no `<label>` or `aria-label`.
 name, so the `label` rule is satisfied. But a placeholder vanishes as soon as you
 type, so a sighted user with a memory problem loses the field's purpose, and screen
 readers handle placeholders inconsistently. WCAG 3.3.2 (Labels or Instructions)
-needs a persistent label. This is a bug a tool is *allowed* to miss, because the
-check it can make is weaker than the requirement.
+asks that labels are provided, so strictly this is as much a usability and good-practice
+failure as a conformance one: the guidance for people with memory and attention
+difficulties is a **persistent** label. A tool can only check that a name exists, so this
+is a bug a tool is *allowed* to miss.
 
-**The fix.** Real `<label>` elements, visually hidden with the `.sr-only` utility
-where the design shows only a placeholder. The placeholder text stays for sighted
-users.
+**The fix.** Real `<label>` elements. On Login and Register they are **visible**, above
+each field, so the cue stays on screen while the user types. (The first fix hid them with
+the `.sr-only` utility and kept only the placeholder visible. That gave screen readers a
+name and left sighted users exactly where they started, so it was changed.) On the post
+composer, where the purpose is obvious from context, the label is visually hidden.
 
 **The guard.** Tests find the fields with `getByLabelText`, which only works when a
 real label exists. The point of the guard is the *query*: `getByPlaceholderText`

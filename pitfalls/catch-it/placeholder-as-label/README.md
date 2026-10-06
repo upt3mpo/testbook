@@ -13,8 +13,9 @@ looks away and back no longer knows what the field is for.
 ## Why the tests miss it
 
 axe-core accepts a non-empty placeholder as an accessible name, so a default scan passes on
-both pages. The requirement (WCAG 3.3.2 Labels or Instructions) is **stronger than what a
-tool can check**: a persistent label, not just a name that exists for a moment.
+both pages. What matters here (WCAG 3.3.2 Labels or Instructions, and good practice for
+people with memory and attention difficulties) is **stronger than what a tool can check**:
+a persistent label, not just a name that exists for a moment.
 
 ## Where it came from
 

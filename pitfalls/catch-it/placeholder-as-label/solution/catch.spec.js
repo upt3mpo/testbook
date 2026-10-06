@@ -24,7 +24,8 @@ test('the label is still visible after the user has typed', async ({ page }) => 
 
 test('a default axe scan does not see the problem - that is the lesson', async ({ page }) => {
   // axe accepts a non-empty placeholder as an accessible name, so its `label` rule is
-  // satisfied. The requirement (WCAG 3.3.2) is stronger than what a tool can check.
+  // satisfied. The expectation of a persistent label (WCAG 3.3.2, and good practice) is
+  // stronger than what a tool can check.
   await openPitfall(page, PITFALL);
   expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
 });
