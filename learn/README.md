@@ -19,7 +19,7 @@ Welcome! This learning path transforms the Testbook project into your personal t
 - Provides reflection questions to deepen understanding
 - Builds toward portfolio-ready artifacts
 
-**Duration:** 24-34 hours (core content) + 14-23 hours (optional exercises)
+**Duration:** 34-44 hours (core content, including Stage 0) + 14-23 hours (optional exercises)
 
 ---
 
@@ -47,10 +47,10 @@ Answer these honestly before picking a track. There's no wrong answer here — t
 
 | Path | Language Focus | Tools You'll Master | Time | Start Here |
 | --- | --- | --- | --- | --- |
-| **Python Track** | Python | pytest, Playwright Python, k6 | 24-34 hours | [Stage 1](stage_1_unit/) |
-| **JavaScript Track** | JavaScript | Vitest, Playwright JS, MSW | 26-36 hours | [Lab 1](stage_1_unit/exercises/LAB_01_Your_First_Test_JavaScript.md) then [Stage 1](stage_1_unit/) |
-| **Hybrid Track** | Python + JavaScript | All tools from both stacks | 28-38 hours | [Stage 1](stage_1_unit/) |
-| **Manual QA Transition** | Python-first | pytest, Playwright, automation mindset | 32-42 hours | [Manual QA Guide](../docs/guides/MANUAL_QA_TO_AUTOMATION.md) |
+| **Python Track** | Python | pytest, Playwright Python, k6 | 34-44 hours | [Stage 1](stage_1_unit/) |
+| **JavaScript Track** | JavaScript | Vitest, Playwright JS, MSW | 36-46 hours | [Lab 1](stage_1_unit/exercises/LAB_01_Your_First_Test_JavaScript.md) then [Stage 1](stage_1_unit/) |
+| **Hybrid Track** | Python + JavaScript | All tools from both stacks | 38-48 hours | [Stage 1](stage_1_unit/) |
+| **Manual QA Transition** | Python-first | pytest, Playwright, automation mindset | 42-52 hours | [Manual QA Guide](../docs/guides/MANUAL_QA_TO_AUTOMATION.md) |
 
 That table tells you what you'll build. It doesn't tell you which one to pick if you have no strong opinion yet, so here's the actual reasoning.
 
@@ -123,24 +123,26 @@ Both Python and JavaScript tracks follow the same testing pyramid, but with diff
 
 ```mermaid
 flowchart TD
-    A["🎯 START HERE<br/>Choose Your Path"]
-    A --> B["🔄 Manual QA → Automation<br/>15-20 hours<br/><br/>→ Phase 1: Programming basics + Stages 1-2<br/>→ Phase 2: Stage 3 (E2E) + exercises<br/>→ Phase 3: Advanced patterns<br/><br/>✅ ACHIEVEMENT: Automation skills added!"]
-    A --> C["💻 Developer → QA Engineer<br/>8-12 hours<br/><br/>→ Phase 1: Quick run through Stages 1-3<br/>→ Phase 2: Deep dive into testing philosophy<br/>→ Phase 3: Advanced techniques<br/><br/>✅ ACHIEVEMENT: Testing mindset mastered!"]
-    A --> D["🌱 Complete Beginner → Tester<br/>24-34 hours<br/><br/>→ Phase 1: Learn programming basics<br/>→ Phase 2: Complete all 5 stages<br/>→ Phase 3: Build portfolio with capstone<br/><br/>✅ ACHIEVEMENT: Full testing foundation!"]
+    A["START HERE<br/>Choose Your Path"]
+    A --> B["Manual QA → Automation<br/>18-23 hours<br/><br/>→ Phase 1: Programming basics + Stages 1-2<br/>→ Phase 2: Stage 3 (E2E) + exercises<br/>→ Phase 3: Advanced patterns<br/><br/>Achievement: Automation skills added!"]
+    A --> C["Developer → QA Engineer<br/>11-15 hours<br/><br/>→ Phase 1: Quick run through Stages 1-3<br/>→ Phase 2: Deep dive into testing philosophy<br/>→ Phase 3: Advanced techniques<br/><br/>Achievement: Testing mindset mastered!"]
+    A --> D["Complete Beginner → Tester<br/>34-44 hours<br/><br/>→ Phase 1: Learn programming basics<br/>→ Phase 2: Complete Stage 0, then Stages 1 to 5<br/>→ Phase 3: Build portfolio with capstone<br/><br/>Achievement: Full testing foundation!"]
 
-    B --> E["🧪 STAGE 1: Unit Tests<br/>4-6 hours<br/><br/>→ Learn: Arrange-Act-Assert pattern<br/>→ Practice: Test individual functions<br/>→ Master: pytest basics, fixtures<br/><br/>✅ ACHIEVEMENT: First tests written!"]
-    C --> E
-    D --> E
+    B --> Z
+    C --> Z
+    D --> Z
+    Z["STAGE 0: Inclusion First<br/>2.5 hours<br/><br/>→ Learn: Who software excludes, and why<br/>→ Practice: Meet the barriers yourself<br/>→ Master: Accessibility as a foundation<br/><br/>Achievement: Inclusion mindset!"]
+    Z --> E["STAGE 1: Unit Tests<br/>4.5-6.5 hours<br/><br/>→ Learn: Arrange-Act-Assert pattern<br/>→ Practice: Test individual functions<br/>→ Master: pytest basics, fixtures<br/><br/>Achievement: First tests written!"]
 
-    E --> F["🧱 STAGE 2: Integration Tests<br/>5-7 hours<br/><br/>→ Learn: Test components together<br/>→ Practice: API endpoints, database<br/>→ Master: TestClient patterns<br/><br/>✅ ACHIEVEMENT: Backend testing mastered!"]
+    E --> F["STAGE 2: Integration Tests<br/>5.5-7.5 hours<br/><br/>→ Learn: Test components together<br/>→ Practice: API endpoints, database<br/>→ Master: TestClient patterns<br/><br/>Achievement: Backend testing mastered!"]
 
-    F --> G["🌐 STAGE 3: API & E2E Testing<br/>5-7 hours<br/><br/>→ Learn: Complete user workflows<br/>→ Practice: Playwright, Page Object Model<br/>→ Master: Network mocking, contracts<br/><br/>✅ ACHIEVEMENT: Full-stack testing ready!"]
+    F --> G["STAGE 3: API & E2E Testing<br/>6-8 hours<br/><br/>→ Learn: Complete user workflows<br/>→ Practice: Playwright, Page Object Model<br/>→ Master: Network mocking, contracts<br/><br/>Achievement: Full-stack testing ready!"]
 
-    G --> H["🚀 STAGE 4: Performance & Security<br/>6-8 hours<br/><br/>→ Learn: Load testing with k6<br/>→ Practice: OWASP Top 10 security<br/>→ Master: Scalability testing<br/><br/>✅ ACHIEVEMENT: Production-ready testing!"]
+    G --> H["STAGE 4: Performance, Security & Accessibility<br/>9.5-11.5 hours<br/><br/>→ Learn: Load testing with k6<br/>→ Practice: OWASP Top 10 security<br/>→ Master: Scalability testing<br/><br/>Achievement: Production-ready testing!"]
 
-    H --> I["🎓 STAGE 5: Job-Ready Capstone<br/>4-6 hours<br/><br/>→ Build: Complete test suite<br/>→ Create: Portfolio artifacts<br/>→ Master: CI/CD, documentation<br/><br/>✅ ACHIEVEMENT: Portfolio ready!"]
+    H --> I["STAGE 5: Job-Ready Capstone<br/>6-8 hours<br/><br/>→ Build: Complete test suite<br/>→ Create: Portfolio artifacts<br/>→ Master: CI/CD, documentation<br/><br/>Achievement: Portfolio ready!"]
 
-    I --> J["🏆 QA AUTOMATION ENGINEER<br/>Ready for interviews!<br/><br/>• Unit, integration, E2E testing<br/>• pytest, Playwright, k6 mastery<br/>• Security & performance testing<br/>• Professional practices<br/>• Portfolio with real examples<br/><br/>🎯 CAREER READY!"]
+    I --> J["QA AUTOMATION ENGINEER<br/>Ready for interviews!<br/><br/>• Unit, integration, E2E testing<br/>• pytest, Playwright, k6 mastery<br/>• Security & performance testing<br/>• Professional practices<br/>• Portfolio with real examples<br/><br/>CAREER READY!"]
 ```
 
 ---
@@ -155,11 +157,11 @@ flowchart TD
 
 **Your Journey:**
 
-- **Phase 1:** Programming basics (Python recommended) + Stage 1-2
+- **Phase 1:** Stage 0 (Inclusion First), programming basics (Python recommended) + Stage 1-2
 - **Phase 2:** Stage 3 (E2E testing) + exercises
 - **Phase 3:** Advanced patterns from [docs/advanced/](../docs/advanced/)
 
-**Time:** 15-20 hours (plus programming basics if needed)
+**Time:** 18-23 hours (plus programming basics if needed)
 
 **Key Resources:**
 
@@ -178,7 +180,7 @@ flowchart TD
 - **Phase 2:** Deep dive into [docs/concepts/](../docs/concepts/) for testing philosophy
 - **Phase 3:** Advanced techniques from [docs/advanced/](../docs/advanced/)
 
-**Time:** 8-12 hours
+**Time:** 11-15 hours
 
 **Key Resources:**
 
@@ -194,10 +196,10 @@ flowchart TD
 **Your Journey:**
 
 - **Phase 1:** Learn programming basics (Python or JavaScript)
-- **Phase 2:** Complete all 5 stages at your own pace
+- **Phase 2:** Complete Stage 0, then Stages 1 to 5, at your own pace
 - **Phase 3:** Build portfolio with Stage 5 capstone
 
-**Time:** 24-34 hours (including programming basics)
+**Time:** 34-44 hours (including programming basics)
 
 **Key Resources:**
 
@@ -222,7 +224,7 @@ flowchart TD
 
 ### Stage 1: Unit Tests
 
-**Duration:** 4-6 hours (core content) + 2-3 hours (optional exercises)
+**Duration:** 4.5-6.5 hours (core content) + 2-3 hours (optional exercises)
 **What you'll learn:** Test individual functions in isolation
 
 **Core Content:** Theory + hands-on labs covering Arrange-Act-Assert pattern, parameterized tests, coverage analysis
@@ -234,7 +236,7 @@ flowchart TD
 
 ### Stage 2: Integration Tests
 
-**Duration:** 5-7 hours (core content) + 3-5 hours (optional exercises)
+**Duration:** 5.5-7.5 hours (core content) + 3-5 hours (optional exercises)
 **What you'll learn:** Test how components work together
 
 **Core Content:** Theory + hands-on labs covering HTTP testing, database fixtures, complete user journeys
@@ -246,7 +248,7 @@ flowchart TD
 
 ### Stage 3: API & E2E Testing
 
-**Duration:** 5-7 hours (core content) + 3-5 hours (optional exercises)
+**Duration:** 5.5-7.5 hours (core content) + 3-5 hours (optional exercises)
 **What you'll learn:** Test complete user workflows and contracts
 
 **Core Content:** Theory + hands-on labs covering component testing, E2E patterns, Page Object Model, network mocking
@@ -256,9 +258,9 @@ flowchart TD
 
 ---
 
-### Stage 4: Performance & Security
+### Stage 4: Performance, Security & Accessibility
 
-**Duration:** 6-8 hours (core content) + 4-6 hours (optional exercises)
+**Duration:** 9.5-11.5 hours (core content) + 4-6 hours (optional exercises)
 **What you'll learn:** Test scalability and protect against vulnerabilities
 
 **Core Content:** Theory + hands-on labs covering load testing, OWASP Top 10, API testing, contract validation
@@ -270,7 +272,7 @@ flowchart TD
 
 ### Stage 5: Job-Ready Capstone
 
-**Duration:** 4-6 hours (core content) + 2-4 hours (optional exercises)
+**Duration:** 6-8 hours (core content) + 2-4 hours (optional exercises)
 **What you'll build:** Portfolio-ready test suite + documentation
 
 **Core Content:** CI/CD setup, professional practices, complete project with full test coverage
@@ -282,7 +284,7 @@ flowchart TD
 
 <h2 id="learning-outcomes">Learning Outcomes</h2>
 
-By completing all 5 stages, you will be able to:
+By completing Stage 0 and all five stages, you will be able to:
 
 - Write unit, integration, and E2E tests professionally
 - Use pytest, Playwright, and k6 effectively
@@ -358,17 +360,18 @@ start-dev.bat   # Windows
 
 As you complete stages, mark your achievements:
 
+- [ ] **Stage 0 Complete** - Inclusion First
 - [ ] **Stage 1 Complete** - Unit Testing Foundations
 - [ ] **Stage 2 Complete** - Integration Testing Mastery
 - [ ] **Stage 3 Complete** - API & E2E Testing Pro
-- [ ] **Stage 4 Complete** - Performance & Security Expert
+- [ ] **Stage 4 Complete** - Performance, Security & Accessibility Expert
 - [ ] **Stage 5 Complete** - Portfolio Ready!
 
 **Completion Milestones:**
 
-- **3 stages done?** You can start applying for junior QA roles!
-- **4 stages done?** You're competitive for mid-level positions
-- **5 stages done?** You have senior-level testing knowledge
+- **Stages 0 to 3 done?** You can start applying for junior QA roles!
+- **Stages 0 to 4 done?** You're competitive for mid-level positions
+- **All six stages done?** You have senior-level testing knowledge
 
 ---
 
@@ -420,13 +423,14 @@ As you complete stages, mark your achievements:
 
 **Start here if you're new to testing!**
 
-1. **Week 1:** Complete Stage 1 (Unit Testing)
-2. **Week 2:** Complete Stage 2 (Integration Testing)
+1. **Week 1:** Complete Stage 0 (Inclusion First) and start Stage 1 (Unit Testing)
+2. **Week 2:** Complete Stage 1 and Stage 2 (Integration Testing)
 3. **Week 3:** Complete Stage 3 (E2E Testing)
-4. **Week 4:** Complete Stage 4 (Performance & Security)
-5. **Week 5:** Complete Stage 5 (Portfolio Capstone)
+4. **Week 4:** Complete Stage 4 (Performance, Security & Accessibility)
+5. **Week 5:** Start Stage 5 (Portfolio Capstone)
+6. **Week 6:** Finish Stage 5 and write the conformance report
 
-**Total time:** 24-34 hours over 5 weeks
+**Total time:** 34-44 hours over 6 weeks
 
 ### Skill Progression
 
@@ -448,34 +452,34 @@ graph LR
 
 ### Stage-by-Stage Breakdown
 
-#### Stage 1: Unit Testing (4-6 hours)
+#### Stage 1: Unit Testing (4.5-6.5 hours)
 
 - **Lab 1:** Your First Test (Python/JavaScript)
 - **Lab 2:** Testing Real Functions (Python/JavaScript)
 - **Lab 3:** Fixtures and Test Data (Python/JavaScript)
 - **Lab 4:** Debugging and Error Handling (Python/JavaScript)
 
-#### Stage 2: Integration Testing (5-7 hours)
+#### Stage 2: Integration Testing (5.5-7.5 hours)
 
 - **Lab 5:** API Endpoint Testing (Python/JavaScript)
 - **Lab 6:** Component Testing (JavaScript) / Advanced API Testing (Python)
 - **Lab 7:** Test Data Management (Python/JavaScript)
 - **Lab 8:** Contract Testing Foundations (Python/JavaScript)
 
-#### Stage 3: E2E Testing (5-7 hours)
+#### Stage 3: E2E Testing (6-8 hours)
 
 - **Lab 9:** Basic E2E Testing (Python/JavaScript)
 - **Lab 10:** Advanced E2E Patterns (Python/JavaScript)
 - **Lab 11:** Cross-Browser Testing (Python/JavaScript)
 - **Lab 12:** E2E Test Organization (Python/JavaScript)
 
-#### Stage 4: Performance & Security (6-8 hours)
+#### Stage 4: Performance, Security & Accessibility (9.5-11.5 hours)
 
 - **Lab 13:** Load Testing with k6
 - **Lab 14:** Security Testing OWASP (Python/JavaScript)
 - **Lab 15:** Rate Limiting Testing (Python/JavaScript)
 
-#### Stage 5: Portfolio Capstone (4-6 hours)
+#### Stage 5: Portfolio Capstone (6-8 hours)
 
 - Design a test plan and build a complete test suite for a feature (Python and/or JavaScript track)
 - Produce portfolio artifacts: coverage reports, E2E recordings, and testing documentation
@@ -488,7 +492,7 @@ Stage 5 is project-based rather than lab-based - see [Stage 5](stage_5_capstone/
 
 After finishing Stage 5's reflection, read [COMPLETION.md](COMPLETION.md) for a wrap-up of the full path and pointers to what to learn next.
 
-After completing all 5 stages:
+After completing all six stages:
 
 1. **Build your portfolio** with artifacts from Stage 5
 2. **Contribute to Testbook** - Add tests, fix bugs, improve docs

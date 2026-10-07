@@ -13,7 +13,7 @@ You are at the start of the course. The order is Stage 0, then Stages 1 to 5.
 - Stage 1: Unit Tests
 - Stage 2: Integration Tests
 - Stage 3: API and E2E Testing
-- Stage 4: Performance and Security
+- Stage 4: Performance, Security and Accessibility
 - Stage 5: Capstone
 
 **Estimated time:** 2.5 hours of core content. There are no optional exercises in this stage.

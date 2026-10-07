@@ -9,7 +9,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-_Future updates will be documented here._
+### Added
+
+- Accessibility testing to WCAG 2.2 AA: component, token-contrast, E2E axe and behavior tests (JavaScript and Python), Lighthouse CI with signed-in pages, and scripted manual tests for keyboard, VoiceOver, NVDA, zoom, contrast, forms, content and pointer input
+- `docs/a11y/`: an audit log of 20 defects (A11Y-001 to A11Y-020) each guarded by a regression test, worked examples, a JavaScript vs Python comparison, and an accessibility conformance report with a template
+- `pitfalls/`: a standalone gallery of broken and fixed pages showing how tests fail, with its own runner and CI workflow
+- Stage 0 "Inclusion First", accessibility threads in Stages 1 to 3, Labs 16 and 17 in Stage 4, and a mandatory accessibility requirement and conformance report in the Stage 5 capstone
+- A docs accessibility lint (`scripts/lint-docs-a11y.mjs`) in CI that fails on emoji, ASCII progress bars and vague link text
+
+### Changed
+
+- Course time estimates: about 34 to 44 hours of core content (was 24 to 34), with Stage 4 retitled "Performance, Security & Accessibility"
+- Course docs no longer use decorative emoji or ASCII progress bars; the stage progress blocks are plain text lists
+- `docs/guides/ACCESSIBILITY_TESTING.md` rewritten as a WCAG 2.2 reference
+
+### Fixed
+
+- 20 accessibility defects in the app, among them unlabeled and hidden-label form fields, invisible keyboard tab stops, a hover menu that fought clicks, silent errors, lost focus, generic page titles, low-contrast dark-mode text, and a crash when the API returned a list of validation errors
 
 ---
 

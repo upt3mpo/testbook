@@ -76,7 +76,7 @@
 
 ## Ready for Stage 4?
 
-If you got 4/6 or better, you're ready to move on to [Stage 4: Performance & Security](../stage_4_performance_security/README.md)!
+If you got 4/6 or better, you're ready to move on to [Stage 4: Performance, Security & Accessibility](../stage_4_performance_security/README.md)!
 
 ---
 

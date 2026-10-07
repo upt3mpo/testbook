@@ -491,16 +491,15 @@ test("verify post created via API", async ({ page, request }) => {
 
 ### Accessibility Tests (`accessibility-axe.spec.js`)
 
-**Why JavaScript-only?**
+**JavaScript and Python:**
 
-- `axe-core` is the industry-standard accessibility testing library (by Deque)
-- `@axe-core/playwright` integration is mature and well-maintained
-- WCAG 2.1 compliance testing is more commonly done in JavaScript environments
-- Python accessibility tools (axe-playwright-python) are less mature
+- `axe-core` is the industry-standard accessibility testing library (by Deque), and `@axe-core/playwright` is its mature Playwright integration
+- The Python track runs the same checks in `tests/e2e-python/test_accessibility.py` by injecting axe-core through Playwright, with a small helper of its own
+- See [JS vs Python accessibility testing](../../docs/a11y/JS_VS_PYTHON_ACCESSIBILITY_TESTING.md) for the measured differences
 
 **What it tests:**
 
-- WCAG 2.1 Level A and AA compliance
+- WCAG 2.2 Level A and AA rules that a tool can check
 - Color contrast ratios
 - ARIA attributes and semantic HTML
 - Keyboard navigation accessibility
@@ -509,12 +508,12 @@ test("verify post created via API", async ({ page, request }) => {
 **Career Value:**
 
 - Accessibility testing is a specialized, high-demand skill
-- Shows awareness of inclusive design and legal compliance (ADA)
+- Shows awareness of inclusive design and legal and procurement requirements
 - Many companies require WCAG compliance for their products
 
 **Interview Talking Points:**
 
-> "For Testbook, I implemented automated accessibility testing using axe-core and Playwright to ensure WCAG 2.1 AA compliance across all pages. This catches ~40% of accessibility issues automatically, which I then complement with manual keyboard navigation and screen reader testing."
+> "For Testbook, I implemented automated accessibility testing using axe-core and Playwright to catch the WCAG 2.2 AA problems a tool can detect on every page and state. Automation cannot judge most criteria, so I complemented it with scripted keyboard and screen reader tests and an honest conformance report."
 
 ---
 

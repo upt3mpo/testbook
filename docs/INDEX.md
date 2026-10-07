@@ -20,42 +20,44 @@
 
 ```text
 Testbook/
-├── README.md                   📱 Project overview + quick start + learning paths
-├── learn/                      🎓 Self-guided 5-stage curriculum (RECOMMENDED!)
-│   ├── stage_1_unit/           🧪 Unit tests + exercises
-│   ├── stage_2_integration/    🧱 Integration tests + exercises
-│   ├── stage_3_api_e2e/        🌐 API & E2E testing + exercises
-│   ├── stage_4_performance_security/ 🚀 Performance & security + exercises
-│   ├── stage_5_capstone/       🎯 Job-ready capstone
-│   └── solutions/              📝 Lab solutions
+├── README.md                   Project overview + quick start + learning paths
+├── learn/                      Self-guided curriculum, Stage 0 plus 5 stages (RECOMMENDED!)
+│   ├── stage_0_inclusion_first/    Inclusion first: why accessibility is the foundation
+│   ├── stage_1_unit/           Unit tests + exercises
+│   ├── stage_2_integration/    Integration tests + exercises
+│   ├── stage_3_api_e2e/        API & E2E testing + exercises
+│   ├── stage_4_performance_security/ Performance, security & accessibility + exercises
+│   ├── stage_5_capstone/       Job-ready capstone
+│   └── solutions/              Lab solutions
 │
 ├── docs/
-│   ├── guides/                 📖 How-to guides
-│   ├── reference/              📚 Reference documentation
-│   ├── concepts/               🧠 Deep conceptual understanding
-│   ├── industry/               🏢 Real-world context & practices
-│   ├── advanced/               🚀 Beyond the basics
-│   └── INDEX.md               📑 This file
+│   ├── guides/                 How-to guides
+│   ├── reference/              Reference documentation
+│   ├── concepts/               Deep conceptual understanding
+│   ├── industry/               Real-world context & practices
+│   ├── advanced/               Beyond the basics
+│   └── INDEX.md               This file
 │
-├── backend/tests/              🔬 Backend test suite
-└── tests/                      🎭 E2E & other tests
+├── backend/tests/              Backend test suite
+└── tests/                      E2E & other tests
 ```
 
 ---
 
 <h2 id="self-guided-learning-path">Self-Guided Learning Path (`learn/`) **RECOMMENDED**</h2>
 
-**The structured 5-stage journey to job-ready testing skills**
+**The structured journey (Stage 0 plus five stages) to job-ready testing skills**
 
 | Stage | Focus | Time | Description |
 | ----------------------------------------------------------------------------- | -------------- | --------- | -------------------------------------------------- |
-| **[Stage 1: Unit Tests](../learn/stage_1_unit/)** | Foundations | 4-6 hours | Test individual functions, fixtures, AAA pattern |
-| **[Stage 2: Integration Tests](../learn/stage_2_integration/)** | Components | 5-7 hours | API endpoints, database operations, test factories |
-| **[Stage 3: API & E2E](../learn/stage_3_api_e2e/)** | Full Stack | 5-7 hours | Playwright, contracts, user workflows |
-| **[Stage 4: Performance & Security](../learn/stage_4_performance_security/)** | Non-Functional | 6-8 hours | k6 load testing, OWASP security, rate limiting |
-| **[Stage 5: Capstone](../learn/stage_5_capstone/)** | Portfolio | 4-6 hours | Build test suite, documentation, job artifacts |
+| **[Stage 0: Inclusion First](../learn/stage_0_inclusion_first/)** | Foundation | 2.5 hours | Who software excludes, the social model, accessibility as a foundation |
+| **[Stage 1: Unit Tests](../learn/stage_1_unit/)** | Foundations | 4.5-6.5 hours | Test individual functions, fixtures, AAA pattern |
+| **[Stage 2: Integration Tests](../learn/stage_2_integration/)** | Components | 5.5-7.5 hours | API endpoints, database operations, test factories |
+| **[Stage 3: API & E2E](../learn/stage_3_api_e2e/)** | Full Stack | 6-8 hours | Playwright, contracts, user workflows |
+| **[Stage 4: Performance, Security & Accessibility](../learn/stage_4_performance_security/)** | Non-Functional | 9.5-11.5 hours | k6 load testing, OWASP security, rate limiting, WCAG 2.2 AA accessibility testing |
+| **[Stage 5: Capstone](../learn/stage_5_capstone/)** | Portfolio | 6-8 hours | Build test suite, documentation, accessibility conformance report, job artifacts |
 
-**Total: 24-34 hours of core content**, matching the estimates in [README.md](../README.md#learning-path) and [learn/README.md](../learn/README.md#the-5-stages). Add 14-23 hours if you also work through the optional exercises in each stage.
+**Total: 34-44 hours of core content**, matching the estimates in [README.md](../README.md#learning-path) and [learn/README.md](../learn/README.md#the-5-stages). Add 14-23 hours if you also work through the optional exercises in each stage.
 
 **What makes this path special:**
 
@@ -84,7 +86,7 @@ Testbook/
 | **[PORTFOLIO.md](guides/PORTFOLIO.md)** (new, recommended) | 30 min | All | Build job-ready portfolio from your work |
 | **[TROUBLESHOOTING.md](reference/TROUBLESHOOTING.md)** | 20 min | Beginner | Technical errors with exact fixes |
 | **[QUALITY_CHECKS.md](guides/QUALITY_CHECKS.md)** (new, recommended) | 20 min | Intermediate | Linting, formatting, coverage gates |
-| **[ACCESSIBILITY_TESTING.md](guides/ACCESSIBILITY_TESTING.md)** (new, recommended) | 30 min | Intermediate | WCAG 2.1, axe-core, Lighthouse |
+| **[ACCESSIBILITY_TESTING.md](guides/ACCESSIBILITY_TESTING.md)** (new, recommended) | 30 min | Intermediate | WCAG 2.2 AA, axe-core, manual scripts, Lighthouse |
 | **[CONTRACT_TESTING.md](guides/CONTRACT_TESTING.md)** (new, recommended) | 30 min | Intermediate | Property-based API contract testing with Schemathesis |
 | **[VISUAL_REGRESSION.md](guides/VISUAL_REGRESSION.md)** (new, recommended) | 25 min | Intermediate | Screenshot baselines, CI infra, why not every PR |
 | **[WINDOWS_SETUP.md](guides/WINDOWS_SETUP.md)** | 30 min | Beginner | Windows-specific setup |

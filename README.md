@@ -66,21 +66,22 @@ start-dev.bat   # Windows
 
 | Track          | Language   | Time        | Best For            | Start Here                     |
 | -------------- | ---------- | ----------- | ------------------- | ------------------------------ |
-| **Python**     | Python     | 24-34 hours | Backend developers  | [Stage 1](learn/stage_1_unit/) |
-| **JavaScript** | JavaScript | 26-36 hours | Frontend developers | [Stage 1](learn/stage_1_unit/) |
-| **Hybrid**     | Both       | 28-38 hours | Full-stack QA       | [Stage 1](learn/stage_1_unit/) |
+| **Python**     | Python     | 34-44 hours | Backend developers  | [Stage 1](learn/stage_1_unit/) |
+| **JavaScript** | JavaScript | 36-46 hours | Frontend developers | [Stage 1](learn/stage_1_unit/) |
+| **Hybrid**     | Both       | 38-48 hours | Full-stack QA       | [Stage 1](learn/stage_1_unit/) |
 
 **Detailed curriculum:** [Complete Learning Guide](learn/README.md)
 
-### The 5 Stages
+### The Stages
 
-1. **Stage 1:** Unit Testing (4-6 hours) - Test individual functions
-2. **Stage 2:** Integration Testing (5-7 hours) - Test components together
-3. **Stage 3:** E2E Testing (5-7 hours) - Test complete user workflows
-4. **Stage 4:** Performance & Security (6-8 hours) - Load testing & OWASP
-5. **Stage 5:** Portfolio Capstone (4-6 hours) - Build job-ready artifacts
+0. **Stage 0:** Inclusion First (2.5 hours) - Why accessibility is the foundation, and who software excludes
+1. **Stage 1:** Unit Testing (4.5-6.5 hours) - Test individual functions
+2. **Stage 2:** Integration Testing (5.5-7.5 hours) - Test components together
+3. **Stage 3:** E2E Testing (6-8 hours) - Test complete user workflows
+4. **Stage 4:** Performance, Security & Accessibility (9.5-11.5 hours) - Load testing, OWASP & WCAG 2.2 AA
+5. **Stage 5:** Portfolio Capstone (6-8 hours) - Build job-ready artifacts, including an accessibility conformance report
 
-**Total: 24-34 hours** | **Result: Job-ready testing skills**
+**Total: 34-44 hours** | **Result: Job-ready testing skills**
 
 ---
 
@@ -176,7 +177,7 @@ test("user can create and view posts", async ({ page }) => {
 
 **New to Playwright?** → [Playwright Quick Start](docs/guides/PLAYWRIGHT_QUICKSTART.md) — first browser test running in under 10 minutes.
 
-### Performance & Security (Stage 4)
+### Performance, Security & Accessibility (Stage 4)
 
 **Load Testing:** k6
 

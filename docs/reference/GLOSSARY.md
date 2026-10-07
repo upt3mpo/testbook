@@ -46,6 +46,20 @@ Plain-language definitions for terms used throughout this repo's docs and labs. 
 
 ## Non-functional testing
 
+**Accessibility (a11y)** — Designing and building so that people with disabilities, and people in temporary or situational limitations, can perceive, operate and understand a product. "a11y" is shorthand: a, then 11 letters, then y. See [ACCESSIBILITY_TESTING.md](../guides/ACCESSIBILITY_TESTING.md).
+
+**WCAG (Web Content Accessibility Guidelines)** — The W3C standard for web accessibility. Testbook targets version 2.2 at Level AA. Success criteria are organized under four principles: Perceivable, Operable, Understandable, Robust (POUR).
+
+**axe-core** — An open-source accessibility rules engine by Deque that checks a rendered page for WCAG problems a tool can detect. It cannot judge most criteria, so it complements manual testing rather than replacing it.
+
+**Screen reader** — Software that speaks a page's contents aloud or sends it to a braille display, such as VoiceOver on macOS and iOS or NVDA on Windows. It reads the accessibility tree, not the pixels.
+
+**Accessible name** — The text a screen reader announces for a control, computed from its label, `aria-label` or visible content. A control with no accessible name is announced only as "button" or "edit text".
+
+**Accessibility tree** — The browser's simplified version of the page for assistive technology: roles, names, states and relationships. Playwright can snapshot it to test what a screen reader would be given.
+
+**Conformance report** — A document stating, criterion by criterion, whether a product supports WCAG, with notes and evidence. An honest one marks unverified criteria "not evaluated" rather than claiming them.
+
 **Load testing** — Testing how a system behaves under an expected, realistic amount of traffic — does it stay fast and error-free at the volume you actually expect?
 
 **Stress testing** — Testing how a system behaves *beyond* its expected capacity, deliberately pushing past normal load to find where and how it breaks.

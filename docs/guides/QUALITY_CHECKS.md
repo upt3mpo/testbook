@@ -296,7 +296,7 @@ None of this is enforced by anything in this repository — it has to be configu
 | Backend Coverage         | 85%   | 80%    | +5%         |
 | Frontend Coverage        | 83%   | N/A    | Good        |
 | Linting Violations       | 0     | 0      | Clean       |
-| Accessibility Violations | 0     | 0      | WCAG 2.1 AA |
+| Accessibility Violations | 0     | 0      | WCAG 2.2 AA |
 
 ---
 

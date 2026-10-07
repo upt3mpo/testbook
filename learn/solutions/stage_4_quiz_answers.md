@@ -1,6 +1,6 @@
 # Stage 4 Quiz Answers
 
-## Performance & Security Testing Quiz Answers
+## Performance, Security and Accessibility Testing Quiz Answers
 
 ### 1. What's the main purpose of performance testing?
 

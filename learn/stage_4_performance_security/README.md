@@ -1,4 +1,4 @@
-# Stage 4: Performance & Security
+# Stage 4: Performance, Security & Accessibility
 
 **Non-Functional Testing That Matters**
 
@@ -15,7 +15,7 @@ You are on Stage 4 of 5 (Stage 0 is the foundation).
 - Stage 4: Performance, Security & Accessibility (you are here)
 - Stage 5: Capstone (not started)
 
-**Estimated time remaining:** 6-8 hours (core content) + 4-6 hours (optional exercises)
+**Estimated time remaining:** 9.5-11.5 hours (core content) + 4-6 hours (optional exercises)
 
 ## Lab Structure
 

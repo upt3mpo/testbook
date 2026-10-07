@@ -31,7 +31,7 @@ Last Updated: October 2025
 - [ ] Stage 1: Unit Tests
 - [ ] Stage 2: Integration Tests
 - [ ] Stage 3: API & E2E Testing
-- [ ] Stage 4: Performance & Security
+- [ ] Stage 4: Performance, Security & Accessibility
 - [ ] Stage 5: Capstone
 - [ ] Full 5-stage curriculum
 - [ ] Other: ___________

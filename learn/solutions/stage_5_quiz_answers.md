@@ -67,7 +67,7 @@
 
 ## Congratulations
 
-You've completed all 5 stages of Testbook! You now have:
+You've completed all six stages of Testbook (Stage 0 and Stages 1 to 5)! You now have:
 
 - **Unit Testing** skills with pytest and Vitest
 - **Integration Testing** skills with FastAPI and React

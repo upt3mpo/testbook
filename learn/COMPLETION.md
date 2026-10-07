@@ -2,7 +2,7 @@
 
 **You've mastered automation testing!**
 
-You've successfully completed all 5 stages of Testbook and now have the skills to build comprehensive test suites, debug failing tests, and create portfolio-worthy projects. You're ready to take on real-world testing challenges!
+You've successfully completed Stage 0 and all five stages of Testbook and now have the skills to build comprehensive test suites, debug failing tests, and create portfolio-worthy projects. You're ready to take on real-world testing challenges!
 
 ---
 
@@ -10,29 +10,20 @@ You've successfully completed all 5 stages of Testbook and now have the skills t
 
 **Self-Issued Certificate**
 
-```text
-╔══════════════════════════════════════════════════════════════╗
-║                                                              ║
-║                    🎓 TESTBOOK COMPLETION                    ║
-║                                                              ║
-║  This certifies that [YOUR NAME] has successfully completed  ║
-║  the Testbook Automation Testing Platform curriculum,        ║
-║  demonstrating proficiency in:                               ║
-║                                                              ║
-║  ✅ Unit Testing (pytest, Vitest)                            ║
-║  ✅ Integration Testing (API endpoints, databases)           ║
-║  ✅ End-to-End Testing (Playwright, browser automation)      ║
-║  ✅ Performance Testing (k6, load testing)                   ║
-║  ✅ Security Testing (OWASP, vulnerability assessment)       ║
-║  ✅ Test Strategy & Portfolio Development                    ║
-║                                                              ║
-║  Date: [TODAY'S DATE]                                        ║
-║  Platform: testbook.dev                                      ║
-║                                                              ║
-║  🚀 Ready for QA Engineering roles! 🚀                       ║
-║                                                              ║
-╚══════════════════════════════════════════════════════════════╝
-```
+**Testbook Completion**
+
+This certifies that [YOUR NAME] has completed the Testbook Automation Testing Platform curriculum, demonstrating proficiency in:
+
+- Inclusive design and accessibility testing (WCAG 2.2 AA, axe-core, screen readers)
+- Unit testing (pytest, Vitest)
+- Integration testing (API endpoints, databases)
+- End-to-end testing (Playwright, browser automation)
+- Performance testing (k6, load testing)
+- Security testing (OWASP, vulnerability assessment)
+- Test strategy and portfolio development
+
+Date: [TODAY'S DATE]
+Platform: testbook.dev
 
 **Print this out, frame it, and put it on your wall!** You've earned it.
 
@@ -42,6 +33,7 @@ You've successfully completed all 5 stages of Testbook and now have the skills t
 
 ### Technical Skills Mastered
 
+- **Accessibility Testing**: Automated WCAG 2.2 AA checks, keyboard and screen reader testing, an honest conformance report
 - **Unit Testing**: Fast, isolated tests for individual functions
 - **Integration Testing**: API endpoints, database operations, multi-component workflows
 - **E2E Testing**: Complete user journeys with browser automation
@@ -54,7 +46,7 @@ You've successfully completed all 5 stages of Testbook and now have the skills t
 
 - **Python**: pytest, FastAPI, SQLAlchemy, TestClient
 - **JavaScript**: Vitest, React Testing Library, MSW, Playwright
-- **Testing Frameworks**: pytest, Playwright, k6, OWASP ZAP
+- **Testing Frameworks**: pytest, Playwright, k6, OWASP ZAP, axe-core, vitest-axe
 - **CI/CD**: GitHub Actions, automated testing pipelines
 - **Documentation**: Professional README writing, portfolio development
 

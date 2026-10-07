@@ -47,19 +47,19 @@ Testing experience is **highly valued** in the software industry, but it's often
 Add a section at the top of YOUR README.md:
 
 ```markdown
-# 🎓 My Testing Portfolio
+# My Testing Portfolio
 
 **By [Your Name]**
 
 I completed the Testbook automation testing curriculum to build professional QA engineering skills. This fork demonstrates my proficiency in:
 
-- ✅ Python testing with pytest (203 backend tests)
-- ✅ JavaScript/React testing with Vitest (144 frontend tests)
-- ✅ E2E testing with Playwright (59 JavaScript + 60 Python tests)
-- ✅ API contract testing (OpenAPI validation)
-- ✅ Performance testing (k6 load tests)
-- ✅ Security testing (OWASP Top 10, 29 tests)
-- ✅ CI/CD with GitHub Actions
+- Python testing with pytest (203 backend tests)
+- JavaScript/React testing with Vitest (144 frontend tests)
+- E2E testing with Playwright (59 JavaScript + 60 Python tests)
+- API contract testing (OpenAPI validation)
+- Performance testing (k6 load tests)
+- Security testing (OWASP Top 10, 29 tests)
+- CI/CD with GitHub Actions
 
 **Coverage achieved:** 85% backend | 83% frontend
 **Total tests:** 495
@@ -67,9 +67,10 @@ I completed the Testbook automation testing curriculum to build professional QA 
 
 ---
 
-## 🏆 My Contributions
+## My Contributions
 
-- [x] Completed all 5 learning stages
+- [x] Completed Stage 0 and all five learning stages
+- [x] Wrote an accessibility conformance report for [feature or app]
 - [x] Wrote [X] additional tests for [feature]
 - [x] Improved test coverage from X% to Y%
 - [x] Fixed [describe bug you found]
@@ -163,7 +164,7 @@ Do Stage 5 (Capstone) from `learn/stage_5_capstone/` and document it:
 **Create `CAPSTONE.md` in your fork:**
 
 ```markdown
-# 🎯 Capstone Project
+# Capstone Project
 
 ## Feature: [Feature Name]
 
@@ -364,25 +365,25 @@ Sep 2024 - Present
 Completed comprehensive automation testing curriculum using Testbook, a production-grade
 social media application designed for QA learning.
 
-🎯 Achievements:
+Achievements:
 • Wrote and maintained 495 automated tests (Python + JavaScript)
 • Achieved 85% backend coverage, 83% frontend coverage
 • Implemented E2E testing with Playwright (dual-stack)
 • Performed OWASP Top 10 security testing
 • Conducted k6 performance testing under load
 
-🛠️ Technologies:
+Technologies:
 Python | pytest | JavaScript | Vitest | Playwright | React Testing Library | k6 |
 FastAPI | Git | GitHub Actions | OpenAPI
 
-💡 Key learnings:
+Key learnings:
 - Test automation best practices and design patterns
 - CI/CD pipeline implementation
 - Full-stack testing strategies
 - Performance and security testing methodologies
 
-🔗 Repository: [Your GitHub link]
-📊 Evidence: See pinned repository for test coverage reports and CI results
+Repository: [Your GitHub link]
+Evidence: See pinned repository for test coverage reports and CI results
 
 Skills: Test Automation • Python • JavaScript • pytest • Playwright • CI/CD
 ```
@@ -455,7 +456,7 @@ Skills: Test Automation • Python • JavaScript • pytest • Playwright • 
 ### Write a Great Repository Description
 
 ```text
-🧪 Automation testing portfolio - 495 tests | Python (pytest) + JavaScript (Vitest/Playwright) | 85% coverage | CI/CD | Full testing pyramid
+Automation testing portfolio - 495 tests | Python (pytest) + JavaScript (Vitest/Playwright) | 85% coverage | CI/CD | Full testing pyramid
 ```
 
 ### Add Topics/Tags
@@ -525,14 +526,14 @@ If you added tests or improved coverage, show the impact:
 ### Show CI/CD Improvement
 
 ```markdown
-<h2 id="cicd-impact">🚀 CI/CD Impact</h2>
+<h2 id="cicd-impact">CI/CD Impact</h2>
 
 After implementing the GitHub Actions pipeline:
 
-✅ **Automated testing on every PR** (was manual)
-✅ **Reduced regression bugs** by 95% (tracked over 2 months)
-✅ **Faster feedback** - test results in 5 minutes (was 30 minutes manual)
-✅ **Increased confidence** in deployments
+**Automated testing on every PR** (was manual)
+**Reduced regression bugs** by 95% (tracked over 2 months)
+**Faster feedback** - test results in 5 minutes (was 30 minutes manual)
+**Increased confidence** in deployments
 ```
 
 ---

@@ -15,7 +15,7 @@ You are on Stage 5 of 5 (Stage 0 is the foundation).
 - Stage 4: Performance, Security & Accessibility (completed)
 - Stage 5: Capstone (you are here)
 
-**Estimated time remaining:** 4-6 hours (core content) + 2-4 hours (optional exercises)
+**Estimated time remaining:** 6-8 hours (core content) + 2-4 hours (optional exercises)
 
 <h2 id="entry-criteria">Entry Criteria: What You Should Know Before Starting</h2>
 
