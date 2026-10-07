@@ -54,14 +54,14 @@ Add a section at the top of YOUR README.md:
 I completed the Testbook automation testing curriculum to build professional QA engineering skills. This fork demonstrates my proficiency in:
 
 - Python testing with pytest (203 backend tests)
-- JavaScript/React testing with Vitest (144 frontend tests)
-- E2E testing with Playwright (59 JavaScript + 60 Python tests)
+- JavaScript/React testing with Vitest (237 frontend tests)
+- E2E testing with Playwright (106 JavaScript + 110 Python tests)
 - API contract testing (OpenAPI validation)
 - Performance testing (k6 load tests)
 - Security testing (OWASP Top 10, 29 tests)
 - CI/CD with GitHub Actions
 
-**Coverage achieved:** 85% backend | 83% frontend
+**Coverage achieved:** 85% backend | 86% frontend
 **Total tests:** 495
 **Time invested:** [X hours]
 
@@ -294,7 +294,7 @@ FULL-STACK TESTING PROJECT | TESTBOOK
 September 2024 - Present
 
 • Built comprehensive test suite for production-grade social media application with 203
-  backend tests (FastAPI/Python) and 144 frontend tests (React/JavaScript)
+  backend tests (FastAPI/Python) and 237 frontend tests (React/JavaScript)
 • Utilized pytest fixtures, factories, and mocking to create maintainable test infrastructure
   following AAA (Arrange-Act-Assert) pattern
 • Implemented React component testing with Testing Library and MSW (Mock Service Worker)
@@ -367,7 +367,7 @@ social media application designed for QA learning.
 
 Achievements:
 • Wrote and maintained 495 automated tests (Python + JavaScript)
-• Achieved 85% backend coverage, 83% frontend coverage
+• Achieved 85% backend coverage, 86% frontend coverage
 • Implemented E2E testing with Playwright (dual-stack)
 • Performed OWASP Top 10 security testing
 • Conducted k6 performance testing under load

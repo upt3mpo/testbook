@@ -2,7 +2,7 @@
 
 Comprehensive cross-platform guide for running all Testbook tests.
 
-**203 Backend Tests | 119 E2E Tests (59 JS + 60 Python) | All Verified Working**
+**203 Backend Tests | 216 E2E Tests (106 JS + 110 Python) | All Verified Working**
 
 ---
 
@@ -41,7 +41,7 @@ pytest -v
 
 ### E2E Tests (Playwright)
 
-- **119 tests** (59 JavaScript + 60 Python, browser automation)
+- **216 tests** (106 JavaScript + 110 Python, browser automation)
 - **Cross-browser** (Chrome, Firefox, Safari)
 - **Platform:** All
 - **Language:** JavaScript or Python (your choice!)

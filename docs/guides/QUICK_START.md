@@ -309,7 +309,7 @@ npx playwright install chromium
 npm test
 ```
 
-**Expected:** 59 E2E tests pass
+**Expected:** 106 E2E tests pass
 
 </details>
 

@@ -74,8 +74,8 @@ pytest -v
 **A:**
 
 - **Backend:** 203 tests (85% coverage)
-- **Frontend:** 144 tests (unit + integration + accessibility, 83% coverage)
-- **E2E:** 119 tests (59 JavaScript + 60 Python, Playwright)
+- **Frontend:** 237 tests (unit + integration + accessibility, 86% coverage)
+- **E2E:** 216 tests (106 JavaScript + 110 Python, Playwright)
 - **Security:** 29 tests (18 pass, 11 skip - 5 real gaps plus 6 intentional
   OWASP-coverage placeholders - see tests/security/README.md)
 - **Total:** 495 tests across every suite

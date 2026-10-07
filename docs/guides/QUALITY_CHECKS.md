@@ -13,7 +13,7 @@ Testbook uses automated quality checks to maintain code standards:
 | **Formatting** | Black | Prettier |
 | **Import Sorting** | Ruff `I` ruleset | ESLint import rules |
 | **Linting** | Ruff `E`/`F` ruleset (24 categories total - see `backend/pyproject.toml`'s `[tool.ruff.lint]`), plus mypy for type checking | ESLint + plugins |
-| **Coverage Gate** | 80% suggested, not enforced by `--cov-fail-under` | No gate (83% actual) |
+| **Coverage Gate** | 80% suggested, not enforced by `--cov-fail-under` | No gate (86% actual) |
 | **Pre-commit Hooks** | Enabled: whitespace/EOF/YAML/JSON checks, markdownlint, Black, Ruff, mypy, detect-secrets | Not enabled: ESLint/Prettier still commented out in `.pre-commit-config.yaml` |
 
 **A note on history:** backend linting used to be isort + Flake8, run separately from what pre-commit checked (which had already moved to Ruff in an earlier pass). CI's `lint-backend` job and `scripts/quality-check.sh` now both run Ruff too, so there's a single tool and a single config (`backend/pyproject.toml`'s `[tool.ruff]`) enforced everywhere - local pre-commit, CI, and the manual quality-check script all agree.
@@ -294,7 +294,7 @@ None of this is enforced by anything in this repository — it has to be configu
 | Metric                   | Value | Target | Status      |
 | ------------------------ | ----- | ------ | ----------- |
 | Backend Coverage         | 85%   | 80%    | +5%         |
-| Frontend Coverage        | 83%   | N/A    | Good        |
+| Frontend Coverage        | 86%   | N/A    | Good        |
 | Linting Violations       | 0     | 0      | Clean       |
 | Accessibility Violations | 0     | 0      | WCAG 2.2 AA |
 

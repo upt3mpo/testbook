@@ -47,9 +47,9 @@ Answer these honestly before picking a track. There's no wrong answer here — t
 
 | Path | Language Focus | Tools You'll Master | Time | Start Here |
 | --- | --- | --- | --- | --- |
-| **Python Track** | Python | pytest, Playwright Python, k6 | 34-44 hours | [Stage 1](stage_1_unit/) |
-| **JavaScript Track** | JavaScript | Vitest, Playwright JS, MSW | 36-46 hours | [Lab 1](stage_1_unit/exercises/LAB_01_Your_First_Test_JavaScript.md) then [Stage 1](stage_1_unit/) |
-| **Hybrid Track** | Python + JavaScript | All tools from both stacks | 38-48 hours | [Stage 1](stage_1_unit/) |
+| **Python Track** | Python | pytest, Playwright Python, k6 | 34-44 hours | [Stage 0](stage_0_inclusion_first/) |
+| **JavaScript Track** | JavaScript | Vitest, Playwright JS, MSW | 36-46 hours | [Stage 0](stage_0_inclusion_first/), then [Lab 1](stage_1_unit/exercises/LAB_01_Your_First_Test_JavaScript.md) |
+| **Hybrid Track** | Python + JavaScript | All tools from both stacks | 38-48 hours | [Stage 0](stage_0_inclusion_first/) |
 | **Manual QA Transition** | Python-first | pytest, Playwright, automation mindset | 42-52 hours | [Manual QA Guide](../docs/guides/MANUAL_QA_TO_AUTOMATION.md) |
 
 That table tells you what you'll build. It doesn't tell you which one to pick if you have no strong opinion yet, so here's the actual reasoning.

@@ -87,6 +87,10 @@ Testbook/
 | **[TROUBLESHOOTING.md](reference/TROUBLESHOOTING.md)** | 20 min | Beginner | Technical errors with exact fixes |
 | **[QUALITY_CHECKS.md](guides/QUALITY_CHECKS.md)** (new, recommended) | 20 min | Intermediate | Linting, formatting, coverage gates |
 | **[ACCESSIBILITY_TESTING.md](guides/ACCESSIBILITY_TESTING.md)** (new, recommended) | 30 min | Intermediate | WCAG 2.2 AA, axe-core, manual scripts, Lighthouse |
+| **[Accessibility audit log](a11y/AUDIT_LOG.md)** | 20 min | Intermediate | 20 defects found and fixed, each with its guard test |
+| **[Accessibility conformance report](a11y/CONFORMANCE_REPORT.md)** | 20 min | Intermediate | Testbook against all 55 WCAG 2.2 A and AA criteria |
+| **[Manual accessibility scripts](a11y/manual/README.md)** | 60 min | Intermediate | Keyboard, VoiceOver, NVDA, zoom, contrast, forms, content, pointer |
+| **[Pitfalls gallery](../pitfalls/README.md)** | 45 min | Intermediate | Standalone broken and fixed pages showing how tests fail |
 | **[CONTRACT_TESTING.md](guides/CONTRACT_TESTING.md)** (new, recommended) | 30 min | Intermediate | Property-based API contract testing with Schemathesis |
 | **[VISUAL_REGRESSION.md](guides/VISUAL_REGRESSION.md)** (new, recommended) | 25 min | Intermediate | Screenshot baselines, CI infra, why not every PR |
 | **[WINDOWS_SETUP.md](guides/WINDOWS_SETUP.md)** | 30 min | Beginner | Windows-specific setup |
@@ -451,7 +455,7 @@ source .venv/bin/activate  # Activate Python (macOS/Linux)
 **Resources:**
 
 - Lab 4 (JavaScript/Playwright)
-- E2E tests (59 tests)
+- E2E tests (106 tests)
 - Performance tests (K6)
 
 **Tools:**

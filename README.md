@@ -2,13 +2,13 @@
 
 ![CI Status](https://github.com/upt3mpo/testbook/actions/workflows/testbook-ci.yml/badge.svg)
 ![Backend Coverage](https://img.shields.io/badge/backend_coverage-85%25-brightgreen)
-![Frontend Coverage](https://img.shields.io/badge/frontend_coverage-83%25-brightgreen)
+![Frontend Coverage](https://img.shields.io/badge/frontend_coverage-86%25-brightgreen)
 ![Total Tests](https://img.shields.io/badge/tests-495-blue)
 ![Python](https://img.shields.io/badge/python-3.13-blue)
 ![Node](https://img.shields.io/badge/node-24-green)
 
 A production-grade social media application built for learning and practicing
-automation testing. Features 203 backend tests, 144 frontend tests, 119 E2E
+automation testing. Features 203 backend tests, 237 frontend tests, 216 E2E
 tests (JavaScript + Python), 29 security tests, and structured hands-on labs.
 
 Perfect for individual learners, junior developers exploring testing, or manual QA professionals transitioning to automation.
@@ -64,11 +64,11 @@ start-dev.bat   # Windows
 
 **Choose your track and master automation testing:**
 
-| Track          | Language   | Time        | Best For            | Start Here                     |
-| -------------- | ---------- | ----------- | ------------------- | ------------------------------ |
-| **Python**     | Python     | 34-44 hours | Backend developers  | [Stage 1](learn/stage_1_unit/) |
-| **JavaScript** | JavaScript | 36-46 hours | Frontend developers | [Stage 1](learn/stage_1_unit/) |
-| **Hybrid**     | Both       | 38-48 hours | Full-stack QA       | [Stage 1](learn/stage_1_unit/) |
+| Track          | Language   | Time        | Best For            | Start Here                                |
+| -------------- | ---------- | ----------- | ------------------- | ----------------------------------------- |
+| **Python**     | Python     | 34-44 hours | Backend developers  | [Stage 0](learn/stage_0_inclusion_first/) |
+| **JavaScript** | JavaScript | 36-46 hours | Frontend developers | [Stage 0](learn/stage_0_inclusion_first/) |
+| **Hybrid**     | Both       | 38-48 hours | Full-stack QA       | [Stage 0](learn/stage_0_inclusion_first/) |
 
 **Detailed curriculum:** [Complete Learning Guide](learn/README.md)
 
@@ -119,7 +119,7 @@ def test_user_creation():
     assert user.is_active is True
 ```
 
-**Frontend:** 144 tests with Vitest
+**Frontend:** 237 tests with Vitest
 
 ```javascript
 test("should render login form", () => {
@@ -202,6 +202,17 @@ export default function () {
 }
 ```
 
+**Accessibility Testing:** WCAG 2.2 AA with axe-core
+
+```javascript
+test("feed has no accessibility violations", async ({ page }, testInfo) => {
+  await page.goto("/");
+  await expectNoA11yViolations(page, testInfo);
+});
+```
+
+Automation catches what a tool can detect. The rest needs a person, so the repo also ships scripted manual tests for keyboard, VoiceOver and NVDA, and an honest [conformance report](docs/a11y/CONFORMANCE_REPORT.md). Start with [Stage 0: Inclusion First](learn/stage_0_inclusion_first/README.md).
+
 **Security Testing:** OWASP Top 10
 
 ```python
@@ -230,8 +241,10 @@ def test_sql_injection_prevention():
 
 ### Learning Materials
 
-- **[Learning Path](learn/README.md)** - Complete 5-stage curriculum
-- **[Stage 1: Unit Tests](learn/stage_1_unit/)** - Start here!
+- **[Learning Path](learn/README.md)** - Complete curriculum: Stage 0 plus five stages
+- **[Stage 0: Inclusion First](learn/stage_0_inclusion_first/)** - Start here!
+- **[Accessibility Testing Guide](docs/guides/ACCESSIBILITY_TESTING.md)** - WCAG 2.2 AA reference, audit log and manual scripts
+- **[Pitfalls Gallery](pitfalls/README.md)** - Standalone broken and fixed pages that show how tests fail
 - **[Portfolio Guide](docs/guides/PORTFOLIO.md)** - Turn your work here into job-ready portfolio content
 - **[All Documentation](docs/INDEX.md)** - Complete documentation index
 
@@ -242,15 +255,16 @@ def test_sql_injection_prevention():
 ### Testing Features
 
 - **203 Backend Tests** - pytest with 85% coverage
-- **144 Frontend Tests** - Vitest + React Testing Library (83% coverage)
-- **119 E2E Tests** - Playwright (59 JavaScript + 60 Python)
+- **237 Frontend Tests** - Vitest + React Testing Library (86% coverage)
+- **216 E2E Tests** - Playwright (106 JavaScript + 110 Python)
 - **Performance Tests** - k6 load testing
 - **29 Security Tests** - OWASP Top 10 coverage
+- **Accessibility Tests** - WCAG 2.2 AA: component, browser (JavaScript and Python), Lighthouse, plus scripted manual tests
 - **API Tests** - Postman collection + Python examples
 
 ### Learning Features
 
-- **5-Stage Curriculum** - Progressive skill building
+- **Stage 0 Plus Five Stages** - Progressive skill building, with accessibility as the foundation
 - **Dual Language Support** - Python and JavaScript tracks
 - **Real Code Examples** - Production-quality test patterns
 - **Hands-on Labs** - Step-by-step exercises
