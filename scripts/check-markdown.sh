@@ -58,6 +58,11 @@ else
     LINT_STATUS=1
 fi
 
+# Docs accessibility lint (no emoji, no ASCII progress bars)
+if ! node scripts/lint-docs-a11y.mjs; then
+    LINT_STATUS=1
+fi
+
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo ""

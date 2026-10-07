@@ -256,7 +256,7 @@ npx playwright test auth.spec.js --debug
 - Browser opens
 - Test pauses at start
 - Use buttons to step through:
-  - ▶Resume
+  - Resume (the play button)
   - Step over
   - Pause
   - Stop

@@ -14,6 +14,7 @@ on:
     paths:
       - "**.md"
       - ".markdownlint.json"
+      - "scripts/lint-docs-a11y.mjs"
       - ".markdown-link-check.json"
       - ".github/workflows/markdown-validation.yml"
   pull_request:
@@ -21,6 +22,7 @@ on:
     paths:
       - "**.md"
       - ".markdownlint.json"
+      - "scripts/lint-docs-a11y.mjs"
       - ".markdown-link-check.json"
       - ".github/workflows/markdown-validation.yml"
 
@@ -45,5 +47,8 @@ jobs:
       - name: Run markdownlint
         run: markdownlint '**/*.md' --ignore node_modules --ignore '**/node_modules/**' --ignore venv --ignore backend/venv
         continue-on-error: false
+
+      - name: Docs accessibility lint (no emoji, no ASCII bars)
+        run: node scripts/lint-docs-a11y.mjs
 
   # Link check and report removed for minimal trim; keep linting only
