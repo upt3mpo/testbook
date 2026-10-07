@@ -27,6 +27,7 @@ Each row shows the test that guards the defect, and what a person still has to j
 | A11Y-017 | The no-duplicate-ids test | Unlikely | None |
 | A11Y-018 | The hover-and-Escape test | Unlikely | None |
 | A11Y-019 | The unit tests and the browser test for the validation error | Yes: an alert appears, but is the message useful? | Does the message tell you what to fix? |
+| A11Y-020 | The unit tests for names, and the browser test that reads the real accessibility tree of Feed, Settings and Profile | Unlikely | None |
 
 ## The pattern
 
@@ -36,8 +37,8 @@ Count the rows in the table above:
   A test guards the *mechanism*, and only a person (or a real screen reader) can judge the *experience*. Most of these are about
   **names, announcements and focus**: the markup is right, and whether it is understandable is a human call.
 - **Two are almost entirely mechanical**, with a small judgement left over (002 and 016).
-- **Six are fully mechanical** (005, 010, 012, 014, 017, 018). A test owns them completely, and a human adds nothing.
-- Eleven plus two plus six is nineteen.
+- **Seven are fully mechanical** (005, 010, 012, 014, 017, 018, 020). A test owns them completely, and a human adds nothing.
+- Eleven plus two plus seven is twenty.
 - **Nothing here is caught by a scan alone.** The behaviour tests and the human pass fill what a snapshot cannot.
 
 That gap is why Lab 17 exists.

@@ -142,7 +142,9 @@ function CreatePost({ onPostCreated }) {
             data-testid="create-post-drop-zone"
           >
             <div className="drop-zone-content">
-              <span className="drop-zone-icon">📁</span>
+              <span className="drop-zone-icon" aria-hidden="true">
+                📁
+              </span>
               <p className="drop-zone-text">
                 {isDragging ? 'Drop your file here' : 'Click to upload or drag and drop'}
               </p>
@@ -178,7 +180,7 @@ function CreatePost({ onPostCreated }) {
               disabled={loading}
               data-testid="create-post-remove-file"
             >
-              ✕ Remove
+              <span aria-hidden="true">✕</span> Remove
             </button>
           </div>
         )}
@@ -193,7 +195,7 @@ function CreatePost({ onPostCreated }) {
             disabled={loading}
             data-testid="create-post-media-button"
           >
-            📷 {selectedFile ? 'Change' : 'Add'} Media
+            <span aria-hidden="true">📷</span> {selectedFile ? 'Change' : 'Add'} Media
           </button>
           <button
             type="submit"

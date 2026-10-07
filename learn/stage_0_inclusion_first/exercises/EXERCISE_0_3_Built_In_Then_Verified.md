@@ -63,6 +63,8 @@ For each defect you need to know what it was. Use, in this order:
 
 You do not need to read every word. Skim each defect to understand what went wrong.
 
+The audit log may list **more than 19** defects, because new ones are found over time. This exercise uses **A11Y-001 to A11Y-019**, the set known when the stage was written. Ignore any later ones.
+
 ## Step 3: Fill in the prevention matrix (20 minutes)
 
 Copy this table. There is one row for each of the 19 defects. Fill in the last three columns.

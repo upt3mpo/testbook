@@ -271,7 +271,9 @@ function Post({ post, onDelete, onUpdate, detailed = false }) {
     >
       {post.is_repost && (
         <div className="repost-header" data-testid={`repost-indicator-${post.id}`}>
-          <span className="text-secondary text-small">🔁 {post.author_display_name} reposted</span>
+          <span className="text-secondary text-small">
+            <span aria-hidden="true">🔁</span> {post.author_display_name} reposted
+          </span>
         </div>
       )}
 
@@ -324,14 +326,14 @@ function Post({ post, onDelete, onUpdate, detailed = false }) {
                   className="dropdown-item"
                   data-testid={`post-${post.id}-edit-button`}
                 >
-                  ✏️ Edit
+                  <span aria-hidden="true">✏️</span> Edit
                 </button>
                 <button
                   onClick={handleDelete}
                   className="dropdown-item dropdown-item-danger"
                   data-testid={`post-${post.id}-delete-button`}
                 >
-                  🗑️ Delete
+                  <span aria-hidden="true">🗑️</span> Delete
                 </button>
               </div>
             )}
@@ -470,7 +472,13 @@ function Post({ post, onDelete, onUpdate, detailed = false }) {
           className={`btn ${post.has_reposted ? 'btn-primary' : 'btn-secondary'}`}
           data-testid={`post-${post.id}-repost-button`}
         >
-          {post.has_reposted ? '✓ Reposted' : 'Repost'}
+          {post.has_reposted ? (
+            <>
+              <span aria-hidden="true">✓</span> Reposted
+            </>
+          ) : (
+            'Repost'
+          )}
         </button>
 
         {!detailed && (

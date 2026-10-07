@@ -173,7 +173,7 @@ function Profile() {
                 className="btn btn-primary"
                 data-testid="profile-edit-button"
               >
-                ✏️ Edit Profile
+                <span aria-hidden="true">✏️</span> Edit Profile
               </button>
             </div>
           ) : (

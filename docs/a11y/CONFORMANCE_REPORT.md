@@ -24,7 +24,7 @@ teams ask vendors for, in a lighter form. Stage 5 asks you to produce one for yo
 | Scripted browser tests | Focus, tab order, announcements, reflow, target size, sticky-header coverage | [accessibility-behavior.spec.js](../../tests/e2e/accessibility-behavior.spec.js) |
 | Component and unit tests | Names, roles, states, focus management, design-token contrast | [a11y-regressions.test.jsx](../../frontend/src/tests/accessibility/a11y-regressions.test.jsx), [tokens.test.js](../../frontend/src/tests/accessibility/tokens.test.js) |
 | Lighthouse | Accessibility score on six pages, including signed-in pages | [accessibility.yml](../../.github/workflows/accessibility.yml) |
-| Code and CSS review | The audit that found 19 defects, all since fixed | [AUDIT_LOG.md](AUDIT_LOG.md) |
+| Code and CSS review | The audit that found 20 defects, all since fixed | [AUDIT_LOG.md](AUDIT_LOG.md) |
 | A machine-executed preview of the manual scripts | Text spacing, pointer cancellation, target sizes, focus-ring contrast | [2026-10-04-machine-preview.md](manual/runs/2026-10-04-machine-preview.md) |
 
 **Not yet done:** a human run of the [manual test scripts](manual/README.md), in particular VoiceOver and NVDA; testing
@@ -132,7 +132,7 @@ with disabled users; zoom to 200% by hand; voice control.
 
 | Criterion | Name | Level | Status | Evidence and notes |
 | --- | --- | --- | --- | --- |
-| 4.1.2 | Name, Role, Value | A | Supports | Named controls, exposed state (`aria-expanded`, `aria-pressed`), no nested interactive elements, unique ids (A11Y-005, 006, 015, 017), by [axe scans](../../tests/e2e/accessibility-axe.spec.js) and [component tests](../../frontend/src/tests/accessibility/a11y-regressions.test.jsx). |
+| 4.1.2 | Name, Role, Value | A | Supports | Named controls, exposed state (`aria-expanded`, `aria-pressed`), no nested interactive elements, unique ids, decorative emoji kept out of names (A11Y-005, 006, 015, 017, 020), by [axe scans](../../tests/e2e/accessibility-axe.spec.js) and [component tests](../../frontend/src/tests/accessibility/a11y-regressions.test.jsx). |
 | 4.1.3 | Status Messages | AA | Supports | Errors use `role="alert"`, confirmations use `role="status"`, and a live region announces reactions, reposts, comments, deletions and page changes (A11Y-004, A11Y-013). The text is tested. **Whether it is spoken needs a person with a screen reader.** |
 
 ## Known limitations and next steps

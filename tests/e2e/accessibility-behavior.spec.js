@@ -78,6 +78,36 @@ test.describe('Accessibility behaviour', { tag: '@a11y' }, () => {
     await expect(page.getByTestId('navbar')).toBeVisible();
   });
 
+  test('A11Y-020: no control has a decorative emoji in its accessible name (4.1.2)', async ({ page }) => {
+    // A screen reader reads an emoji aloud ("camera Add Media"). Read the real accessibility tree on
+    // each signed-in page, with the post menu open, and check every button and link name.
+    const PICTOGRAPH = /[\u2190-\u21FF\u2300-\u23FF\u2600-\u27BF\u2B00-\u2BFF]|\p{Extended_Pictographic}/u;
+    const namesOf = async () => {
+      const tree = await page.locator('body').ariaSnapshot();
+      return [...tree.matchAll(/- (?:button|link) "([^"]*)"/g)].map((m) => m[1]);
+    };
+
+    await loginAsSarah(page);
+    await page.getByRole('button', { name: 'Post options' }).first().click();
+    const found = {
+      feed: await namesOf(),
+    };
+    await page.goto('/settings');
+    await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+    found.settings = await namesOf();
+    await page.goto(`/profile/${TEST_USERS.sarah.username}`);
+    await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+    found.profile = await namesOf();
+
+    for (const [pageName, names] of Object.entries(found)) {
+      expect(names.length, `${pageName}: expected some controls`).toBeGreaterThan(3);
+      expect(
+        names.filter((n) => PICTOGRAPH.test(n)),
+        `${pageName} has pictographic names`
+      ).toEqual([]);
+    }
+  });
+
   test('A11Y-001: the login and register labels are visible on screen, and stay visible while typing (3.3.2)', async ({
     page,
   }) => {

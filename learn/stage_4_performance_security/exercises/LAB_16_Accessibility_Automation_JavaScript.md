@@ -226,7 +226,7 @@ amount. **Undo:** `git checkout frontend/src/components/Navbar.css`.
 
 ### Part 5: What does the suite still not catch? (15 minutes)
 
-Testbook's audit found 19 defects, and each is now guarded by a test. But a guard does not mean full coverage of the *kind*
+Testbook's audit found 20 defects (A11Y-001 to A11Y-020), and each is now guarded by a test. But a guard does not mean full coverage of the *kind*
 of problem. Open the [audit log](../../../docs/a11y/AUDIT_LOG.md) and, for each defect, decide:
 
 | Question | Your answer |
@@ -251,7 +251,7 @@ make lighthouse
 Open one of the HTML reports from `tests/reports/lighthouse/`. Find the accessibility score and look at the list of audits.
 
 **Question:** Lighthouse scores every page 100 on accessibility. Does that mean the pages are accessible? (It does not.
-Lighthouse runs a subset of axe's rules, and several of the 19 real defects passed it. Treat the score as a regression guard.)
+Lighthouse runs a subset of axe's rules, and several of the real defects passed it. Treat the score as a regression guard.)
 
 **Checkpoint:** you can find the accessibility job in CI and explain what a Lighthouse score does and does not prove.
 
@@ -285,7 +285,7 @@ fixed one, in JavaScript. Good choices here: *the theme nobody scanned* (it uses
 
 ## Reflection
 
-1. Which of the 19 defects surprised you by being invisible to a scan?
+1. Which of the 20 defects surprised you by being invisible to a scan?
 2. Your Following test failed once for a reason that had nothing to do with accessibility. What would happen to a team if
    that kept happening?
 3. If you could add one more test to the suite, what would it be, and which layer of the prevention ladder would it sit on?

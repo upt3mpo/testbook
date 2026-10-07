@@ -295,7 +295,7 @@ amount. **Undo:** `git checkout frontend/src/components/Navbar.css`.
 
 ### Part 6: What does the suite still not catch? (15 minutes)
 
-Testbook's audit found 19 defects, and each is now guarded by a test. But a guard does not mean full coverage of the *kind*
+Testbook's audit found 20 defects (A11Y-001 to A11Y-020), and each is now guarded by a test. But a guard does not mean full coverage of the *kind*
 of problem. Open the [audit log](../../../docs/a11y/AUDIT_LOG.md) and, for each defect, decide:
 
 | Question | Your answer |
@@ -321,7 +321,7 @@ make lighthouse
 Open one of the HTML reports from `tests/reports/lighthouse/` and find the accessibility score.
 
 **Question:** Lighthouse scores every page 100 on accessibility. Does that mean the pages are accessible? (It does not.
-Lighthouse runs a subset of axe's rules, and several of the 19 real defects passed it. Treat the score as a regression guard.)
+Lighthouse runs a subset of axe's rules, and several of the real defects passed it. Treat the score as a regression guard.)
 
 **Checkpoint:** you can find where accessibility runs in CI and explain what a Lighthouse score does and does not prove.
 

@@ -196,7 +196,13 @@ function Settings() {
                 disabled={uploadingAvatar}
                 data-testid="settings-upload-avatar-button"
               >
-                {uploadingAvatar ? 'Uploading...' : '📷 Upload Photo'}
+                {uploadingAvatar ? (
+                  'Uploading...'
+                ) : (
+                  <>
+                    <span aria-hidden="true">📷</span> Upload Photo
+                  </>
+                )}
               </button>
               <button
                 type="button"

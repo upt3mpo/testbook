@@ -2,11 +2,14 @@
 
 **Target standard:** WCAG 2.2 Level AA
 **Audit date:** 2026-10-04
-**Status:** All 19 defects fixed and guarded by tests (2026-10-04). Phase 2 manual
+**Status:** All 20 defects fixed and guarded by tests (2026-10-04). Phase 2 manual
 scripts cover what automation cannot (see "Needs manual verification").
 
 See [WORKED_EXAMPLES.md](WORKED_EXAMPLES.md) for the most instructive findings written up as case
 studies.
+
+> **Note for the Stage 0 exercise:** it uses A11Y-001 to A11Y-019, the set known when the stage was written. New defects are
+> appended here as they are found, so this log can list more than the exercise does.
 
 ## Method
 
@@ -25,7 +28,7 @@ seed data from `/api/dev/reset`, signed in as `sarah.johnson@testbook.com`):
 
 | Result | Count |
 | --- | --- |
-| Defects found | 19 (11 from the scans, 3 found while fixing, 4 found while preparing the manual scripts, 1 found while writing course labs) |
+| Defects found | 20 (11 from the scans, 3 found while fixing, 4 found while preparing the manual scripts, 1 found while writing course labs, 1 found during the course-wide retrofit) |
 | Needs a human (manual script) | 3 |
 | Checked and passing | 7 |
 
@@ -35,7 +38,7 @@ reflow, titles, announcements) are things axe can see.
 
 ## Defects
 
-All 19 are fixed, each with a guarding test. "Guarded by" names the file; every
+All 20 are fixed, each with a guarding test. "Guarded by" names the file; every
 guard was confirmed to fail against the pre-fix code (22 of 26 new component tests
 and 21 browser tests fail without the fixes; the remainder cover new components).
 
@@ -60,6 +63,7 @@ and 21 browser tests fail without the fixes; the remainder cover new components)
 | A11Y-017 | Med | 4.1.2 | Post `aria-controls` ids | Introduced by this audit's own A11Y-006 fix: ids built from the post id (`post-12-reactions`) repeat when the feed shows a post and a repost that embeds it. axe reported it as `duplicate-id-aria` (incomplete). | Yes: `useId()` | a11y-regressions.test.jsx (A11Y-017); accessibility-behavior.spec.js (A11Y-017) |
 | A11Y-018 | Med | 1.4.13 | Reaction picker (hover) | The picker revealed by hovering could not be dismissed without moving the pointer: Escape worked only for a click-opened picker. 1.4.13 requires hover-revealed content to be dismissible, hoverable and persistent. Found while writing the zoom/hover manual script (ZM-06). | Yes: Escape sets a pointer-only `hover-dismissed` state (separate from the click state) | a11y-regressions.test.jsx (A11Y-018); accessibility-behavior.spec.js (A11Y-018) |
 | A11Y-019 | High | 3.3.1, 3.3.3 | Register and Login (any API validation error) | The API returns validation errors (HTTP 422) as a **list of objects**, but the UI put `detail` straight into the page. Rendering a list of objects crashes React, and with no error boundary the **whole page went blank**: nothing to see and nothing for a screen reader to read. Reproduce: register with the email `a@b`, which the browser accepts. Found while writing the Stage 2 lab on error responses. | Yes: `getErrorMessage()` turns either error shape into a readable string that names the field and says how to fix it; `ErrorBoundary` replaces any future render crash with a focused, readable message | errors.test.js; a11y-regressions.test.jsx (A11Y-019); accessibility-behavior.spec.js (A11Y-019) |
+| A11Y-020 | Low | 4.1.2 | Composer, post menu, repost control, Profile and Settings buttons, reactions list | Decorative emoji sat inside control text ("📷 Add Media", "✏️ Edit", "🗑️ Delete", "✕ Remove", "✓ Reposted"), so a screen reader read them aloud as part of the name ("camera Add Media"). The reactions list showed a bare emoji with only a `title`. Found while auditing the docs for emoji during the course-wide retrofit; the UI had the same habit. | Yes: decorative emoji are wrapped in `aria-hidden` spans; the reactions list emoji has `role="img"` and a text label | a11y-regressions.test.jsx (A11Y-020); accessibility-behavior.spec.js (A11Y-020) |
 
 ## Needs manual verification
 

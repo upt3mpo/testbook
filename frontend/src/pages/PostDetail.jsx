@@ -116,7 +116,12 @@ function PostDetail() {
                   data-reaction-type={reaction.reaction_type}
                   data-user={reaction.username}
                 >
-                  <span className="reaction-emoji" title={reaction.reaction_type}>
+                  <span
+                    className="reaction-emoji"
+                    role="img"
+                    aria-label={reaction.reaction_type}
+                    title={reaction.reaction_type}
+                  >
                     {reactionEmojis[reaction.reaction_type]}
                   </span>
                   <span className="reaction-user">{reaction.display_name}</span>

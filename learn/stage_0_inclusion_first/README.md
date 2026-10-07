@@ -288,7 +288,7 @@ You are ready for Stage 1 when you can:
 
 ### Testbook's own accessibility record
 
-- [The audit log: 19 defects, all fixed and tested](../../docs/a11y/AUDIT_LOG.md)
+- [The audit log: every defect found, all fixed and tested](../../docs/a11y/AUDIT_LOG.md) (this stage uses the first 19)
 - [Worked examples: the most instructive findings](../../docs/a11y/WORKED_EXAMPLES.md)
 - [The manual testing scripts](../../docs/a11y/manual/README.md)
 

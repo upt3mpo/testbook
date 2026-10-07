@@ -524,6 +524,33 @@ describe('A11Y-019: an unexpected API error shape must not blank the page', () =
   });
 });
 
+describe('A11Y-020: decorative emoji are kept out of accessible names', () => {
+  // A screen reader reads an emoji aloud ("camera Add Media"), so a decorative one is noise in the
+  // name. They are wrapped in aria-hidden spans. This matches pictographs and the dingbat and
+  // arrow symbols the app used (check mark, multiplication x, camera, pencil, bin, repost).
+  it('the composer buttons have clean names', () => {
+    renderWith(<CreatePost onPostCreated={vi.fn()} />);
+    // The aria-hidden emoji is excluded from the accessible name by the browser and by Testing Library.
+    expect(screen.getByRole('button', { name: 'Add Media' })).toBeInTheDocument();
+  });
+
+  it('the post menu and repost control have clean names, and the emoji is hidden', async () => {
+    const user = userEvent.setup();
+    const { container } = renderPost({ ...basePost, has_reposted: true });
+    await user.click(screen.getByRole('button', { name: 'Post options' }));
+
+    expect(screen.getByRole('button', { name: 'Edit' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Delete' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Reposted' })).toBeInTheDocument();
+  });
+
+  it('the repost header icon is hidden', () => {
+    renderPost({ ...basePost, is_repost: true, original_post: { ...basePost, id: 3 } });
+    const header = screen.getByTestId('repost-indicator-7');
+    expect(header.querySelector('[aria-hidden="true"]')).not.toBeNull();
+  });
+});
+
 describe('A11Y-013: changes with no visible message are announced', () => {
   it('announce() writes to the polite live region', async () => {
     render(<LiveRegion />);
