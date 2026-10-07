@@ -4,7 +4,7 @@ This guide helps Windows users set up and run Testbook from scratch, even if you
 
 There are three approaches you can use:
 
-<h2 id="ultra-quick-start">⚡ Ultra-Quick Start</h2>
+<h2 id="ultra-quick-start">Ultra-Quick Start</h2>
 
 **Not sure which path to take?** Use this decision tree:
 
@@ -34,13 +34,13 @@ flowchart TD
 
 **Quick Paths:**
 
-- **🪟 Native Windows** → [Skip to Native Setup](#option-1-native-windows-recommended-for-beginners) (Easiest, familiar Windows environment)
-- **🐧 WSL** → [Skip to WSL Setup](#option-2-wsl-windows-subsystem-for-linux--recommended-for-developers) (Best for developers, Linux-like experience)
-- **🐳 Docker** → [Skip to Docker Setup](#option-3-docker-cross-platform) (Production-like, isolated environment)
+- **Native Windows** → [Skip to Native Setup](#option-1-native-windows-recommended-for-beginners) (Easiest, familiar Windows environment)
+- **WSL** → [Skip to WSL Setup](#option-2-wsl-windows-subsystem-for-linux-recommended-for-developers) (Best for developers, Linux-like experience)
+- **Docker** → [Skip to Docker Setup](#option-3-docker-cross-platform) (Production-like, isolated environment)
 
 ---
 
-<h2 id="quick-navigation">🎯 Quick Navigation</h2>
+<h2 id="quick-navigation">Quick Navigation</h2>
 
 **I want to get started quickly:**
 
@@ -58,16 +58,16 @@ flowchart TD
 - [Setup Comparison](#detailed-comparison-table)
 - [Recommendations by User Type](#recommendations-by-user-type)
 
-<h2 id="table-of-contents">📋 Table of Contents</h2>
+<h2 id="table-of-contents">Table of Contents</h2>
 
-### 🚀 Quick Start
+### Quick Start
 
 - [PowerShell vs Command Prompt](#powershell-vs-command-prompt)
 - [Option 1: Native Windows (Recommended for Beginners)](#option-1-native-windows-recommended-for-beginners)
-- [Option 2: WSL (Windows Subsystem for Linux) ⭐ Recommended for Developers](#option-2-wsl-windows-subsystem-for-linux--recommended-for-developers)
+- [Option 2: WSL (Windows Subsystem for Linux) Recommended for Developers](#option-2-wsl-windows-subsystem-for-linux-recommended-for-developers)
 - [Option 3: Docker (Cross-Platform)](#option-3-docker-cross-platform)
 
-### 📥 Native Windows Setup
+### Native Windows Setup
 
 - [Complete Prerequisites Checklist](#complete-prerequisites-checklist)
   - [Quick Setup (Advanced Users)](#quick-setup-advanced-users)
@@ -76,7 +76,7 @@ flowchart TD
 - [Setup Steps](#setup-steps)
 - [Common Issues and Solutions](#common-issues-and-solutions)
 
-### 🐧 WSL Setup
+### WSL Setup
 
 - [Why WSL?](#why-wsl)
 - [Requirements](#requirements)
@@ -85,12 +85,12 @@ flowchart TD
 - [WSL Development Tips](#wsl-development-tips)
 - [WSL Troubleshooting](#wsl-troubleshooting)
 
-### 🐳 Docker Setup
+### Docker Setup
 
 - [Requirements](#requirements-1)
 - [Setup Steps](#setup-steps-1)
 
-### 🔧 Troubleshooting
+### Troubleshooting
 
 - [Issue 1: Python not found](#issue-1-python-not-found-or-python-is-not-recognized)
 - [Issue 2: npm/node not found](#issue-2-npm-is-not-recognized-or-node-is-not-recognized)
@@ -109,7 +109,7 @@ flowchart TD
 - [Issue 11: Playwright not found](#issue-11-playwright-not-found-or-e2e-tests-fail)
 - [Issue 12: Playwright browser download blocked on a restricted network](#issue-12-playwright-browser-download-blocked-on-a-restricted-network)
 
-### 🛠️ Advanced Topics
+### Advanced Topics
 
 - [Advanced Troubleshooting](#advanced-troubleshooting)
 - [Development Workflow](#development-workflow)
@@ -117,42 +117,42 @@ flowchart TD
 - [IDE Recommendations](#ide-recommendations)
 - [Getting Help](#getting-help)
 
-### 📊 Comparison & Recommendations
+### Comparison & Recommendations
 
 - [Quick Start Comparison](#quick-start-comparison)
 - [Detailed Comparison Table](#detailed-comparison-table)
 - [Recommendations by User Type](#recommendations-by-user-type)
 - [Verification Checklist](#verification-checklist)
 
-### 🎯 Next Steps
+### Next Steps
 
-- [Next Steps](#next-steps)
+- [Next Steps](#next-steps-1)
 - [Getting Help](#getting-help)
 
 ---
 
-<h2 id="powershell-vs-command-prompt">🪟 PowerShell vs Command Prompt</h2>
+<h2 id="powershell-vs-command-prompt">PowerShell vs Command Prompt</h2>
 
 Throughout this guide, we provide commands for both shells (the program that runs your commands):
 
-### 💙 PowerShell (Recommended)
+### PowerShell (Recommended)
 
 **Why PowerShell?**
 
-- ✅ **Pre-installed** - No setup needed, comes with Windows 10/11
-- ✅ **Modern** - Built for today's development workflows
-- ✅ **Powerful** - Better scripting and automation capabilities
-- ✅ **Cross-platform** - Same commands work on Windows, Mac, and Linux
-- ✅ **Better environment variables** - Simple syntax: `$env:VAR="value"`
+- **Pre-installed** - No setup needed, comes with Windows 10/11
+- **Modern** - Built for today's development workflows
+- **Powerful** - Better scripting and automation capabilities
+- **Cross-platform** - Same commands work on Windows, Mac, and Linux
+- **Better environment variables** - Simple syntax: `$env:VAR="value"`
 
-### 🖤 Command Prompt (Alternative)
+### Command Prompt (Alternative)
 
 **When to use Command Prompt:**
 
-- ✅ **Legacy compatibility** - Works with older Windows systems and scripts
-- ✅ **Legacy systems** - Works on older Windows versions
-- ✅ **Simple tasks** - Easier for basic file operations
-- ⚠️ **More verbose** - Environment variables: `set VAR=value`
+- **Legacy compatibility** - Works with older Windows systems and scripts
+- **Legacy systems** - Works on older Windows versions
+- **Simple tasks** - Easier for basic file operations
+- **More verbose** - Environment variables: `set VAR=value`
 
 **This guide's commands are PowerShell.** Anywhere you see `$env:VAR="value"`,
 the Command Prompt equivalent is `set VAR=value` - swap that in if you're
@@ -168,47 +168,47 @@ using cmd.exe instead.
 
 Before starting, you need to install these tools:
 
-<h3 id="what-each-tool-does">🛠️ What Each Tool Does</h3>
+<h3 id="what-each-tool-does">What Each Tool Does</h3>
 
 **Don't know what these tools are?** Here's what each one does in simple terms:
 
-#### 🐍 Python 3.13
+#### Python 3.13
 
 - **What it does:** Runs the backend API server (the "brain" of the application)
 - **Why you need it:** Testbook's backend is written in Python, so you need Python to run it
 - **Think of it as:** The engine that powers the server
 
-#### 🟢 Node.js 24+
+#### Node.js 24+
 
 - **What it does:** Runs the frontend development server and build tools
 - **Why you need it:** Testbook's frontend is built with modern web tools that need Node.js
 - **Think of it as:** The tool that builds and serves the website
 
-#### 📦 Git
+#### Git
 
 - **What it does:** Downloads and manages project code (version control)
 - **Why you need it:** To download the Testbook project from GitHub
 - **Think of it as:** A smart file downloader that tracks changes
 
-#### 🌐 curl (Optional)
+#### curl (Optional)
 
 - **What it does:** Tests API endpoints from the command line
 - **Why you need it:** For testing the backend API and health checks
 - **Think of it as:** A command-line tool for making web requests
 
-#### 🦀 Rust (Auto-installed if needed)
+#### Rust (Auto-installed if needed)
 
 - **What it does:** Compiles some Python packages that need it
 - **Why you need it:** Some Python packages (like pydantic-core) are written in Rust
 - **Think of it as:** A compiler that some Python packages need to work
 
-#### 🖼️ Python Pillow (Auto-installed)
+#### Python Pillow (Auto-installed)
 
 - **What it does:** Generates placeholder images for the application
 - **Why you need it:** The setup script creates default avatars and images automatically
 - **Think of it as:** An image processing library that creates visual content
 
-#### 🎭 Playwright (Required - for E2E Testing)
+#### Playwright (Required - for E2E Testing)
 
 - **What it does:** Runs automated browser tests (end-to-end testing)
 - **Why you need it:** Tests the full application workflow from a user's perspective, not just individual functions
@@ -216,7 +216,7 @@ Before starting, you need to install these tools:
 
 ---
 
-<h4 id="quick-setup-advanced-users">🚀 Quick Setup (Advanced Users)</h4>
+<h4 id="quick-setup-advanced-users">Quick Setup (Advanced Users)</h4>
 
 **Choose your package manager (a tool that installs software for you):**
 
@@ -228,30 +228,30 @@ Before starting, you need to install these tools:
 | **Speed**             | Fast installation                 | Fast installation                |
 | **Best For**          | Power users, automation, advanced | Quick setup, Microsoft ecosystem |
 
-### 🎯 Quick Decision Guide
+### Quick Decision Guide
 
 **Choose winget if:**
 
-- ✅ You want **zero setup** - it's already installed on Windows 10/11
-- ✅ You're new to package managers and want the simplest option
-- ✅ You trust Microsoft's official package repository
+- You want **zero setup** - it's already installed on Windows 10/11
+- You're new to package managers and want the simplest option
+- You trust Microsoft's official package repository
 
 **Choose Chocolatey if:**
 
-- ✅ You want **more packages** (8,000+ vs 3,000+)
-- ✅ You already use Chocolatey for other software
-- ✅ You need advanced package management features
-- ⚠️ **Note:** Requires running PowerShell as Administrator
+- You want **more packages** (8,000+ vs 3,000+)
+- You already use Chocolatey for other software
+- You need advanced package management features
+- **Note:** Requires running PowerShell as Administrator
 
 **Choose Manual if:**
 
-- ✅ You prefer **clicking through installers** (traditional Windows way)
-- ✅ You want to see exactly what's being installed
-- ✅ You're having issues with package managers
+- You prefer **clicking through installers** (traditional Windows way)
+- You want to see exactly what's being installed
+- You're having issues with package managers
 
-**💡 Recommendation:** Start with **winget** - it's built-in and works great for most users.
+**Recommendation:** Start with **winget** - it's built-in and works great for most users.
 
-**🐍 Python Version:** We strongly recommend **Python 3.13** for the best compatibility with all Testbook dependencies. Python 3.14 may work but many packages don't support it yet (~25% compatibility).
+**Python Version:** We strongly recommend **Python 3.13** for the best compatibility with all Testbook dependencies. Python 3.14 may work but many packages don't support it yet (~25% compatibility).
 
 **If you use Chocolatey package manager:**
 
@@ -293,12 +293,12 @@ rustc --version
 
 ---
 
-<h4 id="manual-installation-recommended-for-beginners">📥 Manual Installation (Recommended for Beginners)</h4>
+<h4 id="manual-installation-recommended-for-beginners">Manual Installation (Recommended for Beginners)</h4>
 
 #### 1. Python 3.13 (Required - Recommended Version)
 
 <details>
-<summary>🤔 Why do I need this?</summary>
+<summary>Why do I need this?</summary>
 
 **Python is the programming language that runs Testbook's backend server.** Without Python, the application can't start because:
 
@@ -311,7 +311,7 @@ rustc --version
 </details>
 
 <details>
-<summary>⚠️ What happens if I skip this?</summary>
+<summary>What happens if I skip this?</summary>
 
 - The setup script will fail with "Python not found" errors
 - You won't be able to run the backend server
@@ -346,7 +346,7 @@ python --version
 # ❌ Error: 'python' is not recognized
 ```
 
-**⚠️ Python Version Compatibility Note:**
+**Python Version Compatibility Note:**
 
 - **Use Python 3.13**: Best balance of latest features and package compatibility
 - **Avoid Python 3.14**: Many packages don't support it yet (only ~25% of top packages)
@@ -364,7 +364,7 @@ python --version
 #### 2. Node.js 24+ and npm (Required)
 
 <details>
-<summary>🤔 Why do I need this?</summary>
+<summary>Why do I need this?</summary>
 
 **Node.js runs the frontend development server and build tools.** It's essential because:
 
@@ -378,7 +378,7 @@ python --version
 </details>
 
 <details>
-<summary>⚠️ What happens if I skip this?</summary>
+<summary>What happens if I skip this?</summary>
 
 - The frontend won't start or build properly
 - You'll see errors like: `'node' is not recognized` or `'npm' is not recognized`
@@ -422,7 +422,7 @@ npm --version
 #### 3. Git for Windows (Required)
 
 <details>
-<summary>🤔 Why do I need this?</summary>
+<summary>Why do I need this?</summary>
 
 **Git downloads and manages the Testbook project code.** It's essential because:
 
@@ -436,7 +436,7 @@ npm --version
 </details>
 
 <details>
-<summary>⚠️ What happens if I skip this?</summary>
+<summary>What happens if I skip this?</summary>
 
 - You can't download the Testbook project from GitHub
 - You'll see errors like: `'git' is not recognized as an internal or external command`
@@ -494,7 +494,7 @@ curl --version
 #### 5. Playwright (Required - for E2E Testing)
 
 <details>
-<summary>🤔 Why do I need this?</summary>
+<summary>Why do I need this?</summary>
 
 **Playwright runs automated browser tests (end-to-end testing).**
 
@@ -508,7 +508,7 @@ curl --version
 </details>
 
 <details>
-<summary>⚠️ What happens if I skip this?</summary>
+<summary>What happens if I skip this?</summary>
 
 - E2E tests won't run (`cd tests && npm test` will fail)
 - You'll see errors like: `'playwright' is not recognized as an internal or external command`
@@ -549,7 +549,7 @@ curl --version
    # ❌ Error: 'playwright' is not recognized
    ```
 
-**💡 Learning-Focused Setup:** We configure Playwright to run only Chrome by default for faster execution. This reduces test time from ~5 minutes to ~1 minute, making the learning experience smoother. You can still run other browsers if needed for cross-browser testing.
+**Learning-Focused Setup:** We configure Playwright to run only Chrome by default for faster execution. This reduces test time from ~5 minutes to ~1 minute, making the learning experience smoother. You can still run other browsers if needed for cross-browser testing.
 
 #### 6. Code Editor (Recommended)
 
@@ -584,7 +584,7 @@ npx playwright --version
 # Should show: Playwright version 1.x.x
 ```
 
-<h3 id="installation-workflow">📊 Installation Workflow</h3>
+<h3 id="installation-workflow">Installation Workflow</h3>
 
 **Here's what the setup process looks like:**
 
@@ -620,7 +620,7 @@ flowchart TB
 
 **Total Time:** 5-10 minutes (depending on internet speed)
 
-**If something goes wrong:** Check the troubleshooting section below ⬇️
+**If something goes wrong:** Check the troubleshooting section below
 
 ---
 
@@ -657,9 +657,9 @@ flowchart TB
 
    **What this does:**
 
-   - ✅ `python-dotenv` (loaded in `backend/main.py`) reads `backend\.env`, which sets `TESTING=true`
-   - ✅ Enables dev endpoints for testing
-   - ✅ Increases rate limits to prevent test failures
+   - `python-dotenv` (loaded in `backend/main.py`) reads `backend\.env`, which sets `TESTING=true`
+   - Enables dev endpoints for testing
+   - Increases rate limits to prevent test failures
 
    Do this once, then either `.\start-dev.bat` or a manual `uvicorn` invocation
    will pick up `TESTING=true` from `backend\.env`:
@@ -680,11 +680,11 @@ flowchart TB
 
 The script will:
 
-- ✅ Check if ports (numbered doors for network connections) 8000 and 3000 are available
-- ✅ Create Python virtual environment (isolated Python installation for this project) (if needed)
-- ✅ Install dependencies (required software packages) only if not already present (idempotent)
-- ✅ Health check both services before reporting success
-- ✅ Provide clear error messages if startup fails
+- Check if ports (numbered doors for network connections) 8000 and 3000 are available
+- Create Python virtual environment (isolated Python installation for this project) (if needed)
+- Install dependencies (required software packages) only if not already present (idempotent)
+- Health check both services before reporting success
+- Provide clear error messages if startup fails
 
 **Expected output:**
 
@@ -725,11 +725,11 @@ Test accounts:
 Ready to start? → learn\README.md
 ```
 
-<h3 id="troubleshooting-fast-triage">🔧 Troubleshooting (Fast Triage)</h3>
+<h3 id="troubleshooting-fast-triage">Troubleshooting (Fast Triage)</h3>
 
 **Having issues?** Start here. Pick your symptom, run the quick check, then jump straight to the fix.
 
-#### ✅ One-Command Health Check (PowerShell)
+#### One-Command Health Check (PowerShell)
 
 ```powershell
 # Run in project root (Windows PowerShell)
@@ -767,7 +767,7 @@ Write-Host "ExecutionPolicy: $pol" -ForegroundColor DarkCyan
 
 ---
 
-#### 🧭 Quick Triage Table
+#### Quick Triage Table
 
 | Symptom you see                                                     | Likely cause                                           | Quick action                                          | Full fix                                                                                              |
 | ------------------------------------------------------------------- | ------------------------------------------------------ | ----------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
@@ -785,7 +785,7 @@ Write-Host "ExecutionPolicy: $pol" -ForegroundColor DarkCyan
 
 ---
 
-#### 🚀 One-Click Fixes (Copy/Paste)
+#### One-Click Fixes (Copy/Paste)
 
 <details>
 <summary><strong>Fix Python fast</strong> – install 3.13 and verify</summary>
@@ -863,10 +863,10 @@ Or use prebuilt wheels: see [Issue 2.6](#issue-26-cargo-the-rust-package-manager
 
 ---
 
-#### 🧱 Category Overview
+#### Category Overview
 
 <details>
-<summary>🐍 Python issues</summary>
+<summary>Python issues</summary>
 
 - Not recognized → [Issue 1](#issue-1-python-not-found-or-python-is-not-recognized)
 - Pillow or 3.14 errors → [Issue 2.7](#issue-27-failed-building-wheel-for-pillow-or-python-314-not-supported)
@@ -875,7 +875,7 @@ Or use prebuilt wheels: see [Issue 2.6](#issue-26-cargo-the-rust-package-manager
 </details>
 
 <details>
-<summary>🟩 Node / npm issues</summary>
+<summary>Node / npm issues</summary>
 
 - Not recognized → [Issue 2](#issue-2-npm-is-not-recognized-or-node-is-not-recognized)
 - Wrong version installed → [Issue 2.1](#issue-21-wrong-nodejs-version-installed)
@@ -884,7 +884,7 @@ Or use prebuilt wheels: see [Issue 2.6](#issue-26-cargo-the-rust-package-manager
 </details>
 
 <details>
-<summary>🔧 Git / curl / misc</summary>
+<summary>Git / curl / misc</summary>
 
 - Git not recognized → [Issue 3](#issue-3-git-is-not-recognized)
 - curl not recognized → [Issue 4](#issue-4-curl-is-not-recognized)
@@ -892,7 +892,7 @@ Or use prebuilt wheels: see [Issue 2.6](#issue-26-cargo-the-rust-package-manager
 </details>
 
 <details>
-<summary>🧰 Environment & OS</summary>
+<summary>Environment & OS</summary>
 
 - Ports in use → [Issue 5](#issue-5-port-already-in-use)
 - Permission denied → [Issue 7](#issue-7-permission-denied-errors)
@@ -902,14 +902,14 @@ Or use prebuilt wheels: see [Issue 2.6](#issue-26-cargo-the-rust-package-manager
 </details>
 
 <details>
-<summary>🎭 Testing / Playwright</summary>
+<summary>Testing / Playwright</summary>
 
 - Playwright not found / browsers missing → [Issue 11](#issue-11-playwright-not-found-or-e2e-tests-fail)
 - Browser download blocked on a work machine → [Issue 12](#issue-12-playwright-browser-download-blocked-on-a-restricted-network)
 
 </details>
 
-#### 🚨 Most Common Issues
+#### Most Common Issues
 
 **Quick fixes for the most frequent problems:**
 
@@ -923,7 +923,7 @@ Or use prebuilt wheels: see [Issue 2.6](#issue-26-cargo-the-rust-package-manager
 8. **"Playwright not found"** → [Issue 11](#issue-11-playwright-not-found-or-e2e-tests-fail) - Install Playwright and browsers
 9. **Playwright install hangs on a work laptop** → [Issue 12](#issue-12-playwright-browser-download-blocked-on-a-restricted-network) - Work around the corporate firewall
 
-**📖 Need more help?** Check [TROUBLESHOOTING.md](../reference/TROUBLESHOOTING.md) for technical errors with exact fixes | [FAQ.md](FAQ.md) for learning questions.
+**Need more help?** Check [TROUBLESHOOTING.md](../reference/TROUBLESHOOTING.md) for technical errors with exact fixes | [FAQ.md](FAQ.md) for learning questions.
 
 ---
 
@@ -1370,10 +1370,10 @@ testbook
 
 **Benefits:**
 
-- ✅ No more execution policy issues
-- ✅ One command to activate virtual environment
-- ✅ Works in any PowerShell window
-- ✅ Clear visual feedback
+- No more execution policy issues
+- One command to activate virtual environment
+- Works in any PowerShell window
+- Clear visual feedback
 
 **Note:** Adjust the path `"D:\Projects\testbook\backend\.venv\Scripts\Activate.ps1"` to match your actual project location.
 
@@ -1524,15 +1524,15 @@ If the app starts but you can't access it in browser:
 3. **Try different ports:** Modify `start-dev.bat` to use different ports
 4. **Use localhost instead of 0.0.0.0:** Change `--host 0.0.0.0` to `--host localhost`
 
-[↑ Back to Top](#windows-setup-guide) | [📋 Table of Contents](#table-of-contents)
+[↑ Back to Top](#windows-setup-guide) | [Table of Contents](#table-of-contents)
 
 ---
 
-## Option 2: WSL (Windows Subsystem for Linux) ⭐ Recommended for Developers
+## Option 2: WSL (Windows Subsystem for Linux) Recommended for Developers
 
 **Best for:** Developers comfortable with Linux, or those who want full bash script compatibility and better performance.
 
-### 🎯 Perfect for you if
+### Perfect for you if
 
 - **You're learning from Linux/Mac tutorials** - Same commands, same file structure
 - **You want industry-standard commands** - Learn the same tools used by professional developers
@@ -1541,7 +1541,7 @@ If the app starts but you can't access it in browser:
 - **You want better performance** - Linux file system is faster for development tasks
 - **You're planning to deploy on Linux** - Same environment as production servers
 
-### ❌ Not recommended if
+### Not recommended if
 
 - **You're completely new to coding** - Native Windows is simpler for beginners
 - **You just want to get started quickly** - WSL requires more setup time
@@ -1550,13 +1550,13 @@ If the app starts but you can't access it in browser:
 
 ### Why WSL?
 
-- ✅ **Native Linux environment** on Windows - Real Ubuntu/Debian, not emulation
-- ✅ **Better compatibility** with shell scripts and development tools
-- ✅ **Same experience** as macOS/Linux users - No more platform-specific issues
-- ✅ **Access to Linux tools** and packages - 60,000+ packages via `apt` (Advanced Package Tool)
-- ✅ **Better performance** for development tools - Linux file system is faster
-- ✅ **Avoids Windows-specific issues** - No more PowerShell execution policy problems
-- ✅ **Perfect for learning** cross-platform development
+- **Native Linux environment** on Windows - Real Ubuntu/Debian, not emulation
+- **Better compatibility** with shell scripts and development tools
+- **Same experience** as macOS/Linux users - No more platform-specific issues
+- **Access to Linux tools** and packages - 60,000+ packages via `apt` (Advanced Package Tool)
+- **Better performance** for development tools - Linux file system is faster
+- **Avoids Windows-specific issues** - No more PowerShell execution policy problems
+- **Perfect for learning** cross-platform development
 
 ### Requirements
 
@@ -1758,7 +1758,7 @@ free -h
 # Use VS Code Remote - WSL extension
 ```
 
-[↑ Back to Top](#windows-setup-guide) | [📋 Table of Contents](#table-of-contents)
+[↑ Back to Top](#windows-setup-guide) | [Table of Contents](#table-of-contents)
 
 ---
 
@@ -1787,7 +1787,7 @@ free -h
 
 **Note:** Docker mode runs in production configuration. The ports are the same as dev mode (3000 for frontend, 8000 for backend), but the setup process is different.
 
-### 📝 About npm Deprecation Warnings
+### About npm Deprecation Warnings
 
 When running `.\start-dev.bat` or `npm install`, you may occasionally see `npm warn deprecated ...` lines for one transitive dependency or another.
 
@@ -1800,13 +1800,13 @@ When running `.\start-dev.bat` or `npm install`, you may occasionally see `npm w
 - Most are cosmetic and don't affect the tutorial
 - Focus on learning the testing concepts rather than package maintenance
 
-[↑ Back to Top](#windows-setup-guide) | [📋 Table of Contents](#table-of-contents)
+[↑ Back to Top](#windows-setup-guide) | [Table of Contents](#table-of-contents)
 
 ---
 
 ## Quick Start Comparison
 
-### 🚀 Fastest Setup (Choose One)
+### Fastest Setup (Choose One)
 
 #### Option A: Native Windows (5 minutes)
 
@@ -1858,11 +1858,11 @@ docker-compose up
 | **Performance**        | Fast             | Fast          | Moderate           |
 | **Port Forwarding**    | Direct           | Automatic     | Configured         |
 | **Best For**           | Beginners        | Developers    | Production testing |
-| **Auto-reload**        | ✅ Yes           | ✅ Yes        | ❌ No              |
+| **Auto-reload**        | Yes              | Yes           | No                 |
 | **File Permissions**   | Windows          | Linux         | Container          |
 | **Package Management** | pip/npm          | apt/pip/npm   | Container          |
 | **IDE Integration**    | Good             | Excellent     | Limited            |
-| **Cross-platform**     | ❌ No            | ✅ Yes        | ✅ Yes             |
+| **Cross-platform**     | No               | Yes           | Yes                |
 | **Resource Usage**     | Low              | Medium        | High               |
 | **Troubleshooting**    | Windows-specific | Linux         | Container logs     |
 
@@ -1914,7 +1914,7 @@ pytest -v
 
 ## Common Issues (All Platforms)
 
-**💡 For detailed troubleshooting:** See [TROUBLESHOOTING.md](../reference/TROUBLESHOOTING.md) for technical errors with exact fixes | [FAQ.md](FAQ.md) for learning questions.
+**For detailed troubleshooting:** See [TROUBLESHOOTING.md](../reference/TROUBLESHOOTING.md) for technical errors with exact fixes | [FAQ.md](FAQ.md) for learning questions.
 
 ### Port Conflicts
 
@@ -1931,7 +1931,7 @@ taskkill /PID <PID> /F
 lsof -ti:8000 | xargs kill
 ```
 
-**📖 Detailed solutions:** [Port Conflicts in TROUBLESHOOTING.md](../reference/TROUBLESHOOTING.md#error-address-already-in-use)
+**Detailed solutions:** [Port Conflicts in TROUBLESHOOTING.md](../reference/TROUBLESHOOTING.md#error-address-already-in-use)
 
 ### Virtual Environment Issues
 
@@ -1950,7 +1950,7 @@ cd backend
 source .venv/bin/activate
 ```
 
-**📖 Detailed solutions:** [Python Virtual Environment Errors in TROUBLESHOOTING.md](../reference/TROUBLESHOOTING.md#error-virtual-environment-not-found)
+**Detailed solutions:** [Python Virtual Environment Errors in TROUBLESHOOTING.md](../reference/TROUBLESHOOTING.md#error-virtual-environment-not-found)
 
 ### Node Modules Issues
 
@@ -1967,7 +1967,7 @@ rm -rf node_modules                       # WSL/Linux
 npm install
 ```
 
-**📖 Detailed solutions:** [Node.js & npm Errors in TROUBLESHOOTING.md](../reference/TROUBLESHOOTING.md#error-npm-command-not-found)
+**Detailed solutions:** [Node.js & npm Errors in TROUBLESHOOTING.md](../reference/TROUBLESHOOTING.md#error-npm-command-not-found)
 
 ---
 
@@ -2016,52 +2016,52 @@ Works great with native Windows or WSL. Configure interpreters:
 - Check [TROUBLESHOOTING.md](../reference/TROUBLESHOOTING.md) for technical errors with exact fixes
 - Check [RUNNING_TESTS.md](./RUNNING_TESTS.md)
 - Review [README.md](../../README.md#learning-path)
-- Try WSL if Native Windows setup keeps hitting issues - see [Option 2](#option-2-wsl-windows-subsystem-for-linux--recommended-for-developers)
+- Try WSL if Native Windows setup keeps hitting issues - see [Option 2](#option-2-wsl-windows-subsystem-for-linux-recommended-for-developers)
 - Ask in the course discussion forum
 
 ---
 
-## 🪟 Windows-Specific Gotchas for Linux/Mac Developers
+## Windows-Specific Gotchas for Linux/Mac Developers
 
 **Coming from Linux or Mac?** Here are the key differences you need to know:
 
-### 📁 File Paths
+### File Paths
 
 - **Windows uses backslashes:** `C:\Users\username\Documents` (not `/home/username/Documents`)
 - **PowerShell accepts both:** `C:\Users\username` and `C:/Users/username` both work
 - **Use forward slashes in URLs:** `http://localhost:3000` (not `http://localhost:3000\`)
 
-### 🔧 Environment Variables
+### Environment Variables
 
 - **PowerShell syntax:** `$env:VARIABLE_NAME = "value"`
 - **Command Prompt syntax:** `set VARIABLE_NAME=value`
 - **System-wide:** Use Windows Settings → System → Environment Variables (not `~/.bashrc`)
 
-### 📝 Line Endings
+### Line Endings
 
 - **Windows uses CRLF:** `\r\n` (Carriage Return + Line Feed)
 - **Linux/Mac use LF:** `\n` (Line Feed only)
 - **Git handles this automatically** - don't worry about it
 
-### 🔤 Case Sensitivity
+### Case Sensitivity
 
 - **Windows is case-insensitive:** `MyFile.txt` and `myfile.txt` are the same
 - **Linux/Mac are case-sensitive:** `MyFile.txt` and `myfile.txt` are different
 - **Be careful with URLs:** `localhost:3000` ≠ `localhost:3000` (if you have typos)
 
-### 🔐 Permission Model
+### Permission Model
 
 - **Windows uses UAC:** User Account Control (not `sudo`)
 - **Run as Administrator:** Right-click → "Run as administrator"
 - **PowerShell execution policy:** May need to change for running scripts
 
-### 🛠️ Package Managers
+### Package Managers
 
 - **winget** - Microsoft's built-in package manager (like `apt`/`yum`)
 - **Chocolatey** - Third-party package manager (like `brew`)
 - **Scoop** - Alternative package manager with Unix-like commands
 
-### 💻 PowerShell vs Bash
+### PowerShell vs Bash
 
 - **Use `Get-ChildItem`** instead of `ls` (or create aliases)
 - **Use `Select-String`** instead of `grep` (or create aliases)
@@ -2073,20 +2073,20 @@ Works great with native Windows or WSL. Configure interpreters:
   Set-Alias -Name grep -Value Select-String
   ```
 
-### 🌐 Network and Ports
+### Network and Ports
 
 - **Use `netstat -ano`** instead of `lsof -i`
 - **Kill processes:** `taskkill /PID <PID> /F` (not `kill -9 <PID>`)
 - **Check ports:** `netstat -ano | findstr :8000`
 
-### 📂 File Operations
+### File Operations
 
 - **Copy files:** `Copy-Item` or `cp` (PowerShell has both)
 - **Move files:** `Move-Item` or `mv`
 - **Delete files:** `Remove-Item` or `rm`
 - **Create directories:** `New-Item -ItemType Directory` or `mkdir`
 
-### 🔍 Common Issues
+### Common Issues
 
 - **Antivirus blocking:** Add project folder to exclusions
 - **Long path names:** Enable long path support in Windows
@@ -2098,7 +2098,7 @@ Works great with native Windows or WSL. Configure interpreters:
 ## Recommendations by User Type
 
 Already covered in more depth above ([Ultra-Quick Start](#ultra-quick-start),
-[Option 2: WSL](#option-2-wsl-windows-subsystem-for-linux--recommended-for-developers)'s
+[Option 2: WSL](#option-2-wsl-windows-subsystem-for-linux-recommended-for-developers)'s
 "Perfect for you if" section) - here's the short version:
 
 | If you are...                 | Choose         | Because                                                        |
@@ -2115,26 +2115,26 @@ run the same codebase.
 
 After setup, verify everything works:
 
-### ✅ Basic Functionality
+### Basic Functionality
 
 - [ ] App loads at **<http://localhost:3000>** (development mode)
 - [ ] Can login with test account: `sarah.johnson@testbook.com` / `Sarah2024!`
 - [ ] Can create a post
 - [ ] Can view other users' posts
 
-### ✅ Backend Testing
+### Backend Testing
 
 - [ ] Backend tests run: `cd backend && pytest -v`
 - [ ] See 203 tests pass
 - [ ] No database errors
 
-### ✅ Frontend Testing
+### Frontend Testing
 
 - [ ] Frontend tests run: `cd frontend && npm test`
 - [ ] All tests pass
 - [ ] No console errors in browser
 
-### ✅ E2E Testing (Required)
+### E2E Testing (Required)
 
 - [ ] E2E tests run: `cd tests && npm test`
 - [ ] Browser opens and tests execute
@@ -2151,8 +2151,8 @@ Once your environment is running:
 
 Still stuck on setup? See [Getting Help](#getting-help) above.
 
-**Happy testing!** 🚀
+**Happy testing!**
 
 ---
 
-[↑ Back to Top](#windows-setup-guide) | [📋 Table of Contents](#table-of-contents)
+[↑ Back to Top](#windows-setup-guide) | [Table of Contents](#table-of-contents)

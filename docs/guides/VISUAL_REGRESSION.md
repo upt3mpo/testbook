@@ -1,4 +1,4 @@
-# 📸 Visual Regression Testing
+# Visual Regression Testing
 
 Visual regression tests catch changes that behavioral tests can't: a button
 that still works correctly but has drifted three pixels to the left, a CSS

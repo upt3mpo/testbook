@@ -1,4 +1,4 @@
-# 🐍 Playwright E2E Tests (Python)
+# Playwright E2E Tests (Python)
 
 **End-to-end testing with Playwright Python**
 
@@ -6,7 +6,7 @@ This directory contains E2E tests written in Python using Playwright, mirroring 
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### 1. Install Dependencies
 
@@ -69,7 +69,7 @@ $env:HEADLESS="false"; $env:SLOW_MO="1000"; pytest -v
 
 ---
 
-## 📁 Directory Structure
+## Directory Structure
 
 ```text
 tests/e2e-python/
@@ -92,7 +92,7 @@ tests/e2e-python/
 
 ---
 
-## 🎯 Test Organization
+## Test Organization
 
 ### Pytest Markers
 
@@ -120,11 +120,11 @@ pytest -m "not slow" -v
 - **test_auth.py** - Registration, login, logout, protected routes
 - **test_posts.py** - Creating, viewing, deleting posts
 - **test_users.py** - Following, profiles, user interactions
-- **examples/** - 🆕 Advanced pattern examples from Lab 4B
+- **examples/** - Advanced pattern examples from Lab 4B
 
 ---
 
-## 🆕 Advanced Patterns (Lab 4B)
+## Advanced Patterns (Lab 4B)
 
 ### Page Object Model
 
@@ -163,7 +163,7 @@ def test_api_setup_ui_verify(page, login_as, api_url):
 
 ---
 
-## 🔧 Configuration
+## Configuration
 
 ### Environment Variables
 
@@ -219,7 +219,7 @@ pytest -v
 
 ---
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 **Problem:** `Connection refused`
 **Solution:** Make sure backend and frontend are running (`./start-dev.sh`)
@@ -240,7 +240,7 @@ pytest -v
 
 ---
 
-## 🆚 Compare with JavaScript
+## Compare with JavaScript
 
 **See both implementations side-by-side:**
 
@@ -252,7 +252,7 @@ pytest -v
 
 ---
 
-## 🐍 Python-Specific Tests
+## Python-Specific Tests
 
 ### Example Tests (`examples/` directory)
 
@@ -318,4 +318,4 @@ See [Lab 16](../../learn/stage_4_performance_security/exercises/LAB_16_Accessibi
 
 ---
 
-**🎉 Happy testing with Playwright Python!**
+**Happy testing with Playwright Python!**

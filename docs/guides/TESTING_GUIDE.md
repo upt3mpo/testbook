@@ -1,4 +1,4 @@
-# 🧪 Testbook Testing Guide
+# Testbook Testing Guide
 
 Worked examples for testing Testbook with pytest, Vitest, and Playwright.
 
@@ -26,7 +26,7 @@ Worked examples for testing Testbook with pytest, Vitest, and Playwright.
 
 Testbook works with any testing tool! Here are popular options:
 
-### 🌐 UI Testing Tools
+### UI Testing Tools
 
 **[Playwright](https://playwright.dev/)** - Recommended for beginners
 
@@ -59,7 +59,7 @@ npm install cypress --save-dev
 - Time-travel debugging
 - Beautiful UI
 
-### 🔌 API Testing Tools
+### API Testing Tools
 
 **[Postman](https://www.postman.com/)** - Visual & powerful
 
@@ -81,7 +81,7 @@ given().auth().basic("user", "pass")
 pip install pytest requests
 ```
 
-### 📚 Learning Resources
+### Learning Resources
 
 - **Playwright Tutorial**: <https://playwright.dev/docs/intro>
 - **Selenium Guide**: <https://www.selenium.dev/documentation/>
@@ -137,13 +137,13 @@ requests.post('http://localhost:8000/api/dev/reset')
 
 ### Key Testing Features
 
-✅ **150+ data-testid attributes** - Every interactive element is easily selectable
-✅ **File upload support** - Test drag-and-drop and file picker functionality
-✅ **Toggle actions** - Reactions, reposts, follow/unfollow all toggleable
-✅ **Edit functionality** - Posts and profiles are editable
-✅ **Emoji reactions** - Visual feedback with 6 reaction types
-✅ **Cross-platform scripts** - Reset database on macOS/Linux/Windows
-✅ **Dev API endpoints** - Create custom test scenarios programmatically
+**150+ data-testid attributes** - Every interactive element is easily selectable
+**File upload support** - Test drag-and-drop and file picker functionality
+**Toggle actions** - Reactions, reposts, follow/unfollow all toggleable
+**Edit functionality** - Posts and profiles are editable
+**Emoji reactions** - Visual feedback with 6 reaction types
+**Cross-platform scripts** - Reset database on macOS/Linux/Windows
+**Dev API endpoints** - Create custom test scenarios programmatically
 
 ## Backend Testing
 
@@ -1403,7 +1403,7 @@ class TestbookAPI:
 
 ---
 
-<h2 id="more-resources">📚 More Resources</h2>
+<h2 id="more-resources">More Resources</h2>
 
 - **[README.md](../../README.md)** - Main documentation and project overview
 - **[TESTING_PATTERNS.md](../concepts/TESTING_PATTERNS.md)** - Testing dynamic content patterns
@@ -1413,4 +1413,4 @@ class TestbookAPI:
 
 ---
 
-**Happy Testing! 🧪**
+**Happy Testing!**

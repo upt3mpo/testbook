@@ -65,18 +65,18 @@
 - **4/6:** Good! Review the concepts you missed
 - **3/6 or less:** Consider reviewing the materials before job hunting
 
-## Congratulations! 🎉
+## Congratulations
 
 You've completed all 5 stages of Testbook! You now have:
 
-- ✅ **Unit Testing** skills with pytest and Vitest
-- ✅ **Integration Testing** skills with FastAPI and React
-- ✅ **E2E Testing** skills with Playwright
-- ✅ **Performance Testing** skills with k6
-- ✅ **Security Testing** skills with OWASP
-- ✅ **CI/CD** experience with GitHub Actions
-- ✅ **Portfolio** development skills
-- ✅ **Professional** testing practices
+- **Unit Testing** skills with pytest and Vitest
+- **Integration Testing** skills with FastAPI and React
+- **E2E Testing** skills with Playwright
+- **Performance Testing** skills with k6
+- **Security Testing** skills with OWASP
+- **CI/CD** experience with GitHub Actions
+- **Portfolio** development skills
+- **Professional** testing practices
 
 ## What's Next?
 
@@ -90,7 +90,7 @@ You've completed all 5 stages of Testbook! You now have:
 
 You've built a solid foundation in test automation. Now it's time to apply these skills in real projects and continue growing as a QA engineer.
 
-**Go build amazing things!** 🚀
+**Go build amazing things!**
 
 ---
 

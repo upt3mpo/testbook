@@ -121,7 +121,7 @@ make clean-all        # Deep clean (includes dependencies)
 
 ## Why Use Task Runners?
 
-### ❌ Without Task Runners
+### Without Task Runners
 
 ```bash
 # Have to remember multiple commands
@@ -144,7 +144,7 @@ TESTING=true pytest -v
 $env:TESTING='true'; pytest -v
 ```
 
-### ✅ With Task Runners
+### With Task Runners
 
 ```bash
 # One simple command
@@ -191,15 +191,15 @@ Use same commands locally and in CI pipelines.
 
 ### Use **Make** if
 
-- ✅ You're familiar with Make
-- ✅ You want maximum compatibility (Make is everywhere)
-- ✅ You don't want to install additional tools
+- You're familiar with Make
+- You want maximum compatibility (Make is everywhere)
+- You don't want to install additional tools
 
 ### Use **Just** if
 
-- ✅ You want modern, clean syntax
-- ✅ You prefer better error messages
-- ✅ You're okay installing one extra tool
+- You want modern, clean syntax
+- You prefer better error messages
+- You're okay installing one extra tool
 
 Both work identically - it's purely personal preference!
 

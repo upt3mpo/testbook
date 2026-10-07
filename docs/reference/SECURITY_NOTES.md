@@ -1,4 +1,4 @@
-# 🔒 Security Notes
+# Security Notes
 
 **Known tradeoffs in this application, and what a real deployment would do differently**
 

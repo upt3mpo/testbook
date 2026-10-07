@@ -1,10 +1,10 @@
-# 🔐 Security Tests
+# Security Tests
 
 Comprehensive security testing for Testbook API.
 
 ---
 
-## ⚠️ IMPORTANT: Why Some Tests May Fail
+## IMPORTANT: Why Some Tests May Fail
 
 **If you see security test failures, READ THIS FIRST!**
 
@@ -53,7 +53,7 @@ pytest tests/security/ -v
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Option 1: Use the Test Runner (Recommended)
 
@@ -88,7 +88,7 @@ pytest tests/security/ -v
 
 ---
 
-## 📊 Expected Results
+## Expected Results
 
 ### With the backend server running TESTING=true (Correct Setup)
 
@@ -105,23 +105,23 @@ the comment in `conftest.py` for the full reasoning.
 
 **Passing (18 tests):**
 
-- ✅ All authentication tests
-- ✅ All authorization tests
-- ✅ Input validation (SQL injection, XSS)
-- ✅ Data exposure prevention
-- ✅ Session management
-- ✅ Request size limits
+- All authentication tests
+- All authorization tests
+- Input validation (SQL injection, XSS)
+- Data exposure prevention
+- Session management
+- Request size limits
 
 **Skipped (11 tests):**
 
-- ⏭️ Account lockout (feature not implemented - future enhancement)
-- ⏭️ IP banning (feature not implemented - future enhancement)
-- ⏭️ Rate limit headers (optional feature, not implemented)
-- ⏭️ Login rate-limit test (skips when the server it's calling is in
+- Account lockout (feature not implemented - future enhancement)
+- IP banning (feature not implemented - future enhancement)
+- Rate limit headers (optional feature, not implemented)
+- Login rate-limit test (skips when the server it's calling is in
   TESTING mode, where the limit is raised to 1000/min - too high to
   trigger in a test)
-- ⏭️ Registration rate-limit test (same reasoning, 500/min)
-- ⏭️ Six OWASP-gap placeholders in `test_owasp_gaps.py` (always skipped by design, see [Coverage Against the OWASP Top 10](#coverage-against-the-owasp-top-10-2021) below)
+- Registration rate-limit test (same reasoning, 500/min)
+- Six OWASP-gap placeholders in `test_owasp_gaps.py` (always skipped by design, see [Coverage Against the OWASP Top 10](#coverage-against-the-owasp-top-10-2021) below)
 
 ### Against a server NOT running TESTING=true
 
@@ -139,7 +139,7 @@ verified directly rather than inferred.
 
 ---
 
-## 🎓 Understanding the Failures
+## Understanding the Failures
 
 ### Failure Type 1: Rate Limit Exceeded
 
@@ -196,7 +196,7 @@ AssertionError: Expected 401, got 403
 
 ---
 
-## 🔧 Troubleshooting
+## Troubleshooting
 
 ### Tests still failing even with TESTING=true?
 
@@ -227,7 +227,7 @@ pytest tests/security/ -v -n 4  # ❌ Will hit rate limits
 
 ---
 
-## 📚 Test Structure
+## Test Structure
 
 ```text
 tests/security/
@@ -252,9 +252,9 @@ tests/security/
 
 ---
 
-## 🎯 What These Tests Verify
+## What These Tests Verify
 
-### ✅ Implemented & Tested
+### Implemented & Tested
 
 1. **Authentication Security**
 
@@ -322,7 +322,7 @@ A06, A08, and A09 now have placeholder coverage instead of a bare "not covered":
 
 ---
 
-## 🎓 Educational Value
+## Educational Value
 
 ### Why These "Failures" Are Actually Good
 
@@ -338,26 +338,26 @@ A06, A08, and A09 now have placeholder coverage instead of a bare "not covered":
 
 ---
 
-## 🚀 Best Practices
+## Best Practices
 
 ### DO
 
-- ✅ Run with `TESTING=true` for full suite
-- ✅ Use provided `conftest.py` fixtures
-- ✅ Wait between test runs (60s) if rerunning
-- ✅ Run sequentially, not in parallel
-- ✅ Expect 18/23 real tests to pass, 5 skipped (plus 6 always-skipped OWASP-gap placeholders, 29 collected total)
+- Run with `TESTING=true` for full suite
+- Use provided `conftest.py` fixtures
+- Wait between test runs (60s) if rerunning
+- Run sequentially, not in parallel
+- Expect 18/23 real tests to pass, 5 skipped (plus 6 always-skipped OWASP-gap placeholders, 29 collected total)
 
 ### DON'T
 
-- ❌ Run without TESTING mode (will hit real rate limits)
-- ❌ Remove the 500ms spacing fixture
-- ❌ Run tests in parallel (-n flag)
-- ❌ Expect 100% pass rate (test infrastructure is hard!)
+- Run without TESTING mode (will hit real rate limits)
+- Remove the 500ms spacing fixture
+- Run tests in parallel (-n flag)
+- Expect 100% pass rate (test infrastructure is hard!)
 
 ---
 
-## 💡 Pro Tips
+## Pro Tips
 
 **Tip 1:** Check if test is rate limited
 
@@ -385,7 +385,7 @@ pytest tests/security/test_rate_limiting.py::TestRateLimiting::test_login_attemp
 
 ---
 
-## 🔗 Related Documentation
+## Related Documentation
 
 - [LAB_15: Rate Limiting in Production](../../learn/stage_4_performance_security/exercises/LAB_15_Rate_Limiting_Production_Python.md) - Complete lesson on this topic
 - [backend/main.py](../../backend/main.py) - Rate limiting implementation
@@ -394,26 +394,26 @@ pytest tests/security/test_rate_limiting.py::TestRateLimiting::test_login_attemp
 
 ---
 
-## 🎉 Summary
+## Summary
 
 **These security tests are GOOD, not broken!**
 
-- ✅ All security features are implemented
-- ✅ Tests prove features work (by hitting limits!)
-- ✅ The 5 skips are real, explained gaps (unimplemented features, or a
+- All security features are implemented
+- Tests prove features work (by hitting limits!)
+- The 5 skips are real, explained gaps (unimplemented features, or a
   test that only makes sense against a production-mode server), not
   flakiness
-- ✅ This is realistic and educational
+- This is realistic and educational
 
-**Pass rate:** 18/23 real tests (78%), plus 6 intentionally-skipped OWASP-gap placeholders ✅
-**Security:** Fully implemented ✅
-**Teaching value:** Excellent ✅
+**Pass rate:** 18/23 real tests (78%), plus 6 intentionally-skipped OWASP-gap placeholders
+**Security:** Fully implemented
+**Teaching value:** Excellent
 
-**When tests fail, it's often because security works TOO well!** That's a good problem to have. 😄
+**When tests fail, it's often because security works TOO well!** That's a good problem to have.
 
 ---
 
-## 🆘 Still Having Issues?
+## Still Having Issues?
 
 **See:**
 

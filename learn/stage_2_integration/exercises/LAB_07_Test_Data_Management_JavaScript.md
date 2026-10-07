@@ -1,17 +1,17 @@
-# 📦 Lab 7: Test Data Management (JavaScript)
+# Lab 7: Test Data Management (JavaScript)
 
 **Estimated Time:** 45 minutes<br>
 **Difficulty:** Intermediate<br>
-**Language:** 🟨 JavaScript<br>
+**Language:** JavaScript<br>
 **Prerequisites:** Lab 6 completed
 
-**💡 Need Python instead?** Try [Lab 7: Test Data Management (Python)](LAB_07_Test_Data_Management_Python.md)!
+**Need Python instead?** Try [Lab 7: Test Data Management (Python)](LAB_07_Test_Data_Management_Python.md)!
 
 **What This Adds:** Master test data management with builder patterns and factories - learn to create reusable, maintainable test data that eliminates duplication and makes tests more reliable.
 
 ---
 
-<h2 id="what-youll-learn">🎯 What You'll Learn</h2>
+<h2 id="what-youll-learn">What You'll Learn</h2>
 
 By the end of this lab, you will:
 
@@ -23,7 +23,7 @@ By the end of this lab, you will:
 
 ---
 
-## 💡 Why Test Data Management Matters
+## Why Test Data Management Matters
 
 **The Problem:**
 
@@ -85,7 +85,7 @@ describe("User Tests", () => {
 
 ---
 
-<h2 id="step-by-step-instructions">📋 Step-by-Step Instructions</h2>
+<h2 id="step-by-step-instructions">Step-by-Step Instructions</h2>
 
 ### Step 1: Create a Test Data Builder (15 minutes)
 
@@ -202,7 +202,7 @@ cd frontend
 npm test test_data_builders.test.js
 ```
 
-✅ **Checkpoint:** All builder tests pass
+**Checkpoint:** All builder tests pass
 
 ---
 
@@ -301,7 +301,7 @@ describe("PostBuilder", () => {
 npm test test_data_builders.test.js
 ```
 
-✅ **Checkpoint:** Post builder tests pass
+**Checkpoint:** Post builder tests pass
 
 ---
 
@@ -385,7 +385,7 @@ describe("Helper Functions", () => {
 npm test test_data_builders.test.js
 ```
 
-✅ **Checkpoint:** Helper function tests pass
+**Checkpoint:** Helper function tests pass
 
 ---
 
@@ -515,11 +515,11 @@ describe("PostList Component with Builders", () => {
 npm test PostList.test.jsx
 ```
 
-✅ **Checkpoint:** Component tests with builders pass
+**Checkpoint:** Component tests with builders pass
 
 ---
 
-## 💪 Your Challenge: Comment Builder
+## Your Challenge: Comment Builder
 
 **Create a CommentBuilder:**
 
@@ -582,7 +582,7 @@ describe("Your CommentBuilder Challenge", () => {
 
 ---
 
-<h2 id="best-practices-for-test-data">🎓 Best Practices for Test Data</h2>
+<h2 id="best-practices-for-test-data">Best Practices for Test Data</h2>
 
 ### 1. Make Data Creation Easy
 
@@ -654,7 +654,7 @@ it("test 2", () => {
 
 ---
 
-<h2 id="when-to-use-each-approach">📊 When to Use Each Approach</h2>
+<h2 id="when-to-use-each-approach">When to Use Each Approach</h2>
 
 | Approach              | Use When                   | Example                        |
 | --------------------- | -------------------------- | ------------------------------ |
@@ -664,7 +664,7 @@ it("test 2", () => {
 
 ---
 
-## 🚨 Common Mistakes
+## Common Mistakes
 
 ### Mistake 1: Creating Too Much Data
 
@@ -717,7 +717,7 @@ it("should test user", () => {
 
 ---
 
-<h2 id="completion-checklist">✅ Completion Checklist</h2>
+<h2 id="completion-checklist">Completion Checklist</h2>
 
 - [ ] Created UserBuilder and PostBuilder
 - [ ] Created helper functions
@@ -727,7 +727,7 @@ it("should test user", () => {
 
 ---
 
-<h2 id="key-takeaways">🎯 Key Takeaways</h2>
+<h2 id="key-takeaways">Key Takeaways</h2>
 
 1. **Builders make test data easy** - Fluent API with `.with*()` methods
 2. **Factory functions create scenarios** - Complex data setups
@@ -737,7 +737,7 @@ it("should test user", () => {
 
 ---
 
-<h2 id="next-steps">📚 Next Steps</h2>
+<h2 id="next-steps">Next Steps</h2>
 
 **Apply your skills:**
 
@@ -748,6 +748,6 @@ it("should test user", () => {
 
 ---
 
-**🎉 Congratulations!** You can now manage test data like a professional!
+**Congratulations!** You can now manage test data like a professional!
 
 **Next Lab:** [Lab 8: Contract Testing Foundations (JavaScript)](LAB_08_Contract_Testing_Foundations_JavaScript.md)

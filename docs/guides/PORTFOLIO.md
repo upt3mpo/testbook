@@ -1,22 +1,22 @@
-# 💼 Building Your Testing Portfolio with Testbook
+# Building Your Testing Portfolio with Testbook
 
 **Turn your Testbook learning into job-ready portfolio content**
 
 ---
 
-<h2 id="why-this-matters">🎯 Why This Matters</h2>
+<h2 id="why-this-matters">Why This Matters</h2>
 
 Testing experience is **highly valued** in the software industry, but it's often hard to demonstrate without professional work history. Testbook gives you:
 
-✅ **495 real tests** you can discuss in interviews
-✅ **Multiple testing types** (unit, integration, E2E, performance, security)
-✅ **Production-quality code** that demonstrates professional practices
-✅ **Measurable results** (coverage %, test counts, CI/CD)
-✅ **Full-stack experience** (Python backend + JavaScript frontend)
+**495 real tests** you can discuss in interviews
+**Multiple testing types** (unit, integration, E2E, performance, security)
+**Production-quality code** that demonstrates professional practices
+**Measurable results** (coverage %, test counts, CI/CD)
+**Full-stack experience** (Python backend + JavaScript frontend)
 
 ---
 
-<h2 id="quick-checklist">📋 Quick Checklist</h2>
+<h2 id="quick-checklist">Quick Checklist</h2>
 
 - [ ] Fork Testbook to your GitHub account
 - [ ] Customize the README with your name
@@ -29,7 +29,7 @@ Testing experience is **highly valued** in the software industry, but it's often
 
 ---
 
-## 🔱 Step 1: Fork and Personalize
+## Step 1: Fork and Personalize
 
 ### Fork the Repository
 
@@ -84,7 +84,7 @@ _Original project: https://github.com/upt3mpo/testbook_
 
 ---
 
-<h2 id="step-2-add-your-own-contribution">🧪 Step 2: Add Your Own Contribution</h2>
+<h2 id="step-2-add-your-own-contribution">Step 2: Add Your Own Contribution</h2>
 
 **Don't just fork — contribute something unique!**
 
@@ -203,7 +203,7 @@ I built a complete test suite for [feature description].
 
 ---
 
-<h2 id="step-3-capture-evidence">📸 Step 3: Capture Evidence</h2>
+<h2 id="step-3-capture-evidence">Step 3: Capture Evidence</h2>
 
 ### Screenshot 1: Test Suite Passing
 
@@ -214,7 +214,7 @@ pytest -v
 
 Take a screenshot showing:
 
-- ✅ All tests passing
+- All tests passing
 - Test count (203)
 - Coverage percentage
 
@@ -253,7 +253,7 @@ Record a GIF or take screenshots of:
 
 Once you push to GitHub, your CI will run. Screenshot the Actions tab showing:
 
-- ✅ All jobs passing
+- All jobs passing
 - Backend tests
 - Frontend tests
 - E2E tests
@@ -262,7 +262,7 @@ Once you push to GitHub, your CI will run. Screenshot the Actions tab showing:
 
 ---
 
-## 📝 Step 4: Resume & LinkedIn
+## Step 4: Resume & LinkedIn
 
 ### Resume Bullets
 
@@ -389,7 +389,7 @@ Skills: Test Automation • Python • JavaScript • pytest • Playwright • 
 
 ---
 
-<h2 id="step-5-interview-preparation">🗣️ Step 5: Interview Preparation</h2>
+<h2 id="step-5-interview-preparation">Step 5: Interview Preparation</h2>
 
 ### Talking Points by Test Type
 
@@ -443,7 +443,7 @@ Skills: Test Automation • Python • JavaScript • pytest • Playwright • 
 
 ---
 
-<h2 id="step-6-github-repository-polish">🌐 Step 6: GitHub Repository Polish</h2>
+<h2 id="step-6-github-repository-polish">Step 6: GitHub Repository Polish</h2>
 
 ### Add a Pinned Repository
 
@@ -474,16 +474,16 @@ In your repo settings, add topics:
 
 ### Keep README Professional
 
-- ✅ Clear, concise sections
-- ✅ Badge showing tests passing
-- ✅ Your contribution section
-- ✅ Professional tone
-- ❌ Don't over-explain obvious things
-- ❌ Keep it scannable (use bullets)
+- Clear, concise sections
+- Badge showing tests passing
+- Your contribution section
+- Professional tone
+- Don't over-explain obvious things
+- Keep it scannable (use bullets)
 
 ---
 
-<h2 id="step-7-practice-your-pitch">🎤 Step 7: Practice Your Pitch</h2>
+<h2 id="step-7-practice-your-pitch">Step 7: Practice Your Pitch</h2>
 
 ### 30-Second Elevator Pitch
 
@@ -507,7 +507,7 @@ In your repo settings, add topics:
 
 ---
 
-<h2 id="step-8-quantify-your-impact">📊 Step 8: Quantify Your Impact</h2>
+<h2 id="step-8-quantify-your-impact">Step 8: Quantify Your Impact</h2>
 
 ### Before/After Metrics
 
@@ -537,7 +537,7 @@ After implementing the GitHub Actions pipeline:
 
 ---
 
-## 🎁 Bonus: Create a Video Walkthrough
+## Bonus: Create a Video Walkthrough
 
 **5-minute video showing:**
 
@@ -574,7 +574,7 @@ After implementing the GitHub Actions pipeline:
 
 ---
 
-## ✅ Final Checklist
+## Final Checklist
 
 **Repository:**
 
@@ -611,21 +611,21 @@ After implementing the GitHub Actions pipeline:
 
 ---
 
-## 🎯 Remember
+## Remember
 
 **Recruiters look for:**
 
-- ✅ Evidence of hands-on experience
-- ✅ Understanding of testing principles
-- ✅ Ability to articulate technical concepts
-- ✅ Initiative (adding your own contribution)
-- ✅ Professional presentation
+- Evidence of hands-on experience
+- Understanding of testing principles
+- Ability to articulate technical concepts
+- Initiative (adding your own contribution)
+- Professional presentation
 
 **Testbook gives you all of this!**
 
 ---
 
-## 📚 Additional Resources
+## Additional Resources
 
 - [QA Career Resources](https://www.ministryoftesting.com/topics/career)
 - [QA Interview Questions](https://www.softwaretestinghelp.com/qa-interview-questions/)
@@ -633,6 +633,6 @@ After implementing the GitHub Actions pipeline:
 
 ---
 
-**Good luck with your job search!** 🚀
+**Good luck with your job search!**
 
 _Questions? Open an issue on the main Testbook repo or join the discussions._

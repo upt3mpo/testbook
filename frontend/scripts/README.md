@@ -1,4 +1,4 @@
-# 📜 Frontend Scripts
+# Frontend Scripts
 
 **Utility scripts for development and testing**
 

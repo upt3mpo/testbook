@@ -1,10 +1,10 @@
-# 🎯 Testbook Testing Cheat Sheet
+# Testbook Testing Cheat Sheet
 
 Quick reference for testers and automation engineers.
 
-> **📖 Testing Dynamic Content?** See [TESTING_PATTERNS.md](../concepts/TESTING_PATTERNS.md) for selecting posts/comments without hardcoded IDs!
+> **Testing Dynamic Content?** See [TESTING_PATTERNS.md](../concepts/TESTING_PATTERNS.md) for selecting posts/comments without hardcoded IDs!
 
-## 🧰 Recommended Testing Tools
+## Recommended Testing Tools
 
 **New to testing?** Try these beginner-friendly tools:
 
@@ -14,7 +14,7 @@ Quick reference for testers and automation engineers.
 
 **More options**: See [README.md](../../README.md#tech-stack) for the full tech stack
 
-<h2 id="quick-start">🚀 Quick Start</h2>
+<h2 id="quick-start">Quick Start</h2>
 
 ```bash
 # Start app (choose one)
@@ -34,7 +34,7 @@ reset-database.bat    # Windows
 - Backend API: <http://localhost:8000/api>
 - API Docs: <http://localhost:8000/docs>
 
-## 🔐 Test Accounts
+## Test Accounts
 
 | Email | Password | Use Case |
 | ----- | -------- | -------- |
@@ -43,7 +43,7 @@ reset-database.bat    # Windows
 | <emma.davis@testbook.com> | EmmaLovesPhotos | Photographer |
 | <newuser@testbook.com> | NewUser123! | Clean account |
 
-<h2 id="common-test-ids">🎯 Common Test IDs</h2>
+<h2 id="common-test-ids">Common Test IDs</h2>
 
 ### For Dynamic Content (When You Don't Know the ID)
 
@@ -139,7 +139,7 @@ following-list                 # Following container
 following-{id}-unfollow-button # Unfollow user
 ```
 
-## 📡 Key API Endpoints
+## Key API Endpoints
 
 ### Auth
 
@@ -198,7 +198,7 @@ GET  /api/dev/users        # Get all users + passwords
 POST /api/dev/create-post  # Create test post
 ```
 
-<h2 id="quick-test-examples">🧪 Quick Test Examples</h2>
+<h2 id="quick-test-examples">Quick Test Examples</h2>
 
 ### Playwright
 
@@ -292,7 +292,7 @@ describe("Testbook Tests", () => {
 });
 ```
 
-<h2 id="reset-commands">🔄 Reset Commands</h2>
+<h2 id="reset-commands">Reset Commands</h2>
 
 | Platform    | Command                                            |
 | ----------- | -------------------------------------------------- |
@@ -301,7 +301,7 @@ describe("Testbook Tests", () => {
 | Windows PS  | `.\reset-database.ps1`                             |
 | API         | `curl -X POST http://localhost:8000/api/dev/reset` |
 
-## 🔧 Backend Testing (PyTest)
+## Backend Testing (PyTest)
 
 ### Setup
 
@@ -343,32 +343,32 @@ def test_login():
 
 **Full backend testing guide**: [TESTING_GUIDE.md#backend-testing](../guides/TESTING_GUIDE.md#backend-testing)
 
-## 📊 What Makes This Great for Testing
+## What Makes This Great for Testing
 
-✅ **138+ unique test IDs** - Every element selectable
-✅ **RESTful API** - All features accessible via HTTP
-✅ **File uploads** - Test drag-and-drop and file picker uploads
-✅ **Toggle actions** - Test state changes (react, repost, follow)
-✅ **Emoji reactions** - Test visual feedback
-✅ **Edit functionality** - Test inline editing
-✅ **Real-time updates** - Test feed refreshes
-✅ **Authentication** - Test JWT flows
-✅ **Authorization** - Test permission checks
-✅ **Relationships** - Test complex user interactions
-✅ **Easy reset** - Clean slate anytime
-✅ **Pre-seeded data** - Consistent test scenarios
-✅ **Cross-platform** - Test on any OS
+**138+ unique test IDs** - Every element selectable
+**RESTful API** - All features accessible via HTTP
+**File uploads** - Test drag-and-drop and file picker uploads
+**Toggle actions** - Test state changes (react, repost, follow)
+**Emoji reactions** - Test visual feedback
+**Edit functionality** - Test inline editing
+**Real-time updates** - Test feed refreshes
+**Authentication** - Test JWT flows
+**Authorization** - Test permission checks
+**Relationships** - Test complex user interactions
+**Easy reset** - Clean slate anytime
+**Pre-seeded data** - Consistent test scenarios
+**Cross-platform** - Test on any OS
 
-## 🐛 Debugging Tips
+## Debugging Tips
 
 1. **Check API docs**: <http://localhost:8000/docs>
 2. **View network tab**: Monitor API calls in browser
 3. **Check backend logs**: See request/response in terminal
 4. **Reset database**: Clean state if data gets messy
 
-## 📖 More Resources
+## More Resources
 
-- **[TESTING_PATTERNS.md](../concepts/TESTING_PATTERNS.md)** - ⭐ How to handle dynamic content (posts, comments, etc.)
+- **[TESTING_PATTERNS.md](../concepts/TESTING_PATTERNS.md)** - How to handle dynamic content (posts, comments, etc.)
 - **[TESTING_GUIDE.md](../guides/TESTING_GUIDE.md)** - Detailed examples (UI, API, Backend)
   - [Backend Testing Section](../guides/TESTING_GUIDE.md#backend-testing) - Unit & integration tests
 - **[TESTING_FEATURES.md](TESTING_FEATURES.md)** - Comprehensive testing capabilities
@@ -377,7 +377,7 @@ def test_login():
 
 ---
 
-## ⚠️ CRITICAL: Essential Patterns (From Real Testbook Fixes)
+## CRITICAL: Essential Patterns (From Real Testbook Fixes)
 
 ### 1. Always Handle Browser Dialogs
 
@@ -458,6 +458,6 @@ for (let i = 0; i < 3 && !clicked; i++) {
 
 ---
 
-**Quick tip**: Read [TESTING_PATTERNS.md](../concepts/TESTING_PATTERNS.md) first if you're testing dynamic content! 🔖
+**Quick tip**: Read [TESTING_PATTERNS.md](../concepts/TESTING_PATTERNS.md) first if you're testing dynamic content!
 
 **See also**: [docs/guides/FLAKY_TESTS_GUIDE.md](../guides/FLAKY_TESTS_GUIDE.md) for detailed examples and fixes

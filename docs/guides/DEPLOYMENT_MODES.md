@@ -1,12 +1,12 @@
-# 🖥️ Development vs Production Mode
+# Development vs Production Mode
 
 **Quick Answer:** Use `start-dev.sh` (or `start-dev.bat` on Windows) for learning and testing!
 
-## 🎯 Two Modes, Two Scripts
+## Two Modes, Two Scripts
 
 Testbook has two different deployment modes, each with its own start script:
 
-### 1. Development Mode (For Learning) ✅ **← USE THIS**
+### 1. Development Mode (For Learning) **← USE THIS**
 
 **Scripts:**
 
@@ -32,15 +32,15 @@ Testbook has two different deployment modes, each with its own start script:
 
 **Use for:**
 
-- ✅ All labs and tutorials
-- ✅ Running tests (all tests expect these ports)
-- ✅ Learning and experimentation
-- ✅ Development work
-- ✅ Debugging
+- All labs and tutorials
+- Running tests (all tests expect these ports)
+- Learning and experimentation
+- Development work
+- Debugging
 
 ---
 
-### 2. Production Mode (For Deployment) ⚠️
+### 2. Production Mode (For Deployment)
 
 **Scripts:**
 
@@ -60,9 +60,9 @@ Testbook has two different deployment modes, each with its own start script:
 
 **Use for:**
 
-- ⚠️ Testing production deployment
-- ⚠️ Docker practice
-- ⚠️ NOT recommended for learning
+- Testing production deployment
+- Docker practice
+- NOT recommended for learning
 
 **Why NOT for learning:**
 
@@ -74,7 +74,7 @@ Testbook has two different deployment modes, each with its own start script:
 
 ---
 
-## 📊 Side-by-Side Comparison
+## Side-by-Side Comparison
 
 | Feature                | Development Mode (`start-dev`) | Production Mode (`start`) |
 | ---------------------- | ------------------------------ | ------------------------- |
@@ -89,7 +89,7 @@ Testbook has two different deployment modes, each with its own start script:
 
 ---
 
-## 🎓 For Students
+## For Students
 
 **Always use development mode:**
 
@@ -107,7 +107,7 @@ start-dev.bat
 
 ---
 
-## 🏗️ How Development Mode Works
+## How Development Mode Works
 
 ```text
 start-dev.sh runs:
@@ -143,7 +143,7 @@ start-dev.sh runs:
 
 ---
 
-## 🐳 How Production Mode Works
+## How Production Mode Works
 
 ```text
 start.sh runs:
@@ -162,7 +162,7 @@ start.sh runs:
 
 ---
 
-## 🔧 Troubleshooting
+## Troubleshooting
 
 ### "I ran start-dev.sh but can't see the app"
 
@@ -193,7 +193,7 @@ start.sh runs:
 
 ---
 
-## ✅ Verification Checklist
+## Verification Checklist
 
 After starting in development mode, verify:
 
@@ -205,7 +205,7 @@ After starting in development mode, verify:
 
 ---
 
-## 🎯 Quick Decision Tree
+## Quick Decision Tree
 
 ```text
 Are you learning/testing?
@@ -217,7 +217,7 @@ Are you learning/testing?
 
 ---
 
-## 📚 Related Documentation
+## Related Documentation
 
 - [Quick Start Guide](QUICK_START.md) - Getting started
 - [Running Tests Guide](RUNNING_TESTS.md) - Running all tests
@@ -225,4 +225,4 @@ Are you learning/testing?
 
 ---
 
-**🎓 Remember:** When in doubt, use development mode (`start-dev.sh`)!
+**Remember:** When in doubt, use development mode (`start-dev.sh`)!

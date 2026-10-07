@@ -1,17 +1,17 @@
-# 🧪 Lab 2: Testing Real Functions (JavaScript)
+# Lab 2: Testing Real Functions (JavaScript)
 
 **Estimated Time:** 75 minutes (45 minutes of core steps and a 30 minute accessibility step)<br>
 **Difficulty:** Beginner<br>
-**Language:** 🟨 JavaScript<br>
+**Language:** JavaScript<br>
 **Prerequisites:** Lab 1 completed
 
-**💡 Need Python instead?** Try [Lab 2: Testing Real Functions (Python)](LAB_02_Testing_Real_Functions_Python.md)!
+**Need Python instead?** Try [Lab 2: Testing Real Functions (Python)](LAB_02_Testing_Real_Functions_Python.md)!
 
 **What This Adds:** Move from testing simple examples to testing real production code - learn to test actual functions that handle API calls, component interactions, and other critical frontend logic.
 
 ---
 
-<h2 id="what-youll-learn">🎯 What You'll Learn</h2>
+<h2 id="what-youll-learn">What You'll Learn</h2>
 
 - Test real Testbook frontend functions
 - Test utility functions and helpers
@@ -22,7 +22,7 @@
 
 ---
 
-<h2 id="step-by-step-instructions">📋 Step-by-Step Instructions</h2>
+<h2 id="step-by-step-instructions">Step-by-Step Instructions</h2>
 
 ### Step 1: Explore Real Functions (10 minutes)
 
@@ -41,7 +41,7 @@ export const authAPI = {
 
 **Understand:** These are REAL functions used in Testbook frontend!
 
-✅ **Checkpoint:** You understand what these functions do
+**Checkpoint:** You understand what these functions do
 
 ### Step 2: Look at Existing Tests (10 minutes)
 
@@ -84,7 +84,7 @@ it("calls onPostCreated when post is submitted successfully", async () => {
 - Tests what the function actually does
 - Uses `vi.fn()` for mocking
 
-✅ **Checkpoint:** You understand the test structure
+**Checkpoint:** You understand the test structure
 
 ### Step 3: Run the Test (5 minutes)
 
@@ -107,7 +107,7 @@ npm test CreatePost.test.jsx
 npm test -- --run
 ```
 
-✅ **Checkpoint:** All component tests pass
+**Checkpoint:** All component tests pass
 
 ### Step 4: Write Your Own API Test (15 minutes)
 
@@ -204,7 +204,7 @@ describe("API Functions", () => {
 npm test api.test.js
 ```
 
-✅ **Checkpoint:** Your test passes!
+**Checkpoint:** Your test passes!
 
 ### Step 5: Test Utility Functions (15 minutes)
 
@@ -309,7 +309,7 @@ describe("Utility Functions", () => {
 npm test utils.test.js
 ```
 
-✅ **Checkpoint:** Your utility tests pass!
+**Checkpoint:** Your utility tests pass!
 
 ---
 
@@ -388,7 +388,7 @@ cd frontend
 npx vitest --run src/tests/unit/contrast_lab.test.js
 ```
 
-✅ **Checkpoint:** all your tests pass.
+**Checkpoint:** all your tests pass.
 
 **Now compare** with `frontend/src/tests/unit/contrast.test.js`. Did you cover something it
 does not, or miss something it covers?
@@ -433,7 +433,7 @@ fix. **Now undo your change:**
 git checkout src/index.css
 ```
 
-✅ **Checkpoint:** the test failed with the contrast message, and passes again after you
+**Checkpoint:** the test failed with the contrast message, and passes again after you
 reverted.
 
 **What you just saw.** This is a *unit test*, layer 4 on the
@@ -442,18 +442,18 @@ milliseconds, needs no browser, and would have caught a bug that a full browser 
 months. Cheap tests that apply a pure function to your real design are some of the best value in
 accessibility testing.
 
-<h2 id="what-you-learned">🎓 What You Learned</h2>
+<h2 id="what-you-learned">What You Learned</h2>
 
-- ✅ How to test real application functions
-- ✅ How to mock external dependencies with `vi.mock()`
-- ✅ How to test async functions with `async/await`
-- ✅ How to test error handling
-- ✅ How to navigate existing test code
-- ✅ How to test utility functions
+- How to test real application functions
+- How to mock external dependencies with `vi.mock()`
+- How to test async functions with `async/await`
+- How to test error handling
+- How to navigate existing test code
+- How to test utility functions
 
 ---
 
-## 💪 Practice Exercises
+## Practice Exercises
 
 Try these on your own:
 
@@ -484,7 +484,7 @@ Find and run tests for:
 
 ---
 
-<h2 id="troubleshooting">🐛 Troubleshooting</h2>
+<h2 id="troubleshooting">Troubleshooting</h2>
 
 **Problem:** `ModuleNotFoundError: Cannot resolve module`
 **Solution:** Make sure you're in the `frontend/` directory and using correct import paths
@@ -497,7 +497,7 @@ Find and run tests for:
 
 ---
 
-<h2 id="lab-completion-checklist">✅ Lab Completion Checklist</h2>
+<h2 id="lab-completion-checklist">Lab Completion Checklist</h2>
 
 Before moving to Lab 3, ensure you:
 
@@ -521,6 +521,6 @@ Answer these to solidify your learning:
 
 ---
 
-**🎉 Great job! You're testing real frontend code!**
+**Great job! You're testing real frontend code!**
 
 **Next Lab:** [Lab 2.5: Understanding Fixtures (JavaScript)](LAB_03_Fixtures_And_Test_Data_JavaScript.md)

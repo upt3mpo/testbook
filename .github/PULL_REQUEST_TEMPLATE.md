@@ -1,23 +1,23 @@
 # Pull Request
 
-## 📋 Description
+## Description
 
 <!-- Provide a brief description of what this PR does -->
 
-## 🎯 Type of Change
+## Type of Change
 
 <!-- Check all that apply -->
 
-- [ ] 🐛 Bug fix (non-breaking change which fixes an issue)
-- [ ] ✨ New feature (non-breaking change which adds functionality)
-- [ ] 💥 Breaking change (fix or feature that would cause existing functionality to not work as expected)
-- [ ] 📚 Documentation update
-- [ ] 🧪 Test improvement
-- [ ] 🎓 Lab content (new lab or lab improvement)
-- [ ] 🎨 Code style/refactoring (no functional changes)
-- [ ] ⚡ Performance improvement
+- [ ] Bug fix (non-breaking change which fixes an issue)
+- [ ] New feature (non-breaking change which adds functionality)
+- [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
+- [ ] Documentation update
+- [ ] Test improvement
+- [ ] Lab content (new lab or lab improvement)
+- [ ] Code style/refactoring (no functional changes)
+- [ ] Performance improvement
 
-## 🔗 Related Issues
+## Related Issues
 
 <!-- Link to related issues -->
 
@@ -26,7 +26,7 @@ Relates to #(issue number)
 
 ---
 
-## ✅ Testing Checklist
+## Testing Checklist
 
 <!-- Check all that were tested -->
 
@@ -59,7 +59,7 @@ Relates to #(issue number)
 
 ---
 
-## 📊 Coverage Report
+## Coverage Report
 
 <!-- Include if relevant -->
 
@@ -72,7 +72,7 @@ Optionally note before/after if meaningful; attach CI coverage artifact links.
 
 ---
 
-## 📝 Documentation Updated
+## Documentation Updated
 
 <!-- Check all that apply -->
 
@@ -83,7 +83,7 @@ Optionally note before/after if meaningful; attach CI coverage artifact links.
 - [ ] Comments added for complex logic
 - [ ] CHANGELOG.md updated
 
-## 🧹 Repo Hygiene
+## Repo Hygiene
 
 - [ ] No generated artifacts committed (e.g., `node_modules/`, `dist/`, `build/`, `htmlcov/`, `coverage.xml`)
 - [ ] No local editor/OS files committed (e.g., `.vscode/`, `.DS_Store`)
@@ -92,7 +92,7 @@ Optionally note before/after if meaningful; attach CI coverage artifact links.
 
 ---
 
-## 🖼️ Screenshots/Recordings
+## Screenshots/Recordings
 
 <!-- If this is a UI change, add screenshots or recordings -->
 
@@ -104,7 +104,7 @@ Optionally note before/after if meaningful; attach CI coverage artifact links.
 
 ---
 
-## 📚 Additional Notes
+## Additional Notes
 
 <!-- Any additional context, implementation notes, or considerations -->
 
@@ -126,7 +126,7 @@ Optionally note before/after if meaningful; attach CI coverage artifact links.
 
 ---
 
-## ✅ Self-Review Checklist
+## Self-Review Checklist
 
 <!-- Complete before requesting review -->
 
@@ -143,7 +143,7 @@ Optionally note before/after if meaningful; attach CI coverage artifact links.
 
 ---
 
-## 🎓 For Lab Content PRs
+## For Lab Content PRs
 
 <!-- Additional checklist for lab contributions -->
 
@@ -160,7 +160,7 @@ Optionally note before/after if meaningful; attach CI coverage artifact links.
 
 ---
 
-## 👥 Reviewer Notes
+## Reviewer Notes
 
 <!-- For reviewers - checklist of what to verify -->
 
@@ -175,13 +175,13 @@ Optionally note before/after if meaningful; attach CI coverage artifact links.
 
 ### Review Priority
 
-- [ ] 🔴 Critical - needs immediate attention
-- [ ] 🟡 Normal - review when available
-- [ ] 🟢 Low - nice to have
+- [ ] Critical - needs immediate attention
+- [ ] Normal - review when available
+- [ ] Low - nice to have
 
 ---
 
-## 🙏 Thank You
+## Thank You
 
 Thank you for contributing to Testbook Testing Platform! Your improvements help students worldwide learn professional testing skills.
 

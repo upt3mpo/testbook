@@ -1,17 +1,17 @@
-# 🧪 Lab 3: Fixtures And Test Data (JavaScript)
+# Lab 3: Fixtures And Test Data (JavaScript)
 
 **Estimated Time:** 45 minutes<br>
 **Difficulty:** Intermediate<br>
-**Language:** 🟨 JavaScript<br>
+**Language:** JavaScript<br>
 **Prerequisites:** Labs 1 & 2 completed
 
-**💡 Need Python instead?** Try [Lab 3: Fixtures And Test Data (Python)](LAB_03_Fixtures_And_Test_Data_Python.md)!
+**Need Python instead?** Try [Lab 3: Fixtures And Test Data (Python)](LAB_03_Fixtures_And_Test_Data_Python.md)!
 
 **What This Adds:** Master test data management with Vitest setup patterns - learn to create reusable test setup that eliminates code duplication and makes your tests more maintainable and reliable.
 
 ---
 
-## 🎯 What You'll Learn
+## What You'll Learn
 
 By the end of this lab, you will:
 
@@ -23,7 +23,7 @@ By the end of this lab, you will:
 
 ---
 
-## 💡 What Are Setup Patterns?
+## What Are Setup Patterns?
 
 **A note if you're doing both tracks:** the Python version of this lab teaches pytest fixtures, which do more than `beforeEach`/`afterEach` do here — fixtures can depend on other fixtures (dependency injection) and declare a `scope` (function, class, module, session) that controls how often expensive setup reruns. Vitest doesn't have a direct equivalent to fixture dependency chains or scoping; `beforeEach`/`afterEach` (and manual helper functions, which you'll use here for anything reusable across files) are the idiomatic JS/Vitest way to solve the same repeated-setup problem. That's a real difference between the ecosystems, not a gap in this lab.
 
@@ -70,14 +70,14 @@ describe("User Tests", () => {
 
 **Benefits:**
 
-- ✅ No repeated setup code
-- ✅ Consistent test data
-- ✅ Automatic cleanup
-- ✅ Clear dependencies
+- No repeated setup code
+- Consistent test data
+- Automatic cleanup
+- Clear dependencies
 
 ---
 
-## 📋 Step-by-Step Instructions
+## Step-by-Step Instructions
 
 ### Step 1: Explore Existing Setup Patterns (10 minutes)
 
@@ -125,7 +125,7 @@ afterEach(() => {
 3. `afterAll()` - Runs once after all tests
 4. `cleanup()` - Cleans up React components
 
-✅ **Checkpoint:** List 3 setup patterns you found in `setup.js`
+**Checkpoint:** List 3 setup patterns you found in `setup.js`
 
 ---
 
@@ -188,7 +188,7 @@ cd frontend
 npm test test_learn_setup.js
 ```
 
-✅ **Checkpoint:** All tests should pass and you should see console logs
+**Checkpoint:** All tests should pass and you should see console logs
 
 ---
 
@@ -253,7 +253,7 @@ npm test test_learn_setup.js -- --reporter=verbose
 5. afterAll: Final cleanup
 ```
 
-✅ **Checkpoint:** You can see the setup flow in action
+**Checkpoint:** You can see the setup flow in action
 
 ---
 
@@ -327,7 +327,7 @@ describe("Custom Setup Functions", () => {
 npm test test_learn_setup.js
 ```
 
-✅ **Checkpoint:** Your custom setup functions work!
+**Checkpoint:** Your custom setup functions work!
 
 ---
 
@@ -380,11 +380,11 @@ describe("Advanced Setup Patterns", () => {
 npm test test_learn_setup.js
 ```
 
-✅ **Checkpoint:** Advanced setup patterns work
+**Checkpoint:** Advanced setup patterns work
 
 ---
 
-## 🎓 Understanding Setup Scopes
+## Understanding Setup Scopes
 
 Setup patterns can have different scopes:
 
@@ -453,7 +453,7 @@ You'll see the setup initializes once, and all tests share it!
 
 ---
 
-## 💪 Your Challenge: User with Posts Setup
+## Your Challenge: User with Posts Setup
 
 **Create a setup function for testing users with posts:**
 
@@ -501,7 +501,7 @@ describe("Your Challenge", () => {
 
 ---
 
-## 🚨 Common Mistakes
+## Common Mistakes
 
 ### Mistake 1: Forgetting to Reset State
 
@@ -560,7 +560,7 @@ afterEach(() => {
 
 ---
 
-## 📝 Quiz
+## Quiz
 
 Test your understanding:
 
@@ -602,7 +602,7 @@ Test your understanding:
 
 ---
 
-## ✅ Completion Checklist
+## Completion Checklist
 
 - [ ] Ran all test examples successfully
 - [ ] Created your own setup functions
@@ -612,7 +612,7 @@ Test your understanding:
 
 ---
 
-## 🎯 Key Takeaways
+## Key Takeaways
 
 1. **Setup patterns eliminate repeated code** - Write once, use everywhere
 2. **Different scopes for different needs** - `beforeEach` for fresh data, `beforeAll` for expensive setup
@@ -630,6 +630,6 @@ Test your understanding:
 
 ---
 
-**🎉 Congratulations!** You now understand one of the most powerful features of Vitest!
+**Congratulations!** You now understand one of the most powerful features of Vitest!
 
 **Next Lab:** [Lab DEBUG 01: Reading Errors (JavaScript)](LAB_04_Debugging_And_Error_Handling_JavaScript.md)

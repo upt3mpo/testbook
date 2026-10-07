@@ -98,11 +98,11 @@ bash .devcontainer/post-create.sh
 
 ## Benefits
 
-✅ **Consistent Environment**: Everyone uses the same tools and versions
-✅ **Quick Onboarding**: Start learning in minutes without complex setup
-✅ **No Local Setup**: No need to install Python, Node, or other dependencies
-✅ **Pre-configured IDE**: All necessary extensions and settings ready
-✅ **Isolated**: Container keeps learning environment separate from your system
+**Consistent Environment**: Everyone uses the same tools and versions
+**Quick Onboarding**: Start learning in minutes without complex setup
+**No Local Setup**: No need to install Python, Node, or other dependencies
+**Pre-configured IDE**: All necessary extensions and settings ready
+**Isolated**: Container keeps learning environment separate from your system
 
 ## Requirements
 

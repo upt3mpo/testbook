@@ -243,7 +243,7 @@ _Future updates will be documented here._
 
 **Language Switching Standardization:**
 
-- **Consistent format** - All labs use standardized "💡 Need [Language] instead?" format
+- **Consistent format** - All labs use standardized "Need [Language] instead?" format
 - **Fixed broken links** - All language switching links now point to correct lab files
 - **Aligned terminology** - Consistent language across all 31 lab files
 

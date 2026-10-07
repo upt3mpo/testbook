@@ -1,4 +1,4 @@
-# ⚡ Quick Commands Reference
+# Quick Commands Reference
 
 **Common commands for Testbook development and testing**
 
@@ -6,7 +6,7 @@ This is the single source of truth for frequently used commands. Other documenta
 
 ---
 
-<h2 id="python-backend-commands">🐍 Python Backend Commands</h2>
+<h2 id="python-backend-commands">Python Backend Commands</h2>
 
 ### Virtual Environment
 
@@ -43,7 +43,7 @@ cd backend && uvicorn main:app --reload --host 0.0.0.0 --port 8000
 
 ---
 
-## ☕ JavaScript Frontend Commands
+## JavaScript Frontend Commands
 
 ### Development
 
@@ -73,7 +73,7 @@ npm run test:watch
 
 ---
 
-## 🌐 E2E Testing Commands
+## E2E Testing Commands
 
 > E2E tests require the backend running with `TESTING=true` (enables the dev-only reset endpoint and higher rate limits). See [PLAYWRIGHT_QUICKSTART.md](../guides/PLAYWRIGHT_QUICKSTART.md) for the full setup.
 
@@ -105,7 +105,7 @@ cd tests/e2e-python && pytest -v --headed
 
 ---
 
-<h2 id="utility-commands">🔧 Utility Commands</h2>
+<h2 id="utility-commands">Utility Commands</h2>
 
 ### Database
 
@@ -129,7 +129,7 @@ start-dev.bat
 
 ---
 
-<h2 id="coverage-commands">📊 Coverage Commands</h2>
+<h2 id="coverage-commands">Coverage Commands</h2>
 
 ### Backend Coverage
 
@@ -147,7 +147,7 @@ npm run test:coverage
 
 ---
 
-<h2 id="cicd-commands">🚀 CI/CD Commands</h2>
+<h2 id="cicd-commands">CI/CD Commands</h2>
 
 ### Run All Tests
 
@@ -174,7 +174,7 @@ cd frontend && npm run lint && npm run format
 
 ---
 
-## 💡 Pro Tips
+## Pro Tips
 
 - Use `-v` flag for verbose output
 - Use `-k` to filter tests by name pattern

@@ -1,10 +1,10 @@
-# 🤝 API Contract Testing with Schemathesis
+# API Contract Testing with Schemathesis
 
 **Property-based testing that validates your API matches its documentation**
 
 ---
 
-<h2 id="quick-start-30-seconds">🎯 Quick Start (30 seconds)</h2>
+<h2 id="quick-start-30-seconds">Quick Start (30 seconds)</h2>
 
 **Contract testing** ensures your API does exactly what your documentation says it does.
 
@@ -14,7 +14,7 @@
 
 ---
 
-## 🤔 The Problem Contract Testing Solves
+## The Problem Contract Testing Solves
 
 ### Problem 1: API Documentation Drift
 
@@ -62,7 +62,7 @@ For an API with 30 endpoints (like Testbook):
 
 ---
 
-<h2 id="enter-schemathesis">🚀 Enter Schemathesis</h2>
+<h2 id="enter-schemathesis">Enter Schemathesis</h2>
 
 ### What It Is
 
@@ -112,16 +112,16 @@ def test_api_contract(case):
 
 **That's it!** Schemathesis automatically:
 
-- ✅ Tests all 30 endpoints
-- ✅ Generates 500+ test cases
-- ✅ Tests valid and invalid inputs
-- ✅ Validates responses
-- ✅ Checks status codes
-- ✅ Finds edge cases
+- Tests all 30 endpoints
+- Generates 500+ test cases
+- Tests valid and invalid inputs
+- Validates responses
+- Checks status codes
+- Finds edge cases
 
 ---
 
-## 💡 Property-Based Testing Explained
+## Property-Based Testing Explained
 
 ### Traditional Testing (Example-Based)
 
@@ -164,7 +164,7 @@ You define **properties** that should always be true:
 
 ---
 
-<h2 id="example-what-schemathesis-would-test-in-testbook">📊 Example: What Schemathesis Would Test in Testbook</h2>
+<h2 id="example-what-schemathesis-would-test-in-testbook">Example: What Schemathesis Would Test in Testbook</h2>
 
 ### Endpoint: `POST /api/posts`
 
@@ -225,7 +225,7 @@ Schemathesis would generate:
 
 ---
 
-## ⚠️ Why This Test is Currently Skipped
+## Why This Test is Currently Skipped
 
 ### The Compatibility Issue
 
@@ -249,17 +249,17 @@ OpenAPI 3.1.0 introduced **complete JSON Schema compatibility** (Draft 2020-12),
 
 **The Good News:**
 
-- ✅ The test file is still valuable to study
-- ✅ You learn the concept of contract testing
-- ✅ You see how property-based testing works
-- ✅ When Schemathesis adds support, just remove one line!
+- The test file is still valuable to study
+- You learn the concept of contract testing
+- You see how property-based testing works
+- When Schemathesis adds support, just remove one line!
 
 **For Now:**
 
-- 📚 Learn the **concept** (this guide)
-- 🔬 Study the **test file** (see how it's structured)
-- 🧪 Use **frontend contract testing** (LAB_08 - works today!)
-- 🎯 Focus on the **203 tests that DO run**
+- Learn the **concept** (this guide)
+- Study the **test file** (see how it's structured)
+- Use **frontend contract testing** (LAB_08 - works today!)
+- Focus on the **203 tests that DO run**
 
 ### Discovered Workaround
 
@@ -279,10 +279,10 @@ Using `force_schema_version="30"` makes Schemathesis work with OpenAPI 3.1.0! Ho
 
 **Current Status:**
 
-- ✅ Comprehensive documentation added
-- ✅ Workaround discovered (`force_schema_version="30"`)
-- ⚠️ Skipped pending full configuration
-- 🚀 Full enablement planned for future update
+- Comprehensive documentation added
+- Workaround discovered (`force_schema_version="30"`)
+- Skipped pending full configuration
+- Full enablement planned for future update
 
 **Future Update:**
 
@@ -292,13 +292,13 @@ Using `force_schema_version="30"` makes Schemathesis work with OpenAPI 3.1.0! Ho
 
 **Alternatives Available Now:**
 
-1. Frontend contract testing with OpenAPI (LAB_08) ✅
-2. Manual schema validation with Postman ✅
-3. Traditional API integration tests (127 tests!) ✅
+1. Frontend contract testing with OpenAPI (LAB_08)
+2. Manual schema validation with Postman
+3. Traditional API integration tests (127 tests!)
 
 ---
 
-<h2 id="how-to-enable-when-ready">🔄 How to Enable When Ready</h2>
+<h2 id="how-to-enable-when-ready">How to Enable When Ready</h2>
 
 When Schemathesis adds full OpenAPI 3.1.0 support:
 
@@ -330,7 +330,7 @@ pytest tests/integration/test_api_contract.py -v
 
 ---
 
-## 🛠️ Alternative: Use Experimental Mode (Advanced)
+## Alternative: Use Experimental Mode (Advanced)
 
 If you want to try it now (with caveats):
 
@@ -345,20 +345,20 @@ schema = schemathesis.from_asgi(
 
 **Pros:**
 
-- ✅ Tests run today
-- ✅ Learn by doing
+- Tests run today
+- Learn by doing
 
 **Cons:**
 
-- ⚠️ May have bugs
-- ⚠️ Incomplete coverage
-- ⚠️ Features may change
+- May have bugs
+- Incomplete coverage
+- Features may change
 
 **For now:** We're keeping it skipped for stability.
 
 ---
 
-## 🔗 Related: Frontend Contract Testing
+## Related: Frontend Contract Testing
 
 **You CAN do contract testing today!**
 
@@ -379,39 +379,39 @@ const validation = validateAgainstSchema(response, schema);
 
 ---
 
-## 🎓 When to Use Contract Testing
+## When to Use Contract Testing
 
 ### Perfect For
 
-✅ **Microservices architectures**
+**Microservices architectures**
 
 - Multiple services with API contracts
 - Prevent breaking changes between services
 
-✅ **API-first development**
+**API-first development**
 
 - Design API schema first
 - Generate tests from schema automatically
 
-✅ **Multiple API consumers**
+**Multiple API consumers**
 
 - Mobile apps, web apps, third-party integrations
 - Ensure all consumers get consistent data
 
-✅ **Large APIs (20+ endpoints)**
+**Large APIs (20+ endpoints)**
 
 - Saves massive time vs manual tests
 - Comprehensive coverage automatically
 
 ### Not Needed For
 
-❌ **Small APIs (<5 endpoints)** - Manual tests are fine
-❌ **Rapidly changing APIs** - Schema updates are too frequent
-❌ **Internal-only APIs** - Less risk of drift
+**Small APIs (<5 endpoints)** - Manual tests are fine
+**Rapidly changing APIs** - Schema updates are too frequent
+**Internal-only APIs** - Less risk of drift
 
 ---
 
-## 🆚 Contract Testing vs Integration Testing
+## Contract Testing vs Integration Testing
 
 ### Integration Tests (What We Have - 127 tests)
 
@@ -459,106 +459,106 @@ They complement each other:
 
 ---
 
-## 🔍 What Schemathesis Actually Tests
+## What Schemathesis Actually Tests
 
 For each endpoint, Schemathesis validates:
 
 ### Request Validation
 
-- ✅ Required parameters are enforced
-- ✅ Optional parameters are accepted
-- ✅ Data types match schema (string, int, boolean, etc.)
-- ✅ Format constraints (email, URI, date)
-- ✅ Min/max length restrictions
-- ✅ Min/max value boundaries
-- ✅ Enum values (only allowed values accepted)
-- ✅ Pattern matching (regex validation)
+- Required parameters are enforced
+- Optional parameters are accepted
+- Data types match schema (string, int, boolean, etc.)
+- Format constraints (email, URI, date)
+- Min/max length restrictions
+- Min/max value boundaries
+- Enum values (only allowed values accepted)
+- Pattern matching (regex validation)
 
 ### Response Validation
 
-- ✅ Status codes match schema
-- ✅ Response body structure matches schema
-- ✅ All required fields present
-- ✅ Data types correct
-- ✅ No extra fields (if additionalProperties: false)
+- Status codes match schema
+- Response body structure matches schema
+- All required fields present
+- Data types correct
+- No extra fields (if additionalProperties: false)
 
 ### Security Fuzzing
 
-- ✅ XSS attempts in string fields
-- ✅ SQL injection patterns
-- ✅ Path traversal attempts
-- ✅ Buffer overflow with long strings
-- ✅ Malformed JSON
-- ✅ Unexpected data types
+- XSS attempts in string fields
+- SQL injection patterns
+- Path traversal attempts
+- Buffer overflow with long strings
+- Malformed JSON
+- Unexpected data types
 
 ---
 
-## 📚 Alternative Tools
+## Alternative Tools
 
 ### Backend Contract Testing
 
 | Tool             | Language | Approach                    | Status in Testbook           |
 | ---------------- | -------- | --------------------------- | ---------------------------- |
-| **Schemathesis** | Python   | Property-based from OpenAPI | ⚠️ Skipped (OpenAPI 3.1.0)   |
+| **Schemathesis** | Python   | Property-based from OpenAPI | Skipped (OpenAPI 3.1.0)      |
 | **Dredd**        | Any      | Contract validation         | Not implemented              |
 | **Pact**         | Multiple | Consumer-driven contracts   | Not implemented              |
 | **Postman**      | Any      | Manual contract tests       | Available (see `tests/api/`) |
 
 ### Frontend Contract Testing
 
-| Tool                   | Status in Testbook                                                     |
-| ---------------------- | ---------------------------------------------------------------------- |
-| **OpenAPI validation** | ✅ Available - See LAB_08                                              |
-| **MSW with schema**    | ✅ Available - See LAB_05 (`LAB_05_API_Endpoint_Testing_JavaScript.md`)|
+| Tool                   | Status in Testbook                                                   |
+| ---------------------- | -------------------------------------------------------------------- |
+| **OpenAPI validation** | Available - See LAB_08                                               |
+| **MSW with schema**    | Available - See LAB_05 (`LAB_05_API_Endpoint_Testing_JavaScript.md`) |
 
 **Learn frontend contract testing:** [LAB_08: Contract Testing Foundations](../../learn/stage_2_integration/exercises/LAB_08_Contract_Testing_Foundations_JavaScript.md)
 
 ---
 
-## 🎓 Learning Path
+## Learning Path
 
 ### Stage 1: Understand the Concept (You Are Here!)
 
-- ✅ Read this guide
-- ✅ Understand contract testing value
-- ✅ Know why it's important professionally
+- Read this guide
+- Understand contract testing value
+- Know why it's important professionally
 
 ### Stage 2: Study the Code
 
-- 📖 Read `backend/tests/integration/test_api_contract.py`
-- 🔍 See how it's structured (even though skipped)
-- 💡 Understand the pattern
+- Read `backend/tests/integration/test_api_contract.py`
+- See how it's structured (even though skipped)
+- Understand the pattern
 
 ### Stage 3: Learn Frontend Contracts
 
-- 🧪 Complete [LAB_08](../../learn/stage_2_integration/exercises/LAB_08_Contract_Testing_Foundations_JavaScript.md)
-- ✅ This teaches contract validation that WORKS today
-- 🔄 Same concept, different angle (frontend → backend vs backend self-test)
+- Complete [LAB_08](../../learn/stage_2_integration/exercises/LAB_08_Contract_Testing_Foundations_JavaScript.md)
+- This teaches contract validation that WORKS today
+- Same concept, different angle (frontend → backend vs backend self-test)
 
 ### Stage 4: Monitor for Updates
 
-- 📡 Watch Schemathesis releases
-- 🔄 When OpenAPI 3.1.0 support is stable, enable the test
-- 🚀 See 500+ automated tests in action!
+- Watch Schemathesis releases
+- When OpenAPI 3.1.0 support is stable, enable the test
+- See 500+ automated tests in action!
 
 ### Stage 5: Apply to Your Projects
 
-- 💼 Add contract testing to your portfolio projects
-- 🎯 Mention in interviews ("I understand property-based contract testing")
-- 🏆 Stand out from other QA candidates
+- Add contract testing to your portfolio projects
+- Mention in interviews ("I understand property-based contract testing")
+- Stand out from other QA candidates
 
 ---
 
-## 💼 Why This Matters for Your Career
+## Why This Matters for Your Career
 
 ### Interview Talking Points
 
 **When asked: "What types of API testing have you done?"**
 
-✅ **Good Answer:**
+**Good Answer:**
 "Integration tests, unit tests, and E2E tests."
 
-🌟 **Great Answer:**
+**Great Answer:**
 "Integration tests, E2E, and I've also worked with property-based contract testing using tools like Schemathesis. Contract testing automatically generates hundreds of test cases from the OpenAPI schema to validate that the API implementation matches its specification. It's especially valuable for microservices and API-first architectures where you need to prevent documentation drift and integration bugs."
 
 ### Real-World Scenarios
@@ -577,7 +577,7 @@ For each endpoint, Schemathesis validates:
 
 ---
 
-## 📖 Testbook's Contract Testing
+## Testbook's Contract Testing
 
 ### Our Test File: `backend/tests/integration/test_api_contract.py`
 
@@ -590,7 +590,7 @@ For each endpoint, Schemathesis validates:
 - Schema compliance
 - Security fuzzing
 
-**Current Status:** ⚠️ Skipped
+**Current Status:** Skipped
 
 **Reason:** OpenAPI 3.1.0 compatibility wait
 
@@ -617,7 +617,7 @@ pytest tests/integration/ -v
 
 ---
 
-## 🔗 Related Testbook Content
+## Related Testbook Content
 
 ### Hands-On Labs
 
@@ -637,7 +637,7 @@ pytest tests/integration/ -v
 
 ---
 
-## 🌐 External Resources
+## External Resources
 
 ### Schemathesis
 
@@ -658,7 +658,7 @@ pytest tests/integration/ -v
 
 ---
 
-## ❓ FAQ
+## FAQ
 
 ### Q: Why not just downgrade to OpenAPI 3.0?
 
@@ -702,7 +702,7 @@ It shows you know advanced testing concepts even if the specific tool wasn't ful
 
 ---
 
-## 🎯 Key Takeaways
+## Key Takeaways
 
 1. **Contract testing validates API matches documentation** - prevents drift
 2. **Property-based testing generates tests automatically** - finds edge cases
@@ -713,17 +713,17 @@ It shows you know advanced testing concepts even if the specific tool wasn't ful
 
 ---
 
-## 🚀 Next Steps
+## Next Steps
 
-1. ✅ **Understand the concept** (you just did!)
-2. 📖 **Study the test file:** `backend/tests/integration/test_api_contract.py`
-3. 🧪 **Do LAB_08:** Frontend contract testing (works today!)
-4. 💼 **Add to portfolio:** Mention contract testing knowledge
-5. 🎯 **Use in interviews:** Discuss property-based testing
-6. 🔮 **Watch for updates:** Enable when Schemathesis is ready
+1. **Understand the concept** (you just did!)
+2. **Study the test file:** `backend/tests/integration/test_api_contract.py`
+3. **Do LAB_08:** Frontend contract testing (works today!)
+4. **Add to portfolio:** Mention contract testing knowledge
+5. **Use in interviews:** Discuss property-based testing
+6. **Watch for updates:** Enable when Schemathesis is ready
 
 ---
 
 **Remember:** Even though this specific test is skipped, understanding contract testing and property-based testing makes you a stronger QA engineer. These are professional techniques used in production at major tech companies!
 
-**You're learning concepts that matter.** 🎓
+**You're learning concepts that matter.**

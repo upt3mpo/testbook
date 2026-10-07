@@ -1,17 +1,17 @@
-# 🧪 Lab 8: Contract Testing Foundations
+# Lab 8: Contract Testing Foundations
 
 **Estimated Time:** 90 minutes<br>
 **Difficulty:** Intermediate<br>
-**Language:** 🟨 JavaScript<br>
+**Language:** JavaScript<br>
 **Prerequisites:** Lab 7 completed
 
-**💡 Need Python instead?** Try [Lab 8: Contract Testing Foundations (Python)](LAB_08_Contract_Testing_Foundations_Python.md)!
+**Need Python instead?** Try [Lab 8: Contract Testing Foundations (Python)](LAB_08_Contract_Testing_Foundations_Python.md)!
 
 **What This Adds:** Contract testing ensures API compatibility between frontend and backend, preventing integration failures in production.
 
 ---
 
-## 🎯 What You'll Learn
+## What You'll Learn
 
 - **API contracts** - Define expected API behavior
 - **Schema validation** - Ensure API responses match expected format
@@ -22,7 +22,7 @@
 
 ---
 
-## 📋 Why Contract Testing Matters
+## Why Contract Testing Matters
 
 **The Problem:**
 
@@ -36,7 +36,7 @@ Contract testing ensures API changes don't break existing clients.
 
 ---
 
-## 📋 Step-by-Step Instructions
+## Step-by-Step Instructions
 
 ### Part 1: Understanding API Contracts (20 minutes)
 
@@ -691,7 +691,7 @@ describe("Consumer Contract Testing", () => {
 
 ---
 
-## 💪 Challenge Exercises
+## Challenge Exercises
 
 ### Challenge 1: Test API Versioning
 
@@ -719,7 +719,7 @@ it("should follow consistent error contract across all endpoints", async () => {
 
 ---
 
-## 🎓 Advanced Patterns
+## Advanced Patterns
 
 ### Contract Testing with Custom Matchers
 
@@ -823,7 +823,7 @@ describe.each([
 
 ---
 
-## ✅ Completion Checklist
+## Completion Checklist
 
 - [ ] Understand what API contracts are and why they matter
 - [ ] Can validate API requests and responses against schemas
@@ -835,7 +835,7 @@ describe.each([
 
 ---
 
-## 💡 Pro Tips
+## Pro Tips
 
 1. **Start with consumer contracts** - Define what frontend needs first
 2. **Validate schemas strictly** - Catch type mismatches early
@@ -845,7 +845,7 @@ describe.each([
 
 ---
 
-## 📚 Next Steps
+## Next Steps
 
 **Continue building your skills:**
 
@@ -855,6 +855,6 @@ describe.each([
 
 ---
 
-**🎉 Congratulations!** You now understand contract testing and can ensure API compatibility between frontend and backend!
+**Congratulations!** You now understand contract testing and can ensure API compatibility between frontend and backend!
 
 **Next Lab:** [Lab 9: Basic E2E Testing (JavaScript)](../../stage_3_api_e2e/exercises/LAB_09_Basic_E2E_Testing_JavaScript.md)

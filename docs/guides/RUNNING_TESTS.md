@@ -1,12 +1,12 @@
-# 🧪 Running Tests - Complete Guide
+# Running Tests - Complete Guide
 
 Comprehensive cross-platform guide for running all Testbook tests.
 
-**✅ 203 Backend Tests | 119 E2E Tests (59 JS + 60 Python) | All Verified Working**
+**203 Backend Tests | 119 E2E Tests (59 JS + 60 Python) | All Verified Working**
 
 ---
 
-<h2 id="platform-specific-quick-start">🖥️ Platform-Specific Quick Start</h2>
+<h2 id="platform-specific-quick-start">Platform-Specific Quick Start</h2>
 
 ### macOS / Linux
 
@@ -26,11 +26,11 @@ cd backend
 pytest -v
 ```
 
-**Expected:** 203 tests pass in ~48 seconds ✅
+**Expected:** 203 tests pass in ~48 seconds
 
 ---
 
-## 📚 Test Categories
+## Test Categories
 
 ### Backend Tests (Python/pytest)
 
@@ -66,7 +66,7 @@ pytest -v
 
 ---
 
-## 📚 Table of Contents
+## Table of Contents
 
 1. [Backend Tests (Python/pytest)](#backend-tests)
 2. [E2E Tests (Playwright)](#e2e-tests)
@@ -185,13 +185,16 @@ When running tests, you can choose whether to collect coverage data. Coverage sh
 - `--cov-report=term-missing` - Show missing lines in terminal output
 - `--cov-config=.coveragerc` - Use custom coverage configuration
 
-**When to Use Coverage:**
+**Use coverage for:**
 
-- ✅ **Full test suite runs** - See overall code coverage
-- ✅ **CI/CD pipelines** - Ensure quality standards
-- ✅ **Before committing** - Verify new code is tested
-- ❌ **Single test debugging** - Adds noise to output
-- ❌ **Quick test runs** - Slows down execution
+- **Full test suite runs** - See overall code coverage
+- **CI/CD pipelines** - Ensure quality standards
+- **Before committing** - Verify new code is tested
+
+**Skip coverage for:**
+
+- **Single test debugging** - Adds noise to output
+- **Quick test runs** - Slows down execution
 
 ### With Coverage
 
@@ -443,7 +446,7 @@ http_req_failed...........: 0.23%
 
 ## Security Tests
 
-### 💡 Pro Tip: Use .env File
+### Pro Tip: Use .env File
 
 Tired of typing `TESTING=true` every time? Create a `.env` file:
 
@@ -466,7 +469,7 @@ Copy-Item backend\env.example backend\.env
 
 ---
 
-### ⚠️ IMPORTANT: Security Tests & Rate Limiting
+### IMPORTANT: Security Tests & Rate Limiting
 
 **These tests may fail if run without TESTING mode!**
 
@@ -515,7 +518,7 @@ pytest tests/security/test_rate_limiting.py -v
 
 ### Understanding Test Results
 
-**Expected:** 17-19/23 tests passing (74-83%) ✅
+**Expected:** 17-19/23 tests passing (74-83%)
 
 **If you see failures:**
 
@@ -528,13 +531,13 @@ pytest tests/security/test_rate_limiting.py -v
 
 ### What's Tested
 
-- ✅ Authentication enforcement
-- ✅ Authorization checks
-- ✅ Input validation
-- ✅ SQL injection protection
-- ✅ XSS handling
-- ✅ Data exposure prevention
-- ✅ Session management
+- Authentication enforcement
+- Authorization checks
+- Input validation
+- SQL injection protection
+- XSS handling
+- Data exposure prevention
+- Session management
 
 **Documentation:** [tests/security/README.md](../../tests/security/README.md)
 
@@ -729,24 +732,24 @@ If one of these quick recovery steps doesn't resolve it, [TROUBLESHOOTING.md](..
 
 ### Before Running Tests
 
-1. ✅ Make sure backend is running
-2. ✅ Reset database to clean state
-3. ✅ Check all dependencies installed
-4. ✅ Check no port conflicts
+1. Make sure backend is running
+2. Reset database to clean state
+3. Check all dependencies installed
+4. Check no port conflicts
 
 ### During Development
 
-1. ✅ Run relevant tests frequently
-2. ✅ Use `--verbose` to see detailed output
-3. ✅ Fix failing tests immediately
-4. ✅ Add tests for new features
+1. Run relevant tests frequently
+2. Use `--verbose` to see detailed output
+3. Fix failing tests immediately
+4. Add tests for new features
 
 ### Before Committing
 
-1. ✅ Run all test suites
-2. ✅ Check test coverage
-3. ✅ Verify CI/CD will pass
-4. ✅ Update tests if needed
+1. Run all test suites
+2. Check test coverage
+3. Verify CI/CD will pass
+4. Update tests if needed
 
 ---
 
@@ -822,4 +825,4 @@ pytest tests/security/ -v
 
 ---
 
-**Happy Testing! 🚀**
+**Happy Testing!**

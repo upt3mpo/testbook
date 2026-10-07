@@ -1,4 +1,4 @@
-# 🚀 Newman CLI Guide
+# Newman CLI Guide
 
 **Automate Postman collections from the command line**
 
@@ -6,7 +6,7 @@ Newman is the CLI version of Postman - perfect for CI/CD pipelines and automated
 
 ---
 
-## 📦 Installation
+## Installation
 
 ```bash
 # Install globally
@@ -18,7 +18,7 @@ npx newman --version
 
 ---
 
-## 🎯 Basic Usage
+## Basic Usage
 
 ### Run the Testbook Collection
 
@@ -51,7 +51,7 @@ newman run Testbook.postman_collection.json
 
 ---
 
-## 🔧 Newman Options
+## Newman Options
 
 ### Reporting
 
@@ -124,7 +124,7 @@ newman run Testbook.postman_collection.json \
 
 ---
 
-## 🎯 CI/CD Integration
+## CI/CD Integration
 
 ### GitHub Actions Example
 
@@ -201,7 +201,7 @@ stage('API Tests') {
 
 ---
 
-## 📊 Interpreting Results
+## Interpreting Results
 
 ### Success Indicators
 
@@ -240,7 +240,7 @@ stage('API Tests') {
 
 ---
 
-## 🔍 Debugging Newman Tests
+## Debugging Newman Tests
 
 ### View Request Details
 
@@ -282,7 +282,7 @@ newman run Testbook.postman_collection.json \
 
 ---
 
-## 💡 Best Practices
+## Best Practices
 
 ### 1. Use Environment Variables
 
@@ -338,7 +338,7 @@ pm.test("Response time < 500ms", function () {
 
 ---
 
-## 🚀 Quick Commands
+## Quick Commands
 
 ```bash
 # Run tests
@@ -365,7 +365,7 @@ newman run tests/api/Testbook.postman_collection.json --bail
 
 ---
 
-## 📚 Related Resources
+## Related Resources
 
 - [Postman Collection](Testbook.postman_collection.json) - The collection file
 - [Newman Documentation](https://learning.postman.com/docs/running-collections/using-newman-cli/command-line-integration-with-newman/)
@@ -374,4 +374,4 @@ newman run tests/api/Testbook.postman_collection.json --bail
 
 ---
 
-**🎯 Pro Tip:** Use Newman in your CI/CD pipeline for automated API testing on every commit!
+**Pro Tip:** Use Newman in your CI/CD pipeline for automated API testing on every commit!

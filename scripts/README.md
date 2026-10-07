@@ -1,10 +1,10 @@
-# 🛠️ Testbook Scripts
+# Testbook Scripts
 
 Utility scripts for development and maintenance.
 
 ---
 
-## 📝 Markdown Validation
+## Markdown Validation
 
 ### check-markdown.sh / check-markdown.bat
 
@@ -87,7 +87,7 @@ markdownlint --fix README.md
 
 ---
 
-## ✅ Quality & Release Scripts
+## Quality & Release Scripts
 
 ### quality-check.sh
 
@@ -123,7 +123,7 @@ scripts\run-tests-no-warnings.bat pytest -v
 
 ---
 
-## 🔧 Configuration
+## Configuration
 
 ### Markdown Linting Rules
 
@@ -159,7 +159,7 @@ Edit `.markdown-link-check.json` to customize:
 
 ---
 
-## 🚀 CI/CD Integration
+## CI/CD Integration
 
 Markdown validation runs automatically in GitHub Actions when:
 
@@ -177,7 +177,7 @@ Markdown validation runs automatically in GitHub Actions when:
 
 ---
 
-## 📊 Understanding Results
+## Understanding Results
 
 ### Successful Run
 
@@ -214,7 +214,7 @@ FILE: README.md
 
 ---
 
-## 💡 Tips
+## Tips
 
 ### Pre-commit Hook
 
@@ -253,7 +253,7 @@ markdownlint --fix **/*.md
 
 ---
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### "Command not found: markdownlint"
 
@@ -286,7 +286,7 @@ chmod +x scripts/check-markdown.sh
 
 ---
 
-## 🔗 Related Documentation
+## Related Documentation
 
 - [CONTRIBUTING.md](../CONTRIBUTING.md) - Contribution guidelines
 - [GitHub Actions Workflows](../.github/workflows/) - CI/CD setup
@@ -295,7 +295,7 @@ chmod +x scripts/check-markdown.sh
 
 ---
 
-## 📝 Future Scripts
+## Future Scripts
 
 Potential additions to this directory:
 
@@ -308,4 +308,4 @@ Potential additions to this directory:
 
 ---
 
-**Keep your documentation clean!** 📝✨
+**Keep your documentation clean!**

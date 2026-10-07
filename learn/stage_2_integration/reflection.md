@@ -1,4 +1,4 @@
-# 🤔 Stage 2 Reflection: Integration Tests
+# Stage 2 Reflection: Integration Tests
 
 Document your learning and insights from Stage 2.
 

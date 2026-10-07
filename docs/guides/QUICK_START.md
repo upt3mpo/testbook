@@ -1,19 +1,19 @@
-# 🚀 Quick Start Guide
+# Quick Start Guide
 
 Get Testbook running in 5 minutes on any platform!
 
-**⚠️ IMPORTANT:** Use the **development mode** scripts below (`start-dev.sh` / `start-dev.bat`). These run the app on port 3000 and work with all tests. Do NOT use `start.sh` - it's for production deployment only!
+**IMPORTANT:** Use the **development mode** scripts below (`start-dev.sh` / `start-dev.bat`). These run the app on port 3000 and work with all tests. Do NOT use `start.sh` - it's for production deployment only!
 
-**⚠️ Never expose this application to the internet.** The login credentials shown throughout this guide (`sarah.johnson@testbook.com` / `Sarah2024!` and the other seed accounts in `backend/seed.py`) are published in this public repository, not secrets. Anyone who finds an internet-facing instance can log in with them. Run it locally only.
+**Never expose this application to the internet.** The login credentials shown throughout this guide (`sarah.johnson@testbook.com` / `Sarah2024!` and the other seed accounts in `backend/seed.py`) are published in this public repository, not secrets. Anyone who finds an internet-facing instance can log in with them. Run it locally only.
 
-> **🪟 Windows Users:** We show both PowerShell (recommended) and Command Prompt alternatives. Use PowerShell unless you have a specific reason to use Command Prompt. See [Windows Setup Guide](WINDOWS_SETUP.md) for details.
+> **Windows Users:** We show both PowerShell (recommended) and Command Prompt alternatives. Use PowerShell unless you have a specific reason to use Command Prompt. See [Windows Setup Guide](WINDOWS_SETUP.md) for details.
 
 ---
 
-## 🖥️ Choose Your Platform
+## Choose Your Platform
 
 <details>
-<summary><b>🍎 macOS / Linux</b> (click to expand)</summary>
+<summary><b>macOS / Linux</b> (click to expand)</summary>
 
 ### Step 1: Clone Repository
 
@@ -93,12 +93,12 @@ Email: sarah.johnson@testbook.com
 Password: Sarah2024!
 ```
 
-✅ **Done!** You're ready to test!
+**Done!** You're ready to test!
 
 </details>
 
 <details>
-<summary><b>🖥️ Windows</b> (click to expand)</summary>
+<summary><b>Windows</b> (click to expand)</summary>
 
 ### Windows Step 1: Clone Repository
 
@@ -178,13 +178,13 @@ Email: sarah.johnson@testbook.com
 Password: Sarah2024!
 ```
 
-✅ **Done!** You're ready to test!
+**Done!** You're ready to test!
 
 </details>
 
 ---
 
-## 🔧 Environment Configuration (Optional)
+## Environment Configuration (Optional)
 
 **For beginners:** The `start-dev` scripts handle everything automatically. Skip this section unless you want to run commands manually.
 
@@ -256,7 +256,7 @@ Command-line variables always take precedence over `.env` file settings.
 
 ---
 
-## 🧪 Run Your First Test
+## Run Your First Test
 
 ### Option 1: Python (pytest) - Backend Testing
 
@@ -274,7 +274,7 @@ pytest -v
 pytest -v
 ```
 
-**Expected:** 203 tests pass in ~48 seconds ✅
+**Expected:** 203 tests pass in ~48 seconds
 
 </details>
 
@@ -287,7 +287,7 @@ cd backend
 pytest -v
 ```
 
-**Expected:** 203 tests pass in ~48 seconds ✅
+**Expected:** 203 tests pass in ~48 seconds
 
 </details>
 
@@ -296,7 +296,7 @@ pytest -v
 <details>
 <summary><b>All Platforms</b></summary>
 
-**⚠️ Before running:** stop `start-dev.sh` if it's running without a
+**Before running:** stop `start-dev.sh` if it's running without a
 `backend/.env` file, and restart the backend with `TESTING=true` set — a
 handful of E2E tests use the dev-only `/api/dev/reset` endpoint, which is
 disabled unless `TESTING=true`. See [Playwright Quick Start](PLAYWRIGHT_QUICKSTART.md)
@@ -309,36 +309,36 @@ npx playwright install chromium
 npm test
 ```
 
-**Expected:** 59 E2E tests pass ✅
+**Expected:** 59 E2E tests pass
 
 </details>
 
 ---
 
-## 🎯 Next Steps
+## Next Steps
 
-### ⭐ New to Testing?
+### New to Testing?
 
 **→ [learn/README.md](../../learn/README.md)** - Start here! Choose your track and
 learning style
 
-### 🧪 Want Hands-On Labs?
+### Want Hands-On Labs?
 
 **→ [learn/stage_1_unit/exercises/](../../learn/stage_1_unit/exercises/)** - Write first
 test in 30 min
 
-### 📚 Want Structured Learning?
+### Want Structured Learning?
 
 **→ [Learning Path](../../README.md#learning-path)** - Complete 5-stage curriculum
 overview
 
-### 📖 Want to Run Tests?
+### Want to Run Tests?
 
 **→ [docs/guides/RUNNING_TESTS.md](RUNNING_TESTS.md)** - Complete guide
 
 ---
 
-## 🌍 Cross-Platform Notes
+## Cross-Platform Notes
 
 ### setup_images.py
 
@@ -359,7 +359,7 @@ for all platforms
 
 ---
 
-## ✅ Verification Checklist
+## Verification Checklist
 
 After setup, verify:
 
@@ -369,11 +369,11 @@ After setup, verify:
 - [ ] Backend tests run: `cd backend && pytest -v`
 - [ ] See 203 tests pass
 
-**⚠️ Common Mistake:** Don't open port 8000 - that's the API! The app is on port 3000.
+**Common Mistake:** Don't open port 8000 - that's the API! The app is on port 3000.
 
 ---
 
-## 🚨 Still Having Issues?
+## Still Having Issues?
 
 - **Technical problems?** → [Troubleshooting Guide](../reference/TROUBLESHOOTING.md)
 - **Learning questions?** → [FAQ](FAQ.md)

@@ -1,17 +1,17 @@
-# 🧪 Lab 14: Security Testing & OWASP
+# Lab 14: Security Testing & OWASP
 
 **Estimated Time:** 120 minutes<br>
 **Difficulty:** Advanced<br>
-**Language:** 🐍 Python<br>
+**Language:** Python<br>
 **Prerequisites:** Lab 13 completed
 
-**💡 Need JavaScript instead?** Try [Lab 14: Security Testing & OWASP (JavaScript)](LAB_14_Security_Testing_OWASP_JavaScript.md)!
+**Need JavaScript instead?** Try [Lab 14: Security Testing & OWASP (JavaScript)](LAB_14_Security_Testing_OWASP_JavaScript.md)!
 
 **What This Adds:** Master security testing with pytest to identify vulnerabilities and ensure your application is protected against common attacks like SQL injection, XSS, and CSRF. This is essential for production applications.
 
 ---
 
-## 🎯 What You'll Learn
+## What You'll Learn
 
 - **OWASP Top 10** - Understand common web application vulnerabilities
 - **Security testing techniques** - Test for SQL injection, XSS, CSRF, and more
@@ -22,7 +22,7 @@
 
 ---
 
-## 📋 Why Security Testing Matters
+## Why Security Testing Matters
 
 **The Problem:**
 
@@ -36,7 +36,7 @@ Security testing systematically identifies vulnerabilities and ensures proper se
 
 ---
 
-## 📋 Step-by-Step Instructions
+## Step-by-Step Instructions
 
 > **Before you start:** These exercises hit a running Testbook backend, so start it in test mode first: `TESTING=true uvicorn main:app --reload --port 8000` (see `../../../docs/guides/PLAYWRIGHT_QUICKSTART.md` for why — it unlocks the `/api/dev/reset` endpoint and relaxes rate limits to 1000/min so your new tests aren't cut off by the real 20/min production login limit). Testbook already ships a working security suite you can run as-is at `tests/security/test_security.py` and `tests/security/test_rate_limiting.py` (fixtures in `tests/security/conftest.py`) — it's plain `pytest` + the `requests` library hitting `http://localhost:8000/api` over HTTP, **not** `fastapi.testclient.TestClient` with a `db_session` fixture as shown below. The code in this lab uses the in-process `TestClient`/`db_session` pattern as an alternative teaching style (it assumes fixtures — `client`, `db_session`, `test_user` — that aren't defined here or anywhere in this repo; treat it as illustrative pseudocode to adapt, not copy-paste-ready code). If you want tests that actually run against Testbook as it exists today, mirror `tests/security/conftest.py` instead: a `requests.Session()` against the live server.
 
@@ -1232,7 +1232,7 @@ def get_sensitive_data_fields() -> List[str]:
 
 ---
 
-## 💪 Challenge Exercises
+## Challenge Exercises
 
 ### Challenge 1: Create Custom Security Test Suite
 
@@ -1290,7 +1290,7 @@ class SecurityMonitoring:
 
 ---
 
-## ✅ Completion Checklist
+## Completion Checklist
 
 - [ ] Can test for OWASP Top 10 vulnerabilities
 - [ ] Can test authentication and authorization security
@@ -1302,7 +1302,7 @@ class SecurityMonitoring:
 
 ---
 
-## 💡 Pro Tips
+## Pro Tips
 
 1. **Start with OWASP Top 10** - Focus on the most common vulnerabilities
 2. **Use automated tools** - Combine manual testing with automated scanning
@@ -1312,7 +1312,7 @@ class SecurityMonitoring:
 
 ---
 
-## 📚 Next Steps
+## Next Steps
 
 **Continue building your skills:**
 
@@ -1321,6 +1321,6 @@ class SecurityMonitoring:
 
 ---
 
-**🎉 Congratulations!** You now understand security testing and can identify and prevent common web application vulnerabilities!
+**Congratulations!** You now understand security testing and can identify and prevent common web application vulnerabilities!
 
 **Next Lab:** [Lab 15: Rate Limiting & Production Monitoring (Python)](LAB_15_Rate_Limiting_Production_Python.md)

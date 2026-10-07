@@ -2,17 +2,18 @@
 
 **Testing Complete User Journeys**
 
-> **💡 Language Selection**: This guide includes both Python and JavaScript examples. Both are expanded by default so you can see all approaches. Click the language tabs to collapse sections you don't need.
+> **Language Selection**: This guide includes both Python and JavaScript examples. Both are expanded by default so you can see all approaches. Click the language tabs to collapse sections you don't need.
 
 ## Your Progress
 
-[████████████░░░░░░░░] 60% complete
+You are on Stage 3 of 5 (Stage 0 is the foundation).
 
-✅ Stage 1: Unit Tests (completed)<br>
-✅ Stage 2: Integration Tests (completed)<br>
-→ **Stage 3: E2E Testing** (you are here)<br>
-⬜ Stage 4: Performance & Security<br>
-⬜ Stage 5: Capstone
+- Stage 0: Inclusion First (completed)
+- Stage 1: Unit Tests (completed)
+- Stage 2: Integration Tests (completed)
+- Stage 3: API & E2E Testing (you are here)
+- Stage 4: Performance, Security & Accessibility (not started)
+- Stage 5: Capstone (not started)
 
 **Estimated time remaining:** 5-7 hours (core content) + 3-5 hours (optional exercises)
 
@@ -95,7 +96,7 @@ Imagine you're testing a restaurant. Unit tests would be like testing each chef 
 ### E2E vs Integration: The Key Difference
 
 <details open>
-<summary><strong>🐍 Python</strong></summary>
+<summary><strong>Python</strong></summary>
 
 ```python
 # Integration Test - Tests API endpoints
@@ -124,7 +125,7 @@ async def test_user_creates_post():
 </details>
 
 <details open>
-<summary><strong>☕ JavaScript</strong></summary>
+<summary><strong>JavaScript</strong></summary>
 
 ```javascript
 // Integration Test - Tests API endpoints
@@ -175,7 +176,7 @@ Think of Playwright like being a puppet master for a browser. You can:
 ### Basic Playwright Test Structure
 
 <details open>
-<summary><strong>🐍 Python</strong></summary>
+<summary><strong>Python</strong></summary>
 
 ```python
 async def test_user_can_create_post(page):
@@ -193,7 +194,7 @@ async def test_user_can_create_post(page):
 </details>
 
 <details open>
-<summary><strong>☕ JavaScript</strong></summary>
+<summary><strong>JavaScript</strong></summary>
 
 ```javascript
 test("user can create post", async ({ page }) => {
@@ -223,7 +224,7 @@ test("user can create post", async ({ page }) => {
 ### Common Playwright Actions
 
 <details open>
-<summary><strong>🐍 Python</strong></summary>
+<summary><strong>Python</strong></summary>
 
 ```python
 # Navigation
@@ -246,7 +247,7 @@ page.screenshot(path="test-result.png")
 </details>
 
 <details open>
-<summary><strong>☕ JavaScript</strong></summary>
+<summary><strong>JavaScript</strong></summary>
 
 ```javascript
 // Navigation
@@ -278,7 +279,7 @@ E2E tests must handle:
 - **User interactions**: Clicking, typing
 
 <details open>
-<summary><strong>🐍 Python</strong></summary>
+<summary><strong>Python</strong></summary>
 
 ```python
 # Wait for element to appear
@@ -295,7 +296,7 @@ with page.expect_response("**/api/posts") as response:
 </details>
 
 <details open>
-<summary><strong>☕ JavaScript</strong></summary>
+<summary><strong>JavaScript</strong></summary>
 
 ```javascript
 // Wait for element to appear
@@ -322,7 +323,7 @@ Think of Page Object Model like having blueprints for each page of your app. Ins
 
 ### Why Use Page Object Model?
 
-**Without POM (❌ Brittle):**
+**Without POM (Brittle):**
 
 ```python
 # Every test duplicates selectors
@@ -336,7 +337,7 @@ def test_register():
     # If selector changes, must update ALL tests!
 ```
 
-**With POM (✅ Maintainable):**
+**With POM (Maintainable):**
 
 ```python
 # Update selector in ONE place
@@ -392,7 +393,7 @@ interactions (react, edit, delete, comment, repost).
 
 Now let's see these concepts in real code! Choose your track:
 
-> **⚠️ Before you run anything below:** E2E tests need the app running, and the backend specifically needs `TESTING=true` (plain `./start-dev.sh` with no `backend/.env` leaves it unset, which disables the `/api/dev/reset` endpoint and rate-limit allowances these tests depend on). See [Playwright Quick Start](../../docs/guides/PLAYWRIGHT_QUICKSTART.md) for the full setup.
+> **Before you run anything below:** E2E tests need the app running, and the backend specifically needs `TESTING=true` (plain `./start-dev.sh` with no `backend/.env` leaves it unset, which disables the `/api/dev/reset` endpoint and rate-limit allowances these tests depend on). See [Playwright Quick Start](../../docs/guides/PLAYWRIGHT_QUICKSTART.md) for the full setup.
 
 ### Python Track: E2E Testing with Playwright
 
@@ -814,7 +815,7 @@ test("user can view profile", async ({ page }) => {
 
 <h2 id="part-7-additional-patterns">Part 7: Additional Patterns</h2>
 
-**📝 Note:** The patterns below are **additional enhancements** to your E2E testing skills. All the **core concepts** needed to meet the Stage 3 success criteria are covered in Parts 1-6 above.
+**Note:** The patterns below are **additional enhancements** to your E2E testing skills. All the **core concepts** needed to meet the Stage 3 success criteria are covered in Parts 1-6 above.
 
 These patterns enhance your E2E testing capabilities:
 
@@ -936,14 +937,14 @@ You're ready for Stage 4 when you can:
 
 ### Hands-On Practice
 
-**🐍 Python Track:**
+**Python Track:**
 
 - [Lab 9: Basic E2E Testing (Python)](exercises/LAB_09_Basic_E2E_Testing_Python.md)
 - [Lab 10: Advanced E2E Patterns (Python)](exercises/LAB_10_Advanced_E2E_Patterns_Python.md)
 - [Lab 11: Cross-Browser Testing (Python)](exercises/LAB_11_Cross_Browser_Testing_Python.md)
 - [Lab 12: E2E Test Organization (Python)](exercises/LAB_12_E2E_Test_Organization_Python.md)
 
-**🟨 JavaScript Track:**
+**JavaScript Track:**
 
 - [Lab 9: Basic E2E Testing (JavaScript)](exercises/LAB_09_Basic_E2E_Testing_JavaScript.md)
 - [Lab 10: Advanced E2E Patterns (JavaScript)](exercises/LAB_10_Advanced_E2E_Patterns_JavaScript.md)
@@ -1060,4 +1061,4 @@ You now understand how to test complete user journeys!
 
 ---
 
-_Pro tip: E2E testing is where QA engineers really shine. Master this, and you're ready for senior roles! 🚀_
+_Pro tip: E2E testing is where QA engineers really shine. Master this, and you're ready for senior roles!_

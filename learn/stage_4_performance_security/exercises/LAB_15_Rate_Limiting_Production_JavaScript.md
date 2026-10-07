@@ -1,17 +1,17 @@
-# 🧪 Lab 15: Rate Limiting Testing (JavaScript)
+# Lab 15: Rate Limiting Testing (JavaScript)
 
 **Estimated Time:** 60-90 minutes<br>
 **Difficulty:** Advanced<br>
-**Language:** 🟨 JavaScript<br>
+**Language:** JavaScript<br>
 **Prerequisites:** Lab 14 completed
 
-**💡 Need Python instead?** Try [Lab 15: Rate Limiting Testing (Python)](LAB_15_Rate_Limiting_Production_Python.md)!
+**Need Python instead?** Try [Lab 15: Rate Limiting Testing (Python)](LAB_15_Rate_Limiting_Production_Python.md)!
 
 **What This Adds:** Master rate limiting testing to ensure your application can handle high traffic and prevent abuse. Learn to test and implement rate limiting strategies for production applications.
 
 ---
 
-<h2 id="what-youll-learn">🎯 What You'll Learn</h2>
+<h2 id="what-youll-learn">What You'll Learn</h2>
 
 - How security features (like rate limiting) affect your tests
 - Why tests pass individually but fail together
@@ -22,7 +22,7 @@
 
 ---
 
-<h2 id="background-when-your-code-works-too-well">📚 Background: When Your Code Works TOO Well</h2>
+<h2 id="background-when-your-code-works-too-well">Background: When Your Code Works TOO Well</h2>
 
 ### The Scenario
 
@@ -42,13 +42,13 @@ app.post(
 );
 ```
 
-**Great for security!** ✅ Prevents attackers from trying 1000 passwords per second.
+**Great for security!** Prevents attackers from trying 1000 passwords per second.
 
-**But then your tests start failing...** ❌
+**But then your tests start failing...**
 
 ---
 
-<h2 id="the-problem">🐛 The Problem</h2>
+<h2 id="the-problem">The Problem</h2>
 
 ### Test Results That Don't Make Sense
 
@@ -63,11 +63,11 @@ $ npx playwright test
 Error: 429 Too Many Requests
 ```
 
-**What?!** 🤔 The code didn't change, why does it fail?
+**What?!** The code didn't change, why does it fail?
 
 ---
 
-<h2 id="lab-exercise-1-reproduce-the-issue">🔍 Lab Exercise 1: Reproduce the Issue</h2>
+<h2 id="lab-exercise-1-reproduce-the-issue">Lab Exercise 1: Reproduce the Issue</h2>
 
 ### Step 1: Check Current Rate Limits
 
@@ -111,11 +111,11 @@ npx playwright test auth.spec.js
 
 **You should see some tests failing with 429 errors.**
 
-✅ **Checkpoint:** You can reproduce the rate limit issue
+**Checkpoint:** You can reproduce the rate limit issue
 
 ---
 
-<h2 id="lab-exercise-2-understand-the-problem">🔍 Lab Exercise 2: Understand the Problem</h2>
+<h2 id="lab-exercise-2-understand-the-problem">Lab Exercise 2: Understand the Problem</h2>
 
 ### Step 1: Check Rate Limit Headers
 
@@ -187,11 +187,11 @@ test.describe("Rate Limit Testing", () => {
 npx playwright test test-rate-limits.spec.js --headed
 ```
 
-✅ **Checkpoint:** You understand how rate limits work
+**Checkpoint:** You understand how rate limits work
 
 ---
 
-<h2 id="lab-exercise-3-fix-the-problem">🔍 Lab Exercise 3: Fix the Problem</h2>
+<h2 id="lab-exercise-3-fix-the-problem">Lab Exercise 3: Fix the Problem</h2>
 
 > **Note:** Solutions 1 and 3 below use a `DISABLE_RATE_LIMITS` env var and a `/api/test/reset-rate-limits` endpoint as teaching illustrations of the *pattern* — neither actually exists in Testbook's backend, so writing them as shown won't change real rate-limiting behavior against this app. The mechanism Testbook actually implements is the `TESTING` environment variable read in `backend/routers/auth.py` (`TESTING_MODE = os.getenv("TESTING", "false").lower() == "true"`), which raises `LOGIN_RATE`/`REGISTER_RATE` from 20/15 per minute to 1000/500 per minute — start the backend with `TESTING=true uvicorn main:app --reload --port 8000` to get that real, working relief. Treat Solutions 1-3 below as illustrative alternative designs for apps that don't expose an environment toggle like Testbook's.
 
@@ -380,7 +380,7 @@ test("should reset rate limits between tests", async ({
 
 ---
 
-<h2 id="lab-exercise-4-implement-the-best-solution">🔍 Lab Exercise 4: Implement the Best Solution</h2>
+<h2 id="lab-exercise-4-implement-the-best-solution">Lab Exercise 4: Implement the Best Solution</h2>
 
 ### Step 1: Create a Test Configuration
 
@@ -606,7 +606,7 @@ test.describe("Authentication with Rate Limit Handling", () => {
 
 ---
 
-<h2 id="lab-exercise-5-test-the-solution">🔍 Lab Exercise 5: Test the Solution</h2>
+<h2 id="lab-exercise-5-test-the-solution">Lab Exercise 5: Test the Solution</h2>
 
 ### Step 1: Run the Tests
 
@@ -631,22 +631,22 @@ for i in {1..5}; do
 done
 ```
 
-✅ **Checkpoint:** All tests should pass consistently
+**Checkpoint:** All tests should pass consistently
 
 ---
 
-<h2 id="what-you-learned">🎓 What You Learned</h2>
+<h2 id="what-you-learned">What You Learned</h2>
 
-- ✅ How rate limiting affects test execution
-- ✅ Why tests pass individually but fail together
-- ✅ How to implement retry logic for rate-limited requests
-- ✅ How to use different IP addresses to avoid rate limits
-- ✅ How to create test-specific configurations
-- ✅ How to handle rate limits in CI/CD environments
+- How rate limiting affects test execution
+- Why tests pass individually but fail together
+- How to implement retry logic for rate-limited requests
+- How to use different IP addresses to avoid rate limits
+- How to create test-specific configurations
+- How to handle rate limits in CI/CD environments
 
 ---
 
-<h2 id="best-practices">💡 Best Practices</h2>
+<h2 id="best-practices">Best Practices</h2>
 
 ### 1. Use Test-Specific Rate Limits
 
@@ -705,7 +705,7 @@ test("should check rate limit headers", async ({ page }) => {
 
 ---
 
-<h2 id="troubleshooting">🐛 Troubleshooting</h2>
+<h2 id="troubleshooting">Troubleshooting</h2>
 
 ### Problem: Tests Still Fail with Rate Limits
 
@@ -742,7 +742,7 @@ env:
 
 ---
 
-<h2 id="completion-checklist">✅ Completion Checklist</h2>
+<h2 id="completion-checklist">Completion Checklist</h2>
 
 - [ ] Reproduced the rate limit issue
 - [ ] Understood how rate limits work
@@ -754,7 +754,7 @@ env:
 
 ---
 
-<h2 id="key-takeaways">🎯 Key Takeaways</h2>
+<h2 id="key-takeaways">Key Takeaways</h2>
 
 1. **Rate limiting is a security feature** - Don't disable it in production
 2. **Tests need special handling** - Use test-specific configurations
@@ -772,6 +772,6 @@ env:
 
 ---
 
-**🎉 Congratulations!** You can now handle rate limiting in your tests like a pro!
+**Congratulations!** You can now handle rate limiting in your tests like a pro!
 
 **Next Lab:** Move to [Stage 5: Capstone](../../stage_5_capstone/README.md) or explore other labs

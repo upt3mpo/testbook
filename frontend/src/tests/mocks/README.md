@@ -1,4 +1,4 @@
-# 🎭 MSW (Mock Service Worker) Mocks
+# MSW (Mock Service Worker) Mocks
 
 **Network mocking for component tests**
 
@@ -6,7 +6,7 @@ These files provide MSW configuration for testing React components without a run
 
 ---
 
-## 📁 Files
+## Files
 
 - `handlers.js` - API endpoint mock handlers
 - `server.js` - MSW server setup for Node.js tests
@@ -14,7 +14,7 @@ These files provide MSW configuration for testing React components without a run
 
 ---
 
-## 🚀 Usage
+## Usage
 
 ### Basic Setup
 
@@ -76,7 +76,7 @@ test('handles error state', async () => {
 
 ---
 
-## 🎓 Learn More
+## Learn More
 
 - [Lab 6B: Advanced Component Testing](../../../../learn/stage_2_integration/exercises/LAB_06_Component_Testing_JavaScript.md) - Complete MSW tutorial
 - [MSW Documentation](https://mswjs.io/docs/) - Official MSW docs
@@ -84,12 +84,12 @@ test('handles error state', async () => {
 
 ---
 
-## 💡 Key Benefits
+## Key Benefits
 
 **Why use MSW instead of axios.mock?**
 
-✅ **More realistic** - Intercepts at network level
-✅ **Framework agnostic** - Works with any HTTP client
-✅ **Reusable** - Same handlers for different tests
-✅ **Better debugging** - See actual network requests
-✅ **Development use** - Can use in dev mode too
+**More realistic** - Intercepts at network level
+**Framework agnostic** - Works with any HTTP client
+**Reusable** - Same handlers for different tests
+**Better debugging** - See actual network requests
+**Development use** - Can use in dev mode too

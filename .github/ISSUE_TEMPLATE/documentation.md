@@ -10,7 +10,7 @@ Template Version: 2.0
 Last Updated: October 2025
 -->
 
-## 📄 Documentation Location
+## Documentation Location
 
 **Which document?**
 [e.g. README.md, LAB_05_API_Endpoint_Testing_Python.md, TESTING_CHEATSHEET.md]
@@ -21,7 +21,7 @@ Last Updated: October 2025
 **Link to the file:**
 [Paste the GitHub link or relative path]
 
-## 🐛 Issue Type
+## Issue Type
 
 - [ ] Typo or grammar
 - [ ] Broken link
@@ -31,14 +31,14 @@ Last Updated: October 2025
 - [ ] Code example doesn't work
 - [ ] Other: ___________
 
-## 📋 Current Content
+## Current Content
 
 **What does it say now?**
 ```
 Quote the current text or describe it
 ```
 
-## ✅ Suggested Fix
+## Suggested Fix
 
 **What should it say?**
 ```
@@ -47,17 +47,17 @@ Your suggested correction or improvement
 
 If changing code blocks, include a minimal diff or snippet.
 
-## 🎓 Context
+## Context
 
 **Why is this important?**
 - Impact on learners: [e.g. causes confusion, blocks progress, misleading]
 - Who it affects: [e.g. beginners, all users, Windows users]
 
-## 📝 Additional Context
+## Additional Context
 
 Any other relevant information (screenshots, links). Please avoid pasting secrets or tokens.
 
-## ✅ Contribution
+## Contribution
 
 - [ ] I'd be willing to submit a PR to fix this
 - [ ] I just want to report the issue

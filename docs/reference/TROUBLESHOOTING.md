@@ -1,4 +1,4 @@
-# 🔧 Troubleshooting & Common Mistakes Guide
+# Troubleshooting & Common Mistakes Guide
 
 **Complete reference for fixing errors and avoiding common pitfalls**
 
@@ -6,7 +6,7 @@ This comprehensive guide covers both technical troubleshooting (specific error m
 
 ---
 
-## 📑 Quick Index
+## Quick Index
 
 ### Technical Troubleshooting
 
@@ -32,7 +32,7 @@ This comprehensive guide covers both technical troubleshooting (specific error m
 
 ---
 
-<h2 id="python-virtual-environment-errors">🐍 Python Virtual Environment Errors</h2>
+<h2 id="python-virtual-environment-errors">Python Virtual Environment Errors</h2>
 
 ### Error: `command not found: pytest`
 
@@ -97,7 +97,7 @@ pip install -r requirements.txt
 
 ---
 
-<h2 id="nodejs-npm-errors">📦 Node.js & npm Errors</h2>
+<h2 id="nodejs-npm-errors">Node.js & npm Errors</h2>
 
 ### Error: `npm: command not found`
 
@@ -160,7 +160,7 @@ npm install
 
 ---
 
-<h2 id="docker-permissions-errors">🐳 Docker & Permissions Errors</h2>
+<h2 id="docker-permissions-errors">Docker & Permissions Errors</h2>
 
 ### Error: `permission denied while trying to connect`
 
@@ -203,7 +203,7 @@ docker compose up  # No hyphen
 
 ---
 
-<h2 id="database-issues"> 🗄️ Database Issues</h2>
+<h2 id="database-issues">Database Issues</h2>
 
 ### Error: `database is locked`
 
@@ -250,7 +250,7 @@ python seed.py  # Creates tables and seed data
 
 ---
 
-<h2 id="port-conflicts">🔌 Port Conflicts</h2>
+<h2 id="port-conflicts">Port Conflicts</h2>
 
 ### Error: `Address already in use`
 
@@ -279,7 +279,7 @@ uvicorn main:app --port 8001
 
 ---
 
-<h2 id="test-execution-errors">🧪 Test Execution Errors</h2>
+<h2 id="test-execution-errors">Test Execution Errors</h2>
 
 ### Error: `pytest: command not found`
 
@@ -313,7 +313,7 @@ pytest tests/  # Not test/
 
 ---
 
-<h2 id="coverage-reporting-errors">📊 Coverage & Reporting Errors</h2>
+<h2 id="coverage-reporting-errors">Coverage & Reporting Errors</h2>
 
 ### Error: `No source for code`
 
@@ -348,7 +348,7 @@ open htmlcov/index.html  # macOS
 
 ---
 
-<h2 id="playwright-issues">🎭 Playwright Issues</h2>
+<h2 id="playwright-issues">Playwright Issues</h2>
 
 > If every test times out or 403s regardless of selector, check first whether the backend is running with `TESTING=true` — see [PLAYWRIGHT_QUICKSTART.md](../guides/PLAYWRIGHT_QUICKSTART.md#prerequisites).
 
@@ -401,7 +401,7 @@ await page.waitForLoadState('networkidle')
 
 ---
 
-<h2 id="platform-specific-issues">💻 Platform-Specific Issues</h2>
+<h2 id="platform-specific-issues">Platform-Specific Issues</h2>
 
 ### Windows: PowerShell Execution Policy
 
@@ -450,7 +450,7 @@ nvm install node
 
 ---
 
-<h2 id="environment-setup-mistakes">🔧 Environment Setup Mistakes</h2>
+<h2 id="environment-setup-mistakes">Environment Setup Mistakes</h2>
 
 ### Mistake 1: Not Activating Virtual Environment
 
@@ -537,7 +537,7 @@ npx playwright test
 
 ---
 
-<h2 id="testing-command-mistakes">🧪 Testing Command Mistakes</h2>
+<h2 id="testing-command-mistakes">Testing Command Mistakes</h2>
 
 ### Mistake 1: Running All Tests When You Want One
 
@@ -598,7 +598,7 @@ pytest --lf  # Run last failed tests only
 
 ---
 
-<h2 id="python-pytest-mistakes">🐍 Python/Pytest Mistakes</h2>
+<h2 id="python-pytest-mistakes">Python/Pytest Mistakes</h2>
 
 ### Mistake 1: Not Using Fixtures
 
@@ -681,7 +681,7 @@ def test_create_post_too_long(client, auth_headers):
 
 ---
 
-<h2 id="playwright-e2e-mistakes">🎭 Playwright/E2E Mistakes</h2>
+<h2 id="playwright-e2e-mistakes">Playwright/E2E Mistakes</h2>
 
 ### Mistake 1: Using Hard Waits
 
@@ -730,7 +730,7 @@ await expect(page.locator("text=Success")).toBeVisible(); // Reliable
 
 ---
 
-<h2 id="test-writing-mistakes"> ✍️ Test Writing Mistakes</h2>
+<h2 id="test-writing-mistakes">Test Writing Mistakes</h2>
 
 ### Mistake 1: Testing Implementation, Not Behavior
 
@@ -819,7 +819,7 @@ def test_create_post():
 
 ---
 
-<h2 id="git-version-control-mistakes">🔄 Git & Version Control Mistakes</h2>
+<h2 id="git-version-control-mistakes">Git & Version Control Mistakes</h2>
 
 ### Mistake 1: Committing Test Failures
 
@@ -886,7 +886,7 @@ git commit -m "Update README with new installation instructions"
 
 ---
 
-<h2 id="conceptual-mistakes">🧠 Conceptual Mistakes</h2>
+<h2 id="conceptual-mistakes">Conceptual Mistakes</h2>
 
 ### Mistake 1: Testing Everything with E2E
 
@@ -960,7 +960,7 @@ def create_user(email, password):
 
 ---
 
-## 💡 Quick Tips
+## Quick Tips
 
 ### When You're Stuck
 
@@ -979,7 +979,7 @@ def create_user(email, password):
 
 ---
 
-## 📚 Related Resources
+## Related Resources
 
 - [Testing Guide](../guides/TESTING_GUIDE.md) - Comprehensive testing examples
 - [Testing Patterns](../concepts/TESTING_PATTERNS.md) - Advanced testing techniques
@@ -988,4 +988,4 @@ def create_user(email, password):
 
 ---
 
-**Remember:** Every error is a learning opportunity! The key is to understand why it happened and how to prevent it in the future. 🚀
+**Remember:** Every error is a learning opportunity! The key is to understand why it happened and how to prevent it in the future.

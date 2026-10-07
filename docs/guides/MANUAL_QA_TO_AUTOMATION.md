@@ -61,7 +61,7 @@ def test_login_success(client):
 
 ### When to Automate
 
-✅ **Good candidates for automation:**
+**Good candidates for automation:**
 
 - Repetitive tests run frequently
 - Regression tests for stable features
@@ -70,7 +70,7 @@ def test_login_success(client):
 - Performance and load tests
 - Tests that run overnight or on schedule
 
-❌ **Poor candidates for automation:**
+**Poor candidates for automation:**
 
 - One-time tests
 - Tests for rapidly changing features
@@ -700,4 +700,4 @@ Now you're adding **automation** to amplify your impact. You'll:
 - **Stuck on a lab:** Check the solutions/ directory
 - **General learning:** See [learn/README.md](../../learn/README.md#choose-your-track)
 
-**Remember:** Every expert was once a beginner. You've got this! 🚀
+**Remember:** Every expert was once a beginner. You've got this!

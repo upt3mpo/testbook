@@ -2,17 +2,18 @@
 
 **Testing Components Working Together**
 
-> **💡 Language Selection**: This guide includes both Python and JavaScript examples. Both are expanded by default so you can see all approaches. Click the language tabs to collapse sections you don't need.
+> **Language Selection**: This guide includes both Python and JavaScript examples. Both are expanded by default so you can see all approaches. Click the language tabs to collapse sections you don't need.
 
 ## Your Progress
 
-[████████░░░░░░░░░░░░] 40% complete
+You are on Stage 2 of 5 (Stage 0 is the foundation).
 
-✅ Stage 1: Unit Tests (completed)<br>
-→ **Stage 2: Integration Tests** (you are here)<br>
-⬜ Stage 3: E2E Testing<br>
-⬜ Stage 4: Performance & Security<br>
-⬜ Stage 5: Capstone<br>
+- Stage 0: Inclusion First (completed)
+- Stage 1: Unit Tests (completed)
+- Stage 2: Integration Tests (you are here)
+- Stage 3: API & E2E Testing (not started)
+- Stage 4: Performance, Security & Accessibility (not started)
+- Stage 5: Capstone (not started)
 
 **Estimated time remaining:** 5-7 hours (core content) + 3-5 hours (optional exercises)
 
@@ -101,7 +102,7 @@ Imagine you're testing a restaurant kitchen. Unit tests would be like testing ea
 ### Unit vs Integration: The Key Difference
 
 <details open>
-<summary><strong>🐍 Python</strong></summary>
+<summary><strong>Python</strong></summary>
 
 ```python
 # Unit Test - Tests ONE function in isolation
@@ -124,7 +125,7 @@ def test_user_login_workflow():
 </details>
 
 <details open>
-<summary><strong>☕ JavaScript</strong></summary>
+<summary><strong>JavaScript</strong></summary>
 
 ```javascript
 // Unit Test - Tests ONE function in isolation
@@ -175,7 +176,7 @@ Think of API testing like testing a restaurant's order system:
 ### HTTP Testing Pattern
 
 <details open>
-<summary><strong>🐍 Python</strong></summary>
+<summary><strong>Python</strong></summary>
 
 ```python
 def test_create_post_api():
@@ -195,7 +196,7 @@ def test_create_post_api():
 </details>
 
 <details open>
-<summary><strong>☕ JavaScript</strong></summary>
+<summary><strong>JavaScript</strong></summary>
 
 ```javascript
 test("create post API", async () => {
@@ -268,7 +269,7 @@ Think of database integration like testing a library system:
 ### Database Testing Pattern
 
 <details open>
-<summary><strong>🐍 Python</strong></summary>
+<summary><strong>Python</strong></summary>
 
 ```python
 def test_database_operations():
@@ -292,7 +293,7 @@ def test_database_operations():
 </details>
 
 <details open>
-<summary><strong>☕ JavaScript</strong></summary>
+<summary><strong>JavaScript</strong></summary>
 
 ```javascript
 test("database operations", async () => {
@@ -328,7 +329,7 @@ test("database operations", async () => {
 ### Test Data Management
 
 <details open>
-<summary><strong>🐍 Python</strong></summary>
+<summary><strong>Python</strong></summary>
 
 ```python
 # Without factories (repetitive)
@@ -347,7 +348,7 @@ def test_user_posts(user_factory):
 </details>
 
 <details open>
-<summary><strong>☕ JavaScript</strong></summary>
+<summary><strong>JavaScript</strong></summary>
 
 ```javascript
 // Without factories (repetitive)
@@ -375,7 +376,7 @@ test("user posts", async () => {
 Now let's see these concepts in real code! Choose your track:
 
 <details open>
-<summary><strong>🐍 Python Track: Testing API Endpoints</strong></summary>
+<summary><strong>Python Track: Testing API Endpoints</strong></summary>
 
 **Open `backend/tests/integration/test_api_auth.py` and find `test_register_new_user_success`:**
 
@@ -479,7 +480,7 @@ def test_register_new_user_success(self, client):
 </details>
 
 <details open>
-<summary><strong>☕ JavaScript Track: Testing API Contracts</strong></summary>
+<summary><strong>JavaScript Track: Testing API Contracts</strong></summary>
 
 **Open `frontend/src/tests/unit/Register.test.jsx` and find the registration integration test:**
 
@@ -593,7 +594,7 @@ it("handles registration API errors gracefully", async () => {
 </details>
 
 <details open>
-<summary><strong>🔄 Hybrid Track</strong></summary>
+<summary><strong>Hybrid Track</strong></summary>
 
 **Test the full stack!** This is what most QA roles require.
 
@@ -708,7 +709,7 @@ test("GET /api/users/:id contract validation", async () => {
 
 <h2 id="part-6-additional-patterns">Part 6: Additional Patterns</h2>
 
-**📝 Note:** The patterns below are **additional enhancements** to your integration testing skills. All the **core concepts** needed to meet the Stage 2 success criteria are covered in Parts 1-5 above.
+**Note:** The patterns below are **additional enhancements** to your integration testing skills. All the **core concepts** needed to meet the Stage 2 success criteria are covered in Parts 1-5 above.
 
 These patterns enhance your testing capabilities:
 
@@ -717,7 +718,7 @@ These patterns enhance your testing capabilities:
 Create realistic test data easily:
 
 <details open>
-<summary><strong>🐍 Python</strong></summary>
+<summary><strong>Python</strong></summary>
 
 **Real factories from `backend/tests/factories.py`:**
 
@@ -784,7 +785,7 @@ users = UserFactory.create_batch(db_session, 10)
 </details>
 
 <details open>
-<summary><strong>☕ JavaScript</strong></summary>
+<summary><strong>JavaScript</strong></summary>
 
 ```javascript
 // Without factory (repetitive)
@@ -809,7 +810,7 @@ test("user posts", async () => {
 ### MSW (Mock Service Worker) for API Mocking
 
 <details open>
-<summary><strong>☕ JavaScript</strong></summary>
+<summary><strong>JavaScript</strong></summary>
 
 **Real MSW handlers from `frontend/src/tests/mocks/handlers.js`:**
 
@@ -912,7 +913,7 @@ test("component fetches data", async () => {
 ### API Contract Validation
 
 <details open>
-<summary><strong>☕ JavaScript</strong></summary>
+<summary><strong>JavaScript</strong></summary>
 
 ```javascript
 // Contract validation with OpenAPI schema
@@ -956,7 +957,7 @@ test("PostList component fetches and displays data", async () => {
 Group related tests together:
 
 <details open>
-<summary><strong>🐍 Python</strong></summary>
+<summary><strong>Python</strong></summary>
 
 ```python
 class TestPostAPI:
@@ -975,7 +976,7 @@ class TestPostAPI:
 </details>
 
 <details open>
-<summary><strong>☕ JavaScript</strong></summary>
+<summary><strong>JavaScript</strong></summary>
 
 ```javascript
 describe("Post API", () => {
@@ -1009,16 +1010,16 @@ Instead of writing individual test cases, Schemathesis reads your OpenAPI schema
 - Edge cases are handled
 - Security vulnerabilities are found (fuzzing)
 
-**Current Status:** ⚠️ **Skipped** (OpenAPI 3.1.0 compatibility)
+**Current Status:** **Skipped** (OpenAPI 3.1.0 compatibility)
 
 FastAPI 0.115+ uses OpenAPI 3.1.0, but Schemathesis only has experimental support. The test is skipped until full support is available.
 
 **Should I learn this?**
 
-- 📚 **Yes!** Read [Contract Testing Guide](../../docs/guides/CONTRACT_TESTING.md) to understand the concept
-- 🎯 **For now:** Focus on the 127 integration tests that ARE running
-- 🔄 **Alternative:** Frontend contract testing works today! See [Lab 8: Contract Testing Foundations (JavaScript)](exercises/LAB_08_Contract_Testing_Foundations_JavaScript.md)
-- 💼 **Career value:** Understanding contract testing is a professional differentiator
+- **Yes!** Read [Contract Testing Guide](../../docs/guides/CONTRACT_TESTING.md) to understand the concept
+- **For now:** Focus on the 127 integration tests that ARE running
+- **Alternative:** Frontend contract testing works today! See [Lab 8: Contract Testing Foundations (JavaScript)](exercises/LAB_08_Contract_Testing_Foundations_JavaScript.md)
+- **Career value:** Understanding contract testing is a professional differentiator
 
 ---
 
@@ -1078,14 +1079,14 @@ You're ready for Stage 3 when you can:
 
 ### Hands-On Practice
 
-**🐍 Python Track:**
+**Python Track:**
 
 - [Lab 5: API Endpoint Testing (Python)](exercises/LAB_05_API_Endpoint_Testing_Python.md)
 - [Lab 6: Advanced API Testing (Python)](exercises/LAB_06_Advanced_API_Testing_Python.md)
 - [Lab 7: Test Data Management (Python)](exercises/LAB_07_Test_Data_Management_Python.md)
 - [Lab 8: Contract Testing Foundations (Python)](exercises/LAB_08_Contract_Testing_Foundations_Python.md)
 
-**🟨 JavaScript Track:**
+**JavaScript Track:**
 
 - [Lab 5: API Endpoint Testing (JavaScript)](exercises/LAB_05_API_Endpoint_Testing_JavaScript.md)
 - [Lab 6: Component Testing (JavaScript)](exercises/LAB_06_Component_Testing_JavaScript.md)
@@ -1198,8 +1199,8 @@ Before moving to Stage 3, answer these:
 
 You now understand how to test multi-component systems!
 
-### 👉 [Continue to Stage 3: API & E2E Testing](../stage_3_api_e2e/README.md)
+### [Continue to Stage 3: API & E2E Testing](../stage_3_api_e2e/README.md)
 
 ---
 
-*Pro tip: Integration tests are where most QA engineers spend their time. Master this, and you're job-ready! 💼*
+*Pro tip: Integration tests are where most QA engineers spend their time. Master this, and you're job-ready!*

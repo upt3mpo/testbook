@@ -1,4 +1,4 @@
-# 🤔 Stage 3 Reflection: API & E2E Testing
+# Stage 3 Reflection: API & E2E Testing
 
 Document your insights from exploring browser automation and contract testing.
 

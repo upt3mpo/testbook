@@ -1,10 +1,10 @@
-# ⚡ Pytest Quick Reference
+# Pytest Quick Reference
 
 **One-page reference for pytest commands and patterns**
 
 ---
 
-<h2 id="essential-commands">🚀 Essential Commands</h2>
+<h2 id="essential-commands">Essential Commands</h2>
 
 ### Running Tests
 
@@ -92,7 +92,7 @@ pytest --no-header --no-summary
 
 ---
 
-<h2 id="coverage">📊 Coverage</h2>
+<h2 id="coverage">Coverage</h2>
 
 > **Note:** Coverage is opt-in! It's not included in pytest.ini by default to keep individual test runs clean. Use explicit flags when you need coverage data.
 
@@ -139,7 +139,7 @@ pytest -vv -s tests/unit/test_auth.py::test_password_is_hashed
 
 ---
 
-<h2 id="performance">⚡ Performance</h2>
+<h2 id="performance">Performance</h2>
 
 ```bash
 # Run tests in parallel (requires pytest-xdist)
@@ -155,7 +155,7 @@ pytest -m "not slow"
 
 ---
 
-<h2 id="finding-tests">🔍 Finding Tests</h2>
+<h2 id="finding-tests">Finding Tests</h2>
 
 ```bash
 # List all tests without running
@@ -173,7 +173,7 @@ pytest --fixtures
 
 ---
 
-## 📝 Test Structure Patterns
+## Test Structure Patterns
 
 ### Basic Test
 
@@ -240,7 +240,7 @@ def test_with_setup_teardown(tmp_path):
 
 ---
 
-## 🏷️ Markers
+## Markers
 
 ```python
 # Mark as unit test
@@ -272,7 +272,7 @@ def test_multiple():
 
 ---
 
-## 🎯 Assertions
+## Assertions
 
 ```python
 # Equality
@@ -320,7 +320,7 @@ with pytest.raises(ValueError):
 
 ---
 
-## 🔧 Common Fixtures
+## Common Fixtures
 
 ```python
 # Database session
@@ -346,7 +346,7 @@ def test_data(test_user, test_post):
 
 ---
 
-## 🐛 Debugging Tips
+## Debugging Tips
 
 ```python
 # Print values during test
@@ -367,7 +367,7 @@ pytest -l  # Shows locals on failure
 
 ---
 
-## 📋 Configuration (pytest.ini)
+## Configuration (pytest.ini)
 
 ```ini
 [pytest]
@@ -392,7 +392,7 @@ addopts =
 
 ---
 
-## 🚨 Common Issues
+## Common Issues
 
 ### Tests Not Found
 
@@ -433,7 +433,7 @@ grep "def test_user" tests/conftest.py
 
 ---
 
-## 📚 Related Resources
+## Related Resources
 
 - [Pytest Documentation](https://docs.pytest.org/)
 - [backend/tests/README.md](../../backend/tests/README.md) - Testbook test guide
@@ -441,7 +441,7 @@ grep "def test_user" tests/conftest.py
 
 ---
 
-## 💡 Pro Tips
+## Pro Tips
 
 1. **Use `-v` always** - Verbose output shows exactly what's running
 2. **Use `-x` when debugging** - Stop on first failure saves time
@@ -453,7 +453,7 @@ grep "def test_user" tests/conftest.py
 
 ---
 
-**🎯 Most Common Usage:**
+**Most Common Usage:**
 
 ```bash
 # While developing a specific test

@@ -1,17 +1,17 @@
-# 🧪 Lab 15: Rate Limiting Testing (Python)
+# Lab 15: Rate Limiting Testing (Python)
 
 **Estimated Time:** 60-90 minutes<br>
 **Difficulty:** Advanced<br>
-**Language:** 🐍 Python<br>
+**Language:** Python<br>
 **Prerequisites:** Lab 14 completed
 
-**💡 Need JavaScript instead?** Try [Lab 15: Rate Limiting Testing (JavaScript)](LAB_15_Rate_Limiting_Production_JavaScript.md)!
+**Need JavaScript instead?** Try [Lab 15: Rate Limiting Testing (JavaScript)](LAB_15_Rate_Limiting_Production_JavaScript.md)!
 
 **What This Adds:** Master rate limiting testing to ensure your application can handle high traffic and prevent abuse. Learn to test and implement rate limiting strategies for production applications.
 
 ---
 
-<h2 id="what-youll-learn">🎯 What You'll Learn</h2>
+<h2 id="what-youll-learn">What You'll Learn</h2>
 
 - How security features (like rate limiting) affect your tests
 - Why tests pass individually but fail together
@@ -22,7 +22,7 @@
 
 ---
 
-<h2 id="background-when-your-code-works-too-well">📚 Background: When Your Code Works TOO Well</h2>
+<h2 id="background-when-your-code-works-too-well">Background: When Your Code Works TOO Well</h2>
 
 ### The Scenario
 
@@ -35,13 +35,13 @@ def login(request: Request, ...):
     # Login logic
 ```
 
-**Great for security!** ✅ Prevents attackers from trying 1000 passwords per second.
+**Great for security!** Prevents attackers from trying 1000 passwords per second.
 
-**But then your tests start failing...** ❌
+**But then your tests start failing...**
 
 ---
 
-<h2 id="the-problem">🐛 The Problem</h2>
+<h2 id="the-problem">The Problem</h2>
 
 ### Test Results That Don't Make Sense
 
@@ -55,11 +55,11 @@ $ pytest tests/security/ -v
 ERROR: KeyError: 'access_token'
 ```
 
-**What?!** 🤔 The code didn't change, why does it fail?
+**What?!** The code didn't change, why does it fail?
 
 ---
 
-<h2 id="lab-exercise-1-reproduce-the-issue">🔍 Lab Exercise 1: Reproduce the Issue</h2>
+<h2 id="lab-exercise-1-reproduce-the-issue">Lab Exercise 1: Reproduce the Issue</h2>
 
 ### Step 1: Check Current Rate Limits
 
@@ -116,11 +116,11 @@ pytest tests/security/ -v
 
 **Expected:** Some tests fail with rate limit errors or KeyError: 'access_token'
 
-✅ **Checkpoint:** You can reproduce the issue
+**Checkpoint:** You can reproduce the issue
 
 ---
 
-## 💡 Understanding the Root Cause
+## Understanding the Root Cause
 
 ### The Auth Token Fixture
 
@@ -146,7 +146,7 @@ This matches what `tests/security/README.md` documents as the real cause: it isn
 
 ---
 
-<h2 id="lab-exercise-2-solutions">🔧 Lab Exercise 2: Solutions</h2>
+<h2 id="lab-exercise-2-solutions">Lab Exercise 2: Solutions</h2>
 
 ### Solution A: Testing Mode (Recommended)
 
@@ -208,7 +208,7 @@ cd ..
 pytest tests/security/ -v
 ```
 
-✅ **Checkpoint:** More tests should pass now!
+**Checkpoint:** More tests should pass now!
 
 ---
 
@@ -263,7 +263,7 @@ def slow_down_tests():
 
 ---
 
-<h2 id="lab-exercise-3-test-the-rate-limiting">🎓 Lab Exercise 3: Test the Rate Limiting</h2>
+<h2 id="lab-exercise-3-test-the-rate-limiting">Lab Exercise 3: Test the Rate Limiting</h2>
 
 ### Task: Verify Rate Limiting Actually Works
 
@@ -317,11 +317,11 @@ TESTING=true pytest tests/security/test_rate_limit_demo.py -v -s
 $env:TESTING='true'; pytest tests/security/test_rate_limit_demo.py -v -s
 ```
 
-✅ **Checkpoint:** You can see rate limiting in action!
+**Checkpoint:** You can see rate limiting in action!
 
 ---
 
-<h2 id="lab-exercise-4-understand-http-status-codes">🧠 Lab Exercise 4: Understand HTTP Status Codes</h2>
+<h2 id="lab-exercise-4-understand-http-status-codes">Lab Exercise 4: Understand HTTP Status Codes</h2>
 
 ### The 401 vs 403 Confusion
 
@@ -371,7 +371,7 @@ assert response.status_code in [401, 403]  # Accepts both valid auth errors
 
 ---
 
-<h2 id="lab-exercise-5-fix-a-real-issue">🎯 Lab Exercise 5: Fix a Real Issue</h2>
+<h2 id="lab-exercise-5-fix-a-real-issue">Lab Exercise 5: Fix a Real Issue</h2>
 
 ### Task: Make Tests Work With Rate Limiting
 
@@ -404,7 +404,7 @@ if not TESTING_MODE:
 
 ---
 
-<h2 id="debugging-exercise">🐛 Debugging Exercise</h2>
+<h2 id="debugging-exercise">Debugging Exercise</h2>
 
 ### Challenge: Why Does This Test Hang?
 
@@ -443,29 +443,29 @@ requests.post("/login", timeout=5)
 
 ---
 
-## 🎓 What You Learned
+## What You Learned
 
 ### Real-World Lessons
 
-✅ **Security features affect tests**
+**Security features affect tests**
 
 - Rate limiting, timeouts, size limits all impact test design
 - What works in development might fail in testing
 - Environment configuration is crucial
 
-✅ **Test isolation is hard**
+**Test isolation is hard**
 
 - Fixtures can interfere with each other
 - Shared resources (IP address) cause conflicts
 - Order of execution matters
 
-✅ **Fixture scope is tricky**
+**Fixture scope is tricky**
 
 - `scope="session"` doesn't mean what you think
 - Need careful design for truly shared state
 - Caching strategies help
 
-✅ **HTTP status codes matter**
+**HTTP status codes matter**
 
 - 401 vs 403 are both valid for auth errors
 - Tests should accept both
@@ -473,7 +473,7 @@ requests.post("/login", timeout=5)
 
 ---
 
-## 💪 Practice Challenges
+## Practice Challenges
 
 ### Challenge 1: Implement Request Size Limiting
 
@@ -524,7 +524,7 @@ Write tests for:
 
 ---
 
-## 🔗 Related Concepts
+## Related Concepts
 
 ### This Lab Connects To
 
@@ -550,7 +550,7 @@ Write tests for:
 
 ---
 
-## ✅ Lab Completion Checklist
+## Lab Completion Checklist
 
 - [ ] Understand how rate limiting affects tests
 - [ ] Can explain why tests pass individually but fail together
@@ -563,7 +563,7 @@ Write tests for:
 
 ---
 
-## 🎯 Key Takeaways
+## Key Takeaways
 
 ### The Paradox
 
@@ -593,14 +593,14 @@ Problem: Feature works, tests fail together
 
 **This isn't a bug - it's engineering!**
 
-- ✅ Rate limiting implemented correctly
-- ✅ Tests prove it works (by hitting limits!)
-- ✅ Infrastructure needs adjustment
-- ✅ Professional pattern: environment configuration
+- Rate limiting implemented correctly
+- Tests prove it works (by hitting limits!)
+- Infrastructure needs adjustment
+- Professional pattern: environment configuration
 
 ---
 
-## 🚀 Advanced Topics
+## Advanced Topics
 
 ### Testing Rate Limits Properly
 
@@ -643,7 +643,7 @@ limiter = Limiter(
 
 ---
 
-## 📖 Real-World Story
+## Real-World Story
 
 ### Why This Lab Exists
 
@@ -653,8 +653,8 @@ limiter = Limiter(
 
 **Result:**
 
-- Most of the real tests: ✅ PASS
-- Several of them: ❌ ERROR (rate limited!)
+- Most of the real tests: PASS
+- Several of them: ERROR (rate limited!)
 
 **First reaction:** "The tests are broken!"
 
@@ -666,7 +666,7 @@ limiter = Limiter(
 
 ---
 
-## 🎓 Discussion Questions
+## Discussion Questions
 
 1. **Should you disable security features in tests?**
 
@@ -693,7 +693,7 @@ limiter = Limiter(
 
 ---
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 **Problem:** Tests still fail even with TESTING=true
 
@@ -718,7 +718,7 @@ print(f"TESTING_MODE: {TESTING_MODE}")
 
 ---
 
-## 🔗 Related Resources
+## Related Resources
 
 - [slowapi Documentation](https://slowapi.readthedocs.io/)
 - [HTTP Status Codes](https://httpstatuses.com/)
@@ -728,7 +728,7 @@ print(f"TESTING_MODE: {TESTING_MODE}")
 
 ---
 
-## 💡 Pro Tips
+## Pro Tips
 
 **Tip 1:** Always use environment variables for test configuration
 
@@ -766,20 +766,20 @@ requests.post("/login", json=data, timeout=5)  # Always!
 
 ---
 
-## 🎉 Success Criteria
+## Success Criteria
 
 You've mastered this lab when you can:
 
-- ✅ Explain why tests pass alone but fail together
-- ✅ Implement environment-based configuration
-- ✅ Design fixtures that avoid rate limits
-- ✅ Debug test infrastructure issues
-- ✅ Understand the security/testing trade-off
-- ✅ Know when features work "too well" for tests
+- Explain why tests pass alone but fail together
+- Implement environment-based configuration
+- Design fixtures that avoid rate limits
+- Debug test infrastructure issues
+- Understand the security/testing trade-off
+- Know when features work "too well" for tests
 
 ---
 
-## 🏆 Bonus: Add This to Your Resume
+## Bonus: Add This to Your Resume
 
 **Skills demonstrated:**
 
@@ -798,17 +798,17 @@ You've mastered this lab when you can:
 
 > "I implemented rate limiting for security. Tests started failing together due to hitting the rate limit. I debugged it by running tests individually, identified the shared resource issue, and implemented environment-based configuration so tests use relaxed limits while production uses strict limits. This taught me how security features can affect test infrastructure."
 
-🎯 **That's a senior-level answer!**
+**That's a senior-level answer!**
 
 ---
 
-**🎉 Congratulations!** You now understand advanced testing infrastructure challenges that many senior engineers struggle with!
+**Congratulations!** You now understand advanced testing infrastructure challenges that many senior engineers struggle with!
 
 **Next Lab:** Move to [Stage 5: Capstone](../../stage_5_capstone/README.md) or explore other labs
 
 ---
 
-## 📝 Instructor Notes
+## Instructor Notes
 
 **Teaching Time:** 60-90 minutes
 

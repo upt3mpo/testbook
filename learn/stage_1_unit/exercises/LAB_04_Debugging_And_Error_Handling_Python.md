@@ -1,17 +1,17 @@
-# 🐛 Lab 4: Debugging and Error Handling
+# Lab 4: Debugging and Error Handling
 
 **Estimated Time:** 90 minutes<br>
 **Difficulty:** Intermediate<br>
-**Language:** 🐍 Python<br>
+**Language:** Python<br>
 **Prerequisites:** Lab 3 completed
 
-**💡 Need JavaScript instead?** Try [Lab 4: Debugging and Error Handling (JavaScript)](LAB_04_Debugging_And_Error_Handling_JavaScript.md)!
+**Need JavaScript instead?** Try [Lab 4: Debugging and Error Handling (JavaScript)](LAB_04_Debugging_And_Error_Handling_JavaScript.md)!
 
 **What This Adds:** Master the art of debugging test failures - learn to read error messages, identify root causes, and fix broken tests systematically. This skill will save you hours of frustration.
 
 ---
 
-## 🎯 What You'll Learn
+## What You'll Learn
 
 By the end of this lab, you will:
 
@@ -25,7 +25,7 @@ By the end of this lab, you will:
 
 ---
 
-## 📋 Why This Matters
+## Why This Matters
 
 **Reality Check:**
 
@@ -36,8 +36,8 @@ By the end of this lab, you will:
 
 **What students say:**
 
-- ❌ "I got an error, I don't know what to do"
-- ✅ "The error says X is None on line 45, let me check that"
+- Beginner: "I got an error, I don't know what to do"
+- Strong debugger: "The error says X is None on line 45, let me check that"
 
 ---
 
@@ -473,7 +473,7 @@ def test_login(self, client, test_user):
 
 ---
 
-## 💪 Your Challenge: Fix All At Once
+## Your Challenge: Fix All At Once
 
 **Now that you've seen the patterns, here are 3 more broken tests to fix on your own:**
 
@@ -554,7 +554,7 @@ class TestYourChallenge:
 
 ---
 
-## 🎓 Debugging Strategy Checklist
+## Debugging Strategy Checklist
 
 When you encounter a failing test:
 
@@ -583,7 +583,7 @@ When you encounter a failing test:
 
 ---
 
-## 📊 Common Bug Patterns Summary
+## Common Bug Patterns Summary
 
 | Bug Type              | Symptom                | Fix                             |
 | --------------------- | ---------------------- | ------------------------------- |
@@ -599,7 +599,7 @@ When you encounter a failing test:
 
 ---
 
-## ✅ Completion Checklist
+## Completion Checklist
 
 - [ ] Can identify which line failed in an error message
 - [ ] Can tell the difference between expected and actual values
@@ -614,7 +614,7 @@ When you encounter a failing test:
 
 ---
 
-## 💡 Pro Tips
+## Pro Tips
 
 1. **Read before fixing** - Understand the error first
 2. **Fix one at a time** - Don't change multiple things
@@ -624,7 +624,7 @@ When you encounter a failing test:
 
 ---
 
-## 📚 Next Steps
+## Next Steps
 
 **Continue building your skills:**
 
@@ -634,6 +634,6 @@ When you encounter a failing test:
 
 ---
 
-**🎉 Congratulations!** You're now a debugging expert. These skills will serve you throughout your entire testing career!
+**Congratulations!** You're now a debugging expert. These skills will serve you throughout your entire testing career!
 
 **Next Lab:** [Lab 5: API Endpoint Testing (Python)](../../stage_2_integration/exercises/LAB_05_API_Endpoint_Testing_Python.md)

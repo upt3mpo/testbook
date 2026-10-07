@@ -1,6 +1,6 @@
-# ❓ Frequently Asked Questions
+# Frequently Asked Questions
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Q: Which start script should I use?
 
@@ -29,7 +29,7 @@
 
 ---
 
-## 🐍 Python
+## Python
 
 ### Q: Do I need Python 3.13?
 
@@ -67,7 +67,7 @@ pytest -v
 
 ---
 
-## 🧪 Testing
+## Testing
 
 ### Q: How many tests are there?
 
@@ -110,7 +110,7 @@ pytest -v
 
 ---
 
-## 🎓 Learning Path
+## Learning Path
 
 ### Q: I'm new to testing, where do I start?
 
@@ -144,7 +144,7 @@ pytest -v
 
 ---
 
-## 🔧 Technical Issues
+## Technical Issues
 
 ### Q: I'm getting "port already in use" errors?
 
@@ -187,7 +187,7 @@ start-dev.bat
 
 ---
 
-## 🎯 Best Practices
+## Best Practices
 
 ### Q: Should I commit my test files?
 
@@ -215,15 +215,18 @@ Testbook currently has 85% coverage as an example.
 
 **A:** Focus on:
 
-- ✅ Critical business logic
-- ✅ User-facing features
-- ✅ Edge cases and error conditions
-- ❌ Third-party library code
-- ❌ Simple getters/setters
+- Critical business logic
+- User-facing features
+- Edge cases and error conditions
+
+**Do not spend time on:**
+
+- Third-party library code
+- Simple getters/setters
 
 ---
 
-## 🚀 Advanced Topics
+## Advanced Topics
 
 ### Q: How do I add new test data?
 
@@ -255,7 +258,7 @@ Testbook currently has 85% coverage as an example.
 
 ---
 
-## 🆘 Still Need Help?
+## Still Need Help?
 
 - **Technical issues:** [Troubleshooting Guide](../reference/TROUBLESHOOTING.md)
 - **Learning questions:** [GitHub Discussions](https://github.com/upt3mpo/testbook/discussions)
@@ -264,4 +267,4 @@ Testbook currently has 85% coverage as an example.
 
 ---
 
-**💡 Pro Tip:** Most issues are solved by using development mode (`start-dev.sh`) and making sure you're in the right directory with the right environment activated!
+**Pro Tip:** Most issues are solved by using development mode (`start-dev.sh`) and making sure you're in the right directory with the right environment activated!

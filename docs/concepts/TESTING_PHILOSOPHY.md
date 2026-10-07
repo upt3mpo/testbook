@@ -175,22 +175,22 @@ def test_user_cannot_withdraw_more_than_account_balance():
 
 ## Common Testing Anti-Philosophies
 
-### ❌ "Testing is Someone Else's Job"
+### "Testing is Someone Else's Job"
 
 **Reality:** Quality is everyone's responsibility
 **Better:** "Testing is part of development"
 
-### ❌ "We Don't Have Time for Testing"
+### "We Don't Have Time for Testing"
 
 **Reality:** You don't have time NOT to test
 **Better:** "Testing saves time in the long run"
 
-### ❌ "The Tests Are Passing, So We're Good"
+### "The Tests Are Passing, So We're Good"
 
 **Reality:** Passing tests don't guarantee quality
 **Better:** "The tests are passing AND they cover the right scenarios"
 
-### ❌ "We'll Test It Later"
+### "We'll Test It Later"
 
 **Reality:** "Later" never comes
 **Better:** "We'll test it now, as we build it"

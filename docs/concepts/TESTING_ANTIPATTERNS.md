@@ -1,10 +1,10 @@
-# 🚫 Testing Anti-Patterns
+# Testing Anti-Patterns
 
 **Common testing mistakes and how to avoid them**
 
 ---
 
-## 🎯 What Are Anti-Patterns?
+## What Are Anti-Patterns?
 
 Anti-patterns are common solutions that seem reasonable but cause problems. In testing, they lead to:
 
@@ -33,7 +33,7 @@ Anti-patterns are common solutions that seem reasonable but cause problems. In t
 
 ### Anti-Pattern 1.1: Magic Numbers
 
-**❌ BAD:**
+**BAD:**
 
 ```python
 def test_get_user():
@@ -48,7 +48,7 @@ def test_get_user():
 - Test breaks if database is reset
 - Brittle and unreliable
 
-**✅ GOOD:**
+**GOOD:**
 
 ```python
 def test_get_user(client, test_user):
@@ -62,7 +62,7 @@ def test_get_user(client, test_user):
 
 ### Anti-Pattern 1.2: Hardcoded Timestamps
 
-**❌ BAD:**
+**BAD:**
 
 ```python
 def test_user_created_date():
@@ -78,7 +78,7 @@ def test_user_created_date():
 - Timezone issues
 - Not actually testing the logic
 
-**✅ GOOD:**
+**GOOD:**
 
 ```python
 from datetime import datetime, timedelta
@@ -99,7 +99,7 @@ def test_user_created_date():
 
 ### Anti-Pattern 1.3: Environment-Specific Data
 
-**❌ BAD:**
+**BAD:**
 
 ```python
 def test_api_connection():
@@ -115,7 +115,7 @@ def test_api_connection():
 - Hostname might be different
 - CI/CD environment differs
 
-**✅ GOOD:**
+**GOOD:**
 
 ```python
 import os
@@ -134,7 +134,7 @@ def test_api_connection():
 
 ### Anti-Pattern 2.1: Using sleep() for Waiting
 
-**❌ BAD:**
+**BAD:**
 
 ```python
 import time
@@ -153,7 +153,7 @@ def test_async_operation():
 - Might be too long (slow test)
 - Doesn't check actual condition
 
-**✅ GOOD:**
+**GOOD:**
 
 ```python
 import time
@@ -175,7 +175,7 @@ def test_async_operation():
     assert result.status == "complete"
 ```
 
-**✅ EVEN BETTER with pytest-timeout:**
+**EVEN BETTER with pytest-timeout:**
 
 ```python
 @pytest.mark.timeout(10)
@@ -197,7 +197,7 @@ def test_async_operation():
 
 ### Anti-Pattern 2.2: Playwright Timeouts
 
-**❌ BAD:**
+**BAD:**
 
 ```javascript
 test("wait for element", async ({ page }) => {
@@ -213,7 +213,7 @@ test("wait for element", async ({ page }) => {
 - Might not be long enough
 - Doesn't wait for actual condition
 
-**✅ GOOD:**
+**GOOD:**
 
 ```javascript
 test("wait for element", async ({ page }) => {
@@ -224,7 +224,7 @@ test("wait for element", async ({ page }) => {
 });
 ```
 
-**✅ EVEN BETTER (Playwright auto-waits):**
+**EVEN BETTER (Playwright auto-waits):**
 
 ```javascript
 test("wait for element", async ({ page }) => {
@@ -254,7 +254,7 @@ for why a wait would only have hidden the race, not fixed it.
 
 ### Anti-Pattern 3.1: Tests Depending on Each Other
 
-**❌ BAD:**
+**BAD:**
 
 ```python
 created_user_id = None  # Global state!
@@ -281,7 +281,7 @@ def test_02_update_user():
 - If test_01 fails, test_02 fails too
 - Hard to debug
 
-**✅ GOOD:**
+**GOOD:**
 
 ```python
 def test_create_user():
@@ -302,7 +302,7 @@ def test_update_user():
 
 ### Anti-Pattern 3.2: Testing Implementation, Not Behavior
 
-**❌ BAD:**
+**BAD:**
 
 ```python
 def test_password_hashing_implementation():
@@ -322,7 +322,7 @@ def test_password_hashing_implementation():
 - Breaks when implementation changes
 - Doesn't test actual behavior
 
-**✅ GOOD:**
+**GOOD:**
 
 ```python
 def test_password_hashing_behavior():
@@ -347,7 +347,7 @@ def test_password_hashing_behavior():
 
 ### Anti-Pattern 4.1: No Assertions
 
-**❌ BAD:**
+**BAD:**
 
 ```python
 def test_user_creation():
@@ -362,7 +362,7 @@ def test_user_creation():
 - Gives false confidence
 - Useless test
 
-**✅ GOOD:**
+**GOOD:**
 
 ```python
 def test_user_creation():
@@ -378,7 +378,7 @@ def test_user_creation():
 
 ### Anti-Pattern 4.2: Too Many Assertions
 
-**❌ BAD:**
+**BAD:**
 
 ```python
 def test_everything():
@@ -404,7 +404,7 @@ def test_everything():
 - Testing too much in one test
 - Unclear what's being tested
 
-**✅ GOOD:**
+**GOOD:**
 
 ```python
 def test_user_creation():
@@ -439,7 +439,7 @@ def test_user_follow():
 
 ### Anti-Pattern 4.3: Vague Assertions
 
-**❌ BAD:**
+**BAD:**
 
 ```python
 def test_api_response():
@@ -456,7 +456,7 @@ def test_api_response():
 - Might pass for wrong reasons
 - Hard to debug failures
 
-**✅ GOOD:**
+**GOOD:**
 
 ```python
 def test_api_response():
@@ -478,7 +478,7 @@ def test_api_response():
 
 ### Anti-Pattern 5.1: Unclear Test Names
 
-**❌ BAD:**
+**BAD:**
 
 ```python
 def test_user():
@@ -498,7 +498,7 @@ def test_user_2():
 - Hard to find tests
 - Meaningless failure messages
 
-**✅ GOOD:**
+**GOOD:**
 
 ```python
 def test_user_has_id_after_creation():
@@ -517,7 +517,7 @@ def test_user_has_valid_email_format():
 
 ### Anti-Pattern 5.2: No Test Isolation
 
-**❌ BAD:**
+**BAD:**
 
 ```python
 # Shared state between tests
@@ -541,7 +541,7 @@ def test_list_users():
 - Hard to debug
 - Order-dependent
 
-**✅ GOOD:**
+**GOOD:**
 
 ```python
 def test_create_user():
@@ -568,7 +568,7 @@ def test_list_users():
 
 ### Anti-Pattern 6.1: Not Cleaning Up Test Data
 
-**❌ BAD:**
+**BAD:**
 
 ```python
 def test_user_creation():
@@ -592,7 +592,7 @@ def test_another_user():
 - Hard to debug
 - Can't run tests multiple times
 
-**✅ GOOD:**
+**GOOD:**
 
 ```python
 @pytest.fixture
@@ -622,7 +622,7 @@ def test_another_user(clean_db):
 
 ### Anti-Pattern 6.2: Testing with Production Database
 
-**❌ BAD:**
+**BAD:**
 
 ```python
 # Using production database URL
@@ -639,7 +639,7 @@ def test_delete_user():
 - Catastrophic consequences
 - Should NEVER happen
 
-**✅ GOOD:**
+**GOOD:**
 
 ```python
 # Use test database
@@ -670,7 +670,7 @@ def test_delete_user(test_db):
 
 ### Anti-Pattern 7.1: Brittle Selectors
 
-**❌ BAD:**
+**BAD:**
 
 ```javascript
 test("click button", async ({ page }) => {
@@ -687,7 +687,7 @@ test("click button", async ({ page }) => {
 - Breaks when HTML structure changes
 - Hard to maintain
 
-**✅ GOOD:**
+**GOOD:**
 
 ```javascript
 test("click button", async ({ page }) => {
@@ -702,7 +702,7 @@ test("click button", async ({ page }) => {
 
 ### Anti-Pattern 7.2: Not Using Test IDs
 
-**❌ BAD:**
+**BAD:**
 
 ```javascript
 test("find element", async ({ page }) => {
@@ -720,7 +720,7 @@ test("find element", async ({ page }) => {
 - Internationalization breaks tests
 - Style changes break tests
 
-**✅ GOOD:**
+**GOOD:**
 
 ```javascript
 test("find element", async ({ page }) => {
@@ -737,9 +737,9 @@ test("find element", async ({ page }) => {
 
 ---
 
-### Anti-Pattern 7.3: Not Handling Browser Dialogs ⚠️ CRITICAL
+### Anti-Pattern 7.3: Not Handling Browser Dialogs CRITICAL
 
-**❌ BAD:**
+**BAD:**
 
 ```javascript
 test("should delete account", async ({ page }) => {
@@ -770,7 +770,7 @@ const handleBlock = async () => {
 
 Tests that clicked the block button would hang waiting for the dialog to be dismissed.
 
-**✅ GOOD:**
+**GOOD:**
 
 ```javascript
 test("should delete account", async ({ page }) => {
@@ -782,7 +782,7 @@ test("should delete account", async ({ page }) => {
 });
 ```
 
-**✅ BETTER - Setup Once:**
+**BETTER - Setup Once:**
 
 ```javascript
 // In test-helpers.js
@@ -802,10 +802,10 @@ test.beforeEach(async ({ page }) => {
 
 **Why it's better:**
 
-- ✅ Handles confirms AND alerts
-- ✅ Works for all tests automatically
-- ✅ Logs what dialogs appear
-- ✅ No need to remember for each test
+- Handles confirms AND alerts
+- Works for all tests automatically
+- Logs what dialogs appear
+- No need to remember for each test
 
 **Note:** This fixed 5 Testbook E2E tests that were failing due to:
 
@@ -818,7 +818,7 @@ test.beforeEach(async ({ page }) => {
 
 ### Anti-Pattern 7.4: Test ID Mismatches
 
-**❌ BAD:**
+**BAD:**
 
 ```javascript
 test("should show count", async ({ page }) => {
@@ -845,7 +845,7 @@ Tests were looking for `profile-followers-count` but frontend had:
 </Link>
 ```
 
-**✅ GOOD:**
+**GOOD:**
 
 ```javascript
 // Option 1: Match the actual test IDs
@@ -859,16 +859,16 @@ await expect(
 
 **Best Practice:**
 
-- ✅ Keep a test ID reference document
-- ✅ Verify test IDs exist before writing tests
-- ✅ Use consistent naming conventions
-- ✅ Add test IDs during component development, not later
+- Keep a test ID reference document
+- Verify test IDs exist before writing tests
+- Use consistent naming conventions
+- Add test IDs during component development, not later
 
 ---
 
 ### Anti-Pattern 7.5: Not Using Force Clicks When Needed
 
-**❌ BAD:**
+**BAD:**
 
 ```javascript
 test("should edit post", async ({ page }) => {
@@ -898,7 +898,7 @@ useEffect(() => {
 
 Tests would open the menu, but by the time they tried to click edit, the dropdown was closing!
 
-**✅ GOOD:**
+**GOOD:**
 
 ```javascript
 test("should edit post", async ({ page }) => {
@@ -909,25 +909,28 @@ test("should edit post", async ({ page }) => {
 });
 ```
 
-**When to use `force: true`:**
+**Use `force: true` for:**
 
-- ✅ Elements with CSS transitions
-- ✅ Dropdown menus with close handlers
-- ✅ Elements that become hidden quickly
-- ❌ Not for actually hidden elements
-- ❌ Not as a first resort - debug the real issue first
+- Elements with CSS transitions
+- Dropdown menus with close handlers
+- Elements that become hidden quickly
+
+**Do not use it:**
+
+- For actually hidden elements
+- As a first resort - debug the real issue first
 
 **Note:** This fixed the final 2 failing Testbook tests (edit post, cancel edit)
 
 ---
 
-## ✅ Quick Checklist: Avoid Anti-Patterns
+## Quick Checklist: Avoid Anti-Patterns
 
 Before committing your tests, check:
 
 - [ ] No hardcoded IDs or magic numbers
 - [ ] No `time.sleep()` or `waitForTimeout()` for synchronization
-- [ ] Browser dialogs handled (confirm/alert/prompt) ⚠️ **CRITICAL**
+- [ ] Browser dialogs handled (confirm/alert/prompt) **CRITICAL**
 - [ ] Test IDs match actual frontend code
 - [ ] Tests are independent (no shared state)
 - [ ] Each test has clear assertions
@@ -943,7 +946,7 @@ Before committing your tests, check:
 ## Related Resources
 
 - **[TESTING_PATTERNS.md](TESTING_PATTERNS.md)** - What TO do (now includes dialog handling & force clicks!)
-- **[FLAKY_TESTS_GUIDE.md](../guides/FLAKY_TESTS_GUIDE.md)** ⭐ - Real fixes from this project
+- **[FLAKY_TESTS_GUIDE.md](../guides/FLAKY_TESTS_GUIDE.md)** - Real fixes from this project
 - **[TESTING_CHEATSHEET.md](../reference/TESTING_CHEATSHEET.md)** - Quick reference (updated with critical patterns)
 - **[Troubleshooting](../reference/TROUBLESHOOTING.md)** - Student errors
 - **[Test Examples](../../backend/tests/examples/)** - Good vs bad tests

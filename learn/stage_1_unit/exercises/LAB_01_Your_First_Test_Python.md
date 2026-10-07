@@ -1,19 +1,19 @@
-# 🧪 Lab 1: Your First Test
+# Lab 1: Your First Test
 
 **Estimated Time:** 30 minutes<br>
 **Difficulty:** Beginner<br>
-**Language:** 🐍 Python<br>
+**Language:** Python<br>
 **Prerequisites:** Testbook running, Python installed, basic Python knowledge
 
-**💡 Need Python basics?** Try [learnpython.org](https://www.learnpython.org/) for free interactive tutorials!
+**Need Python basics?** Try [learnpython.org](https://www.learnpython.org/) for free interactive tutorials!
 
-**💡 Need JavaScript instead?** Try [Lab 1: Your First Test (JavaScript)](LAB_01_Your_First_Test_JavaScript.md)!
+**Need JavaScript instead?** Try [Lab 1: Your First Test (JavaScript)](LAB_01_Your_First_Test_JavaScript.md)!
 
 **What This Adds:** Your first step into automated testing - learn to write, run, and understand basic tests that catch bugs before they reach production.
 
 ---
 
-<h2 id="what-youll-learn">🎯 What You'll Learn</h2>
+<h2 id="what-youll-learn">What You'll Learn</h2>
 
 By the end of this lab, you will:
 
@@ -24,7 +24,7 @@ By the end of this lab, you will:
 
 ---
 
-<h2 id="step-by-step-instructions">📋 Step-by-Step Instructions</h2>
+<h2 id="step-by-step-instructions">Step-by-Step Instructions</h2>
 
 ### Step 1: Open Your Terminal (2 minutes)
 
@@ -38,7 +38,7 @@ By the end of this lab, you will:
 - Open Command Prompt or PowerShell
 - Navigate to Testbook: `cd C:\path\to\Testbook`
 
-✅ **Checkpoint:** Run `ls` (or `dir` on Windows) and see `backend/` and `frontend/` folders
+**Checkpoint:** Run `ls` (or `dir` on Windows) and see `backend/` and `frontend/` folders
 
 ### Step 2: Activate Python Environment (2 minutes)
 
@@ -51,7 +51,7 @@ source .venv/bin/activate
 .venv\Scripts\activate
 ```
 
-✅ **Checkpoint:** Your terminal prompt should now show `(venv)`
+**Checkpoint:** Your terminal prompt should now show `(venv)`
 
 ### Step 3: Create Your First Test File (5 minutes)
 
@@ -119,7 +119,7 @@ def test_list_contains():
     assert "banana" in fruits, "Expected 'banana' to be in the fruits list"
 ```
 
-✅ **Checkpoint:** File saved in `backend/tests/test_my_first.py`
+**Checkpoint:** File saved in `backend/tests/test_my_first.py`
 
 ### Step 4: Run Your First Test (5 minutes)
 
@@ -137,9 +137,9 @@ tests/test_my_first.py::test_list_contains PASSED ✓
 ====================== 3 passed in 0.05s =======================
 ```
 
-🎉 **Congratulations!** You just ran your first automated tests!
+**Congratulations!** You just ran your first automated tests!
 
-✅ **Checkpoint:** All 3 tests show PASSED with green checkmarks
+**Checkpoint:** All 3 tests show PASSED with green checkmarks
 
 ### Step 5: Make a Test Fail (On Purpose!) (5 minutes)
 
@@ -173,7 +173,7 @@ assert result == 4  # Correct answer
 
 **Run again - should pass!**
 
-✅ **Checkpoint:** You understand how failing tests help find bugs
+**Checkpoint:** You understand how failing tests help find bugs
 
 ### Step 6: Write Your Own Test (10 minutes)
 
@@ -212,21 +212,21 @@ def test_my_own_test():
 pytest tests/test_my_first.py::test_my_own_test -v
 ```
 
-✅ **Checkpoint:** Your custom test passes!
+**Checkpoint:** Your custom test passes!
 
 ---
 
-<h2 id="what-you-learned">🎓 What You Learned</h2>
+<h2 id="what-you-learned">What You Learned</h2>
 
-- ✅ How to run pytest
-- ✅ How to write a test function
-- ✅ How to use `assert` statements
-- ✅ How failing tests help find bugs
-- ✅ How to create your own tests
+- How to run pytest
+- How to write a test function
+- How to use `assert` statements
+- How failing tests help find bugs
+- How to create your own tests
 
 ---
 
-<h2 id="next-steps">🚀 Next Steps</h2>
+<h2 id="next-steps">Next Steps</h2>
 
 Now try:
 
@@ -237,7 +237,7 @@ Now try:
 
 ---
 
-## 💡 Key Takeaways
+## Key Takeaways
 
 **Test Structure:**
 
@@ -265,7 +265,7 @@ def test_something():           # Function starts with "test_"
 
 ---
 
-<h2 id="challenge">🎯 Challenge</h2>
+<h2 id="challenge">Challenge</h2>
 
 Can you write a test that:
 
@@ -298,6 +298,6 @@ def test_sum_numbers():
 
 ---
 
-**🎉 Congratulations on completing Lab 1!**
+**Congratulations on completing Lab 1!**
 
 **Next Lab:** [Lab 2: Testing Real Functions (Python)](LAB_02_Testing_Real_Functions_Python.md)

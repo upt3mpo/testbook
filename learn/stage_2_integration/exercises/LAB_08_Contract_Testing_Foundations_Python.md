@@ -1,17 +1,17 @@
-# 🧪 Lab 8: Contract Testing Foundations
+# Lab 8: Contract Testing Foundations
 
 **Estimated Time:** 90 minutes<br>
 **Difficulty:** Intermediate<br>
-**Language:** 🐍 Python<br>
+**Language:** Python<br>
 **Prerequisites:** Lab 7 completed
 
-**💡 Need JavaScript instead?** Try [Lab 8: Contract Testing Foundations (JavaScript)](LAB_08_Contract_Testing_Foundations_JavaScript.md)!
+**Need JavaScript instead?** Try [Lab 8: Contract Testing Foundations (JavaScript)](LAB_08_Contract_Testing_Foundations_JavaScript.md)!
 
 **What This Adds:** Contract testing ensures API compatibility between frontend and backend, preventing integration failures in production.
 
 ---
 
-## 🎯 What You'll Learn
+## What You'll Learn
 
 - **API contracts** - Define expected API behavior
 - **Schema validation** - Ensure API responses match expected format
@@ -22,7 +22,7 @@
 
 ---
 
-## 📋 Why Contract Testing Matters
+## Why Contract Testing Matters
 
 **The Problem:**
 
@@ -36,7 +36,7 @@ Contract testing ensures API changes don't break existing clients.
 
 ---
 
-## 📋 Step-by-Step Instructions
+## Step-by-Step Instructions
 
 ### Part 1: Understanding API Contracts (20 minutes)
 
@@ -511,7 +511,7 @@ def test_user_login_consumer_contract(self, client: TestClient, db_session):
 
 ---
 
-## 💪 Challenge Exercises
+## Challenge Exercises
 
 ### Challenge 1: Test API Versioning
 
@@ -541,7 +541,7 @@ def test_error_contract_consistency(self, client: TestClient):
 
 ---
 
-## 🎓 Advanced Patterns
+## Advanced Patterns
 
 ### Contract Testing with Pytest Fixtures
 
@@ -621,7 +621,7 @@ def test_registration_contract_cases(self, client, test_case):
 
 ---
 
-## ✅ Completion Checklist
+## Completion Checklist
 
 - [ ] Understand what API contracts are and why they matter
 - [ ] Can validate API requests and responses against schemas
@@ -633,7 +633,7 @@ def test_registration_contract_cases(self, client, test_case):
 
 ---
 
-## 💡 Pro Tips
+## Pro Tips
 
 1. **Start with consumer contracts** - Define what frontend needs first
 2. **Validate schemas strictly** - Catch type mismatches early
@@ -643,7 +643,7 @@ def test_registration_contract_cases(self, client, test_case):
 
 ---
 
-## 📚 Next Steps
+## Next Steps
 
 **Continue building your skills:**
 
@@ -653,6 +653,6 @@ def test_registration_contract_cases(self, client, test_case):
 
 ---
 
-**🎉 Congratulations!** You now understand contract testing and can ensure API compatibility between frontend and backend!
+**Congratulations!** You now understand contract testing and can ensure API compatibility between frontend and backend!
 
 **Next Lab:** [Lab 9: Basic E2E Testing (Python)](../../stage_3_api_e2e/exercises/LAB_09_Basic_E2E_Testing_Python.md)

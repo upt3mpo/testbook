@@ -1,4 +1,4 @@
-# 🎭 Test Data Scenarios
+# Test Data Scenarios
 
 Guide to using pre-configured test data scenarios for E2E and integration testing.
 
@@ -225,9 +225,9 @@ POST /api/dev/reset
 POST /api/dev/seed
 ```
 
-**⚠️ Important:** Set `TESTING=true` environment variable to enable these endpoints.
+**Important:** Set `TESTING=true` environment variable to enable these endpoints.
 
-**💡 Pro Tip:** Instead of typing `TESTING=true` every time, create a `.env` file:
+**Pro Tip:** Instead of typing `TESTING=true` every time, create a `.env` file:
 
 ```bash
 # Copy the template (already has TESTING=true)

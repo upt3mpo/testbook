@@ -2,17 +2,18 @@
 
 **Foundation of Test Automation**
 
-> **💡 Language Selection**: This guide includes both Python and JavaScript examples. Both are expanded by default so you can see all approaches. Click the language tabs to collapse sections you don't need.
+> **Language Selection**: This guide includes both Python and JavaScript examples. Both are expanded by default so you can see all approaches. Click the language tabs to collapse sections you don't need.
 
 ## Your Progress
 
-[████░░░░░░░░░░░░░░░░] 20% complete
+You are on Stage 1 of 5 (Stage 0 is the foundation).
 
-→ **Stage 1: Unit Tests** (you are here)<br>
-⬜ Stage 2: Integration Tests<br>
-⬜ Stage 3: E2E Testing<br>
-⬜ Stage 4: Performance & Security<br>
-⬜ Stage 5: Capstone
+- Stage 0: Inclusion First (completed)
+- Stage 1: Unit Tests (you are here)
+- Stage 2: Integration Tests (not started)
+- Stage 3: API & E2E Testing (not started)
+- Stage 4: Performance, Security & Accessibility (not started)
+- Stage 5: Capstone (not started)
 
 **Estimated time remaining:** 4-6 hours (core content) + 2-3 hours (optional exercises)
 
@@ -83,7 +84,7 @@ A **unit test** verifies that a single "unit" of code (usually a function) works
 Let's test a simple function that adds two numbers:
 
 <details open>
-<summary><strong>🐍 Python</strong></summary>
+<summary><strong>Python</strong></summary>
 
 ```python
 # The function we want to test
@@ -106,7 +107,7 @@ def test_add():
 </details>
 
 <details open>
-<summary><strong>☕ JavaScript</strong></summary>
+<summary><strong>JavaScript</strong></summary>
 
 ```javascript
 // The function we want to test
@@ -159,7 +160,7 @@ it("add function works correctly", () => {
 
 **Which to use?** Pick one and be consistent! Most teams prefer `it()` because it reads more naturally, but `test()` is perfectly fine too.
 
-> **💡 Quick Reference:** Throughout this course, we'll use `it()` in JavaScript examples because it reads more naturally ("it should do this..."). If you see `test()` in older examples, just mentally replace it with `it()` - they work exactly the same!
+> **Quick Reference:** Throughout this course, we'll use `it()` in JavaScript examples because it reads more naturally ("it should do this..."). If you see `test()` in older examples, just mentally replace it with `it()` - they work exactly the same!
 
 ### Unit Test Characteristics
 
@@ -186,7 +187,7 @@ Every good unit test follows the **Arrange-Act-Assert** pattern. Think of it lik
 ### AAA in Action
 
 <details open>
-<summary><strong>🐍 Python</strong></summary>
+<summary><strong>Python</strong></summary>
 
 ```python
 def test_calculate_discount():
@@ -204,7 +205,7 @@ def test_calculate_discount():
 </details>
 
 <details open>
-<summary><strong>☕ JavaScript</strong></summary>
+<summary><strong>JavaScript</strong></summary>
 
 ```javascript
 it("calculate discount works correctly", () => {
@@ -231,10 +232,10 @@ it("calculate discount works correctly", () => {
 
 ### Common AAA Mistakes
 
-❌ **Mixing phases:**
+**Mixing phases:**
 
 <details open>
-<summary><strong>🐍 Python</strong></summary>
+<summary><strong>Python</strong></summary>
 
 ```python
 def test_bad_example():
@@ -246,7 +247,7 @@ def test_bad_example():
 </details>
 
 <details open>
-<summary><strong>☕ JavaScript</strong></summary>
+<summary><strong>JavaScript</strong></summary>
 
 ```javascript
 it("bad example", () => {
@@ -258,10 +259,10 @@ it("bad example", () => {
 
 </details>
 
-✅ **Clear separation:**
+**Clear separation:**
 
 <details open>
-<summary><strong>🐍 Python</strong></summary>
+<summary><strong>Python</strong></summary>
 
 ```python
 def test_good_example():
@@ -279,7 +280,7 @@ def test_good_example():
 </details>
 
 <details open>
-<summary><strong>☕ JavaScript</strong></summary>
+<summary><strong>JavaScript</strong></summary>
 
 ```javascript
 it("good example", () => {
@@ -308,7 +309,7 @@ A **fixture** is reusable test data or setup that multiple tests can use.
 ### Simple Fixture Example
 
 <details open>
-<summary><strong>🐍 Python</strong></summary>
+<summary><strong>Python</strong></summary>
 
 ```python
 # Without fixture (repetitive)
@@ -335,7 +336,7 @@ def test_user_profile(test_user):
 </details>
 
 <details open>
-<summary><strong>☕ JavaScript</strong></summary>
+<summary><strong>JavaScript</strong></summary>
 
 ```javascript
 // Without fixture (repetitive)
@@ -378,7 +379,7 @@ it("user profile", () => {
 ### Fixture Lifecycle
 
 <details open>
-<summary><strong>🐍 Python</strong></summary>
+<summary><strong>Python</strong></summary>
 
 ```python
 @pytest.fixture
@@ -393,7 +394,7 @@ def database_connection():
 </details>
 
 <details open>
-<summary><strong>☕ JavaScript</strong></summary>
+<summary><strong>JavaScript</strong></summary>
 
 ```javascript
 // Setup and teardown with beforeEach/afterEach
@@ -431,7 +432,7 @@ const withDatabase = (testFn) => {
 Now let's see these concepts in real code!
 
 <details open>
-<summary><strong>🐍 Python: Testing Authentication Functions</strong></summary>
+<summary><strong>Python: Testing Authentication Functions</strong></summary>
 
 **Open `backend/tests/unit/test_auth.py` and find `test_password_is_hashed`:**
 
@@ -503,7 +504,7 @@ def test_password_is_hashed(self):
 - How to debug failing tests
 - The importance of clear assertion messages
 
-> **💡 Notice: No coverage report!** When running single tests for debugging, we skip coverage to keep output clean and focused. To see coverage, add `--cov=. --cov-report=html` to your pytest command. See [Understanding Pytest Flags](../../docs/guides/RUNNING_TESTS.md#understanding-pytest-flags) for more details.
+> **Notice: No coverage report!** When running single tests for debugging, we skip coverage to keep output clean and focused. To see coverage, add `--cov=. --cov-report=html` to your pytest command. See [Understanding Pytest Flags](../../docs/guides/RUNNING_TESTS.md#understanding-pytest-flags) for more details.
 
 **More Examples:**
 
@@ -514,7 +515,7 @@ def test_password_is_hashed(self):
 </details>
 
 <details open>
-<summary><strong>☕ JavaScript: Testing Authentication Components</strong></summary>
+<summary><strong>JavaScript: Testing Authentication Components</strong></summary>
 
 **Note:** From here on, we'll use `it()` instead of `test()` for better readability. Remember, they're identical!
 
@@ -608,7 +609,7 @@ it("allows user to type in form fields", () => {
 
 </details>
 
-### 🔄 Hybrid Approach
+### Hybrid Approach
 
 **Study both!** Understanding both stacks makes you more valuable.
 
@@ -698,7 +699,7 @@ it("multiply function works correctly", () => {
 
 <h2 id="part-6-additional-patterns">Part 6: Additional Patterns</h2>
 
-**📝 Note:** The patterns below are **additional enhancements** to your unit testing skills. All the **core concepts** needed to meet the Stage 1 success criteria are covered in Parts 1-5 above.
+**Note:** The patterns below are **additional enhancements** to your unit testing skills. All the **core concepts** needed to meet the Stage 1 success criteria are covered in Parts 1-5 above.
 
 These patterns enhance your unit testing capabilities:
 
@@ -707,7 +708,7 @@ These patterns enhance your unit testing capabilities:
 Test the same function with multiple inputs:
 
 <details open>
-<summary><strong>🐍 Python</strong></summary>
+<summary><strong>Python</strong></summary>
 
 ```python
 @pytest.mark.parametrize("input,expected", [
@@ -723,7 +724,7 @@ def test_square(input, expected):
 </details>
 
 <details open>
-<summary><strong>☕ JavaScript</strong></summary>
+<summary><strong>JavaScript</strong></summary>
 
 ```javascript
 describe.each([
@@ -743,7 +744,7 @@ describe.each([
 ### Test Organization
 
 <details open>
-<summary><strong>🐍 Python</strong></summary>
+<summary><strong>Python</strong></summary>
 
 ```python
 class TestPasswordHashing:
@@ -759,7 +760,7 @@ class TestPasswordHashing:
 </details>
 
 <details open>
-<summary><strong>☕ JavaScript</strong></summary>
+<summary><strong>JavaScript</strong></summary>
 
 ```javascript
 describe("PasswordHashing", () => {
@@ -780,7 +781,7 @@ describe("PasswordHashing", () => {
 ### Mocking External Dependencies
 
 <details open>
-<summary><strong>🐍 Python</strong></summary>
+<summary><strong>Python</strong></summary>
 
 ```python
 from unittest.mock import patch
@@ -795,7 +796,7 @@ def test_send_email(mock_send_email):
 </details>
 
 <details open>
-<summary><strong>☕ JavaScript</strong></summary>
+<summary><strong>JavaScript</strong></summary>
 
 ```javascript
 import { vi } from "vitest";
@@ -818,7 +819,7 @@ it("should send welcome email", () => {
 ### Pytest Fixtures in Practice
 
 <details open>
-<summary><strong>🐍 Python</strong></summary>
+<summary><strong>Python</strong></summary>
 
 **Real fixtures from `backend/tests/conftest.py`:**
 
@@ -898,7 +899,7 @@ def test_register_new_user_success(self, client):
 </details>
 
 <details open>
-<summary><strong>☕ JavaScript</strong></summary>
+<summary><strong>JavaScript</strong></summary>
 
 ```javascript
 // Mock functions with vi.fn()
@@ -935,7 +936,7 @@ it("should update state when user types", () => {
 ### Additional React Testing Patterns
 
 <details open>
-<summary><strong>☕ JavaScript</strong></summary>
+<summary><strong>JavaScript</strong></summary>
 
 **Testing Custom Hooks:**
 
@@ -1033,14 +1034,14 @@ You're ready for Stage 2 when you can:
 
 ### Hands-On Practice
 
-**🐍 Python Track:**
+**Python Track:**
 
 - [Lab 1: Your First Test (Python)](exercises/LAB_01_Your_First_Test_Python.md)
 - [Lab 2: Testing Real Functions (Python)](exercises/LAB_02_Testing_Real_Functions_Python.md)
 - [Lab 3: Fixtures and Test Data (Python)](exercises/LAB_03_Fixtures_And_Test_Data_Python.md)
 - [Lab 4: Debugging and Error Handling (Python)](exercises/LAB_04_Debugging_And_Error_Handling_Python.md)
 
-**🟨 JavaScript Track:**
+**JavaScript Track:**
 
 - [Lab 1: Your First Test (JavaScript)](exercises/LAB_01_Your_First_Test_JavaScript.md)
 - [Lab 2: Testing Real Functions (JavaScript)](exercises/LAB_02_Testing_Real_Functions_JavaScript.md)
@@ -1153,4 +1154,4 @@ Once you've met the success criteria and reflected on the questions:
 
 ---
 
-_Pro tip: Come back to this stage after completing later stages. You'll notice things you missed the first time! 🎯_
+_Pro tip: Come back to this stage after completing later stages. You'll notice things you missed the first time!_

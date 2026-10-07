@@ -1,6 +1,6 @@
-# 🎯 Testbook Testing Patterns
+# Testbook Testing Patterns
 
-> **💡 Language Selection**: This guide includes both Python and JavaScript examples. Both are expanded by default so you can see all approaches. Click the language tabs to collapse sections you don't need.
+> **Language Selection**: This guide includes both Python and JavaScript examples. Both are expanded by default so you can see all approaches. Click the language tabs to collapse sections you don't need.
 
 ## Table of Contents
 
@@ -28,7 +28,7 @@ The **Arrange-Act-Assert (AAA)** pattern is the fundamental structure for all te
 - **Debugging**: Clear separation makes issues easier to identify
 
 <details open>
-<summary><strong>🐍 Python Example (pytest)</strong></summary>
+<summary><strong>Python Example (pytest)</strong></summary>
 
 ```python
 def test_user_login_success():
@@ -48,7 +48,7 @@ def test_user_login_success():
 </details>
 
 <details open>
-<summary><strong>☕ JavaScript Example (Vitest)</strong></summary>
+<summary><strong>JavaScript Example (Vitest)</strong></summary>
 
 ```javascript
 test('user login success', () => {
@@ -125,7 +125,7 @@ test("user can create a new post", async ({ page }) => {
 
 ### Common AAA Mistakes
 
-❌ **Mixing concerns in one test**
+**Mixing concerns in one test**
 
 ```python
 def test_user_management():
@@ -140,7 +140,7 @@ def test_user_management():
     assert update_response.status_code == 200  # Assert
 ```
 
-✅ **Separate concerns into focused tests**
+**Separate concerns into focused tests**
 
 ```python
 def test_user_login_success():
@@ -171,7 +171,7 @@ When testing dynamic content like posts, comments, and user lists, you often don
 await page.click('[data-testid="post-24-react-button"]');
 ```
 
-<h2 id="the-solution">✅ The Solution</h2>
+<h2 id="the-solution">The Solution</h2>
 
 Testbook provides **multiple selection strategies** for dynamic content:
 
@@ -252,7 +252,7 @@ const postId = await page.evaluate(async () => {
 await page.click(`[data-testid="post-${postId}-react-button"]`);
 ```
 
-<h2 id="available-attributes">📋 Available Attributes</h2>
+<h2 id="available-attributes">Available Attributes</h2>
 
 ### Posts
 
@@ -376,7 +376,7 @@ await page.locator('[data-username="mikechen"]');
 </div>
 ```
 
-<h2 id="common-testing-patterns">🎯 Common Testing Patterns</h2>
+<h2 id="common-testing-patterns">Common Testing Patterns</h2>
 
 ### Pattern 1: Test Newly Created Content
 
@@ -491,7 +491,7 @@ test("find specific user in followers list", async ({ page }) => {
 });
 ```
 
-<h2 id="python-selenium-examples">🐍 Python/Selenium Examples</h2>
+<h2 id="python-selenium-examples">Python/Selenium Examples</h2>
 
 ```python
 from selenium.webdriver.common.by import By
@@ -515,7 +515,7 @@ post_id = first_post.get_attribute('data-post-id')
 react_button = driver.find_element(By.CSS_SELECTOR, f'[data-testid="post-{post_id}-react-button"]')
 ```
 
-<h2 id="cypress-examples">🎭 Cypress Examples</h2>
+<h2 id="cypress-examples">Cypress Examples</h2>
 
 ```javascript
 // Select all posts
@@ -545,9 +545,9 @@ cy.get('[data-testid-generic="comment-item"][data-author="mikechen"]').should(
 );
 ```
 
-<h2 id="best-practices">📊 Best Practices</h2>
+<h2 id="best-practices">Best Practices</h2>
 
-### ✅ DO: Use Generic Selectors for Dynamic Content
+### DO: Use Generic Selectors for Dynamic Content
 
 ```javascript
 // Good - works regardless of ID
@@ -557,7 +557,7 @@ await page.locator('[data-testid-generic="post-item"]').first().click();
 await page.locator('[data-is-own-post="true"]').first();
 ```
 
-### ❌ DON'T: Hardcode Dynamic IDs
+### DON'T: Hardcode Dynamic IDs
 
 ```javascript
 // Bad - ID might not exist or be different
@@ -567,7 +567,7 @@ await page.click('[data-testid="post-99-react-button"]');
 await page.locator(".post").nth(3); // No data-testid!
 ```
 
-### ✅ DO: Combine API and UI Testing
+### DO: Combine API and UI Testing
 
 ```python
 # Create post via API, get ID
@@ -581,7 +581,7 @@ driver.get(f"http://localhost:3000/post/{post_id}")
 assert driver.find_element(By.CSS_SELECTOR, f'[data-post-id="{post_id}"]')
 ```
 
-### ✅ DO: Use Wait Strategies
+### DO: Use Wait Strategies
 
 ```javascript
 // Wait for new content to appear after action
@@ -595,7 +595,7 @@ const posts = page.locator('[data-testid-generic="post-item"]');
 await expect(posts).toHaveCount(22); // Was 21, now 22
 ```
 
-<h2 id="complete-selector-reference">🔍 Complete Selector Reference</h2>
+<h2 id="complete-selector-reference">Complete Selector Reference</h2>
 
 ### Posts
 
@@ -629,7 +629,7 @@ await expect(posts).toHaveCount(22); // Was 21, now 22
 [data-is-following="true"]                  /* Currently following */
 ```
 
-<h2 id="real-world-test-scenarios">🧪 Real-World Test Scenarios</h2>
+<h2 id="real-world-test-scenarios">Real-World Test Scenarios</h2>
 
 ### Scenario: User Registration Flow
 
@@ -737,7 +737,7 @@ test("upload image and create post", async ({ page }) => {
 });
 ```
 
-<h2 id="testing-toggle-actions">🔄 Testing Toggle Actions</h2>
+<h2 id="testing-toggle-actions">Testing Toggle Actions</h2>
 
 ### React/Unreact
 
@@ -781,15 +781,15 @@ test("toggle repost", async ({ page }) => {
 });
 ```
 
-## 🎓 Key Takeaways
+## Key Takeaways
 
-1. ✅ **Use `data-testid-generic`** for dynamic lists
-2. ✅ **Use `.first()`, `.last()`, `.nth()`** for positional selection
-3. ✅ **Use data attributes** for filtering (`data-post-author`, `data-is-own-post`)
-4. ✅ **Combine with text filters** when you know the content
-5. ✅ **Get IDs from API responses** when creating content via API
-6. ✅ **Use proper waits** after creating/updating content
-7. ✅ **Both specific and generic IDs** available for flexibility
+1. **Use `data-testid-generic`** for dynamic lists
+2. **Use `.first()`, `.last()`, `.nth()`** for positional selection
+3. **Use data attributes** for filtering (`data-post-author`, `data-is-own-post`)
+4. **Combine with text filters** when you know the content
+5. **Get IDs from API responses** when creating content via API
+6. **Use proper waits** after creating/updating content
+7. **Both specific and generic IDs** available for flexibility
 
 ## More Resources
 
@@ -810,7 +810,7 @@ test("toggle repost", async ({ page }) => {
 
 ---
 
-## 10. **Handling Browser Dialogs** ⚠️ ESSENTIAL PATTERN
+## 10. **Handling Browser Dialogs** ESSENTIAL PATTERN
 
 ### The Problem
 
@@ -835,7 +835,7 @@ const handleBlock = async () => {
 
 Tests that clicked the block button would hang, waiting for the dialog to be dismissed. **This broke 5 Testbook tests!**
 
-### ✅ The Solution: Setup Dialog Handler
+### The Solution: Setup Dialog Handler
 
 **Pattern 1: Per-Test Handler**
 
@@ -884,14 +884,14 @@ page.on("dialog", async (dialog) => {
 
 ### When to Use
 
-✅ **Always use dialog handlers** if your app has:
+**Always use dialog handlers** if your app has:
 
 - Confirmation dialogs (`window.confirm`)
 - Success/error alerts (`window.alert`)
 - Delete confirmations
 - Destructive action warnings
 
-❌ **Don't rely on dialogs for testing logic**
+**Don't rely on dialogs for testing logic**
 
 - They're meant for user safety, not test validation
 - Test the API response or UI state change instead
@@ -974,7 +974,7 @@ useEffect(() => {
 
 Tests would open menu, but dropdown closed before clicking edit!
 
-### ✅ The Pattern
+### The Pattern
 
 ```javascript
 // Normal click might fail
@@ -988,14 +988,14 @@ await page.locator('[data-testid="edit-button"]').click({ force: true }); // ✅
 
 ### When to Use Force
 
-✅ **Good use cases:**
+**Good use cases:**
 
 - Elements with CSS transitions
 - Dropdown menus with close handlers
 - Elements that become hidden quickly
 - Animation conflicts
 
-❌ **Bad use cases:**
+**Bad use cases:**
 
 - Actually hidden elements (use different selector)
 - As first resort (debug the timing first)
@@ -1024,7 +1024,7 @@ await page.click('[data-testid="edit-button"]');
 
 ### The Pattern: Don't Wait for Time, Wait for State
 
-**❌ BAD - Arbitrary Timeouts:**
+**BAD - Arbitrary Timeouts:**
 
 ```javascript
 await page.click('[data-testid="follow-button"]');
@@ -1032,7 +1032,7 @@ await page.waitForTimeout(1000); // Hope it's enough!
 await expect(button).toContainText("Unfollow");
 ```
 
-**✅ GOOD - Wait for Actual Change:**
+**GOOD - Wait for Actual Change:**
 
 ```javascript
 await page.click('[data-testid="follow-button"]');
@@ -1082,13 +1082,13 @@ await page.waitForURL(/.*\/login/, { timeout: 15000 });
 - **[TESTING_FEATURES.md](../reference/TESTING_FEATURES.md)** - All testable features
 - **[TESTING_CHEATSHEET.md](../reference/TESTING_CHEATSHEET.md)** - Quick reference (updated with real fixes!)
 - **[TESTING_ANTIPATTERNS.md](TESTING_ANTIPATTERNS.md)** - What NOT to do (includes dialog anti-pattern!)
-- **[FLAKY_TESTS_GUIDE.md](../guides/FLAKY_TESTS_GUIDE.md)** ⭐ - Comprehensive guide with real examples
+- **[FLAKY_TESTS_GUIDE.md](../guides/FLAKY_TESTS_GUIDE.md)** - Comprehensive guide with real examples
 
 **New:** Patterns 10-12 (dialog handling, force clicks, state waiting) are based on **real fixes** that took Testbook from 87% → 100% test pass rate!
 
 ---
 
-**Now you can test dynamic content AND handle all the edge cases!** 🎉
+**Now you can test dynamic content AND handle all the edge cases!**
 
 ---
 

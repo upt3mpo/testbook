@@ -1,10 +1,10 @@
-# ✅ Quality Checks & Code Standards
+# Quality Checks & Code Standards
 
 **Maintaining code quality in Testbook**
 
 ---
 
-<h2 id="overview">🎯 Overview</h2>
+<h2 id="overview">Overview</h2>
 
 Testbook uses automated quality checks to maintain code standards:
 
@@ -20,7 +20,7 @@ Testbook uses automated quality checks to maintain code standards:
 
 ---
 
-<h2 id="quick-start">🚀 Quick Start</h2>
+<h2 id="quick-start">Quick Start</h2>
 
 ### Run All Quality Checks
 
@@ -30,16 +30,16 @@ Testbook uses automated quality checks to maintain code standards:
 
 This runs:
 
-- ✅ Black formatting check (Python)
-- ✅ Ruff import sorting and linting (Python)
-- ✅ Backend tests with 80% coverage gate
-- ✅ ESLint linting (JavaScript)
-- ✅ Prettier formatting check (JavaScript)
-- ✅ Frontend tests
+- Black formatting check (Python)
+- Ruff import sorting and linting (Python)
+- Backend tests with 80% coverage gate
+- ESLint linting (JavaScript)
+- Prettier formatting check (JavaScript)
+- Frontend tests
 
 ---
 
-<h2 id="backend-python">🐍 Backend (Python)</h2>
+<h2 id="backend-python">Backend (Python)</h2>
 
 ### Formatting with Black
 
@@ -105,7 +105,7 @@ pytest --cov --cov-fail-under=80
 
 ---
 
-<h2 id="markdown-validation">📝 Markdown Validation</h2>
+<h2 id="markdown-validation">Markdown Validation</h2>
 
 Documentation gets the same automated gate as code: markdownlint checks formatting/style, and `markdown-link-check` verifies every internal link, anchor, and external URL actually resolves.
 
@@ -125,7 +125,7 @@ Two habits worth keeping in mind while writing docs: use descriptive link text (
 
 ---
 
-<h2 id="frontend-javascript">☕ Frontend (JavaScript)</h2>
+<h2 id="frontend-javascript">Frontend (JavaScript)</h2>
 
 ### Linting with ESLint
 
@@ -181,7 +181,7 @@ npm run format
 
 ---
 
-## 🪝 Pre-commit Hooks
+## Pre-commit Hooks
 
 **Automatic quality checks before every commit!**
 
@@ -236,11 +236,11 @@ pre-commit run black --all-files
 git commit --no-verify
 ```
 
-⚠️ **Not recommended!** CI will still fail if checks don't pass.
+**Not recommended!** CI will still fail if checks don't pass.
 
 ---
 
-## 🤖 CI/CD Integration
+## CI/CD Integration
 
 ### GitHub Actions Workflow
 
@@ -287,20 +287,20 @@ None of this is enforced by anything in this repository — it has to be configu
 
 ---
 
-<h2 id="quality-metrics">📊 Quality Metrics</h2>
+<h2 id="quality-metrics">Quality Metrics</h2>
 
 ### Current Status
 
-| Metric                   | Value | Target | Status         |
-| ------------------------ | ----- | ------ | -------------- |
-| Backend Coverage         | 85%   | 80%    | ✅ +5%         |
-| Frontend Coverage        | 83%   | N/A    | ✅ Good        |
-| Linting Violations       | 0     | 0      | ✅ Clean       |
-| Accessibility Violations | 0     | 0      | ✅ WCAG 2.1 AA |
+| Metric                   | Value | Target | Status      |
+| ------------------------ | ----- | ------ | ----------- |
+| Backend Coverage         | 85%   | 80%    | +5%         |
+| Frontend Coverage        | 83%   | N/A    | Good        |
+| Linting Violations       | 0     | 0      | Clean       |
+| Accessibility Violations | 0     | 0      | WCAG 2.1 AA |
 
 ---
 
-<h2 id="ide-integration">🛠️ IDE Integration</h2>
+<h2 id="ide-integration">IDE Integration</h2>
 
 ### VS Code
 
@@ -332,7 +332,7 @@ None of this is enforced by anything in this repository — it has to be configu
 
 ---
 
-<h2 id="common-issues-fixes">🐛 Common Issues & Fixes</h2>
+<h2 id="common-issues-fixes">Common Issues & Fixes</h2>
 
 ### Issue: "Black would make changes"
 
@@ -375,7 +375,7 @@ open htmlcov/index.html
 
 ---
 
-<h2 id="best-practices">🎯 Best Practices</h2>
+<h2 id="best-practices">Best Practices</h2>
 
 ### For Backend (Python)
 
@@ -444,7 +444,7 @@ open htmlcov/index.html
 
 ---
 
-<h2 id="additional-resources">📚 Additional Resources</h2>
+<h2 id="additional-resources">Additional Resources</h2>
 
 - [Black Documentation](https://black.readthedocs.io/)
 - [Ruff Rules](https://docs.astral.sh/ruff/rules/)
@@ -454,7 +454,7 @@ open htmlcov/index.html
 
 ---
 
-## ✅ Checklist
+## Checklist
 
 Before pushing code:
 
@@ -468,4 +468,4 @@ Before pushing code:
 
 ---
 
-**Quality is not an accident — it's a habit!** 🚀
+**Quality is not an accident — it's a habit!**

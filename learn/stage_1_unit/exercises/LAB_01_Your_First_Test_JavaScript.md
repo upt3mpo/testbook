@@ -1,19 +1,19 @@
-# 🧪 Lab 1: Your First Test (JavaScript)
+# Lab 1: Your First Test (JavaScript)
 
 **Estimated Time:** 30 minutes<br>
 **Difficulty:** Beginner<br>
-**Language:** 🟨 JavaScript<br>
+**Language:** JavaScript<br>
 **Prerequisites:** Testbook running, Node.js installed, basic JavaScript knowledge
 
-**💡 Need JavaScript basics?** Try [learn-js.org](https://www.learn-js.org/) for free interactive tutorials!
+**Need JavaScript basics?** Try [learn-js.org](https://www.learn-js.org/) for free interactive tutorials!
 
-**💡 Need Python instead?** Try [Lab 1: Your First Test (Python)](LAB_01_Your_First_Test_Python.md)!
+**Need Python instead?** Try [Lab 1: Your First Test (Python)](LAB_01_Your_First_Test_Python.md)!
 
 **What This Adds:** Your first step into automated testing - learn to write, run, and understand basic tests that catch bugs before they reach production.
 
 ---
 
-<h2 id="what-youll-learn">🎯 What You'll Learn</h2>
+<h2 id="what-youll-learn">What You'll Learn</h2>
 
 By the end of this lab, you will:
 
@@ -24,7 +24,7 @@ By the end of this lab, you will:
 
 ---
 
-<h2 id="step-by-step-instructions">📋 Step-by-Step Instructions</h2>
+<h2 id="step-by-step-instructions">Step-by-Step Instructions</h2>
 
 ### Step 1: Open Your Terminal (2 minutes)
 
@@ -38,7 +38,7 @@ By the end of this lab, you will:
 - Open Command Prompt or PowerShell
 - Navigate to Testbook: `cd C:\path\to\Testbook`
 
-✅ **Checkpoint:** Run `ls` (or `dir` on Windows) and see `backend/` and `frontend/` folders
+**Checkpoint:** Run `ls` (or `dir` on Windows) and see `backend/` and `frontend/` folders
 
 ### Step 2: Navigate to Frontend (2 minutes)
 
@@ -46,7 +46,7 @@ By the end of this lab, you will:
 cd frontend
 ```
 
-✅ **Checkpoint:** You should see `package.json` and `src/` folder
+**Checkpoint:** You should see `package.json` and `src/` folder
 
 ### Step 3: Create Your First Test File (5 minutes)
 
@@ -125,7 +125,7 @@ describe("My First Tests", () => {
 });
 ```
 
-✅ **Checkpoint:** File saved in `frontend/src/tests/unit/test_my_first.test.js`
+**Checkpoint:** File saved in `frontend/src/tests/unit/test_my_first.test.js`
 
 ### Step 4: Run Your First Test (5 minutes)
 
@@ -148,9 +148,9 @@ Start at 14:23:15
 Duration  42ms
 ```
 
-🎉 **Congratulations!** You just ran your first automated tests!
+**Congratulations!** You just ran your first automated tests!
 
-✅ **Checkpoint:** All 3 tests show ✓ with green checkmarks
+**Checkpoint:** All 3 tests show ✓ with green checkmarks
 
 ### Step 5: Make a Test Fail (On Purpose!) (5 minutes)
 
@@ -186,7 +186,7 @@ expect(result).toBe(4); // Correct answer
 
 **Run again - should pass!**
 
-✅ **Checkpoint:** You understand how failing tests help find bugs
+**Checkpoint:** You understand how failing tests help find bugs
 
 ### Step 6: Write Your Own Test (10 minutes)
 
@@ -227,21 +227,21 @@ it("should test my own logic", () => {
 npm test test_my_first.test.js
 ```
 
-✅ **Checkpoint:** Your custom test passes!
+**Checkpoint:** Your custom test passes!
 
 ---
 
-<h2 id="what-you-learned">🎓 What You Learned</h2>
+<h2 id="what-you-learned">What You Learned</h2>
 
-- ✅ How to run Vitest
-- ✅ How to write a test function with `it()`
-- ✅ How to use `expect()` statements
-- ✅ How failing tests help find bugs
-- ✅ How to create your own tests
+- How to run Vitest
+- How to write a test function with `it()`
+- How to use `expect()` statements
+- How failing tests help find bugs
+- How to create your own tests
 
 ---
 
-<h2 id="next-steps">🚀 Next Steps</h2>
+<h2 id="next-steps">Next Steps</h2>
 
 Now try:
 
@@ -252,7 +252,7 @@ Now try:
 
 ---
 
-## 💡 Key Takeaways
+## Key Takeaways
 
 **Test Structure:**
 
@@ -284,7 +284,7 @@ describe("Test Suite", () => {
 
 ---
 
-<h2 id="challenge">🎯 Challenge</h2>
+<h2 id="challenge">Challenge</h2>
 
 Can you write a test that:
 
@@ -320,7 +320,7 @@ it("should sum numbers", () => {
 
 ---
 
-## 🆚 JavaScript vs Python?
+## JavaScript vs Python?
 
 **Both versions of this lab teach the same concepts!**
 
@@ -335,6 +335,6 @@ it("should sum numbers", () => {
 
 ---
 
-**🎉 Congratulations on completing Lab 1!**
+**Congratulations on completing Lab 1!**
 
 **Next Lab:** [Lab 2: Testing Real Functions (JavaScript)](LAB_02_Testing_Real_Functions_JavaScript.md)

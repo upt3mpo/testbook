@@ -1,11 +1,11 @@
-# 🧪 Lab 6: Advanced API Testing
+# Lab 6: Advanced API Testing
 
 **Estimated Time:** 150 minutes (120 minutes of core steps and a 30 minute accessibility step)<br>
 **Difficulty:** Advanced<br>
-**Language:** 🐍 Python<br>
+**Language:** Python<br>
 **Prerequisites:** Lab 5 completed
 
-**💡 Need JavaScript instead?** Try [Lab 6: Component Testing (JavaScript)](LAB_06_Component_Testing_JavaScript.md)!
+**Need JavaScript instead?** Try [Lab 6: Component Testing (JavaScript)](LAB_06_Component_Testing_JavaScript.md)!
 
 **What This Adds:** Advanced API testing patterns including database transactions, complex authentication flows, error handling, and performance testing.
 
@@ -13,7 +13,7 @@
 
 ---
 
-## 🎯 What You'll Learn
+## What You'll Learn
 
 - **Database transactions** - Test complex data operations
 - **Authentication flows** - Test login, logout, token refresh
@@ -24,7 +24,7 @@
 
 ---
 
-## 📋 Step-by-Step Instructions
+## Step-by-Step Instructions
 
 ### Part 1: Database Transaction Testing (30 minutes)
 
@@ -453,7 +453,7 @@ cd backend
 pytest tests/integration/test_error_responses_lab.py -v
 ```
 
-✅ **Checkpoint:** all six pass.
+**Checkpoint:** all six pass.
 
 **Challenge: find a gap.** Probing like this finds things. Try posting an **empty** post
 directly to the API (`POST /api/posts/` with `{"content": ""}`), and registering with a 300
@@ -575,7 +575,7 @@ def test_indexed_query_performance(self, db_session: Session):
 
 ---
 
-## 💪 Challenge Exercises
+## Challenge Exercises
 
 ### Challenge 1: Test Complex Business Logic
 
@@ -615,7 +615,7 @@ def test_unicode_content(self, client, db_session: Session):
 
 ---
 
-## 🎓 Advanced Patterns
+## Advanced Patterns
 
 ### Custom Fixtures for Complex Setup
 
@@ -674,7 +674,7 @@ def test_external_api_call(self, client):
 
 ---
 
-## ✅ Completion Checklist
+## Completion Checklist
 
 - [ ] Can test complex database transactions
 - [ ] Can test complete authentication flows
@@ -689,7 +689,7 @@ def test_external_api_call(self, client):
 
 ---
 
-## 💡 Pro Tips
+## Pro Tips
 
 1. **Test the happy path first** - Get basic functionality working
 2. **Then test edge cases** - Empty data, invalid data, boundary conditions
@@ -699,7 +699,7 @@ def test_external_api_call(self, client):
 
 ---
 
-## 📚 Next Steps
+## Next Steps
 
 **Continue building your skills:**
 
@@ -709,6 +709,6 @@ def test_external_api_call(self, client):
 
 ---
 
-**🎉 Congratulations!** You now understand advanced API testing patterns and can test complex backend functionality!
+**Congratulations!** You now understand advanced API testing patterns and can test complex backend functionality!
 
 **Next Lab:** [Lab 7: Test Data Management (Python)](LAB_07_Test_Data_Management_Python.md)

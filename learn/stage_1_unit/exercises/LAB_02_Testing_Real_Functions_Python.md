@@ -1,17 +1,17 @@
-# 🧪 Lab 2: Testing Real Functions
+# Lab 2: Testing Real Functions
 
 **Estimated Time:** 75 minutes (45 minutes of core steps and a 30 minute accessibility step)<br>
 **Difficulty:** Beginner<br>
-**Language:** 🐍 Python<br>
+**Language:** Python<br>
 **Prerequisites:** Lab 1 completed
 
-**💡 Need JavaScript instead?** Try [Lab 2: Testing Real Functions (JavaScript)](LAB_02_Testing_Real_Functions_JavaScript.md)!
+**Need JavaScript instead?** Try [Lab 2: Testing Real Functions (JavaScript)](LAB_02_Testing_Real_Functions_JavaScript.md)!
 
 **What This Adds:** Move from testing simple examples to testing real production code - learn to test actual functions that handle authentication, password hashing, and other critical application logic.
 
 ---
 
-<h2 id="what-youll-learn">🎯 What You'll Learn</h2>
+<h2 id="what-youll-learn">What You'll Learn</h2>
 
 - Test real Testbook functions
 - Test password hashing
@@ -22,7 +22,7 @@
 
 ---
 
-<h2 id="step-by-step-instructions">📋 Step-by-Step Instructions</h2>
+<h2 id="step-by-step-instructions">Step-by-Step Instructions</h2>
 
 ### Step 1: Explore Real Functions (10 minutes)
 
@@ -42,7 +42,7 @@ def verify_password(plain_password, hashed_password):
 
 **Understand:** These are REAL functions used in Testbook!
 
-✅ **Checkpoint:** You understand what these functions do
+**Checkpoint:** You understand what these functions do
 
 ### Step 2: Look at Existing Tests (10 minutes)
 
@@ -71,7 +71,7 @@ def test_password_is_hashed(self):
 - Multiple assertions checking different things
 - Tests what the function actually does
 
-✅ **Checkpoint:** You understand the test structure
+**Checkpoint:** You understand the test structure
 
 ### Step 3: Run the Test (5 minutes)
 
@@ -92,7 +92,7 @@ tests/unit/test_auth.py::TestPasswordHashing::test_password_is_hashed PASSED ✓
 pytest tests/unit/test_auth.py::TestPasswordHashing -v
 ```
 
-✅ **Checkpoint:** All password hashing tests pass
+**Checkpoint:** All password hashing tests pass
 
 ### Step 4: Write Your Own Password Test (15 minutes)
 
@@ -134,7 +134,7 @@ def test_same_password_different_hashes(self):
 pytest tests/unit/test_auth.py::TestPasswordHashing::test_same_password_different_hashes -v
 ```
 
-✅ **Checkpoint:** Your test passes!
+**Checkpoint:** Your test passes!
 
 ### Step 5: Test Password Verification (15 minutes)
 
@@ -172,7 +172,7 @@ def test_wrong_password_fails(self):
 pytest tests/unit/test_auth.py::TestPasswordHashing::test_wrong_password_fails -v
 ```
 
-✅ **Checkpoint:** Test passes and verifies security works!
+**Checkpoint:** Test passes and verifies security works!
 
 ---
 
@@ -257,7 +257,7 @@ cd backend
 pytest tests/test_contrast_lab.py -v
 ```
 
-✅ **Checkpoint:** all your tests pass.
+**Checkpoint:** all your tests pass.
 
 **Now compare** with `learn/solutions/LAB_02_contrast_solution.py`. Did you cover something it
 does not, or miss something it covers?
@@ -298,17 +298,17 @@ The reference version is at the bottom of `learn/solutions/LAB_02_contrast_solut
 milliseconds, needs no browser, and would have caught a bug that a full browser test missed for
 months.
 
-<h2 id="what-you-learned">🎓 What You Learned</h2>
+<h2 id="what-you-learned">What You Learned</h2>
 
-- ✅ How to test real application functions
-- ✅ How password hashing works
-- ✅ Why security testing matters
-- ✅ How to write tests that verify security
-- ✅ How to navigate existing test code
+- How to test real application functions
+- How password hashing works
+- Why security testing matters
+- How to write tests that verify security
+- How to navigate existing test code
 
 ---
 
-## 💪 Practice Exercises
+## Practice Exercises
 
 Try these on your own:
 
@@ -341,7 +341,7 @@ Find and run tests for:
 
 ---
 
-<h2 id="troubleshooting">🐛 Troubleshooting</h2>
+<h2 id="troubleshooting">Troubleshooting</h2>
 
 **Problem:** `ModuleNotFoundError: No module named 'auth'`
 **Solution:** Make sure you're in the `backend/` directory and venv is activated
@@ -354,7 +354,7 @@ Find and run tests for:
 
 ---
 
-<h2 id="lab-completion-checklist">✅ Lab Completion Checklist</h2>
+<h2 id="lab-completion-checklist">Lab Completion Checklist</h2>
 
 Before moving to Lab 3, ensure you:
 
@@ -378,6 +378,6 @@ Answer these to solidify your learning:
 
 ---
 
-**🎉 Great job! You're testing real security code!**
+**Great job! You're testing real security code!**
 
 **Next Lab:** [Lab 3: Testing API Endpoints (Python)](LAB_03_Fixtures_And_Test_Data_Python.md)

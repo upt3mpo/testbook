@@ -1,10 +1,10 @@
-# 🤝 Contributing to Testbook
+# Contributing to Testbook
 
 Thank you for your interest in improving the Testbook Testing Platform! This document provides guidelines for contributing.
 
 ---
 
-## 🎯 Ways to Contribute
+## Ways to Contribute
 
 ### For Educators & Students
 
@@ -21,7 +21,7 @@ Thank you for your interest in improving the Testbook Testing Platform! This doc
 
 ---
 
-## 📋 Before You Start
+## Before You Start
 
 1. **Search existing issues** - Someone might already be working on it
 2. **Read the docs** - Familiarize yourself with the project structure
@@ -29,7 +29,7 @@ Thank you for your interest in improving the Testbook Testing Platform! This doc
 
 ---
 
-## 🔧 Development Setup
+## Development Setup
 
 ### Prerequisites
 
@@ -65,7 +65,7 @@ cd ..
 
 ---
 
-## 🌿 Branch Strategy
+## Branch Strategy
 
 ### Branch Naming
 
@@ -115,7 +115,7 @@ test/increase-security-coverage
 
 ---
 
-## ✅ Testing Requirements
+## Testing Requirements
 
 ### All Contributions Must
 
@@ -144,7 +144,7 @@ pytest ../tests/security/ -v
 
 ---
 
-## 📝 Code Style
+## Code Style
 
 ### Python (Backend & Tests)
 
@@ -212,7 +212,7 @@ test("user can login with valid credentials", async ({ page }) => {
 
 ---
 
-## 📚 Documentation Standards
+## Documentation Standards
 
 ### All Documentation Should
 
@@ -236,8 +236,8 @@ scripts\check-markdown.bat
 
 This validates:
 
-- ✅ Markdown linting (formatting, style)
-- ✅ Link checking (broken links, anchors)
+- Markdown linting (formatting, style)
+- Link checking (broken links, anchors)
 
 **Auto-fix common issues:**
 
@@ -289,7 +289,7 @@ learn/
 
 ---
 
-## 🔍 Pull Request Process
+## Pull Request Process
 
 ### PR Template
 
@@ -341,14 +341,14 @@ When creating a PR, include:
 
 ### Review Criteria
 
-✅ **Approved if:**
+**Approved if:**
 
 - All tests pass
 - Code quality is good
 - Documentation is clear
 - Follows contribution guidelines
 
-❌ **Changes requested if:**
+**Changes requested if:**
 
 - Tests failing
 - Coverage drops
@@ -357,7 +357,7 @@ When creating a PR, include:
 
 ---
 
-## 🎓 Contributing Labs
+## Contributing Labs
 
 ### Lab Contribution Guidelines
 
@@ -383,7 +383,7 @@ When creating a PR, include:
 
 ---
 
-## 🐛 Reporting Issues
+## Reporting Issues
 
 ### Bug Reports
 
@@ -431,7 +431,7 @@ When creating a PR, include:
 
 ---
 
-## 📖 Documentation Contributions
+## Documentation Contributions
 
 ### Types of Doc Contributions
 
@@ -456,7 +456,7 @@ When creating a PR, include:
 
 ---
 
-## 🎯 Priority Areas
+## Priority Areas
 
 ### High Priority
 
@@ -479,7 +479,7 @@ Look for issues tagged:
 
 ---
 
-## 💬 Communication
+## Communication
 
 ### Getting Help
 
@@ -496,13 +496,13 @@ Look for issues tagged:
 
 ---
 
-## 📜 License
+## License
 
 By contributing, you agree that your contributions will be licensed under the MIT License.
 
 ---
 
-## 🙏 Thank You
+## Thank You
 
 Every contribution makes Testbook better for learners worldwide. Whether you:
 
@@ -512,11 +512,11 @@ Every contribution makes Testbook better for learners worldwide. Whether you:
 - Improve tests
 - Update documentation
 
-**You're helping people learn valuable skills. Thank you!** 🎉
+**You're helping people learn valuable skills. Thank you!**
 
 ---
 
-## 📞 Questions?
+## Questions?
 
 - **General questions:** Create a GitHub Discussion
 - **Bug reports:** Create a GitHub Issue
@@ -524,4 +524,4 @@ Every contribution makes Testbook better for learners worldwide. Whether you:
 
 ---
 
-**Happy Contributing! Let's make testing education better together! 🚀**
+**Happy Contributing! Let's make testing education better together!**

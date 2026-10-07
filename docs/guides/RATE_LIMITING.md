@@ -450,15 +450,15 @@ export API_RATE_LIMIT=50/minute
 
 **Memory (Default):**
 
-- ✅ Simple, no dependencies
-- ❌ Doesn't work with multiple processes
-- ✅ Perfect for development
+- Pro: simple, no dependencies
+- Con: doesn't work with multiple processes
+- Best for development
 
 **Redis (Production):**
 
-- ✅ Works with multiple processes
-- ✅ Persistent across restarts
-- ❌ Requires Redis server
+- Pro: works with multiple processes
+- Pro: persistent across restarts
+- Con: requires Redis server
 
 ```python
 # Using Redis backend
@@ -483,11 +483,11 @@ limiter = Limiter(
 
 ## Summary
 
-✅ **Use environment-based configuration** - Different limits for dev/test/prod
-✅ **Start conservative** - Easier to relax than to tighten
-✅ **Monitor violations** - Track 429 responses and patterns
-✅ **Test thoroughly** - Use LAB_06 exercises
-✅ **User-based limits** - Don't penalize whole networks
-✅ **Multiple windows** - Prevent sustained attacks
+**Use environment-based configuration** - Different limits for dev/test/prod
+**Start conservative** - Easier to relax than to tighten
+**Monitor violations** - Track 429 responses and patterns
+**Test thoroughly** - Use LAB_06 exercises
+**User-based limits** - Don't penalize whole networks
+**Multiple windows** - Prevent sustained attacks
 
 **Rate limiting is a balance between security and user experience!**

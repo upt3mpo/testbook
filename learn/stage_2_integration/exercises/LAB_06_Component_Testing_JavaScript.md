@@ -1,11 +1,11 @@
-# 🧪 Lab 6: Component Testing with Vitest
+# Lab 6: Component Testing with Vitest
 
 **Estimated Time:** 150 minutes (120 minutes of core steps and a 30 minute accessibility step)<br>
 **Difficulty:** Advanced<br>
-**Language:** 🟨 JavaScript/React<br>
+**Language:** JavaScript/React<br>
 **Prerequisites:** Lab 5 completed
 
-**💡 Need Python instead?** Try [Lab 6: Advanced API Testing (Python)](LAB_06_Advanced_API_Testing_Python.md)!
+**Need Python instead?** Try [Lab 6: Advanced API Testing (Python)](LAB_06_Advanced_API_Testing_Python.md)!
 
 **What This Adds:** Master React component testing with Vitest and React Testing Library - learn to test user interactions, component state, and API integration. This bridges unit tests and E2E tests.
 
@@ -13,7 +13,7 @@
 
 ---
 
-## 🎯 What You'll Learn
+## What You'll Learn
 
 - Test React components with Vitest + React Testing Library
 - Render components and query elements
@@ -24,7 +24,7 @@
 
 ---
 
-## 💡 Why Component Testing Matters
+## Why Component Testing Matters
 
 **The Problem:** Unit tests test individual functions, but users interact with components!
 
@@ -45,7 +45,7 @@ function ShoppingCart({ items }) {
 
 ---
 
-## 📋 Step-by-Step Instructions
+## Step-by-Step Instructions
 
 ### Step 1: Explore Existing Component Tests (15 minutes)
 
@@ -129,7 +129,7 @@ const renderCreatePost = (props = {}) => {
 3. **Provider setup** - Wrapping with `AuthContext.Provider`
 4. **Helper functions** - `renderCreatePost()` for consistent setup
 
-✅ **Checkpoint:** You understand the component test structure
+**Checkpoint:** You understand the component test structure
 
 ### Step 2: Run the Component Tests (10 minutes)
 
@@ -153,7 +153,7 @@ npm test CreatePost.test.jsx
     ✓ handles API errors gracefully
 ```
 
-✅ **Checkpoint:** All component tests pass!
+**Checkpoint:** All component tests pass!
 
 ### Step 3: Write Your First Component Test (20 minutes)
 
@@ -247,7 +247,7 @@ describe("Button Component", () => {
 npm test Button.test.jsx
 ```
 
-✅ **Checkpoint:** Your component test passes!
+**Checkpoint:** Your component test passes!
 
 ### Step 4: Test User Interactions (20 minutes)
 
@@ -371,7 +371,7 @@ describe("Counter Component", () => {
 npm test Counter.test.jsx
 ```
 
-✅ **Checkpoint:** Your interaction tests pass!
+**Checkpoint:** Your interaction tests pass!
 
 ### Step 5: Test Form Components (25 minutes)
 
@@ -597,7 +597,7 @@ describe("LoginForm Component", () => {
 npm test LoginForm.test.jsx
 ```
 
-✅ **Checkpoint:** Your form tests pass!
+**Checkpoint:** Your form tests pass!
 
 ---
 
@@ -734,25 +734,25 @@ cd frontend
 npx vitest --run src/tests/unit/a11y_lab.test.jsx
 ```
 
-✅ **Checkpoint:** all four tasks pass, and you watched Tasks C and D fail when you reintroduced
+**Checkpoint:** all four tasks pass, and you watched Tasks C and D fail when you reintroduced
 the original bugs.
 
 Compare your work with `frontend/src/tests/accessibility/a11y-regressions.test.jsx`, which holds
 the real regression tests for these defects.
 
-## 🎓 What You Learned
+## What You Learned
 
-- ✅ How to render React components in tests
-- ✅ How to query elements with `screen` and `getByRole`
-- ✅ How to simulate user interactions with `fireEvent`
-- ✅ How to test component state and props
-- ✅ How to test form validation and submission
-- ✅ How to test loading states and error handling
-- ✅ How to use `waitFor` for async operations
+- How to render React components in tests
+- How to query elements with `screen` and `getByRole`
+- How to simulate user interactions with `fireEvent`
+- How to test component state and props
+- How to test form validation and submission
+- How to test loading states and error handling
+- How to use `waitFor` for async operations
 
 ---
 
-## 💪 Practice Challenges
+## Practice Challenges
 
 ### Challenge 1: Test a Todo Component
 
@@ -790,7 +790,7 @@ Write tests for all features.
 
 ---
 
-## 🚨 Common Mistakes
+## Common Mistakes
 
 ### Mistake 1: Testing Implementation Details
 
@@ -851,7 +851,7 @@ it("should show loading state when clicked", () => {
 
 ---
 
-## 🎯 Pro Tips
+## Pro Tips
 
 ### Tip 1: Use Semantic Queries
 
@@ -904,7 +904,7 @@ const renderWithProviders = (ui, options = {}) => {
 
 ---
 
-## ✅ Completion Checklist
+## Completion Checklist
 
 - [ ] Ran existing component tests
 - [ ] Wrote `Button.test.jsx` and it passes
@@ -919,7 +919,7 @@ const renderWithProviders = (ui, options = {}) => {
 
 ---
 
-## 🎯 Key Takeaways
+## Key Takeaways
 
 1. **Test user experience, not implementation** - Focus on what users see and do
 2. **Use semantic queries** - `getByRole`, `getByLabelText` are more reliable
@@ -937,6 +937,6 @@ const renderWithProviders = (ui, options = {}) => {
 
 ---
 
-**🎉 Congratulations!** You're now testing React components like a pro!
+**Congratulations!** You're now testing React components like a pro!
 
 **Next Lab:** [Lab 7: Test Data Management (JavaScript)](LAB_07_Test_Data_Management_JavaScript.md)

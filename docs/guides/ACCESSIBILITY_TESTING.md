@@ -1,10 +1,10 @@
-# ♿ Accessibility Testing Guide
+# Accessibility Testing Guide
 
 **Making Testbook accessible to all users**
 
 ---
 
-<h2 id="why-accessibility-matters">🎯 Why Accessibility Matters</h2>
+<h2 id="why-accessibility-matters">Why Accessibility Matters</h2>
 
 **Legal Requirements:**
 
@@ -21,7 +21,7 @@
 
 ---
 
-<h2 id="accessibility-testing-pyramid">📊 Accessibility Testing Pyramid</h2>
+<h2 id="accessibility-testing-pyramid">Accessibility Testing Pyramid</h2>
 
 ```text
      Manual Testing (60%)
@@ -40,7 +40,7 @@
 
 ---
 
-<h2 id="testing-approaches-in-testbook">🧪 Testing Approaches in Testbook</h2>
+<h2 id="testing-approaches-in-testbook">Testing Approaches in Testbook</h2>
 
 ### 1. Unit-Level Accessibility (Frontend Component Tests)
 
@@ -140,41 +140,41 @@ make lighthouse            # or: cd tests && npm run lighthouse
 
 ---
 
-<h2 id="what-we-test-for">🔍 What We Test For</h2>
+<h2 id="what-we-test-for">What We Test For</h2>
 
 ### WCAG 2.1 Level AA Criteria
 
 #### 1. **Perceivable**
 
-- ✅ Alt text for all images
-- ✅ Sufficient color contrast (4.5:1 for text)
-- ✅ Text resizable to 200% without loss of content
-- ✅ No information conveyed by color alone
+- Alt text for all images
+- Sufficient color contrast (4.5:1 for text)
+- Text resizable to 200% without loss of content
+- No information conveyed by color alone
 
 #### 2. **Operable**
 
-- ✅ All functionality available via keyboard
-- ✅ No keyboard traps
-- ✅ Skip links for navigation
-- ✅ Clear focus indicators
-- ✅ Sufficient time to read content
+- All functionality available via keyboard
+- No keyboard traps
+- Skip links for navigation
+- Clear focus indicators
+- Sufficient time to read content
 
 #### 3. **Understandable**
 
-- ✅ Page language declared
-- ✅ Consistent navigation
-- ✅ Form labels and error messages
-- ✅ Input assistance for errors
+- Page language declared
+- Consistent navigation
+- Form labels and error messages
+- Input assistance for errors
 
 #### 4. **Robust**
 
-- ✅ Valid HTML
-- ✅ ARIA attributes used correctly
-- ✅ Works with assistive technologies
+- Valid HTML
+- ARIA attributes used correctly
+- Works with assistive technologies
 
 ---
 
-<h2 id="tools-we-use">🛠️ Tools We Use</h2>
+<h2 id="tools-we-use">Tools We Use</h2>
 
 ### 1. axe-core
 
@@ -214,7 +214,7 @@ npm install --save-dev eslint-plugin-jsx-a11y
 
 ---
 
-<h2 id="running-tests">🚀 Running Tests</h2>
+<h2 id="running-tests">Running Tests</h2>
 
 ### Quick Check (All Accessibility Tests)
 
@@ -246,7 +246,7 @@ Accessibility tests run automatically on every PR:
 
 ---
 
-<h2 id="common-issues-fixes">🐛 Common Issues & Fixes</h2>
+<h2 id="common-issues-fixes">Common Issues & Fixes</h2>
 
 ### Issue: "Form elements must have labels"
 
@@ -340,7 +340,7 @@ background: #fff;
 
 ---
 
-## 🧑‍🦯 Manual Testing Checklist
+## Manual Testing Checklist
 
 > **Full scripted suite:** this checklist is the short version. The step-by-step manual
 > tests, with expected results and a run sheet, are in
@@ -371,7 +371,7 @@ background: #fff;
 
 ---
 
-## 📈 Accessibility Scores
+## Accessibility Scores
 
 ### Current Testbook Scores
 
@@ -396,7 +396,7 @@ regression guard.
 
 ---
 
-## 🩺 Known Application Accessibility State
+## Known Application Accessibility State
 
 A pre-merge accessibility review (2026-09) audited every real page in the
 app - Login, Register, Feed, Post Detail, Profile, Settings - with axe-core
@@ -461,7 +461,7 @@ tag list as-is; narrowing it back to WCAG-only tags would reopen this gap.
 
 ---
 
-## 💼 For Your Portfolio
+## For Your Portfolio
 
 When discussing accessibility in interviews:
 
@@ -475,7 +475,7 @@ When discussing accessibility in interviews:
 
 ---
 
-<h2 id="additional-resources">📚 Additional Resources</h2>
+<h2 id="additional-resources">Additional Resources</h2>
 
 - [WCAG 2.1 Guidelines](https://www.w3.org/WAI/WCAG21/quickref/)
 - [axe-core Documentation](https://github.com/dequelabs/axe-core)
@@ -485,7 +485,7 @@ When discussing accessibility in interviews:
 
 ---
 
-<h2 id="checklist-for-new-features">✅ Checklist for New Features</h2>
+<h2 id="checklist-for-new-features">Checklist for New Features</h2>
 
 When adding new features, ensure:
 

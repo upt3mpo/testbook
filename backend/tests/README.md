@@ -69,7 +69,7 @@ pytest -m "not slow"
 
 ### Coverage Reports
 
-> **💡 When to Use Coverage:** Coverage is great for full test suite runs and CI/CD, but skip it when debugging individual tests to keep output clean.
+> **When to Use Coverage:** Coverage is great for full test suite runs and CI/CD, but skip it when debugging individual tests to keep output clean.
 
 ```bash
 # Run with coverage (explicit flags required)
@@ -86,14 +86,14 @@ start htmlcov/index.html # Windows
 
 ### When to Use Coverage
 
-**✅ Use Coverage For:**
+**Use Coverage For:**
 
 - Full test suite runs (`make test-backend` or `just test-backend`)
 - CI/CD pipelines
 - Before committing code
 - Quality assurance checks
 
-**❌ Skip Coverage For:**
+**Skip Coverage For:**
 
 - Single test debugging (`pytest tests/unit/test_auth.py::test_password_is_hashed -v`)
 - Quick test runs during development
@@ -142,7 +142,7 @@ This test uses **Schemathesis** for property-based contract testing - an advance
 - Validates responses match the schema
 - Finds bugs you'd never think to test manually
 
-**Current Status:** ⚠️ **Skipped** (OpenAPI 3.1.0 compatibility)
+**Current Status:** **Skipped** (OpenAPI 3.1.0 compatibility)
 
 FastAPI 0.115+ generates OpenAPI 3.1.0 schemas. Schemathesis 3.27.1 only has experimental 3.1.0 support. The test is skipped until full support is available.
 

@@ -1,4 +1,4 @@
-# 🤔 Stage 4 Reflection: Performance & Security
+# Stage 4 Reflection: Performance & Security
 
 Document your learning about non-functional testing.
 

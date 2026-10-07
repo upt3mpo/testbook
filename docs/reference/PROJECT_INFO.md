@@ -1,4 +1,4 @@
-# 📋 Testbook Project Information
+# Testbook Project Information
 
 ## Overview
 
@@ -8,19 +8,19 @@ Testbook is a fully functional fake social media application built specifically 
 
 ### For Testers
 
-✅ **Test-friendly design** - All elements have `data-testid` attributes
-✅ **Dev API endpoints** - Reset, seed, and manipulate test data easily
-✅ **Predictable behavior** - Consistent, reproducible test scenarios
-✅ **Comprehensive documentation** - Testing guides and examples included
-✅ **Multiple testing approaches** - API, UI, E2E testing support
+**Test-friendly design** - All elements have `data-testid` attributes
+**Dev API endpoints** - Reset, seed, and manipulate test data easily
+**Predictable behavior** - Consistent, reproducible test scenarios
+**Comprehensive documentation** - Testing guides and examples included
+**Multiple testing approaches** - API, UI, E2E testing support
 
 ### For Learning
 
-✅ **Realistic scenarios** - Real-world features to test
-✅ **Modern tech stack** - Learn current frameworks
-✅ **Best practices** - Clean code, proper architecture
-✅ **Full-stack** - Practice both frontend and backend testing
-✅ **Easy setup** - Running in minutes with Docker
+**Realistic scenarios** - Real-world features to test
+**Modern tech stack** - Learn current frameworks
+**Best practices** - Clean code, proper architecture
+**Full-stack** - Practice both frontend and backend testing
+**Easy setup** - Running in minutes with Docker
 
 ## Technical Stack
 
@@ -235,21 +235,21 @@ blocks:
 
 ### What Can You Test?
 
-✅ **Authentication & Authorization**
+**Authentication & Authorization**
 
 - Login/logout flows
 - Registration validation
 - JWT token handling
 - Protected route access
 
-✅ **User Management**
+**User Management**
 
 - Profile creation/updates
 - Follow/unfollow functionality
 - Block/unblock behavior
 - Account deletion
 
-✅ **Content Management**
+**Content Management**
 
 - Post creation (text, images, videos)
 - File upload with drag-and-drop
@@ -259,14 +259,14 @@ blocks:
 - Reaction system
 - Repost feature
 
-✅ **Feed & Filtering**
+**Feed & Filtering**
 
 - "See All" vs "Following" feeds
 - Blocked user filtering
 - Post ordering
 - Real-time updates
 
-✅ **UI/UX**
+**UI/UX**
 
 - Theme switching (dark/light)
 - Text density preferences
@@ -274,7 +274,7 @@ blocks:
 - Navigation
 - Form validation
 
-✅ **API Testing**
+**API Testing**
 
 - Request/response validation
 - Error handling
@@ -309,11 +309,11 @@ blocks:
 
 ## Limitations (By Design)
 
-⚠️ **Learning-focused** - Optimized for testing practice, not production deployment
-⚠️ **Default to SQLite** - PostgreSQL supported via `DATABASE_URL` env var
-⚠️ **No real-time updates** - Requires page refresh
-⚠️ **No pagination** - Limited to 50 posts
-⚠️ **Default secrets** - Warns if SECRET_KEY not set in environment
+**Learning-focused** - Optimized for testing practice, not production deployment
+**Default to SQLite** - PostgreSQL supported via `DATABASE_URL` env var
+**No real-time updates** - Requires page refresh
+**No pagination** - Limited to 50 posts
+**Default secrets** - Warns if SECRET_KEY not set in environment
 
 These are intentional simplifications to keep the focus on testing practice.
 
@@ -327,21 +327,21 @@ These are intentional simplifications to keep the focus on testing practice.
 
 ## Security Notes
 
-⚠️ **For Testing/Learning** - Additional hardening needed for production!
+**For Testing/Learning** - Additional hardening needed for production!
 
 **Current Security Features:**
 
-- ✅ JWT authentication with bcrypt password hashing
-- ✅ Rate limiting (environment-aware: 100/min prod, 1000/min test)
-- ✅ SECRET_KEY environment variable support with warnings
-- ✅ Dev endpoints gated behind TESTING mode
-- ✅ Authorization checks on user-owned resources
+- JWT authentication with bcrypt password hashing
+- Rate limiting (environment-aware: 100/min prod, 1000/min test)
+- SECRET_KEY environment variable support with warnings
+- Dev endpoints gated behind TESTING mode
+- Authorization checks on user-owned resources
 
 **What's Missing for Production:**
 
-- ⚠️ No HTTPS enforcement (configure your reverse proxy)
-- ⚠️ No CSRF protection (stateless API design)
-- ⚠️ Default secrets used if env vars not set (warnings provided)
+- No HTTPS enforcement (configure your reverse proxy)
+- No CSRF protection (stateless API design)
+- Default secrets used if env vars not set (warnings provided)
 
 These limitations are acceptable for a learning platform.
 
@@ -386,7 +386,7 @@ For questions or issues:
 
 ---
 
-## 📚 More Resources
+## More Resources
 
 - **[README.md](../../README.md)** - Main documentation and project overview
 - **[README.md](../../README.md#quick-start)** - Get started in 5 minutes
@@ -397,4 +397,4 @@ For questions or issues:
 
 ---
 
-**Built for testers, by developers who care about quality! 🚀**
+**Built for testers, by developers who care about quality!**

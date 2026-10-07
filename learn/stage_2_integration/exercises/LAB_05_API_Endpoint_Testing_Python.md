@@ -1,17 +1,17 @@
-# 🧪 Lab 5: API Endpoint Testing (Python)
+# Lab 5: API Endpoint Testing (Python)
 
 **Estimated Time:** 60 minutes<br>
 **Difficulty:** Intermediate<br>
-**Language:** 🐍 Python<br>
+**Language:** Python<br>
 **Prerequisites:** Labs 1-4 completed
 
-**💡 Need JavaScript instead?** Try [Lab 5: API Endpoint Testing (JavaScript)](LAB_05_API_Endpoint_Testing_JavaScript.md)!
+**Need JavaScript instead?** Try [Lab 5: API Endpoint Testing (JavaScript)](LAB_05_API_Endpoint_Testing_JavaScript.md)!
 
 **What This Adds:** Master API testing with FastAPI TestClient - learn to test real HTTP endpoints, handle authentication, and verify JSON responses. This is essential for testing backend services.
 
 ---
 
-<h2 id="what-youll-learn">🎯 What You'll Learn</h2>
+<h2 id="what-youll-learn">What You'll Learn</h2>
 
 - Test real API endpoints
 - Use FastAPI TestClient
@@ -21,7 +21,7 @@
 
 ---
 
-<h2 id="step-by-step-instructions">📋 Step-by-Step Instructions</h2>
+<h2 id="step-by-step-instructions">Step-by-Step Instructions</h2>
 
 ### Step 1: Understand the API (10 minutes)
 
@@ -86,7 +86,7 @@ def test_login_success(self, client, test_user):
 - `response.status_code` - HTTP status (200 = success)
 - `response.json()` - Parse JSON response
 
-✅ **Checkpoint:** You understand the test structure
+**Checkpoint:** You understand the test structure
 
 ### Step 3: Run the API Test (5 minutes)
 
@@ -100,7 +100,7 @@ pytest tests/integration/test_api_auth.py::TestLoginEndpoint::test_login_success
 tests/test_api_auth.py::TestLoginEndpoint::test_login_success PASSED ✓
 ```
 
-✅ **Checkpoint:** Test passes!
+**Checkpoint:** Test passes!
 
 ### Step 4: Write Your Own API Test (20 minutes)
 
@@ -134,7 +134,7 @@ def test_login_with_my_wrong_password(self, client, test_user):
 pytest tests/integration/test_api_auth.py::TestLoginEndpoint::test_login_with_my_wrong_password -v
 ```
 
-✅ **Checkpoint:** Your test passes!
+**Checkpoint:** Your test passes!
 
 ### Step 5: Test Creating a Post (30 minutes)
 
@@ -170,21 +170,21 @@ def test_create_my_post(self, client, auth_headers):
 pytest tests/integration/test_api_posts.py::TestCreatePost::test_create_my_post -v
 ```
 
-✅ **Checkpoint:** Post creation test passes!
+**Checkpoint:** Post creation test passes!
 
 ---
 
-<h2 id="what-you-learned">🎓 What You Learned</h2>
+<h2 id="what-you-learned">What You Learned</h2>
 
-- ✅ How to test API endpoints with TestClient
-- ✅ How to check HTTP status codes
-- ✅ How to verify JSON responses
-- ✅ How authentication headers work
-- ✅ How to test both success and failure cases
+- How to test API endpoints with TestClient
+- How to check HTTP status codes
+- How to verify JSON responses
+- How authentication headers work
+- How to test both success and failure cases
 
 ---
 
-## 💪 Practice Challenges
+## Practice Challenges
 
 ### Challenge 1: Test Post Deletion
 
@@ -216,7 +216,7 @@ Write a test that:
 
 ---
 
-<h2 id="common-mistakes">🐛 Common Mistakes</h2>
+<h2 id="common-mistakes">Common Mistakes</h2>
 
 **Mistake 1:** Forgetting authentication
 
@@ -246,7 +246,7 @@ assert "content" in data
 
 ---
 
-<h2 id="lab-completion-checklist">✅ Lab Completion Checklist</h2>
+<h2 id="lab-completion-checklist">Lab Completion Checklist</h2>
 
 - [ ] Ran existing API tests
 - [ ] Wrote `test_login_with_my_wrong_password` (passes)
@@ -257,7 +257,7 @@ assert "content" in data
 
 ---
 
-<h2 id="quiz">🎯 Quiz</h2>
+<h2 id="quiz">Quiz</h2>
 
 1. What HTTP status code means "Unauthorized"?
 2. What does `client.post()` do?
@@ -269,7 +269,7 @@ assert "content" in data
 
 ---
 
-<h2 id="further-reading">📚 Further Reading</h2>
+<h2 id="further-reading">Further Reading</h2>
 
 - [TESTING_GUIDE.md - API Testing Section](../../../docs/guides/TESTING_GUIDE.md#api-testing)
 - [FastAPI Testing Docs](https://fastapi.tiangolo.com/tutorial/testing/)
@@ -277,7 +277,7 @@ assert "content" in data
 
 ---
 
-**🎉 You're now testing real APIs like a pro!**
+**You're now testing real APIs like a pro!**
 
 **Next Lab:** [Lab 6: Advanced API Testing (Python)](LAB_06_Advanced_API_Testing_Python.md)
 

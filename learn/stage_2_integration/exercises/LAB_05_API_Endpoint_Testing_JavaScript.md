@@ -1,17 +1,17 @@
-# 🧪 Lab 5: API Endpoint Testing (JavaScript)
+# Lab 5: API Endpoint Testing (JavaScript)
 
 **Estimated Time:** 60 minutes<br>
 **Difficulty:** Intermediate<br>
-**Language:** 🟨 JavaScript<br>
+**Language:** JavaScript<br>
 **Prerequisites:** Labs 1-4 completed
 
-**💡 Need Python instead?** Try [Lab 5: API Endpoint Testing (Python)](LAB_05_API_Endpoint_Testing_Python.md)!
+**Need Python instead?** Try [Lab 5: API Endpoint Testing (Python)](LAB_05_API_Endpoint_Testing_Python.md)!
 
 **What This Adds:** Master API testing with MSW and Vitest - learn to test real HTTP endpoints, handle authentication, and verify JSON responses. This is essential for testing frontend-backend integration.
 
 ---
 
-<h2 id="what-youll-learn">🎯 What You'll Learn</h2>
+<h2 id="what-youll-learn">What You'll Learn</h2>
 
 - Test real API endpoints with fetch/axios
 - Use MSW (Mock Service Worker) for API mocking
@@ -21,7 +21,7 @@
 
 ---
 
-<h2 id="step-by-step-instructions">📋 Step-by-Step Instructions</h2>
+<h2 id="step-by-step-instructions">Step-by-Step Instructions</h2>
 
 ### Step 1: Understand the API (10 minutes)
 
@@ -102,7 +102,7 @@ it("calls onPostCreated when post is submitted successfully", async () => {
 - `toHaveBeenCalledWith()` - Verify API was called correctly
 - `waitFor()` - Wait for async operations
 
-✅ **Checkpoint:** You understand the test structure
+**Checkpoint:** You understand the test structure
 
 ### Step 3: Run the API Test (5 minutes)
 
@@ -119,7 +119,7 @@ npm test CreatePost.test.jsx
     ✓ calls onPostCreated when post is submitted successfully
 ```
 
-✅ **Checkpoint:** Test passes!
+**Checkpoint:** Test passes!
 
 ### Step 4: Write Your Own API Test (20 minutes)
 
@@ -217,7 +217,7 @@ describe("Auth API Tests", () => {
 npm test api_auth.test.js
 ```
 
-✅ **Checkpoint:** Your test passes!
+**Checkpoint:** Your test passes!
 
 ### Step 5: Test with MSW (Mock Service Worker) (30 minutes)
 
@@ -338,21 +338,21 @@ describe("API Tests with MSW", () => {
 npm test api_msw.test.js
 ```
 
-✅ **Checkpoint:** MSW tests pass!
+**Checkpoint:** MSW tests pass!
 
 ---
 
-<h2 id="what-you-learned">🎓 What You Learned</h2>
+<h2 id="what-you-learned">What You Learned</h2>
 
-- ✅ How to test API endpoints with Vitest
-- ✅ How to mock axios with `vi.mock()`
-- ✅ How to use MSW for realistic API mocking
-- ✅ How to verify API calls and responses
-- ✅ How to test both success and failure cases
+- How to test API endpoints with Vitest
+- How to mock axios with `vi.mock()`
+- How to use MSW for realistic API mocking
+- How to verify API calls and responses
+- How to test both success and failure cases
 
 ---
 
-## 💪 Practice Challenges
+## Practice Challenges
 
 ### Challenge 1: Test Post Creation API
 
@@ -382,7 +382,7 @@ Write a test that:
 
 ---
 
-<h2 id="common-mistakes">🐛 Common Mistakes</h2>
+<h2 id="common-mistakes">Common Mistakes</h2>
 
 **Mistake 1:** Not waiting for async operations
 
@@ -463,7 +463,7 @@ it("should handle login failure", async () => {
 
 ---
 
-<h2 id="lab-completion-checklist">✅ Lab Completion Checklist</h2>
+<h2 id="lab-completion-checklist">Lab Completion Checklist</h2>
 
 - [ ] Ran existing API tests
 - [ ] Wrote `api_auth.test.js` and it passes
@@ -474,7 +474,7 @@ it("should handle login failure", async () => {
 
 ---
 
-<h2 id="quiz">🎯 Quiz</h2>
+<h2 id="quiz">Quiz</h2>
 
 1. What does `vi.mock('axios')` do?
 2. What's the difference between `mockResolvedValue()` and `mockRejectedValue()`?
@@ -492,7 +492,7 @@ it("should handle login failure", async () => {
 
 ---
 
-<h2 id="further-reading">📚 Further Reading</h2>
+<h2 id="further-reading">Further Reading</h2>
 
 - [MSW Documentation](https://mswjs.io/docs/)
 - [Vitest Mocking Guide](https://vitest.dev/guide/mocking.html)
@@ -501,13 +501,13 @@ it("should handle login failure", async () => {
 
 ---
 
-**🎉 You're now testing real APIs like a pro!**
+**You're now testing real APIs like a pro!**
 
 **Next Lab:** [Lab 6: Component Testing (JavaScript)](LAB_06_Component_Testing_JavaScript.md)
 
 ---
 
-## 🆚 JavaScript vs Python?
+## JavaScript vs Python?
 
 **Both versions of this lab teach the same concepts!**
 

@@ -1,17 +1,17 @@
-# 🧪 Lab 12: E2E Test Organization
+# Lab 12: E2E Test Organization
 
 **Estimated Time:** 100 minutes (90 minutes of core parts and a 10 minute accessibility part)<br>
 **Difficulty:** Intermediate<br>
-**Language:** 🟨 JavaScript<br>
+**Language:** JavaScript<br>
 **Prerequisites:** Lab 11 completed
 
-**💡 Need Python instead?** Try [Lab 12: E2E Test Organization (Python)](LAB_12_E2E_Test_Organization_Python.md)!
+**Need Python instead?** Try [Lab 12: E2E Test Organization (Python)](LAB_12_E2E_Test_Organization_Python.md)!
 
 **What This Adds:** Organize E2E tests for maintainability, CI/CD integration, and team collaboration.
 
 ---
 
-## 🎯 What You'll Learn
+## What You'll Learn
 
 - **Test organization** - Structure tests for maintainability
 - **CI/CD integration** - Run E2E tests in pipelines
@@ -22,7 +22,7 @@
 
 ---
 
-## 📋 Why Test Organization Matters
+## Why Test Organization Matters
 
 **The Problem:**
 
@@ -37,7 +37,7 @@ Organize tests with clear structure, proper data management, and CI/CD integrati
 
 ---
 
-## 📋 Step-by-Step Instructions
+## Step-by-Step Instructions
 
 ### Part 1: Test Structure Organization (30 minutes)
 
@@ -153,7 +153,7 @@ export default defineConfig({
 });
 ```
 
-**⚠️ Important:** This is a separate, self-contained config for this
+**Important:** This is a separate, self-contained config for this
 exercise - it is not the real `tests/playwright.config.js` Testbook ships
 with. The real config only enables the `chromium` project by default
 (firefox/webkit/mobile projects are present but commented out); running
@@ -720,7 +720,7 @@ Create `tests/e2e/package.json`:
 }
 ```
 
-**⚠️ Important:** Node resolves ESM vs. CommonJS using the *nearest*
+**Important:** Node resolves ESM vs. CommonJS using the *nearest*
 `package.json` in the directory tree. The real `tests/package.json` already
 sets `"type": "module"` for everything under `tests/`, which is why
 `tests/e2e/auth.spec.js`, `posts.spec.js`, etc. can use `import`. If you
@@ -784,10 +784,10 @@ accident.
 touches styles still gets its accessibility check, and the reports are uploaded as separate
 artifacts. Open the file and find where it selects the accessibility tests.
 
-✅ **Checkpoint:** your keyboard tests are tagged, you can include and exclude them by tag, and you
+**Checkpoint:** your keyboard tests are tagged, you can include and exclude them by tag, and you
 can say when an accessibility test belongs in its own spec and when it belongs beside its feature.
 
-## 💪 Challenge Exercises
+## Challenge Exercises
 
 ### Challenge 1: Create Test Suite Runner
 
@@ -911,7 +911,7 @@ export default TestDataFactory;
 
 ---
 
-## ✅ Completion Checklist
+## Completion Checklist
 
 - [ ] Can organize E2E tests in a maintainable structure
 - [ ] Can use Page Object Model for test organization
@@ -925,7 +925,7 @@ export default TestDataFactory;
 
 ---
 
-## 💡 Pro Tips
+## Pro Tips
 
 1. **Start with smoke tests** - Get critical paths working first
 2. **Use Page Object Model** - Keep tests maintainable and readable
@@ -935,7 +935,7 @@ export default TestDataFactory;
 
 ---
 
-## 📚 Next Steps
+## Next Steps
 
 **Continue building your skills:**
 
@@ -945,6 +945,6 @@ export default TestDataFactory;
 
 ---
 
-**🎉 Congratulations!** You now understand how to organize E2E tests for maintainability and team collaboration!
+**Congratulations!** You now understand how to organize E2E tests for maintainability and team collaboration!
 
 **Next Lab:** [Lab 13: Load Testing with k6 (JavaScript)](../../stage_4_performance_security/exercises/LAB_13_Load_Testing_k6.md)

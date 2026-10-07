@@ -1,17 +1,17 @@
-# 🧪 Lab 3: Fixtures And Test Data (Python)
+# Lab 3: Fixtures And Test Data (Python)
 
 **Estimated Time:** 45 minutes<br>
 **Difficulty:** Intermediate<br>
-**Language:** 🐍 Python<br>
+**Language:** Python<br>
 **Prerequisites:** Labs 1 & 2 completed
 
-**💡 Need JavaScript instead?** Try [Lab 3: Fixtures And Test Data (JavaScript)](LAB_03_Fixtures_And_Test_Data_JavaScript.md)!
+**Need JavaScript instead?** Try [Lab 3: Fixtures And Test Data (JavaScript)](LAB_03_Fixtures_And_Test_Data_JavaScript.md)!
 
 **What This Adds:** Master test data management with pytest fixtures - learn to create reusable test setup that eliminates code duplication and makes your tests more maintainable and reliable.
 
 ---
 
-## 🎯 What You'll Learn
+## What You'll Learn
 
 By the end of this lab, you will:
 
@@ -23,7 +23,7 @@ By the end of this lab, you will:
 
 ---
 
-## 💡 What Are Fixtures?
+## What Are Fixtures?
 
 **Problem:** You need to set up test data repeatedly.
 
@@ -69,14 +69,14 @@ def test_user_username(test_user):
 
 **Benefits:**
 
-- ✅ No repeated setup code
-- ✅ Consistent test data
-- ✅ Automatic cleanup
-- ✅ Clear dependencies
+- No repeated setup code
+- Consistent test data
+- Automatic cleanup
+- Clear dependencies
 
 ---
 
-## 📋 Step-by-Step Instructions
+## Step-by-Step Instructions
 
 ### Step 1: Explore Existing Fixtures (10 minutes)
 
@@ -125,7 +125,7 @@ def test_user(db_session) -> User:
 4. Returns `user` - This is what tests get
 5. Automatic cleanup - Happens after test runs
 
-✅ **Checkpoint:** List 5 fixtures you found in `conftest.py`
+**Checkpoint:** List 5 fixtures you found in `conftest.py`
 
 ---
 
@@ -171,7 +171,7 @@ cd backend
 pytest tests/test_learn_fixtures.py -v
 ```
 
-✅ **Checkpoint:** All 3 tests should pass
+**Checkpoint:** All 3 tests should pass
 
 ---
 
@@ -227,7 +227,7 @@ def test_see_fixture_in_action(self, test_user):
 pytest tests/test_learn_fixtures.py::TestUsingFixtures::test_see_fixture_in_action -v -s
 ```
 
-✅ **Checkpoint:** You can see the user data printed
+**Checkpoint:** You can see the user data printed
 
 ---
 
@@ -279,7 +279,7 @@ class TestCustomFixtures:
 pytest tests/test_learn_fixtures.py::TestCustomFixtures -v
 ```
 
-✅ **Checkpoint:** Your custom fixture tests pass
+**Checkpoint:** Your custom fixture tests pass
 
 ---
 
@@ -339,11 +339,11 @@ class TestComplexFixtures:
 pytest tests/test_learn_fixtures.py::TestComplexFixtures -v
 ```
 
-✅ **Checkpoint:** Complex fixture tests pass
+**Checkpoint:** Complex fixture tests pass
 
 ---
 
-## 🎓 Understanding Fixture Scope
+## Understanding Fixture Scope
 
 Fixtures can have different scopes:
 
@@ -414,7 +414,7 @@ You'll see the fixture initializes once, and all tests share it!
 
 ---
 
-## 💪 Your Challenge
+## Your Challenge
 
 **Create a fixture for testing comments:**
 
@@ -465,7 +465,7 @@ class TestYourChallenge:
 
 ---
 
-## 🚨 Common Mistakes
+## Common Mistakes
 
 ### Mistake 1: Forgetting to Return Value
 
@@ -536,7 +536,7 @@ def test_2(counter):
 
 ---
 
-## 📝 Quiz
+## Quiz
 
 Test your understanding:
 
@@ -574,7 +574,7 @@ Test your understanding:
 
 ---
 
-## ✅ Completion Checklist
+## Completion Checklist
 
 - [ ] Ran all test examples successfully
 - [ ] Created your own simple fixture
@@ -584,7 +584,7 @@ Test your understanding:
 
 ---
 
-## 🎯 Key Takeaways
+## Key Takeaways
 
 1. **Fixtures eliminate repeated setup** - Write once, use everywhere
 2. **Fixtures can depend on other fixtures** - Build complex scenarios
@@ -602,6 +602,6 @@ Test your understanding:
 
 ---
 
-**🎉 Congratulations!** You now understand one of the most powerful features of pytest!
+**Congratulations!** You now understand one of the most powerful features of pytest!
 
 **Next Lab:** [Lab DEBUG 01: Reading Errors (Python)](LAB_04_Debugging_And_Error_Handling_Python.md)

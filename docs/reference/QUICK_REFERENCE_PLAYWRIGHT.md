@@ -1,4 +1,4 @@
-# ⚡ Playwright Quick Reference
+# Playwright Quick Reference
 
 **One-page reference for Playwright E2E testing**
 
@@ -6,7 +6,7 @@
 
 ---
 
-## 🚀 Essential Commands
+## Essential Commands
 
 ### Running Tests
 
@@ -80,7 +80,7 @@ npx playwright test --reporter=line
 
 ---
 
-## 🎯 Test Structure
+## Test Structure
 
 ### Basic Test
 
@@ -142,7 +142,7 @@ test.describe("Suite", () => {
 
 ---
 
-## 🔍 Locators
+## Locators
 
 ### Finding Elements
 
@@ -200,7 +200,7 @@ page
 
 ---
 
-## 🎬 Actions
+## Actions
 
 ### Click
 
@@ -265,7 +265,7 @@ await page.setInputFiles('input[type="file"]', ["file1.jpg", "file2.jpg"]);
 
 ---
 
-## ✅ Assertions
+## Assertions
 
 ### Visibility
 
@@ -327,7 +327,7 @@ await expect(page).toHaveScreenshot("screenshot.png");
 
 ---
 
-## ⏱️ Waiting
+## Waiting
 
 ### Auto-Waiting
 
@@ -368,7 +368,7 @@ await page.waitForFunction(() => {
 
 ---
 
-## 🎯 Navigation
+## Navigation
 
 ```javascript
 // Go to URL
@@ -387,7 +387,7 @@ await Promise.all([page.waitForNavigation(), page.click("a")]);
 
 ---
 
-## 📸 Screenshots & Videos
+## Screenshots & Videos
 
 ```javascript
 // Screenshot element
@@ -410,7 +410,7 @@ use: {
 
 ---
 
-## 🔧 Common Patterns
+## Common Patterns
 
 ### Login Helper
 
@@ -458,7 +458,7 @@ test.beforeEach(async ({ page }) => {
 
 ---
 
-## 🐛 Debugging
+## Debugging
 
 ### Playwright Inspector
 
@@ -501,7 +501,7 @@ console.log(await page.locator('h1').textContent())
 
 ---
 
-## 📋 Configuration (tests/playwright.config.js)
+## Configuration (tests/playwright.config.js)
 
 Testbook's actual config (Chrome only by default; other browsers are present but
 commented out, and `webServer` is intentionally disabled — start the backend
@@ -533,7 +533,7 @@ export default defineConfig({
 
 ---
 
-## 🚨 Common Issues
+## Common Issues
 
 ### Element Not Found
 
@@ -588,7 +588,7 @@ await page.evaluate(() => document.querySelector("button").click());
 
 ---
 
-## 💡 Best Practices
+## Best Practices
 
 1. **Use data-testid for selectors** - More stable than CSS classes
 
@@ -635,7 +635,7 @@ await page.evaluate(() => document.querySelector("button").click());
 
 ---
 
-## 📚 Related Resources
+## Related Resources
 
 - [Playwright Documentation](https://playwright.dev/)
 - [tests/README.md](../../tests/README.md) - Testbook E2E tests
@@ -643,7 +643,7 @@ await page.evaluate(() => document.querySelector("button").click());
 
 ---
 
-**🎯 Most Common Usage:**
+**Most Common Usage:**
 
 ```bash
 # While developing a test

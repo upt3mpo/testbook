@@ -101,10 +101,10 @@ $env:LOG_LEVEL='WARNING'
 
 **Features:**
 
-- ✅ Color-coded by level
-- ✅ Timestamps
-- ✅ Easy to read
-- ✅ Perfect for development
+- Color-coded by level
+- Timestamps
+- Easy to read
+- Perfect for development
 
 ### Production Format (JSON)
 
@@ -134,10 +134,10 @@ $env:LOG_FORMAT='json'
 
 **Benefits:**
 
-- ✅ Machine-parseable
-- ✅ Easy to search/filter
-- ✅ Works with log aggregators
-- ✅ Structured data
+- Machine-parseable
+- Easy to search/filter
+- Works with log aggregators
+- Structured data
 
 ---
 
@@ -534,11 +534,11 @@ logger.addHandler(handler)
 
 ## Summary
 
-✅ **Use appropriate log levels** - DEBUG for details, INFO for events, ERROR for failures
-✅ **Add context** - Include user_id, request_id, and other relevant data
-✅ **Use structured logging** - JSON format for production
-✅ **Don't log secrets** - Never log passwords, tokens, or sensitive data
-✅ **Log exceptions properly** - Always include `exc_info=True`
-✅ **Monitor in production** - Use log aggregation and alerting
+**Use appropriate log levels** - DEBUG for details, INFO for events, ERROR for failures
+**Add context** - Include user_id, request_id, and other relevant data
+**Use structured logging** - JSON format for production
+**Don't log secrets** - Never log passwords, tokens, or sensitive data
+**Log exceptions properly** - Always include `exc_info=True`
+**Monitor in production** - Use log aggregation and alerting
 
 **Good logging makes debugging faster and systems more observable!**

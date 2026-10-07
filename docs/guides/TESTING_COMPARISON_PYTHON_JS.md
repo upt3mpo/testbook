@@ -1,14 +1,14 @@
-# 🔄 Testing Comparison: Python vs JavaScript
+# Testing Comparison: Python vs JavaScript
 
 **A side-by-side guide for test automation across both stacks**
 
-> **💡 Language Selection**: This guide includes both Python and JavaScript examples. Both are expanded by default so you can see all approaches. Click the language tabs to collapse sections you don't need.
+> **Language Selection**: This guide includes both Python and JavaScript examples. Both are expanded by default so you can see all approaches. Click the language tabs to collapse sections you don't need.
 
 This guide helps you translate testing knowledge between Python and JavaScript, showing equivalent patterns and tools for common testing scenarios.
 
 ---
 
-<h2 id="quick-reference-table">📚 Quick Reference Table</h2>
+<h2 id="quick-reference-table">Quick Reference Table</h2>
 
 | Concept               | Python                          | JavaScript               |
 | --------------------- | ------------------------------- | ------------------------ |
@@ -23,12 +23,12 @@ This guide helps you translate testing knowledge between Python and JavaScript, 
 
 ---
 
-<h2 id="test-structure-comparison">🧪 Test Structure Comparison</h2>
+<h2 id="test-structure-comparison">Test Structure Comparison</h2>
 
 ### Basic Test
 
 <details open>
-<summary><strong>🐍 Python (pytest)</strong></summary>
+<summary><strong>Python (pytest)</strong></summary>
 
 ```python
 def test_addition():
@@ -40,7 +40,7 @@ def test_addition():
 </details>
 
 <details open>
-<summary><strong>☕ JavaScript (Vitest)</strong></summary>
+<summary><strong>JavaScript (Vitest)</strong></summary>
 
 ```javascript
 test("addition works correctly", () => {
@@ -54,7 +54,7 @@ test("addition works correctly", () => {
 ### Test Classes/Groups
 
 <details open>
-<summary><strong>🐍 Python (pytest)</strong></summary>
+<summary><strong>Python (pytest)</strong></summary>
 
 ```python
 class TestAuthentication:
@@ -70,7 +70,7 @@ class TestAuthentication:
 </details>
 
 <details open>
-<summary><strong>☕ JavaScript (Vitest)</strong></summary>
+<summary><strong>JavaScript (Vitest)</strong></summary>
 
 ```javascript
 describe("Authentication", () => {
@@ -88,12 +88,12 @@ describe("Authentication", () => {
 
 ---
 
-<h2 id="fixtures-setup">🔧 Fixtures & Setup</h2>
+<h2 id="fixtures-setup">Fixtures & Setup</h2>
 
 ### Basic Fixture
 
 <details open>
-<summary><strong>🐍 Python (pytest)</strong></summary>
+<summary><strong>Python (pytest)</strong></summary>
 
 ```python
 @pytest.fixture
@@ -111,7 +111,7 @@ def test_query(database):
 </details>
 
 <details open>
-<summary><strong>☕ JavaScript (Playwright)</strong></summary>
+<summary><strong>JavaScript (Playwright)</strong></summary>
 
 ```javascript
 const test = base.extend({
@@ -133,7 +133,7 @@ test("query returns users", async ({ database }) => {
 ### Parametrized Tests
 
 <details open>
-<summary><strong>🐍 Python (pytest)</strong></summary>
+<summary><strong>Python (pytest)</strong></summary>
 
 ```python
 @pytest.mark.parametrize("username,valid", [
@@ -149,7 +149,7 @@ def test_username_validation(username, valid):
 </details>
 
 <details open>
-<summary><strong>☕ JavaScript (Vitest)</strong></summary>
+<summary><strong>JavaScript (Vitest)</strong></summary>
 
 ```javascript
 test.each([
@@ -166,12 +166,12 @@ test.each([
 
 ---
 
-<h2 id="e2e-testing-with-playwright">🌐 E2E Testing with Playwright</h2>
+<h2 id="e2e-testing-with-playwright">E2E Testing with Playwright</h2>
 
 ### Basic E2E Test
 
 <details open>
-<summary><strong>🐍 Python</strong></summary>
+<summary><strong>Python</strong></summary>
 
 ```python
 from playwright.sync_api import Page, expect
@@ -189,7 +189,7 @@ def test_login(page: Page):
 </details>
 
 <details open>
-<summary><strong>☕ JavaScript</strong></summary>
+<summary><strong>JavaScript</strong></summary>
 
 ```javascript
 const { test, expect } = require("@playwright/test");
@@ -211,7 +211,7 @@ test("login flow", async ({ page }) => {
 ### Page Object Model
 
 <details open>
-<summary><strong>🐍 Python</strong></summary>
+<summary><strong>Python</strong></summary>
 
 ```python
 class LoginPage:
@@ -235,7 +235,7 @@ def test_login(page: Page):
 </details>
 
 <details open>
-<summary><strong>☕ JavaScript</strong></summary>
+<summary><strong>JavaScript</strong></summary>
 
 ```javascript
 class LoginPage {
@@ -264,12 +264,12 @@ test("login flow", async ({ page }) => {
 
 ---
 
-<h2 id="mocking-stubbing">🎭 Mocking & Stubbing</h2>
+<h2 id="mocking-stubbing">Mocking & Stubbing</h2>
 
 ### Mocking Functions
 
 <details open>
-<summary><strong>🐍 Python</strong></summary>
+<summary><strong>Python</strong></summary>
 
 ```python
 from unittest.mock import Mock, patch
@@ -287,7 +287,7 @@ def test_api_call():
 </details>
 
 <details open>
-<summary><strong>☕ JavaScript</strong></summary>
+<summary><strong>JavaScript</strong></summary>
 
 ```javascript
 import { vi } from "vitest";
@@ -310,7 +310,7 @@ test("API call with mock", async () => {
 ### Network Mocking (Playwright)
 
 <details open>
-<summary><strong>🐍 Python</strong></summary>
+<summary><strong>Python</strong></summary>
 
 ```python
 import json
@@ -335,7 +335,7 @@ def test_mocked_api(page: Page):
 </details>
 
 <details open>
-<summary><strong>☕ JavaScript</strong></summary>
+<summary><strong>JavaScript</strong></summary>
 
 ```javascript
 test("mocked API response", async ({ page }) => {
@@ -358,12 +358,12 @@ test("mocked API response", async ({ page }) => {
 
 ---
 
-## 📡 API Testing
+## API Testing
 
 ### Testing REST Endpoints
 
 <details open>
-<summary><strong>🐍 Python</strong></summary>
+<summary><strong>Python</strong></summary>
 
 ```python
 import requests
@@ -392,7 +392,7 @@ def test_create_post():
 </details>
 
 <details open>
-<summary><strong>☕ JavaScript</strong></summary>
+<summary><strong>JavaScript</strong></summary>
 
 ```javascript
 import axios from "axios";
@@ -421,7 +421,7 @@ test("POST /api/posts endpoint", async () => {
 
 ---
 
-<h2 id="running-tests">🏃 Running Tests</h2>
+<h2 id="running-tests">Running Tests</h2>
 
 ### Command Line
 
@@ -437,7 +437,7 @@ test("POST /api/posts endpoint", async () => {
 ### Pytest Markers vs Vitest Filters
 
 <details open>
-<summary><strong>🐍 Python</strong></summary>
+<summary><strong>Python</strong></summary>
 
 ```python
 @pytest.mark.smoke
@@ -455,7 +455,7 @@ def test_full_integration():
 </details>
 
 <details open>
-<summary><strong>☕ JavaScript</strong></summary>
+<summary><strong>JavaScript</strong></summary>
 
 ```javascript
 test("critical path", { tag: "@smoke" }, async () => {
@@ -474,7 +474,7 @@ test("full integration", { tag: "@slow" }, async () => {
 
 ---
 
-<h2 id="assertions-comparison">🔍 Assertions Comparison</h2>
+<h2 id="assertions-comparison">Assertions Comparison</h2>
 
 ### Common Assertions
 
@@ -499,7 +499,7 @@ test("full integration", { tag: "@slow" }, async () => {
 
 ---
 
-<h2 id="test-organization">🗂️ Test Organization</h2>
+<h2 id="test-organization">Test Organization</h2>
 
 ### File Structure
 
@@ -554,7 +554,7 @@ tests/
 
 ---
 
-<h2 id="configuration-files">⚙️ Configuration Files</h2>
+<h2 id="configuration-files">Configuration Files</h2>
 
 ### Pytest Configuration
 
@@ -612,7 +612,7 @@ module.exports = {
 
 ---
 
-## 🚀 CI/CD Integration
+## CI/CD Integration
 
 ### GitHub Actions
 
@@ -654,34 +654,34 @@ jobs:
 
 ---
 
-## 🎯 When to Use Each Stack
+## When to Use Each Stack
 
 ### Choose Python When
 
-- ✅ Backend is Python (FastAPI, Django, Flask)
-- ✅ Team has Python expertise
-- ✅ Testing APIs and data processing
-- ✅ Scientific/data analysis workflows
-- ✅ Prefer synchronous syntax
+- Backend is Python (FastAPI, Django, Flask)
+- Team has Python expertise
+- Testing APIs and data processing
+- Scientific/data analysis workflows
+- Prefer synchronous syntax
 
 ### Choose JavaScript When
 
-- ✅ Frontend is React/Vue/Angular
-- ✅ Team has JavaScript/TypeScript expertise
-- ✅ Testing UI components
-- ✅ Full-stack JavaScript (Node.js)
-- ✅ Prefer async/await patterns
+- Frontend is React/Vue/Angular
+- Team has JavaScript/TypeScript expertise
+- Testing UI components
+- Full-stack JavaScript (Node.js)
+- Prefer async/await patterns
 
 ### Use Both When
 
-- ✅ Full-stack application (Python backend + React frontend)
-- ✅ Python for API tests, JavaScript for component tests
-- ✅ Playwright E2E in either language (both work!)
-- ✅ Maximum coverage across entire stack
+- Full-stack application (Python backend + React frontend)
+- Python for API tests, JavaScript for component tests
+- Playwright E2E in either language (both work!)
+- Maximum coverage across entire stack
 
 ---
 
-## 📚 Learning Path Recommendations
+## Learning Path Recommendations
 
 ### If You Know Python, Learning JavaScript Testing
 
@@ -699,7 +699,7 @@ jobs:
 
 ---
 
-## 🔗 Useful Resources
+## Useful Resources
 
 ### Python Testing
 
@@ -722,7 +722,7 @@ jobs:
 
 ---
 
-## 💡 Pro Tips
+## Pro Tips
 
 1. **Playwright is identical** - Once you learn Playwright in one language, you know it in both! Only syntax differs (async vs sync).
 
@@ -736,4 +736,4 @@ jobs:
 
 ---
 
-**🎓 Key Takeaway:** The concepts are the same across both stacks! If you understand testing in one language, you can quickly learn the other. Focus on patterns, not syntax.
+**Key Takeaway:** The concepts are the same across both stacks! If you understand testing in one language, you can quickly learn the other. Focus on patterns, not syntax.

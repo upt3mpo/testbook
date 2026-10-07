@@ -2,17 +2,18 @@
 
 **Build Your Testing Portfolio**
 
-> **💡 Language Selection**: This guide includes both Python and JavaScript examples. Both are expanded by default so you can see all approaches. Click the language tabs to collapse sections you don't need.
+> **Language Selection**: This guide includes both Python and JavaScript examples. Both are expanded by default so you can see all approaches. Click the language tabs to collapse sections you don't need.
 
 ## Your Progress
 
-[████████████████████████████] 100% complete
+You are on Stage 5 of 5 (Stage 0 is the foundation).
 
-✅ Stage 1: Unit Tests (completed)<br>
-✅ Stage 2: Integration Tests (completed)<br>
-✅ Stage 3: API & E2E Testing (completed)<br>
-✅ Stage 4: Performance & Security (completed)<br>
-→ **Stage 5: Capstone** (you are here)
+- Stage 0: Inclusion First (completed)
+- Stage 1: Unit Tests (completed)
+- Stage 2: Integration Tests (completed)
+- Stage 3: API & E2E Testing (completed)
+- Stage 4: Performance, Security & Accessibility (completed)
+- Stage 5: Capstone (you are here)
 
 **Estimated time remaining:** 4-6 hours (core content) + 2-4 hours (optional exercises)
 
@@ -648,7 +649,7 @@ Think of job interviews like performing in a play. You need:
 
 <h2 id="part-7-additional-patterns">Part 7: Additional Patterns</h2>
 
-**📝 Note:** The patterns below are **additional enhancements** to your professional testing capabilities. All the **core concepts** needed to meet the Stage 5 success criteria are covered in Parts 1-6 above.
+**Note:** The patterns below are **additional enhancements** to your professional testing capabilities. All the **core concepts** needed to meet the Stage 5 success criteria are covered in Parts 1-6 above.
 
 These patterns enhance your professional testing capabilities:
 

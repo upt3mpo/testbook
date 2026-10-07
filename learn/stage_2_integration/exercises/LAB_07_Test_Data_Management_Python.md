@@ -1,17 +1,17 @@
-# 📦 Lab 7: Test Data Management (Python)
+# Lab 7: Test Data Management (Python)
 
 **Estimated Time:** 45 minutes
 **Difficulty:** Intermediate
-**Language:** 🐍 Python
+**Language:** Python
 **Prerequisites:** Labs 1-6 completed
 
-**💡 Need JavaScript instead?** Try [Lab 7: Test Data Management (JavaScript)](LAB_07_Test_Data_Management_JavaScript.md)!
+**Need JavaScript instead?** Try [Lab 7: Test Data Management (JavaScript)](LAB_07_Test_Data_Management_JavaScript.md)!
 
 **What This Adds:** Master test data management with builder patterns and factories - learn to create reusable, maintainable test data that eliminates duplication and makes tests more reliable.
 
 ---
 
-<h2 id="what-youll-learn">🎯 What You'll Learn</h2>
+<h2 id="what-youll-learn">What You'll Learn</h2>
 
 By the end of this lab, you will:
 
@@ -23,7 +23,7 @@ By the end of this lab, you will:
 
 ---
 
-## 💡 Why Test Data Management Matters
+## Why Test Data Management Matters
 
 **The Problem:**
 
@@ -72,7 +72,7 @@ def test_user_posts():
 
 ---
 
-<h2 id="step-by-step-instructions">📋 Step-by-Step Instructions</h2>
+<h2 id="step-by-step-instructions">Step-by-Step Instructions</h2>
 
 ### Step 1: Create a Test Data Builder (15 minutes)
 
@@ -195,7 +195,7 @@ cd backend
 pytest tests/test_data_builders.py::TestUserBuilder -v
 ```
 
-✅ **Checkpoint:** All builder tests pass
+**Checkpoint:** All builder tests pass
 
 ---
 
@@ -288,7 +288,7 @@ class TestPostBuilder:
 pytest tests/test_data_builders.py::TestPostBuilder -v
 ```
 
-✅ **Checkpoint:** Post builder tests pass
+**Checkpoint:** Post builder tests pass
 
 ---
 
@@ -381,11 +381,11 @@ class TestScenarioBuilders:
 pytest tests/test_data_builders.py::TestScenarioBuilders -v
 ```
 
-✅ **Checkpoint:** Scenario tests pass
+**Checkpoint:** Scenario tests pass
 
 ---
 
-## 💪 Your Challenge: Comment Builder
+## Your Challenge: Comment Builder
 
 **Create a CommentBuilder:**
 
@@ -472,7 +472,7 @@ class CommentBuilder:
 
 ---
 
-<h2 id="best-practices-for-test-data">🎓 Best Practices for Test Data</h2>
+<h2 id="best-practices-for-test-data">Best Practices for Test Data</h2>
 
 ### 1. Make Data Creation Easy
 
@@ -551,7 +551,7 @@ def test_2():
 
 ---
 
-<h2 id="when-to-use-each-approach">📊 When to Use Each Approach</h2>
+<h2 id="when-to-use-each-approach">When to Use Each Approach</h2>
 
 | Approach              | Use When                   | Example                         |
 | --------------------- | -------------------------- | ------------------------------- |
@@ -562,7 +562,7 @@ def test_2():
 
 ---
 
-## 🚨 Common Mistakes
+## Common Mistakes
 
 ### Mistake 1: Creating Too Much Data
 
@@ -610,7 +610,7 @@ def test_get_user():
 
 ---
 
-<h2 id="completion-checklist">✅ Completion Checklist</h2>
+<h2 id="completion-checklist">Completion Checklist</h2>
 
 - [ ] Created UserBuilder and PostBuilder
 - [ ] Created scenario builder functions
@@ -620,7 +620,7 @@ def test_get_user():
 
 ---
 
-<h2 id="key-takeaways">🎯 Key Takeaways</h2>
+<h2 id="key-takeaways">Key Takeaways</h2>
 
 1. **Builders make test data easy** - Fluent API with `.with_*()` methods
 2. **Fixtures provide reusable setup** - Automatic cleanup
@@ -630,7 +630,7 @@ def test_get_user():
 
 ---
 
-<h2 id="next-steps">📚 Next Steps</h2>
+<h2 id="next-steps">Next Steps</h2>
 
 **Apply your skills:**
 
@@ -641,6 +641,6 @@ def test_get_user():
 
 ---
 
-**🎉 Congratulations!** You can now manage test data like a professional!
+**Congratulations!** You can now manage test data like a professional!
 
 **Next Lab:** [Lab 8: Contract Testing Foundations (Python)](LAB_08_Contract_Testing_Foundations_Python.md)

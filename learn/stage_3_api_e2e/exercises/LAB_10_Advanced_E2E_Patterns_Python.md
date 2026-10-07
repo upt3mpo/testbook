@@ -1,17 +1,17 @@
-# 🧪 Lab 10: Advanced E2E Patterns (Python)
+# Lab 10: Advanced E2E Patterns (Python)
 
 **Estimated Time:** 150 minutes (120 minutes of core parts and a 30 minute accessibility part)<br>
 **Difficulty:** Advanced<br>
-**Language:** 🐍 Python<br>
+**Language:** Python<br>
 **Prerequisites:** Lab 9 completed
 
-**💡 Need JavaScript instead?** Try [Lab 10: Advanced E2E Patterns (JavaScript)](LAB_10_Advanced_E2E_Patterns_JavaScript.md)!
+**Need JavaScript instead?** Try [Lab 10: Advanced E2E Patterns (JavaScript)](LAB_10_Advanced_E2E_Patterns_JavaScript.md)!
 
 **What This Adds:** Master advanced E2E testing patterns including page objects, data-driven tests, and complex user workflows. This takes your E2E testing to the next level.
 
 ---
 
-## 🎯 What You'll Learn
+## What You'll Learn
 
 - **Page Object Model (POM)** - Reusable page helpers
 - **Advanced pytest fixtures** - Custom test setup
@@ -23,7 +23,7 @@
 
 ---
 
-## 📋 Step-by-Step Instructions
+## Step-by-Step Instructions
 
 ### Part 1: Page Object Model (45 minutes)
 
@@ -254,7 +254,7 @@ class TestPageObjectExamples:
         assert profile.get_post_count() >= 1
 ```
 
-**🎯 Checkpoint:** Run `HEADLESS=false pytest test_page_objects.py -v -m pom`
+**Checkpoint:** Run `HEADLESS=false pytest test_page_objects.py -v -m pom`
 
 ---
 
@@ -370,7 +370,7 @@ class TestAdvancedFixtures:
         assert feed_page.post_count() >= 1
 ```
 
-**🎯 Checkpoint:** Run `HEADLESS=false pytest test_advanced_fixtures.py -v -m fixtures`
+**Checkpoint:** Run `HEADLESS=false pytest test_advanced_fixtures.py -v -m fixtures`
 
 ---
 
@@ -460,7 +460,7 @@ class TestNetworkInterception:
             pass  # Loading was too fast
 ```
 
-**🎯 Checkpoint:** Run `HEADLESS=false pytest test_network.py -v -m network`
+**Checkpoint:** Run `HEADLESS=false pytest test_network.py -v -m network`
 
 ---
 
@@ -929,7 +929,7 @@ def test_ui_update_persists_to_database(
     assert user["bio"] == "Updated bio from UI test"
 ```
 
-**🎯 Checkpoint:** Run `HEADLESS=false pytest test_api_ui_combined.py -v -m combined`
+**Checkpoint:** Run `HEADLESS=false pytest test_api_ui_combined.py -v -m combined`
 
 ---
 
@@ -1063,7 +1063,7 @@ change:**
 git checkout frontend/src/components/Post.jsx
 ```
 
-✅ **Checkpoint:** both tests pass, and the second one failed when you removed the focus line.
+**Checkpoint:** both tests pass, and the second one failed when you removed the focus line.
 
 **Two things to take away.**
 
@@ -1073,21 +1073,21 @@ git checkout frontend/src/components/Post.jsx
 2. **A click-only suite has a hole.** The click-driven tests in this lab pass on a page with
    invisible Tab stops and lost focus. Only a test that uses the keyboard can see them.
 
-## 🎓 What You Learned
+## What You Learned
 
-- ✅ **Page Object Model** - Reusable, maintainable page helpers
-- ✅ **Advanced fixtures** - Parametrized and custom fixtures
-- ✅ **Network interception** - Mocking API responses
-- ✅ **Pytest markers** - Organizing test runs (smoke/regression)
-- ✅ **Data builders** - Clean test data creation
-- ✅ **🆕 Combined API + UI validation** - Use Python for both backend and frontend testing
-- ✅ **🆕 API-driven test setup** - Fast data seeding
-- ✅ **🆕 Bidirectional verification** - API → UI and UI → API
-- ✅ **Professional patterns** - Industry-standard E2E practices
+- **Page Object Model** - Reusable, maintainable page helpers
+- **Advanced fixtures** - Parametrized and custom fixtures
+- **Network interception** - Mocking API responses
+- **Pytest markers** - Organizing test runs (smoke/regression)
+- **Data builders** - Clean test data creation
+- **Combined API + UI validation** - Use Python for both backend and frontend testing
+- **API-driven test setup** - Fast data seeding
+- **Bidirectional verification** - API → UI and UI → API
+- **Professional patterns** - Industry-standard E2E practices
 
 ---
 
-## 💪 Practice Challenges
+## Practice Challenges
 
 ### Challenge 1: Add More Page Objects
 
@@ -1143,7 +1143,7 @@ Create tests that:
 
 ---
 
-## 🎯 Pro Tips
+## Pro Tips
 
 **Tip 1: Keep Page Objects Focused**
 
@@ -1207,7 +1207,7 @@ This pattern is **10-100x faster** than clicking through UI for setup!
 
 ---
 
-## ✅ Lab Completion Checklist
+## Lab Completion Checklist
 
 - [ ] Created FeedPage and ProfilePage objects
 - [ ] Used page objects in tests successfully
@@ -1215,14 +1215,14 @@ This pattern is **10-100x faster** than clicking through UI for setup!
 - [ ] Implemented network interception
 - [ ] Used pytest markers to organize tests
 - [ ] Created and used data builders
-- [ ] 🆕 Implemented combined API + UI validation patterns
-- [ ] 🆕 Understand Python's unique advantage for full-stack testing
+- [ ] Implemented combined API + UI validation patterns
+- [ ] Understand Python's unique advantage for full-stack testing
 - [ ] All tests pass
 - [ ] Wrote keyboard-only tests (tab order, and focus moving in and back out) and watched one fail when the focus line was removed
 
 ---
 
-## 🆚 Compare with JavaScript
+## Compare with JavaScript
 
 Both Python and JavaScript Playwright support these patterns!
 
@@ -1238,11 +1238,11 @@ The concepts transfer directly between languages!
 
 ---
 
-## 📚 Resources
+## Resources
 
 **Working Examples (Run These!):**
 
-- **`tests/e2e-python/examples/`** - ⭐ Complete working examples from this lab
+- **`tests/e2e-python/examples/`** - Complete working examples from this lab
   - `test_page_objects_example.py` - Page Object Model in action
   - `test_api_ui_combined_example.py` - API + UI validation patterns
   - Run with: `HEADLESS=false pytest tests/e2e-python/examples/ -v -m examples`
@@ -1262,9 +1262,9 @@ The concepts transfer directly between languages!
 
 ---
 
-**🎉 You've mastered advanced E2E testing patterns in Python! These are professional-level skills used in production!**
+**You've mastered advanced E2E testing patterns in Python! These are professional-level skills used in production!**
 
-**🐍 Python's Unique Advantage:** Unlike JavaScript, Python lets you use the same language for backend API manipulation AND frontend UI testing. This enables incredibly fast test setup by seeding data via API instead of clicking through UI!
+**Python's Unique Advantage:** Unlike JavaScript, Python lets you use the same language for backend API manipulation AND frontend UI testing. This enables incredibly fast test setup by seeding data via API instead of clicking through UI!
 
 **Next Lab:** [Lab 11: Cross-Browser Testing (Python)](LAB_11_Cross_Browser_Testing_Python.md)
 

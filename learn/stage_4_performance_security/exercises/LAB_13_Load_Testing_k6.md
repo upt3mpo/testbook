@@ -1,15 +1,15 @@
-# 🧪 Lab 13: Load Testing with k6
+# Lab 13: Load Testing with k6
 
 **Estimated Time:** 120 minutes<br>
 **Difficulty:** Intermediate<br>
-**Language:** 🟨 JavaScript (k6)<br>
+**Language:** JavaScript (k6)<br>
 **Prerequisites:** Lab 12 completed
 
 **What This Adds:** Master load testing with k6 to ensure your application can handle real-world traffic. Learn to identify performance bottlenecks and optimize your application for production scale.
 
 ---
 
-## 🎯 What You'll Learn
+## What You'll Learn
 
 - **Load testing fundamentals** - Test application under various load conditions
 - **k6 scripting** - Write performance test scripts in JavaScript
@@ -20,7 +20,7 @@
 
 ---
 
-## 📋 Why Load Testing Matters
+## Why Load Testing Matters
 
 **The Problem:**
 
@@ -34,7 +34,7 @@ Load testing simulates real user traffic to identify performance limits and bott
 
 ---
 
-## 📋 Step-by-Step Instructions
+## Step-by-Step Instructions
 
 ### Part 1: k6 Setup and Basics (30 minutes)
 
@@ -72,7 +72,7 @@ sudo dnf install k6
 k6 version
 ```
 
-> **⚠️ Backend prerequisite:** The scripts below hit a live Testbook backend on `localhost:8000`. Start it with `TESTING=true uvicorn main:app --reload --port 8000` (from `backend/`) rather than a plain `./start-dev.sh`. Without `TESTING=true`, `/api/auth/login` is rate-limited to 20 requests/minute per IP and `/api/auth/register` to 15/minute (see `backend/routers/auth.py`), so any scenario here that ramps past a handful of virtual users will get rejected with `429`s instead of measuring real performance. See [`../../../docs/guides/PLAYWRIGHT_QUICKSTART.md`](../../../docs/guides/PLAYWRIGHT_QUICKSTART.md) for the full explanation of `TESTING=true`.
+> **Backend prerequisite:** The scripts below hit a live Testbook backend on `localhost:8000`. Start it with `TESTING=true uvicorn main:app --reload --port 8000` (from `backend/`) rather than a plain `./start-dev.sh`. Without `TESTING=true`, `/api/auth/login` is rate-limited to 20 requests/minute per IP and `/api/auth/register` to 15/minute (see `backend/routers/auth.py`), so any scenario here that ramps past a handful of virtual users will get rejected with `429`s instead of measuring real performance. See [`../../../docs/guides/PLAYWRIGHT_QUICKSTART.md`](../../../docs/guides/PLAYWRIGHT_QUICKSTART.md) for the full explanation of `TESTING=true`.
 
 #### Step 2: Create Your First Load Test
 
@@ -800,7 +800,7 @@ Create `tests/performance/performance-dashboard.html`:
 
 ---
 
-## 💪 Challenge Exercises
+## Challenge Exercises
 
 ### Challenge 1: Create Custom Load Test Scenarios
 
@@ -848,7 +848,7 @@ export default function () {
 
 ---
 
-## ✅ Completion Checklist
+## Completion Checklist
 
 - [ ] Can write basic k6 load test scripts
 - [ ] Can create different load test scenarios (smoke, load, stress, spike)
@@ -860,7 +860,7 @@ export default function () {
 
 ---
 
-## 💡 Pro Tips
+## Pro Tips
 
 1. **Start with smoke tests** - Verify basic functionality under minimal load
 2. **Use realistic data** - Test with data similar to production
@@ -870,7 +870,7 @@ export default function () {
 
 ---
 
-## 📚 Next Steps
+## Next Steps
 
 **Continue building your skills:**
 
@@ -880,6 +880,6 @@ export default function () {
 
 ---
 
-**🎉 Congratulations!** You now understand load testing with k6 and can ensure your application performs well under production load!
+**Congratulations!** You now understand load testing with k6 and can ensure your application performs well under production load!
 
 **Next Lab:** [Lab 14: Security Testing & OWASP (Python)](LAB_14_Security_Testing_OWASP_Python.md)

@@ -1,17 +1,17 @@
-# 🧪 Lab 14: Security Testing & OWASP (JavaScript)
+# Lab 14: Security Testing & OWASP (JavaScript)
 
 **Estimated Time:** 120 minutes<br>
 **Difficulty:** Advanced<br>
-**Language:** 🟨 JavaScript<br>
+**Language:** JavaScript<br>
 **Prerequisites:** Lab 13 completed
 
-**💡 Need Python instead?** Try [Lab 14: Security Testing & OWASP (Python)](LAB_14_Security_Testing_OWASP_Python.md)!
+**Need Python instead?** Try [Lab 14: Security Testing & OWASP (Python)](LAB_14_Security_Testing_OWASP_Python.md)!
 
 **What This Adds:** Master security testing with Playwright to identify vulnerabilities and ensure your application is protected against common attacks like SQL injection, XSS, and CSRF. This is essential for production applications.
 
 ---
 
-## 🎯 What You'll Learn
+## What You'll Learn
 
 - **OWASP Top 10** - Understand common web application vulnerabilities
 - **Security testing techniques** - Test for SQL injection, XSS, CSRF, and more
@@ -22,7 +22,7 @@
 
 ---
 
-## 📋 Why Security Testing Matters
+## Why Security Testing Matters
 
 **The Problem:**
 
@@ -36,7 +36,7 @@ Security testing systematically identifies vulnerabilities and ensures proper se
 
 ---
 
-## 📋 Step-by-Step Instructions
+## Step-by-Step Instructions
 
 > **Before you start:** Testbook's actual security test suite (`tests/security/test_security.py`, `tests/security/test_rate_limiting.py`) is Python/pytest-only, hitting the API directly with the `requests` library — there is no equivalent JS file anywhere in `tests/security/`. This lab translates the same OWASP ideas into Playwright so you can practice them from the JS side; treat the code below as a teaching device to adapt, not as code that already exists in this repo. Two things to know before you adapt it: (1) the real frontend identifies elements with `data-testid` attributes, not plain CSS `#id` selectors — e.g. the login form is `[data-testid="login-email-input"]`, `[data-testid="login-password-input"]`, `[data-testid="login-submit-button"]`, and errors render into `[data-testid="login-error"]` (see `frontend/src/pages/Login.jsx` and the real specs in `tests/e2e/auth.spec.js`, which use exactly this pattern) — every `#email`/`#login-button`/`.error-message`-style selector below needs updating to match. (2) Several routes referenced below (`/create-post`, `/posts`, `/users/2`, `/posts/2/edit`, `/search`) don't exist in `frontend/src/App.jsx`'s router — the real routes are `/`, `/login`, `/register`, `/post/:postId`, `/profile/:username`, `/profile/:username/followers`, `/profile/:username/following`, `/settings`. You'll also need the backend running with `TESTING=true` (`cd backend && TESTING=true uvicorn main:app --reload --port 8000`; see `../../../docs/guides/PLAYWRIGHT_QUICKSTART.md`) so rate limits don't get in the way and `/api/dev/reset` is available between runs.
 
@@ -546,7 +546,7 @@ module.exports = { runSecurityScan };
 
 ---
 
-## 💪 Challenge Exercises
+## Challenge Exercises
 
 ### Challenge 1: Create Custom Security Test Suite
 
@@ -573,7 +573,7 @@ test.describe("Custom Security Tests", () => {
 
 ---
 
-## ✅ Completion Checklist
+## Completion Checklist
 
 - [ ] Can test for OWASP Top 10 vulnerabilities
 - [ ] Can test authentication and authorization security
@@ -585,7 +585,7 @@ test.describe("Custom Security Tests", () => {
 
 ---
 
-## 💡 Pro Tips
+## Pro Tips
 
 1. **Start with OWASP Top 10** - Focus on the most common vulnerabilities
 2. **Use automated tools** - Combine manual testing with automated scanning
@@ -595,7 +595,7 @@ test.describe("Custom Security Tests", () => {
 
 ---
 
-## 📚 Next Steps
+## Next Steps
 
 **Continue building your skills:**
 
@@ -604,6 +604,6 @@ test.describe("Custom Security Tests", () => {
 
 ---
 
-**🎉 Congratulations!** You now understand security testing and can identify and prevent common web application vulnerabilities!
+**Congratulations!** You now understand security testing and can identify and prevent common web application vulnerabilities!
 
 **Next Lab:** [Lab 15: Rate Limiting & Production Monitoring (JavaScript)](LAB_15_Rate_Limiting_Production_JavaScript.md)

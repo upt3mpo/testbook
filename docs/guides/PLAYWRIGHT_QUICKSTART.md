@@ -1,4 +1,4 @@
-# 🎭 Playwright Quick Start
+# Playwright Quick Start
 
 **Get your first browser test running in under 10 minutes**
 

@@ -4,7 +4,7 @@
 
 ---
 
-## 📁 Directory Structure
+## Directory Structure
 
 ```text
 frontend/src/tests/
@@ -33,7 +33,7 @@ frontend/src/tests/
 
 ---
 
-## 🧪 Test Categories
+## Test Categories
 
 ### Unit Tests (`unit/`)
 
@@ -100,16 +100,16 @@ npm test -- tests/accessibility/
 
 ---
 
-## 🎭 Mock Service Worker (MSW)
+## Mock Service Worker (MSW)
 
 MSW intercepts network requests at the network level, providing realistic API mocking for component tests.
 
 **Benefits:**
 
-- ✅ More realistic than axios mocks
-- ✅ Works with any HTTP client
-- ✅ Reusable across tests
-- ✅ Can be used in development mode
+- More realistic than axios mocks
+- Works with any HTTP client
+- Reusable across tests
+- Can be used in development mode
 
 **Learn more:**
 
@@ -118,7 +118,7 @@ MSW intercepts network requests at the network level, providing realistic API mo
 
 ---
 
-## 🚀 Running Tests
+## Running Tests
 
 ### Run All Tests
 
@@ -156,7 +156,7 @@ npm test -- --coverage
 
 ---
 
-## 📚 Learning Resources
+## Learning Resources
 
 ### For Unit Testing (Stage 1)
 
@@ -176,7 +176,7 @@ npm test -- --coverage
 
 ---
 
-## 🔧 Configuration
+## Configuration
 
 **Vitest Config:** `frontend/vitest.config.js`
 
@@ -191,7 +191,7 @@ npm test -- --coverage
 
 ---
 
-## ✅ Test Structure (AAA Pattern)
+## Test Structure (AAA Pattern)
 
 Our tests follow the **[Arrange-Act-Assert pattern](../../../docs/concepts/TESTING_PATTERNS.md#arrange-act-assert-pattern)**:
 
@@ -212,7 +212,7 @@ it('should enable submit button when form is valid', () => {
 
 ---
 
-## 💡 Key Testing Principles
+## Key Testing Principles
 
 1. **Test Behavior, Not Implementation**
    - Test what users see and do
@@ -232,7 +232,7 @@ it('should enable submit button when form is valid', () => {
 
 ---
 
-## 🆚 Comparison with Backend Tests
+## Comparison with Backend Tests
 
 | Aspect              | Frontend (JavaScript)               | Backend (Python)                    |
 | ------------------- | ----------------------------------- | ----------------------------------- |
@@ -246,7 +246,7 @@ it('should enable submit button when form is valid', () => {
 
 ---
 
-## 📊 Coverage Goals
+## Coverage Goals
 
 - **Unit Tests:** 80%+ coverage of components
 - **Integration Tests:** All critical API contracts validated

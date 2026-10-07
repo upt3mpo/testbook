@@ -1,17 +1,17 @@
-# 🧪 Lab 10: Advanced E2E Patterns (JavaScript)
+# Lab 10: Advanced E2E Patterns (JavaScript)
 
 **Estimated Time:** 150 minutes (120 minutes of core parts and a 30 minute accessibility part)<br>
 **Difficulty:** Advanced<br>
-**Language:** 🟨 JavaScript<br>
+**Language:** JavaScript<br>
 **Prerequisites:** Lab 9 completed
 
-**💡 Need Python instead?** Try [Lab 10: Advanced E2E Patterns (Python)](LAB_10_Advanced_E2E_Patterns_Python.md)!
+**Need Python instead?** Try [Lab 10: Advanced E2E Patterns (Python)](LAB_10_Advanced_E2E_Patterns_Python.md)!
 
 **What This Adds:** Master advanced E2E testing patterns including page objects, data-driven tests, and complex user workflows. This takes your E2E testing to the next level.
 
 ---
 
-## 🎯 What You'll Learn
+## What You'll Learn
 
 - **Page Object Model (POM)** - Reusable page helpers
 - **Advanced Playwright fixtures** - Custom test setup
@@ -23,7 +23,7 @@
 
 ---
 
-## 📋 Step-by-Step Instructions
+## Step-by-Step Instructions
 
 ### Part 1: Page Object Model (45 minutes)
 
@@ -284,7 +284,7 @@ test.describe("Page Object Model Examples", () => {
 });
 ```
 
-**🎯 Checkpoint:** Run `npx playwright test test-page-objects.spec.js --headed`
+**Checkpoint:** Run `npx playwright test test-page-objects.spec.js --headed`
 
 ---
 
@@ -405,7 +405,7 @@ test.describe("Advanced Fixtures", () => {
 });
 ```
 
-**🎯 Checkpoint:** Run `npx playwright test test-advanced-fixtures.spec.js --headed`
+**Checkpoint:** Run `npx playwright test test-advanced-fixtures.spec.js --headed`
 
 ---
 
@@ -516,7 +516,7 @@ test.describe("Network Interception", () => {
 });
 ```
 
-**🎯 Checkpoint:** Run `npx playwright test test-network.spec.js --headed`
+**Checkpoint:** Run `npx playwright test test-network.spec.js --headed`
 
 ---
 
@@ -828,7 +828,7 @@ change:**
 git checkout frontend/src/components/Post.jsx
 ```
 
-✅ **Checkpoint:** both tests pass, and the second one failed when you removed the focus line.
+**Checkpoint:** both tests pass, and the second one failed when you removed the focus line.
 
 **Two things to take away.**
 
@@ -838,18 +838,18 @@ git checkout frontend/src/components/Post.jsx
 2. **A click-only suite has a hole.** The click-driven tests in this lab pass on a page with
    invisible Tab stops and lost focus. Only a test that uses the keyboard can see them.
 
-## 🎓 What You Learned
+## What You Learned
 
-- ✅ **Page Object Model** - Reusable, maintainable page helpers
-- ✅ **Advanced fixtures** - Custom test setup and teardown
-- ✅ **Network interception** - Mocking API responses
-- ✅ **Test organization** - Organizing test runs with tags
-- ✅ **Data builders** - Clean test data creation
-- ✅ **Professional patterns** - Industry-standard E2E practices
+- **Page Object Model** - Reusable, maintainable page helpers
+- **Advanced fixtures** - Custom test setup and teardown
+- **Network interception** - Mocking API responses
+- **Test organization** - Organizing test runs with tags
+- **Data builders** - Clean test data creation
+- **Professional patterns** - Industry-standard E2E practices
 
 ---
 
-## 💪 Practice Challenges
+## Practice Challenges
 
 ### Challenge 1: Add More Page Objects
 
@@ -893,7 +893,7 @@ export default {
 
 ---
 
-## 🎯 Pro Tips
+## Pro Tips
 
 ### Tip 1: Keep Page Objects Focused
 
@@ -941,7 +941,7 @@ test("should test advanced pattern", async ({
 
 ---
 
-## ✅ Completion Checklist
+## Completion Checklist
 
 - [ ] Created FeedPage and ProfilePage objects
 - [ ] Used page objects in tests successfully
@@ -954,7 +954,7 @@ test("should test advanced pattern", async ({
 
 ---
 
-## 🆚 Compare with Python
+## Compare with Python
 
 Both JavaScript and Python Playwright support these patterns!
 
@@ -970,7 +970,7 @@ The concepts transfer directly between languages!
 
 ---
 
-## 📚 Resources
+## Resources
 
 **Files You Create in This Lab:**
 
@@ -989,6 +989,6 @@ Unlike the Python track (which ships pre-built examples in `tests/e2e-python/exa
 
 ---
 
-**🎉 You've mastered advanced E2E testing patterns in JavaScript! These are professional-level skills used in production!**
+**You've mastered advanced E2E testing patterns in JavaScript! These are professional-level skills used in production!**
 
 **Next Lab:** [Lab 11: Cross-Browser Testing (JavaScript)](LAB_11_Cross_Browser_Testing_JavaScript.md)

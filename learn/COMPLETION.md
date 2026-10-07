@@ -1,12 +1,12 @@
-# 🎉 Congratulations! You've Completed Testbook
+# Congratulations! You've Completed Testbook
 
-**You've mastered automation testing!** 🚀
+**You've mastered automation testing!**
 
 You've successfully completed all 5 stages of Testbook and now have the skills to build comprehensive test suites, debug failing tests, and create portfolio-worthy projects. You're ready to take on real-world testing challenges!
 
 ---
 
-## 🏆 Certificate of Completion
+## Certificate of Completion
 
 **Self-Issued Certificate**
 
@@ -38,7 +38,7 @@ You've successfully completed all 5 stages of Testbook and now have the skills t
 
 ---
 
-## 🎯 What You've Accomplished
+## What You've Accomplished
 
 ### Technical Skills Mastered
 
@@ -67,7 +67,7 @@ You've successfully completed all 5 stages of Testbook and now have the skills t
 
 ---
 
-## 🚀 What's Next? Your Learning Journey Continues
+## What's Next? Your Learning Journey Continues
 
 ### Immediate Next Steps (This Week)
 
@@ -143,7 +143,7 @@ You've successfully completed all 5 stages of Testbook and now have the skills t
 
 ---
 
-## 🛠️ Advanced Challenges
+## Advanced Challenges
 
 Ready to push your skills further? Try these challenges:
 
@@ -177,7 +177,7 @@ Ready to push your skills further? Try these challenges:
 
 ---
 
-## 🌟 Community & Resources
+## Community & Resources
 
 ### Stay Connected
 
@@ -202,7 +202,7 @@ Ready to push your skills further? Try these challenges:
 
 ---
 
-## 🎯 Your Testing Philosophy
+## Your Testing Philosophy
 
 As you continue your testing journey, remember these principles:
 
@@ -238,9 +238,9 @@ As you continue your testing journey, remember these principles:
 
 ---
 
-## 🏁 Final Words
+## Final Words
 
-**You did it!** 🎉
+**You did it!**
 
 You've completed a comprehensive journey from testing beginner to automation expert. You now have the skills, knowledge, and confidence to tackle real-world testing challenges.
 
@@ -254,11 +254,11 @@ You've completed a comprehensive journey from testing beginner to automation exp
 
 Now it's time to apply what you've learned, continue growing, and help others on their testing journey.
 
-**Go build something amazing!** 🚀
+**Go build something amazing!**
 
 ---
 
-## 📞 Need Help?
+## Need Help?
 
 - **Issues**: Create a GitHub issue for bugs or questions
 - **Discussions**: Use GitHub Discussions for general questions
@@ -266,7 +266,7 @@ Now it's time to apply what you've learned, continue growing, and help others on
 
 **Thank you for learning with Testbook!**
 
-_Made with ❤️ for the testing community_
+_Made with care for the testing community_
 
 ---
 

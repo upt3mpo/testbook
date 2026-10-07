@@ -27,7 +27,7 @@ These tests would pass sometimes and fail other times, depending on:
 
 ### Root Causes
 
-#### 1. **Arbitrary Timeouts** ❌ BAD
+#### 1. **Arbitrary Timeouts** BAD
 
 ```javascript
 // BAD: Using fixed timeouts
@@ -37,7 +37,7 @@ await expect(reactButton).toContainText('👍');
 
 **Problem:** The timeout might be too short on slower systems, or the API might take longer than expected.
 
-#### 2. **Not Waiting for State Changes** ❌ BAD
+#### 2. **Not Waiting for State Changes** BAD
 
 ```javascript
 // BAD: Clicking and immediately checking without waiting
@@ -47,7 +47,7 @@ await expect(followButton).toContainText(/unfollow/i, { timeout: 5000 });
 
 **Problem:** The button text might not have updated yet when we check it.
 
-#### 3. **Race Conditions with Async Operations** ❌ BAD
+#### 3. **Race Conditions with Async Operations** BAD
 
 ```javascript
 // BAD: Not waiting for network requests to complete
@@ -61,7 +61,7 @@ await reactionBtn.click();
 
 ## The Solutions
 
-### 1. **Wait for Actual State Changes** ✅ GOOD
+### 1. **Wait for Actual State Changes** GOOD
 
 Instead of arbitrary timeouts, wait for the actual change you expect:
 
@@ -73,7 +73,7 @@ await expect(followButton).toContainText(/unfollow/i, { timeout: 10000 });
 
 **Why it works:** Playwright will automatically retry the assertion until it passes or times out. It checks the actual state, not just waiting blindly.
 
-### 2. **Use Network Idle for API-Heavy Operations** ✅ GOOD
+### 2. **Use Network Idle for API-Heavy Operations** GOOD
 
 ```javascript
 // GOOD: Wait for network to settle
@@ -84,7 +84,7 @@ await expect(reactButton).toContainText('👍', { timeout: 10000 });
 
 **Why it works:** `networkidle` waits until there are no network connections for at least 500ms, ensuring API calls have completed.
 
-### 3. **Verify Prerequisites Before Actions** ✅ GOOD
+### 3. **Verify Prerequisites Before Actions** GOOD
 
 ```javascript
 // GOOD: Ensure element is visible and interactive before clicking
@@ -99,7 +99,7 @@ await reactionBtn.click();
 
 **Why it works:** Verifying visibility ensures the element is rendered and ready for interaction.
 
-### 4. **Use URL Changes for Navigation** ✅ GOOD
+### 4. **Use URL Changes for Navigation** GOOD
 
 ```javascript
 // GOOD: Wait for actual URL change after deletion
@@ -111,7 +111,7 @@ await page.waitForURL(/.*\/(login|$)/, { timeout: 15000 }).catch(async () => {
 
 **Why it works:** URL changes are definitive indicators of navigation, more reliable than checking for element visibility alone.
 
-### 5. **Increase Timeouts for Critical Assertions** ✅ GOOD
+### 5. **Increase Timeouts for Critical Assertions** GOOD
 
 ```javascript
 // GOOD: Use longer timeouts for operations that involve multiple steps
@@ -122,7 +122,7 @@ await expect(reactButton).toContainText('👍', { timeout: 10000 });
 
 ## Before and After Comparison
 
-### Before: Flaky Post Reaction Test ❌
+### Before: Flaky Post Reaction Test
 
 ```javascript
 test('should add reaction to post', async ({ page }) => {
@@ -140,7 +140,7 @@ test('should add reaction to post', async ({ page }) => {
 
 **Pass rate:** ~60% (failed when system was slow)
 
-### After: Reliable Post Reaction Test ✅
+### After: Reliable Post Reaction Test
 
 ```javascript
 test('should add reaction to post', async ({ page }) => {
@@ -163,7 +163,7 @@ test('should add reaction to post', async ({ page }) => {
 
 ## Improved Helper Function
 
-### Before: Unreliable addReaction ❌
+### Before: Unreliable addReaction
 
 ```javascript
 async function addReaction(post, reactionType) {
@@ -178,7 +178,7 @@ async function addReaction(post, reactionType) {
 }
 ```
 
-### After: Reliable addReaction ✅
+### After: Reliable addReaction
 
 ```javascript
 async function addReaction(post, reactionType) {
@@ -241,7 +241,7 @@ This fixed 4 additional tests that were failing due to hover dropdown timing iss
 
 ## Best Practices to Avoid Flaky Tests
 
-### ✅ DO
+### DO
 
 1. **Wait for actual state changes**, not arbitrary times
 2. **Use Playwright's built-in auto-waiting** features
@@ -251,7 +251,7 @@ This fixed 4 additional tests that were failing due to hover dropdown timing iss
 6. **Check for URL changes** after navigation
 7. **Add fallback strategies** for critical assertions
 
-### ❌ DON'T
+### DON'T
 
 1. **Don't use `waitForTimeout()` for synchronization** - only use it for deliberate delays (like testing slow networks)
 2. **Don't assume immediate UI updates** after clicks

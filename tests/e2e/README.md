@@ -4,7 +4,7 @@ End-to-end tests for Testbook using JavaScript and Playwright Test.
 
 ---
 
-<h2 id="quick-start">🚀 Quick Start</h2>
+<h2 id="quick-start">Quick Start</h2>
 
 ### 1. Install Dependencies
 
@@ -14,7 +14,7 @@ npm install
 npx playwright install chromium
 ```
 
-**💡 Learning-Focused Configuration:** We configure Playwright to run only Chrome by default for faster execution. This reduces test time from ~5 minutes to ~1 minute, making the learning experience smoother. You can still run other browsers if needed for cross-browser testing.
+**Learning-Focused Configuration:** We configure Playwright to run only Chrome by default for faster execution. This reduces test time from ~5 minutes to ~1 minute, making the learning experience smoother. You can still run other browsers if needed for cross-browser testing.
 
 ### 2. Start Testbook
 
@@ -48,7 +48,7 @@ npm run test:debug
 
 ---
 
-<h2 id="configuration">⚙️ Configuration</h2>
+<h2 id="configuration">Configuration</h2>
 
 ### Environment Variables
 
@@ -82,7 +82,7 @@ BASE_URL=http://localhost:3000 npx playwright test
 
 ---
 
-<h2 id="page-objects">📦 Page Objects</h2>
+<h2 id="page-objects">Page Objects</h2>
 
 Logging in, registering, and interacting with posts/profiles/settings all
 go through the page objects in `pages/`, one file per page, mirroring the
@@ -112,7 +112,7 @@ test("my test", async ({ page }) => {
 });
 ```
 
-<h2 id="test-helpers">🧪 Test Helpers</h2>
+<h2 id="test-helpers">Test Helpers</h2>
 
 What's left in `fixtures/test-helpers.js` is database setup, dialog
 handling, and shared test data - things that aren't tied to a specific
@@ -167,7 +167,7 @@ TEST_USERS.newuser; // For registration tests
 
 ---
 
-## 📁 Test Structure
+## Test Structure
 
 ```text
 tests/e2e/
@@ -188,7 +188,7 @@ tests/e2e/
 
 ---
 
-<h2 id="writing-tests">🎯 Writing Tests</h2>
+<h2 id="writing-tests">Writing Tests</h2>
 
 ### Basic Test Example
 
@@ -259,7 +259,7 @@ test.describe("Post Tests", () => {
 
 ---
 
-<h2 id="debugging-tests">🐛 Debugging Tests</h2>
+<h2 id="debugging-tests">Debugging Tests</h2>
 
 ### Run with Visible Browser
 
@@ -307,7 +307,7 @@ await page.screenshot({ path: "screenshot.png" });
 
 ---
 
-<h2 id="running-specific-tests">🏃 Running Specific Tests</h2>
+<h2 id="running-specific-tests">Running Specific Tests</h2>
 
 ### By File
 
@@ -338,7 +338,7 @@ npx playwright test --project=chromium
 
 ---
 
-<h2 id="test-reports">📊 Test Reports</h2>
+<h2 id="test-reports">Test Reports</h2>
 
 ### HTML Report
 
@@ -367,7 +367,7 @@ npx playwright show-trace trace.zip
 
 ---
 
-<h2 id="troubleshooting">🔧 Troubleshooting</h2>
+<h2 id="troubleshooting">Troubleshooting</h2>
 
 ### "net::ERR_CONNECTION_REFUSED"
 
@@ -412,9 +412,9 @@ npx playwright show-trace trace.zip
 
 ---
 
-<h2 id="best-practices">📚 Best Practices</h2>
+<h2 id="best-practices">Best Practices</h2>
 
-### ✅ Do
+### Do
 
 - Use `data-testid` attributes for selectors
 - Use `expect()` with auto-retry
@@ -422,7 +422,7 @@ npx playwright show-trace trace.zip
 - Use page objects (`pages/`) for page interactions, test helpers for database/dialog setup
 - Write independent tests
 
-### ❌ Don't
+### Don't
 
 - Use `page.waitForTimeout()` - use explicit waits
 - Hardcode URLs - use `page.goto('/')` with baseURL
@@ -432,7 +432,7 @@ npx playwright show-trace trace.zip
 
 ---
 
-## 🎯 Example Patterns
+## Example Patterns
 
 ### Complete User Flow
 
@@ -478,7 +478,7 @@ test("verify post created via API", async ({ page, request }) => {
 
 ---
 
-## 🔗 Related Documentation
+## Related Documentation
 
 - [Playwright Test Docs](https://playwright.dev/docs/intro)
 - [Main Testing Guide](../../docs/guides/RUNNING_TESTS.md)
@@ -487,7 +487,7 @@ test("verify post created via API", async ({ page, request }) => {
 
 ---
 
-## 🎯 JavaScript-Specific Tests
+## JavaScript-Specific Tests
 
 ### Accessibility Tests (`accessibility-axe.spec.js`)
 
@@ -500,11 +500,11 @@ test("verify post created via API", async ({ page, request }) => {
 
 **What it tests:**
 
-- ✅ WCAG 2.1 Level A and AA compliance
-- ✅ Color contrast ratios
-- ✅ ARIA attributes and semantic HTML
-- ✅ Keyboard navigation accessibility
-- ✅ Screen reader compatibility
+- WCAG 2.1 Level A and AA compliance
+- Color contrast ratios
+- ARIA attributes and semantic HTML
+- Keyboard navigation accessibility
+- Screen reader compatibility
 
 **Career Value:**
 
@@ -518,7 +518,7 @@ test("verify post created via API", async ({ page, request }) => {
 
 ---
 
-## 💡 Tips
+## Tips
 
 - **Use --headed for development:** See what's happening
 - **Use --debug for failures:** Step through problematic tests
@@ -545,4 +545,4 @@ and the [JavaScript and Python comparison](../../docs/a11y/JS_VS_PYTHON_ACCESSIB
 
 ---
 
-**Happy Testing!** 🚀
+**Happy Testing!**

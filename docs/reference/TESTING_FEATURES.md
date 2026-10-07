@@ -1,10 +1,10 @@
-# 🧪 Testbook Testing Features
+# Testbook Testing Features
 
 ## Overview
 
 Testbook is purpose-built for QA automation testing practice. Every feature is designed with testability in mind.
 
-## ✅ Test-Friendly Design
+## Test-Friendly Design
 
 ### 1. **Comprehensive Test IDs (138+ data-testid attributes)**
 
@@ -29,7 +29,7 @@ await page.click('[data-testid="post-1-react-button"]');
 await page.locator('[data-is-own-post="true"]').first();
 ```
 
-📖 **See [TESTING_PATTERNS.md](../concepts/TESTING_PATTERNS.md) for complete guide on testing dynamic content!**
+**See [TESTING_PATTERNS.md](../concepts/TESTING_PATTERNS.md) for complete guide on testing dynamic content!**
 
 ### 2. **RESTful API Endpoints**
 
@@ -124,11 +124,11 @@ Scripts work on all platforms:
 - **Docker**: Universal containerization
 - **Development mode**: Hot reload for rapid testing
 
-## 📊 Testing Capabilities
+## Testing Capabilities
 
 ### Frontend Testing
 
-✅ **UI Automation Frameworks**
+**UI Automation Frameworks**
 
 - Selenium WebDriver
 - Playwright
@@ -136,7 +136,7 @@ Scripts work on all platforms:
 - Puppeteer
 - TestCafe
 
-✅ **What You Can Test**
+**What You Can Test**
 
 - User registration and login flows
 - Post creation with text, images, videos
@@ -156,7 +156,7 @@ Scripts work on all platforms:
 
 ### Backend Testing
 
-✅ **API Testing Frameworks**
+**API Testing Frameworks**
 
 - Postman/Newman
 - REST Assured (Java)
@@ -164,7 +164,7 @@ Scripts work on all platforms:
 - SuperTest (Node.js)
 - RestSharp (.NET)
 
-✅ **What You Can Test**
+**What You Can Test**
 
 - All CRUD operations on posts
 - File upload handling
@@ -179,14 +179,14 @@ Scripts work on all platforms:
 
 ### Performance Testing
 
-✅ **Load Testing Tools**
+**Load Testing Tools**
 
 - K6
 - JMeter
 - Locust
 - Artillery
 
-✅ **What You Can Test**
+**What You Can Test**
 
 - Concurrent user logins
 - Feed loading performance
@@ -196,7 +196,7 @@ Scripts work on all platforms:
 
 ### Security Testing
 
-✅ **What You Can Test**
+**What You Can Test**
 
 - JWT token validation
 - Protected route access
@@ -206,7 +206,7 @@ Scripts work on all platforms:
 - File upload validation
 - User isolation (can't access others' data)
 
-## 🎯 Test Data
+## Test Data
 
 ### Pre-seeded Data
 
@@ -243,7 +243,7 @@ requests.post(f"{BASE_URL}/dev/create-post", json={
 })
 ```
 
-## 🔍 Common Test Patterns
+## Common Test Patterns
 
 ### Page Object Model (POM)
 
@@ -318,7 +318,7 @@ class TestbookAPI:
                 headers={"Authorization": f"Bearer {self.token}"})
 ```
 
-## 🎨 UI Testing Best Practices
+## UI Testing Best Practices
 
 ### 1. Use Data Test IDs
 
@@ -358,7 +358,7 @@ await dropZone.setInputFiles("test-image.jpg");
 await expect(page.locator('[data-testid="create-post-preview"]')).toBeVisible();
 ```
 
-## 📈 Test Coverage Recommendations
+## Test Coverage Recommendations
 
 ### Critical Paths (Must Test)
 
@@ -393,7 +393,7 @@ await expect(page.locator('[data-testid="create-post-preview"]')).toBeVisible();
 - Block someone you're following
 - Delete account while logged in
 
-## 🚀 Quick Start for Testers
+## Quick Start for Testers
 
 1. **Start Testbook**:
 
@@ -421,9 +421,9 @@ await expect(page.locator('[data-testid="create-post-preview"]')).toBeVisible();
    curl http://localhost:8000/api/dev/users
    ```
 
-## 📚 Documentation
+## Documentation
 
-- **TESTING_PATTERNS.md** - ⭐ Testing dynamic content (must read!)
+- **TESTING_PATTERNS.md** - Testing dynamic content (must read!)
 - **TESTING_CHEATSHEET.md** - Quick reference card
 - **README.md** - Complete feature list and setup
 - **TESTING_GUIDE.md** - Detailed test examples
@@ -431,20 +431,20 @@ await expect(page.locator('[data-testid="create-post-preview"]')).toBeVisible();
 - **PROJECT_INFO.md** - Technical architecture
 - **API Docs** - Interactive docs at `/docs` endpoint
 
-## 💡 Why Testbook is Great for Testing
+## Why Testbook is Great for Testing
 
-✅ **Realistic** - Behaves like real social media
-✅ **Lightweight** - Starts in seconds, no heavy dependencies
-✅ **Controllable** - Reset anytime, predictable test data
-✅ **Well-documented** - Every endpoint and test ID documented
-✅ **Feature-rich** - Real-world complexity without real-world problems
-✅ **Test-friendly** - Built for automation from the ground up
-✅ **Cross-platform** - Works on macOS, Linux, Windows
-✅ **Modern stack** - Practice with current frameworks (FastAPI, React, Vite)
+**Realistic** - Behaves like real social media
+**Lightweight** - Starts in seconds, no heavy dependencies
+**Controllable** - Reset anytime, predictable test data
+**Well-documented** - Every endpoint and test ID documented
+**Feature-rich** - Real-world complexity without real-world problems
+**Test-friendly** - Built for automation from the ground up
+**Cross-platform** - Works on macOS, Linux, Windows
+**Modern stack** - Practice with current frameworks (FastAPI, React, Vite)
 
 ---
 
-## 📚 More Resources
+## More Resources
 
 - **[README.md](../../README.md)** - Main documentation and project overview
 - **[TESTING_GUIDE.md](../guides/TESTING_GUIDE.md)** - Complete testing examples
@@ -454,4 +454,4 @@ await expect(page.locator('[data-testid="create-post-preview"]')).toBeVisible();
 
 ---
 
-**Happy Testing! 🎉**
+**Happy Testing!**

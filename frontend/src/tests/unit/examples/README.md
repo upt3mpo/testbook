@@ -1,4 +1,4 @@
-# 🧪 Component Test Examples
+# Component Test Examples
 
 **Example tests demonstrating advanced patterns from Lab 6B**
 
@@ -6,7 +6,7 @@ These tests showcase the patterns taught in [Lab 6B: Advanced Component Testing]
 
 ---
 
-## 📁 Files
+## Files
 
 Place your example tests here following Lab 6B patterns:
 
@@ -17,7 +17,7 @@ Place your example tests here following Lab 6B patterns:
 
 ---
 
-## 🚀 Running Examples
+## Running Examples
 
 ```bash
 cd frontend
@@ -26,7 +26,7 @@ npm test -- examples
 
 ---
 
-## 📚 What to Test
+## What to Test
 
 ### Component Testing Patterns
 
@@ -66,7 +66,7 @@ describe('MyComponent', () => {
 
 ---
 
-## 🎓 Learn More
+## Learn More
 
 - [Lab 6B: Advanced Component Testing](../../../../../learn/stage_2_integration/exercises/LAB_06_Component_Testing_JavaScript.md)
 - [Vitest Documentation](https://vitest.dev/)

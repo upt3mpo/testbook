@@ -1,4 +1,4 @@
-# 🤔 Stage 1 Reflection: Unit Tests
+# Stage 1 Reflection: Unit Tests
 
 Use this space to document your learning journey through Stage 1.
 

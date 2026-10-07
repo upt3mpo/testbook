@@ -10,7 +10,7 @@ Template Version: 2.0
 Last Updated: October 2025
 -->
 
-## 👤 About You
+## About You
 
 **Your Background:**
 - [ ] Complete beginner to testing
@@ -25,7 +25,7 @@ Last Updated: October 2025
 - [ ] Both
 - [ ] Neither (learning!)
 
-## 📚 What You Completed
+## What You Completed
 
 **Stages Completed:**
 - [ ] Stage 1: Unit Tests
@@ -38,19 +38,19 @@ Last Updated: October 2025
 
 **Time Invested:** [e.g. 5 hours, 2 weeks, etc.]
 
-## ⭐ What Worked Well
+## What Worked Well
 
 What did you find most helpful or enjoyable?
 
-## 😕 What Was Challenging
+## What Was Challenging
 
 What was confusing, frustrating, or could be improved?
 
-## 💭 Suggestions
+## Suggestions
 
 If you could change one thing, what would it be?
 
-## 🎯 Learning Outcomes
+## Learning Outcomes
 
 **Did you achieve your goals?**
 - [ ] Yes, completely
@@ -61,7 +61,7 @@ If you could change one thing, what would it be?
 **What did you learn?**
 [Brief description of key takeaways]
 
-## 📊 Ratings (Optional)
+## Ratings (Optional)
 
 Rate each aspect (1-5, where 5 is best):
 
@@ -71,7 +71,7 @@ Rate each aspect (1-5, where 5 is best):
 - Setup experience: __/5
 - Overall satisfaction: __/5
 
-## 🗣️ Would You Recommend?
+## Would You Recommend?
 
 Would you recommend Testbook to someone learning testing?
 
@@ -82,10 +82,10 @@ Would you recommend Testbook to someone learning testing?
 
 **Why?**
 
-## 📝 Additional Comments
+## Additional Comments
 
 Any other feedback, suggestions, or stories to share?
 
 ---
 
-**Thank you for taking the time to share your experience! Your feedback helps improve Testbook for future learners. 🎓**
+**Thank you for taking the time to share your experience! Your feedback helps improve Testbook for future learners.**

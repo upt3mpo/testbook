@@ -2,17 +2,18 @@
 
 **Non-Functional Testing That Matters**
 
-> **💡 Language Selection**: This guide includes both Python and JavaScript examples. Both are expanded by default so you can see all approaches. Click the language tabs to collapse sections you don't need.
+> **Language Selection**: This guide includes both Python and JavaScript examples. Both are expanded by default so you can see all approaches. Click the language tabs to collapse sections you don't need.
 
 ## Your Progress
 
-[████████████████████░░░░] 80% complete
+You are on Stage 4 of 5 (Stage 0 is the foundation).
 
-✅ Stage 1: Unit Tests (completed)<br>
-✅ Stage 2: Integration Tests (completed)<br>
-✅ Stage 3: API & E2E Testing (completed)<br>
-→ **Stage 4: Performance & Security** (you are here)<br>
-⬜ Stage 5: Capstone
+- Stage 0: Inclusion First (completed)
+- Stage 1: Unit Tests (completed)
+- Stage 2: Integration Tests (completed)
+- Stage 3: API & E2E Testing (completed)
+- Stage 4: Performance, Security & Accessibility (you are here)
+- Stage 5: Capstone (not started)
 
 **Estimated time remaining:** 6-8 hours (core content) + 4-6 hours (optional exercises)
 
@@ -474,7 +475,7 @@ export const options = {
 **Open `tests/security/test_security.py` and find `test_sql_injection_in_login` (in `TestInputValidation`):**
 
 <details open>
-<summary><strong>🐍 Python</strong></summary>
+<summary><strong>Python</strong></summary>
 
 ```python
 def test_sql_injection_in_login(self, api_client):
@@ -497,7 +498,7 @@ def test_sql_injection_in_login(self, api_client):
 </details>
 
 <details open>
-<summary><strong>☕ JavaScript</strong></summary>
+<summary><strong>JavaScript</strong></summary>
 
 ```javascript
 test("SQL injection prevention", async () => {
@@ -695,7 +696,7 @@ Try to break the application:
 
 <h2 id="part-6-additional-patterns">Part 6: Additional Patterns</h2>
 
-**📝 Note:** The patterns below are **additional enhancements** to your performance and security testing skills. All the **core concepts** needed to meet the Stage 4 success criteria are covered in Parts 1-5 above.
+**Note:** The patterns below are **additional enhancements** to your performance and security testing skills. All the **core concepts** needed to meet the Stage 4 success criteria are covered in Parts 1-5 above.
 
 These patterns enhance your security testing capabilities:
 
@@ -726,18 +727,18 @@ The most critical web application security risks:
 
 ### Security Testing Mindset
 
-✅ **Think like an attacker:**
+**Think like an attacker:**
 
 - What's the worst input I can send?
 - Can I access others' data?
 - Can I bypass authentication?
 - Can I cause a crash or DOS?
 
-✅ **Test assumptions:**
+**Unsafe assumptions to test:**
 
-- "Users will only send valid data" ❌
-- "Nobody will try that" ❌
-- "The frontend validates it" ❌
+- "Users will only send valid data"
+- "Nobody will try that"
+- "The frontend validates it"
 
 ---
 
@@ -806,7 +807,7 @@ You're ready for Stage 5 when you can:
 
 ### Hands-On Practice
 
-**🐍 Python Track:**
+**Python Track:**
 
 - [Lab 13: Load Testing with k6 (Python)](exercises/LAB_13_Load_Testing_k6.md)
 - [Lab 14: Security Testing with OWASP (Python)](exercises/LAB_14_Security_Testing_OWASP_Python.md)
@@ -814,7 +815,7 @@ You're ready for Stage 5 when you can:
 - [Lab 16: Accessibility Automation (Python)](exercises/LAB_16_Accessibility_Automation_Python.md)
 - [Lab 17: Manual Accessibility Testing](exercises/LAB_17_Manual_Accessibility_Testing.md)
 
-**🟨 JavaScript Track:**
+**JavaScript Track:**
 
 - [Lab 13: Load Testing with k6 (JavaScript)](exercises/LAB_13_Load_Testing_k6.md)
 - [Lab 14: Security Testing with OWASP (JavaScript)](exercises/LAB_14_Security_Testing_OWASP_JavaScript.md)
@@ -931,4 +932,4 @@ You now understand non-functional testing that protects users and business!
 
 ---
 
-*Pro tip: Performance and security testing are where QA engineers become invaluable. Master these, and you're ready for senior roles! 🚀*
+*Pro tip: Performance and security testing are where QA engineers become invaluable. Master these, and you're ready for senior roles!*

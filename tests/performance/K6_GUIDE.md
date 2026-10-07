@@ -1,10 +1,10 @@
-# 📊 K6 Performance Testing Guide
+# K6 Performance Testing Guide
 
 **Load testing with thresholds and result interpretation**
 
 ---
 
-<h2 id="what-is-k6">🎯 What is K6?</h2>
+<h2 id="what-is-k6">What is K6?</h2>
 
 K6 is a modern load testing tool that lets you test your application's performance under various load conditions.
 
@@ -12,7 +12,7 @@ K6 is a modern load testing tool that lets you test your application's performan
 
 ---
 
-<h2 id="installation">📦 Installation</h2>
+<h2 id="installation">Installation</h2>
 
 ```bash
 # macOS
@@ -37,7 +37,7 @@ k6 version
 
 ---
 
-<h2 id="running-tests">🚀 Running Tests</h2>
+<h2 id="running-tests">Running Tests</h2>
 
 ### Basic Usage
 
@@ -54,7 +54,7 @@ k6 run tests/performance/stress-test.js
 
 ---
 
-<h2 id="understanding-k6-test-scripts">📊 Understanding K6 Test Scripts</h2>
+<h2 id="understanding-k6-test-scripts">Understanding K6 Test Scripts</h2>
 
 ### Test Structure with Thresholds
 
@@ -104,7 +104,7 @@ export default function () {
 
 ---
 
-<h2 id="threshold-reference">🎯 Threshold Reference</h2>
+<h2 id="threshold-reference">Threshold Reference</h2>
 
 ### Common Threshold Patterns
 
@@ -140,7 +140,7 @@ thresholds: {
 
 ---
 
-## 📈 Test Scenarios
+## Test Scenarios
 
 ### 1. Smoke Test (Sanity Check)
 
@@ -162,8 +162,8 @@ export const options = {
 
 **Interpreting Results:**
 
-- ✅ **Pass:** System handles minimal load, no errors
-- ❌ **Fail:** Basic functionality broken, fix before scaling
+- **Pass:** System handles minimal load, no errors
+- **Fail:** Basic functionality broken, fix before scaling
 
 ---
 
@@ -195,9 +195,9 @@ export const options = {
 
 **Interpreting Results:**
 
-- ✅ **Pass:** System handles normal load within acceptable time
-- ⚠️ **Warning:** Some thresholds close to limits, investigate
-- ❌ **Fail:** Can't handle normal load, optimization needed
+- **Pass:** System handles normal load within acceptable time
+- **Warning:** Some thresholds close to limits, investigate
+- **Fail:** Can't handle normal load, optimization needed
 
 ---
 
@@ -233,13 +233,13 @@ export const options = {
 
 **Interpreting Results:**
 
-- ✅ Find breaking point (e.g., "System degrades at 150 VUs")
-- ✅ Identify bottlenecks
-- ✅ Plan capacity needs
+- Find breaking point (e.g., "System degrades at 150 VUs")
+- Identify bottlenecks
+- Plan capacity needs
 
 ---
 
-<h2 id="interpreting-k6-metrics">📊 Interpreting K6 Metrics</h2>
+<h2 id="interpreting-k6-metrics">Interpreting K6 Metrics</h2>
 
 ### Key Metrics Explained
 
@@ -270,7 +270,7 @@ export const options = {
 
 ---
 
-<h2 id="recommended-thresholds-by-endpoint-type">🎯 Recommended Thresholds by Endpoint Type</h2>
+<h2 id="recommended-thresholds-by-endpoint-type">Recommended Thresholds by Endpoint Type</h2>
 
 ### Fast Endpoints (Health, Static)
 
@@ -316,30 +316,30 @@ thresholds: {
 
 ---
 
-## 🚨 When to Optimize
+## When to Optimize
 
 ### Response Time Benchmarks
 
-| User Experience  | p(95) Response Time | Action                  |
-| ---------------- | ------------------- | ----------------------- |
-| **Excellent**    | <200ms              | 🎉 Great!               |
-| **Good**         | 200-500ms           | ✅ Acceptable           |
-| **Acceptable**   | 500-1000ms          | ⚠️ Consider optimizing  |
-| **Poor**         | 1000-2000ms         | 🔧 Optimize soon        |
-| **Unacceptable** | >2000ms             | 🚨 Optimize immediately |
+| User Experience  | p(95) Response Time | Action               |
+| ---------------- | ------------------- | -------------------- |
+| **Excellent**    | <200ms              | Great!               |
+| **Good**         | 200-500ms           | Acceptable           |
+| **Acceptable**   | 500-1000ms          | Consider optimizing  |
+| **Poor**         | 1000-2000ms         | Optimize soon        |
+| **Unacceptable** | >2000ms             | Optimize immediately |
 
 ### Error Rate Benchmarks
 
-| Error Rate | Status       | Action               |
-| ---------- | ------------ | -------------------- |
-| **<0.1%**  | 🎉 Excellent | Keep monitoring      |
-| **0.1-1%** | ✅ Good      | Investigate errors   |
-| **1-5%**   | ⚠️ Warning   | Fix error sources    |
-| **>5%**    | 🚨 Critical  | Immediate fix needed |
+| Error Rate | Status    | Action               |
+| ---------- | --------- | -------------------- |
+| **<0.1%**  | Excellent | Keep monitoring      |
+| **0.1-1%** | Good      | Investigate errors   |
+| **1-5%**   | Warning   | Fix error sources    |
+| **>5%**    | Critical  | Immediate fix needed |
 
 ---
 
-## 💡 Performance Optimization Tips
+## Performance Optimization Tips
 
 ### If Response Times Are High
 
@@ -359,7 +359,7 @@ thresholds: {
 
 ---
 
-<h2 id="sample-k6-test-with-full-configuration">📚 Sample K6 Test with Full Configuration</h2>
+<h2 id="sample-k6-test-with-full-configuration">Sample K6 Test with Full Configuration</h2>
 
 ```javascript
 import http from "k6/http";
@@ -475,7 +475,7 @@ export default function () {
 
 ---
 
-<h2 id="interpreting-results">📊 Interpreting Results</h2>
+<h2 id="interpreting-results">Interpreting Results</h2>
 
 ### Example Output
 
@@ -496,7 +496,7 @@ export default function () {
 
 ### What This Tells You
 
-**Overall Health:** ✅ Good
+**Overall Health:** Good
 
 - Error rate: 0.23% (excellent, <1%)
 - Average response: 285ms (good, <300ms)
@@ -504,20 +504,20 @@ export default function () {
 
 **Specific Findings:**
 
-1. **Login Endpoint:** ✅ Excellent (p95: 345ms)
-2. **Feed Endpoint:** ⚠️ Slower (p95: 856ms) - Investigate!
-3. **Post Creation:** ✅ Working well (2800 created)
+1. **Login Endpoint:** Excellent (p95: 345ms)
+2. **Feed Endpoint:** Slower (p95: 856ms) - Investigate!
+3. **Post Creation:** Working well (2800 created)
 
 **Recommendations:**
 
-- ✅ System handles 100 req/s with good performance
-- ⚠️ Feed endpoint needs optimization (database queries?)
-- ✅ Error rate very low
-- ✅ Check rate acceptable (98.5%)
+- System handles 100 req/s with good performance
+- Feed endpoint needs optimization (database queries?)
+- Error rate very low
+- Check rate acceptable (98.5%)
 
 ---
 
-## 🔍 Analyzing Failed Thresholds
+## Analyzing Failed Thresholds
 
 ### When a Threshold Fails
 
@@ -558,7 +558,7 @@ export default function () {
 
 ---
 
-## 📊 Performance Report Template
+## Performance Report Template
 
 After running tests, create a report:
 
@@ -597,7 +597,7 @@ After running tests, create a report:
 
 ---
 
-## 🎯 Quick Reference
+## Quick Reference
 
 ### Essential K6 Commands
 
@@ -630,7 +630,7 @@ const BASE_URL = __ENV.BASE_URL || 'http://localhost:8000';
 
 ---
 
-## 📚 Related Resources
+## Related Resources
 
 - [K6 Documentation](https://k6.io/docs/)
 - [K6 Thresholds Guide](https://k6.io/docs/using-k6/thresholds/)
@@ -640,4 +640,4 @@ const BASE_URL = __ENV.BASE_URL || 'http://localhost:8000';
 
 ---
 
-**🎯 Pro Tip:** Start with smoke tests, then load tests, then stress tests. Always establish a performance baseline before making changes!
+**Pro Tip:** Start with smoke tests, then load tests, then stress tests. Always establish a performance baseline before making changes!

@@ -1,17 +1,17 @@
-# 🧪 Lab 9: Basic E2E Testing (JavaScript)
+# Lab 9: Basic E2E Testing (JavaScript)
 
 **Estimated Time:** 105 minutes (90 minutes of core steps and a 15 minute accessibility step)<br>
 **Difficulty:** Intermediate<br>
-**Language:** 🟨 JavaScript<br>
+**Language:** JavaScript<br>
 **Prerequisites:** Lab 8 completed
 
-**💡 Need Python instead?** Try [Lab 9: Basic E2E Testing (Python)](LAB_09_Basic_E2E_Testing_Python.md)!
+**Need Python instead?** Try [Lab 9: Basic E2E Testing (Python)](LAB_09_Basic_E2E_Testing_Python.md)!
 
 **What This Adds:** Master end-to-end testing with Playwright - learn to test complete user workflows in real browsers, ensuring your application works as users expect it to.
 
 ---
 
-<h2 id="what-youll-learn">🎯 What You'll Learn</h2>
+<h2 id="what-youll-learn">What You'll Learn</h2>
 
 - Write E2E tests with Playwright (JavaScript)
 - Test in a real browser
@@ -21,7 +21,7 @@
 
 ---
 
-<h2 id="step-by-step-instructions">📋 Step-by-Step Instructions</h2>
+<h2 id="step-by-step-instructions">Step-by-Step Instructions</h2>
 
 ### Step 1: Setup Playwright (10 minutes)
 
@@ -33,7 +33,7 @@ npx playwright install chromium
 
 **Wait for installation...**
 
-✅ **Checkpoint:** Run `npx playwright --version` and see version number
+**Checkpoint:** Run `npx playwright --version` and see version number
 
 ### Step 2: Make Sure Testbook is Running (5 minutes)
 
@@ -51,7 +51,7 @@ This launches the backend on `http://localhost:8000` and the frontend UI on `htt
 
 **Verify:** Open <http://localhost:3000> in your browser – you should see Testbook!
 
-✅ **Checkpoint:** Testbook loads in your browser
+**Checkpoint:** Testbook loads in your browser
 
 ### Step 3: Watch a Test Run! (10 minutes)
 
@@ -62,16 +62,16 @@ cd tests
 npx playwright test auth.spec.js --headed
 ```
 
-**🎬 What you'll see:**
+**What you'll see:**
 
 - Browser window opens automatically
 - Form fields fill themselves
 - Buttons click themselves
 - Test passes or fails
 
-**This is E2E testing magic!** ✨
+**This is E2E testing magic!**
 
-✅ **Checkpoint:** You watched a test run in the browser
+**Checkpoint:** You watched a test run in the browser
 
 ### Step 4: Run in DEBUG Mode (15 minutes)
 
@@ -102,7 +102,7 @@ npx playwright test auth.spec.js --headed --slow-mo=1000
 
 (Slows down each action by 1 second - great for demos!)
 
-✅ **Checkpoint:** You used Playwright Inspector
+**Checkpoint:** You used Playwright Inspector
 
 ### Step 5: Understand Selectors (15 minutes)
 
@@ -135,7 +135,7 @@ await page.locator('[data-testid="navbar"]').toBeVisible();
 await page.fill('[data-testid="create-post-textarea"]', "My post");
 ```
 
-✅ **Checkpoint:** You understand how to find elements
+**Checkpoint:** You understand how to find elements
 
 ### Step 6: Write Your First E2E Test! (35 minutes)
 
@@ -182,7 +182,7 @@ test("My first E2E test - Login and create post", async ({ page }) => {
 npx playwright test my_first_e2e.spec.js --headed
 ```
 
-**🎬 Watch the magic:**
+**Watch the magic:**
 
 - Browser opens
 - Form fills automatically
@@ -190,7 +190,7 @@ npx playwright test my_first_e2e.spec.js --headed
 - Post is created
 - Test verifies result
 
-✅ **Checkpoint:** YOUR first E2E test runs and passes!
+**Checkpoint:** YOUR first E2E test runs and passes!
 
 ### Step 7: Rewrite your test the way a user finds things (15 minutes)
 
@@ -234,7 +234,7 @@ them the same way. `exact: true` stops "Post" from also matching "Post options".
 npx playwright test my_first_e2e_accessible.spec.js --headed
 ```
 
-✅ **Checkpoint:** both of your tests pass.
+**Checkpoint:** both of your tests pass.
 
 **Now break the page on purpose.** Open `frontend/src/pages/Login.jsx` and delete this element (the
 label for the email field):
@@ -261,7 +261,7 @@ npx playwright test my_first_e2e --timeout=8000
 git checkout frontend/src/pages/Login.jsx
 ```
 
-✅ **Checkpoint:** you watched the test-id test pass while the label test failed, then restored the
+**Checkpoint:** you watched the test-id test pass while the label test failed, then restored the
 label.
 
 **When is a test id still the right choice?** When nothing user-facing identifies the element, for
@@ -271,17 +271,17 @@ labels for **controls**, and test ids for **containers and data**. This is the s
 
 ---
 
-<h2 id="what-you-learned">🎓 What You Learned</h2>
+<h2 id="what-you-learned">What You Learned</h2>
 
-- ✅ How to write E2E tests with Playwright
-- ✅ How to select elements with data-testid
-- ✅ How to interact with the UI (fill, click)
-- ✅ How to verify results (expect, toBeVisible, toContainText)
-- ✅ How powerful automated testing is!
+- How to write E2E tests with Playwright
+- How to select elements with data-testid
+- How to interact with the UI (fill, click)
+- How to verify results (expect, toBeVisible, toContainText)
+- How powerful automated testing is!
 
 ---
 
-## 💪 Practice Challenges
+## Practice Challenges
 
 ### Challenge 1: Test Logout
 
@@ -317,7 +317,7 @@ Write a test that:
 
 ---
 
-<h2 id="troubleshooting">🐛 Troubleshooting</h2>
+<h2 id="troubleshooting">Troubleshooting</h2>
 
 **Problem:** `page.goto: net::ERR_CONNECTION_REFUSED`
 **Solution:** Make sure the dev servers are running (`./start-dev.sh`) so the frontend is available on <http://localhost:3000> and the API on <http://localhost:8000>
@@ -337,7 +337,7 @@ for a real example found and fixed in Testbook's own test suite.
 
 ---
 
-<h2 id="lab-completion-checklist">✅ Lab Completion Checklist</h2>
+<h2 id="lab-completion-checklist">Lab Completion Checklist</h2>
 
 - [ ] Playwright installed successfully
 - [ ] Watched test run in headed mode
@@ -349,7 +349,7 @@ for a real example found and fixed in Testbook's own test suite.
 
 ---
 
-<h2 id="pro-tips">🎯 Pro Tips</h2>
+<h2 id="pro-tips">Pro Tips</h2>
 
 **Tip 1:** Always run in headed mode while developing
 
@@ -373,7 +373,7 @@ npx playwright codegen http://localhost:3000
 
 ---
 
-## 🆚 JavaScript vs Python?
+## JavaScript vs Python?
 
 **Both versions of this lab teach the same concepts!**
 
@@ -388,6 +388,6 @@ npx playwright codegen http://localhost:3000
 
 ---
 
-**🎉 You're now writing E2E tests! This is professional-level testing!**
+**You're now writing E2E tests! This is professional-level testing!**
 
 **Next Lab:** [Lab 10: Advanced E2E Patterns (JavaScript)](LAB_10_Advanced_E2E_Patterns_JavaScript.md)

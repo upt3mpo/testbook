@@ -10,11 +10,11 @@ Template Version: 2.0
 Last Updated: October 2025
 -->
 
-## ❓ Your Question
+## Your Question
 
 Ask your question clearly and concisely.
 
-## 🔍 What You've Tried
+## What You've Tried
 
 Before asking, please check:
 - [ ] I've checked the [FAQ](../../docs/guides/FAQ.md)
@@ -26,7 +26,7 @@ Before asking, please check:
 **What have you tried so far?**
 [Describe your attempts to solve this yourself]
 
-## 📋 Context
+## Context
 
 **What are you trying to do?**
 [Your goal]
@@ -37,19 +37,19 @@ Before asking, please check:
 **Which lab/section?**
 [e.g. LAB_01, backend tests, frontend unit tests, E2E, environment setup]
 
-## 💻 Environment (if relevant)
+## Environment (if relevant)
 
 - **OS:** [macOS/Linux/Windows]
 - **Python Version:** [if relevant]
 - **Node Version:** [if relevant]
 
-## 📝 Error Messages (if any)
+## Error Messages (if any)
 
 ```
 Paste any error messages here
 ```
 
-## 📸 Screenshots (if helpful)
+## Screenshots (if helpful)
 
 If applicable, add screenshots.
 

@@ -17,11 +17,11 @@ npm install
 npx playwright install chromium
 ```
 
-**💡 Learning-Focused Configuration:** We configure Playwright to run only Chrome by default for faster execution. This reduces test time from ~5 minutes to ~1 minute, making the learning experience smoother. You can still run other browsers if needed for cross-browser testing.
+**Learning-Focused Configuration:** We configure Playwright to run only Chrome by default for faster execution. This reduces test time from ~5 minutes to ~1 minute, making the learning experience smoother. You can still run other browsers if needed for cross-browser testing.
 
 ## Running Tests
 
-**⚠️ IMPORTANT:** Start Testbook in **development mode** first (port 3000)!
+**IMPORTANT:** Start Testbook in **development mode** first (port 3000)!
 
 ```bash
 # In separate terminal - Start the app
@@ -35,7 +35,7 @@ start-dev.bat   # Windows
 
 These tests expect **port 3000** (configured in `playwright.config.js`):
 
-- Frontend: <http://localhost:3000> ✅
+- Frontend: <http://localhost:3000>
 - Backend: <http://localhost:8000>
 
 **If using production mode** (`start.sh` - port 8000):

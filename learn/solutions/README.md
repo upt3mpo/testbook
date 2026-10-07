@@ -1,4 +1,4 @@
-# 📝 Lab Solutions (Maintainers Only)
+# Lab Solutions (Maintainers Only)
 
 This directory contains a small set of reference implementations that demonstrate the expected outcomes for the introductory labs. These files are **not** intended for learners—they exist so maintainers can verify exercises quickly, prepare hints, or build automated checks.
 

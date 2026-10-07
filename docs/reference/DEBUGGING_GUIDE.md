@@ -1,10 +1,10 @@
-# 🐛 Debugging Guide
+# Debugging Guide
 
 **How to debug failing tests like a professional**
 
 ---
 
-## 🎯 Quick Navigation
+## Quick Navigation
 
 1. [Reading Error Messages](#reading-error-messages)
 2. [Debugging Pytest Tests](#debugging-pytest-tests)
@@ -14,7 +14,7 @@
 
 ---
 
-<h2 id="reading-error-messages">📖 Reading Error Messages</h2>
+<h2 id="reading-error-messages">Reading Error Messages</h2>
 
 ### Anatomy of a Pytest Error
 
@@ -79,7 +79,7 @@ Call log:
 
 ---
 
-<h2 id="debugging-pytest-tests">🐍 Debugging Pytest Tests</h2>
+<h2 id="debugging-pytest-tests">Debugging Pytest Tests</h2>
 
 ### Method 1: Print Statements
 
@@ -222,7 +222,7 @@ pytest -k "login and wrong" -v
 
 ---
 
-<h2 id="debugging-playwright-tests">🎭 Debugging Playwright Tests</h2>
+<h2 id="debugging-playwright-tests">Debugging Playwright Tests</h2>
 
 > Most "everything times out" E2E failures trace back to one thing: the backend not running with `TESTING=true`. See [PLAYWRIGHT_QUICKSTART.md](../guides/PLAYWRIGHT_QUICKSTART.md#prerequisites) before digging further.
 
@@ -256,10 +256,10 @@ npx playwright test auth.spec.js --debug
 - Browser opens
 - Test pauses at start
 - Use buttons to step through:
-  - ▶️ Resume
-  - ⏭️ Step over
-  - ⏯️ Pause
-  - ⏹️ Stop
+  - ▶Resume
+  - Step over
+  - Pause
+  - Stop
 
 **In the inspector:**
 
@@ -376,7 +376,7 @@ npx playwright show-trace trace.zip
 
 ---
 
-<h2 id="common-error-patterns">🔍 Common Error Patterns</h2>
+<h2 id="common-error-patterns">Common Error Patterns</h2>
 
 ### Error Pattern 1: Element Not Found
 
@@ -542,7 +542,7 @@ test("fixed", async ({ page }) => {
 
 ---
 
-<h2 id="advanced-debugging-techniques">⚡ Advanced Debugging Techniques</h2>
+<h2 id="advanced-debugging-techniques">Advanced Debugging Techniques</h2>
 
 ### Technique 1: Binary Search
 
@@ -618,7 +618,7 @@ pytest tests/test_broken.py -v
 
 ---
 
-## 📝 Debugging Checklist
+## Debugging Checklist
 
 When a test fails, check:
 
@@ -638,7 +638,7 @@ When a test fails, check:
 
 ---
 
-## 💡 Pro Tips
+## Pro Tips
 
 1. **Start simple** - Add prints before using debugger
 2. **Run one test** - Focus on the failing test
@@ -650,7 +650,7 @@ When a test fails, check:
 
 ---
 
-## 📚 Related Resources
+## Related Resources
 
 - [TROUBLESHOOTING.md](TROUBLESHOOTING.md) - Common errors and fixes
 - [QUICK_REFERENCE_PYTEST.md](QUICK_REFERENCE_PYTEST.md) - Pytest commands
@@ -660,4 +660,4 @@ When a test fails, check:
 
 ---
 
-**🎯 Remember:** Every bug you fix makes you a better tester!
+**Remember:** Every bug you fix makes you a better tester!

@@ -1,4 +1,4 @@
-# 🧪 E2E Python Examples
+# E2E Python Examples
 
 ## Example tests demonstrating advanced patterns from Lab 4B
 
@@ -6,14 +6,14 @@ These tests showcase the patterns taught in [Lab 4B: Advanced E2E Python](../../
 
 ---
 
-## 📁 Files
+## Files
 
 - `test_page_objects_example.py` - Page Object Model examples
 - `test_api_ui_combined_example.py` - Combined API + UI validation patterns
 
 ---
 
-## 🚀 Running the Examples
+## Running the Examples
 
 ### Prerequisites
 
@@ -73,7 +73,7 @@ $env:HEADLESS="false"; pytest examples/test_api_ui_combined_example.py -v
 
 ---
 
-## 📚 What These Examples Demonstrate
+## What These Examples Demonstrate
 
 ### Page Object Model
 
@@ -91,25 +91,25 @@ $env:HEADLESS="false"; pytest examples/test_api_ui_combined_example.py -v
 
 ---
 
-## 💡 Key Takeaways
+## Key Takeaways
 
 **Page Objects make tests:**
 
-- ✅ More readable
-- ✅ Easier to maintain
-- ✅ Reusable across tests
-- ✅ Professional quality
+- More readable
+- Easier to maintain
+- Reusable across tests
+- Professional quality
 
 **API + UI patterns enable:**
 
-- ✅ 10-100x faster test setup
-- ✅ More reliable assertions
-- ✅ Same language for both layers
-- ✅ Reduced UI flakiness
+- 10-100x faster test setup
+- More reliable assertions
+- Same language for both layers
+- Reduced UI flakiness
 
 ---
 
-## 🎓 Learn More
+## Learn More
 
 - [Lab 4B: Advanced E2E Python](../../../learn/stage_3_api_e2e/exercises/LAB_10_Advanced_E2E_Patterns_Python.md) -
   Full tutorial

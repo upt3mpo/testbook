@@ -335,7 +335,7 @@ start-dev.bat   # Windows
 
 ## How to Use This Path
 
-### ✅ DO
+### DO
 
 - **Go in order** - Each stage builds on previous knowledge
 - **Type code yourself** - Don't copy-paste; typing builds muscle memory
@@ -344,7 +344,7 @@ start-dev.bat   # Windows
 - **Ask "why?"** - Understand the reasoning behind patterns
 - **Reflect deeply** - Answer reflection questions thoughtfully
 
-### ❌ DON'T
+### DON'T
 
 - Skip stages or rush through
 - Just read code without running it

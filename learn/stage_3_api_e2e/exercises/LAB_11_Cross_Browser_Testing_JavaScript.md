@@ -1,17 +1,17 @@
-# 🧪 Lab 11: Cross-Browser Testing (JavaScript)
+# Lab 11: Cross-Browser Testing (JavaScript)
 
 **Estimated Time:** 105 minutes (90 minutes of core parts and a 15 minute accessibility part)<br>
 **Difficulty:** Advanced<br>
-**Language:** 🟨 JavaScript<br>
+**Language:** JavaScript<br>
 **Prerequisites:** Lab 10 completed
 
-**💡 Need Python instead?** Try [Lab 11: Cross Browser Testing (Python)](LAB_11_Cross_Browser_Testing_Python.md)!
+**Need Python instead?** Try [Lab 11: Cross Browser Testing (Python)](LAB_11_Cross_Browser_Testing_Python.md)!
 
 **What This Adds:** Master the advanced features of Playwright that make it the go-to E2E testing tool. Learn debugging, code generation, CI/CD integration, and performance optimization techniques used in production.
 
 ---
 
-## 🎯 What You'll Learn
+## What You'll Learn
 
 - **Trace Viewer** - Debug test failures with visual timeline
 - **Codegen** - Generate tests by recording user actions
@@ -25,7 +25,7 @@
 
 ---
 
-## 📋 Step-by-Step Instructions
+## Step-by-Step Instructions
 
 ### Part 1: Trace Viewer - The Ultimate Debugging Tool (20 minutes)
 
@@ -105,7 +105,7 @@ npx playwright test test-trace-debug.spec.js --trace on-first-retry
 npx playwright show-trace test-results/trace.zip
 ```
 
-✅ **Checkpoint:** You can use trace viewer to debug test failures
+**Checkpoint:** You can use trace viewer to debug test failures
 
 ---
 
@@ -191,7 +191,7 @@ test("should login and create post", async ({ page }) => {
 });
 ```
 
-✅ **Checkpoint:** You can generate tests using codegen
+**Checkpoint:** You can generate tests using codegen
 
 ---
 
@@ -283,7 +283,7 @@ npx playwright test test-screenshots.spec.js
 npx playwright show-report
 ```
 
-✅ **Checkpoint:** You can capture and compare screenshots
+**Checkpoint:** You can capture and compare screenshots
 
 ---
 
@@ -370,7 +370,7 @@ npx playwright show-trace test-results/network.har
 - **Error responses** - Failed API calls
 - **Request dependencies** - Which calls depend on others
 
-✅ **Checkpoint:** You can analyze network requests and responses
+**Checkpoint:** You can analyze network requests and responses
 
 ---
 
@@ -451,7 +451,7 @@ test("navbar renders correctly on a mobile viewport", async ({ browser }) => {
 });
 ```
 
-✅ **Checkpoint:** You can run the same spec against Chromium, Firefox, and WebKit, and against a mobile viewport
+**Checkpoint:** You can run the same spec against Chromium, Firefox, and WebKit, and against a mobile viewport
 
 ---
 
@@ -459,7 +459,7 @@ test("navbar renders correctly on a mobile viewport", async ({ browser }) => {
 
 **Speed up test runs** with parallel execution and optimization.
 
-**⚠️ Note:** Testbook's own `tests/playwright.config.js` intentionally sets
+**Note:** Testbook's own `tests/playwright.config.js` intentionally sets
 `workers: 1` and `fullyParallel: false`, because the E2E suite resets the
 shared database between tests - running it with `workers: 4` /
 `fullyParallel: true` as shown below would make tests interfere with each
@@ -536,7 +536,7 @@ npx playwright test --workers=4
 npx playwright test --reporter=html
 ```
 
-✅ **Checkpoint:** You can run tests in parallel efficiently
+**Checkpoint:** You can run tests in parallel efficiently
 
 ---
 
@@ -651,7 +651,7 @@ CI=true npx playwright test
 docker run --rm -it -v $(pwd):/workspace -w /workspace mcr.microsoft.com/playwright:v1.40.0-focal bash
 ```
 
-✅ **Checkpoint:** You can run Playwright tests in CI/CD
+**Checkpoint:** You can run Playwright tests in CI/CD
 
 ---
 
@@ -721,23 +721,23 @@ an assistive technology pairing, say whether it is **automated** (Playwright) or
 give one sentence on what it would catch that the others would not. Keep it as a note you can
 reuse in the Stage 5 capstone.
 
-✅ **Checkpoint:** you ran the keyboard tests on more than one engine, you saw the plain-`Tab`
+**Checkpoint:** you ran the keyboard tests on more than one engine, you saw the plain-`Tab`
 difference for yourself, and you can explain why a Firefox test run says nothing about NVDA.
 
-## 🎓 What You Learned
+## What You Learned
 
-- ✅ **Trace Viewer** - Debug test failures with visual timeline
-- ✅ **Codegen** - Generate tests by recording user actions
-- ✅ **Screenshots/Videos** - Visual debugging and verification
-- ✅ **Network Analysis** - Understand API interactions
-- ✅ **Cross-Browser & Mobile Testing** - Run the same spec against Chromium, Firefox, WebKit, and a mobile viewport
-- ✅ **Parallel Execution** - Speed up test runs
-- ✅ **CI/CD Integration** - Run tests in GitHub Actions
-- ✅ **Performance Optimization** - Make tests run faster
+- **Trace Viewer** - Debug test failures with visual timeline
+- **Codegen** - Generate tests by recording user actions
+- **Screenshots/Videos** - Visual debugging and verification
+- **Network Analysis** - Understand API interactions
+- **Cross-Browser & Mobile Testing** - Run the same spec against Chromium, Firefox, WebKit, and a mobile viewport
+- **Parallel Execution** - Speed up test runs
+- **CI/CD Integration** - Run tests in GitHub Actions
+- **Performance Optimization** - Make tests run faster
 
 ---
 
-## 💪 Practice Challenges
+## Practice Challenges
 
 ### Challenge 1: Create a Complete Test Suite
 
@@ -765,7 +765,7 @@ Using all the techniques learned:
 
 ---
 
-## 🎯 Pro Tips
+## Pro Tips
 
 ### Tip 1: Use Trace Viewer for Complex Debugging
 
@@ -806,7 +806,7 @@ export default defineConfig({
 
 ---
 
-## ✅ Completion Checklist
+## Completion Checklist
 
 - [ ] Used trace viewer to debug test failures
 - [ ] Generated tests using codegen
@@ -821,7 +821,7 @@ export default defineConfig({
 
 ---
 
-## 🎯 Key Takeaways
+## Key Takeaways
 
 1. **Trace Viewer is your best friend** - Use it for debugging complex failures
 2. **Codegen speeds up test creation** - Record first, then customize
@@ -840,6 +840,6 @@ export default defineConfig({
 
 ---
 
-**🎉 Congratulations!** You've mastered Playwright's advanced features and are ready for production E2E testing!
+**Congratulations!** You've mastered Playwright's advanced features and are ready for production E2E testing!
 
 **Next Lab:** [Lab 12: E2E Test Organization (JavaScript)](LAB_12_E2E_Test_Organization_JavaScript.md)
