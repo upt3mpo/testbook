@@ -99,6 +99,12 @@ the navigation, and note the differences below.
 Press `NVDA+T` and listen on load. Elements list (`NVDA+F7`) > Landmarks / Headings.
 **Expected** as in the VoiceOver script.
 
+> **Landmarks depend on the page.** The login and register pages have **one** landmark,
+> `main`. The navigation bar only exists once you are signed in, so the signed-in pages have
+> two: `navigation` and `main`. If the reading cursor is already inside `main` (you clicked or
+> tabbed into a field), `D` says "no next landmark". Press `Ctrl+Home` first to go to the top,
+> then `D`.
+
 ### SR-02 Login form
 
 Use `F` to jump between fields, or `Tab`. **Expected** as before: names "Email" and
@@ -121,7 +127,7 @@ messages are normally spoken by NVDA immediately and interrupt other speech.
 
 ### SR-05 Landmarks and headings
 
-`D` cycles landmarks (navigation, main). `H` cycles headings. Posts are articles named
+Signed in, `D` cycles landmarks (navigation, main). Press `Ctrl+Home` first so you start at the top. `H` cycles headings. Posts are articles named
 "Post by <author>". **NVDA note:** articles are not always announced as a role in browse
 mode. If NVDA does not speak "article" but does speak the name on entering the post, that is
 acceptable; note it.
