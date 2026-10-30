@@ -35,7 +35,7 @@ yours. Nothing in this lab is a test of you.
 | You have | Use |
 | --- | --- |
 | A Mac | VoiceOver with Safari ([setup](../../../docs/a11y/manual/02_SCREEN_READER_VOICEOVER.md#setup)) |
-| Windows | NVDA with Firefox ([setup](../../../docs/a11y/manual/03_SCREEN_READER_NVDA.md#setup)) |
+| Windows | NVDA with Firefox ([setup, including choosing your NVDA key](../../../docs/a11y/manual/03_SCREEN_READER_NVDA.md#setup)) |
 | Both | Do both, and compare in Part 6 |
 | Neither | Use the alternative in Part 3 (the browser's accessibility inspector and a live-region watcher) |
 

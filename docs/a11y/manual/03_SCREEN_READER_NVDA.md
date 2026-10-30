@@ -21,15 +21,32 @@ See [SCREEN_READER_COMPARISON.md](SCREEN_READER_COMPARISON.md) for the full pict
 - Open *NVDA menu > Tools > Speech Viewer* to see the spoken text on screen. It is the
   easiest way to quote output in a bug report.
 
+### First launch: choose your NVDA key
+
+Start NVDA with `Ctrl+Alt+N` (the desktop shortcut) or from the Start menu. The first time,
+NVDA opens a **Welcome to NVDA** dialog. Settle three things here before you test anything.
+
+![The Welcome to NVDA dialog. It explains that most commands need the NVDA key held down, that Insert and numpad Insert both work by default, and that CapsLock can be enabled too. Below the text are a Keyboard layout dropdown set to desktop, and three checkboxes: Use CapsLock as an NVDA modifier key (ticked), Start NVDA after I sign in (not ticked), and Show this dialog when NVDA starts (ticked). An OK button is at the bottom right.](images/nvda-welcome-dialog.png)
+
+| Option | What to choose | Why |
+| --- | --- | --- |
+| **Keyboard layout** | `desktop` (the default) | The key tables in this script use the desktop layout. The `laptop` layout moves some shortcuts, for example "say all" becomes `NVDA+A`. |
+| **Use CapsLock as an NVDA modifier key** | Tick it if your keyboard has no separate `Insert` key, which is common on laptops | It is **off by default**. Insert and the numpad Insert already work without ticking anything. |
+| **Show this dialog when NVDA starts** | Your choice | Untick it once you are set up. You can reopen it any time from *NVDA menu > Help > Welcome Dialog*. |
+
+You can change the same options later in *NVDA menu > Preferences > Settings > Keyboard*.
+Open the NVDA menu with `NVDA+N`, or right-click the NVDA icon in the system tray (click the
+`^` to show hidden icons).
+
+**If you hear nothing**, check that the Speech Viewer shows text first. If it does, NVDA is
+working and the problem is audio: look at *Preferences > Settings > Audio* and make sure
+the output device is the one you are actually listening on (Windows can send sound to
+headphones that are not plugged in), and that the Windows volume is up.
+
 ### NVDA keys you need
 
-`NVDA` means the NVDA modifier key. By default it is `Insert` (the one on the numeric keypad
-also works with Num Lock off). `CapsLock` is also supported but is **off by default**. To
-change it: right-click the NVDA icon in the system tray (click the `^` to show hidden icons)
-> *Preferences > Settings > Keyboard*, then tick the keys you want under *Select NVDA
-Modifier Keys*. Many laptops have no separate `Insert` key, so tick `CapsLock` there. The
-*Keyboard layout* setting on the same page also changes some shortcuts: for example, "say
-all" is `NVDA+A` in the laptop layout.
+`NVDA` means the NVDA modifier key you chose above: `Insert` by default, or `CapsLock` if you ticked it.
+Hold it down while you press the other key, as you would hold `Ctrl`.
 
 | Do this | Keys |
 | --- | --- |
