@@ -1,5 +1,9 @@
 * text=auto eol=lf
 
+# Windows batch files need CRLF; cmd mis-parses LF-only files (labels and goto break)
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
 # Binary types
 *.png binary
 *.jpg binary

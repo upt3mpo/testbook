@@ -1,4 +1,5 @@
 @echo off
+REM Keep CRLF line endings (enforced by .gitattributes); cmd mis-parses LF-only batch files.
 echo.
 echo 🔄 Resetting Testbook Database...
 echo.

@@ -1,4 +1,5 @@
 @echo off
+REM Keep CRLF line endings (enforced by .gitattributes); cmd mis-parses LF-only batch files.
 REM Markdown validation script for Windows
 REM Run this before committing to catch issues early
 

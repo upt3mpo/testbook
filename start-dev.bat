@@ -1,4 +1,5 @@
 @echo off
+REM Keep CRLF line endings (enforced by .gitattributes); cmd mis-parses LF-only batch files.
 chcp 65001 >nul
 setlocal enabledelayedexpansion
 
