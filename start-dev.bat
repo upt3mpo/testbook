@@ -1,4 +1,5 @@
 @echo off
+chcp 65001 >nul
 setlocal enabledelayedexpansion
 
 echo.
@@ -41,10 +42,27 @@ if "%PORT_CONFLICT%"=="1" (
     exit /b 1
 )
 
+REM Find Python 3.13 (the version this project pins in .python-version and CI).
+REM Plain "python" can point at a different or missing install, such as a newer
+REM version that some pinned packages have no wheels for, so prefer the py launcher.
+set "PY="
+py -3.13 --version >nul 2>&1 && set "PY=py -3.13"
+if not defined PY (
+    python --version 2>&1 | findstr /b /c:"Python 3.13" >nul && set "PY=python"
+)
+if not defined PY (
+    echo ❌ Error: Python 3.13 was not found
+    echo    This project needs Python 3.13. Install it from https://www.python.org/downloads/
+    echo    Check what the launcher sees: py -0
+    pause
+    exit /b 1
+)
+echo ✓ Using %PY%
+
 REM Generate placeholder images if they don't exist
 if not exist "backend\static\images\default-avatar.jpg" (
     echo 📸 Generating placeholder images...
-    python setup_images.py
+    %PY% setup_images.py
     echo.
 )
 
@@ -52,25 +70,40 @@ REM Backend setup
 echo 🔧 Setting up backend...
 cd backend
 
+REM Throw away a venv that was built from a different or missing Python
+if exist ".venv\Scripts\python.exe" (
+    ".venv\Scripts\python.exe" --version 2>&1 | findstr /b /c:"Python 3.13" >nul
+    if errorlevel 1 (
+        echo ⚠️  Existing .venv was not built with Python 3.13, recreating it...
+        rmdir /s /q .venv
+    )
+)
+
 REM Create venv if it doesn't exist
 if not exist ".venv\Scripts\activate.bat" (
     echo 📦 Creating Python virtual environment...
-    python -m venv .venv
+    %PY% -m venv .venv
+    if errorlevel 1 goto :error_exit
 )
 
 REM Activate venv
 call .venv\Scripts\activate.bat
 
 REM Check if dependencies need installation (idempotent check)
-if not exist ".venv\Lib\site-packages\fastapi\__init__.py" (
+python -c "import fastapi, uvicorn, sqlalchemy, psycopg, slowapi" >nul 2>&1
+if errorlevel 1 (
     REM Check for uv
     where uv >nul 2>&1
     if not errorlevel 1 (
         echo 📦 Installing backend dependencies with uv ^(fast!^)...
-        call uv pip install -r requirements.txt
+        call uv pip install --python .venv\Scripts\python.exe -r requirements.txt
     ) else (
         echo 📦 Installing backend dependencies with pip...
-        pip install -q -r requirements.txt
+        python -m pip install -r requirements.txt
+    )
+    if errorlevel 1 (
+        echo ❌ Installing backend dependencies failed. See the error above.
+        goto :error_exit
     )
 ) else (
     echo ✓ Backend dependencies already installed
@@ -79,6 +112,10 @@ if not exist ".venv\Lib\site-packages\fastapi\__init__.py" (
 REM Seed database
 echo 🌱 Seeding database...
 python seed.py
+if errorlevel 1 (
+    echo ❌ Seeding the database failed. See the error above.
+    goto :error_exit
+)
 
 REM Start backend
 echo 🚀 Starting backend server on port 8000...
