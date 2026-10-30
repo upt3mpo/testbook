@@ -23,7 +23,13 @@ See [SCREEN_READER_COMPARISON.md](SCREEN_READER_COMPARISON.md) for the full pict
 
 ### NVDA keys you need
 
-`NVDA` means the NVDA key: `Insert` (desktop layout) or `CapsLock` (default).
+`NVDA` means the NVDA modifier key. By default it is `Insert` (the one on the numeric keypad
+also works with Num Lock off). `CapsLock` is also supported but is **off by default**. To
+change it: right-click the NVDA icon in the system tray (click the `^` to show hidden icons)
+> *Preferences > Settings > Keyboard*, then tick the keys you want under *Select NVDA
+Modifier Keys*. Many laptops have no separate `Insert` key, so tick `CapsLock` there. The
+*Keyboard layout* setting on the same page also changes some shortcuts: for example, "say
+all" is `NVDA+A` in the laptop layout.
 
 | Do this | Keys |
 | --- | --- |
